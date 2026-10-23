@@ -1,0 +1,43 @@
+# @package _global_
+# Native scratch training and latent-only evaluation over mmgen.sample manifests.
+# Public model overrides are declared below.
+model:
+  name: gen_engine
+  extras:
+    transformer_config_path: ""
+    video_latent_codec_config_path: ""
+    audio_latent_codec_config_path: ""
+    require_digests: true
+    tensor_format: bundle
+    audio_layout: ACT
+    artifact_cache_dir: null
+    pin_artifacts: false
+    target_modalities: null
+    # Null uses the transformer config; an explicit override must match it.
+    patch_size: null
+    video_flow_shift: 12.0
+    audio_flow_shift: 3.0
+    video_loss_weight: 1.0
+    audio_loss_weight: 1.0
+    reference_timestep: 0.999
+    text_timestep: 1.0
+
+optimizer:
+  name: adamw
+  learning_rate: 1.0e-5
+  weight_decay: 0.0
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+
+runtime:
+  weights_strict: true
+  gradient_clip_val: 1.0
+
+parallel:
+  gradient_checkpointing: true
+  fsdp_leaf_module_paths:
+    - context_embedder
+    - token_refiner.final_norm
+
+evaluation:
+  num_inference_steps: 50

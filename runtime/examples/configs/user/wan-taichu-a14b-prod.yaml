@@ -1,0 +1,71 @@
+# @package _global_
+# Load with:
+#   torchrun --nproc_per_node=8 -m vforge.tasks.train \
+#     --config-dir /path/to/vforge/examples/configs \
+#     +user=wan-taichu-a14b-prod
+defaults:
+  - override /experiment: wan_taichu_wan22_a14b
+  - _self_
+
+model:
+  # Direct Taichu weights-only warm-start. It is not a Native resume and does
+  # not restore optimizer, scheduler, global step, or RNG state.
+  pretrained_path: /path/to/taichu/checkpoints/18000.pt
+  extras:
+    # Provides transformer/ and transformer_2/ configs and frozen assets.
+    condition_pretrained_path: /path/to/Wan2.2-I2V-A14B-Diffusers
+    condition_streams: [rgb, grid, normal]
+    train_expert: high
+    weighting_scheme: bsmntw
+    grid_drop_prob: 0.1
+    normal_drop_prob: 1.0
+    load_vae_for_dropout_fallback: true
+    max_latents_schedule:
+      start_step: 0
+      end_step: 4000
+      start_value: 38
+      end_value: 150
+
+latent_cache:
+  mode: offline
+
+data:
+  sources:
+    - name: gameplay-5s
+      cache_dir: /path/to/v3-cache/gameplay-production-a14b-5s
+      weight: 0.2
+      min_latents: 21
+      max_latents: 38
+    - name: gameplay-20s
+      cache_dir: /path/to/v3-cache/gameplay-production-a14b-20s
+      weight: 0.8
+      min_latents: 38
+      max_latents: 150
+  batch_size: 1
+  num_workers: 2
+
+optimizer:
+  learning_rate: 5e-6
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  eps: 1e-15
+
+scheduler:
+  name: constant_with_warmup
+  warmup_steps: 100
+
+parallel:
+  usp_size: 8
+
+attention_offload:
+  enable: true
+  max_cpu_bytes: 68719476736
+  async_transfer: true
+
+runtime:
+  max_steps: 1000000
+  gradient_clip_val: 1.0
+  output_dir: /path/to/output/wan-taichu-a14b-prod
+
+checkpoint:
+  every_n_steps: 500

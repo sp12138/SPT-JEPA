@@ -1,0 +1,26 @@
+# Public standalone-evaluation CLI surface. Keep this aligned with
+# EvaluationHydraConfig so documented fields use regular Hydra overrides.
+
+checkpoint_format: auto
+checkpoint_path: ""
+evaluate_all_checkpoints: false
+data_source: ""
+manifest: ""
+sources: []
+path_replacements: []
+output_dir: ${runtime.output_dir}/samples
+num_samples: null
+sample_index: null
+sample_selection: first
+seed: 42
+skip_existing: true
+num_inference_steps: null
+guidance_scale: null
+negative_prompt: null
+rollout_mode: ""
+gridnormal:
+  enabled: false
+  variants: null
+online_ref:
+  num_frames: null
+  frame_indices: null

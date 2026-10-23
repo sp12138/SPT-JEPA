@@ -1,0 +1,24 @@
+# @package _global_
+# Wan Taichu ordinary bidirectional Wan 2.1 I2V 14B.
+
+model:
+  name: wan_taichu
+  init_device: meta
+  weight_loading: auto
+  pretrained_path: ""
+  extras:
+    variant: wan21_i2v_14b
+    condition_streams: [normal]
+    weighting_scheme: none
+    normal_drop_prob: 0.0
+    text_drop_prob: 0.0
+    max_frames: null
+    max_sequence_length: 512
+
+runtime:
+  precision: bf16
+  autocast: false
+  output_dir: outputs/wan_taichu_wan21_i2v_14b
+
+parallel:
+  gradient_checkpointing: true

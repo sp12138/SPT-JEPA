@@ -1,0 +1,41 @@
+# @package _global_
+# Wan Taichu Wan 2.2 TI2V 5B with in-context reference tokens.
+
+model:
+  name: wan_taichu
+  init_device: meta
+  weight_loading: auto
+  pretrained_path: ""
+  extras:
+    variant: wan22_ti2v_5b_ref
+    condition_streams: [grid, normal]
+    weighting_scheme: none
+    exclude_first_frame_from_loss: true
+    ref_num_frames_online: 6
+    grid_drop_prob: 0.0
+    normal_drop_prob: 0.0
+    text_drop_prob: 0.0
+    partial_normal_aug: false
+    max_frames: null
+    max_sequence_length: 512
+
+latent_cache:
+  mode: offline
+
+evaluation:
+  num_inference_steps: 50
+  guidance_scale: 5.0
+  negative_prompt: null
+
+runtime:
+  precision: bf16
+  autocast: false
+  output_dir: outputs/wan_taichu_wan22_ti2v_5b_ref
+
+parallel:
+  usp_size: 1
+  gradient_checkpointing: true
+
+attention:
+  backend: auto
+  allow_fallback: true

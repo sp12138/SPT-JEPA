@@ -1,0 +1,18 @@
+defaults:
+  - default
+  - _self_
+
+data_source: cache
+sources:
+  - name: gameplay-a14b-20s-99lat
+    cache_dir: ${oc.env:A14B_LATENT_CACHE}
+    min_latents: 99
+    max_latents: 99
+
+num_samples: 30
+sample_selection: evenly_spaced
+num_inference_steps: 40
+guidance_scale: 1.0
+seed: 42
+skip_existing: true
+rollout_mode: incremental_kv

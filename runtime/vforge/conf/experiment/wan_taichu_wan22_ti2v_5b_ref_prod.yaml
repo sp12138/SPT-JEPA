@@ -1,0 +1,15 @@
+# @package _global_
+# Wan Taichu equivalent of Taichu prod_v1/wan22-5b-diffusers/exp_ref_prod.yaml.
+defaults:
+  - wan_taichu_wan22_ti2v_5b_ref
+  - _self_
+
+evaluation:
+  num_samples: 16
+  sample_selection: evenly_spaced
+  num_inference_steps: 40
+  guidance_scale: 1.0
+  seed: 42
+  gridnormal:
+    enabled: true
+    variants: null

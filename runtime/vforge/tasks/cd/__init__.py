@@ -1,0 +1,1 @@
+"""Consistency-distillation task entry."""

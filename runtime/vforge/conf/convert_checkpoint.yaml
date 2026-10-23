@@ -1,0 +1,22 @@
+# @package _global_
+defaults:
+  - native_defaults
+  - experiment: wan21_i2v_14b
+  - _self_
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: ${runtime.output_dir}/hydra/${now:%Y-%m-%d_%H-%M-%S}
+
+runtime:
+  output_dir: outputs/convert
+
+convert_checkpoint:
+  input_path: ""
+  output_path: ""
+  # Optional RoleModelBundle subtree, for example generator.
+  component_path: ""
+  # raw exports the live role; ema exports <component_path>_ema.
+  weights: raw

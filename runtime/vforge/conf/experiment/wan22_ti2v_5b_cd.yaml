@@ -1,0 +1,134 @@
+# @package _global_
+# Wan 2.2 TI2V-5B causal consistency distillation.
+
+training:
+  recipe: cd
+  models:
+    teacher:
+      model: wan_taichu
+      config:
+        variant: wan22_ti2v_5b_causal_teacher
+        condition_streams: [grid, normal]
+        grid_drop_prob: 0.0
+        normal_drop_prob: 0.0
+        text_drop_prob: 0.0
+        noise_shift: 5.0
+        frame_per_block: 3
+        first_frame_own_block: true
+        local_attn_size: 31
+        sink_size: 10
+      pretrained_path: /data/gwm-efs/shared/models/Wan2.2-TI2V-5B-Diffusers
+      init_weights: /data/gwm-efs/xiaotaohu/experiments/prod_v1_20s_swa_causal_ar_teacher/prod_v1_20s_swa_causal_ar_teacher/checkpoints/10000.pt
+    student:
+      model: wan_taichu
+      config:
+        variant: wan22_ti2v_5b_causal_teacher
+        condition_streams: [grid, normal]
+        grid_drop_prob: 0.0
+        normal_drop_prob: 0.0
+        text_drop_prob: 0.0
+        noise_shift: 5.0
+        frame_per_block: 3
+        first_frame_own_block: true
+        local_attn_size: 31
+        sink_size: 10
+      pretrained_path: /data/gwm-efs/shared/models/Wan2.2-TI2V-5B-Diffusers
+      init_weights: /data/gwm-efs/xiaotaohu/experiments/prod_v1_20s_swa_causal_ar_teacher/prod_v1_20s_swa_causal_ar_teacher/checkpoints/10000.pt
+    ema_model:
+      model: wan_taichu
+      config:
+        variant: wan22_ti2v_5b_causal_teacher
+        condition_streams: [grid, normal]
+        grid_drop_prob: 0.0
+        normal_drop_prob: 0.0
+        text_drop_prob: 0.0
+        noise_shift: 5.0
+        frame_per_block: 3
+        first_frame_own_block: true
+        local_attn_size: 31
+        sink_size: 10
+      pretrained_path: /data/gwm-efs/shared/models/Wan2.2-TI2V-5B-Diffusers
+      init_weights: /data/gwm-efs/xiaotaohu/experiments/prod_v1_20s_swa_causal_ar_teacher/prod_v1_20s_swa_causal_ar_teacher/checkpoints/10000.pt
+  cd:
+    algorithm: causal_consistency_tf
+    discrete_levels: 40
+    sigma_grid: wan
+    pair_sampling: adjacent_uniform
+    consistency_shift: 5.0
+    guidance_scale: 1.0
+    ema:
+      decay: 0.995
+      start_step: 0
+
+latent_cache:
+  mode: offline
+
+data:
+  sources:
+    - name: wan22_5b_cd
+      cache_dir: /data/gwm-code/jwphuang/latent_cache/prod_v1/gameplay-production-ti2v5b-20s
+      min_latents: 148
+      max_latents: 148
+  base_seed: 1234567
+  sampler_seed: 0
+  batch_size: 1
+  num_workers: 0
+  shuffle: true
+  drop_last: true
+  pin_memory: true
+  persistent_workers: false
+  prefetch_factor: null
+
+optimizers:
+  student:
+    name: adamw
+    learning_rate: 5.0e-6
+    weight_decay: 0.01
+    betas: [0.9, 0.999]
+    eps: 1.0e-15
+
+scheduler:
+  name: constant_with_warmup
+  factor: 1.0
+  warmup_steps: 500
+
+logging:
+  jsonl: true
+  jsonl_filename: train_steps.jsonl
+  wandb_enabled: false
+
+runtime:
+  max_steps: 0
+  run_backward: true
+  seed: 42
+  precision: bf16
+  autocast: true
+  gradient_clip_val: 1.0
+  output_dir: outputs/wan22_ti2v_5b_cd
+  weights_strict: true
+
+limitations:
+  gradient_accumulation_steps: 1
+  expert_parallel: false
+  ring_attention: false
+  train_condition_encoders: false
+  cross_attention_ulysses: false
+  padded_cross_attention_requires_varlen: true
+
+parallel:
+  usp_size: 4
+  dp_size: auto
+  dp_replicate_size: 1
+  dp_shard_size: 1
+  dp_mode: fsdp2
+  include_usp_in_fsdp: true
+  gradient_checkpointing: true
+  reshard_after_forward: true
+  mixed_precision:
+    # CD retains block input precision without changing the shared Wan default.
+    preserve_forward_input_paths: ["blocks.*"]
+
+attention:
+  backend: flash_attention_4
+  allow_fallback: false
+  debug: false

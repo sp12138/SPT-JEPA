@@ -1,0 +1,33 @@
+{% extends "main.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ 'assets/stylesheets/overview.css' | url }}">
+{% endblock %}
+
+{% block content %}
+<div class="vf-home">
+  <h1 class="vf-home__title">vforge</h1>
+  <section class="vf-hero" aria-label="开始探索 vforge">
+    <div class="vf-art">
+      <button class="vf-portrait" type="button" aria-label="暂停画面动画" disabled>
+        <img src="{{ 'assets/images/human-in-light.jpg' | url }}" alt="一张由细密粒子构成的女性侧影，抬头望向前方。" width="1536" height="1024" fetchpriority="high">
+        <img src="{{ 'assets/images/bear-in-light.jpg' | url }}" alt="一只完全由细密粒子组成的玩具熊，安静地坐着。" width="1536" height="1024" hidden>
+        <img src="{{ 'assets/images/robot-in-light.jpg' | url }}" alt="一个由粒子勾勒的小机器人，伸出手掌，好奇地看向前方。" width="1536" height="1024" hidden>
+        <img src="{{ 'assets/images/whale-in-light.jpg' | url }}" alt="一头由细密粒子组成的鲸鱼，舒展长鳍，游向前方。" width="1536" height="1024" hidden>
+        <img src="{{ 'assets/images/tree-in-light.jpg' | url }}" alt="一棵由粒子组成的树，枝条与树冠向四周舒展。" width="1536" height="1024" hidden>
+        <canvas id="vf-light" aria-hidden="true"></canvas>
+      </button>
+    </div>
+    <nav class="vf-home__entries" aria-label="入门入口">
+      <a href="{{ 'guide/' | url }}">开始使用 <span aria-hidden="true">↗</span></a>
+      <a href="{{ 'development/environment/' | url }}">开始开发 <span aria-hidden="true">↗</span></a>
+    </nav>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ 'assets/javascripts/overview.js' | url }}" defer></script>
+{% endblock %}

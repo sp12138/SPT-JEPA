@@ -1,0 +1,127 @@
+# @package _global_
+# MiniMax-H3 FL2VA/T2VA first-release training recipe.
+
+model:
+  name: minimax_h3
+  init_device: meta
+  weight_loading: auto
+  pretrained_path: ""
+  extras:
+    variant: fl2va
+    model_revision: 9ac0dd7aabc2c651fcf0ace4c00b2bffd9c8c8a6
+    video_flow_shift: 12.0
+    audio_flow_shift: 3.0
+    audio_loss_weight: 1.0
+    keyframe_noise_aug: 0.999
+    text_encoder_layer: 50
+    num_frames: 124
+    height: null
+    width: null
+    canvas_multiple: 32
+    canvas_short_edge: 768
+    canvas_max_pixels: 1032192
+    patch_size: [1, 2, 2]
+    audio_sample_rate: 32000
+    encode_seed: 42
+    qwen_patch_embed_mode: fp32  # default | fp32 | last_channel
+    video_vae_tile_batch_size: 1
+    prepare_cpu_prefetch: true
+    skip_existing: true
+    save_tensor_artifacts: false
+
+latent_cache:
+  mode: offline
+
+data:
+  train_manifest: ""
+  val_manifest: ""
+  cache_dir: ""
+  base_seed: 1234567
+  sampler_seed: 0
+  batch_size: 1
+  num_workers: 0
+  drop_last: true
+  pin_memory: true
+  persistent_workers: false
+  prefetch_factor: null
+
+optimizer:
+  name: adamw
+  learning_rate: 1.0e-5
+  weight_decay: 0.0
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+
+scheduler:
+  name: none
+  factor: 1.0
+  warmup_steps: 0
+
+logging:
+  jsonl: true
+  jsonl_filename: train_steps.jsonl
+  wandb_enabled: true
+  wandb_project: ${oc.env:WANDB_PROJECT,vforge}
+  wandb_entity: null
+  wandb_group: null
+  wandb_name: ""
+  wandb_tags: []
+  wandb_mode: null
+  wandb_save_dir: ""
+  wandb_include_optimizer_in_backward: false
+  wandb_exclude_dataloader_from_step: false
+
+runtime:
+  max_steps: 0
+  run_backward: true
+  seed: 42
+  precision: bf16
+  autocast: false
+  gradient_clip_val: 0.0
+  log_every_n_steps: 1
+  log_timing: true
+  output_dir: outputs/minimax_h3_fl2va
+  weights_strict: true
+
+limitations:
+  expert_parallel: false
+  ring_attention: false
+  train_condition_encoders: false
+  cross_attention_ulysses: false
+  padded_cross_attention_requires_varlen: true
+
+parallel:
+  usp_size: 1
+  dp_size: auto
+  dp_replicate_size: 1
+  dp_shard_size: 1
+  dp_mode: fsdp2
+  include_usp_in_fsdp: true
+  gradient_checkpointing: true
+  reshard_after_forward: true
+  fsdp_leaf_module_paths:
+    - context_embedder
+    - token_refiner.final_norm
+  engine: fsdp2
+
+attention:
+  backend: auto
+  allow_fallback: false
+  debug: false
+
+attention_offload:
+  enable: false
+
+evaluation:
+  checkpoint_format: dcp
+  data_source: ""
+  manifest: ""
+  num_samples: 1
+  seed: 42
+  skip_existing: true
+  num_inference_steps: 30
+
+convert_checkpoint:
+  input_path: ""
+  output_path: ""
+  dry_run: false

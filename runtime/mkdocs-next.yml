@@ -1,0 +1,79 @@
+site_name: vforge
+site_description: vforge 工程文档 — 镜像、测试与持续集成
+site_url: https://ieg-infra-vforge.devcloud.woa.com/
+repo_url: https://git.woa.com/ieg-infra/vforge
+repo_name: vforge
+edit_uri: edit/master/docs-next/
+docs_dir: docs-next
+site_dir: site
+theme:
+  name: material
+  custom_dir: docs-theme
+  language: zh
+  font: false
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: 切换到深色模式
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到浅色模式
+  icon:
+    logo: material/layers-outline
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+extra_css:
+  - assets/stylesheets/vforge.css
+extra:
+  generator: false
+nav:
+  - 概览: index.md
+  - 用户指南:
+      - 开始使用: guide/index.md
+      - 镜像资源: guide/images.md
+      - 保存、恢复与自动容错: guide/training-recovery.md
+      - 模型列表:
+          - RepWorld: models/rep-world.md
+          - LTX2.3:
+              - 概览: models/ltx23.md
+              - SFT / TF: models/ltx23/sft-tf.md
+              - DMD: models/ltx23/dmd.md
+              - Long Tuning: models/ltx23/long-tuning.md
+              - 推理: models/ltx23/eval.md
+          - Wan Taichu:
+              - 概览: models/wan-taichu.md
+              - CD: models/wan-taichu/cd.md
+  - 开发者:
+      - 开始开发:
+          - 配置开发环境: development/environment.md
+          - 提交代码: development/contributing.md
+          - 数据组件与多源采样: development/data.md
+      - 测试用例:
+          - 运行测试: development/testing/running.md
+          - 编写测试: development/testing/writing.md
+      - 工程维护:
+          - 持续集成设计: development/maintenance/ci.md
+          - 构建与发布文档: development/maintenance/documentation.md

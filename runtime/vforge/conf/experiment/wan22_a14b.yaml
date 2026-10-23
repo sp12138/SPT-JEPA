@@ -1,0 +1,133 @@
+# @package _global_
+# Single Wan 2.2 I2V A14B experiment file reused by train/prepare/eval/convert.
+
+model:
+  name: wan22_a14b
+  init_device: meta
+  weight_loading: auto
+  # Root of the Diffusers export; the two experts come from its ``transformer``
+  # and ``transformer_2`` subfolders.
+  pretrained_path: ""
+  extras:
+    # Flow-matching / loss. A14B is trained at shift 3.0, not the 5.0 the other
+    # Wan variants use.
+    noise_shift: 3.0
+    weighting_scheme: none
+    # High/low-noise expert split. Timesteps at or above
+    # boundary_ratio * num_train_timesteps (900 of 1000) go to the high-noise
+    # expert, the rest to the low-noise one. With both trainable they alternate
+    # by global step parity, so a step only ever samples from the range of the
+    # expert it is about to train.
+    boundary_ratio: 0.9
+    num_train_timesteps: 1000
+    # Training builds only the selected tower for high/low. FSDP2 also supports
+    # both (alternating by global step); the MCore engine requires high or low.
+    train_expert: both
+    # Conditioning. A14B keeps the Wan2.1 layout: every stream is a 4-channel
+    # temporal first-frame mask followed by a z_dim latent body, so
+    # in_channels = z_dim + streams * (4 + z_dim) with z_dim = 16:
+    #   []               16
+    #   [normal]         36
+    #   [rgb]            36  <- published width
+    #   [rgb, normal]    56
+    # Anything past the published 36 widens patch_embedding, whose new tail is
+    # zero-initialized. A cache is only valid for the stream list it was
+    # prepared with.
+    condition_streams: [rgb]
+    rgb_first_frame_drop_prob: 0.0
+    rgb_cond_drop_prob: 0.0
+    normal_drop_prob: 0.0
+    text_drop_prob: 0.0
+    # Preprocessing.
+    max_frames: null
+    max_sequence_length: 512
+    fps: 16.0
+
+latent_cache:
+  mode: offline
+
+evaluation:
+  num_inference_steps: 50
+  guidance_scale: 5.0
+  negative_prompt: null
+
+data:
+  train_manifest: ""
+  val_manifest: ""
+  cache_dir: ""
+  base_seed: 1234567
+  sampler_seed: 0
+  batch_size: 1
+  num_workers: 0
+  shuffle: true
+  drop_last: true
+  pin_memory: true
+  persistent_workers: false
+  prefetch_factor: null
+
+optimizer:
+  name: adamw
+  learning_rate: 1.0e-5
+  weight_decay: 0.0
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+
+scheduler:
+  name: none
+  factor: 1.0
+  warmup_steps: 0
+
+logging:
+  jsonl: true
+  jsonl_filename: train_steps.jsonl
+  wandb_enabled: true
+  wandb_project: ${oc.env:WANDB_PROJECT,vforge}
+  wandb_entity: null
+  wandb_group: null
+  wandb_name: ""
+  wandb_tags: []
+  wandb_mode: null
+  wandb_save_dir: ""
+  wandb_include_optimizer_in_backward: false
+  wandb_exclude_dataloader_from_step: false
+
+runtime:
+  max_steps: 0
+  run_backward: true
+  seed: 42
+  precision: bf16
+  autocast: true
+  gradient_clip_val: 0.0
+  log_every_n_steps: 1
+  log_timing: true
+  output_dir: outputs/wan22_a14b
+
+limitations:
+  expert_parallel: false
+  ring_attention: false
+  train_condition_encoders: false
+  cross_attention_ulysses: false
+  padded_cross_attention_requires_varlen: true
+
+parallel:
+  usp_size: 1
+  dp_size: auto
+  dp_replicate_size: 1
+  dp_shard_size: 1
+  dp_mode: fsdp2
+  include_usp_in_fsdp: true
+  gradient_checkpointing: true
+  reshard_after_forward: true
+
+attention:
+  backend: auto
+  allow_fallback: true
+  debug: false
+
+attention_offload:
+  enable: false
+
+convert_checkpoint:
+  input_path: ""
+  output_path: ""
+  dry_run: false

@@ -1,0 +1,238 @@
+# @package _global_
+# Wan 2.2 A14B MoE Self-Forcing DMD.
+#
+# Mirrors taichu-video's scripts/train_dmd_wan22_a14b.sh, i.e.
+# configs/exp/self_forcing/dmd/causal_wan22_a14b_704x1280.yaml plus
+# configs/train_module/self-forcing-dmd-wan22-a14b.yaml. Inline comments name
+# the taichu key each value comes from.
+#
+# Differences from the 5B DMD experiment that are intrinsic to A14B:
+#   * Dual experts. generator / real_score / fake_score each hold a high-noise
+#     and a low-noise transformer routed at boundary_ratio * 1000 = 900, and
+#     each expert owns its own KV cache during the rollout.
+#   * The reference frame arrives through y's mask channels instead of a
+#     dedicated first block, so first_frame_own_block=false and the DMD
+#     first-frame anchor is off: the first frame is part of the DMD loss.
+#   * last_step_only=false. Every iteration draws an exit rung shared by all
+#     blocks, which is the only way the high-noise expert receives gradient.
+
+training:
+  recipe: dmd
+  models:
+    generator:
+      model: wan_taichu
+      config:
+        variant: wan22_a14b_causal_teacher
+        # in_channels = z 16 + 2 streams * (mask 4 + z 16) = 56, matching the
+        # taichu generator params.
+        condition_streams: [rgb, normal]
+        max_frames: 81                  # taichu num_training_frames 21 latents
+        max_sequence_length: 512
+        frame_per_block: 3              # taichu num_frame_per_block
+        first_frame_own_block: false    # taichu first_frame_own_block
+        boundary_ratio: 0.9             # taichu boundary_ratio
+        train_expert: both
+        use_vae_channels_last_3d: false
+        # taichu encoder_params.negative_prompt. The published Wan string is
+        # English; this lineage was distilled against its Chinese translation,
+        # and since the real score's guidance is the gap between the
+        # conditional and unconditional branches, the other string does not
+        # round differently, it guides somewhere else.
+        negative_prompt: "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走"
+      pretrained_path: ${oc.env:WAN_EFS_ROOT,/gwm-efs}/shared/models/Wan2.2-I2V-A14B-Diffusers
+      # taichu model_cfg.generator_ckpt, the stage-D ODE-init(TF) product. Its
+      # two experts sit under generator/generator_2 rather than wan/wan_2, which
+      # build_wan_weight_sources maps onto this model's experts.
+      init_weights: ${oc.env:WAN_EFS_ROOT,/gwm-efs}/jaexli/experiments/taichu_SF_wan2214b_MoE_sso_ODEinitTF_totalBatch16/taichu_SF_wan2214b_MoE_sso_ODEinitTF_totalBatch16/checkpoints/02000.pt
+    real_score:
+      model: wan_taichu
+      config:
+        variant: wan22_a14b
+      pretrained_path: ${oc.env:WAN_EFS_ROOT,/gwm-efs}/shared/models/Wan2.2-I2V-A14B-Diffusers
+      # taichu model_cfg.real_score_ckpt. Already keyed wan/wan_2.
+      init_weights: ${oc.env:WAN_EFS_ROOT,/gwm-efs}/jwphuang/experiments/wan22-a14b-diffusers-seedance-omniworld-sekai-normal2v-mix/wan22-a14b-diffusers-seedance-omniworld-sekai-normal2v-mix/checkpoints/24500.pt
+    fake_score:
+      model: wan_taichu
+      config:
+        variant: wan22_a14b
+      pretrained_path: ${oc.env:WAN_EFS_ROOT,/gwm-efs}/shared/models/Wan2.2-I2V-A14B-Diffusers
+      # taichu model_cfg.fake_score_ckpt, the same cold-start critic weights.
+      init_weights: ${oc.env:WAN_EFS_ROOT,/gwm-efs}/jwphuang/experiments/wan22-a14b-diffusers-seedance-omniworld-sekai-normal2v-mix/wan22-a14b-diffusers-seedance-omniworld-sekai-normal2v-mix/checkpoints/24500.pt
+  dmd:
+    algorithm: distribution_matching
+    rollout:
+      # taichu denoising_step_list. Terminal zero is a boundary, so the
+      # effective forwards are 1000, 900, 741, and 477.
+      denoising_steps: [1000, 900, 741, 477, 0]
+      terminal_zero_is_boundary: true
+      # taichu last_step_only. Off means the rollout exits on a drawn rung
+      # rather than always the last one, which is the only way the high-noise
+      # generator expert is ever on the path to the loss.
+      last_step_only: false
+      context_full_trajectory: true     # taichu context_full_trajectory
+      context_noise: 0                  # taichu context_noise
+    score:
+      num_train_timesteps: 1000         # taichu num_train_timestep
+      timestep_shift: 3.0               # taichu timestep_shift
+      sampled_timestep_min: 0           # taichu min_score_timestep
+      effective_timestep_clamp: [20, 980]
+      # taichu ts_schedule. The companion of the drawn exit rung: with the exit
+      # varying per iteration, a fixed floor would score coarse samples against
+      # levels they never reached. taichu leaves ts_schedule_max off, so the
+      # upper bound stays at the schedule's own top.
+      timestep_floor_at_rollout_exit: true
+      real_guidance_scale: 2.5          # taichu guidance_scale
+      fake_guidance_scale: 0.0
+      denoising_loss: flow              # taichu denoising_loss_type
+      mse_weight: 0.0                   # taichu mse_weight (pure DMD)
+    schedule:
+      generator_every_n_steps: 5        # taichu dfake_gen_update_ratio
+    ema:
+      # taichu ema_start_step is 200000000, so its EMA never engages. Keeping
+      # it off here matches that and avoids six more 14B shadow copies.
+      enabled: false
+      decay: 0.99                       # taichu ema_weight
+      start_step: 200000000             # taichu ema_start_step
+      storage: sharded_fp32
+
+latent_cache:
+  mode: online
+
+data:
+  # taichu reads configs/dataset/self-forcing-video-normal-a14b-dmd.yaml, whose
+  # index is the stage-C/D ode_with_path.json under
+  # /gwm-efs/jaexli/2608_wan2214B_normal_taichu. DMD ignores its ode_path field
+  # and only needs rgb, normal and caption. That index names omniworld clips
+  # under /threed-code/markbwzheng, a bucket this machine does not mount, so
+  # point at a reachable index carrying the same three fields.
+  sources:
+    - name: seedance_self_forcing
+      kind: self_forcing
+      index_files:
+        - ${oc.env:WAN_CODE_ROOT,/gwm-code}/xiaotaohu/data/seedance/train_seedance_with_normal_caption.json
+      frames: 81                        # taichu dataset frames
+      height: 704                       # taichu image_height
+      width: 1280                       # taichu image_width
+      max_sequence_length: 512          # taichu max_sequence_length
+  base_seed: 1234567
+  sampler_seed: 0
+  batch_size: 1                         # taichu train_batch_size
+  num_workers: 0
+  shuffle: true
+  drop_last: true
+  pin_memory: true
+  persistent_workers: false
+  prefetch_factor: null
+
+optimizers:
+  generator:
+    name: adamw
+    learning_rate: 2.0e-6               # taichu training_cfg.learning_rate
+    weight_decay: 0.01
+    betas: [0.0, 0.999]
+    eps: 1.0e-8
+  critic:
+    name: adamw
+    learning_rate: 4.0e-7               # taichu learning_rate_critic
+    weight_decay: 0.01
+    betas: [0.0, 0.999]                 # taichu beta1_critic / beta2_critic
+    eps: 1.0e-8
+
+# The taichu DMD module clips per component inside the LitModule and never
+# steps an outer scheduler, so a fixed LR is the reference behavior.
+scheduler:
+  name: none
+  factor: 1.0
+  warmup_steps: 0
+
+logging:
+  jsonl: true
+  jsonl_filename: train_steps.jsonl
+  wandb_enabled: false
+  wandb_project: ""
+  wandb_entity: null
+  wandb_group: null
+  wandb_name: ""
+  wandb_tags: []
+  wandb_mode: null
+  wandb_save_dir: ""
+  wandb_include_optimizer_in_backward: false
+  wandb_exclude_dataloader_from_step: false
+
+runtime:
+  max_steps: 0
+  run_backward: true
+  seed: 0                               # taichu training_cfg.seed
+  precision: bf16                       # taichu accelerator_cfg.mixed_precision
+  autocast: true
+  # taichu sets accelerator_cfg.max_grad_norm=0 and clips per component
+  # (max_grad_norm_generator / _critic = 1.0) inside the LitModule.
+  gradient_clip_val: 1.0
+  log_every_n_steps: 1                  # taichu log_every_n_steps
+  log_timing: true
+  output_dir: outputs/wan22_a14b_dmd
+  weights_strict: true
+
+limitations:
+  expert_parallel: false
+  ring_attention: false
+  train_condition_encoders: false
+  cross_attention_ulysses: false
+  padded_cross_attention_requires_varlen: true
+
+parallel:
+  # taichu runs sp_size=2. The rollout can shard now -- the incremental KV cache
+  # stores num_heads/usp_size heads per rank and the block forward slices to
+  # match -- but that path has only been measured on truncated towers, so the
+  # production recipe stays data parallel until the full depth is checked.
+  # Raising this halves the per-rank KV cache, which is what makes the
+  # attention_offload note below negotiable.
+  usp_size: 1
+  dp_size: auto
+  dp_replicate_size: 1
+  dp_shard_size: 1
+  dp_mode: fsdp2
+  include_usp_in_fsdp: true
+  gradient_checkpointing: true          # taichu gradient_checkpointing
+  reshard_after_forward: true
+
+attention:
+  # Pinned rather than resolved: the offload below only pays off on a preserved
+  # Flash Attention path, and a silent fallback would quietly give that up.
+  backend: flash_attention_4
+  allow_fallback: false
+  debug: false
+
+# On one node this is not optional. taichu runs 2 nodes with sp_size=2, which
+# both shards the KV cache across the SP pair and halves the FSDP footprint. At
+# usp_size=1 each rank instead holds a full-clip cache per expert -- 40 layers x
+# K and V x 73920 tokens x 5120 x bf16 is about 60 GB per expert -- and once the
+# lazily created AdamW state for the last expert lands, reserved memory reaches
+# ~94% of a B300's HBM and the rollout stalls there. Offloading the checkpointed
+# attention activations (about 57 GB per step) buys back the headroom.
+attention_offload:
+  enable: true
+
+# Mirrors the shared lifecycle contract in conf/train.yaml, which experiments do
+# not own: _self_ is merged after the experiment group, so these values only
+# document what the run gets. Six 14B towers plus two optimizers make a save
+# enormous, so a smoke has to turn it off on the command line instead.
+checkpoint:
+  enabled: true
+  every_n_steps: 0
+  dirpath: ""
+  state: full
+  format: dcp
+  save_final: true
+  keep_last: 2
+  async_save: true
+  save_optimizer: true
+  save_trainer_state: true
+  empty_cache_before_save: false
+
+resume:
+  path: none
+  weights: true
+  optimizer: true
+  training_state: true
+  stage_remote: false

@@ -1,0 +1,101 @@
+# @package _global_
+# 128-GPU (USP16 x DP8) counterpart of Taichu
+# exp_99lat_swa_causal_ar_teacher.yaml.
+#
+# Prerequisite:
+#   pip install 'flash-attn-4[cu13]==4.0.0b29'
+#
+# Run this command once per node, with NODE_RANK=0..15 and a shared rendezvous:
+#
+#   cd /path/to/vforge
+#   torchrun --nnodes=16 --nproc_per_node=8 \
+#     --node_rank="${NODE_RANK}" \
+#     --master_addr="${MASTER_ADDR}" --master_port="${MASTER_PORT:-29500}" \
+#     -m vforge.tasks.train --config-dir examples/configs \
+#     +user=wan-taichu-a14b-causal-teacher-l99-swa-usp16-dp8 \
+#     data.sources.0.cache_dir=/path/to/gameplay-production-a14b-20s \
+#     runtime.output_dir=/efs/your-name/experiments/a14b-teacher-l99-swa \
+#     resume.path=auto
+#
+# The warm-start checkpoint and condition model default to the validated
+# Taichu assets; A14B_CHECKPOINT and A14B_CONDITION_MODEL can override them.
+# The latent cache and output path must be supplied by the caller.
+#
+# To save through an S3 mount, append these overrides to the command:
+#
+#   checkpoint.dirpath=/threed-code/vforge-checkpoints/your-name/a14b-teacher-l99-swa/checkpoints \
+#   'storage.s3_mounts=[{mount_path:/threed-code/vforge-checkpoints/your-name/a14b-teacher-l99-swa,bucket:ieg-infra-code-us-west-2,region:us-west-2,key_prefix:vforge-checkpoints/your-name/a14b-teacher-l99-swa}]'
+#
+# They resolve to:
+# s3://ieg-infra-code-us-west-2/vforge-checkpoints/your-name/a14b-teacher-l99-swa/checkpoints
+# Without them, checkpoints fall back to <runtime.output_dir>/checkpoints.
+defaults:
+  - override /experiment: wan_taichu_wan22_a14b_causal_teacher
+  - _self_
+
+model:
+  pretrained_path: ${oc.env:A14B_CHECKPOINT,/gwm-efs/xiaotaohu/experiments/prod_v1_39lat_causal_ar_teacher_a14b_moe_gridnormal/prod_v1_39lat_causal_ar_teacher_a14b_moe_gridnormal/checkpoints/01700.pt}
+  extras:
+    condition_pretrained_path: ${oc.env:A14B_CONDITION_MODEL,/gwm-efs/shared/models/Wan2.2-I2V-A14B-Diffusers}
+    condition_streams: [rgb, grid, normal]
+    train_expert: both
+    grid_random_rot_deg: 30.0
+    grid_drop_prob: 0.0
+    normal_drop_prob: 1.0
+    text_drop_prob: 0.0
+    load_vae_for_dropout_fallback: true
+    frame_per_block: 3
+    first_frame_own_block: false
+    local_attn_size: 30
+    sink_size: 9
+
+latent_cache:
+  mode: offline
+
+data:
+  sources:
+    - name: gameplay-99lat
+      cache_dir: ${oc.env:A14B_LATENT_CACHE}
+      weight: 1.0
+      min_latents: 99
+      max_latents: 99
+  batch_size: 1
+  num_workers: 2
+  shuffle: true
+
+optimizer:
+  learning_rate: 1.0e-5
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+
+scheduler:
+  name: constant_with_warmup
+  warmup_steps: 100
+
+parallel:
+  usp_size: 16
+
+runtime:
+  precision: bf16
+  autocast: false
+  max_steps: 1000000
+  gradient_clip_val: 1.0
+  output_dir: ${oc.env:A14B_OUTPUT_DIR}
+
+attention:
+  backend: flash_attention_4
+  allow_fallback: false
+
+logging:
+  wandb_group: a14b-causal-teacher-l99-swa-usp16-dp8
+  wandb_tags: [vforge, a14b, latent99, swa, usp16, dp8]
+
+checkpoint:
+  enabled: true
+  every_n_steps: 100
+  dirpath: ""
+  save_final: true
+
+resume:
+  path: auto

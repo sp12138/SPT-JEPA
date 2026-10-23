@@ -1,0 +1,194 @@
+# MR validation and docs preview. Build on KAP, deploy the preview from CI.
+version: v3.0
+name: vforge-ci
+on:
+  mr:
+    target-branches: [master]
+    action: [open, reopen, push-update, edit]
+stages:
+  - name: checks
+    jobs:
+      checks:
+        runs-on:
+          pool-name: docker
+          container:
+            image: python:3.12
+        steps:
+          # The checkout plugin requires git-lfs before repository scripts exist.
+          - name: checkout prerequisites
+            run: |
+              set -euo pipefail
+              apt-get update -qq
+              apt-get install -y -qq git-lfs
+          - checkout: self
+          - name: CPU checks
+            env:
+              CI_RUN_ID: ${{ ci.build_id }}
+              KOALA_APPID: ${{ settings.ieg_infra_koala_cli.appId }}
+              KOALA_SECRETKEY: ${{ settings.ieg_infra_koala_cli.secretKey }}
+              AWS_ACCESS_KEY_ID: ${{ settings.ieg_infra_aws.appId }}
+              AWS_SECRET_ACCESS_KEY: ${{ settings.ieg_infra_aws.secretKey }}
+              AWS_DEFAULT_REGION: us-west-2
+            run: |
+              set -euo pipefail
+              bash scripts/ci/bootstrap.sh
+              git fetch --no-tags origin master
+              SOURCE="${BK_REPO_GIT_WEBHOOK_MR_LAST_COMMIT:?MR source commit missing}"
+              git fetch --no-tags origin "${SOURCE}"
+              git checkout --detach "${SOURCE}"
+              # Use the MR's gitlinks and the checkout plugin's HTTPS credentials.
+              git -c url.https://git.woa.com/.insteadOf=git@git.woa.com: \
+                submodule update --init --checkout -- \
+                vforge/models/gen_engine/dit \
+                vforge/models/gen_engine/audio_vae \
+                vforge/models/gen_engine/video_vae
+              python3 scripts/ci/run.py mr --phase cpu --run-id "${CI_RUN_ID:?build ID missing}" --source "${SOURCE}" --target origin/master \
+                --include-submodule vforge/models/gen_engine/dit \
+                --include-submodule vforge/models/gen_engine/audio_vae \
+                --include-submodule vforge/models/gen_engine/video_vae
+          - name: 文档 debug
+            env:
+              CI_RUN_ID: ${{ ci.build_id }}
+              DEVCLOUD_SSH_KEY: ${{ settings.vforge_docs_ssh.privateKey }}
+              DEVCLOUD_KNOWN_HOSTS: '[ieg-infra-vforge.devcloud.woa.com]:36000 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN3AELQwYKhDTFP3kWLnNJGqXI/3qY/SxrW/msp/MG2H'
+            run: |
+              set -euo pipefail
+              SOURCE="${BK_REPO_GIT_WEBHOOK_MR_LAST_COMMIT:?MR source commit missing}"
+              python3 scripts/ci/run.py mr --phase docs-debug --run-id "${CI_RUN_ID:?build ID missing}" --source "${SOURCE}"
+  - name: GPU tests
+    fast-kill: false
+    jobs:
+      gpu_core:
+        name: GPU Core
+        timeout-minutes: 150
+        runs-on:
+          pool-name: docker
+          container:
+            image: python:3.12
+        steps:
+          - name: checkout prerequisites
+            run: |
+              set -euo pipefail
+              apt-get update -qq
+              apt-get install -y -qq git-lfs
+          - checkout: self
+          - name: GPU Core tests
+            timeout-minutes: 140
+            env:
+              CI_RUN_ID: ${{ ci.build_id }}
+              KOALA_APPID: ${{ settings.ieg_infra_koala_cli.appId }}
+              KOALA_SECRETKEY: ${{ settings.ieg_infra_koala_cli.secretKey }}
+            run: |
+              set -euo pipefail
+              bash scripts/ci/bootstrap.sh
+              git fetch --no-tags origin master
+              SOURCE="${BK_REPO_GIT_WEBHOOK_MR_LAST_COMMIT:?MR source commit missing}"
+              git fetch --no-tags origin "${SOURCE}"
+              git checkout --detach "${SOURCE}"
+              git -c url.https://git.woa.com/.insteadOf=git@git.woa.com: \
+                submodule update --init --checkout -- \
+                vforge/models/gen_engine/dit \
+                vforge/models/gen_engine/audio_vae \
+                vforge/models/gen_engine/video_vae
+              python3 scripts/ci/run.py mr --phase gpu --gpu-group core --run-id "${CI_RUN_ID:?build ID missing}" --source "${SOURCE}" --target origin/master \
+                --include-submodule vforge/models/gen_engine/dit \
+                --include-submodule vforge/models/gen_engine/audio_vae \
+                --include-submodule vforge/models/gen_engine/video_vae
+      gpu_ltx:
+        name: GPU LTX
+        timeout-minutes: 150
+        runs-on:
+          pool-name: docker
+          container:
+            image: python:3.12
+        steps:
+          - name: checkout prerequisites
+            run: |
+              set -euo pipefail
+              apt-get update -qq
+              apt-get install -y -qq git-lfs
+          - checkout: self
+          - name: GPU LTX tests
+            timeout-minutes: 140
+            env:
+              CI_RUN_ID: ${{ ci.build_id }}
+              KOALA_APPID: ${{ settings.ieg_infra_koala_cli.appId }}
+              KOALA_SECRETKEY: ${{ settings.ieg_infra_koala_cli.secretKey }}
+            run: |
+              set -euo pipefail
+              bash scripts/ci/bootstrap.sh
+              git fetch --no-tags origin master
+              SOURCE="${BK_REPO_GIT_WEBHOOK_MR_LAST_COMMIT:?MR source commit missing}"
+              git fetch --no-tags origin "${SOURCE}"
+              git checkout --detach "${SOURCE}"
+              git -c url.https://git.woa.com/.insteadOf=git@git.woa.com: \
+                submodule update --init --checkout -- \
+                vforge/models/gen_engine/dit \
+                vforge/models/gen_engine/audio_vae \
+                vforge/models/gen_engine/video_vae
+              python3 scripts/ci/run.py mr --phase gpu --gpu-group ltx --run-id "${CI_RUN_ID:?build ID missing}" --source "${SOURCE}" --target origin/master \
+                --include-submodule vforge/models/gen_engine/dit \
+                --include-submodule vforge/models/gen_engine/audio_vae \
+                --include-submodule vforge/models/gen_engine/video_vae
+      gpu_wan:
+        name: GPU Wan
+        timeout-minutes: 150
+        runs-on:
+          pool-name: docker
+          container:
+            image: python:3.12
+        steps:
+          - name: checkout prerequisites
+            run: |
+              set -euo pipefail
+              apt-get update -qq
+              apt-get install -y -qq git-lfs
+          - checkout: self
+          - name: GPU Wan tests
+            timeout-minutes: 140
+            env:
+              CI_RUN_ID: ${{ ci.build_id }}
+              KOALA_APPID: ${{ settings.ieg_infra_koala_cli.appId }}
+              KOALA_SECRETKEY: ${{ settings.ieg_infra_koala_cli.secretKey }}
+            run: |
+              set -euo pipefail
+              bash scripts/ci/bootstrap.sh
+              git fetch --no-tags origin master
+              SOURCE="${BK_REPO_GIT_WEBHOOK_MR_LAST_COMMIT:?MR source commit missing}"
+              git fetch --no-tags origin "${SOURCE}"
+              git checkout --detach "${SOURCE}"
+              git -c url.https://git.woa.com/.insteadOf=git@git.woa.com: \
+                submodule update --init --checkout -- \
+                vforge/models/gen_engine/dit \
+                vforge/models/gen_engine/audio_vae \
+                vforge/models/gen_engine/video_vae
+              python3 scripts/ci/run.py mr --phase gpu --gpu-group wan --run-id "${CI_RUN_ID:?build ID missing}" --source "${SOURCE}" --target origin/master \
+                --include-submodule vforge/models/gen_engine/dit \
+                --include-submodule vforge/models/gen_engine/audio_vae \
+                --include-submodule vforge/models/gen_engine/video_vae
+finally:
+  cleanup:
+    runs-on:
+      pool-name: docker
+      container:
+        image: python:3.12
+    steps:
+      # The checkout plugin requires git-lfs before repository scripts exist.
+      - name: checkout prerequisites
+        run: |
+          set -euo pipefail
+          apt-get update -qq
+          apt-get install -y -qq git-lfs
+      - checkout: self
+      - name: release KAP resources
+        env:
+          CI_RUN_ID: ${{ ci.build_id }}
+          KOALA_APPID: ${{ settings.ieg_infra_koala_cli.appId }}
+          KOALA_SECRETKEY: ${{ settings.ieg_infra_koala_cli.secretKey }}
+          AWS_ACCESS_KEY_ID: ${{ settings.ieg_infra_aws.appId }}
+          AWS_SECRET_ACCESS_KEY: ${{ settings.ieg_infra_aws.secretKey }}
+          AWS_DEFAULT_REGION: us-west-2
+        run: |
+          set -euo pipefail
+          bash scripts/ci/bootstrap.sh
+          python3 scripts/ci/run.py mr --run-id "${CI_RUN_ID:?build ID missing}" --cleanup

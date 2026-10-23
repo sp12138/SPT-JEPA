@@ -1,0 +1,18 @@
+# @package _global_
+defaults:
+  - native_defaults
+  - experiment: wan21_i2v_14b
+  - _self_
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: ${runtime.output_dir}/hydra/${now:%Y-%m-%d_%H-%M-%S}
+
+runtime:
+  output_dir: outputs/prepare
+  max_steps: 0
+
+latent_cache:
+  mode: online

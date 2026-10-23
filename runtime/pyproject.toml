@@ -1,0 +1,145 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vforge"
+version = "0.1.0"
+description = "Video Forge: a torch-native distributed runtime for video training."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  # Library requirements also accept the GWM 20260428 runtime. CI pins are below.
+  "torch>=2.9.1,<2.14",
+  "torchvision>=0.24.1,<0.29",
+  "torchdata>=0.7",
+  "omegaconf>=2.3",
+  "hydra-core>=1.3",
+  "numpy",
+  "diffusers>=0.38.0.dev0",
+  "transformers>=4.57",
+  "accelerate",
+  "fsspec",
+  "safetensors",
+  "huggingface-hub>=0.34",
+  "boto3[crt]>=1.42.97",
+  "av",
+  # The upstream ctypes decoder has a Linux x86_64 wheel only for our targets.
+  # Other platforms can run CPU contracts but cannot use this video decoder.
+  "decord==0.6.0; sys_platform == 'linux' and platform_machine == 'x86_64'",
+  "ftfy",
+]
+
+[project.optional-dependencies]
+# Compiled extensions for the optional MCore backend, not model dependencies.
+megatron = [
+  "transformer-engine[pytorch]>=2.9,<3",
+  "nvidia-resiliency-ext>=0.6,<0.7",
+]
+
+[project.scripts]
+vforge-train = "vforge.tasks.train:main"
+vforge-prepare = "vforge.tasks.prepare:main"
+vforge-eval = "vforge.tasks.eval:main"
+vforge-visualize = "vforge.tasks.visualize:main"
+vforge-convert-checkpoint = "vforge.tasks.convert_checkpoint:main"
+
+[dependency-groups]
+lint = ["ruff==0.16.1"]
+docs = ["mkdocs==1.6.1", "mkdocs-material==9.7.7"]
+dev = [{ include-group = "lint" }, "pre-commit", "pytest"]
+# Keep the default locked CI runtime independent of inherited image environments.
+cpu = [
+  "torch==2.13.0",
+  "torchvision==0.28.0",
+  "diffusers>=0.40",
+  "boto3[crt]>=1.43.58",
+]
+cu130 = [
+  "torch==2.13.0",
+  "torchvision==0.28.0",
+  "diffusers>=0.40",
+  "boto3[crt]>=1.43.58",
+  "flash-attn-4[cu13]==4.0.0b29",
+]
+# PyTorch 2.9 runtime with the current vforge attention backend.
+cu130-torch29 = [
+  "torch==2.9.1",
+  "torchvision==0.24.1",
+  "diffusers>=0.40",
+  "boto3[crt]>=1.43.58",
+  "flash-attn-4[cu13]==4.0.0b29",
+]
+# Keep the backend available for offline editable installs in KAP pods.
+build = ["setuptools>=68", "wheel"]
+
+[tool.uv]
+required-version = "==0.12.10"
+conflicts = [[{ group = "cpu" }, { group = "cu130" }, { group = "cu130-torch29" }]]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", group = "cpu", marker = "sys_platform == 'linux'" },
+  { index = "pytorch-cu130", group = "cu130", marker = "sys_platform == 'linux'" },
+  { index = "pytorch-cu130", group = "cu130-torch29", marker = "sys_platform == 'linux'" },
+]
+torchvision = [
+  { index = "pytorch-cpu", group = "cpu", marker = "sys_platform == 'linux'" },
+  { index = "pytorch-cu130", group = "cu130", marker = "sys_platform == 'linux'" },
+  { index = "pytorch-cu130", group = "cu130-torch29", marker = "sys_platform == 'linux'" },
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vforge*"]
+
+[tool.setuptools.package-data]
+vforge = [
+  "conf/**/*.yaml",
+  "models/gen_engine/audio_vae/latent_codec_configs/*.json",
+  "models/gen_engine/dit/configs/*.json",
+  "models/gen_engine/video_vae/latent_codec_configs/*.json",
+]
+# mcore compiles datasets/helpers.cpp on first use and reads its own metadata,
+# so the tree needs more than .py files to work from an installed wheel.
+"vforge.mcore" = ["**/*.cpp", "**/*.cu", "**/*.h", "**/Makefile", "**/*.txt", "LICENSE"]
+"vforge.models.rep_world.codecs" = ["THIRD_PARTY.md", "licenses/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# Vendored upstream source. Linting it would report ~154k lines of other
+# people's style and force us to diverge from upstream, which breaks the diff
+# that makes re-syncing safe. See vforge/mcore/VENDOR.md.
+extend-exclude = ["vforge/mcore"]
+# force-exclude is what makes the line above actually hold. Without it ruff
+# honours excludes only when discovering files itself, and scripts/ci/lint.sh
+# passes an explicit changed-file list -- so the vendoring MR would hand ruff
+# 437 vendored files and fail on ~4.7k upstream style violations.
+force-exclude = true
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+# Optional submodule checkouts must not change how vforge imports are grouped.
+known-first-party = ["vforge"]
+
+[tool.pytest.ini_options]
+# Confine collection to our own suite: mcore carries unittest-based helpers
+# that would otherwise be imported (and fail) during collection.
+testpaths = ["tests"]
+addopts = "--strict-markers"
+markers = [
+    "gpu(gpus): requires the specified number of CUDA devices",
+]

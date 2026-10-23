@@ -1,0 +1,43 @@
+# @package _global_
+# Wan Taichu Wan 2.2 A14B MoE block-causal teacher forcing.
+
+model:
+  name: wan_taichu
+  init_device: meta
+  weight_loading: auto
+  pretrained_path: ""
+  extras:
+    variant: wan22_a14b_causal_teacher
+    condition_streams: [rgb, grid, normal]
+    weighting_scheme: none
+    boundary_ratio: 0.9
+    train_expert: both
+    rgb_drop_prob: 0.0
+    grid_drop_prob: 0.0
+    normal_drop_prob: 1.0
+    text_drop_prob: 0.0
+    frame_per_block: 3
+    first_frame_own_block: false
+    local_attn_size: 30
+    sink_size: 9
+    max_frames: null
+    max_sequence_length: 512
+    # Taichu's causal train-module does not inherit _wan_normal_base.yaml,
+    # so its Wan VAE encoder keeps the constructor default NCDHW layout.
+    use_vae_channels_last_3d: false
+
+latent_cache:
+  mode: offline
+
+runtime:
+  precision: bf16
+  autocast: false
+  output_dir: outputs/wan_taichu_wan22_a14b_causal_teacher
+
+parallel:
+  usp_size: 1
+  gradient_checkpointing: true
+
+attention:
+  backend: auto
+  allow_fallback: true

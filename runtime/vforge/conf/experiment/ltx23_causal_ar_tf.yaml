@@ -1,0 +1,99 @@
+# @package _global_
+# LTX-2.3 Stage 1 causal autoregressive teacher-forcing training.
+
+model:
+  name: ltx23_causal_ar_tf
+  init_device: meta
+  weight_loading: rank0_broadcast
+  pretrained_path: ${oc.env:LTX23_MODEL_PATH,''}
+  extras:
+    training_mode: causal_ar_tf
+    block_latent_frames: 3
+    first_block_latent_frames: 4
+    ref_audio_seconds: 1.5
+    ref_position_gap: 5.0
+
+conditioning:
+  mode: offline
+
+data:
+  train_manifest: ""
+  val_manifest: ""
+  cache_dir: ${oc.env:LTX23_PRECOMPUTED_ROOT,''}
+  base_seed: 42
+  sampler_seed: 42
+  batch_size: 1
+  num_workers: 4
+  shuffle: true
+  drop_last: true
+  pin_memory: true
+  persistent_workers: true
+  prefetch_factor: 2
+
+optimizer:
+  name: adamw
+  learning_rate: 1.0e-5
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+
+scheduler:
+  name: linear
+  factor: 1.0
+  start_factor: 1.0
+  end_factor: 0.1
+  total_iters: 200000
+  warmup_steps: 0
+
+runtime:
+  max_steps: 200000
+  run_backward: true
+  seed: 42
+  precision: bf16
+  autocast: false
+  gradient_clip_val: 1.0
+  log_every_n_steps: 1
+  log_timing: true
+  weights_strict: true
+
+limitations:
+  expert_parallel: false
+  ring_attention: false
+  train_condition_encoders: false
+  cross_attention_ulysses: false
+  padded_cross_attention_requires_varlen: true
+
+parallel:
+  usp_size: 8
+  cp_size: 1
+  tp_size: 1
+  dp_size: auto
+  dp_replicate_size: 1
+  dp_shard_size: 1
+  dp_mode: fsdp2
+  include_usp_in_fsdp: true
+  gradient_checkpointing: true
+  reshard_after_forward: true
+  engine: fsdp2
+
+attention:
+  backend: auto
+  allow_fallback: true
+  debug: false
+  blas_backend: default
+
+attention_offload:
+  enable: false
+
+evaluation:
+  checkpoint_format: dcp
+  data_source: ""
+  manifest: ""
+  num_samples: 1
+  seed: 42
+  skip_existing: true
+
+convert_checkpoint:
+  input_path: ""
+  output_path: ""
+  dry_run: false

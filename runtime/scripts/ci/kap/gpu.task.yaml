@@ -1,0 +1,42 @@
+workingDir: /data/work/
+envVars:
+  # LTX DMD example: independent assets on ieg-infra-efs; byte-pinned inputs.
+  LTX23_DMD_CI_BASE: /efs/alexlshen/vforge/examples/ltx23-dmd/model/base.safetensors
+  LTX23_DMD_CI_GENERATOR: /efs/alexlshen/vforge/examples/ltx23-dmd/model/generator.safetensors
+  LTX23_DMD_CI_SCORE: /efs/alexlshen/vforge/examples/ltx23-dmd/model/score.safetensors
+  LTX23_DMD_CI_GEMMA: /efs/alexlshen/vforge/examples/ltx23-dmd/model/gemma-3-12b
+  LTX23_DMD_CI_CACHE: /efs/alexlshen/vforge/examples/ltx23-dmd/data/.precomputed
+  LTX23_LONG_TUNING_CI_GENERATOR: /efs/alexlshen/vforge/examples/ltx23-long-tuning/model/generator.safetensors
+  LTX23_LONG_TUNING_CI_CACHE: /efs/alexlshen/vforge/examples/ltx23-long-tuning/cache
+  # CT 5B Ref assets, consumed by tests/models/wan_taichu/test_ct.py.
+  WAN_CT_5B_MODEL: /gwm-efs/shared/models/Wan2.2-TI2V-5B-Diffusers
+  WAN_CT_5B_TRAIN_CHECKPOINT: /gwm-efs/jwphuang/experiments/prod_v1_60s_prod/prod_v1_60s_prod/checkpoints/11400.pt
+  WAN_CT_5B_EVAL_CHECKPOINT: /gwm-efs/jwphuang/experiments/prod_v1_ref_prod/prod_v1_ref_prod/checkpoints/27000.pt
+  WAN_CT_5B_CACHE_5S: /gwm-code/jwphuang/latent_cache/prod_v1/seedance-production-ti2v5b-5s
+  WAN_CT_5B_CACHE_20S: /gwm-code/jwphuang/latent_cache/prod_v1/gameplay-production-ti2v5b-20s
+  WAN_CT_5B_CACHE_60S: /gwm-code/jwphuang/latent_cache/prod_v1/gameplay-production-ti2v5b-60s
+  WAN_CT_5B_EVAL_5S_PKL: /gwm-efs/shared/dataconfig/production-v1/seedance/seedance_5s.pkl
+  WAN_CT_5B_EVAL_20S_PKL: /gwm-efs/shared/dataconfig/production-v1/gameplay-camera/items_20s_ref.pkl
+  WAN_CT_5B_EVAL_60S_PKL: /gwm-efs/shared/dataconfig/production-v1/gameplay-camera/items_60s_ref.pkl
+  # CT A14B assets.
+  WAN_CT_A14B_MODEL: /gwm-efs/shared/models/Wan2.2-I2V-A14B-Diffusers
+  WAN_CT_A14B_TRAIN_CHECKPOINT: /gwm-efs/jwphuang/experiments/prod_v1_5s_prod_a14b_onlygameplay-resume/prod_v1_5s_prod_a14b_onlygameplay-resume/checkpoints/18000.pt
+  WAN_CT_A14B_EVAL_CHECKPOINT: /gwm-efs/jwphuang/experiments/prod_v1_5s_prod_a14b_20s-onlygameplay/prod_v1_5s_prod_a14b_20s-onlygameplay/checkpoints/100001.pt
+  WAN_CT_A14B_CACHE_5S: /gwm-code/jwphuang/latent_cache/prod_v1/gameplay-production-a14b-5s
+  WAN_CT_A14B_CACHE_20S: /gwm-code/jwphuang/latent_cache/prod_v1/gameplay-production-a14b-20s
+  WAN_CT_A14B_EVAL_20S_PKL: /gwm-efs/shared/dataconfig/production-v1/gameplay-camera/items_20s_ref_gemini.pkl
+  # TF A14B assets, consumed by tests/models/wan_taichu/test_tf.py.
+  WAN_TF_A14B_MODEL: /gwm-efs/shared/models/Wan2.2-I2V-A14B-Diffusers
+  WAN_TF_A14B_TRAIN_CHECKPOINT: /gwm-efs/xiaotaohu/experiments/prod_v1_39lat_causal_ar_teacher_a14b_moe_gridnormal/prod_v1_39lat_causal_ar_teacher_a14b_moe_gridnormal/checkpoints/01700.pt
+  WAN_TF_A14B_EVAL_CHECKPOINT: /gwm-efs/xiaotaohu/experiments/prod_v1_99lat_swa_causal_ar_teacher_a14b_moe_gridnormal/prod_v1_99lat_swa_causal_ar_teacher_a14b_moe_gridnormal/checkpoints/04900.pt
+  WAN_TF_A14B_CACHE: /gwm-code/jwphuang/latent_cache/prod_v1/gameplay-production-a14b-20s
+  # Full A14B DMD, SP8: fixed sample pool and ten recorded alignment steps.
+  WAN_DMD_A14B_MODEL: /gwm-efs/shared/models/Wan2.2-I2V-A14B-Diffusers
+  WAN_DMD_A14B_GENERATOR: /gwm-efs/jaexli/experiments/taichu_SF_wan2214b_MoE_sso_ODEinitTF_totalBatch16/taichu_SF_wan2214b_MoE_sso_ODEinitTF_totalBatch16/checkpoints/02000.pt
+  WAN_DMD_A14B_SCORE: /gwm-efs/jwphuang/experiments/wan22-a14b-diffusers-seedance-omniworld-sekai-normal2v-mix/wan22-a14b-diffusers-seedance-omniworld-sekai-normal2v-mix/checkpoints/24500.pt
+  WAN_DMD_A14B_CACHE: /gwm-code/jwphuang/latent_cache/prod_v1/gameplay-production-a14b-20s
+  # Native CD: eight ranks / SP8, serial execution in the Wan worker.
+  WAN_CD_CI_ROOT: /efs/weilunfeng/vforge/examples/taichu-cd
+  WAN_EFS_ROOT: /gwm-efs
+  WAN_CODE_ROOT: /gwm-code
+startCmd: cd /data/work/vforge && python scripts/ci/worker.py gpu

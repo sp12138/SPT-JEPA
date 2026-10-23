@@ -1,0 +1,62 @@
+# @package _global_
+# Native counterpart of Taichu dmd-for-all:
+# configs/exp/ct/prod_v1/wan22-a14b-diffusers/
+# exp_99lat_swa_causal_ar_teacher.yaml
+defaults:
+  - override /experiment: wan_taichu_wan22_a14b_causal_teacher
+  - _self_
+
+model:
+  # Direct weights-only warm-start from the 39-lat causal teacher run.
+  pretrained_path: /path/to/taichu/checkpoints/01700.pt
+  extras:
+    condition_pretrained_path: /path/to/Wan2.2-I2V-A14B-Diffusers
+    condition_streams: [rgb, grid, normal]
+    grid_drop_prob: 0.0
+    normal_drop_prob: 1.0
+    text_drop_prob: 0.0
+    load_vae_for_dropout_fallback: true
+    frame_per_block: 3
+    first_frame_own_block: false
+    local_attn_size: 30
+    sink_size: 9
+
+latent_cache:
+  mode: offline
+
+data:
+  sources:
+    - name: gameplay-99lat
+      cache_dir: /path/to/v3-cache/gameplay-production-a14b-20s
+      weight: 1.0
+      min_latents: 99
+      max_latents: 99
+  batch_size: 1
+  num_workers: 2
+
+optimizer:
+  learning_rate: 1e-5
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  eps: 1e-8
+
+scheduler:
+  name: constant_with_warmup
+  warmup_steps: 100
+
+parallel:
+  usp_size: 8
+
+runtime:
+  precision: bf16
+  autocast: false
+  max_steps: 1000000
+  gradient_clip_val: 1.0
+  output_dir: /path/to/output/wan-taichu-a14b-causal-teacher-prod
+
+attention:
+  backend: flash_attention_4
+  allow_fallback: false
+
+checkpoint:
+  every_n_steps: 100

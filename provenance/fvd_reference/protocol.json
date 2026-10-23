@@ -1,0 +1,47 @@
+{
+  "architecture": "direct RGB PixelDiT with frozen V-JEPA2.1 REPA",
+  "attention_fallback": false,
+  "autocast": "bfloat16",
+  "cases": 2048,
+  "cfg": 1,
+  "codec_encode_batch_size": 1,
+  "covariance_ddof": 1,
+  "cudnn_benchmark": false,
+  "cudnn_deterministic": true,
+  "detector": "pinned I3D Kinetics400, pre-softmax400, FP32, resize224 bilinear align_corners=False antialias=False, [-1,1]",
+  "detector_batch_size": 1,
+  "display_fps": 16,
+  "euler_steps_per_state": 50,
+  "eval_manifest_sha256": "c3d36f19eb385bbbfbed86b777cebb1d7a1c585c545a0877bc2bec3d8aeffba2",
+  "evaluation_parallel": "fsdp2",
+  "frechet_precision": "float64",
+  "generated_rgb_frames": 128,
+  "generated_uint8": "clamp[-1,1], add1, multiply127.5, round, castuint8",
+  "history_window_states": 8,
+  "inference_attention": "flash_attention_4",
+  "mask_during_inference": 0,
+  "metric_rgb_frames": [
+    16,
+    144
+  ],
+  "observed_rgb_frames": 16,
+  "online_and_ema": false,
+  "parameters": "float32",
+  "reshard_after_forward": true,
+  "resize_input": [
+    256,
+    256
+  ],
+  "sampling_batch_sizes": {
+    "rgb16_repa__ema": 8
+  },
+  "sampling_implementation": "Native RepWorld independent per-case generators; batch windows v2",
+  "seed": 20260920,
+  "source_fps_resampling": false,
+  "source_frame_stride": 1,
+  "study": "rgb16_repa_355m",
+  "tf32": false,
+  "total_states": 9,
+  "version": 2,
+  "weights": "ema"
+}

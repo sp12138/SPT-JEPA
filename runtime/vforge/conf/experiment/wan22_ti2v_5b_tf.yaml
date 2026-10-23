@@ -1,0 +1,145 @@
+# @package _global_
+# Wan 2.2 TI2V 5B trained by block-causal teacher forcing.
+#
+# Same weights, data and cache as the bidirectional wan22_ti2v_5b experiment;
+# the transformer is fed a doubled [clean | noisy] sequence instead. Prepare a
+# cache with `model.name=wan22_ti2v_5b` and point this file at it.
+
+model:
+  name: wan22_ti2v_5b_tf
+  init_device: meta
+  weight_loading: auto
+  pretrained_path: ""
+  extras:
+    # Flow-matching / loss.
+    noise_shift: 5.0
+    weighting_scheme: none
+    exclude_first_frame_from_loss: true
+    # Conditioning. TI2V has no CLIP/DINO/VAE image branch; the reference frame
+    # is in-painted into latent frame 0 instead.
+    #
+    # condition_streams lists the latent streams concatenated onto the noisy
+    # latent, in that order, each one z_dim wide, so
+    # in_channels = (1 + len(streams)) * z_dim:
+    #   []                    48
+    #   [normal]              96
+    #   [rgb]                 96
+    #   [rgb, normal]        144
+    #   [grid, normal]       144
+    #   [rgb, grid, normal]  192
+    # Each stream takes an optional <stream>_drop_prob for CFG dropout, and a
+    # cache is only valid for the stream list it was prepared with.
+    condition_streams: [normal]
+    normal_drop_prob: 0.0
+    grid_drop_prob: 0.0
+    rgb_drop_prob: 0.0
+    text_drop_prob: 0.0
+    # Replace the normal stream with a foreground- or background-only body one
+    # step in three. Requires a cache carrying normal_fg_body / normal_bg_body,
+    # which this encoder does not write, so it is off unless the cache came
+    # from a producer that does.
+    partial_normal_aug: false
+    # Causal block layout. A noisy token attends to its own block plus every
+    # strictly-earlier clean frame, so frame_per_block trades context for
+    # parallelism: larger blocks see more of themselves at once, smaller ones
+    # are closer to the autoregressive student they supervise.
+    # first_frame_own_block keeps the in-painted reference frame alone in
+    # block 0, matching how the noisy half pins its timestep to 0.
+    frame_per_block: 3
+    first_frame_own_block: true
+    # Preprocessing.
+    max_frames: null
+    max_sequence_length: 512
+    fps: 24.0
+
+latent_cache:
+  mode: offline
+
+evaluation:
+  num_inference_steps: 50
+  guidance_scale: 5.0
+  negative_prompt: null
+  # Causal eval defaults to full history recomputation. Set incremental_kv
+  # for fixed-capacity KV rollout when p_t=1 and usp_size=1.
+  rollout_mode: full_recompute
+
+data:
+  train_manifest: ""
+  val_manifest: ""
+  cache_dir: ""
+  base_seed: 1234567
+  sampler_seed: 0
+  batch_size: 1
+  num_workers: 0
+  shuffle: true
+  drop_last: true
+  pin_memory: true
+  persistent_workers: false
+  prefetch_factor: null
+
+optimizer:
+  name: adamw
+  learning_rate: 1.0e-5
+  weight_decay: 0.0
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+
+scheduler:
+  name: none
+  factor: 1.0
+  warmup_steps: 0
+
+logging:
+  jsonl: true
+  jsonl_filename: train_steps.jsonl
+  wandb_enabled: true
+  wandb_project: ${oc.env:WANDB_PROJECT,vforge}
+  wandb_entity: null
+  wandb_group: null
+  wandb_name: ""
+  wandb_tags: []
+  wandb_mode: null
+  wandb_save_dir: ""
+  wandb_include_optimizer_in_backward: false
+  wandb_exclude_dataloader_from_step: false
+
+runtime:
+  max_steps: 0
+  run_backward: true
+  seed: 42
+  precision: bf16
+  autocast: true
+  gradient_clip_val: 0.0
+  log_every_n_steps: 1
+  log_timing: true
+  output_dir: outputs/wan22_ti2v_5b_tf
+
+limitations:
+  expert_parallel: false
+  ring_attention: false
+  train_condition_encoders: false
+  cross_attention_ulysses: false
+  padded_cross_attention_requires_varlen: true
+
+parallel:
+  usp_size: 1
+  dp_size: auto
+  dp_replicate_size: 1
+  dp_shard_size: 1
+  dp_mode: fsdp2
+  include_usp_in_fsdp: true
+  gradient_checkpointing: true
+  reshard_after_forward: true
+
+attention:
+  backend: auto
+  allow_fallback: true
+  debug: false
+
+attention_offload:
+  enable: false
+
+convert_checkpoint:
+  input_path: ""
+  output_path: ""
+  dry_run: false

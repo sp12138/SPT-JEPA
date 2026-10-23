@@ -1,0 +1,38 @@
+# Read-only branch inventory. Scheduled configuration is read from master.
+version: v2.0
+name: vforge-stale-branches-preview
+on:
+  manual: enabled
+  openapi: disabled
+  schedules:
+    cron: "0 10 * * *"
+    branches: [master]
+    always: true
+variables:
+  STALE_DAYS: "60"
+stages:
+  - name: branch inventory
+    jobs:
+      scan:
+        runs-on:
+          pool-name: docker
+          container:
+            image: python:3.12
+        timeout-minutes: 10
+        steps:
+          - name: checkout prerequisites
+            run: |
+              set -euo pipefail
+              apt-get update -qq
+              apt-get install -y -qq git git-lfs ca-certificates
+          - checkout: self
+            with:
+              enableSubmodule: false
+              enableGitLfs: false
+          - name: report stale branches
+            env:
+              GONGFENG_TOKEN: ${{ ci.token }}
+              STALE_DAYS: ${{ variables.STALE_DAYS }}
+            run: |
+              set -euo pipefail
+              python3 scripts/ci/stale_branches.py --days "$STALE_DAYS"

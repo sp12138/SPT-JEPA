@@ -1,0 +1,18 @@
+import torch
+
+from vforge.models.ltx.gelu_approx import GELUApprox
+from vforge.models.ltx.ops import LTXLinear
+
+
+class FeedForward(torch.nn.Module):
+    def __init__(self, dim: int, dim_out: int, mult: int = 4) -> None:
+        super().__init__()
+        inner_dim = int(dim * mult)
+        project_in = GELUApprox(dim, inner_dim)
+
+        self.net = torch.nn.Sequential(
+            project_in, torch.nn.Identity(), LTXLinear(inner_dim, dim_out)
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.net(x)

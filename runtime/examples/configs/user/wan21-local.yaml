@@ -1,0 +1,20 @@
+# @package _global_
+# Load with: --config-dir /path/to/configs +user=wan21-local
+defaults:
+  - override /experiment: wan21_i2v_14b
+  - _self_
+
+model:
+  pretrained_path: /models/Wan2.1-I2V-14B
+
+data:
+  train_manifest: /data/wan21/train.jsonl
+  cache_dir: /data/wan21/cache
+
+runtime:
+  output_dir: /runs/wan21/local
+  max_steps: 100
+
+# Optional for long-running jobs.
+checkpoint:
+  every_n_steps: 500

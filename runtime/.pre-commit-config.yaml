@@ -1,0 +1,12 @@
+repos:
+  - repo: local
+    hooks:
+      - id: vforge-lint
+        name: vforge lint
+        entry: bash -c 'CI_STRICT=1 LINT_SCOPE=changed ./scripts/ci/lint.sh'
+        language: python
+        additional_dependencies:
+          - ruff==0.16.1
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]

@@ -1,0 +1,36 @@
+# @package _global_
+defaults:
+  - native_defaults
+  - experiment: wan21_i2v_14b
+  - _self_
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: ${runtime.output_dir}/hydra/${now:%Y-%m-%d_%H-%M-%S}
+
+runtime:
+  output_dir: outputs/train
+
+# Shared training lifecycle contract. Experiments must not override these
+# defaults; model-specific recipes only own model, precision and parallelism.
+checkpoint:
+  enabled: true
+  every_n_steps: 0
+  dirpath: ""
+  state: full
+  format: dcp
+  save_final: true
+  keep_last: 2
+  async_save: true
+  save_optimizer: true
+  save_trainer_state: true
+  empty_cache_before_save: true
+
+resume:
+  path: none
+  weights: true
+  optimizer: true
+  training_state: true
+  stage_remote: false

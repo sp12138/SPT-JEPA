@@ -1,0 +1,34 @@
+# @package _global_
+# Wan Taichu Wan 2.1 I2V 14B with speak-audio conditioning.
+
+model:
+  name: wan_taichu
+  init_device: meta
+  weight_loading: auto
+  pretrained_path: ""
+  extras:
+    variant: wan21_i2v_14b_audio
+    condition_streams: [rgb]
+    weighting_scheme: none
+    use_vae_condition: false
+    use_clip_condition: false
+    audio_pretrained_path: ""
+    audio_type: wav2vec2
+    audio_video_rate: 25
+    audio_fps: 25
+    audio_batch_frames: 121
+    audio_bucket_m: 0
+    audio_sample_rate: 16000
+    audio_drop_prob: 0.1
+    text_drop_prob: 0.1
+    audio_zero_init: false
+    max_frames: 121
+    max_sequence_length: 512
+
+runtime:
+  precision: bf16
+  autocast: false
+  output_dir: outputs/wan_taichu_wan21_i2v_14b_audio
+
+parallel:
+  gradient_checkpointing: true

@@ -1,0 +1,117 @@
+# @package _global_
+# DMD stage only: initialize from an existing causal TF generator and bid score.
+training:
+  recipe: dmd
+  models:
+    generator:
+      model: ltx23
+      pretrained_path: /path/to/ltx-2.3-base.safetensors
+      init_weights: /path/to/ltx-tf.safetensors
+      config:
+        variant: causal
+        source_prefix: ""
+        first_block_latent_frames: 4
+        block_latent_frames: 3
+        max_train_frames: 241
+        frame_rate: 24.0
+        ref_audio_seconds: 1.5
+        ref_position_gap: 5.0
+        ref_follow: true
+        text_encoder_path: /path/to/gemma-3
+        max_text_length: 1024
+        negative_prompt: >-
+          blurry, out of focus, overexposed, underexposed, low contrast, washed out colors, excessive noise, grainy texture, poor lighting, flickering, motion blur, distorted proportions, unnatural skin tones, deformed facial features, asymmetrical face, missing facial features, extra limbs, disfigured hands, wrong hand count, artifacts around text, inconsistent perspective, camera shake, incorrect depth of field, background too sharp, background clutter, distracting reflections, harsh shadows, inconsistent lighting direction, color banding, cartoonish rendering, 3D CGI look, unrealistic materials, uncanny valley effect, incorrect ethnicity, wrong gender, exaggerated expressions, wrong gaze direction, mismatched lip sync, silent or muted audio, distorted voice, robotic voice, echo, background noise, off-sync audio, incorrect dialogue, added dialogue, repetitive speech, jittery movement, awkward pauses, incorrect timing, unnatural transitions, inconsistent framing, tilted camera, flat lighting, inconsistent tone, cinematic oversaturation, stylized filters, or AI artifacts.
+    real_score:
+      model: ltx23
+      pretrained_path: ${training.models.generator.pretrained_path}
+      init_weights: /path/to/ltx-bid.safetensors
+      config:
+        variant: bidirectional
+        source_prefix: ""
+    fake_score:
+      model: ltx23
+      pretrained_path: ${training.models.generator.pretrained_path}
+      init_weights: ${training.models.real_score.init_weights}
+      config:
+        variant: bidirectional
+        source_prefix: ""
+  dmd:
+    algorithm: block_distribution_matching
+    rollout:
+      denoising_steps: [999, 757, 522, 0]
+      same_step_across_blocks: true
+      backward_mode: retained_graph
+    score:
+      num_train_timesteps: 1000
+      sampled_timestep_min: 20
+      sampled_timestep_max: 980
+      component_guidance_scales: {video: 3.0, audio: 5.0}
+      component_weights: {video: 1.0, audio: 1.0}
+    schedule:
+      # G+C, C, C, C, C: critic:G = 5:1.
+      generator_every_n_steps: 5
+    ema:
+      enabled: false
+      decay: 0.99
+      start_step: 0
+      storage: sharded_fp32
+
+latent_cache:
+  mode: offline
+data:
+  sources:
+    - name: ltx_dmd
+      cache_dir: /path/to/ltx/.precomputed
+  batch_size: 1
+  num_workers: 0
+  sampler_seed: ${runtime.seed}
+  shuffle: true
+  # Match the reference length buckets: discard incomplete rank groups.
+  drop_last: true
+  pin_memory: true
+  persistent_workers: false
+  prefetch_factor: null
+
+optimizers:
+  generator:
+    name: adamw
+    learning_rate: 1.0e-5
+    weight_decay: 0.0
+    betas: [0.0, 0.999]
+    eps: 1.0e-8
+  critic:
+    name: adamw
+    learning_rate: 1.0e-5
+    weight_decay: 0.0
+    betas: [0.0, 0.999]
+    eps: 1.0e-8
+scheduler:
+  name: none
+  warmup_steps: 0
+runtime:
+  max_steps: 10
+  run_backward: true
+  seed: 42
+  precision: bf16
+  autocast: false
+  gradient_clip_val: 1.0
+  output_dir: outputs/ltx23_dmd
+  weights_strict: true
+parallel:
+  usp_size: 1
+  tp_size: 1
+  cp_size: 1
+  dp_size: auto
+  dp_mode: fsdp2
+  gradient_checkpointing: true
+  reshard_after_forward: true
+  mixed_precision:
+    # Reference FSDP disables input casts on every unit: positions stay FP32.
+    cast_forward_inputs: false
+attention:
+  backend: sdpa
+  allow_fallback: false
+attention_offload:
+  enable: false
+logging:
+  jsonl: true

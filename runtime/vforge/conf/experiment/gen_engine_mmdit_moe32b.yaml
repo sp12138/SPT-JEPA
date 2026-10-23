@@ -1,0 +1,20 @@
+# @package _global_
+# Full mmdit-moe-32b-a4.1b architecture with a 4096-wide text input projection.
+# Derived from the pinned DiT catalog config; text_dim is the only difference.
+# Resolve example paths from the repository root, or override them explicitly.
+defaults:
+  - gen_engine
+  - _self_
+
+model:
+  extras:
+    transformer_config_path: examples/configs/gen-engine/mmdit-moe-32b-a4.1b-pt4096.json
+    tensor_format: tensor
+    audio_layout: ATC
+    require_digests: false
+    pin_artifacts: true
+    # The tensor shapes do not establish encoder normalization or its clock.
+    # Supply both codec files from the data producer before training. In
+    # particular, do not infer posterior sampling from the DiT model family.
+    video_latent_codec_config_path: ""
+    audio_latent_codec_config_path: ""

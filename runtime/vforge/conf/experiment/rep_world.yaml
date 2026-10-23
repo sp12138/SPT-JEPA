@@ -1,0 +1,108 @@
+# @package _global_
+# VideoRAE 3D baseline; the four codec variants share the Native lifecycle.
+model:
+  name: rep_world
+  extras:
+    initial_weights_format: native
+    ema:
+      enabled: false
+      decay: 0.99
+      evaluation_weights: online
+    codec:
+      family: videorae
+      variant: 3d
+      checkpoint: ""
+      statistics: ""
+      encode_batch_size: 40
+      decode_batch_size: 1
+      independent_state_decode: false
+    states: 10
+    frame_interval: 1
+    random_clip: true
+    use_muon: true
+    next_state_tuning_start_step: null
+    next_state_tuning_init: online
+    world:
+      width: 768
+      depth: 12
+      heads: 12
+      patch_size: 1
+      mlp_ratio: 4.0
+      qk_norm: true
+      adaln_mode: adaln_lora
+      adaln_lora_dim: 256
+      condition_dropout: 0.1
+      cross_attention_every: 1
+      cross_attention_position: after_self
+      cross_attention_scope: global
+      cross_attention_3d_rope: false
+      condition_mode: cross_attention
+    conditioner:
+      architecture: causal
+      encoder_depth: null
+      input: rgb
+      input_size: 256
+      temporal_patch: 2
+      spatial_patch: 16
+      width: 768
+      depth: 12
+      heads: 12
+      feature_layers: [11]
+      mlp_ratio: 4.0
+      pretrained_grid: 16
+      context_mask_ratio: 0.0
+      mask_stage: after_e
+    flow:
+      mode: no_zprev
+      mean: 0.8
+      std: 0.8
+      shift: -1.0
+      base_shift: 2.667
+      distant_target_prob: 0.0
+      target_layout: single_state
+      future_target_choices: 3
+      future_target_policy: legacy
+      target_origin_reserve: null
+      df_train_time_bins: 50
+    rollout:
+      batch_size: 1
+      total_states: ${model.extras.states}
+      history_states: 1
+      history_window_states: ${model.extras.states}
+      use_vit_c_kv_cache: false
+      cfg_interval_min: 0.2
+      cfg_interval_max: 1.0
+      fps: 16
+
+latent_cache:
+  mode: online
+
+data:
+  batch_size: 4
+  sampler_seed: ${runtime.seed}
+
+# use_muon selects the task-local matrix optimizer; these fields also set its
+# auxiliary Adam branch. Set use_muon=false for ordinary Native AdamW.
+optimizer:
+  learning_rate: 1.0e-4
+  betas: [0.9, 0.95]
+
+runtime:
+  autocast: true
+  gradient_clip_val: 1.0
+
+parallel:
+  dp_mode: ddp
+  # Match the source FP32 parameters + BF16 autocast, including FM RNG/norms.
+  mixed_precision:
+    enabled: false
+
+attention:
+  # FA4 is opt-in until independent Muon update equivalence is accepted.
+  # B300: attention.backend=flash_attention_4 runtime.deterministic=true.
+  backend: sdpa
+  allow_fallback: false
+
+evaluation:
+  num_inference_steps: 50
+  guidance_scale: 2.0

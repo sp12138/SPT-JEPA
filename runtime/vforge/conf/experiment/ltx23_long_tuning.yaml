@@ -1,0 +1,26 @@
+# @package _global_
+defaults:
+  - ltx23_dmd
+  - _self_
+
+training:
+  models:
+    generator:
+      init_weights: /path/to/ltx-dmd-student.safetensors
+    real_score:
+      # Empty selects the transformer from the official base checkpoint.
+      init_weights: ""
+    fake_score:
+      init_weights: ${training.models.real_score.init_weights}
+  dmd:
+    algorithm: segment_chain_distribution_matching
+    chain:
+      segment_slots: 9
+      max_rollout_blocks: 57
+      sink_blocks: 1
+      local_blocks: 2
+    rollout:
+      backward_mode: block_replay
+runtime:
+  max_steps: 2000
+  output_dir: outputs/ltx23_long_tuning

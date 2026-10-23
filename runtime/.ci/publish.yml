@@ -1,0 +1,66 @@
+# Runs only after merge. Build on KAP, transfer the artifact, deploy from CI.
+version: v3.0
+name: vforge-docs-publish
+on:
+  push:
+    branches: [master]
+concurrency:
+  group: vforge-docs-publish
+  cancel-in-progress: false
+  max-parallel: 1
+  queue-length: 20
+  queue-timeout-minutes: 120
+stages:
+  - name: publish
+    jobs:
+      publish:
+        runs-on:
+          pool-name: docker
+          container:
+            image: python:3.12
+        steps:
+          - name: checkout prerequisites
+            run: |
+              set -euo pipefail
+              apt-get update -qq
+              apt-get install -y -qq git-lfs
+          - checkout: self
+          - name: build on KAP and publish from CI
+            env:
+              CI_RUN_ID: ${{ ci.build_id }}
+              KOALA_APPID: ${{ settings.ieg_infra_koala_cli.appId }}
+              KOALA_SECRETKEY: ${{ settings.ieg_infra_koala_cli.secretKey }}
+              AWS_ACCESS_KEY_ID: ${{ settings.ieg_infra_aws.appId }}
+              AWS_SECRET_ACCESS_KEY: ${{ settings.ieg_infra_aws.secretKey }}
+              AWS_DEFAULT_REGION: us-west-2
+              DEVCLOUD_SSH_KEY: ${{ settings.vforge_docs_ssh.privateKey }}
+              DEVCLOUD_KNOWN_HOSTS: '[ieg-infra-vforge.devcloud.woa.com]:36000 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN3AELQwYKhDTFP3kWLnNJGqXI/3qY/SxrW/msp/MG2H'
+            run: |
+              set -euo pipefail
+              bash scripts/ci/bootstrap.sh
+              python3 scripts/ci/run.py publish --run-id "${CI_RUN_ID:?build ID missing}" --source "${GIT_CI_SHA:?push commit missing}"
+finally:
+  cleanup:
+    runs-on:
+      pool-name: docker
+      container:
+        image: python:3.12
+    steps:
+      - name: checkout prerequisites
+        run: |
+          set -euo pipefail
+          apt-get update -qq
+          apt-get install -y -qq git-lfs
+      - checkout: self
+      - name: release KAP resources
+        env:
+          CI_RUN_ID: ${{ ci.build_id }}
+          KOALA_APPID: ${{ settings.ieg_infra_koala_cli.appId }}
+          KOALA_SECRETKEY: ${{ settings.ieg_infra_koala_cli.secretKey }}
+          AWS_ACCESS_KEY_ID: ${{ settings.ieg_infra_aws.appId }}
+          AWS_SECRET_ACCESS_KEY: ${{ settings.ieg_infra_aws.secretKey }}
+          AWS_DEFAULT_REGION: us-west-2
+        run: |
+          set -euo pipefail
+          bash scripts/ci/bootstrap.sh
+          python3 scripts/ci/run.py publish --run-id "${CI_RUN_ID:?build ID missing}" --cleanup

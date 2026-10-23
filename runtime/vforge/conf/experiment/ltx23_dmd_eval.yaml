@@ -1,0 +1,53 @@
+# @package _global_
+model:
+  name: ltx23
+  pretrained_path: /path/to/ltx-2.3-base.safetensors
+  init_device: meta
+  extras:
+    variant: causal
+    source_prefix: ""
+    first_block_latent_frames: 4
+    block_latent_frames: 3
+    frame_rate: 24.0
+    ref_audio_seconds: 1.5
+    ref_position_gap: 5.0
+    ref_follow: true
+    text_encoder_path: /path/to/gemma-3
+    max_text_length: 1024
+    seconds: 30.0
+    denoising_steps: [999, 757, 522, 0]
+    kv_cache_blocks: 0
+    num_sink_blocks: 0
+    prompt: ""
+    prompt_file: ""
+evaluation:
+  checkpoint_path: /path/to/generator.safetensors
+  checkpoint_format: auto
+  data_source: cache
+  sources:
+    - name: ltx_dmd
+      cache_dir: /path/to/ltx/.precomputed
+  sample_index: 0
+  seed: 42
+latent_cache:
+  mode: offline
+runtime:
+  precision: bf16
+  # Reference inference runs BF16 parameters without autocast's operator promotion.
+  autocast: false
+  weights_strict: true
+parallel:
+  dp_mode: fsdp2
+  dp_size: auto
+  usp_size: 1
+  tp_size: 1
+  cp_size: 1
+  gradient_checkpointing: false
+  reshard_after_forward: true
+  mixed_precision:
+    param_dtype: bfloat16
+    reduce_dtype: float32
+    cast_forward_inputs: false
+attention:
+  backend: auto
+  allow_fallback: false

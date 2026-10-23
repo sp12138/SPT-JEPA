@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if not page.is_homepage %}
+    <div class="vf-eyebrow vf-article-label">
+      {% for section in page.ancestors | reverse %}{{ section.title }}{% if not loop.last %} / {% endif %}{% endfor %}
+    </div>
+    {{ super() }}
+  {% endif %}
+{% endblock %}

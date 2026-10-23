@@ -1,0 +1,108 @@
+{
+  "root": "/efs/stormyxie/reports/rgb16_scale_budget_20261010",
+  "runtime": "/efs/stormyxie/reports/rgb16_scale_budget_20261010/runtime",
+  "jobs": "/efs/stormyxie/reports/rgb16_scale_budget_20261010/jobs",
+  "output": "/efs/stormyxie/outputs/vforge/rgb16_scale_budget_20261010",
+  "pretrain_config": "/efs/stormyxie/reports/rgb16_scale_budget_20261010/jobs/configs/pretrain_50k.yaml",
+  "pretrain_config_sha256": "fd12cc65638d67e6e09836844a629cdbb208c3928e5bdae87ca9a5c3a260a47f",
+  "pretrain_output": "/efs/stormyxie/outputs/vforge/rgb16_scale_budget_20261010/pretrain_50k",
+  "max_steps": 50000,
+  "source_config": "/threed-code/stormyxie/vforge_jobs/rgb16_capacity_20260929/configs/rgb16_dits_plus70m_355m_pretrain.yaml",
+  "source_runtime": "/efs/stormyxie/reports/rgb16_capacity_20260929/runtime",
+  "source_digest": "5bac5c6a634b742a29d063cb47272a85e007911f78e5e71262c188015f564f57",
+  "baseline": {
+    "split_e_layers": 3,
+    "split_c_layers": 18,
+    "vit_width": 1024,
+    "patch_dit_layers": 8,
+    "patch_dit_width": 768,
+    "pixel_layers": 2,
+    "pixel_width": 16,
+    "cross_attention_layers": [
+      0,
+      4
+    ],
+    "repa": false,
+    "mask_stage": "before_e",
+    "pretrain_mask_ratio": 0.9,
+    "pretrain_distant_target_prob": 0.5,
+    "tune_mask_ratio": 0,
+    "tune_distant_target_prob": 0
+  },
+  "global_batch": 64,
+  "gpus": 8,
+  "hardware": "H200",
+  "precision": "bf16",
+  "attention": "flash_attention_4",
+  "activation_checkpointing": false,
+  "checkpoint_intervals": {
+    "pretrain": 2500,
+    "tune": 500
+  },
+  "evaluation": {
+    "report": "/efs/stormyxie/reports/rgb16_scale_budget_20261010/fvd_eval",
+    "cases": 2048,
+    "weights": "ema",
+    "observed_frames": 16,
+    "generated_frames": 128,
+    "euler_steps": 50,
+    "cfg": 1,
+    "seed": 20260920,
+    "fixed_tune_endpoint": true
+  },
+  "cases": [
+    {
+      "pretrain_steps": 10000,
+      "tune_steps": 2000,
+      "completed_steps": 12000,
+      "output": "/efs/stormyxie/outputs/vforge/rgb16_scale_budget_20261010/tune_from_10000",
+      "config": "/efs/stormyxie/reports/rgb16_scale_budget_20261010/jobs/configs/tune_from_10000.yaml",
+      "config_sha256": "b9f0140fc6d65624479ec9e7b9e0b6ca2a24c7ae189f7f944268ddc9320cbfb0",
+      "name": "rgb16_scale_p10000_t2k__ema"
+    },
+    {
+      "pretrain_steps": 20000,
+      "tune_steps": 2000,
+      "completed_steps": 22000,
+      "output": "/efs/stormyxie/outputs/vforge/rgb16_scale_budget_20261010/tune_from_20000",
+      "config": "/efs/stormyxie/reports/rgb16_scale_budget_20261010/jobs/configs/tune_from_20000.yaml",
+      "config_sha256": "329d0181da93839418c46723efa4cc2dd62d25b3b6b52fad469edd214f1a03e4",
+      "name": "rgb16_scale_p20000_t2k__ema"
+    },
+    {
+      "pretrain_steps": 30000,
+      "tune_steps": 2000,
+      "completed_steps": 32000,
+      "output": "/efs/stormyxie/outputs/vforge/rgb16_scale_budget_20261010/tune_from_30000",
+      "config": "/efs/stormyxie/reports/rgb16_scale_budget_20261010/jobs/configs/tune_from_30000.yaml",
+      "config_sha256": "68d8f6f2069a29c0ee4bb3168178b6b793d64884c2541aa1043b5ca951297531",
+      "name": "rgb16_scale_p30000_t2k__ema"
+    },
+    {
+      "pretrain_steps": 40000,
+      "tune_steps": 2000,
+      "completed_steps": 42000,
+      "output": "/efs/stormyxie/outputs/vforge/rgb16_scale_budget_20261010/tune_from_40000",
+      "config": "/efs/stormyxie/reports/rgb16_scale_budget_20261010/jobs/configs/tune_from_40000.yaml",
+      "config_sha256": "1daf98f3a6e6b9aeffb13db26858cfcebe4ab0425d3d8f960267d78d99a6fd9a",
+      "name": "rgb16_scale_p40000_t2k__ema"
+    },
+    {
+      "pretrain_steps": 50000,
+      "tune_steps": 2000,
+      "completed_steps": 52000,
+      "output": "/efs/stormyxie/outputs/vforge/rgb16_scale_budget_20261010/tune_from_50000",
+      "config": "/efs/stormyxie/reports/rgb16_scale_budget_20261010/jobs/configs/tune_from_50000.yaml",
+      "config_sha256": "d924d1d3d9ae875b0a6fde89927a5a8d1d929a4747ded475485bcd20f97a8d0e",
+      "name": "rgb16_scale_p50000_t2k__ema"
+    }
+  ],
+  "runner_policy": "finite; exit after 50k and five 2k-tune FVD endpoints",
+  "parameters": {
+    "total": 423579328,
+    "vit_e": 42143308,
+    "vit_c": 233962952,
+    "dit": 147473068,
+    "repa_projector": 0
+  }
+}

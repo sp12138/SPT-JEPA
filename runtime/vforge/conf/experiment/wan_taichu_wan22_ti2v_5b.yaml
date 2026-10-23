@@ -1,0 +1,39 @@
+# @package _global_
+# Wan Taichu ordinary bidirectional Wan 2.2 TI2V 5B.
+
+model:
+  name: wan_taichu
+  init_device: meta
+  weight_loading: auto
+  pretrained_path: ""
+  extras:
+    variant: wan22_ti2v_5b
+    condition_streams: [normal]
+    weighting_scheme: none
+    exclude_first_frame_from_loss: true
+    normal_drop_prob: 0.0
+    text_drop_prob: 0.0
+    partial_normal_aug: false
+    max_frames: null
+    max_sequence_length: 512
+
+latent_cache:
+  mode: offline
+
+evaluation:
+  num_inference_steps: 50
+  guidance_scale: 5.0
+  negative_prompt: null
+
+runtime:
+  precision: bf16
+  autocast: true
+  output_dir: outputs/wan_taichu_wan22_ti2v_5b
+
+parallel:
+  usp_size: 1
+  gradient_checkpointing: true
+
+attention:
+  backend: auto
+  allow_fallback: true

@@ -1,0 +1,69 @@
+# @package _global_
+# Load with:
+#   torchrun --nproc_per_node=8 -m vforge.tasks.train \
+#     --config-dir /path/to/vforge/examples/configs \
+#     +user=wan-taichu-5b-ref-prod
+defaults:
+  - override /experiment: wan_taichu_wan22_ti2v_5b_ref
+  - _self_
+
+model:
+  # Direct Taichu weights-only warm-start. It is not a Native resume and does
+  # not restore optimizer, scheduler, global step, or RNG state.
+  pretrained_path: /path/to/taichu/checkpoints/11400.pt
+  extras:
+    # Frozen tokenizer, text encoder, and VAE remain on the published Wan root;
+    # This directory supplies model config plus frozen condition assets; the
+    # trainable Transformer weights come from pretrained_path above.
+    condition_pretrained_path: /path/to/Wan2.2-TI2V-5B-Diffusers
+    condition_streams: [grid, normal]
+    ref_num_frames_online: 6
+    grid_drop_prob: 0.1
+    normal_drop_prob: 0.2
+    # Taichu preserve_frozen_assets=true kept a VAE for neutral CFG fallbacks.
+    # Set this only because the existing caches do not contain fallback latents.
+    load_vae_for_dropout_fallback: true
+
+latent_cache:
+  mode: offline
+
+data:
+  sources:
+    - name: seedance-5s
+      cache_dir: /path/to/v3-cache/seedance-production-ti2v5b-5s
+      weight: 0.5
+      min_latents: 21
+      max_latents: 38
+    - name: gameplay-20s
+      cache_dir: /path/to/v3-cache/gameplay-production-ti2v5b-20s
+      weight: 0.3
+      min_latents: 21
+      max_latents: 150
+    - name: gameplay-60s
+      cache_dir: /path/to/v3-cache/gameplay-production-ti2v5b-60s
+      weight: 0.2
+      min_latents: 150
+      max_latents: 450
+  batch_size: 1
+  num_workers: 2
+
+optimizer:
+  learning_rate: 1e-5
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  eps: 1e-15
+
+scheduler:
+  name: constant_with_warmup
+  warmup_steps: 100
+
+parallel:
+  usp_size: 4
+
+runtime:
+  max_steps: 1000000
+  gradient_clip_val: 1.0
+  output_dir: /path/to/output/wan-taichu-5b-ref-prod
+
+checkpoint:
+  every_n_steps: 500

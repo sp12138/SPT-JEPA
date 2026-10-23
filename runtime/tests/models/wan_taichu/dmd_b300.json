@@ -1,0 +1,194 @@
+{
+  "environment": {
+    "gpu": "NVIDIA B300 SXM6 AC",
+    "torch": "2.13.0+cu130",
+    "cuda": "13.0",
+    "flash_attention_4": "4.0.0b29",
+    "seed": 42,
+    "layers": 40,
+    "parameter_dtype": "float32",
+    "compute_dtype": "bfloat16"
+  },
+  "steps": 10,
+  "topology": "DP1xUSP8",
+  "latent_frames": 21,
+  "sample_count": 30,
+  "sampler_seed": 0,
+  "provenance": {
+    "source_base_commit": "39ea23ab73d3f333cd71743ce4aee4d475a10437",
+    "source_change": "Wan DMD task-owned phase RNG and SP broadcasts; task-selected Ulysses reduce_scatter backward. Native shared-text computation unchanged.",
+    "source_log_sha256": "3650414e8d7939b058ee423f53ff1ba07c28e747b66347778c8fba8294624495",
+    "capture": "Ten full-depth steps through the unmodified GPU CI launcher and clean vforge.tasks.train, with no alignment hooks or RNG replay.",
+    "previous_golden_log_sha256": "bcb6a1f03f39cce833ff8b62119f6f00defcd2c2166c076354afe50508bea61b",
+    "shared_text_control_log_sha256": "6ee634531f59020febbe5171f789f1bffcdce01b8cf31c5b3333fbe3c7c7b952",
+    "shared_text_control": "With only the external shared-text patch (disable text-context upcast and bypass the FSDP2 shared-text input backward hook), native RNG reproduces all 12 previous golden losses bitwise. CPU/CUDA RNG states, inputs and noise draws match the Taichu trace in all 12 phases. Removing that patch is the sole numerical change in this recording.",
+    "native_gate": "Clean vforge.tasks.train; exact hexadecimal phase loss comparison, without hooks, reference traces or relaxed tolerances.",
+    "input_order": "Preserve the original 30-sample pool. Generator sampler seed 0, critic sampler seed 7919; both advance once per training step. Latents use the first 21 frames and BF16 cache storage."
+  },
+  "samples": [
+    {
+      "sample_id": "00026459",
+      "sha256": "d3fd2081e55272d7d048bdbe6d071adfca79cdbe751f2b2718b6614c3118c00f"
+    },
+    {
+      "sample_id": "00010200",
+      "sha256": "440bfadee8db6ba963e3c3a4514f312b86201e82ecd70c65020e84b366c1937f"
+    },
+    {
+      "sample_id": "00017484",
+      "sha256": "3e84ffc809cc9b3064c8ff5487ff72ead1a9629404c8322e64f6da156debd1d7"
+    },
+    {
+      "sample_id": "00001648",
+      "sha256": "dfd3bf38d94a2181c6e21a92c8e73f2d1176a03ddb7d91b00ed14bf93fa4713b"
+    },
+    {
+      "sample_id": "00019492",
+      "sha256": "a156c535af16dafdb849808bf722f1fefb72d21b197000a9b001ae6f189def69"
+    },
+    {
+      "sample_id": "00001938",
+      "sha256": "2ec06ba23f12d34f2f2a714ef12001e4e4ff36c204fac48ef235f6f0ef37320d"
+    },
+    {
+      "sample_id": "00025924",
+      "sha256": "4796f7df4776399ef590e67eeb75207f4e37b1d11155a72aefed6cb2c7abb3ec"
+    },
+    {
+      "sample_id": "00018601",
+      "sha256": "fb68efff78867f165c0297bfca81db422a2bc6c16e4d28d1be8953948b0afd72"
+    },
+    {
+      "sample_id": "00000107",
+      "sha256": "c684f3be94d774290666ff3cc127e17c1f2530aeb9dce4c1f1eb0839239e2cb7"
+    },
+    {
+      "sample_id": "00025813",
+      "sha256": "c5444f7b5d49c3ac402e30ad71cc990bba7b04c74d546ffb219e30fd4daeb72c"
+    },
+    {
+      "sample_id": "00017147",
+      "sha256": "c866edab3535b5847cad9e43cea346c432cf1f9cef5860b200779114d9069f1e"
+    },
+    {
+      "sample_id": "00025149",
+      "sha256": "65349d5dbe51afca15eb5f54998fc80646992934cf5863d8a7caf9a032730138"
+    },
+    {
+      "sample_id": "00022343",
+      "sha256": "54afd5ff7d47f47a0c552d354cbad245ff1a3699b091dffee93528fc706776b6"
+    },
+    {
+      "sample_id": "00012907",
+      "sha256": "a604396d969a2b49da0db41d7c300af0e12ffbbaddb85c9401c6ab4d376c2dfa"
+    },
+    {
+      "sample_id": "00013953",
+      "sha256": "5f6cc4c72b4fd7dd0db1696be8d7194f08a1e65b5213704b350c573d0a6d95ef"
+    },
+    {
+      "sample_id": "00018933",
+      "sha256": "c263b1b8c2e494efac3f69627a660dd230e413c14b55e2e4a21fb4d4423dd4ec"
+    },
+    {
+      "sample_id": "00012766",
+      "sha256": "27e25430a50bc79aac40b856b00cf987e92be906071ca97078fdf6d970e086ca"
+    },
+    {
+      "sample_id": "00023675",
+      "sha256": "27789b61c726016fedba576a63b8a9a263e7e4a9a6d52a00d9579450a4af3b0e"
+    },
+    {
+      "sample_id": "00016639",
+      "sha256": "3ed325222c91b990de5941950c1e90430c1f4f27c9b18fa304f8ba4f7bcefa6b"
+    },
+    {
+      "sample_id": "00000503",
+      "sha256": "efc2ed7b5295ccee264fb316a910660a8cd341b16223bc89dbd818f46f936649"
+    },
+    {
+      "sample_id": "00016441",
+      "sha256": "6bd40bda4b91758b47a5affc4f721a92e466838ecab40d0bc78c8a126fa31c85"
+    },
+    {
+      "sample_id": "00014941",
+      "sha256": "21586d58cd283cdd71f8d953cde6481a27418b4f13383c6f78b807f2d433a454"
+    },
+    {
+      "sample_id": "00019631",
+      "sha256": "9a3922822707045c25fe15718d467ce4a0222980f62ee708bed369de6d6d491e"
+    },
+    {
+      "sample_id": "00006532",
+      "sha256": "8bdee7eb1971442a148f8f19a6de937b052c3792ba71035fb3489e8d726cedbe"
+    },
+    {
+      "sample_id": "00002682",
+      "sha256": "cb30c49908c83c8ae436bf839a84be0d079a4046774f930453f58d84e4b6937a"
+    },
+    {
+      "sample_id": "00017908",
+      "sha256": "a923196da12d0f1ac499a4d2e1410c1c409ac5b834f66c8b9963d74e8236ce36"
+    },
+    {
+      "sample_id": "00015116",
+      "sha256": "889deaaf68a24350379b424a8a0d2ae10206ede62024007a34229fcda6bfa53f"
+    },
+    {
+      "sample_id": "00025666",
+      "sha256": "6463ac60c7e3a8787a5eddbc0ef6d67fb89a7ba0c7e343a908aa1ab8b5bb7900"
+    },
+    {
+      "sample_id": "00005063",
+      "sha256": "1563e832aced56528b8cc6212f2ba96ec44e3eee29c9b12f8c03764cd3408a32"
+    },
+    {
+      "sample_id": "00005798",
+      "sha256": "8c521b815a057c3515843f9e8d9f672b13c48a4410ccf25d17f9109f3c1cc457"
+    }
+  ],
+  "losses": [
+    {
+      "step": 0,
+      "generator/loss": "0x1.0d3bc20000000p-4",
+      "critic/loss": "0x1.ed63ec0000000p-6"
+    },
+    {
+      "step": 1,
+      "critic/loss": "0x1.7515c20000000p-5"
+    },
+    {
+      "step": 2,
+      "critic/loss": "0x1.2f5d700000000p-5"
+    },
+    {
+      "step": 3,
+      "critic/loss": "0x1.a68a520000000p-5"
+    },
+    {
+      "step": 4,
+      "critic/loss": "0x1.7916b80000000p-5"
+    },
+    {
+      "step": 5,
+      "generator/loss": "0x1.2c04de0000000p-4",
+      "critic/loss": "0x1.b6485e0000000p-6"
+    },
+    {
+      "step": 6,
+      "critic/loss": "0x1.71ebb60000000p-4"
+    },
+    {
+      "step": 7,
+      "critic/loss": "0x1.215c300000000p-4"
+    },
+    {
+      "step": 8,
+      "critic/loss": "0x1.df0ff20000000p-5"
+    },
+    {
+      "step": 9,
+      "critic/loss": "0x1.22a1440000000p-4"
+    }
+  ]
+}

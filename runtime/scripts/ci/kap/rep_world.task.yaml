@@ -1,0 +1,13 @@
+workingDir: /data/work/
+startCmd: |
+  set -eu
+  cd "$REP_WORLD_BUNDLE_ROOT/vforge"
+  export PYTHONDONTWRITEBYTECODE=1
+  "$REP_WORLD_PYTHON" -u tests/tasks/rep_world/multinode_worker.py \
+    --assets "$REP_WORLD_ASSETS" \
+    --manifest "$REP_WORLD_MANIFEST" \
+    --output "$REP_WORLD_OUTPUT" \
+    --master-addr "$REP_WORLD_MASTER_ADDR" \
+    --nodes "$CI_HOST_NUM" \
+    --node-rank "$RANK" \
+    --gpus "$CI_HOST_GPU_NUM"

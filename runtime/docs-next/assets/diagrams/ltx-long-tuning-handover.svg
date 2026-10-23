@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="965" viewBox="0 0 1000 965" role="img" aria-labelledby="title desc"><title id="title">段与段如何衔接</title><desc id="desc">默认九个槽位。首段生成 B0 至 B8；第二段携带 B0、B7、B8，生成 B9 至 B14；第三段携带 B0、B13、B14，生成 B15 至 B20。上一段末尾 block 经视频 VAE 解码取末帧再编码，为下一段评分提供图像条件。</desc><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#64748b"/></marker></defs><rect width="1000" height="965" rx="12" fill="#f8fafc"/><g font-family="sans-serif" fill="#172b40">
+<text x="24" y="38" font-size="24" font-weight="bold" text-anchor="start" fill="#172b40">每段 9 个槽位：保留 3 个历史 block，再生成 6 个新 block</text>
+<rect x="24" y="59" width="22" height="22" rx="8" fill="#fff0d9" stroke="#cbd5e1"/>
+<text x="56" y="78" font-size="18" font-weight="normal" text-anchor="start" fill="#172b40">sink：首段固定 B0</text>
+<rect x="302" y="59" width="22" height="22" rx="8" fill="#e1f3e9" stroke="#cbd5e1"/>
+<text x="334" y="78" font-size="18" font-weight="normal" text-anchor="start" fill="#172b40">local：上一段末尾 2 个</text>
+<rect x="636" y="59" width="22" height="22" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="668" y="78" font-size="18" font-weight="normal" text-anchor="start" fill="#172b40">当前段新生成内容</text>
+<text x="24" y="153" font-size="22" font-weight="bold" text-anchor="start" fill="#172b40">第 1 段</text>
+<text x="24" y="183" font-size="18" font-weight="normal" text-anchor="start" fill="#172b40">生成 9 个</text>
+<rect x="178" y="126" width="74" height="68" rx="8" fill="#fff0d9" stroke="#cbd5e1"/>
+<text x="215.0" y="168" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B0</text>
+<rect x="264" y="126" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="301.0" y="168" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B1</text>
+<rect x="350" y="126" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="387.0" y="168" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B2</text>
+<rect x="436" y="126" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="473.0" y="168" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B3</text>
+<rect x="522" y="126" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="559.0" y="168" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B4</text>
+<rect x="608" y="126" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="645.0" y="168" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B5</text>
+<rect x="694" y="126" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="731.0" y="168" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B6</text>
+<rect x="780" y="126" width="74" height="68" rx="8" fill="#e1f3e9" stroke="#cbd5e1"/>
+<text x="817.0" y="168" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B7</text>
+<rect x="866" y="126" width="74" height="68" rx="8" fill="#e1f3e9" stroke="#cbd5e1"/>
+<text x="903.0" y="168" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B8</text>
+<path d="M215.0 194 V300" fill="none" stroke="#bc8b32" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M817.0 194 V228 H301.0 V300" fill="none" stroke="#47966d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M903.0 194 V258 H387.0 V300" fill="none" stroke="#47966d" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="475" y="285" font-size="18" font-weight="normal" text-anchor="start" fill="#526579">历史前缀复制到下一段，不重新生成</text>
+<text x="24" y="331" font-size="22" font-weight="bold" text-anchor="start" fill="#172b40">第 2 段</text>
+<text x="24" y="361" font-size="18" font-weight="normal" text-anchor="start" fill="#172b40">新增 6 个</text>
+<rect x="178" y="304" width="74" height="68" rx="8" fill="#fff0d9" stroke="#cbd5e1"/>
+<text x="215.0" y="346" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B0</text>
+<rect x="264" y="304" width="74" height="68" rx="8" fill="#e1f3e9" stroke="#cbd5e1"/>
+<text x="301.0" y="346" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B7</text>
+<rect x="350" y="304" width="74" height="68" rx="8" fill="#e1f3e9" stroke="#cbd5e1"/>
+<text x="387.0" y="346" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B8</text>
+<rect x="436" y="304" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="473.0" y="346" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B9</text>
+<rect x="522" y="304" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="559.0" y="346" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B10</text>
+<rect x="608" y="304" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="645.0" y="346" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B11</text>
+<rect x="694" y="304" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="731.0" y="346" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B12</text>
+<rect x="780" y="304" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="817.0" y="346" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B13</text>
+<rect x="866" y="304" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="903.0" y="346" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B14</text>
+<path d="M215.0 372 V478" fill="none" stroke="#bc8b32" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M817.0 372 V406 H301.0 V478" fill="none" stroke="#47966d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M903.0 372 V436 H387.0 V478" fill="none" stroke="#47966d" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="475" y="463" font-size="18" font-weight="normal" text-anchor="start" fill="#526579">历史前缀复制到下一段，不重新生成</text>
+<text x="24" y="509" font-size="22" font-weight="bold" text-anchor="start" fill="#172b40">第 3 段</text>
+<text x="24" y="539" font-size="18" font-weight="normal" text-anchor="start" fill="#172b40">新增 6 个</text>
+<rect x="178" y="482" width="74" height="68" rx="8" fill="#fff0d9" stroke="#cbd5e1"/>
+<text x="215.0" y="524" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B0</text>
+<rect x="264" y="482" width="74" height="68" rx="8" fill="#e1f3e9" stroke="#cbd5e1"/>
+<text x="301.0" y="524" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B13</text>
+<rect x="350" y="482" width="74" height="68" rx="8" fill="#e1f3e9" stroke="#cbd5e1"/>
+<text x="387.0" y="524" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B14</text>
+<rect x="436" y="482" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="473.0" y="524" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B15</text>
+<rect x="522" y="482" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="559.0" y="524" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B16</text>
+<rect x="608" y="482" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="645.0" y="524" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B17</text>
+<rect x="694" y="482" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="731.0" y="524" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B18</text>
+<rect x="780" y="482" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="817.0" y="524" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B19</text>
+<rect x="866" y="482" width="74" height="68" rx="8" fill="#eaf5ff" stroke="#cbd5e1"/>
+<text x="903.0" y="524" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">B20</text>
+<text x="24" y="591" font-size="19" font-weight="bold" text-anchor="start" fill="#172b40">B0 始终保留；local 随段更新。重复出现的 block 不计入新增数量。</text>
+<text x="24" y="624" font-size="17" font-weight="normal" text-anchor="start" fill="#172b40">B 编号表示整条链的生成顺序，并非模型内部的位置编号；每段重建 KV，历史前缀不反传。</text>
+<text x="24" y="677" font-size="22" font-weight="bold" text-anchor="start" fill="#172b40">第 1 → 2 段交接时，还要为 teacher / critic 重建图像条件</text>
+<rect x="24" y="705" width="180" height="87" rx="8" fill="#f0edff" stroke="#b6a8db"/>
+<text x="114.0" y="738" font-size="18" font-weight="bold" text-anchor="middle" fill="#172b40">末尾视频 block</text>
+<text x="114.0" y="766" font-size="18" font-weight="normal" text-anchor="middle" fill="#172b40">B8</text>
+<rect x="247" y="705" width="255" height="87" rx="8" fill="#f0edff" stroke="#b6a8db"/>
+<text x="374.5" y="738" font-size="18" font-weight="bold" text-anchor="middle" fill="#172b40">VAE 解码</text>
+<text x="374.5" y="766" font-size="18" font-weight="normal" text-anchor="middle" fill="#172b40">取最后一个像素帧</text>
+<rect x="545" y="705" width="180" height="87" rx="8" fill="#f0edff" stroke="#b6a8db"/>
+<text x="635.0" y="738" font-size="18" font-weight="bold" text-anchor="middle" fill="#172b40">VAE 编码</text>
+<text x="635.0" y="766" font-size="18" font-weight="normal" text-anchor="middle" fill="#172b40">单帧图像 latent</text>
+<rect x="768" y="705" width="208" height="87" rx="8" fill="#f0edff" stroke="#b6a8db"/>
+<text x="872.0" y="738" font-size="18" font-weight="bold" text-anchor="middle" fill="#172b40">第 2 段</text>
+<text x="872.0" y="766" font-size="18" font-weight="normal" text-anchor="middle" fill="#172b40">评分的首帧条件</text>
+<path d="M204 750 H242" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M502 750 H540" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M725 750 H763" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="24" y="817" width="952" height="57" rx="8" fill="#f0edff" stroke="#b6a8db"/>
+<text x="500" y="852" font-size="21" font-weight="bold" text-anchor="middle" fill="#172b40">第 2 段评分窗口 = 重编码图像 latent + 新生成的 B9～B14</text>
+<text x="24" y="907" font-size="18" font-weight="normal" text-anchor="start" fill="#172b40">Generator 用上方的 sink / local 前缀；teacher / critic 用下方的图像条件。VAE 不训练。</text>
+<text x="24" y="940" font-size="18" font-weight="normal" text-anchor="start" fill="#172b40">音频另携带上一段末尾 1 个 token，参与评分加噪与归一化，但不计入生成区 loss。</text>
+</g></svg>

@@ -1,0 +1,35 @@
+# @package _global_
+# Wan Taichu ordinary bidirectional Wan 2.2 A14B.
+
+model:
+  name: wan_taichu
+  init_device: meta
+  weight_loading: auto
+  pretrained_path: ""
+  extras:
+    variant: wan22_a14b
+    condition_streams: [rgb]
+    use_vae_condition: false
+    weighting_scheme: none
+    boundary_ratio: 0.9
+    train_expert: both
+    rgb_drop_prob: 0.0
+    text_drop_prob: 0.0
+    max_frames: null
+    max_sequence_length: 512
+
+latent_cache:
+  mode: offline
+
+runtime:
+  precision: bf16
+  autocast: false
+  output_dir: outputs/wan_taichu_wan22_a14b
+
+parallel:
+  usp_size: 1
+  gradient_checkpointing: true
+
+attention:
+  backend: auto
+  allow_fallback: true
