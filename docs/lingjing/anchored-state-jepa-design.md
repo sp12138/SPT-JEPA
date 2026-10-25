@@ -51,13 +51,13 @@ loss = fm + beta * kl                     # nothing else
 
 The simplest practical form fixes both variances (`sig = sigma_0`, `s = s_0`). The KL chain then reduces to three lines: Gaussian noise of fixed size on the state, a squared prediction error between the prior's mean and the next state, and a squared-norm penalty on the first state. See Section 6.
 
-PushT starting point. [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md) builds these modules from SPT's ViT-E, state-causal blocks and `WorldDiT`, keeping one-frame 64 px chunks at frameskip 5:
+PushT starting point (stages 1 and 2 of [the implementation plan](as-jepa-spt-implementation-plan.md): LeWM's encoder, predictor and harness, with SPT's `WorldDiT` as the renderer; stage 3 moves to SPT's own modules):
 
 | Module | Start | Note |
 | --- | --- | --- |
 | Encoder | ViT-tiny at 224 px, patch 14 (as LeWM), plus 4 learned state queries of 16 dims | state = 64 dims per chunk |
 | Prior | LeWM's depth-6 predictor, residual mean, per-dimension log-variance head (or fixed variance) | block-causal over state tokens and actions |
-| Renderer | DiT-S on 64 x 64 pixels; anchor channel-concatenated with the noisy target; state tokens through cross-attention | static camera, so the anchor is spatially aligned with the target |
+| Renderer | SPT's `WorldDiT` at DiT-S size on 64 x 64 pixels; anchor channel-concatenated with the noisy target; state tokens through cross-attention | static camera, so the anchor is spatially aligned with the target |
 | Data | windows of 8 frames, frameskip 5 | chunk = one frame |
 | beta | ramp from 0 over the first few percent of training, then sweep | the main knob |
 
@@ -73,7 +73,7 @@ Three uses of the trained model:
 
 What: a ViT over one chunk; `K_h` learned queries cross-attend to the patch tokens (Perceiver-style pooling); linear heads give `mu` and `log sigma`. The state is `K_h` tokens of `d_h` dims.
 
-Why per-chunk, with no access to history or anchor: the state must be a function of the frame alone. This gives three things at once. Goal images encode without a history. The state is Markov, so the prior owns all prediction. And the encoder cannot express "pose relative to the anchor", so it cannot offload position into the renderer's side information. In the theory, `z_hat_t = E(x_t)` is the object the identifiability claim is about.
+Why per-chunk, with no access to history or anchor: the state must be a function of the frame alone. This gives three things at once. Goal images encode without a history. The state is a function of the frame, and the prior, which reads past states and actions, owns all prediction (Section 5.1 lets it read the last `L` states, which is where velocity lives when one frame does not show it). And the encoder cannot express "pose relative to the anchor", so it cannot offload position into the renderer's side information. In the theory, `z_hat_t = E(x_t)` is the object the identifiability claim is about.
 
 Why learned queries: a fixed slot identity across examples (the "fixed J" of the residual-SPT notes) without masking, and a state that is small by construction.
 
@@ -145,19 +145,45 @@ Why no stop-gradient, EMA or augmentation: Section 4.
 
 ## 4. The story for the JEPA community
 
-JEPA's goal is to predict in representation space and not spend representation capacity on unpredictable pixel detail. Its stated reason for avoiding reconstruction is that a pixel loss forces the latent to encode everything and is dominated by high-entropy detail.
+Main line: the JEPA objective is not designed here, it is derived. Start from one information principle and no JEPA ingredients, and the latent prediction loss falls out as the code length of the state. Image editing (Section 4.3) is an interpretation of the renderer, not the argument.
 
-Both complaints are about reconstruction that is unpriced and unexcused. Give the renderer alibis and charge for bits, and the reconstruction loss becomes the one thing JEPA is missing: a quantitative account of what the representation should keep.
+### 4.1 The derivation
+
+Describe a video as cheaply as possible, when the receiver already holds the first frame and can sample. The sender turns each frame into a noisy state `z_t = mu(x_t) + sigma_0 * eps`, sends the states, and the receiver renders each later frame from its state and the first frame. The total code length is the cost of the states plus the cost of the frames given the states.
+
+The cheapest way to send a sequence is predictive coding: the first state against a fixed prior, each later state against a predictor that has seen the earlier states and the actions. By the bits-back argument (Hinton and van Camp 1993), the cost of a noisy state is the KL from its posterior to the distribution it is coded against:
+
+```
+cost(states) = KL(q(z_0|x_0) || N(0, I)) + sum_{t>=1} KL(q(z_t|x_t) || p(z_t | z_<t, a_<t))
+```
+
+With fixed variances each surprise term is
+
+```
+KL_t = ||mu(x_t) - m(z_<t, a_<t)||^2 / (2 s_0^2) + const
+```
+
+That is the JEPA latent prediction loss: a predictor maps earlier embeddings and actions to the next frame's embedding and is scored by squared error against the same encoder's embedding of that frame, with the target attached, as in LeWM. Nobody chose this loss; it is what the state costs under the predictor. With learned variances it becomes a Gaussian-NLL JEPA loss with calibrated uncertainty.
+
+The entry term contains what JEPA adds as an anti-collapse regularizer, and more. By the ELBO decomposition `E_x KL(q(z|x) || p(z)) = I(x; z) + KL(q(z) || p(z))`, its second half matches the embedding distribution to an isotropic Gaussian, the role SIGReg plays in LeJEPA and LeWM; its first half is the price of information, which SIGReg leaves out. The cost of the frames is the flow loss of a renderer that sees the first frame. That term is what makes information worth paying for, and it is what prevents collapse.
+
+So AS-JEPA is LeWM's objective with SIGReg replaced by the full code length plus a renderer: the same encoder, predictor and attached-target squared error, with noise on the embedding, an entry price, and an anchored stochastic renderer added.
+
+### 4.2 Why the derived objective needs no heuristics
+
+JEPA avoids reconstruction because a pixel loss forces the latent to encode everything and is dominated by high-entropy detail. Both complaints are about reconstruction that is unpriced and unexcused. Give the renderer alibis and charge for bits, and the reconstruction term becomes the one thing JEPA is missing: a quantitative account of what the representation should keep.
 
 - **Two alibis.** Appearance is excused by the anchor; unpredictable detail is excused by the noise. Whatever the renderer cannot excuse must come from the state, and every bit of state costs. The state therefore ends up with exactly the predictable, dynamics-relevant information, which is the JEPA target, reached by accounting rather than by heuristics.
-- **The state is an edit instruction.** Rendering is editing the anchor according to the state. Edit instructions are low-bandwidth and carry no appearance. This is the intuitive version of the Wyner-Ziv argument.
 - **Fixed points.** A JEPA objective (prediction plus anti-collapse) is satisfied by every representation that is predictable and non-degenerate. It has no term that says "you dropped something that mattered" and none that says "you kept something useless". Which information survives is decided by masking, augmentation and the regularizer. Here the optimum is the minimum-description-length predictive state (Section 5). Collapse is the degenerate end of the same continuum; the distortion term measures it, so EMA, stop-gradient and augmentation are not needed.
-- **The latent predictor is still there and still does all the prediction.** The code-length chain is a Gaussian-NLL JEPA loss with learned variance, plus a fixed-prior entry term. LeJEPA's SIGReg is that entry term without the price: by the ELBO decomposition `E_x KL(q(z|x) || p(z)) = I(x; z) + KL(q(z) || p(z))`, SIGReg keeps the second term and drops the first. We add the first term and the renderer.
 - **Capacity goes to the renderer, not the representation.** The state is tens of dimensions and the renderer is discarded at planning time. JEPA's "wasted capacity" objection is about the encoder's output; here the output cannot hold pixels. The cost is training compute, as in SPT.
 - **Pixel detail and gradients.** In flow matching, fine detail lives at low noise levels, where the noisy target already contains it; the state's gradient comes from high-noise levels, which is coarse structure. With a frozen codec target (as in SPT) texture is already gone.
 - **The field is moving this way.** V-JEPA 2 trains a diffusion decoder for visualization; VANE adds a light decoder and reports state of the art among unified encoders; FlowWM shows deterministic latent predictors blur multimodal futures. All three add back a stochastic or auxiliary renderer.
 
 One-line pitch: we do not reconstruct pixels, we price them.
+
+### 4.3 Interpretation: rendering as image editing
+
+The renderer edits the first frame according to the state, `x_t = edit(x_0, instruction = z_t)`, so world prediction becomes predicting the next edit instruction. This is the intuitive picture of the side-information argument (an instruction is low-bandwidth and carries no appearance), and the swap test literally applies episode B's instructions to episode A's image. The design borrows interfaces from editing models (reference-image channel concatenation, instruction cross-attention, guidance on the instruction), not pretrained weights. The picture holds only with a fixed reference frame: editing from the current frame with the action as the instruction (ImageWAM, Orca, ChronoEdit) predicts in pixel space and lets the editor do the dynamics.
 
 Anticipated objections:
 
@@ -172,6 +198,8 @@ Anticipated objections:
 Per episode: appearance `c ~ p(c)`; initial state `z_0 ~ p(z_0)` independent of `c`; transition `z_{t+1} = f(z_t, a_t, eta_t)` with exogenous noise `eta_t` and `f` not depending on `c`; actions `a_t` from any policy (we condition on them); rendering `x_t = g(z_t, c, eps_t)` with `eps_t` i.i.d. over time and independent of everything else.
 
 Graph: `c -> x_t` for every `t`; `z_t -> x_t`; `(z_t, a_t) -> z_{t+1}`; `eps_t -> x_t`; no edge from `c` into `z`.
+
+The transition may read the last `L` states, `z_{t+1} = f(z_{t-L+1:t}, a_t, eta_t)`, a time-delayed process as in TDRL. This matters when a single frame does not show velocity: `z_t` is then the configuration visible in frame `t`, so A1 stays true per frame, and velocity is carried by the prior's context of past states. Nothing in Section 5.3 changes, because the renderer still draws each frame from its own state. Planning starts from the last `L` encoded frames, as LeWM's history of 3 does.
 
 Channels in the architecture: the state is priced and is the only path to the prior and across time; the anchor is free and reaches only the renderer; the noise is free, reaches only the renderer, and is not predictable.
 
@@ -268,7 +296,15 @@ Use PushT's variation space (`docs/envs/pusht.md`) to randomize two kinds of fac
 
 Collect with `WeakPolicy`; ground-truth factors come free. To test the noise route, overlay a small random dot on every frame, large enough that blurring it is costly; it is transient, so it should be sampled rather than stored.
 
-Train the model across a `beta` sweep, plus two ablations: no anchor route (colors should enter the state) and a deterministic MSE renderer (the dot should enter the state or blur). Compare against LeWM and, if code is available, LRC-JEPA. Check:
+Train across a `beta` sweep and compare a ladder that adds one piece at a time, all with the same encoder, predictor, data and planner:
+
+1. LeWM: attached-target squared error plus SIGReg.
+2. LeWM plus the anchored flow renderer, SIGReg kept, nothing priced. Predicted: colors stay in the state, since nothing charges for them.
+3. AS-JEPA: SIGReg replaced by the code length (entry plus surprise). Predicted: colors leave the state.
+4. AS-JEPA without the anchor route. Predicted: colors enter the state.
+5. AS-JEPA with a deterministic MSE renderer. Predicted: the dot enters the state or blurs.
+
+Also run LeWM at AS-JEPA's 64-dim state width so width is not a confound, and LRC-JEPA if its code is available. Check:
 
 - the entry cost against the roughly 40-nat budget;
 - probes and MCC from `mu`: pose, shape and scale in; colors, goal pose and dot out;
@@ -276,7 +312,7 @@ Train the model across a `beta` sweep, plus two ablations: no anchor route (colo
 - planning with goal images in different colors (the proposed model should barely notice; LeWM likely degrades);
 - action following in contact versus free motion.
 
-Refutation: colors stay decodable at every `beta` that preserves action following, or the dot enters the state as readily with the flow renderer as with the MSE renderer.
+Refutation: colors stay decodable at every `beta` that preserves action following; rung 2 removes colors as well as rung 3 (then the price is not what removes appearance); or the dot enters the state as readily with the flow renderer as with the MSE renderer.
 
 ## 10. Prior work
 
@@ -299,6 +335,6 @@ The pieces exist. Not found: SPT's flow renderer with anchor side information, a
 
 ## 11. Decisions and open questions
 
-Decisions: no augmentation; no EMA or stop-gradient; anchor is the first chunk and is never rendered; anchor enters by channel concatenation on PushT; encoder is per-chunk; prior is anchor-blind and one-step; renderer is history-blind and action-blind; masking is not the information restriction; fixed-variance Gaussian code first. On SPT (2026-10-25): no target network, and SPT's evaluation-only weight EMA is also off; the state reaches the renderer without per-token LayerNorm; chunks stay one frame; entry and surprise get separate weights; `beta` is swept, not fixed at 1.
+Decisions: no augmentation; no EMA or stop-gradient; anchor is the first chunk and is never rendered; anchor enters by channel concatenation on PushT; encoder is per-chunk; prior is anchor-blind and one-step; renderer is history-blind and action-blind; masking is not the information restriction; fixed-variance Gaussian code first. On SPT (2026-10-25): no target network, and SPT's evaluation-only weight EMA is also off; the state reaches the renderer without per-token LayerNorm; chunks stay one frame; entry and surprise get separate weights; `beta` is swept, not fixed at 1. Story and implementation (2026-10-25): the main story is the derivation in Section 4.1, with editing as an interpretation; no pretrained editing model; stages 1 and 2 use LeWM's harness, encoder and predictor with SPT's `WorldDiT` renderer, and stage 3 uses SPT's own stack; the transition may read the last `L` states.
 
 Open: anchor refresh for videos with camera motion; an action-relevance term for control; one state token versus several; chunk length for the slow/fast hierarchy; whether the entry term and the surprise terms should have different weights.

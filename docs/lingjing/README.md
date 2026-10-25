@@ -18,8 +18,9 @@ channels. The state must support latent planning, generation and probing.
    no augmentation, EMA or stop-gradient. Section 11 lists settled decisions
    and open questions.
 2. [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md):
-   how AS-JEPA maps onto the actual SPT code (2026-10-25): where the code
-   differs from the manuscript description, module layout, data, checks.
+   how AS-JEPA is built (2026-10-25): LeWM's harness, encoder and predictor
+   with SPT's `WorldDiT` renderer for the PushT suite, SPT's own stack at
+   scale; the literal diff from LeWM; data, diagnostics, order of work.
 3. [discussions/2026-10-24_to_10-25-as-jepa-design-session.md](discussions/2026-10-24_to_10-25-as-jepa-design-session.md):
    how that design was reached, turn by turn, including rejected alternatives,
    points the user did not explicitly settle (SPT-style masking), and offers
