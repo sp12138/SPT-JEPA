@@ -27,3 +27,14 @@ The user pointed out that the plan had not considered all major points of the de
 - The alternative codes (learned-variance Gaussian, FSQ) were missing; the learned-variance code is needed for the component-wise identifiability bonus. Added a `StateCode` interface.
 - Missing: the guidance-scale reliance diagnostic, the swap test, rate-based leak and collapse signals, the dot and contact checks, the no-anchor and MSE-renderer ablations, generation with prior samples and both continuation modes, data conditions required by the theory (colours sampled independently of initial state, dot i.i.d.), and the camera-motion anchor route. Added, with a design-to-plan traceability table (plan Section 2).
 - The masking disagreement was left implicit; the plan now proposes one measured comparison.
+
+## Story and first experiments (user question, same day)
+
+User asked whether an "image editing is world prediction" framing changes the design, how SPT, editing architectures and the theory fit together, whether to start with PushT planning or SPT's generation/FVD evaluation, and which benchmarks JEPA world-model papers use.
+
+Answer given (not yet written into the design doc):
+
+- The framing fits if stated as "the world model predicts the edit instruction; the editor executes it". The predictor stays in latent space (JEPA), and reconstruction only grounds what an instruction means. Recent editing-as-world-model papers (ImageWAM, Orca, ChronoEdit, EditWorld) edit from the *current* frame with the action as instruction, which is pixel-space prediction and the recent-anchor bypass; AS-JEPA edits from a fixed first frame with a learned, priced instruction. A literal "Image Editing is World Prediction" title would invite that confusion.
+- Recommended order: PushT with the variation space, generation and editing visualizations first (rendered latent rollouts, counterfactual actions, anchor/state swap), then LeWM-protocol planning (PushT, TwoRoom, Reacher, OGBench-Cube, all present in `~/code/sparse_jepa/stable_worldmodel/envs`). SPT's SolarWM/FVD evaluation later, as a scale and generation-cost check, since it is action-free with camera motion.
+- New consideration from the search ("Frozen in a Frame", arXiv 2610.04585): single-frame encoders miss velocity. With one-frame chunks the state is not Markov in velocity; the prior can infer it from history, but the identifiability assumption that the frame determines the state weakens. Bears on the chunk-length knob (two-frame chunks are the minimal fix).
+- Benchmarks: LeWM suite (TwoRoom, Reacher, PushT, OGBench-Cube), extended suites (Wall, PointMaze, Scene, PushObj, Ant-U-Maze), V-JEPA 2 (SSv2, Epic-Kitchens, DROID real-robot planning), intuitive physics (IntPhys, IntPhys 2, InfLevel; Physion). The per-step surprise rate is a natural violation-of-expectation score for IntPhys-style tests.
