@@ -1,6 +1,6 @@
 # Anchored State JEPA: design notes
 
-Updated 2026-10-25. Working name: AS-JEPA. Status: design only; nothing has been implemented or trained. This supersedes the residual-SPT sketch in [residual-jepa-spt-proposal.md](superseded/residual-jepa-spt-proposal.md) for the question of separating dynamics from appearance. The fixed-slot idea from those notes survives here as the learned state queries.
+Updated 2026-10-25. Working name: AS-JEPA. Status: design only; nothing has been implemented or trained. The SPT-specific build plan is [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md). This supersedes the residual-SPT sketch in [residual-jepa-spt-proposal.md](superseded/residual-jepa-spt-proposal.md) for the question of separating dynamics from appearance. The fixed-slot idea from those notes survives here as the learned state queries.
 
 ## 1. Goal and principles
 
@@ -26,7 +26,7 @@ Generative story for one episode of chunks `x_0 .. x_T` with optional actions `a
 
 Inference: `q_theta(z_t | x_t)` is a diagonal Gaussian from a per-chunk encoder. The encoder sees only its own chunk.
 
-Objective (negative evidence lower bound; `beta = 1` is the exact bound):
+Objective (negative evidence lower bound; `beta = 1` is the exact bound only when the renderer term is an exact negative log-likelihood. SPT's flow loss is not, so with SPT `beta` is a rate-distortion weight to sweep; see [the implementation plan](as-jepa-spt-implementation-plan.md), Section 2):
 
 ```
 L = sum_{t>=1} FlowLoss(x_t | z_t, x_0)
@@ -51,7 +51,7 @@ loss = fm + beta * kl                     # nothing else
 
 The simplest practical form fixes both variances (`sig = sigma_0`, `s = s_0`). The KL chain then reduces to three lines: Gaussian noise of fixed size on the state, a squared prediction error between the prior's mean and the next state, and a squared-norm penalty on the first state. See Section 6.
 
-PushT starting point:
+PushT starting point. Superseded for SPT by [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md), which uses 4-frame RGB4 chunks at 256 px and SPT's ViT-E, causal blocks and pixel DiT; the table below is the original LeWM-style sketch:
 
 | Module | Start | Note |
 | --- | --- | --- |
@@ -129,7 +129,7 @@ Why stochastic: bits-back. The renderer samples the residual instead of the stat
 
 Why the target is fixed (pixels or a frozen codec): the learned state is the condition, not the target, so the collapse REPA-E reports for a learned target under a diffusion loss does not apply.
 
-Why noise-time weighting matters: the gradient reaching the state comes from noise levels at which the noisy target has not already revealed the answer, so high-noise weighting makes the state responsible for coarse structure (Mittal et al. 2023). Default to SPT's weighting; bias it high if the state is under-used.
+Why noise-time weighting matters: the gradient reaching the state comes from noise levels at which the noisy target has not already revealed the answer, so high-noise weighting makes the state responsible for coarse structure (Mittal et al. 2023). SPT's weighting (logit-normal with mean 0.8 plus a resolution shift, median noise level about 0.8) is already biased toward high noise; keep it.
 
 Without it (an MSE renderer): the state is pushed to store transient detail to reduce blur, which is the MAE failure mode.
 
@@ -230,11 +230,11 @@ Three codes, one objective (distortion plus `beta` times code length):
 
 Recommendation: fixed-variance Gaussian first on PushT, where actions make futures near-deterministic. FSQ second if `beta` is painful; its rate is exact and the budget replaces the entry term. The flow prior for action-free video, where futures are multimodal.
 
-Masking. SPT masks 90% of the history tokens after the ViT. This saves compute and acts as a mild regularizer, and SPT fine-tunes unmasked afterwards. It does not hide information (each retained token can encode anything in its chunk, including appearance), it gives no entry cost, and it trains no latent predictor. As an information restriction it is at most an erasure channel on the state (the Information Dropout view), an alternative noise to Gaussian, not a simpler one. In this design the small state already provides SPT's compute saving (4 tokens per chunk instead of 26 retained of 256). Keep SPT's patch dropping only if ViT compute matters; it does not interfere with the story.
+Masking. SPT drops 90% of each history state's patches before its per-state encoder blocks (ViT-E), so about 102 of 1024 tokens per RGB16 state reach the encoder and the causal ViT-C. This saves compute and acts as a mild regularizer, and SPT fine-tunes unmasked afterwards. It does not hide information (each retained token can encode anything in its chunk, including appearance), it gives no entry cost, and it trains no latent predictor. As an information restriction it is at most an erasure channel on the state (the Information Dropout view), an alternative noise to Gaussian, not a simpler one. In this design the small state already provides SPT's compute saving in the causal model (4 tokens per chunk instead of about 102). Because SPT's masking acts inside the encoder, reusing ViT-E as the AS-JEPA encoder requires masking off: the state must be a function of the whole chunk, with matching inputs at training and inference.
 
 ## 7. Relation to SPT
 
-Kept: the three modules (ViT, causal transformer, DiT); one end-to-end training pass; a flow-matching renderer on pixels or a frozen codec; state reuse across denoising steps; streaming generation.
+Kept: the three modules (SPT's per-state ViT-E as the encoder, its state-causal blocks as the prior, its pixel DiT as the renderer); one end-to-end training pass; a flow-matching renderer on pixels or a frozen codec; state reuse across denoising steps; streaming generation.
 
 Changed:
 
@@ -299,6 +299,6 @@ The pieces exist. Not found: SPT's flow renderer with anchor side information, a
 
 ## 11. Decisions and open questions
 
-Decisions: no augmentation; no EMA or stop-gradient; anchor is the first chunk and is never rendered; anchor enters by channel concatenation on PushT; encoder is per-chunk; prior is anchor-blind and one-step; renderer is history-blind and action-blind; masking is not the information restriction; fixed-variance Gaussian code first.
+Decisions: no augmentation; no EMA or stop-gradient; anchor is the first chunk and is never rendered; anchor enters by channel concatenation on PushT; encoder is per-chunk; prior is anchor-blind and one-step; renderer is history-blind and action-blind; masking is not the information restriction; fixed-variance Gaussian code first. On SPT (2026-10-25): no target network, and SPT's evaluation-only weight EMA is also off; the state reaches the renderer without per-token LayerNorm; first chunks are 4-frame RGB4 states; `beta` is swept, not fixed at 1.
 
 Open: anchor refresh for videos with camera motion; an action-relevance term for control; one state token versus several; chunk length for the slow/fast hierarchy; whether the entry term and the surprise terms should have different weights.

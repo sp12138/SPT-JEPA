@@ -17,12 +17,15 @@ channels. The state must support latent planning, generation and probing.
    design (AS-JEPA, 2026-10-25). One objective, a flow loss plus a KL chain;
    no augmentation, EMA or stop-gradient. Section 11 lists settled decisions
    and open questions.
-2. [discussions/2026-10-24_to_10-25-as-jepa-design-session.md](discussions/2026-10-24_to_10-25-as-jepa-design-session.md):
+2. [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md):
+   how AS-JEPA maps onto the actual SPT code (2026-10-25): where the code
+   differs from the manuscript description, module layout, data, checks.
+3. [discussions/2026-10-24_to_10-25-as-jepa-design-session.md](discussions/2026-10-24_to_10-25-as-jepa-design-session.md):
    how that design was reached, turn by turn, including rejected alternatives,
    points the user did not explicitly settle (SPT-style masking), and offers
    not yet taken up (identifiability proof, PushT experiment plan, probe
    evaluation design).
-3. [discussions/2026-10-08_to_10-24-codex-sessions.md](discussions/2026-10-08_to_10-24-codex-sessions.md):
+4. [discussions/2026-10-08_to_10-24-codex-sessions.md](discussions/2026-10-08_to_10-24-codex-sessions.md):
    the earlier trajectory: LeWM dense-sparse campaign evidence (SIGReg carries
    most of the anti-collapse load), the residual-SPT collaborator handoff,
    sparse-update findings, and the Oct 24 masking/literature discussion.
