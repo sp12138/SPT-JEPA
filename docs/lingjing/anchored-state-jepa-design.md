@@ -51,7 +51,7 @@ loss = fm + beta * kl                     # nothing else
 
 The simplest practical form fixes both variances (`sig = sigma_0`, `s = s_0`). The KL chain then reduces to three lines: Gaussian noise of fixed size on the state, a squared prediction error between the prior's mean and the next state, and a squared-norm penalty on the first state. See Section 6.
 
-PushT starting point. Superseded for SPT by [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md), which uses 4-frame RGB4 chunks at 256 px and SPT's ViT-E, causal blocks and pixel DiT; the table below is the original LeWM-style sketch:
+PushT starting point. [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md) builds these modules from SPT's ViT-E, state-causal blocks and `WorldDiT`, keeping one-frame 64 px chunks at frameskip 5:
 
 | Module | Start | Note |
 | --- | --- | --- |
@@ -299,6 +299,6 @@ The pieces exist. Not found: SPT's flow renderer with anchor side information, a
 
 ## 11. Decisions and open questions
 
-Decisions: no augmentation; no EMA or stop-gradient; anchor is the first chunk and is never rendered; anchor enters by channel concatenation on PushT; encoder is per-chunk; prior is anchor-blind and one-step; renderer is history-blind and action-blind; masking is not the information restriction; fixed-variance Gaussian code first. On SPT (2026-10-25): no target network, and SPT's evaluation-only weight EMA is also off; the state reaches the renderer without per-token LayerNorm; first chunks are 4-frame RGB4 states; `beta` is swept, not fixed at 1.
+Decisions: no augmentation; no EMA or stop-gradient; anchor is the first chunk and is never rendered; anchor enters by channel concatenation on PushT; encoder is per-chunk; prior is anchor-blind and one-step; renderer is history-blind and action-blind; masking is not the information restriction; fixed-variance Gaussian code first. On SPT (2026-10-25): no target network, and SPT's evaluation-only weight EMA is also off; the state reaches the renderer without per-token LayerNorm; chunks stay one frame; entry and surprise get separate weights; `beta` is swept, not fixed at 1.
 
 Open: anchor refresh for videos with camera motion; an action-relevance term for control; one state token versus several; chunk length for the slow/fast hierarchy; whether the entry term and the surprise terms should have different weights.

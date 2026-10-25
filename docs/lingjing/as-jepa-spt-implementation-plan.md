@@ -1,167 +1,183 @@
 # AS-JEPA on the SPT code base: implementation plan
 
-Written 2026-10-25 after reading the bundled SPT implementation (`runtime/vforge/models/rep_world/`, `runtime/vforge/tasks/rep_world/`, `jobs/`). It replaces the "PushT starting point" table in [anchored-state-jepa-design.md](anchored-state-jepa-design.md) Section 2, which assumed a LeWM-style stack (ViT-tiny at 224 px, LeWM predictor, DiT-S at 64 px). The design itself (objective, routing, theory) is unchanged except where noted in Section 2 below. Nothing here has been implemented or run.
+Written 2026-10-25 after reading the bundled SPT implementation (`runtime/vforge/models/rep_world/`, `runtime/vforge/tasks/rep_world/`, `jobs/`). Revised the same day against the final answer of the design session (Happier session `cmvmnyra9gqc1qq5775z6t4j9`, seq 144: anchor conditioning, the prior and its code-length term, the flow noise, masking, block identifiability). The design is in [anchored-state-jepa-design.md](anchored-state-jepa-design.md); this file says how to build it in this repository. Nothing here has been implemented or run.
 
-## 1. What SPT actually is (and where the design notes were wrong about it)
+The rule for this plan: **the design decides, the code adapts.** Where SPT's code makes a design choice inconvenient, the plan finds a route that keeps the design, and says so when no such route exists. Section 2 checks every design point against the plan.
 
-The design notes and the October collaborator handoff described SPT from the manuscript. The code differs in ways that matter for the plan.
+## 1. What SPT actually is
+
+The design notes described SPT from the manuscript. The code differs in ways that matter.
 
 | Topic | Design notes assumed | Actual SPT code | Consequence for AS-JEPA |
 | --- | --- | --- | --- |
-| Encoder | one ViT, then masked tokens go to a causal transformer | `SplitViTConditioner` = **ViT-E** (`StateViTEncoder`, 3 blocks, each state encoded alone) then **ViT-C** (`TokenCausalViT`, 18 blocks, state-causal mask) | ViT-E is already the per-chunk encoder AS-JEPA needs. ViT-C's block-causal machinery (`CausalViTBlock`, `state_causal_sparsity`, cached prefill) is the prior's skeleton. |
-| Chunk | "chunk" of unspecified length | RGB16: one state = 16 RGB frames at 256x256 = 4 temporal planes x 16x16 patches = 1024 tokens; clip = 10 states = 160 frames. RGB4 (`pixel/rgb4`): 4 frames, 1 plane, 256 tokens. | A chunk is several frames. The state encodes a short motion segment, not an instantaneous pose. |
-| Masking | 90% of history tokens dropped *after* the ViT; "26 retained of 256" | `mask_stage: before_e`: 90% of patches dropped *before* ViT-E blocks, so the encoder itself is trained on about 10% of each state's patches (about 102 of 1024 in RGB16) and sees all patches at inference | If ViT-E becomes the AS-JEPA encoder, masking must be off: the state must be a deterministic function of the whole chunk, and train/test inputs must match. |
-| DiT conditioning | "conditioning projection" of a history summary | Cross-attention (blocks 0 and 4) to ViT-C output tokens of the latest origin state, with 3D RoPE aligning each condition token with the same spatial position in the target | SPT's DiT already has a spatially aligned view of the most recent chunk. This is the "recent anchor" bypass the design warns about; AS-JEPA removes it by design. |
-| Target | pixels or frozen codec | Direct pixels, losslessly packed (`PixelRGB4Codec`): 16x16 patch x 4 frames = 3072 channels per token; two-level `WorldDiT` (8 blocks, width 768) + `PixelRefiner` (per-pixel PiT, 2 blocks) | Target is fixed data, as the design requires. No codec to freeze. |
-| Future offset | random `k` | `distant_target_prob 0.5`, `future_target_choices 2`: target is state `i+1` or `i+2` | Removed in AS-JEPA (one-step prior, renderer renders the current chunk). |
-| Noise schedule | "default to SPT's weighting; bias high if the state is under-used" | `noisy = (1-t) y + t eps`, `t = shift(sigmoid(0.8 + 0.8 n))`, automatic shift about 1.74 for a 16x16 grid. Median `t` is about 0.8: already strongly biased toward high noise | The guard "bias toward high noise" is already the default. Velocity sign is `y - eps` (design pseudocode used `eps - y`); use SPT's convention. |
-| Condition dropout | proposed as a new tool for CFG on the state | `condition_dropout 0.1` already replaces the condition with a learned null token | Reuse as is: with the anchor still present, it trains the anchor-only renderer needed for the guidance-scale reliance diagnostic. |
-| EMA | "no EMA" | `ema.decay 0.99` is a **weight average for evaluation only** (demos and FVD load EMA weights); it is not a target network | Not in conflict with the theory. Keep it off in AS-JEPA runs to honour the decision and report online weights; an EMA-evaluated variant can be reported separately later. |
-| Actions | `a_t` into the prior | No actions anywhere in `rep_world`; data are action-free SolarWM videos with camera motion | PushT data with actions must be brought in (Section 4). SolarWM violates the static-content assumption (design 5.6) and is a later, action-free scale test. |
-| Optimizer | unspecified | `MuonWithAuxAdam`: every parameter with `ndim >= 2` goes to Muon, including learned tokens | Small new parameters (state queries) would be orthogonalized by Muon. Use AdamW for the first PushT runs (LeWM's choice) and keep Muon as a later scaling option. |
-| Code integrity | edit SPT modules | `jobs/worker.py` refuses to start if any file in `provenance/upstream_runtime_hashes.json` changed; `tests/test_portability.py` checks the same hashes | Do not edit `rep_world` files. AS-JEPA goes in a new Native family that imports `rep_world` components (Section 3). |
+| Encoder | one ViT, then masked tokens go to a causal transformer | `SplitViTConditioner` = **ViT-E** (`StateViTEncoder`, 3 blocks, each state encoded alone) then **ViT-C** (`TokenCausalViT`, 18 blocks, state-causal mask) | ViT-E is the per-chunk encoder AS-JEPA needs. ViT-C's pieces (`CausalViTBlock`, `state_causal_sparsity`, cached prefill) are the prior's skeleton. |
+| Chunk | one frame on PushT | RGB16 state = 16 frames at 256x256 (4 planes x 16x16 patches = 1024 tokens); the `PixelRefiner` hard-codes 4 frames per plane at 256 px | The RGB16 renderer cannot render one frame. `WorldDiT` without the refiner can (Section 3.3). |
+| Masking | 90% of history tokens dropped *after* the ViT; "26 retained of 256" | `mask_stage: before_e`: 90% of patches dropped *before* the ViT-E blocks, so the encoder trains on about 102 of 1024 tokens per state and sees all of them at inference | Reusing ViT-E as the encoder requires masking off; Section 4.4. |
+| DiT conditioning | "conditioning projection" of a history summary | cross-attention (blocks 0 and 4) to ViT-C tokens of the latest origin state, with 3D RoPE aligning each condition token to the same spatial position in the target | SPT's renderer has a spatially aligned view of the most recent chunk: the recent-anchor bypass the design forbids. AS-JEPA removes it by construction. |
+| Condition projection | not discussed | `semantic_raw_projector = LayerNorm(condition_width) -> Linear` | Per-token LayerNorm on a 16-dim state token removes its mean and scale. Replaced in AS-JEPA (Section 3.3). |
+| Target | pixels or frozen codec | direct pixels, losslessly packed into patch tokens | fixed target, as the design requires |
+| Future offset | random `k` | target is state `i+1` or `i+2` (`distant_target_prob 0.5`) | removed: one-step prior, renderer renders the current chunk |
+| Noise schedule | "bias high if the state is under-used" | `noisy = (1-t) y + t eps`, `t = shift(sigmoid(0.8 + 0.8 n))`; median `t` about 0.8 | already high-noise biased; keep. Velocity target is `y - eps` (design pseudocode used `eps - y`). |
+| Condition dropout | proposed as new, for CFG on the state | `condition_dropout 0.1` swaps the condition for a learned null token | reuse; it is the training half of the guidance-scale diagnostic |
+| EMA | "no EMA" | `ema.decay 0.99` is an evaluation-only weight average, not a target network | keep off to honour the decision |
+| Actions | `a_t` into the prior | none anywhere; SolarWM data are action-free, with camera motion | PushT with actions must be brought in (Section 5) |
+| Optimizer | unspecified | `MuonWithAuxAdam` puts every `ndim >= 2` parameter in Muon | AdamW for the first runs |
+| Code integrity | edit SPT modules | `jobs/worker.py` refuses to start if a hash-pinned runtime file changes; `tests/test_portability.py` checks the same | do not edit `rep_world`; AS-JEPA is a new Native family importing its components |
 
-## 2. Changes to the design that follow from the code
+## 2. Design points and where the plan implements them
 
-1. **Chunk = one RGB4 state (4 frames at 256x256), not one frame at 64 px.** RGB4 reuses the validated pixel path with no renderer changes: `PixelRefiner` and `PixelRGB4Codec` hard-code 4 frames per plane and a 16x16 grid of 16x16 patches. A one-frame chunk needs an `rgb1` geometry and a generalized refiner (about 40 lines plus tests). On PushT at 10 Hz, 4 frames span 4 control steps, close to LeWM's frameskip 5. Planning then needs a goal *chunk*; a resting goal image repeated 4 times is the natural choice. Move to `rgb1` only if goal-image planning or probing shows the multi-frame chunk is in the way.
-2. **The anchor enters by channel concatenation implemented as an added, zero-initialized embedding**, at two places: the coarse patch embedding of `WorldDiT` and the per-pixel embedding of `PixelRefiner`. The in-context alternative (anchor as prefix frames, as `flow.mode: zprev` does) is blocked in this code: `PixelRefiner` and position-aware cross-attention both require exactly one target state with no prefix. Zero-initialized addition `x_embed(y_noisy) + anchor_embed(x_0)` is algebraically channel concatenation with the new weights initialized at zero.
-3. **The state reaches the renderer without SPT's per-token LayerNorm.** `WorldDiT.semantic_raw_projector` is `LayerNorm(condition_width) -> Linear`. With 16-dim state tokens, LayerNorm removes each token's mean and scale (2 of 16 degrees of freedom) and makes the renderer insensitive to the magnitude that the fixed noise `sigma_0` is calibrated against. Feeding an already-projected input does not avoid this, because the projector would still normalize each token. AS-JEPA therefore sets `condition_width = d_h` and replaces the projector at construction with `nn.Sequential(nn.Identity(), nn.Linear(d_h, width))`; `WorldDiT._condition` only requires a sequential whose element `[1]` has a weight.
-4. **`beta = 1` is not an exact evidence bound with SPT's renderer loss.** SPT's flow loss is a velocity MSE under a logit-normal, shifted time distribution. Kingma and Gao (2023) show a weighted diffusion loss is an ELBO only for weightings monotone in time; this one is not, and its scale is per pixel-element, not nats per chunk. So `beta` has no natural value of 1: treat the objective as rate-distortion (Alemi et al. 2018) with distortion = SPT's flow loss, log the KL in nats per chunk, and sweep `beta` on a log grid. The block-identifiability argument (design Section 5) is unaffected as a statement about the idealized model, but its "beta = 1 or slightly above" condition does not transfer to a numeric `beta` here.
-5. **Render a random subset of chunks per step if compute requires it.** The KL chain is cheap and computed on all chunks; the renderer runs on `B x T` targets. Rendering `R < T` uniformly chosen chunks per window and scaling by `T / R` keeps the estimator unbiased.
+This table walks through the final design answer and the design doc. "Plan" names the section below; "Change" marks where the code forces a deviation.
 
-## 3. Code layout
+| Design point | Plan | Change |
+| --- | --- | --- |
+| **Anchor = first chunk, renderer only, never rendered; prior and encoder never see it** | 3.3, 3.5 (renderer is the only module taking `x_0`; loss renders `t >= 1`) | none |
+| Static camera: anchor channel-concatenated with the noisy target (InstructPix2Pix) | 3.3: zero-initialized anchor embedding added to the DiT patch embedding, algebraically channel concatenation | none |
+| State tokens enter through cross-attention or adaLN | 3.3: cross-attention, global scope, no spatial RoPE (state tokens have no position) | none |
+| Camera motion: anchor tokens in context (FLUX Kontext, OmniGen) or cross-attended (ReferenceNet) | 3.3: in-context is blocked by `WorldDiT` (position-aware cross-attention and target-only constraints); cross-attending to `[state tokens; anchor tokens]` works unmodified | in-context variant needs a `WorldDiT` change; deferred until SolarWM |
+| Editing analogy `x_t = edit(x_0, z_t)` | the renderer's interface is literally `render(noisy, t, state=z_t, anchor=x_0)` | none |
+| State dropout enables CFG on the state; the guidance scale needed is the reliance diagnostic | 3.3 (`condition_dropout 0.1`), 6 (diagnostic sweeps guidance scale) | none |
+| Anchor noising: not wanted | off, not implemented | none |
+| **Prior emits a distribution over the next state, never touches the renderer, trained only by the code-length term** | 3.2, 3.5 (prior output enters only the rate term during training; renderer reads the posterior sample) | none |
+| Code length prices surprise, not size; residual mean so static dimensions cost nothing after entry | 3.2: mean `z_t + delta`, zero-initialized `delta` head | none |
+| **Fixed-variance three-line form: fixed noise on the state; squared prediction error; squared norm on the first state. Noise sets resolution, two weights set the price of surprise and of entry** | 3.4, 3.5: `sigma_0` fixed, separate `beta_surprise` and `beta_entry` | my first plan collapsed the two weights into one; restored |
+| Learned-variance Gaussian (exact KL), FSQ with categorical prior, noisy encoder plus latent flow prior (design Section 6) | 3.4: one `StateCode` interface with these as alternative implementations; fixed-variance first, FSQ second | none |
+| Diagonal prior whose means *and variances* depend on the past and actions (TDRL/LEAP condition for component-wise identifiability) | 3.4: the learned-variance code; required for the MCC experiment | fixed variances forfeit the component-wise bonus, not the block claim |
+| Actions enter the prior only | 3.2 (action token per step in the prior); renderer and encoder take no actions | none |
+| **Renderer noise is the within-frame residual, not alternative futures; one observed outcome per context suffices** | 3.3, 4.1: one-frame chunks keep this argument exact | my first plan used 4-frame chunks, which put intra-chunk motion inside the renderer's noise; reverted |
+| **One-step prediction; multi-step offsets removed** | 3.5: no target offsets, no overshooting | none |
+| **Masking is not the information restriction** (user leaned toward it; not settled) | 4.4: off in the main model; one optional erasure-channel comparison | none |
+| Encoder per chunk, sees only its own chunk | 3.1, CPU test in 7 | none |
+| Block identifiability step 2: frames are rendered independently given state and anchor | 3.3: each frame is one renderer call | holds only with one-frame chunks; another reason for 4.1 |
+| A2: appearance independent of the initial state; `eps` i.i.d. over time | 5: data collection samples colours independently of initial poses; dot redrawn every frame | none |
+| `beta = 1` is the exact bound | 4.2: not with SPT's flow loss; sweep `beta` | yes, documented |
+| Risks: posterior collapse (ramp `beta`, high noise, FSQ); appearance leak; contact factor squeezed at large `beta`; unimodal prior; rollout drift | 6: each risk has a logged signal and a response | none |
+| Three uses: planning via `encode`/`rollout`, generation (sample from prior, render with anchor; append state or re-encode), representation | 3.6, 6 | none |
+| First experiment: render-only vs dynamics-relevant factors, dot, `beta` sweep, ablations no-anchor and MSE renderer, baselines LeWM and LRC-JEPA, probes, MCC, swap test, colour-shifted goals, contact vs free motion | 5, 6, 8 | none |
 
-New Native family, following `runtime/AGENTS.md` (models in `models/`, assembly and step in `tasks/`, differences only in the experiment YAML; no new Trainer, checkpoint manager, or attention backend):
+## 3. Code layout and modules
+
+New Native family, following `runtime/AGENTS.md` (models in `models/`, assembly in `tasks/`, model differences in the experiment YAML; no new Trainer, checkpoint manager or attention backend):
 
 ```text
 runtime/vforge/models/as_jepa/
-  config.py      # StateConfig (K_h, d_h, sigma_0, s_0), PriorConfig, AnchorConfig
-  encoder.py     # StateEncoder: rep_world StateViTEncoder (mask ratio 0) + query pooling + mu head
-  prior.py       # StatePrior: CausalViTBlock stack over [state tokens, action token] per chunk
-  renderer.py    # AnchoredWorldDiT: rep_world WorldDiT + zero-init anchor embeddings
+  config.py      # StateConfig, PriorConfig, RendererConfig, CodeConfig
+  pixels.py      # pack/unpack one frame <-> [B, 3*p*p, 1, 16, 16] patch tokens
+  encoder.py     # StateEncoder: rep_world StateViTEncoder (latent input, mask 0) + query pooling
+  codes.py       # StateCode: FixedGaussian, LearnedGaussian, FSQ (rate and sampling)
+  prior.py       # StatePrior: CausalViTBlock stack over [state tokens, action token] per step
+  renderer.py    # AnchoredWorldDiT: rep_world WorldDiT + anchor embedding + linear state projector
   model.py       # ASJepa root: loss, encode, rollout, render
 runtime/vforge/tasks/as_jepa/
-  data.py        # PushTChunkDataset: frames + per-chunk action blocks from a JSONL manifest
-  train.py       # build_train_components (reuses rep_world loader pattern, EMA off)
-  shared.py      # parse_config, model_spec
-  eval.py        # rollout + render, action-following metrics
+  data.py  train.py  shared.py  eval.py
 runtime/vforge/conf/experiment/as_jepa_pusht.yaml
 runtime/tests/models/as_jepa/  runtime/tests/tasks/as_jepa/
-jobs/as_jepa/    # prepare/worker launchers modeled on jobs/prepare_run.py and jobs/worker.py,
-                 # with their own hash manifest; the RGB16 worker stays untouched
+jobs/as_jepa/    # prepare/worker launchers with their own hash manifest
 ```
 
-### 3.1 Encoder (`encoder.py`)
+### 3.1 Encoder
+
+One frame at 64x64 is packed losslessly into a 16x16 grid of 4x4 patches, 48 channels per token (`pixels.py`, a reshape like `PixelRGB4Codec`). `StateViTEncoder` in latent-input mode applies `Linear(48, width)` per patch, its blocks, and a final norm, with each frame encoded alone. `K` learned queries cross-attend to its 256 output tokens and a linear head gives `mu` (and `log sigma` for the learned-variance code). Masking is off (`context_mask_ratio 0`).
+
+### 3.2 Prior
+
+One sequence block per time step: `K` state tokens (`Linear(d -> W)` of the posterior sample) plus one action token (`Linear(5 * 2 -> W)` of the 5 actions between consecutive frames at frameskip 5). Block-causal attention via `state_causal_sparsity(length, K + 1)` (FA4) or the boolean block mask (SDPA), as `TokenCausalViT` does. RoPE positions: time = step, row = token index, col = 0. Heads on the `K` state positions of block `t` give `delta` (zero-initialized) and, for the learned code, `log s`; the mean for step `t + 1` is `z_t + delta`. Inference uses `CausalViTBlock.forward_cached`.
+
+The prior sees posterior samples `z_<t` and actions, nothing else: no anchor, no pixels, no renderer features. In training its output goes only to the rate term.
+
+### 3.3 Renderer
+
+`AnchoredWorldDiT` subclasses `WorldDiT` with `channels 48`, `state_planes 1`, `grid 16`, `patch_size 1`, `pixel_depth 0` (the plain `FinalLayer` output, which accepts any channel count), `condition_mode cross_attention`, `cross_attention_scope global`, `cross_attention_3d_rope false`, `condition_dropout 0.1`. Two changes at construction, none to pinned files:
+
+- **Anchor.** `x_embedder` is wrapped so that it returns `base(noisy) + anchor_embed(x_0)`, with `anchor_embed` a zero-initialized `PatchEmbed3D` of the same shape. That equals channel concatenation with the new half of the weights at zero. The anchor tensor is set on the wrapper inside `forward` under `try/finally`; activation checkpointing recomputes only the blocks, never the embedding.
+- **State projection.** `semantic_raw_projector` is replaced by `nn.Sequential(nn.Identity(), nn.Linear(d, width))` with `condition_width = d`, removing the per-token LayerNorm. `WorldDiT._condition` only requires element `[1]` to have a weight.
+
+The renderer receives no history and no actions. For a camera-motion dataset, the anchor's own token embeddings would be appended to the cross-attention context instead (ReferenceNet style), which `WorldDiT` supports unmodified; the in-context variant needs a `WorldDiT` change and is deferred.
+
+### 3.4 State codes
+
+All codes implement the same interface: `sample(posterior) -> z`, `entry_rate(posterior) -> nats`, `surprise_rate(posterior, prior) -> nats`.
+
+- **FixedGaussian (first).** `z = mu + sigma_0 * eps`; entry `||mu_0||^2 / 2`; surprise `||mu_t - m_t||^2 / (2 s_0^2)`; constants dropped. Three lines, as the design says.
+- **LearnedGaussian.** Closed-form diagonal KL to `N(0, I)` and to `N(m_t, s_t^2)`, with `s_t` from the prior. Needed for the component-wise (MCC) claim, since TDRL/LEAP need variances that depend on the past.
+- **FSQ (second, if `beta` is painful).** Finite scalar quantization of `mu`; categorical prior head; rate = cross-entropy in nats; the code size is the hard budget.
+
+The latent flow prior (for action-free multimodal video) is not built now; the interface leaves room for it.
+
+### 3.5 Loss
 
 ```python
-class StateEncoder(nn.Module):
-    def __init__(self, vit_cfg, geometry, state):         # vit_cfg.context_mask_ratio == 0
-        self.vit = StateViTEncoder(vit_cfg, geometry)        # imported from rep_world
-        self.queries = nn.Parameter(torch.randn(state.k, vit_cfg.width) * 0.02)
-        self.pool = nn.MultiheadAttention(vit_cfg.width, vit_cfg.heads, batch_first=True)
-        self.norm = nn.LayerNorm(vit_cfg.width)
-        self.mu = nn.Linear(vit_cfg.width, state.d)          # fixed-variance code: no sigma head
+post = encoder(frames)                          # [B, T+1, K, d]; each frame alone
+z = code.sample(post)
+prior = prior_net(z[:, :-1], actions[:, :-1])   # mean (and scale) for steps 1..T
+entry = code.entry_rate(post[:, 0])             # nats per window
+surprise = code.surprise_rate(post[:, 1:], prior).sum(1)
 
-    def forward(self, rgb):                                   # [B, 3, S*4, 256, 256]
-        tokens = self.vit(rgb)                                # [B, S, 256, W], each chunk alone
-        b, s, n, w = tokens.shape
-        q = self.queries.expand(b * s, -1, -1)
-        pooled, _ = self.pool(q, tokens.reshape(b * s, n, w), tokens.reshape(b * s, n, w))
-        return self.mu(self.norm(pooled)).reshape(b, s, -1, self.mu.out_features)  # [B, S, K, d]
-```
-
-`StateViTEncoder` raises nothing for mask ratio 0 and returns `norm(hidden)` per state, so it is reused without modification.
-
-### 3.2 Prior (`prior.py`)
-
-One sequence block per chunk: `K` state tokens (`Linear(d -> W)` of the posterior sample) plus one action token (`Linear(4 * 2 -> W)` of the chunk's 4 two-dimensional actions). Use `state_causal_sparsity(length, K + 1)` under FA4 or the boolean block mask under SDPA, exactly as `TokenCausalViT` does. RoPE positions: time = chunk index, row = token index within the block, col = 0. Output heads read the `K` state positions of block `t` and produce `delta`; the mean for chunk `t + 1` is `z_t + delta` (zero-initialize the head so the prior starts as the identity carry). Inference uses `CausalViTBlock.forward_cached` for incremental rollout.
-
-Action alignment must be explicit and tested: chunk `t` holds frames `4t .. 4t+3`; the action token in block `t` is the four actions applied from frame `4t+3` to frame `4t+7`, i.e. those that produce chunk `t + 1`.
-
-### 3.3 Renderer (`renderer.py`)
-
-`AnchoredWorldDiT` subclasses `WorldDiT` and wraps two embeddings with anchor-aware versions:
-
-```python
-class _AnchoredEmbed(nn.Module):        # wraps net.x_embedder and net.pixel_refiner.embed
-    def __init__(self, base, anchor_branch):
-        self.base, self.anchor = base, anchor_branch      # anchor_branch zero-initialized
-        self.value = None                                 # set only inside AnchoredWorldDiT.forward
-    def forward(self, x):
-        if self.value is None:
-            raise RuntimeError("anchor missing")
-        return self.base(x) + self.anchor(self.value)
-```
-
-`AnchoredWorldDiT.forward(noisy, t, *, state, anchor)` reshapes the anchor once into each embedding's input layout, sets both `value` fields in a `try/finally`, calls `WorldDiT.forward(..., condition=state_tokens)`, and clears them. This is safe with the existing activation checkpointing because only `blocks` and refiner blocks are recomputed, never the embeddings. The subclass also swaps `semantic_raw_projector` as described in Section 2, item 3. Settings: `condition_mode: cross_attention`, `cross_attention_scope: global`, `cross_attention_3d_rope: false` (state tokens have no spatial position), no `target_offsets`.
-
-The alternative is an `anchor=None` keyword added to `WorldDiT.forward` and `PixelRefiner.forward`. It is cleaner code but edits hash-pinned files and breaks the RGB16 worker's integrity check, so it is not the default.
-
-### 3.4 Loss (`model.py`)
-
-```python
-mu = encoder(rgb)                                         # [B, T+1, K, d]
-z = mu + sigma0 * torch.randn_like(mu)
-m = prior(z[:, :-1], actions[:, :-1])                     # mean for z[:, 1:]
-rate0 = 0.5 * mu[:, 0].square().sum((-2, -1))             # entry: KL to N(0, I) up to constants
-rate = (mu[:, 1:] - m).square().sum((-2, -1)) / (2 * s0**2)   # surprise per chunk, nats + const
-kl = (rate0 + rate.sum(1)).mean()                         # nats per window
-
-y = target_chunks(rgb)[:, 1:]                             # packed RGB4, chunks 1..T
-t = model.draw_timesteps(...)                             # SPT schedule, unchanged
+y = pack(frames[:, 1:])                         # every frame after the anchor
+t = draw_timesteps(...)                         # SPT schedule, imported
 noisy = (1 - t) * y + t * eps
-v = renderer(noisy, t, state=z[:, 1:], anchor=packed(rgb)[:, 0])
-fm = (y - eps - v).square().mean()                        # SPT sign convention
+v = renderer(noisy, t, state=z[:, 1:], anchor=pack(frames[:, 0]))
+fm = (y - eps - v).square().mean()              # SPT sign convention
 
-loss = fm + beta(step) * kl / NORM                        # NORM: elements per window, fixed
+loss = fm + (ramp(step) / NORM) * (beta_entry * entry + beta_surprise * surprise).mean()
 ```
 
-`NORM` (the number of pixel elements per window) puts `beta` on a per-element scale so its sweep range does not depend on window length. Log `kl` in nats per chunk, `rate0` separately, and the per-dimension KL averaged over the batch (effective state size). `beta(step)` ramps linearly from 0 over the first 5% of steps.
+`NORM` is the number of pixel elements per window, so the two `beta`s are on a fixed per-element scale. `ramp` goes linearly from 0 to 1 over the first 5% of steps. No stop-gradient, no target network, no EMA, no augmentation.
 
-## 4. Data: PushT with actions
+### 3.6 Inference
 
-The PushT environment, `WeakPolicy`, and collectors exist in `~/code/sparse_jepa` (`stable_worldmodel/envs/pusht`, `scripts/data/collect_weak_pusht.py`, variation space in `docs/envs/pusht.md`). They write `.lance` shards at 224 px.
+- **Encode**: `mu` of a frame (goal images included).
+- **Rollout**: prior means (or samples) under candidate actions, cached.
+- **Generate**: sample the next state from the prior and render it with the first observed frame as the anchor, at a chosen guidance scale on the state. Two continuation modes, reported separately: append the sampled state, or re-encode the generated frame.
+- **Planning adapter**: `encode` and `rollout` with LeWM's signatures (`stable_worldmodel/wm/lewm/lewm.py` in `~/code/sparse_jepa`), so its planners and `GoalMSE` run unchanged.
 
-1. Collect with `resolution=256`, `WeakPolicy`, per-episode variation of agent, block and background colours, goal-overlay pose (render-only factors) and block shape and scale (dynamics-relevant). Record the sampled factors and per-frame simulator state for probes. Add the transient random-dot overlay as a separate dataset variant.
-2. Export each episode to an MP4 (lossless or high-quality) plus an `actions.npy` and a `factors.json`; write a JSONL manifest in the style `VideoClipDataset` reads (`rgb_path`, plus `actions_path`, `start_frame`). Split by episode before windowing.
-3. `PushTChunkDataset` returns `rgb [3, (T+1)*4, 256, 256]` and `actions [T+1, 4, 2]` with a fixed resume contract, mirroring `rep_world/data.py`.
+## 4. Decisions made, with reasons
 
-Start with `T + 1 = 8` chunks (32 frames, 3.2 s).
+1. **One-frame chunks at 64 px with frameskip 5, as in the design.** The renderer's noise then models only within-frame residual, the block-identifiability step that renders frames independently given state and anchor holds exactly, goal images encode directly, and the setup matches LeWM for comparison. My first plan chose 4-frame RGB4 chunks to reuse the pixel refiner; that broke three of these properties for a code convenience that turns out to be unnecessary. Multi-frame chunks stay available as the design's open "slow/fast level" knob.
+2. **`beta` is a rate-distortion weight, not 1.** SPT's flow loss is a velocity MSE under a non-monotone logit-normal time weighting, so by Kingma and Gao (2023) it is not an ELBO term and is measured per pixel element. Log the rates in nats and sweep. The block-identifiability statement is about the idealized model, and its "beta = 1 or slightly above" condition has no numeric counterpart here.
+3. **Separate entry and surprise weights** (design: "the two weights set the price of surprise and of entry"; open question in design Section 11). Start equal; the leak and collapse diagnostics decide whether to separate them.
+4. **Masking off, with one comparison.** The design argues masking is at most an erasure channel on the state, not a price; the user's counter-point was that it is empirically proven in SPT. One run replaces the Gaussian state noise with SPT-style token dropping on the encoder's input (the entry and surprise terms then reduce to a plain prediction error with no resolution) so the comparison is measured, not argued.
+5. **Anchor wrapper, not edits to pinned files**, so the RGB16 worker's integrity check keeps passing.
+6. **EMA off; AdamW.** EMA is evaluation-only in SPT and the design removes EMA; Muon puts small learned tokens through orthogonalization.
 
-Datasets and exports live outside Git, under a path the user chooses (not `/efs/prescottsun/SPT`, which belongs to the SPT maintainers' runs).
+## 5. Data: PushT with actions
 
-## 5. Starting configuration (proposed, not tuned)
+The environment, `WeakPolicy` and collectors are in `~/code/sparse_jepa` (`stable_worldmodel/envs/pusht`, `scripts/data/collect_weak_pusht.py`, variation space in `docs/envs/pusht.md`).
 
-| Module | Setting | Reason |
+1. Collect at `resolution=64` with `WeakPolicy`. Per episode, sample render-only factors (agent, block and background colours, goal-overlay pose) independently of the initial state, and dynamics-relevant factors (block shape and scale). Record factors and per-frame simulator state for probes and MCC. A second variant overlays a random dot redrawn independently every frame.
+2. Export each episode as frames plus `actions.npy` and `factors.json`, with a JSONL manifest. Split by episode before windowing.
+3. `PushTDataset` returns `frames [T+1, 3, 64, 64]` at frameskip 5 and `actions [T+1, 5, 2]` (the actions between consecutive kept frames), with a resume contract mirroring `rep_world/data.py`. Window `T + 1 = 8`.
+
+Datasets live outside Git, at a path the user chooses (not `/efs/prescottsun/SPT`).
+
+## 6. Diagnostics tied to the design's risks
+
+| Signal (logged or evaluated) | What it detects | Response |
 | --- | --- | --- |
-| Geometry | `pixel/rgb4`, 256x256, 4 frames per chunk | validated pixel path, no refiner changes |
-| ViT-E | width 384, depth 6, heads 6, patch 16, mask 0 | PushT is simple; LeWM uses ViT-tiny |
-| State | `K = 4` tokens x `d = 16`, `sigma_0 = 0.1`, `s_0 = 0.1` initially | design default (64 dims) |
-| Prior | 6 `CausalViTBlock`s, width 384 | LeWM predictor depth |
-| Renderer | `WorldDiT` width 384, depth 8, heads 6, cross-attention every 2, `pixel_depth 2`, `pixel_width 16`, `condition_dropout 0.1` | SPT structure at smaller width |
-| Optimizer | AdamW, lr 1e-4 warmup 100, weight decay 0, grad clip 1.0, bf16 | standard; Muon later |
-| EMA | off | design decision; SPT's EMA is evaluation-only |
-| `beta` | ramp over 5%, then sweep on a log grid | the main knob |
+| entry rate (nats) vs the rough 40-nat PushT budget; colour probes on `mu` | appearance leaking into the state (near twice the budget, probes above chance) | raise `beta_entry`; check the anchor branch weights moved off zero |
+| per-dimension rate averaged over data | effective state size; collapse when all are near zero early | longer ramp; FSQ code |
+| renders with the state zeroed or swapped; guidance scale needed for state-following samples | renderer ignoring the state (posterior collapse) | as above |
+| swap test: anchor from episode A, states from episode B | correct routing: A's colours, B's poses | |
+| dot probe on `mu`, flow renderer vs MSE renderer | transient detail stored instead of sampled | |
+| action following in contact vs free motion | a contact-only factor dropped at large `beta` | choose `beta` on contact action following, not on flow loss |
+| prior-mean rollouts without actions; latent drift over steps | unimodal-prior averaging; compounding error | flow prior; revisit training only if drift appears |
+| probes and MCC against simulator factors | block identifiability (pose, shape, scale in; colours, goal, dot out); component-wise bonus | |
 
-Profile one step before fixing batch size and steps; the RGB16 baseline's 1.65 s per step on 8 H200s is for a 423M-parameter model at 4x the tokens and is not a guide.
+## 7. Order of work and checks
 
-## 6. Order of work and checks
+Follow the feedback ladder in `runtime/AGENTS.md`.
 
-Follow the feedback ladder in `runtime/AGENTS.md`; do not go to GPUs until the CPU contracts pass.
+1. **Data export and loader.** Frames match simulator renders; a known action sequence moves the agent in the recorded direction between the frames the prior links.
+2. **CPU contract tests**, small configs:
+   - encoder output for frame `t` unchanged when other frames change;
+   - prior output for step `t` unchanged when frames or actions after `t` change, and it has no anchor or pixel input;
+   - renderer output unchanged by history and actions; with the anchor branch at its zero initialization, output equals plain `WorldDiT`;
+   - gradients reach encoder, prior and renderer, with no detached path;
+   - each `StateCode`'s rates equal hand-computed values.
+3. **One-GPU smoke run** on a small shard: finite loss, rates moving, renders change when the state is zeroed.
+4. **Main run, `beta` sweep, ablations** (no anchor; deterministic MSE renderer, which regresses `y` from state and anchor with a fixed input), the masking comparison (4.4), and the learned-variance code for MCC.
+5. **Evaluation** (Section 6), then planning through the adapter, against LeWM and, if code is available, LRC-JEPA.
 
-1. **Data export and loader.** Check: decoded frames match the simulator renders; action alignment test (a known action sequence moves the agent in the recorded direction between the chunks the prior links).
-2. **Modules with CPU contract tests**, each with a small config:
-   - encoder output for chunk `t` is unchanged when other chunks change (per-chunk property);
-   - prior output for block `t` is unchanged when chunks `> t` or actions `> t` change (causality);
-   - renderer output is unchanged by history and actions (it receives neither); zero-initialized anchor branch gives exactly `WorldDiT` output at initialization;
-   - gradients reach encoder, prior and renderer from the loss, with no detached path;
-   - `kl` equals a hand-computed value on a fixed tensor.
-3. **Tier-1 run on one GPU**: a few hundred steps on a small PushT shard; loss finite, `kl` per chunk moving, samples from pure noise change when the state is zeroed.
-4. **First real run**, then the `beta` sweep and the two ablations from design Section 9 (no anchor; deterministic MSE renderer).
-5. **Evaluation** (`tasks/as_jepa/eval.py`): latent rollout from a prefix with the prior's means under recorded actions, rendered with the first chunk as anchor; action following from matched simulator states; probes and swap test from design Section 9. Planning comes after action following works, through an adapter exposing LeWM's `encode`/`rollout` signatures so the `stable_worldmodel` planners and `GoalMSE` can run unchanged.
+## 8. Decisions needed from the user
 
-## 7. Decisions needed before coding
-
-- **Compute placement.** This host is a login node. Data collection and every training step need an allocated machine; dev3 and dev8 are allocated to the SPT maintainers' runs and must not be used without their agreement.
-- **Chunk length.** RGB4 (recommended, no renderer changes) or a new `rgb1` geometry (matches the design's one-frame state and single-image planning; about 40 lines plus tests).
-- **Anchor wiring.** Wrapper subclass (recommended, leaves pinned files untouched) or a keyword added to the pinned `WorldDiT`/`PixelRefiner` files with refreshed hashes.
+- **Compute placement.** This host is a login node. Collection and training need an allocated machine; dev3 and dev8 belong to the SPT maintainers.
+- **Whether to run the masking comparison** (4.4) in the first round, given the earlier disagreement about masking.
