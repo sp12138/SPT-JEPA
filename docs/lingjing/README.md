@@ -17,6 +17,10 @@ channels. The state must support latent planning, generation and probing.
    formulation, the objective and how the JEPA loss emerges from it, the
    architecture, the block-identifiability theory with proofs, and the
    narrative for the JEPA community.
+1. [as-jepa-experiment-spec.md](as-jepa-experiment-spec.md): the handoff
+   spec for the first round of experiments (2026-10-26): PushT only, two
+   branches (LeWM ladder and SPT ladder), shared data and evaluation,
+   component-level implementation, run waves, gates, failure responses.
 1. [anchored-state-jepa-design.md](anchored-state-jepa-design.md): the
    design notes and decision history (AS-JEPA, 2026-10-25). One objective, a flow loss plus a KL chain;
    no augmentation, EMA or stop-gradient. Section 11 lists settled decisions

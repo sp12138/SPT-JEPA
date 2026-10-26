@@ -1,5 +1,7 @@
 # AS-JEPA implementation plan: SPT, LeWM and editing pieces
 
+**Superseded for execution (2026-10-26)** by [as-jepa-experiment-spec.md](as-jepa-experiment-spec.md), the handoff spec the collaborator follows. Kept for its rationale and the appendix on what SPT's code actually does.
+
 Written 2026-10-25 after reading the bundled SPT implementation (`runtime/vforge/models/rep_world/`, `runtime/vforge/tasks/rep_world/`, `jobs/`) and LeWM in `~/code/sparse_jepa` (`stable_worldmodel/wm/lewm/`, `scripts/train/lewm.py`). Third revision, same day: it follows the consolidated story in [anchored-state-jepa-design.md](anchored-state-jepa-design.md) Section 4 (the JEPA objective derived from code length; editing as an interpretation), checked point by point against the design session's final answer (Happier session `cmvmnyra9gqc1qq5775z6t4j9`, seq 144). Nothing here has been implemented or run.
 
 The rule for this plan: **the design decides, the code adapts.** Section 4 traces every design point to where it is implemented.
