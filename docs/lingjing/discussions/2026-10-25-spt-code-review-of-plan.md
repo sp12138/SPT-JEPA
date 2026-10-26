@@ -49,3 +49,14 @@ Decided and written down:
 - Implementation: the editing framing adds no module and no pretrained weights. Stages 1-2 use LeWM's harness, encoder (ViT-tiny plus query head) and predictor (residual mean), with SPT's `WorldDiT` as the renderer (runs outside SPT's trainer after `initialize_ops`, as SPT's CPU tests do). The paper's comparison becomes a literal diff from LeWM. Stage 3 uses SPT's own ViT-E, causal blocks, pixel DiT and Native trainer. LeWM's BatchNorm heads must be replaced on `mu` and `delta`, since batch normalization would prevent the entry price from switching dimensions off.
 - Theory: block identifiability unchanged; design 5.1 now allows lag-`L` transitions so velocity lives in the prior's context and A1 holds per frame.
 - Experiments: same data and order; Section 9 of the design doc is now a ladder LeWM -> LeWM + anchored renderer (SIGReg kept) -> AS-JEPA -> AS-JEPA without anchor -> AS-JEPA with MSE renderer, which isolates the price as what removes appearance.
+
+## Story document and theory check (2026-10-26)
+
+The user approved the plan, story and design and asked to document the whole story carefully, theory first, and commit before discussing the empirical plan. Written: `as-jepa-story.md`, now the canonical statement (README item 0; design notes point to it).
+
+Checking the identifiability sketch step by step while writing changed the theory, which the user should review:
+
+- The design notes' matching step does not hold: with an anchor-blind state chain the model must pay for the first state and can at best match the frames' conditional distribution given the appearance, not given the anchor.
+- Replacement (exact, Proposition 1): with optimal prior and renderer, the objective equals the entry cost minus the sum over frames of `I(s_t; past states, actions) - I(s_t; anchor)`. The objective rewards information that the past predicts and the anchor does not, which formalizes the user's original intuition from the first design round.
+- Appearance is excluded for every `beta > 0` with an exact gap (Proposition 2); transient detail for `beta >= 1`, strictly at `beta = 1` because the shared encoder also encodes the never-rendered anchor (Proposition 3).
+- Dynamics inclusion needs a per-window value condition (A5): the entry cost is paid per training window, so window length, contact frequency and anchor distance matter. Static dynamics-relevant factors such as block shape are kept only through their value for prediction. This raises an open design question: an anchor drawn from a distant time in the same episode would strengthen the value of slow components.

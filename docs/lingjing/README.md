@@ -13,8 +13,12 @@ channels. The state must support latent planning, generation and probing.
 
 ## Where to start
 
-1. [anchored-state-jepa-design.md](anchored-state-jepa-design.md): the current
-   design (AS-JEPA, 2026-10-25). One objective, a flow loss plus a KL chain;
+0. [as-jepa-story.md](as-jepa-story.md): the canonical statement (2026-10-26):
+   formulation, the objective and how the JEPA loss emerges from it, the
+   architecture, the block-identifiability theory with proofs, and the
+   narrative for the JEPA community.
+1. [anchored-state-jepa-design.md](anchored-state-jepa-design.md): the
+   design notes and decision history (AS-JEPA, 2026-10-25). One objective, a flow loss plus a KL chain;
    no augmentation, EMA or stop-gradient. Section 11 lists settled decisions
    and open questions.
 2. [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md):

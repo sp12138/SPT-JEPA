@@ -1,6 +1,6 @@
 # Anchored State JEPA: design notes
 
-Updated 2026-10-25. Working name: AS-JEPA. Status: design only; nothing has been implemented or trained. The SPT-specific build plan is [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md). This supersedes the residual-SPT sketch in [residual-jepa-spt-proposal.md](superseded/residual-jepa-spt-proposal.md) for the question of separating dynamics from appearance. The fixed-slot idea from those notes survives here as the learned state queries.
+Updated 2026-10-25. Working name: AS-JEPA. Status: design only; nothing has been implemented or trained. The SPT-specific build plan is [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md). The consolidated statement of formulation, method, theory and narrative is [as-jepa-story.md](as-jepa-story.md) (2026-10-26); where the two differ, it is current, and its Section 5 replaces Section 5 here. This supersedes the residual-SPT sketch in [residual-jepa-spt-proposal.md](superseded/residual-jepa-spt-proposal.md) for the question of separating dynamics from appearance. The fixed-slot idea from those notes survives here as the learned state queries.
 
 ## 1. Goal and principles
 
@@ -192,6 +192,8 @@ Anticipated objections:
 - *"Why not a latent target?"* A learned latent target trained through a diffusion loss collapses (REPA-E). A frozen semantic target (VANE) works but imports that encoder's biases. Here the target is fixed data and the latent is the condition.
 
 ## 5. Theory: three blocks, three channels
+
+Superseded by [as-jepa-story.md](as-jepa-story.md) Section 5 (2026-10-26), which keeps the three blocks and channels but replaces the proof idea below: the matching step in 5.3 does not hold for an anchor-blind state chain, and the coupling assumption becomes a per-window value condition. Kept here for the record.
 
 ### 5.1 Data-generating process
 
