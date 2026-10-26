@@ -21,7 +21,7 @@ Both branches use the same data, the same 64-pixel rendering target, the same re
 
 ## 1. Named quantities
 
-Code uses these names. Derived quantities are computed from the data and the configs as defined here, never retyped as numbers. Values are for PushT.
+Code uses these names. They live in one module, `runtime/vforge/models/as_jepa/constants.py`, which every file below imports. It sets the fixed choices (`C`, `RENDER_PX`, `PATCH`, `K`, `d`, `W_SPT` and the Section 1.3 values) and the values that come from the data or LeWM's config (`ENC_PX`, `FRAMESKIP`, `RAW_ACTION_DIM`, `WORKSPACE`), and computes every derived quantity from them by the formulas below, never as retyped numbers. At startup, each training entry point checks the data-dependent values against the dataset and LeWM's config. Values are for PushT.
 
 ### 1.1 Derived quantities
 
@@ -104,11 +104,11 @@ Do not edit any file listed in `provenance/upstream_runtime_hashes.json`. `jobs/
   initialize_ops(OpsConfig(backend="sdpa", allow_fallback=False), device=torch.device("cuda", local_rank), parallel_state=None)
   ```
 
-  SPT's own CPU tests do the same (`runtime/tests/models/rep_world/test_cross_attention_order.py`). With no parallel state, sequence parallelism is off.
+  SPT's own CPU tests do the same with `backend="sdpa_math"` on the CPU device (`runtime/tests/models/rep_world/test_cross_attention_order.py`); use that for CPU tests and `sdpa` on GPU. With no parallel state, sequence parallelism is off.
 
 ### 2.4 SPT smoke test (no baseline reproduction)
 
-Run the repository's CPU tests (`PYTHONPATH=runtime python -B -m unittest discover -s tests`) and the `rep_world` model tests under `runtime/tests/models/rep_world/`. Then run a short RGB16 training smoke (at most 100 updates) on one 8-GPU node following the README's procedure, record step time and peak memory, and stop. Do not run the 50k-step baseline, FVD-2048 or SolarWM experiments in this round.
+Run the repository's CPU tests (`PYTHONPATH=runtime python -B -m unittest discover -s tests`) and the `rep_world` model tests, which are pytest-style (`PYTHONPATH=runtime python -m pytest -q runtime/tests/models/rep_world`; `unittest discover` would run none of them). Then run a short RGB16 training smoke (at most 100 updates) on one 8-GPU node following the README's procedure, record step time and peak memory, and stop. Do not run the 50k-step baseline, FVD-2048 or SolarWM experiments in this round.
 
 ## 3. Data
 
@@ -139,6 +139,9 @@ Use only `D-std` in this round. On `D-std` the appearance is fixed and the frame
 - **Renderer target and anchor (both branches), and encoder input (branch S):** `RENDER_PX` pixels, computed from the raw `uint8` frame by exactly these functions (shared, in `as_jepa_tools/data/frames.py`). The area filter is rounded back to `uint8`, so both branches see identical values:
 
   ```python
+  import torch
+  from vforge.models.as_jepa.constants import RENDER_PX
+
   def to_render(frames_uint8):           # [N, C, H, W] uint8 -> [N, C, RENDER_PX, RENDER_PX] uint8
       x = torch.nn.functional.interpolate(frames_uint8.float(), size=(RENDER_PX, RENDER_PX), mode="area")
       return x.round().clamp_(0, 255).to(torch.uint8)
@@ -152,6 +155,8 @@ Use only `D-std` in this round. On `D-std` the appearance is fixed and the frame
 - **Packing for SPT modules** (shared, `runtime/vforge/models/as_jepa/pixels.py`). A rendered frame becomes a `GRID x GRID` grid of `PATCH x PATCH` patches, `TOKEN_CH` channels per token, one temporal plane:
 
   ```python
+  from vforge.models.as_jepa.constants import C, PATCH
+
   def pack(frames, patch=PATCH):         # [N, C, H, W] -> [N, C * patch**2, 1, H // patch, W // patch]
       n, c, h, w = frames.shape
       x = frames.reshape(n, c, h // patch, patch, w // patch, patch)        # c, gy, py, gx, px
@@ -166,7 +171,7 @@ Use only `D-std` in this round. On `D-std` the appearance is fixed and the frame
 - **Windows:** L2, S2 and L1 use `W` kept frames (8 unless Stage B selects otherwise); L0 uses LeWM's own window (history 3 plus 1); S0 and S1 use `W_SPT` kept frames.
 - **Anchor with gap `g`** (L2, S2, L1 and their ablations):
   - `g = 0`: the anchor is window frame 0.
-  - `g >= 1`: the anchor is drawn uniformly from the kept frames of the same episode (frameskip-aligned with the window) that lie at least `g` kept frames before window frame 0 or at least `g` kept frames after the window's last frame. Use `torch.Generator().manual_seed(hash((episode_idx, window_start, epoch)) & 0x7FFFFFFF)`. If no frame is eligible, use the farthest frame of the episode and count the window as a fallback. If the fallback share exceeds `FALLBACK_MAX` of training windows for some `g`, drop that `g` from the grid and report it.
+  - `g >= 1`: the anchor is drawn uniformly from the kept frames of the same episode (frameskip-aligned with the window) that lie at least `g` kept frames before window frame 0 or at least `g` kept frames after the window's last frame. Use `torch.Generator().manual_seed(hash((int(episode_idx), int(window_start), int(epoch))) & 0x7FFFFFFF)` (convert to Python integers first: tensors hash by object identity, so equal values would give different seeds). If no frame is eligible, use the farthest frame of the episode and count the window as a fallback. If the fallback share exceeds `FALLBACK_MAX` of training windows for some `g`, drop that `g` from the grid and report it.
   - For every `g`, window frame 0 is encoded as the first state of the chain and is never a rendering target.
 
   Episodes are short (median 25 kept frames), which bounds the useful gaps. With windows starting at every environment step, the expected share of training windows without an eligible anchor is:
@@ -203,6 +208,7 @@ The renderer is trained and sampled exactly as SPT does. The flow settings come 
 
 ```python
 import torch
+from vforge.models.as_jepa.constants import CFG_SCALE, GRID, SAMPLER_STEPS, TOKEN_CH
 from vforge.models.rep_world.model import FlowConfig, shift_timestep
 
 FLOW = FlowConfig()                    # SPT's defaults: logit-normal mean and std, base shift, automatic shift
@@ -241,7 +247,8 @@ def sample(renderer, state, anchor, shift, steps=SAMPLER_STEPS, cfg_scale=CFG_SC
             if cfg_scale > 1 and 0.2 < float(t_now) <= 1.0:        # SPT's guidance interval (0.2, 1.0]
                 vu = renderer(z, t, condition=state, condition_drop=drop)
                 v = vu + cfg_scale * (v - vu)
-            z = z - (t_next - t_now) * v
+            dt = (t_next - t_now).reshape(1, 1, 1, 1, 1)           # a shaped fp32 tensor keeps the update in fp32 under bf16 autocast, as SPT's _denoise does
+            z = z - dt * v
     return z
 ```
 
@@ -255,6 +262,7 @@ SPT's `WorldDiT` with two changes and no edits to its file. Design reason: the a
 import contextlib
 import torch
 from torch import nn
+from vforge.models.as_jepa.constants import GRID, TOKEN_CH
 from vforge.models.rep_world.config import WorldConfig
 from vforge.models.rep_world.layers import PatchEmbed3D
 from vforge.models.rep_world.world import WorldDiT
@@ -315,7 +323,7 @@ class AnchoredWorldDiT(WorldDiT):
             self._anchor = None
 
 def renderer_config(state_width, condition_width=None, cross_attention_3d_rope=False):
-    """The renderer for L1, L2 and S2 (S1 overrides the two keyword arguments, Section 6.5).
+    """The renderer for L1, L2 and S2 (S0 and S1 override the two keyword arguments, Sections 6.3 and 6.4).
     DiT-S size, plain output layer (no pixel refiner), cross-attention in blocks 0, 2, 4, 6, 8, 10."""
     return WorldConfig(channels=TOKEN_CH, state_planes=1, grid=GRID, width=384, depth=12, heads=6, patch_size=1,
                        mlp_ratio=4.0, qk_norm=True, adaln_mode="adaln_lora", adaln_lora_dim=256,
@@ -370,10 +378,12 @@ Why these are the only constants, and why there is one `beta`:
 Used only by S2; branch L uses LeWM's predictor (Section 5.2). This is SPT's native state-causal transformer applied to state tokens: one sequence block per step, `K` state tokens plus one action token, and a linear head that predicts the next state's mean directly, as JEPA predictors do.
 
 ```python
+import torch
 from torch import nn
 from vforge.models.rep_world.config import ConditionerConfig
 from vforge.models.rep_world.conditioner import CausalViTBlock
 from vforge.models.rep_world.sparsity import state_causal_sparsity, use_segmented_attention
+from vforge.models.rep_world.split_conditioner import _initialize
 
 class StatePrior(nn.Module):
     def __init__(self, K, d, action_dim, width=384, depth=6, heads=6):
@@ -401,11 +411,14 @@ class StatePrior(nn.Module):
         return self.head(out)                    # means of s_1 .. s_T
 ```
 
-Initialization: `trunc_normal_(std=0.02)` for all linear weights including `head`, zeros for biases, `slot` normal with std 0.02, and the residual scaling of `vforge.models.rep_world.split_conditioner._initialize` for the blocks. The head is not zero-initialized: there is no residual identity carry (Section 13 keeps one as a fallback).
+Initialization: `_initialize(self, self.blocks)`, which sets every linear layer (including `head`) to `trunc_normal_(std=0.02)` with zero bias, every LayerNorm to ones and zeros, and applies SPT's residual scaling to the blocks; then `nn.init.normal_(self.slot, std=0.02)`. The head is not zero-initialized: there is no residual identity carry (Section 13 keeps one as a fallback).
 
 ### 4.5 Query pooling (`pooling.py`)
 
 ```python
+import torch
+from torch import nn
+
 class QueryPool(nn.Module):                      # K learned queries cross-attend to one frame's tokens
     def __init__(self, width, heads, K, d):
         super().__init__()
@@ -419,7 +432,8 @@ class QueryPool(nn.Module):                      # K learned queries cross-atten
         return self.head(self.norm(pooled))
     def initialize(self):                        # must run after meta-device materialization (branch S)
         nn.init.normal_(self.queries, std=0.02)
-        self.attn._reset_parameters()
+        self.attn.out_proj.reset_parameters()    # not covered by _reset_parameters()
+        self.attn._reset_parameters()            # input projection xavier; both biases zero
         nn.init.ones_(self.norm.weight); nn.init.zeros_(self.norm.bias)
         nn.init.trunc_normal_(self.head.weight, std=0.02); nn.init.zeros_(self.head.bias)
 ```
@@ -452,18 +466,18 @@ Components:
 - **Prior:** LeWM's `Predictor(num_frames=T, depth=6, heads=16, mlp_dim=2048, input_dim=STATE_DIM, hidden_dim=192, output_dim=STATE_DIM, dim_head=64, dropout=0.1, emb_dropout=0.0)` on the flattened state. Its output is used directly as the predicted mean of the next state; there is no residual head. No `pred_proj`: LeWM normalizes its prediction with a BatchNorm projector, which would put the predicted mean in different coordinates from `mu`, which is not normalized.
 - **Renderer:** `AnchoredWorldDiT(renderer_config(d), state_dim=d, num_slots=K)`.
 
-Loss per window (`W = T + 1` frames):
+Loss per window (`W = T + 1` frames), with `model` the Section 5.6 class:
 
 ```python
-mu = encoder(batch["pixels"])                          # [B, W, K, d]; each frame encoded alone
+info = model.encode({"pixels": batch["pixels"], "action": batch["action"]})
+mu = info["emb"].unflatten(-1, (K, d))                 # [B, W, K, d]; each frame encoded alone
 s = mu + cfg.sigma0 * torch.randn_like(mu)             # the code
-act_emb = action_encoder(batch["action"])              # [B, W, STATE_DIM]
-m = predictor(s.flatten(2)[:, :-1], act_emb[:, :-1]).view_as(mu[:, 1:])   # predicted means of s_1 .. s_T
+m = model.predict(s.flatten(2)[:, :-1], info["act_emb"][:, :-1]).view_as(mu[:, 1:])   # predicted means of s_1 .. s_T
 entry = entry_nats(mu[:, 0], cfg.sigma0)               # [B]
 surprise = surprise_nats(mu[:, 1:], m, cfg.sigma0)     # [B, T]
 y = pack(batch["pixels_render"][:, 1:].flatten(0, 1))  # frames 1 .. T; frame 0 is never rendered
 anchor = pack(batch["anchor_render"]).repeat_interleave(T, dim=0)
-fm = flow_loss(renderer, y, s[:, 1:].flatten(0, 1), anchor, SHIFT)
+fm = flow_loss(model.renderer, y, s[:, 1:].flatten(0, 1), anchor, SHIFT)
 rate = entry + surprise.sum(1)                         # nats per window, [B]
 loss = fm + cfg.beta * rate.sum() / y.numel()          # rate per rendered value, priced at beta
 ```
@@ -478,15 +492,15 @@ loss = fm + cfg.beta * rate.sum() / y.numel()          # rate per rendered value
 The same encoder, pooling, action encoder, predictor and renderer as L2, built by the same code, with no noise on the state and no code length. L1 uses L2's selected window `W` and anchor gap `g`. Loss per window:
 
 ```python
-mu = encoder(batch["pixels"])                          # [B, W, K, d]
-flat = mu.flatten(2)                                   # [B, W, STATE_DIM]
-act_emb = action_encoder(batch["action"])
-pred = predictor(flat[:, :-1], act_emb[:, :-1])        # [B, T, STATE_DIM]
+info = model.encode({"pixels": batch["pixels"], "action": batch["action"]})
+flat = info["emb"]                                     # [B, W, STATE_DIM]
+mu = flat.unflatten(-1, (K, d))                        # [B, W, K, d]
+pred = model.predict(flat[:, :-1], info["act_emb"][:, :-1])   # [B, T, STATE_DIM]
 pred_loss = (pred - flat[:, 1:]).pow(2).mean()         # LeWM's prediction loss, attached target
 sigreg = sigreg_fn(flat.transpose(0, 1))               # LeWM's SIGReg, called as LeWM calls it
 y = pack(batch["pixels_render"][:, 1:].flatten(0, 1))
 anchor = pack(batch["anchor_render"]).repeat_interleave(T, dim=0)
-fm = flow_loss(renderer, y, mu[:, 1:].flatten(0, 1), anchor, SHIFT)
+fm = flow_loss(model.renderer, y, mu[:, 1:].flatten(0, 1), anchor, SHIFT)
 loss = pred_loss + cfg.lambda_sigreg * sigreg + fm
 ```
 
@@ -513,7 +527,7 @@ Learning-rate schedule: exactly L0's scheduler configuration, through the same c
 
 Batch and GPUs: global batch 128 windows, bf16 autocast (rate terms in fp32), gradient clip 1.0. L0 and L1 train on one GPU, because `SIGReg` supports a single GPU only. L2 has no `SIGReg` and may use several GPUs with the same global batch (per-GPU batch `128 / n_gpus`, or gradient accumulation).
 
-Budget: the full budget is 100 epochs over the train windows of the run's window length, as in LeWM; a screening run uses `SCREEN_FRAC` of it. Because a window starts at every environment step, this is large: about 1.25 million optimizer steps at `W = 8`, 1.5 million at `W = 4` and 0.7 million at `W = 16` (each with twice as many frames per window). The throughput measurement in Section 10.3 turns these into GPU-hours.
+Budget: the full budget is 100 epochs over the train windows of the run's window length, as in LeWM; a screening run uses `SCREEN_FRAC` of it. Because a window starts at every environment step, this is large: about 1.25 million optimizer steps at `W = 8`, 1.5 million at `W = 4` and 0.7 million at `W = 16`, where each step processes twice as many frames as at `W = 8`. The throughput measurement in Section 10.3 turns these into GPU-hours.
 
 Checkpoints: every 10% and at the end, in `save_pretrained` format with the full model config. `swm.wm.utils.load_pretrained` requires each checkpoint folder to hold exactly one `.pt` file plus its `config.json`.
 
@@ -576,9 +590,9 @@ PUSHT_RENDER = CodecGeometry(family=f"pixel{RENDER_PX}", variant=f"rgb1p{PATCH}"
 
 Construct it directly; do not add it to the pinned `CODECS` table. The family label must differ from SPT's `"pixel"`, so that SPT's RGB-codec code paths (which test `family == "pixel"`) are not triggered. The dataset reads the Section 3.3 export and returns:
 
-- `latents`: `pack` frames arranged `[TOKEN_CH, W, GRID, GRID]`, the packed layout `[P*C, S, H, W]` that `rep_world` uses;
+- `latents`: `pack` of the rendered frames, arranged `[TOKEN_CH, W, GRID, GRID]`, the packed layout `[P*C, S, H, W]` that `rep_world` uses;
 - `actions`: `[W, ACTION_DIM]`;
-- `anchor_render`;
+- `anchor_render`: the anchor as a rendered frame, `unit` of the exported `uint8` frame permuted from `[RENDER_PX, RENDER_PX, C]` to `[C, RENDER_PX, RENDER_PX]`;
 - `state`;
 - `sample_id`.
 
@@ -589,7 +603,7 @@ Components:
 - **Encoder:** `StateViTEncoder(ConditionerConfig(input="latent", width=384, depth=7, encoder_depth=6, heads=6, mlp_ratio=4.0, feature_layers=(6,), architecture="split_ec", context_mask_ratio=0.0), PUSHT_RENDER)`, then `QueryPool(width=384, heads=6, K=K, d=d)`. Each frame is encoded alone, with no masking.
 - **Prior:** `StatePrior(K, d, ACTION_DIM)` (Section 4.4).
 - **Renderer:** `AnchoredWorldDiT(renderer_config(d), state_dim=d, num_slots=K)`, identical to L2's.
-- **Loss:** exactly L2's (Section 5.2), with `mu = pool(encoder(latents).flatten(0, 1)).view(B, W, K, d)` and `m = prior(s[:, :-1], actions[:, :-1])`, the same `beta`, `sigma0` and normalization.
+- **Loss:** exactly L2's (Section 5.2), with `mu = pool(encoder(latents).flatten(0, 1)).view(B, W, K, d)` (the encoder returns `[B, W, GRID * GRID, 384]`, each frame encoded alone), `m = prior(s[:, :-1], actions[:, :-1])`, the target `y = latents[:, :, 1:].transpose(1, 2).flatten(0, 1).unsqueeze(2)` (identical to L2's `y`), `anchor = pack(anchor_render).repeat_interleave(T, dim=0)`, and the same `beta`, `sigma0` and normalization.
 - **Initialization:** the Native trainer builds the model on the meta device and then calls only `initialize_weights`, so `ASJepaSPT.initialize_weights` must initialize every parameter: `encoder.initialize_weights()`, `pool.initialize()`, the prior as in Section 4.4, and `renderer.initialize_weights()`.
 - **Window and anchor:** `W` kept frames and anchor gap `g`, from the S2 search (Section 9.5).
 
@@ -598,6 +612,13 @@ Components:
 `RepWorld` with SPT's split encoder in latent-input mode, actions added to each state's encoded tokens:
 
 ```python
+from torch import nn
+from vforge.models.as_jepa.constants import ACTION_DIM
+from vforge.models.as_jepa.pixels import pack
+from vforge.models.as_jepa.renderer import AnchoredWorldDiT
+from vforge.models.rep_world.model import RepWorld
+from vforge.models.rep_world.split_conditioner import SplitViTConditioner
+
 class ActionSplitViT(SplitViTConditioner):
     def __init__(self, config, geometry, action_dim=ACTION_DIM):
         super().__init__(config, geometry)
@@ -814,7 +835,7 @@ Grid extension: if the selected `beta` or `sigma0` lies at the edge of its grid,
 
 ### 9.3 Stage B: anchor gap and window length
 
-At the selected `(beta*, sigma0*)`: `g` in {0, 2, 4, 8} x `W` in {4, 8, 16}, minus the two cells Stage A already ran and the cell that fails `FALLBACK_MAX` (`W = 16, g = 8`; Section 3.3), giving 9 runs at seed 0 and `SCREEN_FRAC` budget. Apply Section 11 to Stages A and B together and keep the top two configurations.
+At the selected `(beta*, sigma0*)`: `g` in {0, 2, 4, 8} x `W` in {4, 8, 16}, minus the `W = 8` cells Stage A already ran at `(beta*, sigma0*)` and the cell that fails `FALLBACK_MAX` (`W = 16, g = 8`; Section 3.3). That is 9 runs at seed 0 and `SCREEN_FRAC` budget, or 10 if a grid extension produced `(beta*, sigma0*)` and only one `W = 8` cell exists there. Apply Section 11 to Stages A and B together and keep the top two configurations.
 
 ### 9.4 Stage C: confirmation
 
@@ -856,14 +877,14 @@ Before Stage A, measure throughput in the smoke runs (Section 10.3), report the 
 
 ## 10. Tests and checks before any long run
 
-Zero initializations make several checks trivial or impossible at initialization: WorldDiT's output layer (`final_layer.linear` and `final_layer.adaLN_modulation[-1]`), `anchor_embed`, and S0's `action_proj`. In every test below that probes gradients, causality, or the effect of an input, first re-initialize those layers with `normal_(std=0.02)`; the equivalence tests run on the true initialization.
+Zero initializations make several checks trivial or impossible at initialization: WorldDiT's output layer (`final_layer.linear` and `final_layer.adaLN_modulation[-1]`), `anchor_embed`, S0's `action_proj`, and LeWM's predictor blocks, which are AdaLN-zero (`predictor.transformer.layers[i].adaLN_modulation[-1]`; at initialization every block is an identity, so actions and earlier states have no effect on the prediction and the action encoder gets exactly zero gradient). In every test below that probes gradients, causality, or the effect of an input, first re-initialize those layers with `normal_(std=0.02)`; the equivalence tests run on the true initialization.
 
 ### 10.1 Shared components (CPU, small configs, `sdpa_math` backend)
 
 - `pack` then `unpack` is the identity; `to_render` matches between the branch-L loader and the branch-S export on 1000 rows.
-- `timestep_shift(renderer_config(d))` equals `RepWorld.timestep_shift` built with the same world config and `FlowConfig()`, and `draw_timesteps` equals `RepWorld.draw_timesteps` on identical uniforms.
+- `timestep_shift(renderer_config(d))` equals the `timestep_shift` of `rw = RepWorld(PUSHT_RENDER, renderer_config(d), ConditionerConfig(input="latent", width=d, depth=2, heads=2, feature_layers=(1,)), FlowConfig())`, and `draw_timesteps(n, device, SHIFT, uniform=u)` equals `rw.draw_timesteps((n, 1), torch.zeros(n, 1), uniform=u)`.
 - `AnchoredWorldDiT`:
-  - With the output layer perturbed and `anchor_embed` at zero, its output equals a plain `WorldDiT` with the same weights, for any anchor.
+  - With the output layer perturbed and `anchor_embed` at zero, its output equals that of a plain `WorldDiT(cfg)` whose `semantic_raw_projector` is replaced by `nn.Sequential(nn.Identity(), SlotLinear(d, cfg.width, K))` and which is loaded with `load_state_dict(anchored.state_dict(), strict=False)` (only `anchor_embed.*` unexpected), both in eval mode, for any anchor.
   - With the output layer perturbed, one optimizer step on a nonzero loss makes `anchor_embed`'s weights nonzero.
   - Outside `anchored(...)` it raises.
   - Scaling the state tokens by 2 changes the output (no normalization before the projector).
@@ -976,6 +997,6 @@ These datasets test the two purity claims (appearance and transient detail are e
   ```
 
   Check the names against `swm fovs PushT-v1` at the pinned commit; passing `variation` replaces the default list. The default format is Lance with JPEG frames, the same as `D-std`. The sampled values are saved per step as `variation.<name>` columns; probes read them. Block shape and scale and agent shape and scale stay at their defaults. `D-var` trains and evaluates separate models; it is not mixed with `D-std`.
-- **`D-dot`:** `D-std` frames with one filled disc redrawn independently every frame, applied in the loader before resizing: radius 4% of the frame side, centre uniform over the image, colour uniform in RGB, from `torch.Generator().manual_seed(hash((episode_idx, step_idx, 7)) & 0x7FFFFFFF)`, so a frame always shows the same dot at every resolution. Record the dot's centre and colour.
+- **`D-dot`:** `D-std` frames with one filled disc redrawn independently every frame, applied in the loader before resizing: radius 4% of the frame side, centre uniform over the image, colour uniform in RGB, from `torch.Generator().manual_seed(hash((int(episode_idx), int(step_idx), 7)) & 0x7FFFFFFF)`, so a frame always shows the same dot at every resolution. Record the dot's centre and colour.
 - **Additions to evaluation:** a pose estimator trained on `D-var` (the `D-std` estimator also scores `D-dot`); probes for the colours of agent, block, background and goal and for the goal pose on `D-var`, and for the dot's centre and colour on `D-dot`; on `D-var`, the swap gallery records whether rendered colours at B's object positions are closer to A's or B's recorded colours.
 - **Runs, at the final configurations:** L0, L1 and L2 on `D-var`, then S2; L0, L2 and `L2-mse` (a deterministic renderer: called with zero input at `t = 1` and trained with `(v - y)^2`, a direct regressor of the frame) on `D-dot`.
