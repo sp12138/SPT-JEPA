@@ -6,6 +6,8 @@ Written 2026-10-26 for the collaborator who will implement and run the first rou
 
 **What AS-JEPA is, operationally.** A per-frame encoder maps each frame to a small noisy state, `s_t = mu(x_t) + sigma0 * noise`. A causal predictor (the prior) reads past states and actions and predicts the next state's mean. A flow-matching renderer draws each frame from its own state and one anchor frame of the same episode. Training minimizes one objective at a constant price `beta`: the renderer's flow loss plus `beta` times the code length of the states, which is the first state's cost against `N(0, I)` plus each later state's squared prediction error under the prior, both in nats. There is no augmentation, EMA, stop-gradient, target network, SIGReg, masking or loss schedule in AS-JEPA.
 
+**Empirical design, frozen for this round** (reasons in story Section 8). The code noise is fixed at `sigma0 = 0.1`. The prior starts as an identity carry: each code base's native predictor computes the change from the previous state, with its last layer zero-initialized. The anchor is a frame of the same episode at least 8 kept frames away from the window, and windows hold 8 kept frames. The only searched hyperparameter is the price `beta`, constant during training. Every run trains for 10 LeWM epochs, LeWM's own PushT budget.
+
 **What this round must show, on standard PushT (`D-std`) only.**
 
 - Main criteria: generation (rendered rollouts follow the actions) and planning (LeWM's PushT protocol).
@@ -14,7 +16,7 @@ Written 2026-10-26 for the collaborator who will implement and run the first rou
 
 **Main models and comparisons, in two code bases.**
 
-- **Branch L**, in LeWM's code base (stable-worldmodel). The main model is **L2**: AS-JEPA built from LeWM's encoder and predictor plus SPT's renderer, tuned by a hyperparameter search. Comparisons: **L1**, the same architecture trained with LeWM's objective (prediction loss plus SIGReg) and the same renderer, with nothing priced; **L0**, LeWM as published.
+- **Branch L**, in LeWM's code base (stable-worldmodel). The main model is **L2**: AS-JEPA built from LeWM's encoder and predictor plus SPT's renderer, tuned by a search over `beta`. Comparisons: **L1**, the same architecture trained with LeWM's objective (prediction loss plus SIGReg) and the same renderer, with nothing priced; **L0**, LeWM as published.
 - **Branch S**, in SPT's code base (vforge Native). The main model is **S2**: AS-JEPA built from SPT's modules. Comparisons: **S0**, SPT with actions; **S1**, S0 plus the anchor.
 
 Both branches use the same data, the same 64-pixel rendering target, the same renderer architecture and one shared evaluation package. L2 and S2 come first. Runs that do not depend on each other run in parallel on whatever compute you have; Section 9 gives the dependencies and the priorities when compute is short.
@@ -43,25 +45,27 @@ Code uses these names. They live in one module, `runtime/vforge/models/as_jepa/c
 | `SHIFT` | SPT's automatic flow-time shift for the renderer's grid (Section 4.1) | about 1.742 |
 | `WORKSPACE` | side of the PushT workspace in simulator pixels, read from the environment | 512 |
 
-### 1.2 Hyperparameters
+### 1.2 Hyperparameters and frozen choices
 
-| Name | Meaning | Values | Chosen in |
+| Name | Meaning | Value | Status |
 | --- | --- | --- | --- |
-| `beta` | price of one nat of state, relative to the flow loss of one rendered value | {1, 4, 16, 64, 256, 1024} | Stage A (9.2) |
-| `sigma0` | noise of the code, in units of the first state's prior `N(0, I)`; the prior's predictive spread is tied to it | {0.03, 0.1, 0.3} | Stage A |
-| `g` (anchor gap) | kept frames between the anchor and the window; `g = 0` means the window's first frame (Section 3.3) | {0, 8} in Stage A; {0, 2, 4, 8} in Stage B | Stages A and B |
-| `W` | window length in kept frames | 8 in Stage A; {4, 8, 16} in Stage B | Stage B |
-| `K`, `d` | number of state tokens and their width | 4 and 16, fixed | not searched (below) |
-| `LAMBDA_SIGREG` | L1 only: weight of SIGReg | {0.03, 0.09, 0.27} | L1's screen (9.6) |
+| `beta` | price of one nat of state, relative to the flow loss of one rendered value | {1, 4, 16, 64, 256} | the only searched quantity (Section 9.2) |
+| `sigma0` | noise of the code, in units of the first state's prior `N(0, I)`; the prior's predictive spread is tied to it | 0.1 | frozen; 0.03 is a fallback (Section 13) |
+| `g` (anchor gap) | kept frames between the anchor and the window; `g = 0` means the window's first frame (Section 3.3) | 8 | frozen; `g = 0` is an ablation (Section 5.7), `g = 4` goes with the 16-frame fallback |
+| `W` | window length in kept frames | 8 | frozen; 16 is a fallback (Section 13) |
+| `K`, `d` | number of state tokens and their width | 4 and 16 | frozen; Section 11 checks that the state is large enough |
+| `EPOCHS` | training budget in LeWM epochs (one epoch visits every valid window start of the train episodes) | 10 | frozen (Section 5.5) |
+| `LAMBDA_SIGREG` | L1 only: weight of SIGReg | 0.09 | frozen at LeWM's published value; LeWM reports PushT success above 80% for weights from 0.01 to 0.2 |
 
-Why only these. The code length has exactly two free numbers, `beta` and `sigma0`; Section 4.3 shows that its other constants are fixed by the mathematics or would duplicate these two. The anchor gap and the window length are the two knobs that, by the theory, decide which slowly changing components the state keeps (story Section 5.6); `sigma0` is the third such knob. The state size is not searched, because the price switches unneeded dimensions off; it only has to be large enough, which Section 11 checks. Everything else, including the architectures and optimizer settings, is inherited from LeWM or SPT and fixed.
+Why only `beta` is searched (story Section 8.2). The code length has exactly two free numbers, `beta` and `sigma0`; Section 4.3 shows that its other constants are fixed by the mathematics or would duplicate these two. `beta` must be found empirically, because the renderer's flow loss is not measured in nats. `sigma0` only sets the entry price relative to the surprise price, and its effect on which slowly changing components the state keeps is shared with the window length and the anchor gap, which are frozen at values that favour keeping them. The state size needs no search either: the price switches unneeded dimensions off. Everything else, including the architectures and optimizer settings, is inherited from LeWM or SPT.
 
 ### 1.3 Evaluation and decision constants
 
 | Name | Value | Meaning |
 | --- | --- | --- |
-| `SCREEN_FRAC` | 0.4 | screening runs train for this fraction of the full budget |
-| `SEL_TOL` | 0.10 | configurations within 10% of the best generation score count as tied (Section 11) |
+| `CONTINUE_TOL` | 0.05 | if the generation score improves by more than this fraction between the 8-epoch and 10-epoch checkpoints, the selected configuration is run once for 20 epochs (Section 5.5) |
+| `COLLAPSE_CHECK` | 3 epochs | a run that fails the collapse test (Section 13) at this point is stopped |
+| `SEL_TOL` | 0.10 | prices within 10% of the best generation score count as tied (Section 11) |
 | `PLAN_MARGIN` | 10 points | a difference in planning success rate that counts as a separation |
 | `MOVE_PX` | 10 workspace pixels (about 2% of `WORKSPACE`) | a window moves the block if the block moves more than this |
 | `ACTIVE_NATS` | 0.1 | a state dimension is active if it carries more than this many nats per window |
@@ -168,7 +172,7 @@ Use only `D-std` in this round. On `D-std` the appearance is fixed and the frame
       return x.reshape(n, c, gh * patch, gw * patch)
   ```
 
-- **Windows:** L2, S2 and L1 use `W` kept frames (8 unless Stage B selects otherwise); L0 uses LeWM's own window (history 3 plus 1); S0 and S1 use `W_SPT` kept frames.
+- **Windows:** L2, S2 and L1 use `W` kept frames (frozen at 8; 16 only as a fallback, Section 13); L0 uses LeWM's own window (history 3 plus 1); S0 and S1 use `W_SPT` kept frames.
 - **Anchor with gap `g`** (L2, S2, L1 and their ablations):
   - `g = 0`: the anchor is window frame 0.
   - `g >= 1`: the anchor is drawn uniformly from the kept frames of the same episode (frameskip-aligned with the window) that lie at least `g` kept frames before window frame 0 or at least `g` kept frames after the window's last frame. Use `torch.Generator().manual_seed(hash((int(episode_idx), int(window_start), int(epoch))) & 0x7FFFFFFF)` (convert to Python integers first: tensors hash by object identity, so equal values would give different seeds). If no frame is eligible, use the farthest frame of the episode and count the window as a fallback. If the fallback share exceeds `FALLBACK_MAX` of training windows for some `g`, drop that `g` from the grid and report it.
@@ -182,7 +186,7 @@ Use only `D-std` in this round. On `D-std` the appearance is fixed and the frame
   | 8 | 0% | 1% | 9% | 30% | 56% |
   | 16 | 1% | 7% | 30% | 61% | 82% |
 
-  Hence the grid stops at `g = 8`, and the cell `W = 16, g = 8` fails `FALLBACK_MAX` and is skipped. Recompute this table for the dataset card.
+  Hence `g = 8` is the largest gap that keeps the fallback share under `FALLBACK_MAX` at `W = 8`, and `g = 4` at `W = 16`. Recompute this table for the dataset card.
 
   Design reason: the anchor supplies what the whole episode shares. The gap controls how much of the current configuration the anchor also shows. At `g = 0` it shows the configuration at the start of the window, so a component that does not move within the window (often the block) can be left to the anchor; larger gaps make the state carry it (story Section 5.6).
 - **Branch S export.** Write the dataset once as memory-mapped arrays: the `uint8` output of `to_render` as `[N_rows, RENDER_PX, RENDER_PX, C]`, actions, the simulator state, and an index table (episode id, step index, row). Both branches must produce bit-identical rendered targets. Test this on 1000 random rows.
@@ -343,7 +347,7 @@ Notes:
 
 ### 4.3 Code lengths (`codes.py`)
 
-The Gaussian code with fixed noise `sigma0` per run (a hyperparameter, Section 1.2), with the prior's predictive spread tied to it. Computed in fp32.
+The Gaussian code with fixed noise `sigma0` (frozen at 0.1, Section 1.2), with the prior's predictive spread tied to it. Computed in fp32.
 
 ```python
 import math
@@ -371,11 +375,11 @@ Why these are the only constants, and why there is one `beta`:
   fm(u + noise) + beta * [ (sigma0^2 / 2) * ||u_0||^2 + (1/2) * sum_t ||u_t - m_t / sigma0||^2 ] + const
   ```
 
-  so `sigma0^2` is exactly the price of entry relative to the price of surprise. One `beta` for both keeps the rate an exact code length, and `sigma0` sets the ratio.
+  so `sigma0^2` is exactly the price of entry relative to the price of surprise. One `beta` for both keeps the rate an exact code length, and `sigma0` sets the ratio. This is why `sigma0` can stay frozen while `beta` is searched (Section 1.2).
 
 ### 4.4 State prior for branch S (`prior.py`)
 
-Used only by S2; branch L uses LeWM's predictor (Section 5.2). This is SPT's native state-causal transformer applied to state tokens: one sequence block per step, `K` state tokens plus one action token, and a linear head that predicts the next state's mean directly, as JEPA predictors do.
+Used only by S2; branch L uses LeWM's predictor (Section 5.2). This is SPT's native state-causal transformer applied to state tokens: one sequence block per step, `K` state tokens plus one action token, and a linear head. The head predicts the change from the previous state and is zero-initialized, so the prior starts as the identity carry. Design reason (story Section 8.1): an untrained direct head misses `mu` by about its own size, and on real PushT windows the starting rate is 50 to 500 times smaller with the carry, which removes the early pull toward collapse without a schedule.
 
 ```python
 import torch
@@ -408,10 +412,10 @@ class StatePrior(nn.Module):
         for block in self.blocks:
             h = block(h, mask=mask, positions=positions)
         out = self.norm(h).reshape(B, T, K + 1, -1)[:, :, :K]        # state-slot outputs of each step
-        return self.head(out)                    # means of s_1 .. s_T
+        return s + self.head(out)                # identity carry: means of s_1 .. s_T as changes from s_0 .. s_{T-1}
 ```
 
-Initialization: `_initialize(self, self.blocks)`, which sets every linear layer (including `head`) to `trunc_normal_(std=0.02)` with zero bias, every LayerNorm to ones and zeros, and applies SPT's residual scaling to the blocks; then `nn.init.normal_(self.slot, std=0.02)`. The head is not zero-initialized: there is no residual identity carry (Section 13 keeps one as a fallback).
+Initialization: `_initialize(self, self.blocks)`, which sets every linear layer to `trunc_normal_(std=0.02)` with zero bias, every LayerNorm to ones and zeros, and applies SPT's residual scaling to the blocks; then `nn.init.normal_(self.slot, std=0.02)`; then zero `head` (weight and bias) last.
 
 ### 4.5 Query pooling (`pooling.py`)
 
@@ -463,7 +467,7 @@ Components:
 
 - **Encoder:** LeWM's ViT-tiny (`ENC_PX`, patch 14, `embed_dim 192`, random init), all output tokens. Then `QueryPool(width=192, heads=3, K=K, d=d)`, giving `mu: [B, W, K, d]`. No LeWM projector.
 - **Action encoder:** LeWM's `Embedder(input_dim=ACTION_DIM, smoothed_dim=ACTION_DIM, emb_dim=STATE_DIM, mlp_scale=4)`. Its width must be `STATE_DIM`, not LeWM's 192: LeWM's `Transformer` projects the action embedding with `cond_proj = Linear(input_dim, hidden_dim)` whenever the state width (`input_dim`) differs from `hidden_dim`, so the action embedding must have the state's width.
-- **Prior:** LeWM's `Predictor(num_frames=T, depth=6, heads=16, mlp_dim=2048, input_dim=STATE_DIM, hidden_dim=192, output_dim=STATE_DIM, dim_head=64, dropout=0.1, emb_dropout=0.0)` on the flattened state. Its output is used directly as the predicted mean of the next state; there is no residual head. No `pred_proj`: LeWM normalizes its prediction with a BatchNorm projector, which would put the predicted mean in different coordinates from `mu`, which is not normalized.
+- **Prior:** LeWM's `Predictor(num_frames=T, depth=6, heads=16, mlp_dim=2048, input_dim=STATE_DIM, hidden_dim=192, output_dim=STATE_DIM, dim_head=64, dropout=0.1, emb_dropout=0.0)` on the flattened state, used as an identity carry: the model's `predict` adds its input to the predictor's output, `predict(emb, act_emb) = emb + LeWM.predict(emb, act_emb)`, and the predictor's last layer `predictor.transformer.output_proj` is zero-initialized (weight and bias), so the prior starts by predicting that nothing changes (design reason in Section 4.4). No `pred_proj`: LeWM normalizes its prediction with a BatchNorm projector, which would put the predicted mean in different coordinates from `mu`, which is not normalized.
 - **Renderer:** `AnchoredWorldDiT(renderer_config(d), state_dim=d, num_slots=K)`.
 
 Loss per window (`W = T + 1` frames), with `model` the Section 5.6 class:
@@ -489,7 +493,7 @@ loss = fm + cfg.beta * rate.sum() / y.numel()          # rate per rendered value
 
 ### 5.3 L1: L2's architecture with LeWM's objective
 
-The same encoder, pooling, action encoder, predictor and renderer as L2, built by the same code, with no noise on the state and no code length. L1 uses L2's selected window `W` and anchor gap `g`. Loss per window:
+The same encoder, pooling, action encoder, predictor (with the identity carry) and renderer as L2, built by the same code, with no noise on the state and no code length. L1 uses the same frozen window and anchor gap. Loss per window:
 
 ```python
 info = model.encode({"pixels": batch["pixels"], "action": batch["action"]})
@@ -508,13 +512,13 @@ Design reason: L1 and L2 differ only in the objective (SIGReg on a noiseless, un
 
 ### 5.4 L0: LeWM as published
 
-Copy `scripts/train/lewm.py` and its config into `as_jepa_lewm/train_lewm.py` and change only the dataset split (upstream splits windows at random, 0.9 and 0.1 with seed 3072; Section 3.2 needs an episode split), the output paths, and `trainer.devices=1`. Upstream's `devices: auto` would make the batch of 128 a per-GPU batch, and `SIGReg` supports a single GPU only, so LeWM's published setting is one GPU. At commit `21446f1`, upstream uses:
+Copy `scripts/train/lewm.py` and its config into `as_jepa_lewm/train_lewm.py` and change only the dataset split (upstream splits windows at random, 0.9 and 0.1 with seed 3072; Section 3.2 needs an episode split), the output paths, `trainer.devices=1` and `trainer.max_epochs=10`. Upstream's `devices: auto` would make the batch of 128 a per-GPU batch, and `SIGReg` supports a single GPU only, so LeWM's published setting is one GPU. LeWM's paper trains PushT for 10 epochs (its Appendix E: "10 epochs are sufficient to reach the best performance"; 96.0 ± 2.83% success); the config's 100 epochs is not the published setting. At commit `21446f1`, upstream otherwise uses:
 
 - encoder: ViT-tiny, 224 pixels, patch 14, `embed_dim 192`;
 - predictor: depth 6, 16 heads, `mlp_dim 2048`, dropout 0.1;
 - windows: `history_size 3`, `num_preds 1`, frameskip 5;
 - loss: `SIGReg` weight 0.09 (17 knots, 1024 projections);
-- optimization: AdamW lr `5e-5`, weight decay `1e-3`, 1% warmup then cosine, batch 128, 100 epochs, bf16, gradient clip 1.0.
+- optimization: AdamW lr `5e-5`, weight decay `1e-3`, 1% warmup then cosine over the run, batch 128, bf16, gradient clip 1.0.
 
 ### 5.5 Optimization for L2 and L1
 
@@ -523,17 +527,24 @@ AdamW with two parameter groups:
 - encoder, pooling, action encoder and prior: lr `5e-5`, weight decay `1e-3`, betas `(0.9, 0.999)` (LeWM's);
 - renderer: lr `1e-4`, weight decay 0, betas `(0.9, 0.95)` (SPT's).
 
-Learning-rate schedule: exactly L0's scheduler configuration, through the same code path, for both groups: `LinearWarmupCosineAnnealingLR`, 1% warmup then cosine over the total optimizer steps. This is the optimizer's schedule inherited from LeWM; nothing schedules the objective. Upstream's config says `interval: epoch`, but `stable-pretraining` (0.1.7 and 0.1.8) steps the scheduler after every optimizer step, so the schedule is per step. Log the learning rate at every step in the smoke runs (Section 10.3) for L0, L1 and L2; if the curve is not warmup then cosine over optimizer steps, stop and ask us before Stage A.
+Learning-rate schedule: exactly L0's scheduler configuration, through the same code path, for both groups: `LinearWarmupCosineAnnealingLR`, 1% warmup then cosine over the total optimizer steps. This is the optimizer's schedule inherited from LeWM; nothing schedules the objective. Upstream's config says `interval: epoch`, but `stable-pretraining` (0.1.7 and 0.1.8) steps the scheduler after every optimizer step, so the schedule is per step. Log the learning rate at every step in the smoke runs (Section 10.3) for L0, L1 and L2; if the curve is not warmup then cosine over optimizer steps, stop and ask us before the `beta` search.
 
 Batch and GPUs: global batch 128 windows, bf16 autocast (rate terms in fp32), gradient clip 1.0. L0 and L1 train on one GPU, because `SIGReg` supports a single GPU only. L2 has no `SIGReg` and may use several GPUs with the same global batch (per-GPU batch `128 / n_gpus`, or gradient accumulation).
 
-Budget: the full budget is 100 epochs over the train windows of the run's window length, as in LeWM; a screening run uses `SCREEN_FRAC` of it. Because a window starts at every environment step, this is large: about 1.25 million optimizer steps at `W = 8`, 1.5 million at `W = 4` and 0.7 million at `W = 16`, where each step processes twice as many frames as at `W = 8`. The throughput measurement in Section 10.3 turns these into GPU-hours.
+Budget: `EPOCHS = 10` LeWM epochs for every run, as in LeWM's paper (story Section 8.3), with the learning-rate schedule spanning those 10 epochs. A window starts at every environment step, so one epoch at `W = 8` is about 12,500 batches of 128 and a run is about 125,000 optimizer steps. Two rules adjust it:
 
-Checkpoints: every 10% and at the end, in `save_pretrained` format with the full model config. `swm.wm.utils.load_pretrained` requires each checkpoint folder to hold exactly one `.pt` file plus its `config.json`.
+- **Continue:** if the generation score (Section 11) of the selected configuration improves by more than `CONTINUE_TOL` between its 8-epoch and 10-epoch checkpoints, run that configuration once for 20 epochs (schedule spanning 20) and report both.
+- **Stop:** a run that fails the collapse test (Section 13) at `COLLAPSE_CHECK` is stopped.
+
+The throughput measurement in Section 10.3 turns the budget into GPU-hours.
+
+Checkpoints: every epoch and at the end, in `save_pretrained` format with the full model config. `swm.wm.utils.load_pretrained` requires each checkpoint folder to hold exactly one `.pt` file plus its `config.json`.
 
 ### 5.6 Inference interface for L2 and L1 (`as_jepa_lewm/model.py`)
 
-Subclass `stable_worldmodel.wm.lewm.LeWM` with `projector=None` and `pred_proj=None`; LeWM then uses identities for both, so its `predict(emb, act_emb)` returns the predictor's output directly, as L2 and L1 need. Add the pooling head and the renderer as submodules, and override only `encode`:
+Subclass `stable_worldmodel.wm.lewm.LeWM` with `projector=None` and `pred_proj=None`; LeWM then uses identities for both. Add the pooling head and the renderer as submodules, and override two methods:
+
+- `predict(emb, act_emb)`: `emb + super().predict(emb, act_emb)`, the identity carry of Section 5.2, with `predictor.transformer.output_proj` zero-initialized. LeWM's `rollout` appends `predict(...)[:, -1]` as the next state, so it rolls out the carry without changes.
 
 - `encode(info)`: run LeWM's encoder as LeWM does (`interpolate_pos_encoding=True`), pool all output tokens of `last_hidden_state` with `QueryPool` instead of taking the CLS token, and set `info["emb"] = mu.flatten(2)` with shape `[B, H, STATE_DIM]`, and `info["act_emb"]` when actions are present. Same keys as LeWM.
 - `rollout(info, action_sequence, history_size=None)`: LeWM's `rollout` (`stable_worldmodel/wm/lewm/lewm.py`), inherited unchanged. Its contract, which the planner relies on: with `H` context frames, `action_sequence` holds strictly future candidates, and when `H > 1`, `info["action_history"]` of shape `[B, S, H - 1, ACTION_DIM]` holds the executed action blocks between the context frames (asserted); the current frame is paired with the first candidate. `history_size` defaults to `self.predictor.num_frames` (the predictor's positional table is only `num_frames` long). It returns `info["predicted_emb"]` of shape `[B, S, H + steps, STATE_DIM]`, whose first `H` entries are the encoded context frames. For planning, roll out prior means (no noise). For generation, Section 8.2 specifies means and samples.
@@ -543,9 +554,9 @@ Subclass `stable_worldmodel.wm.lewm.LeWM` with `projector=None` and `pred_proj=N
 
 | Id | Change from L2's final configuration | Seeds |
 | --- | --- | --- |
-| `L2-noanchor` | renderer without the anchor branch (`use_anchor=False`) | 0 |
+| `L2-g0` | the anchor is the window's first frame (`g = 0`) | 0 |
 
-The window length and the anchor gap are no longer ablations: Stage B searches them.
+This also tests the theory's prediction that a near anchor lets the state leave the block to the anchor (story Section 5.6). The no-anchor ablation belongs to the appearance-varied round (Appendix A), where the anchor carries appearance; on `D-std`, a distant anchor already shows little the state needs.
 
 ### 5.8 Planning for branch L
 
@@ -556,7 +567,7 @@ Run `scripts/plan/eval_wm.py` with `scripts/plan/config/pusht.yaml` unchanged ex
 - `GoalMSE` with sum reduction, scored at the last predicted step;
 - 50 episodes, goal offset 25 steps, budget 50 steps.
 
-This protocol is P0. Upstream's CEM now uses the population standard deviation, so success rates may differ slightly from the LeWM paper; compare only against our retrained L0. For final configurations use three evaluation seeds (42, 43, 44) for each model seed and report success rate as mean and standard deviation over all of them. For screening runs, Section 11 uses one evaluation seed (42).
+This protocol is P0. Upstream's CEM now uses the population standard deviation, so success rates may differ slightly from the LeWM paper; compare only against our retrained L0. For final configurations use three evaluation seeds (42, 43, 44) for each model seed and report success rate as mean and standard deviation over all of them. For the `beta` grid, Section 11 uses one evaluation seed (42).
 
 Planning needs no anchor and no renderer, so the anchor gap does not enter it.
 
@@ -680,7 +691,7 @@ Native trainer:
 - EMA disabled;
 - global batch 128 windows, on any number of GPUs.
 
-Use `attention.backend: sdpa`, or `flash_attention_4` if it runs these shapes; the semantics must match. Budget: `max_steps` chosen so that each S run sees the same number of windows as the corresponding L run (100 epochs, or `SCREEN_FRAC` of that for screens). Checkpoint every 10% in full DCP.
+Use `attention.backend: sdpa`, or `flash_attention_4` if it runs these shapes; the semantics must match. Budget: `max_steps` chosen so that each S run sees the same number of windows as the corresponding L run (`EPOCHS` LeWM epochs), with the same continue and stop rules (Section 5.5). Checkpoint every 10% in full DCP.
 
 ### 6.6 Inference for branch S
 
@@ -691,10 +702,6 @@ For S1, wrap every velocity call of the sampler in `model.net.anchored(pack(anch
 For S2, the rollout is L2's: encode the context frames, roll out the prior, render with the anchor.
 
 Planning for S2 is optional in this round. If you run it, write an adapter exposing `encode` and `rollout`. The adapter must undo the evaluation's ImageNet normalization, rescale to `uint8`, and apply `unit(to_render(...))`.
-
-### 6.7 S ablation
-
-`S2-noanchor`: S2's final configuration without the anchor branch, seed 0.
 
 ## 7. Design invariants: what must not change
 
@@ -806,10 +813,10 @@ Mark each fixed case `pass` or `fail` in `fixed/review.csv`. A pass means the mo
 
 ### 8.8 Reports
 
-Write `reports/<stage>.md` after Stage B (selection) and after Stage C with the comparisons (the `D-std` report), with:
+Write `reports/<stage>.md` after the `beta` search (selection) and after the final seeds and comparisons (the `D-std` report), with:
 
 - tables for all metrics, as mean and standard deviation over seeds;
-- for screens, the grid of generation scores, rates and collapse flags over `beta`, `sigma0`, `g` and `W`;
+- for the search, the generation score, rate and collapse flag at each `beta`;
 - the dataset card;
 - links to galleries;
 - configs, commit hashes (SPT-JEPA and stable-worldmodel) and the GPU-hours used.
@@ -818,66 +825,56 @@ Also write `reports/<stage>.json` with one record per run: `run_id`, `branch`, `
 
 ## 9. Run plan
 
-Run IDs follow `<model>-<dataset>-b<beta>-s0<sigma0>-g<gap>-w<window>-seed<seed>`, with fields that do not apply omitted. All runs use `D-std`.
+Run IDs follow `<model>-<dataset>-b<beta>-seed<seed>`, adding `-g<gap>`, `-w<window>` or `-s0<sigma0>` only for runs that depart from the frozen values. All runs use `D-std` and the 10-epoch budget (Section 5.5).
 
 ### 9.1 Dependencies
 
-- Stage A needs L2 implemented and tested (Section 10). Stage B needs Stage A's selection; Stage C needs Stage B's.
-- L1 and `L2-noanchor` need Stage B's selection (L1 uses L2's `W` and `g`).
-- L0, S0 and S1 depend on nothing in the search and can start as soon as they pass their tests.
-- S2 depends on nothing in full mode; in reduced mode it needs L2's Stage B selection (Section 9.5).
+- The `beta` search needs L2 implemented and tested (Section 10). L2's extra seeds and `L2-g0` need the selected `beta*`.
+- L0, L1, S0 and S1 depend on nothing in the search and can start as soon as they pass their tests.
+- S2's search depends on nothing in full mode; in reduced mode it waits for L2's `beta*` (Section 9.3).
 
-### 9.2 Stage A: L2 screen
+### 9.2 L2: the `beta` search
 
-Full grid at `W = 8`, seed 0, `SCREEN_FRAC` budget: `beta` (6 values) x `sigma0` (3 values) x `g` in {0, 8}, 36 runs. If they cannot all run at once, launch `sigma0 = 0.1` first (12 runs), then `0.03`, then `0.3`. Then apply Section 11.
+Run `beta` in {1, 4, 16, 64, 256} at seed 0: 5 runs. Apply Section 11 to choose `beta*`. If `beta*` lies at an edge of the grid, add one step beyond that edge (a factor of 4) and select again. Then run `beta*` with seeds 1 and 2; together with seed 0 these form L2's final configuration. Apply the continue rule of Section 5.5.
 
-Grid extension: if the selected `beta` or `sigma0` lies at the edge of its grid, extend that axis by one step beyond the edge (a factor of 4 for `beta`, 3 for `sigma0`) at the selected values of the other hyperparameters, and select again.
+### 9.3 Branch S
 
-### 9.3 Stage B: anchor gap and window length
+- **S2, full mode** (compute for both branches at once): the same `beta` grid and rules as L2, in parallel with branch L, then two more seeds at S2's `beta*`.
+- **S2, reduced mode:** after L2's `beta*` is known, run S2 at `beta` in {`beta*/4`, `beta*`, `4 * beta*`} (3 runs), select by Section 11, then two more seeds. The renderer, data and loss are shared with L2, so the rate-distortion balance should transfer approximately; the three-point check covers the different encoder and prior.
+- **S0** and **S1:** seeds {0, 1, 2} each.
 
-At the selected `(beta*, sigma0*)`: `g` in {0, 2, 4, 8} x `W` in {4, 8, 16}, minus the `W = 8` cells Stage A already ran at `(beta*, sigma0*)` and the cell that fails `FALLBACK_MAX` (`W = 16, g = 8`; Section 3.3). That is 9 runs at seed 0 and `SCREEN_FRAC` budget, or 10 if a grid extension produced `(beta*, sigma0*)` and only one `W = 8` cell exists there. Apply Section 11 to Stages A and B together and keep the top two configurations.
+### 9.4 Comparisons and ablation in branch L
 
-### 9.4 Stage C: confirmation
+- **L0:** seeds {0, 1, 2}.
+- **L1:** seeds {0, 1, 2}, at LeWM's published SIGReg weight. If L2's advantage over L1 is smaller than twice the larger of their seed standard deviations, also run L1 at weights 0.03 and 0.27 (seed 0) before concluding, so that L1 is not under-tuned.
+- **`L2-g0`:** Section 5.7.
 
-The top two configurations, seeds {0, 1, 2}, full budget: 6 runs. Of the two, the one Section 11 selects on three-seed means is L2's final configuration.
+### 9.5 Count and priorities
 
-### 9.5 Branch S
+The full plan is 27 runs of 10 epochs: L2 7 (5 plus 2 seeds), `L2-g0` 1, L0 3, L1 3, S2 7 (5 in reduced mode), S0 3 and S1 3.
 
-- **S2, full mode** (enough compute for both branches at once): Stages A to C with the same grids and rules as L2, in parallel with branch L.
-- **S2, reduced mode:** after L2's Stage B, run `beta` in {`beta*/4`, `beta*`, `4 * beta*`} at L2's `(sigma0*, g*, W*)`, seed 0, `SCREEN_FRAC` budget (3 runs); then the configuration Section 11 selects, seeds {0, 1, 2}, full budget (3 runs). The renderer, data and loss are shared with L2, so the rate-distortion balance should transfer approximately; the 3-point check covers the different encoder and prior.
-- **S0** and **S1:** seeds {0, 1, 2}, full budget each.
-- **`S2-noanchor`:** Section 6.7.
+You decide the allocation. When compute is short, run in this order:
 
-### 9.6 Comparisons and ablation in branch L
-
-- **L0:** seeds {0, 1, 2}, full budget.
-- **L1:** `LAMBDA_SIGREG` in {0.03, 0.09, 0.27} at L2's `(W*, g*)`, seed 0, `SCREEN_FRAC` budget; then the best (Section 11, steps 1 to 4, then the best score), seeds {0, 1, 2}, full budget. This gives L1 a tuning opportunity on its own knob; L2's search is larger, and the report must say so.
-- **`L2-noanchor`:** Section 5.7.
-
-### 9.7 Priorities when compute is short
-
-You decide the allocation. Run in this order of priority:
-
-1. L2: Stages A, B and C.
-2. S2 in reduced mode, then its confirmation.
+1. L2's `beta` search and its two extra seeds.
+2. S2 in reduced mode and its two extra seeds.
 3. L0 and L1.
 4. S0 and S1.
-5. `L2-noanchor` and `S2-noanchor`.
+5. `L2-g0`.
 
-If compute suffices for only one branch, run branch L (items 1, 3 and the L part of 5) and skip branch S. With ample compute, start everything without a dependency at once: Stage A, L0, S0, S1, and S2 in full mode.
+If compute suffices for only one branch, run branch L (items 1, 3 and 5) and skip branch S. With ample compute, start everything without a dependency at once: L2's grid, L0, L1, S0, S1, and S2's grid in full mode.
 
-Seeds: three seeds for every final configuration and comparison give a first estimate of seed-to-seed variation. If the difference between L2 (or S2) and a comparison is smaller than twice the larger of their seed standard deviations, add seeds 3 and 4 to both before drawing a conclusion.
+Seeds: three seeds for the final configuration and every comparison give a first estimate of seed-to-seed variation. If the difference between L2 (or S2) and a comparison is smaller than twice the larger of their seed standard deviations, add seeds 3 and 4 to both before drawing a conclusion.
 
-Before Stage A, measure throughput in the smoke runs (Section 10.3), report the projected GPU-hours of the runs you intend to launch, and wait for our acknowledgement if the total exceeds what was agreed.
+Before launching, measure throughput in the smoke runs (Section 10.3), report the projected GPU-hours of the runs you intend to launch, and wait for our acknowledgement if the total exceeds what was agreed.
 
-### 9.8 Reports and stopping point
+### 9.6 Reports and stopping point
 
-- After Stage B: the selection report (Section 8.8).
-- After Stage C and the comparisons: the `D-std` report, the gate check (Section 12), and stop. Do not start Appendix A or other environments without our agreement.
+- After the `beta` search: the selection report (Section 8.8).
+- After the final seeds and the comparisons: the `D-std` report, the gate check (Section 12), and stop. Do not start Appendix A or other environments without our agreement.
 
 ## 10. Tests and checks before any long run
 
-Zero initializations make several checks trivial or impossible at initialization: WorldDiT's output layer (`final_layer.linear` and `final_layer.adaLN_modulation[-1]`), `anchor_embed`, S0's `action_proj`, and LeWM's predictor blocks, which are AdaLN-zero (`predictor.transformer.layers[i].adaLN_modulation[-1]`; at initialization every block is an identity, so actions and earlier states have no effect on the prediction and the action encoder gets exactly zero gradient). In every test below that probes gradients, causality, or the effect of an input, first re-initialize those layers with `normal_(std=0.02)`; the equivalence tests run on the true initialization.
+Zero initializations make several checks trivial or impossible at initialization: WorldDiT's output layer (`final_layer.linear` and `final_layer.adaLN_modulation[-1]`), `anchor_embed`, S0's `action_proj`, the identity-carry heads (`StatePrior.head` and LeWM's `predictor.transformer.output_proj`), and LeWM's predictor blocks, which are AdaLN-zero (`predictor.transformer.layers[i].adaLN_modulation[-1]`; at initialization every block is an identity, so actions and earlier states have no effect on the prediction and the action encoder gets exactly zero gradient). In every test below that probes gradients, causality, or the effect of an input, first re-initialize those layers with `normal_(std=0.02)`; the equivalence tests run on the true initialization.
 
 ### 10.1 Shared components (CPU, small configs, `sdpa_math` backend)
 
@@ -890,7 +887,9 @@ Zero initializations make several checks trivial or impossible at initialization
   - Scaling the state tokens by 2 changes the output (no normalization before the projector).
   - Permuting the state tokens changes the output (slot identity).
 - `entry_nats` and `surprise_nats` equal `torch.distributions.kl_divergence` between the corresponding Normals, for every `sigma0` in the grid.
-- `StatePrior`: its output for step `t` is unchanged when states or actions at steps later than `t` change.
+- `StatePrior`:
+  - Its output for step `t` is unchanged when states or actions at steps later than `t` change.
+  - At initialization its output equals its input exactly (identity carry).
 
 ### 10.2 Per model (CPU, small configs)
 
@@ -900,6 +899,7 @@ Zero initializations make several checks trivial or impossible at initialization
 - **Renderer isolation:** the gradient of the rendered output for frame `t` with respect to actions and to states other than `s_t` is exactly zero.
 - **Gradient reach:** every loss term produces nonzero gradients in encoder, prior and renderer. In L2 and S2, the rate term reaches the encoder and the prior; the flow loss reaches the encoder through `s_t`.
 - **Same modules in L1 and L2:** they build modules with identical parameter names and shapes.
+- **Identity carry (L2, L1):** at initialization `predict(emb, act_emb)` returns `emb` exactly, and so does the first step of `rollout`.
 - **Action alignment:** the action vector paired with frame `t` is the `FRAMESKIP` raw actions recorded after frame `t`, checked against dataset indices.
 - **Anchor sampler:** for every `g` in the grid, the anchor comes from the same episode and respects the gap; it is deterministic given the seed; `g = 0` returns window frame 0.
 - **S0:** with `action_proj` at zero, `ActionSplitViT` equals `SplitViTConditioner`; changing `a_t` changes contexts at origins `>= t` only.
@@ -918,7 +918,7 @@ Check:
 
 ## 11. Selection rule
 
-Applied to screening runs (one seed each) and to confirmed configurations (three-seed means):
+Applied to the `beta` grid, one seed per price:
 
 1. Exclude collapsed runs (Section 13).
 2. Generation score: the mean over agent and block of the position error at horizon 7 divided by the copy baseline's, mean rollout, `D-std` fixed test windows, primary test anchor. Lower is better.
@@ -926,7 +926,7 @@ Applied to screening runs (one seed each) and to confirmed configurations (three
 4. Run P0 planning with one evaluation seed on the tied set. If the best and worst planners in it differ by more than `PLAN_MARGIN`, keep only the runs within `PLAN_MARGIN` of the best planner.
 5. Choose the run with the lowest rate per kept frame, `(entry + summed surprise) / W` on held-out windows: among equally good world models, the one whose state uses the fewest nats.
 
-"The top two" applies steps 3 to 5 again after removing the first choice. L1 has no rate, so it uses steps 1 to 4 and then the best score.
+If L1's SIGReg weight is screened (Section 9.4), it uses steps 1 to 4 and then the best score, since L1 has no rate.
 
 State-size check: at L2's and S2's final configurations, count active dimensions. If all `STATE_DIM` dimensions are active, the state may be too small: rerun the final configuration with `d` doubled (seed 0) and report the result.
 
@@ -942,14 +942,14 @@ Planning is the second main criterion. Report P0 for L0, L1 and L2's final confi
 
 ## 13. Failure responses
 
-**Collapse test**, run on every screening run at its end and on the smoke runs: render each held-out frame `t >= 1` from its own encoded state (`mu(x_t) + sigma0 * noise`) and the run's anchor, and measure the agent position error with the pose estimator, averaged over the frames whose agent lies more than `MOVE_PX` from its position in the anchor frame (elsewhere copying the anchor is already nearly exact, so the comparison says nothing). The run has collapsed if this mean error is at least `COLLAPSE_RATIO` times the mean error, over the same frames, of using the anchor frame itself as the prediction, or if fewer than 2 state dimensions are active (the agent's position alone needs two).
+**Collapse test**, run on every run at `COLLAPSE_CHECK` and at its end, and on the smoke runs: render each held-out frame `t >= 1` from its own encoded state (`mu(x_t) + sigma0 * noise`) and the run's anchor, and measure the agent position error with the pose estimator, averaged over the frames whose agent lies more than `MOVE_PX` from its position in the anchor frame (elsewhere copying the anchor is already nearly exact, so the comparison says nothing). The run has collapsed if this mean error is at least `COLLAPSE_RATIO` times the mean error, over the same frames, of using the anchor frame itself as the prediction, or if fewer than 2 state dimensions are active (the agent's position alone needs two).
 
 | Symptom | Likely cause | Response |
 | --- | --- | --- |
-| Collapse in some grid cells | the price is above the collapse barrier there, or training stalled before the renderer used the state | Rerun the cell with fallback 1: an identity-carry prior, `m_t = s_{t-1} + head(...)` with the head zero-initialized. If it still collapses, fallback 2: `beta` ramped linearly from 0 over the first 5% of steps (fixed; do not tune). Report which cells needed which fallback. A configuration selected with a fallback keeps it in all its later runs. |
-| Collapse in every cell, with both fallbacks | the objective or an implementation error | Check the projector replacement and the anchor isolation tests. If they pass, stop and report. |
+| Collapse at some prices | the price is above the collapse barrier there | Stop those runs at `COLLAPSE_CHECK` and exclude them from selection; they mark the top of the useful range. No rescue runs. |
+| Collapse at every price | training stalls before the renderer uses the state, or an implementation error | Check the identity carry (the prior's output equals its input at initialization), the projector replacement and the anchor isolation tests. If they pass, rerun the grid with `beta` ramped linearly from 0 over the first 5% of steps (fixed; do not tune). If that also collapses at every price, stop and report. |
 | Good at horizon 1, fast drift after a few steps | prior errors compound in open loop | Report mean and sample rollouts and the per-horizon curve; check the prior's context length at rollout. Do not add multi-step training without our agreement. |
-| Block copied from the anchor and never moves in rollouts; block-pose probe low | block pose left out of the state | Compare across `g` and `W` in Stage B (larger gaps and longer windows should help) and across `sigma0` in Stage A (smaller noise should help); report the block-motion fraction from the dataset card. |
+| Block copied from the anchor and never moves in rollouts; block-pose probe low | block pose left out of the state | Rerun the final configuration with `sigma0 = 0.03`, and with `W = 16` at `g = 4` (seed 0 each; both lower the theory's threshold for keeping slow components); report the block-motion fraction from the dataset card. |
 | NaN or loss spikes | numerics | Check that rate terms are fp32; halve the learning rate; keep gradient clipping. |
 | S0 or S1 renders noise after training | SPT at this scale needs more updates | Compare with L1 at the same number of windows seen. Extend S budgets by 50% (Section 14); report. |
 | L1 unstable | its state has no BatchNorm projector | Add LeWM's BatchNorm projector to L1 only (Section 5.3); report. |
@@ -975,9 +975,9 @@ Everything else, especially anything in Section 7, needs our agreement. When uns
    - shared components and their tests (Sections 4 and 10.1);
    - the evaluation package with the pose estimator, run on ground-truth data to produce the copy baselines and estimator floors (Section 8).
 2. **Implement L2**, then L1 and L0 (Section 5); in parallel, if branch S runs, S2 and then S0 and S1 (Section 6). Per-model tests (10.2) and GPU smokes (10.3). Report throughput and projected GPU-hours.
-3. **Stage A**, plus everything without a dependency that compute allows (Section 9.7).
-4. **Stage B**; selection report.
-5. **Stage C**, L1, the ablations and the remaining S runs.
+3. **The `beta` search** (Section 9.2), plus everything without a dependency that compute allows (Section 9.5).
+4. **Selection report.**
+5. **Final seeds**, `L2-g0` and the remaining runs.
 6. **`D-std` report and gate check**, then stop.
 
 ## Appendix A. Deferred datasets (after the `D-std` report, with our agreement)
@@ -999,4 +999,4 @@ These datasets test the two purity claims (appearance and transient detail are e
   Check the names against `swm fovs PushT-v1` at the pinned commit; passing `variation` replaces the default list. The default format is Lance with JPEG frames, the same as `D-std`. The sampled values are saved per step as `variation.<name>` columns; probes read them. Block shape and scale and agent shape and scale stay at their defaults. `D-var` trains and evaluates separate models; it is not mixed with `D-std`.
 - **`D-dot`:** `D-std` frames with one filled disc redrawn independently every frame, applied in the loader before resizing: radius 4% of the frame side, centre uniform over the image, colour uniform in RGB, from `torch.Generator().manual_seed(hash((int(episode_idx), int(step_idx), 7)) & 0x7FFFFFFF)`, so a frame always shows the same dot at every resolution. Record the dot's centre and colour.
 - **Additions to evaluation:** a pose estimator trained on `D-var` (the `D-std` estimator also scores `D-dot`); probes for the colours of agent, block, background and goal and for the goal pose on `D-var`, and for the dot's centre and colour on `D-dot`; on `D-var`, the swap gallery records whether rendered colours at B's object positions are closer to A's or B's recorded colours.
-- **Runs, at the final configurations:** L0, L1 and L2 on `D-var`, then S2; L0, L2 and `L2-mse` (a deterministic renderer: called with zero input at `t = 1` and trained with `(v - y)^2`, a direct regressor of the frame) on `D-dot`.
+- **Runs, at the final configurations:** L0, L1, L2 and `L2-noanchor` (renderer without the anchor branch, `use_anchor=False`) on `D-var`, then S2 and `S2-noanchor`; L0, L2 and `L2-mse` (a deterministic renderer: called with zero input at `t = 1` and trained with `(v - y)^2`, a direct regressor of the frame) on `D-dot`. On `D-var` the anchor carries appearance, so the no-anchor ablations test Proposition 2 directly.
