@@ -60,3 +60,20 @@ Checking the identifiability sketch step by step while writing changed the theor
 - Replacement (exact, Proposition 1): with optimal prior and renderer, the objective equals the entry cost minus the sum over frames of `I(s_t; past states, actions) - I(s_t; anchor)`. The objective rewards information that the past predicts and the anchor does not, which formalizes the user's original intuition from the first design round.
 - Appearance is excluded for every `beta > 0` with an exact gap (Proposition 2); transient detail for `beta >= 1`, strictly at `beta = 1` because the shared encoder also encodes the never-rendered anchor (Proposition 3).
 - Dynamics inclusion needs a per-window value condition (A5): the entry cost is paid per training window, so window length, contact frequency and anchor distance matter. Static dynamics-relevant factors such as block shape are kept only through their value for prediction. This raises an open design question: an anchor drawn from a distant time in the same episode would strengthen the value of slow components.
+
+## Empirical plan decisions (2026-10-26)
+
+Context: the plan will be handed to a collaborator on another system with the same setup as the original SPT code base and access to SPT and the public LeWM (stable-worldmodel). The collaborator will not review the design, so the plan must be a written spec detailing every component.
+
+Settled with the user:
+
+1. Two branches as two ladders meeting at AS-JEPA: L (LeWM -> LeWM + anchored renderer with SIGReg -> AS-JEPA, plus ablations) and S (SPT with actions -> + first-frame anchor -> AS-JEPA from SPT modules). Shared PushT data and one shared evaluation package. Run independent rungs in parallel within each branch.
+2. SPT base experiments: environment smoke test only; natural video only after PushT works.
+3. PushT only for now; move on (shape/scale variation, other environments) only after decent behaviour on PushT. (Whether round one includes the appearance-variation and dot variants of PushT is being confirmed.)
+4. Round-one ablations: window length and anchor choice.
+5. Video evaluation: pose-estimator action following, same-state counterfactual actions, LPIPS/SSIM, FVD secondary; also save successful and failure cases for human inspection.
+6. Planning: PushT planning from the start, reported but not gating; full LeWM suite only after PushT works.
+7. No external baselines for now; the LeWM rung is the comparison.
+8. Written specs only, detailed component by component so the implementation cannot drift from the design.
+
+Theory follow-up: the user asked what the unreduced assumption is and whether block identifiability depends on it. Answer recorded in `as-jepa-story.md` Section 5.6: purity (no appearance, no transient information) is proved without it; completeness needs the per-window value condition A5, whose wording was corrected. A toy Gaussian calculation (`theory_checks/a5_value_condition.py`) reduces A5 to "the component moves within a window by more than about the code noise relative to its spread", shows that a rarely pushed block is dropped with a first-frame anchor but kept with a distant anchor, and shows collapse is a local minimum (motivating the `beta` ramp).
