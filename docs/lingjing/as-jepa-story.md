@@ -277,11 +277,36 @@ J*_1(q) = C + Entry(q) - W_T(q),        W_T(q) = sum_{t=1}^{T} [ I(s_t; s_<t, a_
 - **Changing components** (agent position). The value accumulates frame by frame, roughly the uncertainty about the position given the anchor minus its uncertainty given the earlier states and the actions, and grows with the window length. The entry cost is paid once.
 - **Static, dynamics-relevant components** (block shape and scale). Their direct value is about zero (slightly negative): the anchor shows them exactly and earlier states repeat them noisily. They pay the entry cost and are worth it only through prediction, `sum_t I(position_t; shape | earlier states, actions)`, the improvement in predicting positions through contacts. They are kept when contacts within the window carry more information than their entry cost.
 - **Slowly changing components** (block pose when the block is rarely pushed). When the block does not move within a window, the anchor already shows its pose and the state gains nothing from it. Short windows, or a policy that rarely pushes the block, can leave block pose to the anchor; the renderer then copies the block, and predicted pushes fail.
-- **Anchor distance.** The value of every changing component grows with how little the anchor reveals about the current state. The window's first frame is the most distant frame inside the window. An anchor drawn from a distant time in the same episode would raise the value of slow components at no cost to appearance exclusion, since any frame of the episode shows the appearance. This is an open design choice (Section 9).
+- **Anchor distance.** The value of every changing component grows with how little the anchor reveals about the current state. The window's first frame is the most distant frame inside the window. An anchor drawn from a distant time in the same episode would raise the value of slow components at no cost to appearance exclusion, since any frame of the episode shows the appearance. If the window's first frame stays unrendered (it only starts the state chain), Proposition 3 keeps its strictness. This is an open design choice (Section 9).
 
-**Condition (A5): every component pays for itself within the window.** For every non-constant function `phi` of the state, encoding `phi(z_t)` more precisely increases `W_T - Entry` at the optimum.
+**Condition (A5): every component pays for itself within the window.** For every non-constant function `phi` of the dynamics state, the best code that carries information about `phi(z_t)` has a lower objective than every code that carries none. In words: what the history and actions tell about the component beyond the anchor, accumulated over the window's frames, is worth more than the nats it costs to describe the component in the first state.
 
-**Claim (block identifiability).** Under A1 to A5 at `beta = 1`, a minimizer's state depends on the frame only through `z_t` (Propositions 2 and 3) and is informative about every component of `z_t`; in the noiseless limit, `s_t = h(z_t)` with `h` injective and independent of `c` and `eps_t`. Status: Propositions 1 to 3 are proved. The inclusion half is a claim: A5 is an assumption about the objective's landscape that we have not reduced to primitive conditions on the dynamics, and with finite noise "injective" is a statement about the encoder mean `mu`, not the noisy state.
+**Block identifiability: what is proved and what is conditional.** Block identifiability has two halves.
+
+- *Purity*: the state depends on the frame only through `z_t`; it carries no appearance and no transient information. This is proved under A1 to A4 (Propositions 2 and 3, for `beta >= 1`) and does not use A5.
+- *Completeness*: the state is informative about every component of `z_t`, so that in the noiseless limit `s_t = h(z_t)` with `h` injective. This follows from A5, since a minimizer that carried no information about some component could be improved, and it needs A5: completeness is a genuine condition, not a technicality, and it fails when a component barely changes within training windows. With finite noise, "injective" is a statement about the encoder mean `mu`; the noisy state carries each component at finite precision.
+
+So the state is provably uncontaminated, and it is complete when A5 holds. A5 plays the role that sufficient-variability or sufficient-change conditions play in other identifiability results. Unlike most of them, it can be checked from simulator states before training (worked example below).
+
+**Worked example: what A5 asks for.** Take one component that moves deterministically under the actions, `x_t = x_0 + D_t`, with spread `Var(x_0) = v` across the data and displacement `D_t` after `t` frames, coded as `s_t = A x_t + sigma_0 xi_t` against the unit prior. Relative to not encoding it, the objective at `beta = 1` changes by (Proposition 1 with Gaussian terms)
+
+```
+dJ(A) = A^2 v / 2  -  sum_{t=1}^{T} (1/2) log[ (A^2 Var(D_t) + sigma_0^2) / (sigma_0^2 + P_t) ],
+P_t = A^2 v sigma_0^2 / (sigma_0^2 + t A^2 v)      (what t noisy earlier states leave unknown about A x_0)
+```
+
+Optimizing the amplitude `A` at high precision gives the condition for keeping the component:
+
+```
+geometric mean over t = 1..T of  sd(D_t) / sqrt(v)   >   kappa_T * sigma_0,
+kappa_T = exp( (1 - ln T)/2 + ln(T + 1)/(2T) )        (1.20 for T = 3, 0.72 for T = 7, 0.47 for T = 15)
+```
+
+A component is kept when it moves, within a window, by more than about the code's resolution `sigma_0`, measured relative to its spread across the data; longer windows lower the bar. Exact evaluation ([theory_checks/a5_value_condition.py](theory_checks/a5_value_condition.py)) agrees: with `sigma_0 = 0.1` and 8-frame windows (`T = 7`), a component moving 2% of its spread per frame is dropped and one moving 5% is kept. Three consequences:
+
+- **Plausibility on PushT.** The agent moves at every step under the actions, so A5 very likely holds for its position. The block moves only when pushed. In the same toy (block moving 10% of its spread per frame when pushed), a block pushed in 20% or fewer of the windows is dropped with a first-frame anchor and kept at 40% or more; with an anchor from a distant time in the same episode it is kept even when pushed in 5% of the windows, because the anchor no longer shows its current pose. Block shape and scale are fixed in the first round, so they are not components there. All of these quantities can be measured from simulator states before training.
+- **Collapse is a local minimum.** For small `A`, `dJ > 0`: in the toy, `A = 0.1` costs 0.25 nats while `A = 3` gains 11. A coarse code of absolute position tells the renderer less than the anchor does and still pays the entry price, so the good solution sits behind a barrier. This is the posterior-collapse risk made precise. At `beta = 0` the objective rewards all information beyond the anchor (Proposition 1), so ramping `beta` up from 0 lets training enter the high-precision basin before the price applies.
+- **Knobs that strengthen completeness:** longer windows, smaller `sigma_0`, contact-rich data, and a distant anchor. None of them affects purity.
 
 **Corollary (when collapse is not optimal).** The collapsed code, whose states are independent of the frames, has `W_T = 0` and the smallest entry cost. It is not a minimizer exactly when some code has `W_T` larger than its extra entry cost, that is, when the windows contain action-explained change relative to the anchor worth more than the cost of describing the first state. Very short windows, static scenes, or anchors adjacent to the rendered frames can make collapse optimal.
 
@@ -377,9 +402,9 @@ The pieces exist. Not found together: a flow renderer with anchor side informati
 
 1. **Appearance.** With the anchor, colour, background and goal-overlay information in `mu` falls to chance once `beta > 0` has had time to act. Without the anchor it stays. LeWM keeps it, and so does LeWM plus the anchored renderer with SIGReg kept, because nothing prices it (Proposition 2).
 2. **Transients.** A random dot redrawn every frame is excluded with the flow renderer, and enters the state or blurs with a squared-error renderer (Proposition 3).
-3. **Dynamics.** Agent position and block pose are decodable from `mu`; block shape and scale are decodable when contacts are frequent within windows; decodability of slow components rises with window length and anchor distance (Section 5.6).
+3. **Dynamics.** Agent position is decodable from `mu`; block pose is decodable when the block moves in enough windows, and its decodability rises with window length and anchor distance (Section 5.6, worked example); block shape and scale, when varied, are decodable when contacts are frequent within windows.
 4. **Price ordering.** As `beta` increases, transient information leaves first (by the calibrated `beta = 1`), then contact-only dynamics, before frequently changing components.
-5. **Collapse.** Collapse appears when windows are too short or motion too small relative to the entry cost; when the model works, the measured entry cost sits near the state's information budget (roughly 40 nats on PushT), and well above it signals leakage.
+5. **Collapse.** Collapse appears when windows are too short or motion too small relative to the entry cost, and more often without the `beta` ramp (collapse is a local minimum, Section 5.6); when the model works, the measured entry cost sits near the state's information budget (roughly 40 nats on PushT), and well above it signals leakage.
 6. **Generation.** Rendered prior rollouts follow the actions, including through contact; the swap test shows the anchor's appearance with the other episode's motion.
 7. **Planning.** Parity with LeWM on standard PushT, and an advantage when goal images have different colours from the observations.
 
@@ -387,7 +412,7 @@ The empirical plan will specify datasets, metrics, baselines and ablations for e
 
 ## 9. Open questions
 
-- **Anchor distance:** the window's first frame, or a frame from a distant time in the same episode (Section 5.6)?
+- **Anchor distance:** the window's first frame, or a frame from a distant time in the same episode with the window's first frame left unrendered (Section 5.6; the toy favours the distant anchor for slow components)?
 - **Window length** relative to motion and contact frequency (A5).
 - **Entry versus surprise weights:** separate knobs, starting equal.
 - **One state token versus several.**
