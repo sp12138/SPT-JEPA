@@ -1,6 +1,6 @@
 # Anchored-State JEPA: formulation, method, theory and narrative
 
-Written 2026-10-26. This is the canonical statement of AS-JEPA: the problem, the formulation, the objective and how the JEPA loss emerges from it, the architecture, the theory, and the narrative for the JEPA community. The design notes ([anchored-state-jepa-design.md](anchored-state-jepa-design.md)) keep the decision history and component details; where the two differ, this document is current. Section 5 replaces the theory sketch in design-notes Section 5 (Section 5.8 says what changed and why). The build plan is [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md). Nothing has been implemented or trained.
+Written 2026-10-26. This is the canonical statement of AS-JEPA: the problem, the formulation, the objective and how the JEPA loss emerges from it, the architecture, the theory, and the narrative for the JEPA community. The design notes ([anchored-state-jepa-design.md](anchored-state-jepa-design.md)) keep the decision history and component details; where the two differ, this document is current. Section 5 replaces the theory sketch in design-notes Section 5 (Section 5.8 says what changed and why). The first-round experiments are specified in [as-jepa-experiment-spec.md](as-jepa-experiment-spec.md); the earlier build plan is [as-jepa-spt-implementation-plan.md](as-jepa-spt-implementation-plan.md). Nothing has been implemented or trained.
 
 **Notation.** `x_t` is frame `t`, `a_t` the action taken after it, `z_t` the true dynamics state, `c` the episode's appearance, `eps_t` the transient detail of frame `t`, and `s_t` the learned noisy state, with encoder mean `mu(x_t)` (the design notes call the learned state `z`). A training window holds frames `x_0 .. x_T` and actions `a_0 .. a_{T-1}`; `x_0` is the anchor. Pixels are 8-bit, so `H` is discrete entropy; learned states are continuous, so `h` is differential entropy; `I` is mutual information. All quantities are in nats.
 
@@ -83,7 +83,7 @@ At `beta = 1` this is the negative evidence lower bound of the generative model,
 ```python
 mu = encoder(x)                                  # [B, T+1, K, d]; each frame encoded alone
 s = mu + sigma0 * torch.randn_like(mu)           # the code; its noise sets the resolution
-m = s[:, :-1] + prior(s[:, :-1], a[:, :-1])      # predicted means of s_1..s_T, from states and actions only
+m = prior(s[:, :-1], a[:, :-1])                  # predicted means of s_1..s_T, from states and actions only
 entry = 0.5 * mu[:, 0].pow(2).sum((-2, -1))                       # first state against N(0, I)
 surprise = (mu[:, 1:] - m).pow(2).sum((-2, -1)) / (2 * s0 ** 2)   # later states against the predictor
 fm = flow_loss(renderer, y=x[:, 1:], state=s[:, 1:], anchor=x[:, 0])   # frames given state and anchor
@@ -125,17 +125,17 @@ A ViT reads one frame. `K` learned query tokens cross-attend to its patch tokens
 - **Per frame, with no access to history or anchor.** The state must be a function of its own frame: goal images encode without history, the predictor owns all prediction, and the encoder cannot express "pose relative to the anchor", so it cannot move position into the renderer's side information. In the theory, the encoder's output is the object the identifiability claim is about.
 - **Shared across time, including the anchor.** The anchor is encoded too, and its state is the first state of the chain. Together with the anchor never being rendered, this makes transient information strictly unprofitable (Proposition 3).
 - **Learned queries.** A fixed slot identity across examples without masking, and a state that is small by construction.
-- **Noise of fixed size.** The noise is what makes the code length a real price. A noiseless continuous vector carries unbounded information; with noise `sigma_0`, each dimension carries about `log(range / sigma_0)` nats.
+- **Noise of fixed size.** The noise is what makes the code length a real price. A noiseless continuous vector carries unbounded information; with noise `sigma_0`, each dimension carries about `log(range / sigma_0)` nats. Only `sigma_0` relative to the unit prior matters, because the networks that read the state can absorb any rescaling of it; it sets the price of entry relative to surprise (Section 4.4) and is tuned together with `beta`.
 - **No normalization of `mu`.** Batch or layer normalization applied to `mu` itself would pin each dimension's spread, so the entry price could never switch a dimension off.
 
 ### 4.2 Prior
 
-A causal transformer over past noisy states and actions outputs the next state's distribution. The mean is residual, `m_t = s_{t-1} + delta_t`, with the `delta` head zero-initialized so the prior starts as the identity carry; a variance head is optional (Section 4.6). Attention is causal over steps, and the predictor may attend to the last `L` states, which is where velocity lives.
+A causal transformer over past noisy states and actions outputs the next state's distribution. The mean is the predictor's direct output, as in native JEPA predictors (LeWM's predictor, SPT's state-causal transformer); a variance head is optional (Section 4.6). Attention is causal over steps, and the predictor may attend to the last `L` states, which is where velocity lives.
 
 - **Trained only by the code length.** The prior emits a distribution over the next state and never feeds the renderer; during training the renderer reads the encoded state. This separation is what makes bits chargeable. In SPT, by contrast, the causal transformer outputs a context that conditions the renderer directly, so it carries whatever helps the renderer, appearance included.
 - **Anchor-blind.** If the prior saw the anchor, everything visible in the first frame would become free to predict. Appearance would then cost nothing in the state (no exclusion), and dynamics-relevant static factors such as block shape would never need to enter the state.
 - **Actions enter here only.** Actions are interventions on the state mechanism. A renderer that saw actions could render motion without the state.
-- **Residual mean.** Unchanging dimensions cost nothing to carry after entry.
+- **No residual parametrization.** An expressive prior (A4) carries unchanging dimensions after entry without one. A residual identity carry (`m_t = s_{t-1} + delta_t`, with `delta` zero-initialized) changes only where training starts, so the experiments keep it as a fallback in case training collapses early.
 - **One step.** The prior predicts `s_t` from `s_<t`; multi-step targets (SPT's random offset, latent overshooting) do not serve the argument and are removed.
 
 ### 4.3 Renderer
@@ -149,7 +149,9 @@ A flow-matching DiT renders frame `t` from noise, conditioned on `s_t` and the a
 
 ### 4.4 Training
 
-One pass trains encoder, prior and renderer together on `J_beta`. Windows hold `T + 1 = 8` frames at frameskip 5, one frame per chunk; the anchor is the window's first frame and is never rendered. `beta` ramps from 0 over the first few percent of training, so the renderer learns to use the state before the price applies. Entry and surprise have separate weights in practice (`beta_entry`, `beta_surprise`, starting equal). There is no augmentation, EMA, stop-gradient, target network or masking.
+One pass trains encoder, prior and renderer together on `J_beta`, with `beta` constant throughout. Windows hold `T + 1` frames at frameskip 5 (8 to start), one frame per chunk. The window's first frame starts the state chain and is never rendered. The anchor is a frame of the same episode at a chosen gap from the window; gap 0 makes it the window's first frame (Section 5.6 explains why the gap matters). There is no augmentation, EMA, stop-gradient, target network, masking or loss schedule.
+
+**Two prices, one knob.** Entry and surprise need no separate weights. The prior and the renderer read the state through linear layers and can absorb any rescaling of it, so only the state measured in noise units, `u = mu / sigma_0`, matters. With the prior's spread tied to the code noise (`s_0 = sigma_0`), the rate in those units is `(sigma_0^2 / 2) ||u_0||^2 + (1/2) sum_t ||u_t - m_t / sigma_0||^2`: the noise level `sigma_0` is exactly the price of entry relative to surprise, and a single `beta` keeps the rate an exact code length. The practical knobs are therefore `beta`, `sigma_0`, the anchor gap and the window length; the last three decide which slowly changing components the state keeps (Section 5.6).
 
 ### 4.5 Uses of the trained model
 
@@ -277,7 +279,7 @@ J*_1(q) = C + Entry(q) - W_T(q),        W_T(q) = sum_{t=1}^{T} [ I(s_t; s_<t, a_
 - **Changing components** (agent position). The value accumulates frame by frame, roughly the uncertainty about the position given the anchor minus its uncertainty given the earlier states and the actions, and grows with the window length. The entry cost is paid once.
 - **Static, dynamics-relevant components** (block shape and scale). Their direct value is about zero (slightly negative): the anchor shows them exactly and earlier states repeat them noisily. They pay the entry cost and are worth it only through prediction, `sum_t I(position_t; shape | earlier states, actions)`, the improvement in predicting positions through contacts. They are kept when contacts within the window carry more information than their entry cost.
 - **Slowly changing components** (block pose when the block is rarely pushed). When the block does not move within a window, the anchor already shows its pose and the state gains nothing from it. Short windows, or a policy that rarely pushes the block, can leave block pose to the anchor; the renderer then copies the block, and predicted pushes fail.
-- **Anchor distance.** The value of every changing component grows with how little the anchor reveals about the current state. The window's first frame is the most distant frame inside the window. An anchor drawn from a distant time in the same episode would raise the value of slow components at no cost to appearance exclusion, since any frame of the episode shows the appearance. If the window's first frame stays unrendered (it only starts the state chain), Proposition 3 keeps its strictness. This is an open design choice (Section 9).
+- **Anchor distance.** The value of every changing component grows with how little the anchor reveals about the current state. The window's first frame is the most distant frame inside the window. An anchor drawn from a distant time in the same episode would raise the value of slow components at no cost to appearance exclusion, since any frame of the episode shows the appearance. If the window's first frame stays unrendered (it only starts the state chain), Proposition 3 keeps its strictness. The experiments treat this as a hyperparameter, the anchor gap; Propositions 1 to 3 hold with the anchor frame in the renderer terms and the window's first frame starting the chain.
 
 **Condition (A5): every component pays for itself within the window.** For every non-constant function `phi` of the dynamics state, the best code that carries information about `phi(z_t)` has a lower objective than every code that carries none. In words: what the history and actions tell about the component beyond the anchor, accumulated over the window's frames, is worth more than the nats it costs to describe the component in the first state.
 
@@ -305,7 +307,7 @@ kappa_T = exp( (1 - ln T)/2 + ln(T + 1)/(2T) )        (1.20 for T = 3, 0.72 for 
 A component is kept when it moves, within a window, by more than about the code's resolution `sigma_0`, measured relative to its spread across the data; longer windows lower the bar. Exact evaluation ([theory_checks/a5_value_condition.py](theory_checks/a5_value_condition.py)) agrees: with `sigma_0 = 0.1` and 8-frame windows (`T = 7`), a component moving 2% of its spread per frame is dropped and one moving 5% is kept. Three consequences:
 
 - **Plausibility on PushT.** The agent moves at every step under the actions, so A5 very likely holds for its position. The block moves only when pushed. In the same toy (block moving 10% of its spread per frame when pushed), a block pushed in 20% or fewer of the windows is dropped with a first-frame anchor and kept at 40% or more; with an anchor from a distant time in the same episode it is kept even when pushed in 5% of the windows, because the anchor no longer shows its current pose. Block shape and scale are fixed in the first round, so they are not components there. All of these quantities can be measured from simulator states before training.
-- **Collapse is a local minimum.** For small `A`, `dJ > 0`: in the toy, `A = 0.1` costs 0.25 nats while `A = 3` gains 11. A coarse code of absolute position tells the renderer less than the anchor does and still pays the entry price, so the good solution sits behind a barrier. This is the posterior-collapse risk made precise. At `beta = 0` the objective rewards all information beyond the anchor (Proposition 1), so ramping `beta` up from 0 lets training enter the high-precision basin before the price applies.
+- **Collapse is a local minimum.** For small `A`, `dJ > 0`: in the toy, `A = 0.1` costs 0.25 nats while `A = 3` gains 11. A coarse code of absolute position tells the renderer less than the anchor does and still pays the entry price, so the good solution sits behind a barrier. This is the posterior-collapse risk made precise. The barrier needs a large enough price: as `beta` falls toward 0 the objective rewards all information beyond the anchor (Proposition 1), and in the toy a distant anchor weakens the barrier, because the anchor no longer shows the current position. The experiments therefore keep `beta` constant and let the search over `beta` and the anchor gap find where training does not stall; ramping `beta` up from 0 is kept as a fallback.
 - **Knobs that strengthen completeness:** longer windows, smaller `sigma_0`, contact-rich data, and a distant anchor. None of them affects purity.
 
 **Corollary (when collapse is not optimal).** The collapsed code, whose states are independent of the frames, has `W_T = 0` and the smallest entry cost. It is not a minimizer exactly when some code has `W_T` larger than its extra entry cost, that is, when the windows contain action-explained change relative to the anchor worth more than the cost of describing the first state. Very short windows, static scenes, or anchors adjacent to the rendered frames can make collapse optimal.
@@ -375,7 +377,7 @@ The renderer edits the first frame according to the state, `x_t = edit(x_0, inst
 ### 6.4 Anticipated objections
 
 - *"VAEs with a KL give weak, blurry latents."* The state is small and never asked to carry pixels, and blur is impossible because the renderer samples. Dropping low-value nats at large `beta` is the intended behaviour, tuned by action following rather than reconstruction quality.
-- *"Posterior collapse with a powerful decoder."* Real. An anchor-conditioned renderer can produce plausible frames without the state. Section 5.6 states when collapse is not optimal; in practice, ramp `beta`, keep high-noise weighting, and use windows long enough for motion relative to the anchor to outweigh the entry cost. The discrete code is a fallback.
+- *"Posterior collapse with a powerful decoder."* Real. An anchor-conditioned renderer can produce plausible frames without the state. Section 5.6 states when collapse is not optimal; in practice, keep `beta` below the collapse barrier (the search finds that range), keep high-noise weighting, use windows long enough for motion relative to the anchor to outweigh the entry cost, and prefer anchors that do not show the current configuration. A `beta` ramp and the discrete code are fallbacks.
 - *"Isn't this Dreamer?"* RSSM is the template for a KL to a learned transition prior. It differs in three ways that carry the argument: a deterministic decoder with no side information (so its state holds appearance and detail), a deterministic recurrent path the decoder reads, and no account of what the state keeps.
 - *"Why not keep SIGReg and add a renderer?"* Then nothing charges for information, and appearance stays in the state. Our experiments test exactly this: LeWM plus the anchored renderer, with SIGReg kept, is a rung of the comparison ladder.
 - *"Why not a latent target?"* A learned latent target trained through a diffusion loss collapses (REPA-E), and a frozen semantic target (VANE) imports that encoder's biases. Here the target is fixed data and the state is the condition.
@@ -404,7 +406,7 @@ The pieces exist. Not found together: a flow renderer with anchor side informati
 2. **Transients.** A random dot redrawn every frame is excluded with the flow renderer, and enters the state or blurs with a squared-error renderer (Proposition 3).
 3. **Dynamics.** Agent position is decodable from `mu`; block pose is decodable when the block moves in enough windows, and its decodability rises with window length and anchor distance (Section 5.6, worked example); block shape and scale, when varied, are decodable when contacts are frequent within windows.
 4. **Price ordering.** As `beta` increases, transient information leaves first (by the calibrated `beta = 1`), then contact-only dynamics, before frequently changing components.
-5. **Collapse.** Collapse appears when windows are too short or motion too small relative to the entry cost, and more often without the `beta` ramp (collapse is a local minimum, Section 5.6); when the model works, the measured entry cost sits near the state's information budget (roughly 40 nats on PushT), and well above it signals leakage.
+5. **Collapse.** Collapse appears when windows are too short, motion too small relative to the entry cost, or `beta` too high, and less often with a distant anchor (collapse is a local minimum, Section 5.6); when the model works, the measured entry cost sits near the state's information budget (roughly 40 nats on PushT), and well above it signals leakage.
 6. **Generation.** Rendered prior rollouts follow the actions, including through contact; the swap test shows the anchor's appearance with the other episode's motion.
 7. **Planning.** Parity with LeWM on standard PushT, and an advantage when goal images have different colours from the observations.
 
@@ -412,9 +414,9 @@ The empirical plan will specify datasets, metrics, baselines and ablations for e
 
 ## 9. Open questions
 
-- **Anchor distance:** the window's first frame, or a frame from a distant time in the same episode with the window's first frame left unrendered (Section 5.6; the toy favours the distant anchor for slow components)?
-- **Window length** relative to motion and contact frequency (A5).
-- **Entry versus surprise weights:** separate knobs, starting equal.
+- **Anchor distance:** now the anchor-gap hyperparameter, searched in the first round (Section 5.6; the toy favours larger gaps for slow components).
+- **Window length** relative to motion and contact frequency (A5); searched in the first round.
+- **Entry versus surprise weights:** settled; they are the same knob as `sigma_0` (Section 4.4).
 - **One state token versus several.**
 - **Chunk length:** one frame now; multi-frame chunks would carry velocity and set the slow/fast level of the state.
 - **An action-relevance term** to remove predictable but control-irrelevant dynamics (multi-step inverse dynamics, Delta-JEPA).
