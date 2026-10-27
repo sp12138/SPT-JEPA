@@ -43,7 +43,7 @@ class TrainModule(pl.LightningModule):
             if param.requires_grad:(renderer if name.startswith("renderer.") else other).append(param)
         groups=[dict(params=other,lr=5e-5,weight_decay=1e-3,betas=(.9,.999))]
         if renderer:groups.append(dict(params=renderer,lr=1e-4,weight_decay=0.,betas=(.9,.95)))
-        optimizer=torch.optim.AdamW(groups,fused=True)
+        optimizer=torch.optim.AdamW(groups,foreach=True)
         total=self.cfg["max_steps"];warmup=max(1,int(.01*total))
         def schedule(step):
             if step<warmup:return max(1,step)/warmup
