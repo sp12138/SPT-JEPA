@@ -20,10 +20,10 @@ class ASJepaLeWM(LeWM):
     def __init__(self, mode="L2", beta=4.0, sigma0=.1, window=8, use_anchor=True,
                  renderer_width=192, renderer_depth=6, renderer_heads=3,
                  carry=True, domain="standard", encoder_size=224, encoder_depth=12,
-                 lambda_sigreg=.09, objective="flow"):
+                 lambda_sigreg=.09, objective="flow", anchor_gap=8):
         self.mode=mode; self.beta=beta; self.sigma0=sigma0; self.window=window
         self.carry=carry; self.domain=domain; self.encoder_size=encoder_size
-        self.lambda_sigreg=lambda_sigreg; self.objective=objective
+        self.lambda_sigreg=lambda_sigreg; self.objective=objective; self.anchor_gap=anchor_gap
         encoder=ViTModel(ViTConfig(hidden_size=192,num_hidden_layers=12,num_attention_heads=3,intermediate_size=768,image_size=224,patch_size=14),add_pooling_layer=False,use_mask_token=False)
         encoder.config.interpolate_pos_encoding=True
         if encoder_depth!=12:encoder.encoder.layer=encoder.encoder.layer[:encoder_depth]

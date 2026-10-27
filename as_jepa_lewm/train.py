@@ -26,7 +26,7 @@ class WindowSampler(Sampler):
 
 class TrainModule(pl.LightningModule):
     def __init__(self,cfg):
-        super().__init__();self.cfg=cfg;self.model=ASJepaLeWM(**cfg["model"]);self.last_metrics={};self.initial_step=0
+        super().__init__();self.cfg=cfg;self.model=ASJepaLeWM(**cfg["model"]);self.last_metrics={};self.initial_step=0;self.samples_consumed=0
         self.save_hyperparameters(cfg)
     def training_step(self,batch,batch_idx):
         loss,metrics=self.model.loss(batch,self.global_step,self.cfg.get("ramp_steps",0))
@@ -48,12 +48,12 @@ class TrainModule(pl.LightningModule):
         return dict(optimizer=optimizer,lr_scheduler=dict(scheduler=scheduler,interval="step"))
     def on_save_checkpoint(self,checkpoint):
         checkpoint["campaign_rng"]=dict(python=random.getstate(),numpy=np.random.get_state(),torch=torch.get_rng_state(),cuda=torch.cuda.get_rng_state_all())
-        checkpoint["campaign_samples"]=int(self.global_step)*self.cfg["batch_size"]
+        checkpoint["campaign_samples"]=self.samples_consumed
     def on_load_checkpoint(self,checkpoint):
         rng=checkpoint.get("campaign_rng")
         if rng:
             random.setstate(rng["python"]);np.random.set_state(rng["numpy"]);torch.set_rng_state(rng["torch"]);torch.cuda.set_rng_state_all(rng["cuda"])
-        self.initial_step=int(checkpoint.get("global_step",0))
+        self.initial_step=int(checkpoint.get("global_step",0));self.samples_consumed=int(checkpoint.get("campaign_samples",0))
 
 
 class PersistentProgress(Callback):
@@ -80,6 +80,7 @@ class PersistentProgress(Callback):
         for older in exports[:-2]:shutil.rmtree(older)
     def on_train_batch_end(self,trainer,module,outputs,batch,batch_idx):
         step=int(trainer.global_step)
+        module.samples_consumed+=self.cfg["batch_size"]
         if step%100==0:self.status(trainer,module,"running")
         if step and step%self.cfg.get("checkpoint_every",2000)==0:self.save(trainer,module)
         if (self.root/"STOP").exists():trainer.should_stop=True
