@@ -129,7 +129,7 @@ def main():
         ("L1-standard-cursorfix-seed0","L1, matched seed 0"),("L2-standard-b4-cursorfix-seed0","L2 beta4, matched seed 0"),("L1-standard-bn-dev2","L1 BN64, seed 0"),("L1-standard-bn-seed1","L1 BN64, seed 1"),("L1-standard-mlpbn-seed0","L1 MLP-BN"),
         ("L2-standard-calibrated-b001-seed0","L2 beta .01, seed 0"),("L2-standard-calibrated-b001-seed1","L2 beta .01, seed 1"),
         ("L2-standard-calibrated-b001-50k-seed0","L2 beta .01, 50k"),
-        ("L2-standard-staged-b025-seed0","L2 staged beta .25"),
+        ("L2-standard-staged-b025-seed0","L2 warm, freeze 4k, beta .25"),("L2-standard-staged-b4-seed0","L2 warm, freeze 4k, beta 4"),
         ("L2-standard-poolfp32-b025-seed0","L2 FP32 pool, beta .25"),("L2-standard-fullfp32-b025-seed0","L2 full FP32, beta .25"),
         ("L2-standard-b1-extended-dev13","L2 beta1, resumed"),("L2-standard-b1-seed1-continuous","L2 beta1, seed 1"),
         ("L2-standard-original-renderer-b001-budget","L2, original-size renderer")]
