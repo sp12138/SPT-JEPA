@@ -1,41 +1,52 @@
-# Active campaign recovery — checked 2026-10-27T16:43:52.903636+00:00
+# Campaign continuation — updated 2026-10-27T18:23:06.517424+00:00
 
-Deadline stays 2026-10-27 22:24:58 UTC / 2026-10-28 06:24:58 Shanghai. Authorized hosts: dev2, replacement dev13, dev15 (8 H200 each). Everything authoritative is /efs/prescottsun/SPT-JEPA. Do not touch other projects or restart old SPT historical jobs.
+Original 12-hour deadline remains 2026-10-27 22:24:58 UTC (Oct28 06:24:58 Shanghai). Authorized hosts are dev2, replacement dev13 and dev15. Authoritative root is /efs/prescottsun/SPT-JEPA. Do not touch other projects or historical SPT jobs. New training is closed. No subagents have been used or authorized. User wants insight-first results and explicitly authorized commit & push; latest user additionally requires full aggregate numerical results and key scientific figures in Git.
 
-Campaign: runs/insights12h_20261027. Read plan.json, actual processes and worker-dev2/dev13/dev15.json. Training sources/configs are immutable Git archives; current code branch is insights/12h-20261027. No subagents have been used. New training is now closed; remaining work is verification, evidence analysis and final reporting, except repairs justified by actual failures.
+Publication destination is https://github.com/sp12138/SPT-JEPA.git, branch insights/12h-20261027. Local origin was verified and push dry-run previously succeeded; nothing has actually been published. Never push to upstream sp12138/SPT. Do not ask for publication approval again.
 
-28 finalizers are registered in finalization_registry.json. They run after their completed training parents on the same GPU. Standard runs get 20k/5k episode-disjoint probes, 256 fixed mean-rollout cases, 4 sampled latent rollouts/case where applicable, P0 seeds42/43/44 and 64 matched-reset action counterfactuals. Color runs get swaps; dot runs are compared on dynamics AND nuisance. Default source is source-final-v18 (7536848). The unstarted original-renderer finalizer was explicitly updated to source-final-v19 (49170c3), with 256 mean cases, 64x4 latent samples, planning/counterfactual priority. Read each finalizer actual_source.json/source_manifest.json rather than assuming the host worker source.
+Current EFS HEAD is 3180850 (export campaign reporter). Source diagnostic-v24 is immutable 711463f3fe9913c73235a637d6624d00b0a43ba6. source_manifest_diagnostic_v24.json pins full archive, Python and PYTHONPATH. Source-report-v22 is a reporting-only subset at 80fa218; do not edit either snapshot.
 
-Long remaining training:
-- L2-standard-calibrated-b001-50k-seed0: fresh 50k cosine budget, dev13 GPU3, expected finish around 20:15 UTC.
-- L2-standard-original-renderer-b001-budget: 51,097,134 params, 384x12 renderer, dev13 GPU6; resumed trusted 200-step smoke; same 25k schedule, max_seconds=16200 (4.5h), expected endpoint around 20:35 UTC below 25k. Peak128.76 GiB, hot0.90s/step. Its final evaluation should finish before the original deadline.
-- Full-FP32 beta.25 control: dev13 GPU7, ~0.74s/step, expected finish around19:15 UTC.
-- Seed1 color anchor pair, L1 BN seed1, L1 MLP-BN, low-price dot pair, staged controls and beta1 controls remain in their explicit plan slots.
+Main finalizers: 21/28 finished at this check; pending entries below. Parallel original-renderer components on dev15 GPUs1/2 must also finish; read required_components.json. All completed inner probe statuses were scanned: no errors.
+- ('L2-standard-calibrated-b001-50k-seed0', 'not_started', 0, None)
+- ('L2-standard-b1-seed1-continuous', 'running', 3, 7)
+- ('L2-standard-original-renderer-b001-budget', 'not_started', 0, None)
+- ('L2-standard-fullfp32-b025-seed0', 'not_started', 0, None)
+- ('L1-color-bn-seed0', 'running', 1, 3)
+- ('L1-standard-cursorfix-seed0', 'not_started', 0, None)
+- ('L2-standard-b4-cursorfix-seed0', 'not_started', 0, None)
 
-Source-cohort audit:
-The initial source-v3 sampler advanced self.start during iterator construction. Corrected snapshots use completed-sample advancement, with exact cross-host CPU recovery tested. Legacy initial-grid recovery extensions are not claims of bitwise continuation of the old GPU/data order.
-L0 legacy seed0 final P0 is 86/86/76 (mean82.7). Corrected-source seed1 is70/62/58 (mean63.3). A matched corrected-source L0 seed0 is now running at L0-standard-cursorfix-seed0, dev13 GPU2, with its finalizer queued. Matched corrected-source L1 without BN and raw beta4 seed0 were also added on dev15 GPUs6/4; beta4 preserves the full25k audit budget with STOP_DISABLED.
+New completed supplementary endpoints:
+- late-probes-standard-dev2: 9 pinned final25k models,36 BF16/FP32 mean/noisy probes, no failures.
+- late-probes-native-dev2: Native S0/S1 portable24k and S2 portable12k,8 probes, no failures. Native S0/S1 pooled-position R2 .832/.878 and .813/.808, so these encoders are useful despite failed long rollouts. S2 noisy FP32 remains chance.
+- quality-late-S0-native-seed0, quality-late-S1-native-seed0, quality-late-S2-native-b4-resume2-dev2:256 matched windows,50 Euler,pose-v2, all complete. Their case IDs match primary L2 exactly.
+- Native S0/S1 h1 agent errors/copy=.278/.206 (12.5/9.2px), but h7 agent/copy=1.105/1.096; moving-block/copy=1.632/1.191. Single-step prediction works, pixel autoregression drifts.
+- native-context-S1-smoke8 passed with h1 agent AND block errors exactly equal to cached baseline (maxdiff0). It reuses Native rollout_frames unchanged; only next_context input is replaced by true past frames, with same actions/anchor/noise. The8 cases are a contract smoke, not final evidence. They are first8 of the256 case ordering.
+- Full teacher-forcing audits native-context-S0-native-seed0-n256 and native-context-S1-native-seed0-n256 are registered on dev2 GPUs0/1, source-v24. Read native_context_registry.json and actual statuses; expected finish around18:30UTC. These are privileged-past-frame diagnostics, not deployable rollouts. They need inclusion in the final report/figures. Do not confuse with L2 true-future posterior reconstruction diagnostic.
 
-Current evidence (provisional):
-- No AS-JEPA configuration has met the original three-seed generation gate. At256 cases, low-price beta.01/std.1 @18k mean h7 agent/copy=1.022 and moving-block/copy=.522. Small32/64-case screens were more optimistic.
-- Legacy default beta4 extended to25k still has feature_std~.0005 and zero active dims. Beta1 extension @12k regained weak noisy position R2~.05, so an8k screen does not establish permanent irrecoverability. A separate uninterrupted beta1 seed1 (corrected source) is running.
-- Amplified-head BF16 variance can be hundreds of times FP32 variance. Some noisy FP32 probes stay at chance despite large BF16 feature_std. Variance, effective rank and an information upper bound alone do not prove useful information.
-- Color beta.25 @20k: with anchor, background-style transfer follows changed anchor (~.94) and scarcely changed state (~.001); without anchor, changed state transfers~.94. Renderings remain noisy and agent geometry imperfect.
-- The no-anchor color state caught up substantially by20k. Paired episode-cluster bootstrap on5000 test frames/922 episodes gives anchor-minus-noanchor R2: agent [-.026,-.015], block [.047,.071]. Early10k advantage must not be presented as a persistent final accuracy improvement. Seed1 validation is still required.
-- Warm encoder starts with useful noisy position R2~.52/.79, loses information under joint high-price optimization; staged freezing preserves207 encoder/pool tensors exactly during the200-step contract smoke. Staged controls are diagnostics, not canonical from-scratch results.
-- Pose-v1 fails real random-dot frames (~108px agent); exclude its dot pose scores. Pose-v2 was separately trained and validated: standard/color/dot real agent errors2.37/3.03/3.25px, block1.48/1.80/1.78px.
-- Nine CPU contracts passed on source-v14 including all903 inherited runtime hashes. CPU recovery5+15 vs20 steps has max parameter difference0; no bitwise GPU claim.
+Newest main results:
+- L2 beta.01/std.1 seed0 noisy R2 agent/block=.472/.935; seed1=.458/.890. h7 moving-block/copy=.486/.495, h7 agent/copy=1.010/1.003. P0 seed0=18/10/10, seed1=12/6/4. Positive block dynamics replicated; agent/planning still weak.
+- L1 BN64 seeds0/1 agent/block R2=.543/.886 and .676/.854; h7 moving-block/copy=.418/.434; P0=18/14/16 and30/22/22.
+- L1 MLP-BN seed0 final: agent/block R2=.588/.897, h7 moving-block/copy=.404, agent/copy=.972; P0=42/32/26 (mean33.3%). This is a labeled fallback, not L2.
+- Matched corrected-source L0 seed0 P0=76/78/70 (74.7%); seed1=70/62/58 (63.3%). Legacy source L0 seed0=86/86/76 (82.7%) is a separate sampler cohort.
+- beta1 legacy recovery at25k regained noisy R2=.228/.451; P0=4/6/6 and motion~copy. Hence8k collapse does not imply permanent irrecoverability. Corrected uninterrupted seed1 final still pending at last check.
+- Color beta.25/std1 at25k, both seeds: anchor-swap palette transfer .9447/.9444, state-swap .00093/.00050. No-anchor state swap .9463/.9451. Noisy palette R2 .194/.139 vs no-anchor .586/.510. Block R2 .902/.889 vs .845/.519; agent .432/.445 vs .453/.328 (mixed direction).
+- Paired color moving-block generation delta (anchor minus no-anchor error/copy) seed0=-.127 CI[-.189,-.070], seed1=-.393 CI[-.536,-.267]. Agent differences include0. Conditional trained-weight, episode-cluster CIs, not training-seed population intervals.
+- Random-dot low beta .01 at15k: flow keeps dot RGB R2~.8 while MSE and L1 BN approximately0; neither encodes dot location. Flow dynamics probes stronger but moving-block generation worse (.779 vs MSE .472). This does not support selective removal by flow in this tested low-price regime; it does not settle theoretical beta>=1 claims.
+- Oracle posterior/forecast decomposition128 cases: L2 true-future posterior agent~117/128/134px at h1/7/13, almost forecast error; posterior block~21/19/19 vs forecast21/30/36. Agent failure already in encoder/decoder route; cannot assign encoder vs decoder individually. L1 BN similar; beta4 empty also under oracle.
 
-Read experiments/insights12h/EVALUATION_PROTOCOL.md and INITIALIZATION.md for departures. Source code contains as_jepa_tools/summarize_final.py: emits summary.json/CSV/RESULTS.md and plots, with episode-cluster bootstrap and explicit source-cohort metadata. Run its committed single-file export or a frozen archive remotely into a NEW review directory. Do not overwrite existing measurements. First partial review is review/final_partial_1620. Color paired-CI helper was exercised successfully on probe-batch6 data.
+Reports prepared:
+- review/status_1748:19 completed main finalizers, color pairs2; later counts are higher. Core summary.json/CSV/RESULTS.md and final-comparison, color-mechanism figures.
+- review/diagnostics_1754:12 supplementary probe models,3 Native endpoints,2 paired color generation comparisons,3 posterior decompositions, pending0. Source at80fa218, so it predates h1 Native figure and teacher-forcing collection. Three plots visually inspected: posterior-forecast, dot-information, precision-diagnostics.
+- Current as_jepa_tools/summarize_diagnostics.py at711463f additionally includes all Native horizons and native-rollout-drift plot, but still must be extended to collect the full teacher-forcing audits once finished.
+- review/export_1819: committed3180850 single-file exporter;130 task entries and937 aggregate observations at collection. campaign-configurations.json579KB, all-aggregate-measurements.csv309KB, all-aggregate-measurements.json~6MB. Full historical observations are explicitly tagged; invalid dot pose-v1 scores flagged. Raw details/arrays/logs/media stay EFS. Re-export after completion. Could improve source fallback to execution.json if no actual_source/source_manifest.
+- User explicitly wants these complete aggregate numerical tables plus key scientific figures committed. Keep main final tables separate from tagged historical observations in prose. Do not call130 tasks130 training runs.
 
-Still required:
-1. Inspect every finalizer return code; repair actual failures with new immutable source/output if needed.
-2. After W16 finishes, run supplementary latest-checkpoint probes (mean/noisy, FP32 where relevant) for W16/g4, direct prior/calibrated high-price, std.1 beta.25 and beta4, warm beta4, native S0/S1 representations and Native S2. Use pinned weights. Do not infer late outcomes from early probes.
-3. Gather final 28-model evidence, compare corrected-source cohorts, two color seeds and both L0 seeds. Keep incomplete claims explicitly unresolved.
-4. Inspect final visual galleries. Produce a concise Chinese insight report and small figures, leaving all checkpoints/logs/videos on EFS.
-5. Stop owned workers/evaluator once all necessary work is complete (or let original deadline save/stop them); verify actual GPUs/processes. No compute extension past the original deadline.
-6. Sync small source/report artifacts to the local review clone using Git; artifacts/ is ignored, so explicitly add only small chosen presentation files. The user explicitly authorized commit & push after main results are ready. The configured project origin is https://github.com/sp12138/SPT-JEPA.git (push dry-run succeeded); publish the insights/12h-20261027 branch, including code, result report and only small presentation artifacts. No repeat approval is needed.
+Local review clone was last synchronized to8419475; fetch EFS branch and fast-forward when needed. Local artifacts/insights12h contains small inspected PNGs: color-mechanism-two-seeds, posterior-forecast, dot-information, precision-diagnostics, previews/positive-selected-beta001-25k, standard-beta001-first16, posterior-forecast-beta001, S0/S1-native-seed0-24k. artifacts/ is ignored; force-add only chosen small final presentation files. All canonical media still EFS.
 
-If a host disappears, never blindly restart its worker: held stale jobs can otherwise start fresh into used directories. Preserve old outputs; create a new independent recovery output, hard-link the latest complete trusted checkpoint, retain the same model/schedule/data contract and resume. Native strict DCP retains its legacy campaign_output fingerprint while request.output_dir controls actual export paths. The retired dev13 1025-host jobs remain held.
-
-Latest publication authorization and positive-case request are recorded in reports/authorization.json. Main evaluation for the original-size renderer is being split into three disjoint components on dev13 GPU6 and dev15 GPUs1/2. Read required_components.json before treating that finalizer as complete. Oracle posterior/forecast diagnostic uses source-diagnostic-v20 (508ef20), on dev15 GPU3.
+Remaining work:
+1. Check fresh processes and every evaluation return code; finish7 main finalizers + original renderer components, plus Native teacher-forcing diagnostics.
+2. Extend final diagnostics reporter/figure with Native teacher forcing, inspect galleries; keep h1 same-noise control and privileged-data scope explicit.
+3. Audit final numeric counts, common case identities, pose-v2, inner probe errors and pinned weights/source. No need to rerun already-passing9 CPU contracts without framework changes; all903 inherited runtime files remain unchanged.
+4. Produce concise Chinese key-insight report, full aggregate results/source/config index and small key figures. The Native feedback diagnostic, anchor two-seed mechanism, low-beta replicated block dynamics, posterior-vs-prior bottleneck, dot counterexample and precision false positives are the main candidates. Await50k/original-size/full-FP32 before final interpretation.
+5. Stop only owned workers/evaluator once necessary jobs finish (or original deadline), inspect all GPUs/processes. No deadline extension.
+6. Commit result bundle in authoritative EFS Git, sync local via SSH Git fetch, push insights/12h-20261027 to verified SPT-JEPA origin. User publication permission is explicit. Final response should link report and branch, with key outcomes and limits.

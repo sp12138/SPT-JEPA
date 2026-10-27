@@ -15,7 +15,7 @@ from vforge.ops import initialize_ops,OpsConfig
 def main():
     p=argparse.ArgumentParser()
     for name in ["checkpoint","baseline","data","pose","output"]:p.add_argument("--"+name,required=True)
-    p.add_argument("--cases",type=int,default=256);p.add_argument("--steps",type=int,default=50);a=p.parse_args()
+    p.add_argument("--intervention",choices=["true-history","clip-history"],default="true-history");p.add_argument("--cases",type=int,default=256);p.add_argument("--steps",type=int,default=50);a=p.parse_args()
     out=Path(a.output);out.mkdir(parents=True,exist_ok=True);torch.set_num_threads(2);torch.set_float32_matmul_precision("high")
     initialize_ops(OpsConfig(backend="sdpa",allow_fallback=False),device=torch.device("cuda",0),parallel_state=None)
     model=load_model(a.checkpoint);assert model.mode in ["S0","S1"];pose=pose_net(a.pose)
@@ -26,14 +26,18 @@ def main():
     baseline_metric=json.loads((baseline/"metrics.json").read_text())
     assert baseline_metric["sampler_steps"]==a.steps and baseline_metric["pose_weights"]==str(Path(a.pose))
     base=np.load(baseline/"per_case.npz");loader=DataLoader(Subset(data,indices),batch_size=4,num_workers=2,pin_memory=True)
-    values={};images=[];started=time.time()
+    values={};images=[];ranges=[];started=time.time()
     for batch_id,batch in enumerate(loader):
         batch={k:v.cuda(non_blocking=True) if torch.is_tensor(v) else v for k,v in batch.items()}
         with torch.autocast("cuda",dtype=torch.bfloat16):
             _,frames,_=model.prepare(batch);anchor=frames[:,0];original=model.causal_semantic_encoder.next_context;counter=[0]
             def true_context(source):
-                target=3+counter[0];lo=max(0,target-(model.window-1));truth=frames[:,lo:target]
-                latents=pack(truth.flatten(0,1)).reshape(len(frames),target-lo,48,16,16).transpose(1,2)
+                target=3+counter[0];lo=max(0,target-(model.window-1))
+                ranges.append(dict(horizon=counter[0]+1,batch=batch_id,out_of_range_fraction=float((source.abs()>1.00001).float().mean()),minimum=float(source.min()),maximum=float(source.max())))
+                if a.intervention=="true-history":
+                    truth=frames[:,lo:target]
+                    latents=pack(truth.flatten(0,1)).reshape(len(frames),target-lo,48,16,16).transpose(1,2)
+                else:latents=source.clamp(-1,1)
                 assert latents.shape==source.shape
                 counter[0]+=1
                 return original(latents)
@@ -52,19 +56,21 @@ def main():
     arrays={k:np.concatenate(v) for k,v in values.items()};episodes=[r["episode"] for r in cases]
     h1={entity:float(np.max(np.abs(arrays[entity][:,0]-base[entity][:len(cases),0]))) for entity in ["agent","block"]}
     control=dict(max_h1_error_difference_px=h1,tolerance_px=.5,passed=all(x<=.5 for x in h1.values()))
-    report=dict(model=model.mode,checkpoint=str(Path(a.checkpoint).resolve()),baseline=str(baseline),pose_weights=a.pose,cases=len(cases),steps=a.steps,
+    label="teacher_forced" if a.intervention=="true-history" else "clipped_feedback"
+    description=("Only next_context input history is replaced by true past frames; actions, initial anchor and the existing 13-step sampler/RNG are unchanged" if a.intervention=="true-history" else "Only the existing next_context input is clipped to the training pixel range [-1,1]; no future frames enter prediction; sampler, actions, anchor and noise unchanged")
+    report=dict(model=model.mode,intervention_mode=a.intervention,checkpoint=str(Path(a.checkpoint).resolve()),baseline=str(baseline),pose_weights=a.pose,cases=len(cases),steps=a.steps,
                 seconds=time.time()-started,precision="BF16 autocast; FP32 matmul high",control=control,horizons={},
-                intervention="Only next_context input history is replaced by true past frames; actions, initial anchor and the existing 13-step sampler/RNG are unchanged",
-                scope="Teacher forcing is an oracle diagnostic, not deployable rollout. One trained seed; common cases and sampling noise.")
+                intervention=description,context_range_by_horizon={str(h):dict(mean_out_of_range_fraction=float(np.mean([r["out_of_range_fraction"] for r in ranges if r["horizon"]==h])),minimum=min(r["minimum"] for r in ranges if r["horizon"]==h),maximum=max(r["maximum"] for r in ranges if r["horizon"]==h)) for h in range(1,14)},
+                scope=("Teacher forcing is an oracle diagnostic, not deployable rollout." if a.intervention=="true-history" else "Separate inference ablation; this does not modify or replace the canonical Native baseline.")+" One trained seed; common cases and sampling noise.")
     for h in [1,3,7,13]:
         report["horizons"][str(h)]={}
         for entity in ["agent","block"]:
             numerator=arrays[entity][:,h-1];denominator=base["copy_"+entity][:len(cases),h-1]
             autoregressive=base[entity][:len(cases),h-1]
-            report["horizons"][str(h)][entity]=dict(teacher_forced_px=float(numerator.mean()),autoregressive_px=float(autoregressive.mean()),
-                copy_px=float(denominator.mean()),teacher_forced_ratio_ci=interval_ratio(numerator,denominator,episodes),
-                autoregressive_ratio_ci=interval_ratio(autoregressive,denominator,episodes))
-    (out/"teacher_forcing.json").write_text(json.dumps(report,indent=2));(out/"cases.json").write_text(json.dumps(cases,indent=2))
+            report["horizons"][str(h)][entity]={label+"_px":float(numerator.mean()),"autoregressive_px":float(autoregressive.mean()),
+                "copy_px":float(denominator.mean()),label+"_ratio_ci":interval_ratio(numerator,denominator,episodes),
+                "autoregressive_ratio_ci":interval_ratio(autoregressive,denominator,episodes)}
+    (out/("teacher_forcing.json" if a.intervention=="true-history" else "feedback_clipping.json")).write_text(json.dumps(report,indent=2));(out/"cases.json").write_text(json.dumps(cases,indent=2))
     np.savez(out/"per_case.npz",**arrays);gallery(images,out)
     print(json.dumps(dict(model=model.mode,cases=len(cases),seconds=report["seconds"],control=control,horizons=report["horizons"]),indent=2))
     if not control["passed"]:raise RuntimeError("One-step matched-noise control failed")

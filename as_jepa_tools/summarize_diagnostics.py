@@ -57,6 +57,12 @@ def main():
                 if h==7:result[entity+"_h7_ci"]=ci
         result["moving_block_h7_ci"]=interval_ratio(arr["block"][moving,6],arr["copy_block"][moving,6],episodes[moving])
         native.append(result)
+    teacher_forcing=[]
+    for job in read(c/"native_context_registry.json") or []:
+        root=Path(job["output"]);status=read(root/"status.json") or {};score=read(root/"results/teacher_forcing.json")
+        if status.get("state")!="finished" or not score or not score.get("control",{}).get("passed"):
+            pending.append(dict(job=job["id"],state=status.get("state")));continue
+        teacher_forcing.append(dict(job=job["id"],source=read(root/"actual_source.json"),**score))
     decomposition=[]
     for file in sorted((c/"decode-decomposition-batch-dev15/results").glob("*-n128/decomposition.json")):
         decomposition.append(dict(model=file.parent.name.removesuffix("-n128"),**read(file)))
@@ -71,7 +77,7 @@ def main():
         root=c/("final-"+name);pp=read(root/"probes/noisy/probes.json") or read(root/"probes/mean/probes.json")
         if pp:dot.append(dict(model=name,probe=pp,metrics=read(root/"generation/mean/metrics.json")))
     result=dict(collected_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),probes=probes,native=native,
-                decomposition=decomposition,color_generation_comparisons=color,dot=dot,pending=pending,
+                decomposition=decomposition,native_context=teacher_forcing,color_generation_comparisons=color,dot=dot,pending=pending,
                 scope="Final pinned diagnostics; single training seeds unless listed; uncertainty is conditional on trained weights")
     (out/"diagnostics.json").write_text(json.dumps(result,indent=2,allow_nan=False))
     with (out/"late-probes.csv").open("w") as f:
@@ -116,6 +122,19 @@ def main():
         fig.supxlabel("256 fixed held-out windows, seed 0, 50 Euler steps. Good one-step agent prediction does not persist through rollout.",fontsize=9)
         for suffix in ["png","svg"]:fig.savefig(out/("native-rollout-drift."+suffix),bbox_inches="tight")
         plt.close(fig)
+    if teacher_forcing:
+        fig,axes=plt.subplots(2,len(teacher_forcing),figsize=(6*len(teacher_forcing),7.5),squeeze=False,layout="constrained");horizons=[1,3,7,13]
+        for col,row in enumerate(teacher_forcing):
+            for axis,entity in zip(axes[:,col],["agent","block"]):
+                for key,label,color_value in [("teacher_forced_ratio_ci","True past frames (oracle)","#375c93"),("autoregressive_ratio_ci","Generated past frames","#cf8a43")]:
+                    ci=[row["horizons"][str(h)][entity][key] for h in horizons];values=np.array([x["value"] for x in ci]);lower=np.array([x["lower"] for x in ci]);upper=np.array([x["upper"] for x in ci])
+                    axis.errorbar(horizons,values,yerr=np.stack([values-lower,upper-values]),marker="o",label=label,color=color_value,capsize=3)
+                axis.axhline(1,color="#777777",linestyle="--",label="Copy context")
+                axis.set(xlabel="Forecast horizon",ylabel=entity.capitalize()+" error / copy error",xticks=horizons,ylim=(0,None),title=row["model"]+" - "+entity)
+        axes[0,0].legend(frameon=False,fontsize=9)
+        fig.supxlabel("256 fixed cases; same checkpoints, actions, anchor and sampler noise. Privileged true history is diagnostic only. 95% episode-cluster intervals.",fontsize=9)
+        for suffix in ["png","svg"]:fig.savefig(out/("native-context-intervention."+suffix),bbox_inches="tight")
+        plt.close(fig)
     names=[("L2-standard-calibrated-b025-resume-dev15","std .1, beta .25"),("L2-standard-calibrated1-b025-seed0","std 1, beta .25"),("L2-standard-calibrated1-b4-seed0","std 1, beta 4"),("L2-standard-direct-calibrated1-b4-seed0","Direct prior"),("L2-standard-w16g4-calibrated1-b4-seed0","W16 / gap4"),("L2-standard-warmencoder-b4-seed0","Warm encoder, beta 4")]
     lookup={r["model"]:r for r in probes};chosen=[(lookup[n],label) for n,label in names if n in lookup]
     if chosen:
@@ -128,7 +147,7 @@ def main():
         fig.supxlabel("25k final checkpoints. A large BF16 feature variance alone is insufficient evidence of useful state information.",fontsize=9)
         for suffix in ["png","svg"]:fig.savefig(out/("precision-diagnostics."+suffix),bbox_inches="tight")
         plt.close(fig)
-    print(json.dumps(dict(output=str(out),probe_models=len(probes),native_completed=len(native),color_pairs=len(color),decompositions=len(decomposition),pending=pending),indent=2))
+    print(json.dumps(dict(output=str(out),probe_models=len(probes),native_completed=len(native),color_pairs=len(color),decompositions=len(decomposition),native_context=len(teacher_forcing),pending=pending),indent=2))
 
 
 if __name__=="__main__":main()

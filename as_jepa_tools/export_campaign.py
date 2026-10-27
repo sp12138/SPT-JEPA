@@ -19,9 +19,9 @@ def main():
     p=argparse.ArgumentParser();p.add_argument("--campaign",required=True);p.add_argument("--output",required=True);a=p.parse_args()
     c=Path(a.campaign);out=Path(a.output);out.mkdir(parents=True,exist_ok=True);plan=read(c/"plan.json");measurements=[];runs=[]
     kinds={"probes.json":"probe","metrics.json":"metric","counterfactual.json":"counterfactual","swaps.json":"color_swap",
-           "decomposition.json":"posterior_forecast","teacher_forcing.json":"native_context"}
+           "decomposition.json":"posterior_forecast","teacher_forcing.json":"native_context","feedback_clipping.json":"feedback_clip"}
     for job in plan["jobs"]:
-        root=Path(job["output"]);source=read(root/"actual_source.json") or read(root/"source_manifest.json") or {}
+        root=Path(job["output"]);source=read(root/"actual_source.json") or read(root/"source_manifest.json") or read(root/"execution.json") or {}
         latest=sorted(p for p in root.glob("model-step*") if (p/"weights.pt").exists() and (p/"config.json").exists())
         runs.append(dict(id=job["id"],host=job["host"],gpu=job["gpu"],hold=job.get("hold",False),parent=job.get("parent"),
             output=str(root),model_size=read(root/"model_size.json"),status=aggregate(read(root/"status.json")),exit=read(c/("exit-"+job["id"]+".json")),
@@ -41,7 +41,7 @@ def main():
                     kind="planning";successes=metric["metrics"]["episode_successes"];metric["trial_count"]=len(successes);metric["success_count"]=int(sum(successes))
                 elif "h7_agent_ratio" in metric:kind="generation"
                 else:continue
-            final=root.name.startswith("final-");supp=root.name.startswith(("late-probes-","quality-late-","native-context-","decode-decomposition-"))
+            final=root.name.startswith("final-");supp=root.name.startswith(("late-probes-","quality-late-","native-context-","native-feedback-","decode-decomposition-"))
             tier="final" if final else "final diagnostic" if supp else "historical exploratory"
             flags=[]
             if tier=="historical exploratory":flags.append("Historical protocol; not pooled into final comparisons. See EVALUATION_PROTOCOL.md.")
