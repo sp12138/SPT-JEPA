@@ -12,16 +12,20 @@ from vforge.ops import OpsConfig,initialize_ops
 
 
 class WindowSampler(Sampler):
-    """A stateless permutation per epoch; resume starts at a saved sample offset."""
-    def __init__(self,dataset,start=0,seed=0):self.dataset=dataset;self.start=start;self.seed=seed
-    def __len__(self):return self.dataset.natural_length
+    """Stateless permutations, with a precise, batch-aligned resume offset."""
+    def __init__(self,dataset,start=0,seed=0,batch_size=128):
+        self.dataset=dataset;self.start=start;self.seed=seed;self.length=(dataset.natural_length//batch_size)*batch_size
+    def __len__(self):return self.length
     def __iter__(self):
-        n=self.dataset.natural_length;epoch=self.start//n;position=self.start%n
-        generator=np.random.default_rng(self.seed+epoch*1000003)
-        a=int(generator.integers(1,n));b=int(generator.integers(0,n))
-        while math.gcd(a,n)!=1:a=(a+1)%n or 1
-        for i in range(position,n):yield (a*i+b)%n
-        self.start=(epoch+1)*n
+        n=self.dataset.natural_length;epoch=-1;start=self.start
+        self.start=start+self.length
+        for k in range(start,start+self.length):
+            current=k//n
+            if current!=epoch:
+                epoch=current;generator=np.random.default_rng(self.seed+epoch*1000003)
+                a=int(generator.integers(1,n));b=int(generator.integers(0,n))
+                while math.gcd(a,n)!=1:a=(a+1)%n or 1
+            yield (a*(k%n)+b)%n
 
 
 class TrainModule(pl.LightningModule):
@@ -84,6 +88,7 @@ class PersistentProgress(Callback):
         if step%100==0:self.status(trainer,module,"running")
         if step and step%self.cfg.get("checkpoint_every",2000)==0:self.save(trainer,module)
         if (self.root/"STOP").exists():trainer.should_stop=True
+        if self.cfg.get("stop_after")==step and module.initial_step==0:trainer.should_stop=True
     def on_train_end(self,trainer,module):self.save(trainer,module);self.status(trainer,module,"finished")
     def on_exception(self,trainer,module,exception):
         (self.root/"error.txt").write_text(repr(exception));self.status(trainer,module,"failed")
@@ -100,8 +105,8 @@ def main():
     checkpoint=root/"last.ckpt";resume=str(checkpoint) if args.resume and checkpoint.exists() else None
     start=int(torch.load(checkpoint,map_location="cpu",weights_only=False).get("campaign_samples",0)) if resume else 0
     dataset=PushTWindows(cfg["data"],window=cfg["model"]["window"],gap=cfg.get("gap",8),seed=cfg["seed"])
-    sampler=WindowSampler(dataset,start=start,seed=cfg["seed"])
-    loader=DataLoader(dataset,batch_size=cfg["batch_size"],sampler=sampler,num_workers=cfg.get("workers",4),persistent_workers=cfg.get("workers",4)>0,pin_memory=True,drop_last=True,worker_init_fn=seed_worker)
+    sampler=WindowSampler(dataset,start=start,seed=cfg["seed"],batch_size=cfg["batch_size"])
+    loader=DataLoader(dataset,batch_size=cfg["batch_size"],sampler=sampler,generator=torch.Generator().manual_seed(cfg["seed"]+999),num_workers=cfg.get("workers",4),persistent_workers=cfg.get("workers",4)>0,pin_memory=True,drop_last=True,worker_init_fn=seed_worker)
     progress=PersistentProgress(root,cfg)
     trainer=pl.Trainer(accelerator="gpu",devices=1,precision="bf16-mixed",max_steps=cfg["max_steps"],max_epochs=-1,
                        max_time=datetime.timedelta(seconds=cfg.get("max_seconds",36000)),gradient_clip_val=1.,logger=False,enable_checkpointing=False,
