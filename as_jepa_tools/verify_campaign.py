@@ -83,11 +83,11 @@ def main():
                     source_checks[key]=dict(path=str(path),sha256=actual_hash,passed=actual_hash==expected_hash)
                     check(actual_hash==expected_hash,"Immutable training source differs: "+str(path))
         records.append(dict(model=label,step=manifest["checkpoint_step"],weights_sha256=digest(pin/"weights.pt"),training_source=src))
-    for registry in ["late_native_quality_registry.json","native_context_registry.json","native_feedback_registry.json"]:
+    for registry in ["late_native_quality_registry.json","native_context_registry.json","native_feedback_registry.json","color_geometry_registry.json"]:
         for job in read(c/registry) or []:
             root=Path(job["output"])
             if not finished(root,job["id"]):continue
-            if registry in ["native_context_registry.json","native_feedback_registry.json"]:
+            if registry in ["native_context_registry.json","native_feedback_registry.json","color_geometry_registry.json"]:
                 score=read(root/"results"/("teacher_forcing.json" if registry=="native_context_registry.json" else "feedback_clipping.json")) or {}
                 check(score.get("cases")==256 and score.get("control",{}).get("passed",False),job["id"]+": matched-context intervention contract")
     for name in ["late-probes-standard-dev2","late-probes-native-dev2"]:

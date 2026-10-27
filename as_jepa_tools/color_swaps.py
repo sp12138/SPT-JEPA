@@ -50,7 +50,9 @@ def main():
             save(key+"_bg_donor_error",(bg-donor_bg).norm(dim=-1))
             save(key+"_agent_error",(poses[key][:,:2]-batch["state"][:,3,:2].float()).norm(dim=-1))
             save(key+"_block_error",(poses[key][:,2:]-batch["state"][:,3,2:4].float()).norm(dim=-1))
-            save(key+"_image_change",(image.float()-own.float()).square().mean((1,2,3)))
+            save(key+"_agent_donor_error",(poses[key][:,:2]-batch["state"][:,3,:2].float().flip(0)).norm(dim=-1))
+            save(key+"_block_donor_error",(poses[key][:,2:]-batch["state"][:,3,2:4].float().flip(0)).norm(dim=-1))
+            save(key+"_pose",poses[key]);save(key+"_image_change",(image.float()-own.float()).square().mean((1,2,3)))
         delta=donor_bg-own_bg;denom=delta.square().sum(-1)
         save("palette_distance",delta.norm(dim=-1))
         save("anchor_style_transfer_projection",((background(anchor_swap)-own_render_bg)*delta).sum(-1)/denom.clamp_min(1))
@@ -60,7 +62,8 @@ def main():
         if len(pictures)<16:
             for i in range(min(len(anchor),16-len(pictures))):
                 pictures.append(torch.stack([anchor[i],anchor.flip(0)[i],frames[i,3],own[i],anchor_swap[i],state_swap[i],noisy[i]]).float().cpu())
-        records.extend([dict(episode=int(ep),start=int(start)) for ep,start in zip(batch["episode"].cpu(),batch["start"].cpu())])
+        save("own_truth",batch["state"][:,3,:4].float());save("donor_truth",batch["state"][:,3,:4].float().flip(0))
+        records.extend([dict(episode=int(ep),start=int(start),donor_episode=int(dep),donor_start=int(dstart)) for ep,start,dep,dstart in zip(batch["episode"].cpu(),batch["start"].cpu(),batch["episode"].flip(0).cpu(),batch["start"].flip(0).cpu())])
     arrays={k:np.concatenate(v) for k,v in values.items()};eligible=arrays["palette_distance"]>30
     report=dict(checkpoint=str(Path(a.checkpoint).resolve()),cases=len(records),steps=a.steps,
                 feature_precision="FP32" if a.fp32 else "BF16",palette_pairs_over_30=int(eligible.sum()),
@@ -68,7 +71,7 @@ def main():
                 anchor_style_transfer_projection=float(arrays["anchor_style_transfer_projection"][eligible].mean()),
                 state_style_transfer_projection=float(arrays["state_style_transfer_projection"][eligible].mean()),
                 seconds=time.time()-started,
-                scope="Common posterior states and renderer noise; reversed within-batch donors; corner-median background measures appearance, pose is independent v2")
+                scope="Common posterior states and renderer noise; same reversed within-batch donor pairing for separate anchor/state interventions; corner-median background measures appearance, pose is independent v2")
     out=Path(a.output);out.mkdir(parents=True,exist_ok=True);(out/"swaps.json").write_text(json.dumps(report,indent=2))
     (out/"cases.json").write_text(json.dumps(records,indent=2));np.savez(out/"per_case.npz",**arrays)
     from PIL import Image,ImageDraw

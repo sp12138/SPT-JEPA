@@ -63,6 +63,13 @@ def main():
         if status.get("state")!="finished" or not score or not score.get("control",{}).get("passed"):
             pending.append(dict(job=job["id"],state=status.get("state")));continue
         teacher_forcing.append(dict(job=job["id"],source=read(root/"actual_source.json"),**score))
+    feedback=[];geometry=[]
+    for registry,destination,filename in [("native_feedback_registry.json",feedback,"feedback_clipping.json"),("color_geometry_registry.json",geometry,"swaps.json")]:
+        for job in read(c/registry) or []:
+            root=Path(job["output"]);status=read(root/"status.json") or {};score=read(root/"results"/filename)
+            if status.get("state")!="finished" or not score:
+                pending.append(dict(job=job["id"],state=status.get("state")));continue
+            destination.append(dict(job=job["id"],parent=job.get("model"),source=read(root/"actual_source.json"),matched_control=read(root/"control.json"),**score))
     decomposition=[]
     for file in sorted((c/"decode-decomposition-batch-dev15/results").glob("*-n128/decomposition.json")):
         decomposition.append(dict(model=file.parent.name.removesuffix("-n128"),**read(file)))
@@ -77,7 +84,7 @@ def main():
         root=c/("final-"+name);pp=read(root/"probes/noisy/probes.json") or read(root/"probes/mean/probes.json")
         if pp:dot.append(dict(model=name,probe=pp,metrics=read(root/"generation/mean/metrics.json")))
     result=dict(collected_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),probes=probes,native=native,
-                decomposition=decomposition,native_context=teacher_forcing,color_generation_comparisons=color,dot=dot,pending=pending,
+                decomposition=decomposition,native_context=teacher_forcing,native_feedback=feedback,color_geometry=geometry,color_generation_comparisons=color,dot=dot,pending=pending,
                 scope="Final pinned diagnostics; single training seeds unless listed; uncertainty is conditional on trained weights")
     (out/"diagnostics.json").write_text(json.dumps(result,indent=2,allow_nan=False))
     with (out/"late-probes.csv").open("w") as f:
@@ -135,6 +142,30 @@ def main():
         fig.supxlabel("256 fixed cases; same checkpoints, actions, anchor and sampler noise. Privileged true history is diagnostic only. 95% episode-cluster intervals.",fontsize=9)
         for suffix in ["png","svg"]:fig.savefig(out/("native-context-intervention."+suffix),bbox_inches="tight")
         plt.close(fig)
+    if feedback:
+        row=feedback[0];oracle=next((x for x in teacher_forcing if x["model"]==row["model"]),None);horizons=[1,3,7,13]
+        fig,axes=plt.subplots(1,2,figsize=(11,4.5),layout="constrained")
+        for axis,entity in zip(axes,["agent","block"]):
+            curves=[(row,"autoregressive_ratio_ci","Canonical generated history","#cf8a43"),(row,"clipped_feedback_ratio_ci","Clip history to training pixel range","#4e9a89")]
+            if oracle:curves.append((oracle,"teacher_forced_ratio_ci","True past frames (oracle)","#375c93"))
+            for source,key,label,color_value in curves:
+                ci=[source["horizons"][str(h)][entity][key] for h in horizons];value=np.array([x["value"] for x in ci]);lower=np.array([x["lower"] for x in ci]);upper=np.array([x["upper"] for x in ci])
+                axis.errorbar(horizons,value,yerr=np.stack([value-lower,upper-value]),marker="o",color=color_value,label=label,capsize=3)
+            axis.axhline(1,color="#777777",linestyle="--");axis.set(xticks=horizons,xlabel="Forecast horizon",ylabel=entity.capitalize()+" error / copy error",ylim=(0,None),title="Native "+row["model"]+" - "+entity)
+        axes[0].legend(frameon=False,fontsize=8);fig.supxlabel("256 same cases, weights, actions, anchor and sampling noise; clipping changes only generated encoder history. Oracle uses privileged past frames.",fontsize=9)
+        for suffix in ["png","svg"]:fig.savefig(out/("native-feedback-clipping."+suffix),bbox_inches="tight")
+        plt.close(fig)
+    anchor_geometry=[r for r in geometry if r.get("parent","").startswith("L2-color-calibrated1-")]
+    if anchor_geometry:
+        fig,axes=plt.subplots(1,len(anchor_geometry),figsize=(6*len(anchor_geometry),4.7),squeeze=False,layout="constrained");x=np.arange(3);keys=["own","anchor_swap","state_swap"]
+        for axis,row in zip(axes[0],anchor_geometry):
+            axis.bar(x-.18,[row["mean"][k+"_block_error"] for k in keys],.36,label="Error to own block",color="#375c93")
+            axis.bar(x+.18,[row["mean"][k+"_block_donor_error"] for k in keys],.36,label="Error to donor block",color="#cf8a43")
+            axis.set_xticks(x,["Own state / own anchor","Own state / donor anchor","Donor state / own anchor"],rotation=18,ha="right")
+            axis.set(ylabel="Block position error (px)",title="Anchor model, "+row["parent"].split("-")[-1]);axis.legend(frameon=False,fontsize=9)
+        fig.supxlabel("128 matched posterior-state interventions per seed; same donor pairing and rendering noise. Means are conditional on each trained model.",fontsize=9)
+        for suffix in ["png","svg"]:fig.savefig(out/("color-geometry-interventions."+suffix),bbox_inches="tight")
+        plt.close(fig)
     names=[("L2-standard-calibrated-b025-resume-dev15","std .1, beta .25"),("L2-standard-calibrated1-b025-seed0","std 1, beta .25"),("L2-standard-calibrated1-b4-seed0","std 1, beta 4"),("L2-standard-direct-calibrated1-b4-seed0","Direct prior"),("L2-standard-w16g4-calibrated1-b4-seed0","W16 / gap4"),("L2-standard-warmencoder-b4-seed0","Warm encoder, beta 4")]
     lookup={r["model"]:r for r in probes};chosen=[(lookup[n],label) for n,label in names if n in lookup]
     if chosen:
@@ -147,7 +178,7 @@ def main():
         fig.supxlabel("25k final checkpoints. A large BF16 feature variance alone is insufficient evidence of useful state information.",fontsize=9)
         for suffix in ["png","svg"]:fig.savefig(out/("precision-diagnostics."+suffix),bbox_inches="tight")
         plt.close(fig)
-    print(json.dumps(dict(output=str(out),probe_models=len(probes),native_completed=len(native),color_pairs=len(color),decompositions=len(decomposition),native_context=len(teacher_forcing),pending=pending),indent=2))
+    print(json.dumps(dict(output=str(out),probe_models=len(probes),native_completed=len(native),color_pairs=len(color),decompositions=len(decomposition),native_context=len(teacher_forcing),native_feedback=len(feedback),color_geometry=len(geometry),pending=pending),indent=2))
 
 
 if __name__=="__main__":main()
