@@ -67,6 +67,10 @@ class TrainModule(pl.LightningModule):
             values=torch.cat(values);mean=values.mean(0).unflatten(-1,(4,16)).mean(0);current=values.std(0).mean().clamp_min(1e-8);scale=float(self.cfg["calibrate_state_std"])/float(current)
             head=self.model.pool.head;head.weight.mul_(scale);head.bias.sub_(mean).mul_(scale)
         self.model.train(was_training)
+        if self.cfg.get("export_initial",False):
+            initial=Path(self.cfg["output"])/"initial-model";initial.mkdir(exist_ok=True)
+            torch.save(self.model.state_dict(),initial/"weights.pt")
+            (initial/"config.json").write_text(json.dumps(dict(_target_="as_jepa_lewm.model.ASJepaLeWM",**self.cfg["model"]),indent=2))
         (Path(self.cfg["output"])/"initial_scale.json").write_text(json.dumps(dict(target_std=self.cfg["calibrate_state_std"],original_std=float(current),scale=scale,mean_before=values.mean(0).cpu().tolist(),note="One fixed affine head initialization from 128 train windows; no target labels, batch normalization, stop-gradient or objective change."),indent=2))
     def on_save_checkpoint(self,checkpoint):
         checkpoint["campaign_rng"]=dict(python=random.getstate(),numpy=np.random.get_state(),torch=torch.get_rng_state(),cuda=torch.cuda.get_rng_state_all())
@@ -122,6 +126,17 @@ def main():
     use_cpu=cfg.get("device")=="cpu"
     initialize_ops(OpsConfig(backend="sdpa_math" if use_cpu else "sdpa",allow_fallback=False),device=torch.device("cpu") if use_cpu else torch.device("cuda",0),parallel_state=None)
     module=TrainModule(cfg)
+    if cfg.get("initial_encoder_checkpoint") and not args.resume:
+        import hashlib
+        source=Path(cfg["initial_encoder_checkpoint"])
+        weights=torch.load(source/"weights.pt",map_location="cpu",weights_only=True)
+        encoder={k.removeprefix("encoder."):v for k,v in weights.items() if k.startswith("encoder.")}
+        module.model.encoder.load_state_dict(encoder,strict=True)
+        digest=hashlib.sha256()
+        with (source/"weights.pt").open("rb") as handle:
+            for block in iter(lambda:handle.read(1024*1024),b""):digest.update(block)
+        (root/"initial_encoder.json").write_text(json.dumps(dict(source=str(source),sha256=digest.hexdigest(),scope="Encoder-only warm initialization from our L0; pool, prior, renderer and optimizer are fresh"),indent=2))
+        del weights,encoder
     (root/"model_size.json").write_text(json.dumps(dict(total=sum(p.numel() for p in module.model.parameters()),encoder=sum(p.numel() for p in module.model.encoder.parameters()),prior=sum(p.numel() for p in module.model.predictor.parameters()),renderer=sum(p.numel() for p in module.model.renderer.parameters()) if module.model.renderer else 0),indent=2))
     checkpoint=root/"last.ckpt";resume=str(checkpoint) if args.resume and checkpoint.exists() else None
     start=int(torch.load(checkpoint,map_location="cpu",weights_only=False).get("campaign_samples",0)) if resume else 0
