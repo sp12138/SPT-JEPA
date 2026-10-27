@@ -129,6 +129,7 @@ def main():
         ("L2-standard-calibrated-b001-seed0","L2 beta .01, seed 0"),("L2-standard-calibrated-b001-seed1","L2 beta .01, seed 1"),
         ("L2-standard-calibrated-b001-50k-seed0","L2 beta .01, 50k"),
         ("L2-standard-staged-b025-seed0","L2 staged beta .25"),
+        ("L2-standard-poolfp32-b025-seed0","L2 FP32 pool, beta .25"),("L2-standard-fullfp32-b025-seed0","L2 full FP32, beta .25"),
         ("L2-standard-b1-extended-dev13","L2 beta1, resumed"),("L2-standard-b1-seed1-continuous","L2 beta1, seed 1"),
         ("L2-standard-original-renderer-b001-budget","L2, original-size renderer")]
     chosen=[(lookup[n],label) for n,label in names if n in lookup]
@@ -169,7 +170,7 @@ def main():
             labels.append(("L1 BN" if row["mode"]=="L1" else "No anchor" if "noanchor" in row["model"] else "Anchor")+f", s{row['seed']}")
             anchor.append(swap["anchor_style_transfer_projection"]);state.append(swap["state_style_transfer_projection"])
         x=np.arange(len(labels));axes[1].bar(x-.18,anchor,.35,label="Change anchor",color="#375c93");axes[1].bar(x+.18,state,.35,label="Change state",color="#4e9a89")
-        axes[1].set_xticks(x,labels,rotation=25,ha="right");axes[1].set(ylabel="Fraction of donor background palette transferred",title="Common-noise interventions");axes[1].legend(frameon=False)
+        axes[1].set_xticks(x,labels,rotation=25,ha="right");axes[1].set(ylabel="Fraction of donor background palette transferred",title="Common-noise interventions",ylim=(0,1.15));axes[1].legend(frameon=False)
         fig.savefig(out/"color-mechanism.png",bbox_inches="tight");fig.savefig(out/"color-mechanism.svg",bbox_inches="tight");plt.close(fig)
     text=["# SPT-JEPA：统一评估结果",f"核查时间：{stamp}","",
           "这是单次探索性 campaign 的结果。不同训练种子分别列出；规划为 3 个评估种子的均值与标准差，生成比值的 95% 区间按测试 episode 重采样。未完成项目不会算作通过。",

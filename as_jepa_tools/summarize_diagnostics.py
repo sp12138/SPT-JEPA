@@ -47,9 +47,14 @@ def main():
         arr=np.load(root/"generation/per_case.npz");episodes=np.array([r["episode"] for r in cases]);moving=np.array([r["moving_block"] for r in reference])
         result=dict(model=job["id"].removeprefix("quality-late-"),source=read(root/"actual_source.json"),checkpoint=read(root/"checkpoint_manifest.json"),
                     cases=len(cases),moving_cases=int(moving.sum()),common_case_ids_verified=True,
-                    metrics={k:v for k,v in metric.items() if k in ["h7_agent_ratio","h7_block_ratio","h7_moving_block_ratio","sampler_steps","feature_forward_precision","pose_weights"]})
-        for entity in ["agent","block"]:
-            result[entity+"_h7_ci"]=interval_ratio(arr[entity][:,6],arr["copy_"+entity][:,6],episodes)
+                    metrics={k:v for k,v in metric.items() if "ratio" in k or "by_horizon" in k or k in ["sampler_steps","feature_forward_precision","pose_weights"]})
+        result["horizons"]={}
+        for h in [1,3,7,13]:
+            result["horizons"][str(h)]={}
+            for entity in ["agent","block"]:
+                ci=interval_ratio(arr[entity][:,h-1],arr["copy_"+entity][:,h-1],episodes)
+                result["horizons"][str(h)][entity]=dict(error_px=float(arr[entity][:,h-1].mean()),copy_px=float(arr["copy_"+entity][:,h-1].mean()),ratio_ci=ci)
+                if h==7:result[entity+"_h7_ci"]=ci
         result["moving_block_h7_ci"]=interval_ratio(arr["block"][moving,6],arr["copy_block"][moving,6],episodes[moving])
         native.append(result)
     decomposition=[]
@@ -99,6 +104,17 @@ def main():
         axes[1].set(xticks=np.arange(5),xticklabels=["x","y","red","green","blue"],ylabel="Held-out probe R2",ylim=(-.05,1),title="The flow model retains dot RGB");axes[1].legend(frameon=False,fontsize=8)
         fig.supxlabel("15k updates, seed 0, same data and state size. Low-beta result does not establish behavior at beta >= 1.",fontsize=9)
         for suffix in ["png","svg"]:fig.savefig(out/("dot-information."+suffix),bbox_inches="tight")
+        plt.close(fig)
+    pixel=[r for r in native if r["model"].startswith(("S0-","S1-"))]
+    if pixel:
+        fig,axes=plt.subplots(1,2,figsize=(11,4.3),layout="constrained");horizons=[1,3,7,13]
+        for axis,entity in zip(axes,["agent","block"]):
+            for row in pixel:axis.plot(horizons,[row["horizons"][str(h)][entity]["error_px"] for h in horizons],marker="o",label=row["model"][:2]+", 24k")
+            axis.plot(horizons,[pixel[0]["horizons"][str(h)][entity]["copy_px"] for h in horizons],linestyle="--",marker="o",color="#777777",label="Copy context")
+            axis.set(xlabel="Forecast horizon",ylabel=entity.capitalize()+" position error (px)",xticks=horizons,ylim=(0,None));axis.legend(frameon=False)
+            axis.set_title("Native pixel autoregression - "+entity)
+        fig.supxlabel("256 fixed held-out windows, seed 0, 50 Euler steps. Good one-step agent prediction does not persist through rollout.",fontsize=9)
+        for suffix in ["png","svg"]:fig.savefig(out/("native-rollout-drift."+suffix),bbox_inches="tight")
         plt.close(fig)
     names=[("L2-standard-calibrated-b025-resume-dev15","std .1, beta .25"),("L2-standard-calibrated1-b025-seed0","std 1, beta .25"),("L2-standard-calibrated1-b4-seed0","std 1, beta 4"),("L2-standard-direct-calibrated1-b4-seed0","Direct prior"),("L2-standard-w16g4-calibrated1-b4-seed0","W16 / gap4"),("L2-standard-warmencoder-b4-seed0","Warm encoder, beta 4")]
     lookup={r["model"]:r for r in probes};chosen=[(lookup[n],label) for n,label in names if n in lookup]
