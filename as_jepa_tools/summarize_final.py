@@ -186,7 +186,7 @@ def main():
     text+=["","背景颜色交换与噪声状态探针见 color-mechanism.png。完整逐配置协议与区间在 summary.json，简表在 summary.csv。","",
            "旧 L0 seed0 与旧 L1 无 BN 使用修复前的迭代器游标。主比较优先使用 cursorfix seed0 与修复后的 seed1；源版本和恢复来源在 summary.json 中明确记录。","","原方案要求三训练种子、h7 agent 不超过复制基线的 0.5 倍、移动 block 优于复制，以及反事实和人工画面检查。本轮只用于关键 insight 筛选，不能把单项表征、规划、方差或低 loss 当作通过这个门槛。","",
            "LPIPS、SSIM 和 FVD 未测。权威检查点、视频、逐 case 数据与日志留在 EFS，未进入 Git。","",
-           "尚未完成："+(", ".join(r["model"] for r in pending) if pending else "无")]
+           "本批已登记终点评估尚未完成："+(", ".join(r["model"] for r in pending) if pending else "无")]
     (out/"RESULTS.md").write_text("\n".join(text)+"\n")
     print(json.dumps(dict(completed=len(rows),pending=len(pending),color_pairs=len(color_comparisons),output=str(out)),indent=2))
 

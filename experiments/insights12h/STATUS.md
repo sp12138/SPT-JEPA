@@ -1,4 +1,7 @@
-# Insight campaign complete
+# Twelve-hour campaign closed; original full spec incomplete
+
+Original-spec gaps and all 140 dispatch outcomes: [task audit](TASK_AUDIT_20261028.md).
+The 28/28 result below covers selected endpoint finalizers only.
 
 Checked 2026-10-27T20:56:14.635676+00:00. All 28 selected main finalizers and all supplementary diagnostics
 are complete; final verification reports no errors/pending entries.

@@ -1,0 +1,81 @@
+{
+  "audited_result_commit": "b9356dba26d1e797defb695a35803d96917da1eb",
+  "original_spec_commit": "9e81418",
+  "scope": "Review of the original first-round spec against the user-authorized12h adaptation",
+  "original_spec_complete": false,
+  "selected_endpoints_complete": true,
+  "items": [
+    {
+      "id": "final_l2_training_seeds",
+      "status": "pending",
+      "spec": "9.2,12",
+      "detail": "Only beta=.01/50k seed0 exists; seeds1/2 absent."
+    },
+    {
+      "id": "baseline_training_seeds",
+      "status": "partial",
+      "spec": "9.4",
+      "detail": "Matched L0 has seeds0/1; seed2 and a consistent three-seed L1 variant are absent."
+    },
+    {
+      "id": "formal_generation_gallery_gate",
+      "status": "pending",
+      "spec": "8.7,12",
+      "detail": "No formal32-case pass/fail review; first16 gallery is qualitative only."
+    },
+    {
+      "id": "native_search_and_replication",
+      "status": "partial",
+      "spec": "9.3",
+      "detail": "S2 beta4/12k early stop; no successful low-beta50k transfer. S0/S1 trained25k seed0 but late quality uses24k."
+    },
+    {
+      "id": "g0_successful_configuration",
+      "status": "pending",
+      "spec": "5.7,9.4",
+      "detail": "Only beta4 early screen; no beta.01/50k g0."
+    },
+    {
+      "id": "doubled_state_capacity",
+      "status": "pending",
+      "spec": "11",
+      "detail": "64 active dimensions logged; no doubled-width state control."
+    },
+    {
+      "id": "complete_quality_metrics",
+      "status": "partial",
+      "spec": "8.2,8.3",
+      "detail": "LPIPS/SSIM/FVD and generated block-angle metrics absent."
+    },
+    {
+      "id": "original_data_exposure_budget",
+      "status": "partial",
+      "spec": "3,5.5",
+      "detail": "One frameskip phase, reduced renderer and exploratory step budgets differ from original full exposure."
+    },
+    {
+      "id": "full_probe_rate_contract_signoff",
+      "status": "partial",
+      "spec": "8.5,8.6,10",
+      "detail": "20k-train probes and nine core CPU contracts do not complete every original requirement."
+    },
+    {
+      "id": "original_selection_continue_protocol",
+      "status": "partial",
+      "spec": "5.5,11",
+      "detail": "Exploratory selection rather than full original epoch/seed procedure."
+    },
+    {
+      "id": "p1_p4_planning",
+      "status": "conditional_not_triggered",
+      "spec": "5.8,12",
+      "detail": "Formal gate incomplete; current matched P0 gap is under10 percentage points."
+    },
+    {
+      "id": "later_datasets_and_scale",
+      "status": "deferred",
+      "spec": "Appendix A",
+      "detail": "Full appearance variation and later environments/video scale are not completed by the simplified controls."
+    }
+  ]
+}

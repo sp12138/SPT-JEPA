@@ -1,5 +1,7 @@
 # Completed insight campaign — 2026-10-27T20:56:14.635676+00:00
 
+Original full-spec completion was audited separately: [remaining tasks](experiments/insights12h/TASK_AUDIT_20261028.md). The original full spec is incomplete; the 28 selected endpoint finalizers are complete.
+
 The selected 28 main finalizers and all late diagnostics are complete. Read
 [the final report](experiments/insights12h/results/INSIGHTS.md) and
 [the numeric/figure index](experiments/insights12h/results/README.md).

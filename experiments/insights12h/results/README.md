@@ -2,6 +2,8 @@
 
 28 组所选主终点评估全部完成，完整性核验通过。本轮核心正面结果：轻量 L2 β=.01/50k 在单训练种子上，P0 均值 70%，h7 agent 和移动物块误差约为复制基线的 23%。详见[关键结论](INSIGHTS.md)。
 
+原始全量计划尚未全部完成，见[逐项任务核对](../TASK_AUDIT_20261028.md)。28/28 仅指本轮所选终点评估。
+
 - [统一主表](RESULTS.md)、[CSV](summary.csv)、[完整终点 JSON](summary.json)：28 组的探针、均值/噪声状态生成、P0 和反事实。训练种子分开列出。
 - [预算对照](budget-comparison.csv)、[训练耗时与损失](training-summary.csv)：同一 50k 轨迹的 24k/50k 检查点与独立短跑；耗时、吞吐和训练损失独立于生成质量。
 - [全部聚合记录 CSV](all-aggregate-measurements.csv)、[完整 JSON](all-aggregate-measurements.json)：包含历史、终点、诊断、定位器控制和梯度检查，附 tier、flags、路径和版本；记录数量不代表独立实验数量。

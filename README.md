@@ -2,6 +2,8 @@
 
 当前完成的 SPT-JEPA insight campaign（2026-10-28）：[关键结论](experiments/insights12h/results/INSIGHTS.md)、[完整数值与图索引](experiments/insights12h/results/README.md)。28 组所选主终点评估已核验完成；轻量 L2 β=.01/50k 的单训练种子 P0 均值为70%，h7 agent/移动物块误差比均约.234。三训练种子统计仍待验证。
 
+原始全量实验规格尚未全部完成，逐项状态见[任务核对](experiments/insights12h/TASK_AUDIT_20261028.md)。
+
 本轮权重、数据与运行状态保存在 /efs/prescottsun/SPT-JEPA，Git 发布聚合数值及关键 PNG/SVG。当前计算已结束；下文是继承的 SPT 基线文档。
 
 Initialized from [sp12138/SPT](https://github.com/sp12138/SPT) at commit

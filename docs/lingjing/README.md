@@ -4,7 +4,10 @@ Branch: `lingjing/anchored-state-jepa`. Moved here on 2026-10-25 from a private
 LeWM / stable-worldmodel fork (`sparse_jepa`), where the ideas were developed.
 Only plans, design notes and discussion logs were carried over; datasets,
 checkpoints, results, PDFs and literature dumps stay outside this repository.
-Nothing in this folder has been implemented in SPT-JEPA yet.
+This directory preserves the planning snapshots. The 2026-10-27 insight campaign
+implemented both branches and published results; see the
+[task audit](../../experiments/insights12h/TASK_AUDIT_20261028.md) for completed
+work and remaining requirements. The original full experiment spec is incomplete.
 
 The goal is a video world model, trained end to end on top of SPT's ViT, causal
 transformer and DiT flow renderer, whose learned state holds what the dynamics
