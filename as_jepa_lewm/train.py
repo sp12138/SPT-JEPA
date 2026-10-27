@@ -52,6 +52,22 @@ class TrainModule(pl.LightningModule):
             return .5*(1+math.cos(math.pi*min(1.,(step-warmup)/max(1,total-warmup))))
         scheduler=torch.optim.lr_scheduler.LambdaLR(optimizer,schedule)
         return dict(optimizer=optimizer,lr_scheduler=dict(scheduler=scheduler,interval="step"))
+    def on_fit_start(self):
+        if self.cfg.get("calibrate_state_std") is None or self.cfg.get("is_resuming",False):return
+        # One-time affine head initialization. No per-batch normalization is added to AS-JEPA.
+        dataset=PushTWindows(self.cfg["data"],window=self.cfg["model"]["window"],gap=self.cfg.get("gap",8),seed=self.cfg["seed"])
+        generator=torch.Generator().manual_seed(91);indices=torch.randperm(len(dataset),generator=generator)[:128].tolist()
+        from torch.utils.data import Subset
+        loader=DataLoader(Subset(dataset,indices),batch_size=16,num_workers=0)
+        was_training=self.model.training;self.model.eval();values=[]
+        with torch.no_grad():
+            for batch in loader:
+                batch={k:v.to(self.device) if torch.is_tensor(v) else v for k,v in batch.items()}
+                pixels,_,_=self.model.prepare(batch);values.append(self.model.encode(dict(pixels=pixels))["emb"].float().flatten(0,1))
+            values=torch.cat(values);mean=values.mean(0).unflatten(-1,(4,16)).mean(0);current=values.std(0).mean().clamp_min(1e-8);scale=float(self.cfg["calibrate_state_std"])/float(current)
+            head=self.model.pool.head;head.weight.mul_(scale);head.bias.sub_(mean).mul_(scale)
+        self.model.train(was_training)
+        (Path(self.cfg["output"])/"initial_scale.json").write_text(json.dumps(dict(target_std=self.cfg["calibrate_state_std"],original_std=float(current),scale=scale,mean_before=values.mean(0).cpu().tolist(),note="One fixed affine head initialization from 128 train windows; no target labels, batch normalization, stop-gradient or objective change."),indent=2))
     def on_save_checkpoint(self,checkpoint):
         checkpoint["campaign_rng"]=dict(python=random.getstate(),numpy=np.random.get_state(),torch=torch.get_rng_state(),cuda=torch.cuda.get_rng_state_all())
         checkpoint["campaign_samples"]=self.samples_consumed
@@ -100,7 +116,7 @@ class PersistentProgress(Callback):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument("config");parser.add_argument("--resume",action="store_true");args=parser.parse_args()
-    cfg=json.loads(Path(args.config).read_text());root=Path(cfg["output"]);root.mkdir(parents=True,exist_ok=True)
+    cfg=json.loads(Path(args.config).read_text());cfg["is_resuming"]=args.resume;root=Path(cfg["output"]);root.mkdir(parents=True,exist_ok=True)
     torch.set_num_threads(cfg.get("cpu_threads",2));pl.seed_everything(cfg["seed"],workers=True)
     torch.backends.cuda.matmul.allow_tf32=True;torch.set_float32_matmul_precision("high")
     use_cpu=cfg.get("device")=="cpu"

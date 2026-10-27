@@ -69,7 +69,7 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
     loader=DataLoader(Subset(data,indices),batch_size=batch_size,num_workers=2,pin_memory=True)
     pose=pose_net(pose_path) if pose_path else None
     errors={};latent_errors=[];shuffled_errors=[];feature_stds=[];records=[];started=time.time()
-    image_rows=[];anchor_changes=[];zero_changes=[]
+    image_rows=[];anchor_changes=[];zero_changes=[];permutation_changes=[]
     for batch_id,batch in enumerate(loader):
         batch={k:v.cuda(non_blocking=True) if torch.is_tensor(v) else v for k,v in batch.items()}
         with torch.autocast("cuda",dtype=torch.bfloat16):
@@ -108,6 +108,8 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
                 own=model.render_states(mu[:,3],anchor,steps=steps,seed=77)
                 zero=model.render_states(mu[:,3]*0,anchor,steps=steps,seed=77)
                 swap=model.render_states(mu[:,3],anchor.flip(0),steps=steps,seed=77)
+                permuted=model.render_states(mu[:,3].flip(0),anchor,steps=steps,seed=77)
+                permutation_changes.append((own.float()-permuted.float()).square().mean((1,2,3)).cpu())
                 zero_changes.append((own.float()-zero.float()).square().mean((1,2,3)).cpu());anchor_changes.append((own.float()-swap.float()).square().mean((1,2,3)).cpu())
                 if pose is not None:
                     ownpose=pose(own.clamp(-1,1)).float();zeropose=pose(zero.clamp(-1,1)).float();anchorpose=pose(anchor).float();target=batch["state"][:,3,:2].float()/512
@@ -121,7 +123,7 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
     result=dict(cases=len(records),sampler_steps=steps,seconds=time.time()-started,feature_std=float(torch.stack(feature_stds).mean()),latent_mse_by_horizon=torch.cat(latent_errors).mean(0).tolist(),shuffled_action_latent_mse_by_horizon=torch.cat(shuffled_errors).mean(0).tolist(),scope="single-seed exploratory fixed held-out windows; not a three-seed benchmark")
     arrays={k:torch.cat(v).numpy() for k,v in errors.items()}
     for name,values in arrays.items():result[name+"_by_horizon"]=values.mean(0).tolist() if values.ndim>1 else float(values.mean())
-    if zero_changes:result["zero_state_intervention_mse"]=float(torch.cat(zero_changes).mean());result["anchor_swap_intervention_mse"]=float(torch.cat(anchor_changes).mean())
+    if zero_changes:result["zero_state_intervention_mse"]=float(torch.cat(zero_changes).mean());result["anchor_swap_intervention_mse"]=float(torch.cat(anchor_changes).mean());result["state_permutation_intervention_mse"]=float(torch.cat(permutation_changes).mean())
     if "agent" in arrays:
         for h in [1,3,7,13]:
             result[f"h{h}_agent_ratio"]=float(arrays["agent"][:,h-1].mean()/max(1e-6,arrays["copy_agent"][:,h-1].mean()))

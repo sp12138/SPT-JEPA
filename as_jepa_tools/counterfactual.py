@@ -11,7 +11,7 @@ from vforge.ops import initialize_ops,OpsConfig
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--checkpoint',required=True);parser.add_argument('--data',required=True);parser.add_argument('--pose',required=True);parser.add_argument('--output',required=True);parser.add_argument('--cases',type=int,default=32);parser.add_argument('--steps',type=int,default=50);args=parser.parse_args()
     torch.set_num_threads(2);initialize_ops(OpsConfig(backend='sdpa',allow_fallback=False),device=torch.device('cuda',0),parallel_state=None)
-    from stable_worldmodel.envs.pusht.pusht import PushTEnv
+    from stable_worldmodel.envs.pusht import PushT as PushTEnv
     import inspect
     print('PushTEnv signature',inspect.signature(PushTEnv),flush=True)
     data=PushTWindows(args.data,window=16,gap=8,split='test');data.open();model=load_model(args.checkpoint);pose=pose_net(args.pose);rng=np.random.default_rng(42)

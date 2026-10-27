@@ -1,5 +1,5 @@
 """GPU7 evaluates immutable exports and records evidence for early stopping."""
-import json,os,time,traceback,fcntl
+import json,os,time,traceback,fcntl,shutil
 from pathlib import Path
 import torch
 from as_jepa_tools.evaluate import load_model,evaluate
@@ -13,7 +13,7 @@ def main():
     deadline=json.loads((c/"plan.json").read_text())["deadline"];seen=set();last={}
     while time.time()<deadline:
         if not pose.exists():time.sleep(10);continue
-        plan=json.loads((c/"plan.json").read_text());names=[job["id"] for job in plan["jobs"]]+["S2-native-b4-seed0"]
+        plan=json.loads((c/"plan.json").read_text());names=list(dict.fromkeys([job["id"] for job in plan["jobs"]]+["S2-native-b4-seed0"]+[p.name for p in c.iterdir() if p.is_dir() and (p/"execution.json").exists() and p.name.startswith(("L0-","L1-","L2-","S0-","S1-","S2-"))]))
         candidates=[]
         for name in names:
             run=c/name
@@ -34,7 +34,13 @@ def main():
         _,name,folder,step,key=sorted(candidates)[0];run=c/name;out=run/"eval"/f"step{step:07d}"
         state=dict(state="evaluating",model=name,step=step,started_at=time.time(),pid=os.getpid());(c/"evaluation-worker.json").write_text(json.dumps(state,indent=2))
         try:
-            model=load_model(folder);result=evaluate(model,base/"data/pusht",out,count=32,steps=20,pose_path=pose,batch_size=8)
+            out.mkdir(parents=True,exist_ok=True)
+            pinned=out/"checkpoint";pinned.mkdir(exist_ok=True)
+            (pinned/"config.json").write_bytes((folder/"config.json").read_bytes())
+            if not (pinned/"weights.pt").exists():
+                try:os.link(folder/"weights.pt",pinned/"weights.pt")
+                except OSError:shutil.copy2(folder/"weights.pt",pinned/"weights.pt")
+            model=load_model(pinned);result=evaluate(model,base/"data/pusht",out,count=32,steps=20,pose_path=pose,batch_size=8)
             result["checkpoint_step"]=step;result["source_checkpoint"]=str(folder)
             (out/"metrics.json").write_text(json.dumps(result,indent=2))
             seen.add(key);last[name]=step
