@@ -69,7 +69,7 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
     loader=DataLoader(Subset(data,indices),batch_size=batch_size,num_workers=2,pin_memory=True)
     pose=pose_net(pose_path) if pose_path else None
     errors={};latent_errors=[];shuffled_errors=[];feature_stds=[];records=[];started=time.time()
-    image_rows=[];anchor_changes=[];zero_changes=[];permutation_changes=[]
+    image_rows=[];anchor_changes=[];zero_changes=[];permutation_changes=[];all_means=[]
     for batch_id,batch in enumerate(loader):
         batch={k:v.cuda(non_blocking=True) if torch.is_tensor(v) else v for k,v in batch.items()}
         with torch.autocast("cuda",dtype=torch.bfloat16):
@@ -83,6 +83,7 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
             _,_,anchor=model.prepare(prior_batch)
             if model.anchor_gap==0:anchor=frames[:,0]
             mu=model.encode(dict(pixels=pixels))["emb"]
+            all_means.append(mu.float().flatten(0,1).cpu())
             predicted=predict_states(model,pixels[:,:3],batch["action"],13)
             permutation=torch.arange(len(pixels)-1,-1,-1,device="cuda")
             shuffled=predict_states(model,pixels[:,:3],batch["action"][permutation],13)
@@ -121,6 +122,11 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
                     image_rows.extend([(frames[i].cpu(),generated[i].cpu(),anchor[i].cpu()) for i in range(min(len(pixels),16-len(image_rows)))])
         for ep,start in zip(batch["episode"].cpu(),batch["start"].cpu()):records.append(dict(episode=int(ep),start=int(start)))
     result=dict(cases=len(records),sampler_steps=steps,seconds=time.time()-started,feature_std=float(torch.stack(feature_stds).mean()),latent_mse_by_horizon=torch.cat(latent_errors).mean(0).tolist(),shuffled_action_latent_mse_by_horizon=torch.cat(shuffled_errors).mean(0).tolist(),scope="single-seed exploratory fixed held-out windows; not a three-seed benchmark")
+    means=torch.cat(all_means);variance=means.var(0,unbiased=False)
+    result["state_std_per_dimension"]=variance.sqrt().tolist()
+    if model.mode in {"L2","S2"}:
+        result["noisy_state_information_upper_bound_nats"]=float(.5*torch.log1p(variance/model.sigma0**2).sum())
+        result["information_bound_scope"]="Empirical diagonal-covariance Gaussian-noise channel upper bound; not an estimate of task-relevant information."
     arrays={k:torch.cat(v).numpy() for k,v in errors.items()}
     for name,values in arrays.items():result[name+"_by_horizon"]=values.mean(0).tolist() if values.ndim>1 else float(values.mean())
     if zero_changes:result["zero_state_intervention_mse"]=float(torch.cat(zero_changes).mean());result["anchor_swap_intervention_mse"]=float(torch.cat(anchor_changes).mean());result["state_permutation_intervention_mse"]=float(torch.cat(permutation_changes).mean())
