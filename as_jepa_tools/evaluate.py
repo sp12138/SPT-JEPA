@@ -62,9 +62,9 @@ def pose_net(path):
     model.load_state_dict(weights);return model.cuda().eval()
 
 @torch.no_grad()
-def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
+def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8,fp32=False):
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
-    if model.mode in {"S0","S1"}:return evaluate_pixel(model,root,output,count,steps,pose_path,batch_size)
+    if model.mode in {"S0","S1"}:return evaluate_pixel(model,root,output,count,steps,pose_path,batch_size,fp32=fp32)
     data=PushTWindows(root,window=16,gap=8,split="test");indices=select_windows(data,count)
     loader=DataLoader(Subset(data,indices),batch_size=batch_size,num_workers=2,pin_memory=True)
     pose=pose_net(pose_path) if pose_path else None
@@ -72,7 +72,7 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
     image_rows=[];anchor_changes=[];zero_changes=[];permutation_changes=[];all_means=[]
     for batch_id,batch in enumerate(loader):
         batch={k:v.cuda(non_blocking=True) if torch.is_tensor(v) else v for k,v in batch.items()}
-        with torch.autocast("cuda",dtype=torch.bfloat16):
+        with torch.autocast("cuda",dtype=torch.bfloat16,enabled=not fp32):
             pixels,frames,anchor=model.prepare(batch)
             # Primary deployment anchor is eight kept frames before the context.
             # Dataset anchor selection is replaced by this deterministic past frame.
@@ -130,7 +130,7 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
                 if len(image_rows)<16:
                     image_rows.extend([(frames[i].cpu(),generated[i].cpu(),anchor[i].cpu()) for i in range(min(len(pixels),16-len(image_rows)))])
         for ep,start in zip(batch["episode"].cpu(),batch["start"].cpu()):records.append(dict(episode=int(ep),start=int(start)))
-    result=dict(cases=len(records),sampler_steps=steps,seconds=time.time()-started,feature_std=float(torch.stack(feature_stds).mean()),latent_mse_by_horizon=torch.cat(latent_errors).mean(0).tolist(),shuffled_action_latent_mse_by_horizon=torch.cat(shuffled_errors).mean(0).tolist(),scope="single-seed exploratory fixed held-out windows; not a three-seed benchmark")
+    result=dict(feature_forward_precision="FP32" if fp32 else "BF16 autocast",pose_weights=str(pose_path),cases=len(records),sampler_steps=steps,seconds=time.time()-started,feature_std=float(torch.stack(feature_stds).mean()),latent_mse_by_horizon=torch.cat(latent_errors).mean(0).tolist(),shuffled_action_latent_mse_by_horizon=torch.cat(shuffled_errors).mean(0).tolist(),scope="single-seed exploratory fixed held-out windows; not a three-seed benchmark")
     means=torch.cat(all_means);variance=means.var(0,unbiased=False)
     result["state_std_per_dimension"]=variance.sqrt().tolist()
     if model.mode in {"L2","S2"}:
@@ -159,13 +159,13 @@ def gallery(rows,output):
 
 
 @torch.no_grad()
-def evaluate_pixel(model,root,output,count,steps,pose_path,batch_size):
+def evaluate_pixel(model,root,output,count,steps,pose_path,batch_size,fp32=False):
     output=Path(output);data=PushTWindows(root,window=16,gap=8,split="test");indices=select_windows(data,count)
     loader=DataLoader(Subset(data,indices),batch_size=min(4,batch_size),num_workers=2,pin_memory=True)
     pose=pose_net(pose_path) if pose_path else None;errors={};images=[];started=time.time()
     for batch_id,batch in enumerate(loader):
         batch={k:v.cuda(non_blocking=True) if torch.is_tensor(v) else v for k,v in batch.items()}
-        with torch.autocast("cuda",dtype=torch.bfloat16):
+        with torch.autocast("cuda",dtype=torch.bfloat16,enabled=not fp32):
             _,frames,_=model.prepare(batch);anchor=frames[:,0]
             generated=model.rollout_frames(frames[:,:3],batch["action"],anchor,horizon=13,steps=steps,seed=1000+batch_id).float().clamp(-1,1)
             copy=frames[:,2:3].expand_as(generated)
@@ -175,7 +175,7 @@ def evaluate_pixel(model,root,output,count,steps,pose_path,batch_size):
                 prediction=pose(generated.flatten(0,1)).float().reshape(len(frames),13,6);copypose=pose(copy.flatten(0,1)).float().reshape(len(frames),13,6);truth=batch["state"][:,3:,:4].float()/512
                 for name,values in [("agent",(prediction[:,:,:2]-truth[:,:,:2]).norm(dim=-1)*512),("block",(prediction[:,:,2:4]-truth[:,:,2:4]).norm(dim=-1)*512),("copy_agent",(copypose[:,:,:2]-truth[:,:,:2]).norm(dim=-1)*512),("copy_block",(copypose[:,:,2:4]-truth[:,:,2:4]).norm(dim=-1)*512)]:errors.setdefault(name,[]).append(values.cpu())
             if len(images)<16:images.extend([(frames[i].cpu(),generated[i].cpu(),anchor[i].cpu()) for i in range(min(len(frames),16-len(images)))])
-    arrays={k:torch.cat(v).numpy() for k,v in errors.items()};result=dict(cases=len(indices),sampler_steps=steps,seconds=time.time()-started,model=model.mode,scope="single-seed SPT pixel-autoregressive baseline on the same held-out window IDs")
+    arrays={k:torch.cat(v).numpy() for k,v in errors.items()};result=dict(feature_forward_precision="FP32" if fp32 else "BF16 autocast",pose_weights=str(pose_path),cases=len(indices),sampler_steps=steps,seconds=time.time()-started,model=model.mode,scope="single-seed SPT pixel-autoregressive baseline on the same held-out window IDs")
     for key,value in arrays.items():result[key+"_by_horizon"]=value.mean(0).tolist()
     if "agent" in arrays:
         for h in [1,3,7,13]:
@@ -185,8 +185,8 @@ def evaluate_pixel(model,root,output,count,steps,pose_path,batch_size):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument("--checkpoint",required=True);p.add_argument("--data",required=True);p.add_argument("--output",required=True);p.add_argument("--cases",type=int,default=64);p.add_argument("--steps",type=int,default=20);p.add_argument("--pose");a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument("--checkpoint",required=True);p.add_argument("--data",required=True);p.add_argument("--output",required=True);p.add_argument("--cases",type=int,default=64);p.add_argument("--steps",type=int,default=20);p.add_argument("--pose");p.add_argument("--fp32",action="store_true");a=p.parse_args()
     torch.set_num_threads(2);torch.set_float32_matmul_precision("high");initialize_ops(OpsConfig(backend="sdpa",allow_fallback=False),device=torch.device("cuda",0),parallel_state=None)
-    model=load_model(a.checkpoint);result=evaluate(model,a.data,a.output,a.cases,a.steps,a.pose);print(json.dumps(result,indent=2))
+    model=load_model(a.checkpoint);result=evaluate(model,a.data,a.output,a.cases,a.steps,a.pose,fp32=a.fp32);print(json.dumps(result,indent=2))
 
 if __name__=="__main__":main()

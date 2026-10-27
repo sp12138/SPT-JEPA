@@ -33,7 +33,7 @@ def gallery(cases,output):
 def main():
     p=argparse.ArgumentParser();p.add_argument("--checkpoint",required=True);p.add_argument("--data",required=True)
     p.add_argument("--pose",required=True);p.add_argument("--output",required=True);p.add_argument("--cases",type=int,default=32)
-    p.add_argument("--steps",type=int,default=50);a=p.parse_args()
+    p.add_argument("--steps",type=int,default=50);p.add_argument("--fp32",action="store_true");a=p.parse_args()
     torch.set_num_threads(2);torch.manual_seed(42)
     initialize_ops(OpsConfig(backend="sdpa",allow_fallback=False),device=torch.device("cuda",0),parallel_state=None)
     from stable_worldmodel.envs.pusht import PushT as PushTEnv
@@ -70,7 +70,7 @@ def main():
         anchor_row=int(data.offsets[ep])+start-model.anchor_gap if model.mode not in {"S0","S1"} else int(rows[0])
         anchor=torch.from_numpy(np.array(data.p64[anchor_row])).permute(2,0,1)[None].cuda().float()/127.5-1.
         past=batch["action"][:2].numpy();actions=torch.from_numpy(np.stack([np.concatenate([past,v],0) for v in normalized])).cuda().float()
-        with torch.autocast("cuda",dtype=torch.bfloat16):
+        with torch.autocast("cuda",dtype=torch.bfloat16,enabled=not a.fp32):
             if model.mode in {"S0","S1"}:
                 generated=torch.cat([model.rollout_frames(frames,actions[i:i+1],anchor,horizon=8,steps=a.steps,seed=123+case) for i in range(4)])
             else:
@@ -99,7 +99,7 @@ def main():
             galleries.append(dict(case=case,truth=truth_images,prediction=pred))
     env.close();out=Path(a.output);out.mkdir(parents=True,exist_ok=True)
     def average(key):return float(np.mean([r[key] for r in records]))
-    report=dict(checkpoint=str(Path(a.checkpoint).resolve()),cases=len(records),rollouts=4*len(records),
+    report=dict(feature_forward_precision="FP32" if a.fp32 else "BF16 autocast",checkpoint=str(Path(a.checkpoint).resolve()),cases=len(records),rollouts=4*len(records),
                 action_identification_accuracy=average("correct"),agent_action_identification_accuracy=average("agent_correct"),
                 block_action_identification_accuracy=average("block_correct"),oracle_pose_action_identification_accuracy=average("oracle_pose_correct"),
                 chance=.25,sampler_steps=a.steps,seconds=time.time()-started,common_sampler_noise=True,

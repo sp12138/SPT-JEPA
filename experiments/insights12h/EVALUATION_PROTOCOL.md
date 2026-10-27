@@ -25,3 +25,5 @@ Native exploratory runs use one AdamW group (lr=1e-4, betas=.9/.95, weight decay
 Gradient diagnostics compare flow and priced-rate derivatives on the same fixed train minibatch without any optimizer update. A zero initial flow-to-state gradient is expected from a zero renderer output head; its presence alone is not evidence that later learning is impossible.
 
 A matched FP32-versus-BF16 feature probe is added for the same frozen weights and case IDs. The large one-time head gain can in principle amplify rounding/cancellation; this is a diagnostic hypothesis, not an established cause. Feature extraction precision and float32 matmul precision are recorded. Do not infer useful state information from variance or an information upper bound alone.
+
+Full-FP32 training controls are evaluated with FP32 forward passes explicitly, and mixed controls retain BF16 autocast with the declared FP32 pool where applicable. The streaming evaluator's next revision uses pose-v2 and a separate eval-posev2 directory; it preserves all earlier eval directories. The pose weight path and feature-forward precision are stored in each new measurement.

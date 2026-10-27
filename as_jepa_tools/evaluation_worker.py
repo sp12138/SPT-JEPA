@@ -7,7 +7,7 @@ from vforge.ops import OpsConfig,initialize_ops
 
 
 def main():
-    base=Path("/efs/prescottsun/SPT-JEPA");c=base/"runs/insights12h_20261027";pose=c/"pose/weights.pt"
+    base=Path("/efs/prescottsun/SPT-JEPA");c=base/"runs/insights12h_20261027";pose=Path(os.environ.get("ASJEPA_POSE_PATH",str(c/"pose/weights.pt")));eval_dir=os.environ.get("ASJEPA_EVAL_DIR","eval")
     lock=(c/"evaluation-worker.lock").open("w");fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     torch.set_num_threads(2);torch.set_float32_matmul_precision("high");initialize_ops(OpsConfig(backend="sdpa",allow_fallback=False),device=torch.device("cuda",0),parallel_state=None)
     deadline=json.loads((c/"plan.json").read_text())["deadline"];seen=set();last={}
@@ -25,13 +25,13 @@ def main():
             key=f"{name}:{step}"
             if key in seen:continue
             if step<2000:continue
-            metrics=run/"eval"/f"step{step:07d}"/"metrics.json"
+            metrics=run/eval_dir/f"step{step:07d}"/"metrics.json"
             if metrics.exists():seen.add(key);continue
             # Prioritize a matched first look, then prices near the useful range.
             priority=(0 if name not in last else 1,last.get(name,0),0 if "standard" in name else 1,name)
             candidates.append((priority,name,folder,step,key))
         if not candidates:time.sleep(15);continue
-        _,name,folder,step,key=sorted(candidates)[0];run=c/name;out=run/"eval"/f"step{step:07d}"
+        _,name,folder,step,key=sorted(candidates)[0];run=c/name;out=run/eval_dir/f"step{step:07d}"
         state=dict(state="evaluating",model=name,step=step,started_at=time.time(),pid=os.getpid());(c/"evaluation-worker.json").write_text(json.dumps(state,indent=2))
         try:
             out.mkdir(parents=True,exist_ok=True)
@@ -40,7 +40,9 @@ def main():
             if not (pinned/"weights.pt").exists():
                 try:os.link(folder/"weights.pt",pinned/"weights.pt")
                 except OSError:shutil.copy2(folder/"weights.pt",pinned/"weights.pt")
-            model=load_model(pinned);result=evaluate(model,base/"data/pusht",out,count=32,steps=20,pose_path=pose,batch_size=8)
+            model=load_model(pinned)
+            run_config=json.loads((run/"config.json").read_text()) if (run/"config.json").exists() else {}
+            result=evaluate(model,base/"data/pusht",out,count=32,steps=20,pose_path=pose,batch_size=8,fp32=run_config.get("precision")=="32-true")
             result["checkpoint_step"]=step;result["source_checkpoint"]=str(folder)
             (out/"metrics.json").write_text(json.dumps(result,indent=2))
             seen.add(key);last[name]=step
