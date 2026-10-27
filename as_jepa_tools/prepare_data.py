@@ -2,6 +2,7 @@
 import argparse, concurrent.futures, hashlib, json, os, time
 from pathlib import Path
 import h5py
+import hdf5plugin  # register the source HDF5 compression filters
 import numpy as np
 
 
