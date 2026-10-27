@@ -73,6 +73,12 @@ def main():
                  seed=train_cfg["seed"],beta=cfg.get("beta"),renderer_width=cfg.get("renderer_width",192),renderer_depth=cfg.get("renderer_depth",6),
                  calibrate_state_std=train_cfg.get("calibrate_state_std"),precision=train_cfg.get("precision","bf16-mixed"),
                  reached_max_steps=manifest["reached_max_steps"],output=str(root),parameter_counts=read(parent/"model_size.json"))
+        training_source=read(parent/"actual_source.json") or read(parent/"source_manifest.json") or read(parent/"execution.json") or {}
+        row["training_source"]=training_source
+        row["resume_from"]=read(parent/"resume_from.json")
+        source_path=Path(training_source.get("source","/nonexistent"))/"as_jepa_lewm/train.py"
+        source_text=source_path.read_text() if source_path.exists() else ""
+        row["sampler_rule"]="legacy iterator-advance cursor" if "self.start=start+self.length" in source_text else ("completed-sample cursor" if source_text else "unknown")
         row["probes"]={name:read(root/"probes"/name/"probes.json") for name in ["mean","noisy","mean-fp32"]}
         row["generation_mean"]=generation(root/"generation/mean")
         row["generation_sample"]=generation(root/"generation/samples")
@@ -100,7 +106,7 @@ def main():
     result=dict(collected_at=stamp,models=rows,pending=pending,color_probe_comparisons=color_comparisons,
                 source_campaign=str(campaign),scope="Exploratory campaign; no claim of the original three-training-seed generation gate")
     (out/"summary.json").write_text(json.dumps(result,indent=2,allow_nan=False))
-    fields=["model","step","seed","mode","domain","beta","precision","renderer_width","renderer_depth","plan_mean","plan_sd","h7_agent_ratio","h7_moving_block_ratio","cf_accuracy","agent_r2","block_r2","nuisance_r2","output"]
+    fields=["model","step","seed","mode","domain","beta","precision","sampler_rule","renderer_width","renderer_depth","plan_mean","plan_sd","h7_agent_ratio","h7_moving_block_ratio","cf_accuracy","agent_r2","block_r2","nuisance_r2","output"]
     with (out/"summary.csv").open("w") as handle:
         writer=csv.DictWriter(handle,fieldnames=fields);writer.writeheader()
         for row in rows:
@@ -114,8 +120,8 @@ def main():
     import matplotlib.pyplot as plt
     plt.rcParams.update({"font.size":10,"axes.spines.top":False,"axes.spines.right":False,"savefig.dpi":170})
     names=[
-        ("L0-standard-seed0","L0, seed 0"),("L0-standard-seed1","L0, seed 1"),
-        ("L1-standard-bn-dev2","L1 BN64, seed 0"),("L1-standard-bn-seed1","L1 BN64, seed 1"),("L1-standard-mlpbn-seed0","L1 MLP-BN"),
+        ("L0-standard-cursorfix-seed0","L0, matched seed 0"),("L0-standard-seed1","L0, matched seed 1"),("L0-standard-seed0","L0, legacy order seed 0"),
+        ("L1-standard-cursorfix-seed0","L1, matched seed 0"),("L2-standard-b4-cursorfix-seed0","L2 beta4, matched seed 0"),("L1-standard-bn-dev2","L1 BN64, seed 0"),("L1-standard-bn-seed1","L1 BN64, seed 1"),("L1-standard-mlpbn-seed0","L1 MLP-BN"),
         ("L2-standard-calibrated-b001-seed0","L2 beta .01, seed 0"),("L2-standard-calibrated-b001-seed1","L2 beta .01, seed 1"),
         ("L2-standard-calibrated-b001-50k-seed0","L2 beta .01, 50k"),
         ("L2-standard-staged-b025-seed0","L2 staged beta .25"),
@@ -171,7 +177,7 @@ def main():
         plan="—" if not pp else num(pp["mean"],1)+"±"+num(pp.get("std"),1)
         text.append(f"| {row['model']} | {row['step']} | {plan} | {num(gg.get('h7_agent_ratio'))} | {num(gg.get('h7_moving_block_ratio'))} | {num(cf.get('action_identification_accuracy'))} |")
     text+=["","背景颜色交换与噪声状态探针见 color-mechanism.png。完整逐配置协议与区间在 summary.json，简表在 summary.csv。","",
-           "原方案要求三训练种子、h7 agent 不超过复制基线的 0.5 倍、移动 block 优于复制，以及反事实和人工画面检查。本轮只用于关键 insight 筛选，不能把单项表征、规划、方差或低 loss 当作通过这个门槛。","",
+           "旧 L0 seed0 与旧 L1 无 BN 使用修复前的迭代器游标。主比较优先使用 cursorfix seed0 与修复后的 seed1；源版本和恢复来源在 summary.json 中明确记录。","","原方案要求三训练种子、h7 agent 不超过复制基线的 0.5 倍、移动 block 优于复制，以及反事实和人工画面检查。本轮只用于关键 insight 筛选，不能把单项表征、规划、方差或低 loss 当作通过这个门槛。","",
            "LPIPS、SSIM 和 FVD 未测。权威检查点、视频、逐 case 数据与日志留在 EFS，未进入 Git。","",
            "尚未完成："+(", ".join(r["model"] for r in pending) if pending else "无")]
     (out/"RESULTS.md").write_text("\n".join(text)+"\n")

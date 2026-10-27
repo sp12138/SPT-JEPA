@@ -1,5 +1,7 @@
 # SPT-JEPA insight campaign, 2026-10-27
 
+Active recovery/status audit: 2026-10-27T16:43:52.903636+00:00. Read RECOVERY_ACTIVE_20261028.md before acting; it supersedes earlier provisional results below.
+
 Latest checked status: 2026-10-27T13:33:10.378322+00:00. Read experiments/insights12h/INTERIM_20261027.md and EVALUATION_PROTOCOL.md for current results and limitations. Local review clone tracks insights/12h-20261027; authoritative runtime remains on EFS.
 
 Current authoritative project root is `/efs/prescottsun/SPT-JEPA`, including code and Git metadata. The user authorized dev2, dev13 and dev15 (8 H200 each) for a 12-hour insight-first campaign starting 2026-10-27 10:24:58 UTC, ending 22:24:58 UTC. Single-seed screens and early stopping are authorized. dev15 was added at 12:04 UTC; the original deadline is unchanged. No other hosts are authorized by this campaign.
