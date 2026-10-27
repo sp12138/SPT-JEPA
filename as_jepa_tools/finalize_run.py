@@ -10,7 +10,7 @@ def atomic(path,value):
 def main():
     p=argparse.ArgumentParser();p.add_argument("--run",required=True);p.add_argument("--campaign",required=True)
     p.add_argument("--output",required=True);p.add_argument("--cases",type=int,default=256)
-    p.add_argument("--planning-seeds",default="42,43,44");p.add_argument("--skip-samples",action="store_true")
+    p.add_argument("--planning-seeds",default="42,43,44");p.add_argument("--sample-cases",type=int);p.add_argument("--skip-samples",action="store_true")
     p.add_argument("--probe-only",action="store_true");a=p.parse_args()
     run=Path(a.run);campaign=Path(a.campaign);base=campaign.parent.parent;out=Path(a.output);out.mkdir(parents=True,exist_ok=True)
     lock=(out/"finalizer.lock").open("w");fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
@@ -40,7 +40,7 @@ def main():
             if fp32:args.append("--fp32")
             jobs.append(dict(id="generation-mean",command=args))
             if mode=="L2" and not a.skip_samples:
-                args=[python,"-u","-m","as_jepa_tools.sample_rollouts","--checkpoint",str(ck),"--data",data,"--pose",pose,"--output",str(out/"generation/samples"),"--cases",str(a.cases),"--steps","50","--samples","4"]
+                args=[python,"-u","-m","as_jepa_tools.sample_rollouts","--checkpoint",str(ck),"--data",data,"--pose",pose,"--output",str(out/"generation/samples"),"--cases",str(a.sample_cases or a.cases),"--steps","50","--samples","4"]
                 if fp32:args.append("--fp32")
                 jobs.append(dict(id="generation-samples",command=args))
         if domain=="color":
@@ -52,6 +52,14 @@ def main():
                 args=[python,"-u","-m","as_jepa_tools.counterfactual","--checkpoint",str(ck),"--data",data,"--pose",pose,"--output",str(out/"counterfactual"),"--cases","64","--steps","50"]
                 if fp32:args.append("--fp32")
                 jobs.append(dict(id="counterfactual",command=args))
+    def priority(job):
+        if job["id"]=="probes":return 0
+        if job["id"]=="generation-mean":return 1
+        if job["id"]=="colour-swaps":return 2
+        if job["id"].startswith("planning-"):return 3
+        if job["id"]=="counterfactual":return 4
+        return 5
+    jobs.sort(key=priority)
     atomic(out/"jobs.json",jobs);results=[];deadline=json.loads((campaign/"plan.json").read_text())["deadline"];stopped=False
     for job in jobs:
         if (out/"STOP").exists() or time.time()>deadline-90:stopped=True;break
