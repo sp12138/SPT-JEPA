@@ -152,7 +152,7 @@ def main():
                 ci=[source["horizons"][str(h)][entity][key] for h in horizons];value=np.array([x["value"] for x in ci]);lower=np.array([x["lower"] for x in ci]);upper=np.array([x["upper"] for x in ci])
                 axis.errorbar(horizons,value,yerr=np.stack([value-lower,upper-value]),marker="o",color=color_value,label=label,capsize=3)
             axis.axhline(1,color="#777777",linestyle="--");axis.set(xticks=horizons,xlabel="Forecast horizon",ylabel=entity.capitalize()+" error / copy error",ylim=(0,None),title="Native "+row["model"]+" - "+entity)
-        axes[0].legend(frameon=False,fontsize=8);fig.supxlabel("256 same cases, weights, actions, anchor and sampling noise; clipping changes only generated encoder history. Oracle uses privileged past frames.",fontsize=9)
+        axes[0].legend(frameon=False,fontsize=8);fig.supxlabel("256 same cases, weights, actions, anchor and sampling noise; clipping changes only generated encoder history. Oracle uses privileged past frames.\n95% episode-cluster intervals, conditional on trained weights.",fontsize=9)
         for suffix in ["png","svg"]:fig.savefig(out/("native-feedback-clipping."+suffix),bbox_inches="tight")
         plt.close(fig)
     anchor_geometry=[r for r in geometry if r.get("parent","").startswith("L2-color-calibrated1-")]
@@ -162,7 +162,7 @@ def main():
             axis.bar(x-.18,[row["mean"][k+"_block_error"] for k in keys],.36,label="Error to own block",color="#375c93")
             axis.bar(x+.18,[row["mean"][k+"_block_donor_error"] for k in keys],.36,label="Error to donor block",color="#cf8a43")
             axis.set_xticks(x,["Own state / own anchor","Own state / donor anchor","Donor state / own anchor"],rotation=18,ha="right")
-            axis.set(ylabel="Block position error (px)",title="Anchor model, "+row["parent"].split("-")[-1]);axis.legend(frameon=False,fontsize=9)
+            axis.set(ylabel="Mean block position error (px)",title="Anchor model, "+row["parent"].split("-")[-1],ylim=(0,1.3*max(row["mean"][k+suffix] for k in keys for suffix in ["_block_error","_block_donor_error"])));axis.legend(frameon=False,fontsize=9)
         fig.supxlabel("128 matched posterior-state interventions per seed; same donor pairing and rendering noise. Means are conditional on each trained model.",fontsize=9)
         for suffix in ["png","svg"]:fig.savefig(out/("color-geometry-interventions."+suffix),bbox_inches="tight")
         plt.close(fig)
