@@ -1,0 +1,181 @@
+{
+  "data": {
+    "status": "passed",
+    "random_pixel_rows": 1000,
+    "kept_frames": 474498,
+    "train_episodes": 17751,
+    "test_episodes": 934,
+    "split_overlap": 0,
+    "train_windows_w8": 326593,
+    "train_windows_w4": 397597,
+    "checked_at": 1793098783.6395986,
+    "scope": "exact read-only HDF5 pixel matching and uint8-rounded 64px area resize; episode-disjoint split"
+  },
+  "pose_v1": {
+    "standard": {
+      "domain": "standard",
+      "frames": 10000,
+      "agent_position_error": 2.591797351837158,
+      "block_position_error": 1.5171453952789307,
+      "seconds": 2.677752733230591,
+      "scope": "Episode-disjoint real-frame evaluator floor; no world-model generated frames"
+    },
+    "color": {
+      "domain": "color",
+      "frames": 10000,
+      "agent_position_error": 4.30126953125,
+      "block_position_error": 2.1983065605163574,
+      "seconds": 2.867870569229126,
+      "scope": "Episode-disjoint real-frame evaluator floor; no world-model generated frames"
+    },
+    "dot": {
+      "domain": "dot",
+      "frames": 10000,
+      "agent_position_error": 108.4083023071289,
+      "block_position_error": 29.570005416870117,
+      "seconds": 2.737689971923828,
+      "scope": "Episode-disjoint real-frame evaluator floor; no world-model generated frames"
+    }
+  },
+  "pose_v2": {
+    "standard": {
+      "domain": "standard",
+      "frames": 10000,
+      "agent_position_error": 2.370551347732544,
+      "block_position_error": 1.4810757637023926,
+      "seconds": 2.5868070125579834,
+      "scope": "Episode-disjoint real-frame evaluator floor; no world-model generated frames"
+    },
+    "color": {
+      "domain": "color",
+      "frames": 10000,
+      "agent_position_error": 3.0333383083343506,
+      "block_position_error": 1.7954554557800293,
+      "seconds": 2.7190136909484863,
+      "scope": "Episode-disjoint real-frame evaluator floor; no world-model generated frames"
+    },
+    "dot": {
+      "domain": "dot",
+      "frames": 10000,
+      "agent_position_error": 3.2522103786468506,
+      "block_position_error": 1.781081199645996,
+      "seconds": 2.7109620571136475,
+      "scope": "Episode-disjoint real-frame evaluator floor; no world-model generated frames"
+    }
+  },
+  "cpu_unittest": {
+    "returncode": 0,
+    "time": 1793114478.3454666,
+    "source": {
+      "source_commit": "91b91eaf53004a2381e3790961fc092daff6315d",
+      "source": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/source-insight-v14",
+      "python": "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/source-insight-v14:/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/source-insight-v14/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+      "upstream_commit": "21446f1ede6d5284e981bd7b47f432b994e6d812"
+    }
+  },
+  "cpu_tests": 9,
+  "cpu_test_seconds": 13.312,
+  "initial_pytest_runner": {
+    "returncode": 1,
+    "reason": "pytest did not start because supplied overlay lacks pluggy; same nine contracts passed through unittest",
+    "source": "/efs/prescottsun/SPT-JEPA/reports/validation-current/cpu-contracts.json"
+  },
+  "native_context": {
+    "native-context-S0-native-seed0-n256": {
+      "max_h1_error_difference_px": {
+        "agent": 0.0,
+        "block": 0.0
+      },
+      "tolerance_px": 0.5,
+      "passed": true
+    },
+    "native-context-S1-native-seed0-n256": {
+      "max_h1_error_difference_px": {
+        "agent": 0.0,
+        "block": 0.0
+      },
+      "tolerance_px": 0.5,
+      "passed": true
+    }
+  },
+  "color_geometry": {
+    "L2-color-calibrated1-b025-seed0": {
+      "passed": true,
+      "same_case_ids": true,
+      "palette_abs_differences": {
+        "anchor_style_transfer_projection": 0.0,
+        "state_style_transfer_projection": 0.0
+      },
+      "own_pose_abs_differences_px": {
+        "own_agent_error": 0.0,
+        "own_block_error": 0.0
+      },
+      "palette_tolerance": 0.001,
+      "pose_tolerance_px": 1
+    },
+    "L2-color-calibrated1-b025-seed1": {
+      "passed": true,
+      "same_case_ids": true,
+      "palette_abs_differences": {
+        "anchor_style_transfer_projection": 0.0,
+        "state_style_transfer_projection": 0.0
+      },
+      "own_pose_abs_differences_px": {
+        "own_agent_error": 0.0,
+        "own_block_error": 0.0
+      },
+      "palette_tolerance": 0.001,
+      "pose_tolerance_px": 1
+    },
+    "L2-color-noanchor-calibrated1-b025-seed0": {
+      "passed": true,
+      "same_case_ids": true,
+      "palette_abs_differences": {
+        "anchor_style_transfer_projection": 0.0,
+        "state_style_transfer_projection": 0.0
+      },
+      "own_pose_abs_differences_px": {
+        "own_agent_error": 0.0,
+        "own_block_error": 0.0
+      },
+      "palette_tolerance": 0.001,
+      "pose_tolerance_px": 1
+    },
+    "L2-color-noanchor-calibrated1-b025-seed1": {
+      "passed": true,
+      "same_case_ids": true,
+      "palette_abs_differences": {
+        "anchor_style_transfer_projection": 0.0,
+        "state_style_transfer_projection": 0.0
+      },
+      "own_pose_abs_differences_px": {
+        "own_agent_error": 0.0,
+        "own_block_error": 0.0
+      },
+      "palette_tolerance": 0.001,
+      "pose_tolerance_px": 1
+    }
+  },
+  "cpu_cross_host_recovery": {
+    "status": "passed",
+    "reference_steps": 20,
+    "recovered_steps": 20,
+    "samples_consumed": 40,
+    "all_batch_episode_and_start_ids_match": true,
+    "max_weight_abs_error": 0.0,
+    "scheduler_states_equal": true,
+    "source_host": "dev13",
+    "recovery_host": "dev2",
+    "scope": "FP32 CPU 20-step uninterrupted reference vs 5 steps on dev13 and 15 restored steps on dev2; full model/optimizer/scheduler/RNG and data cursor restored",
+    "checked_at": 1793101303.7537117
+  },
+  "inherited_runtime_integrity": {
+    "checked_at": "2026-10-27T20:58:12.516249+00:00",
+    "files": 903,
+    "mismatches": [],
+    "passed": true,
+    "manifest": "provenance/upstream_runtime_hashes.json",
+    "manifest_sha256": "fcbaf93c0a03307019da33e2b691d9c7544a5f989abf6a39fae2755326569cc4"
+  }
+}

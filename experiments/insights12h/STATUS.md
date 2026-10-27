@@ -1,1 +1,12 @@
-See the persistent campaign root `/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027` for current state. Native and LeWM mechanism contracts: 9 passed. Dataset pixel/split validation passed. Cross-host CPU full-state recovery passed exactly. dev13 became unreachable at approximately 11:28 UTC; evaluation and recovery continue on dev2. Small S0/S1 loss and autoregressive sampling checks passed. First 2000-step generation evidence is weak, with no benchmark-success claim. Model sizes, all deviations, masks, seeds and source hashes are recorded in the run metadata.
+# Insight campaign complete
+
+Checked 2026-10-27T20:56:14.635676+00:00. All 28 selected main finalizers and all supplementary diagnostics
+are complete; final verification reports no errors/pending entries.
+See [results](results/README.md) and [scientific conclusions](results/INSIGHTS.md).
+The package contains 1,040 aggregate observations, training/configuration provenance,
+28 endpoint rows,10 scientific PNG/SVG plot pairs and2 qualitative PNGs.
+
+There are no active campaign GPU processes. Only owned workers/evaluator were
+closed; frozen sources/configs and all EFS assets remain intact.
+Single-seed 50k success is exploratory; the original 3-training-seed gate is incomplete.
+Historical status/interim documents remain timestamped evidence.

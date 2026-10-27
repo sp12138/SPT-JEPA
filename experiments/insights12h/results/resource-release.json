@@ -1,0 +1,57 @@
+{
+  "hosts": [
+    {
+      "host": "dev2",
+      "checked_at": "2026-10-27T20:47:42.949164+00:00",
+      "processes": [
+        {
+          "pid": 1916815,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -u -m as_jepa_tools.host_worker --plan /efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/plan.json --host dev2 ",
+          "cwd": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/source-v3",
+          "signal": "SIGTERM",
+          "remaining": false
+        }
+      ],
+      "gpu_compute_processes": "",
+      "scope": "Only campaign-owned idle workers/evaluator stopped after all evaluations completed."
+    },
+    {
+      "host": "dev13",
+      "checked_at": "2026-10-27T20:47:43.090853+00:00",
+      "processes": [
+        {
+          "pid": 1506,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -u -m as_jepa_tools.host_worker --plan /efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/plan.json --host dev13 ",
+          "cwd": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/source-round2",
+          "signal": "SIGTERM",
+          "remaining": false
+        }
+      ],
+      "gpu_compute_processes": "",
+      "scope": "Only campaign-owned idle workers/evaluator stopped after all evaluations completed."
+    },
+    {
+      "host": "dev15",
+      "checked_at": "2026-10-27T20:47:43.036342+00:00",
+      "processes": [
+        {
+          "pid": 1801,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -u -m as_jepa_tools.host_worker --plan /efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/plan.json --host dev15 ",
+          "cwd": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/source-round2",
+          "signal": "SIGTERM",
+          "remaining": false
+        },
+        {
+          "pid": 18729,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -u -m as_jepa_tools.evaluation_worker ",
+          "cwd": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/source-insight-v14",
+          "signal": "SIGTERM",
+          "remaining": false
+        }
+      ],
+      "gpu_compute_processes": "",
+      "scope": "Only campaign-owned idle workers/evaluator stopped after all evaluations completed."
+    }
+  ],
+  "scope": "Final live process checks; historical statuses on EFS remain immutable."
+}

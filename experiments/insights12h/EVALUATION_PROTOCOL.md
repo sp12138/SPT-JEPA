@@ -41,3 +41,26 @@ The 51M original-size renderer control receives at most 4.5h of resumed training
 A posterior/forecast diagnostic compares true-future mean state, true-future noisy state, predicted mean state and zero state at horizons1/7/13, using identical renderer noise and anchor. It is an oracle evaluation only: true future pixels are used to diagnose encoder/decoder reconstruction, never for deployment or optimization. This separates prior errors from errors already present when reconstructing the true future state.
 
 The large-renderer final evaluation is split across three H200s using the same pinned checkpoint: primary probes/256-case mean generation, actions (P0 seeds42/43/44 and64 counterfactual cases), and64x4 sampled latent rollouts. Each component has independent logs and status, writes disjoint output paths and waits until the training parent is finished and the checkpoint manifest committed. The report requires all declared components to finish before counting this model complete.
+
+
+The final low-beta50k arm is a fresh training run from initialization with a
+50k cosine budget. Its24k checkpoint was recovered from its existing
+eval-posev2/step0024000/checkpoint export, then immutably pinned and hashed.
+The24k and50k evaluations share generation and planning case IDs. The independent
+25k-budget run follows a different learning-rate trajectory; comparisons between
+the short and long runs are not an isolated step-count effect. Both training
+budgets and the same-trajectory comparison are reported.
+
+After the50k result, an inference-only posterior decomposition was added using
+the same128 case IDs as the25k diagnostic. Reported posterior states encode true
+future images and remain oracle diagnostics. The50k qualitative gallery uses the
+first16 entries of the fixed256-case order, without error-based selection; it
+does not replace the original32-case human gallery gate. No new training was
+started for these final diagnostic checks.
+
+All28 selected endpoint finalizers and all declared components completed before
+the original deadline. Nine CPU contracts passed through unittest; the initial
+pytest invocation did not start because the supplied overlay lacked pluggy.
+The final numerical verifier passed counts, nested errors, checkpoint pins,
+source bytes, evaluator identities and common test cases. Campaign-owned idle
+workers/evaluator were closed and final GPU process checks were empty.
