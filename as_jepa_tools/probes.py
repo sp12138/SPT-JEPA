@@ -33,7 +33,7 @@ def features(model,root,split,count,seed,noisy=False):
  return np.concatenate(xs),np.concatenate(ys),names
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--checkpoint',required=True);p.add_argument('--data',required=True);p.add_argument('--output',required=True);p.add_argument('--train',type=int,default=20000);p.add_argument('--test',type=int,default=5000);p.add_argument('--noisy',action='store_true');a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--checkpoint',required=True);p.add_argument('--data',required=True);p.add_argument('--output',required=True);p.add_argument('--train',type=int,default=20000);p.add_argument('--test',type=int,default=5000);p.add_argument('--noisy',action='store_true');p.add_argument('--seed',type=int,default=20261027);a=p.parse_args()
  torch.set_num_threads(2);torch.manual_seed(a.seed);initialize_ops(OpsConfig(backend='sdpa',allow_fallback=False),device=torch.device('cuda',0),parallel_state=None)
  model=load_model(a.checkpoint);started=time.time();train_x,train_y,names=features(model,a.data,'train',a.train,17,a.noisy);test_x,test_y,_=features(model,a.data,'test',a.test,18,a.noisy)
  scaler=StandardScaler().fit(train_x);yscaler=StandardScaler().fit(train_y);ridge=RidgeCV(alphas=np.logspace(-4,4,9),cv=5).fit(scaler.transform(train_x),yscaler.transform(train_y));prediction=yscaler.inverse_transform(ridge.predict(scaler.transform(test_x)))
