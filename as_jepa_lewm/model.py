@@ -112,7 +112,7 @@ class ASJepaLeWM(LeWM):
         else:
             beta=self.beta*min(1.,step/max(1,ramp_steps)) if ramp_steps else self.beta
             loss=fm+beta*rate
-        return loss,dict(loss=loss,fm=fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),rate_share=self.beta*rate/fm.detach().clamp_min(1e-8),feature_std=mu.float().std((0,1)).mean(),active_dims=(mu.float().var((0,1))>.0001).sum())
+        return loss,dict(loss=loss,fm=fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),rate_share=self.beta*rate/fm.detach().clamp_min(1e-8),feature_std=mu.float().std((0,1)).mean(),active_dims=((.5*mu[:,0].float().square()+(mu[:,1:].float()-predicted.float()).square().sum(1)/(2*self.sigma0**2)).mean(0)>.1).sum())
     @torch.no_grad()
     def render_states(self,states,anchor,steps=50,seed=0):
         states=states.unflatten(-1,(K,d)) if states.shape[-1]==STATE_DIM else states

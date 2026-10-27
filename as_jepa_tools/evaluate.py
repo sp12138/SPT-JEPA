@@ -12,17 +12,22 @@ from as_jepa_lewm.model import ASJepaLeWM
 
 def load_model(folder,device="cuda"):
     folder=Path(folder);cfg=json.loads((folder/"config.json").read_text());cfg.pop("_target_",None)
-    model=ASJepaLeWM(**cfg).to(device);model.load_state_dict(torch.load(folder/"weights.pt",map_location=device,weights_only=True),strict=True);return model.eval()
+    target=json.loads((folder/"config.json").read_text()).get("_target_", "as_jepa_lewm.model.ASJepaLeWM")
+    if target=="vforge.models.as_jepa.model.ASJepaSPT":
+        from vforge.models.as_jepa.model import ASJepaSPT
+        model=ASJepaSPT(**cfg).to(device)
+    else:model=ASJepaLeWM(**cfg).to(device)
+    model.load_state_dict(torch.load(folder/"weights.pt",map_location=device,weights_only=True),strict=True);return model.eval()
 
 @torch.no_grad()
 def predict_states(model,context,actions,horizon,sample_noise=False):
     emb=model.encode(dict(pixels=context))["emb"]
-    if sample_noise and model.mode=="L2":emb=emb+model.sigma0*torch.randn_like(emb)
+    if sample_noise and model.mode in {"L2","S2"}:emb=emb+model.sigma0*torch.randn_like(emb)
     history=list(emb.unbind(1));h=len(history);act=model.action_encoder(actions)
     for i in range(horizon):
         lo=max(0,len(history)-(model.window-1));past=torch.stack(history[lo:],1)
         nxt=model.predict(past,act[:,lo:len(history)])[:,-1]
-        if sample_noise and model.mode=="L2":nxt=nxt+model.sigma0*torch.randn_like(nxt)
+        if sample_noise and model.mode in {"L2","S2"}:nxt=nxt+model.sigma0*torch.randn_like(nxt)
         history.append(nxt)
     return torch.stack(history[h:],1)
 
