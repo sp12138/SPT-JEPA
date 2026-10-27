@@ -423,7 +423,7 @@ The code length has exactly two free numbers, `beta` and `sigma_0` (Section 4.4)
 
 The search is a short logarithmic grid of `beta`, priced per rendered value (1, 4, 16, 64, 256), one seed each at the full budget, extended by one step if the best value lies at an edge. Selection uses generation first: the rollouts' pose error relative to copying the last frame. Among prices within 10% of the best, the better planner wins if planning separates them; otherwise the lowest rate wins, the most compressed state among equally good world models. The selected price then gets two more seeds.
 
-Fallbacks are used only when their failure appears: a `beta` ramp from 0 over the first 5% of training if every price collapses, and `sigma_0 = 0.03` or 16-frame windows if the block is left out of the state. The first-frame anchor is run once as an ablation, which also tests the theory's prediction that a near anchor lets the state drop the block.
+Fallbacks are used only when their failure appears: a `beta` ramp from 0 over the first 5% of training if every price collapses, and `sigma_0 = 0.03` or 16-frame windows if the block is left out of the state. The first-frame anchor is run once as an ablation, which also tests the theory's prediction that a near anchor lets the state drop the block. The frozen values are frozen for simplicity, not required by the theory: if failure diagnosis points to `sigma_0`, the anchor gap, the window or the prior's parametrization, that choice is reopened and tuned. If AS-JEPA fails outright in LeWM's code base after this, the comparisons there (LeWM, and our architecture with LeWM's objective) are skipped and effort moves to the SPT build.
 
 ### 8.3 Training budget
 

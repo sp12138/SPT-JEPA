@@ -863,6 +863,8 @@ You decide the allocation. When compute is short, run in this order:
 
 If compute suffices for only one branch, run branch L (items 1, 3 and 5) and skip branch S. With ample compute, start everything without a dependency at once: L2's grid, L0, L1, S0, S1, and S2's grid in full mode.
 
+If L2 fails outright (no `beta` passes the collapse test, or none produces usable rollouts, even after the fallbacks of Section 13 and our joint diagnosis), do not run or finish L0, L1 and `L2-g0`: their only purpose is to interpret a working L2. Report, then move the compute to branch S (S2 first, then S0 and S1).
+
 Seeds: three seeds for the final configuration and every comparison give a first estimate of seed-to-seed variation. If the difference between L2 (or S2) and a comparison is smaller than twice the larger of their seed standard deviations, add seeds 3 and 4 to both before drawing a conclusion.
 
 Before launching, measure throughput in the smoke runs (Section 10.3), report the projected GPU-hours of the runs you intend to launch, and wait for our acknowledgement if the total exceeds what was agreed.
@@ -941,6 +943,8 @@ Moving beyond `D-std` (Appendix A, other environments) needs our agreement after
 Planning is the second main criterion. Report P0 for L0, L1 and L2's final configuration, and P1 to P4 when the generation gate passes but P0 trails L0 by more than `PLAN_MARGIN` (Section 5.8). Probes, rates and FVD are reported for understanding and do not gate.
 
 ## 13. Failure responses
+
+The frozen choices of Section 1.2 (`sigma0`, anchor gap, window, state size, identity carry) are frozen for simplicity, not because the theory requires their values. If diagnosis points to one of them (for example, the block-pose probe stays low while the rollouts copy the anchor, which implicates `sigma0`, the gap or the window), propose retuning that choice to us with the evidence instead of working around it; the responses below give the first step for the common cases.
 
 **Collapse test**, run on every run at `COLLAPSE_CHECK` and at its end, and on the smoke runs: render each held-out frame `t >= 1` from its own encoded state (`mu(x_t) + sigma0 * noise`) and the run's anchor, and measure the agent position error with the pose estimator, averaged over the frames whose agent lies more than `MOVE_PX` from its position in the anchor frame (elsewhere copying the anchor is already nearly exact, so the comparison says nothing). The run has collapsed if this mean error is at least `COLLAPSE_RATIO` times the mean error, over the same frames, of using the anchor frame itself as the prediction, or if fewer than 2 state dimensions are active (the agent's position alone needs two).
 

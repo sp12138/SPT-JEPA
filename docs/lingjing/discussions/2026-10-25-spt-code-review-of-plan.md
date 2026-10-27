@@ -118,3 +118,7 @@ Decided and written (`as-jepa-story.md` new Section 8 "Empirical design of the f
 4. Frozen anchor gap 8 and window 8; the first-frame anchor is one ablation run; `sigma0 = 0.03` and 16-frame windows (gap 4) are fallbacks if the block is left out. The no-anchor ablations moved to the appearance-varied round.
 5. Budget: 10 LeWM epochs for every run (about 125k steps at window 8), L0 at the paper's `max_epochs=10`; continue rule (20 epochs once if the generation score improves more than 5% between epochs 8 and 10); runs that fail the collapse test at 3 epochs are stopped.
 6. L1 at LeWM's published SIGReg weight 0.09 (LeWM reports success above 80% for 0.01 to 0.2), screened at 0.03 and 0.27 only if L2's advantage is within twice the seed spread. The full plan is 27 runs of 10 epochs.
+
+## Contingencies (2026-10-27)
+
+User additions: if L2 fails outright even after the search, fallbacks and joint diagnosis, skip L0, L1 and `L2-g0` (they only interpret a working L2) and move compute to branch S. The frozen choices (`sigma0`, anchor gap, window, state size, identity carry) stay open to retuning whenever failure diagnosis implicates them. Written into spec Sections 9.5 and 13 and story Section 8.2. The branch was then pushed.
