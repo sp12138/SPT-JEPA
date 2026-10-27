@@ -32,15 +32,23 @@ def features(model,root,split,count,seed,noisy=False):
  if model.domain=='dot':names+=['dot_x','dot_y','dot_r','dot_g','dot_b']
  return np.concatenate(xs),np.concatenate(ys),names
 
-def main():
- p=argparse.ArgumentParser();p.add_argument('--checkpoint',required=True);p.add_argument('--data',required=True);p.add_argument('--output',required=True);p.add_argument('--train',type=int,default=20000);p.add_argument('--test',type=int,default=5000);p.add_argument('--noisy',action='store_true');p.add_argument('--seed',type=int,default=20261027);a=p.parse_args()
- torch.set_num_threads(2);torch.manual_seed(a.seed);initialize_ops(OpsConfig(backend='sdpa',allow_fallback=False),device=torch.device('cuda',0),parallel_state=None)
+def main(argv=None,initialize=True):
+ p=argparse.ArgumentParser();p.add_argument('--checkpoint',required=True);p.add_argument('--data',required=True);p.add_argument('--output',required=True);p.add_argument('--train',type=int,default=20000);p.add_argument('--test',type=int,default=5000);p.add_argument('--noisy',action='store_true');p.add_argument('--seed',type=int,default=20261027);a=p.parse_args(argv)
+ torch.set_num_threads(2);torch.manual_seed(a.seed)
+ if initialize:initialize_ops(OpsConfig(backend='sdpa',allow_fallback=False),device=torch.device('cuda',0),parallel_state=None)
  model=load_model(a.checkpoint);started=time.time();train_x,train_y,names=features(model,a.data,'train',a.train,17,a.noisy);test_x,test_y,_=features(model,a.data,'test',a.test,18,a.noisy)
  scaler=StandardScaler().fit(train_x);yscaler=StandardScaler().fit(train_y);ridge=RidgeCV(alphas=np.logspace(-4,4,9),cv=5).fit(scaler.transform(train_x),yscaler.transform(train_y));prediction=yscaler.inverse_transform(ridge.predict(scaler.transform(test_x)))
  scores=r2_score(test_y,prediction,multioutput='raw_values');cov=np.cov(train_x,rowvar=False);eigen=np.clip(np.linalg.eigvalsh(cov),0,None);prob=eigen/eigen.sum().clip(1e-30)
  rank=float(np.exp(-(prob*np.log(prob.clip(1e-30))).sum()))
  result=dict(checkpoint=str(Path(a.checkpoint).resolve()),noise_seed=a.seed,feature_type='sampled noisy code' if a.noisy else 'posterior mean / deterministic embedding',r2={name:float(value) for name,value in zip(names,scores)},agent_r2=float(scores[:2].mean()),block_position_r2=float(scores[2:4].mean()),block_angle_r2=float(scores[4:6].mean()),velocity_r2=float(scores[6:8].mean()),feature_effective_rank=rank,feature_std=float(train_x.std(0).mean()),selected_alpha=float(ridge.alpha_),train_frames=len(train_x),test_frames=len(test_x),seconds=time.time()-started,split='episode-disjoint; ridge regularization selected only on training features',scope='single trained seed; exploratory linear decodability')
  if len(scores)>8:result['nuisance_r2']=float(scores[8:].mean())
+ if not a.noisy and model.mode in {"L2","S2"}:
+  test_cov=np.cov(test_x,rowvar=False,bias=True);test_eigen=np.clip(np.linalg.eigvalsh(test_cov),0,None)
+  result["heldout_noisy_channel_covariance_bound_nats"]=float(.5*np.log1p(test_eigen/model.sigma0**2).sum())
+  result["heldout_noisy_channel_diagonal_bound_nats"]=float(.5*np.log1p(np.diag(test_cov)/model.sigma0**2).sum())
+  result["heldout_covariance_eigenvalues"]=test_eigen.tolist()
+  result["information_bound_scope"]="Empirical covariance Gaussian-noise channel upper bound on uniformly sampled test frames; not task mutual information."
+
  out=Path(a.output);out.mkdir(parents=True,exist_ok=True);(out/'probes.json').write_text(json.dumps(result,indent=2));np.savez(out/'probe_predictions.npz',truth=test_y,prediction=prediction);print(json.dumps(result,indent=2))
 
 if __name__=='__main__':main()
