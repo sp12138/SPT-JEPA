@@ -65,6 +65,10 @@ def main():
     rows=[];pending=[]
     for root in sorted(campaign.glob("final-*")):
         status=read(root/"status.json");manifest=read(root/"checkpoint_manifest.json")
+        required=read(root/"required_components.json") or []
+        component_states=[(read(Path(folder)/"status.json") or {}).get("state","not_started") for folder in required]
+        if any(state!="finished" for state in component_states):
+            pending.append(dict(model=root.name,status="waiting_components",components=component_states));continue
         if not status or status.get("state")!="finished":
             pending.append(dict(model=root.name,status=status.get("state","not_started") if status else "not_started"))
             continue

@@ -11,7 +11,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument("--run",required=True);p.add_argument("--campaign",required=True)
     p.add_argument("--output",required=True);p.add_argument("--cases",type=int,default=256)
     p.add_argument("--planning-seeds",default="42,43,44");p.add_argument("--sample-cases",type=int);p.add_argument("--skip-samples",action="store_true")
-    p.add_argument("--probe-only",action="store_true");a=p.parse_args()
+    p.add_argument("--probe-only",action="store_true");p.add_argument("--skip-counterfactual",action="store_true");a=p.parse_args()
     run=Path(a.run);campaign=Path(a.campaign);base=campaign.parent.parent;out=Path(a.output);out.mkdir(parents=True,exist_ok=True)
     lock=(out/"finalizer.lock").open("w");fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     status=json.loads((run/"status.json").read_text())
@@ -46,9 +46,9 @@ def main():
         if domain=="color":
             jobs.append(dict(id="colour-swaps",command=[python,"-u","-m","as_jepa_tools.color_swaps","--checkpoint",str(ck),"--data",data,"--pose",pose,"--output",str(out/"colour-swaps"),"--cases","128","--steps","50"]))
         if domain=="standard":
-            for seed in a.planning_seeds.split(","):
+            for seed in filter(None,a.planning_seeds.split(",")):
                 jobs.append(dict(id="planning-"+seed,command=[python,"-u","-m","as_jepa_tools.planning","--checkpoint",str(ck),"--output",str(out/"planning"/("seed"+seed)),"--upstream",str(base/"sources/stable-worldmodel"),"--data-root",str(base/"data/planning"),"--test-episodes",str(base/"data/pusht/test_episodes.npy"),"--seed",seed,"--episodes","50"]))
-            if mode!="L0":
+            if mode!="L0" and not a.skip_counterfactual:
                 args=[python,"-u","-m","as_jepa_tools.counterfactual","--checkpoint",str(ck),"--data",data,"--pose",pose,"--output",str(out/"counterfactual"),"--cases","64","--steps","50"]
                 if fp32:args.append("--fp32")
                 jobs.append(dict(id="counterfactual",command=args))
