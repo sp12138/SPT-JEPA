@@ -7,3 +7,7 @@ The repository-owned planner entry still runs that pinned upstream script. An op
 Counterfactual evaluations use the same initial simulator reset for four donor action sequences and the same sampling noise for every donor. Report both the learned model's assignment accuracy and a pose oracle operating on real simulator frames. Report the recorded-action replay error because dataset states do not save block velocity and exact simulator restoration is not possible from those states. Counterfactual action identification is distinct from P0 planning success.
 
 The frozen pose evaluator's real-frame error is measured separately on standard, episode-color and random-dot domains. Training loss, posterior mean decodability, noisy-code decodability, open-loop image/pose error and planning are separate measurements.
+
+One default-initialization beta4 arm is deliberately continued to 25k after the initial 8k screen. Its STOP_DISABLED marker is declared before launch; the evaluator records a triggered collapse gate but does not stop that single control. This audits whether stopping at 8k was premature. Other screened arms remain stopped.
+
+New evaluator snapshots additionally compare a noisy posterior state with the deterministic mean using identical renderer noise. Existing metrics directories retain their original protocol and are never overwritten.

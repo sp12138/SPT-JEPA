@@ -108,6 +108,11 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
                 # Matched pure-noise seed makes these changes reflect conditioning interventions.
                 own=model.render_states(mu[:,3],anchor,steps=steps,seed=77)
                 zero=model.render_states(mu[:,3]*0,anchor,steps=steps,seed=77)
+                noisy_own=None
+                if model.mode in {"L2","S2"}:
+                    noise_generator=torch.Generator(device=mu.device).manual_seed(1700+batch_id)
+                    noisy_mu=mu[:,3].float()+model.sigma0*torch.randn(mu[:,3].shape,device=mu.device,generator=noise_generator)
+                    noisy_own=model.render_states(noisy_mu,anchor,steps=steps,seed=77)
                 swap=model.render_states(mu[:,3],anchor.flip(0),steps=steps,seed=77)
                 permuted=model.render_states(mu[:,3].flip(0),anchor,steps=steps,seed=77)
                 permutation_changes.append((own.float()-permuted.float()).square().mean((1,2,3)).cpu())
@@ -118,6 +123,10 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
                     if model.anchor_gap==0:anchortruth=batch["state"][:,0,:2].float()
                     moving=(target*512-anchortruth).norm(dim=-1)>10
                     for name,values in [("posterior_agent",(ownpose[:,:2]-target).norm(dim=-1)*512),("zero_agent",(zeropose[:,:2]-target).norm(dim=-1)*512),("anchor_agent",(anchorpose[:,:2]-target).norm(dim=-1)*512)]:errors.setdefault(name,[]).append(values[moving].cpu())
+                    if noisy_own is not None:
+                        noisy_pose=pose(noisy_own.clamp(-1,1)).float()
+                        errors.setdefault("noisy_posterior_agent",[]).append(((noisy_pose[:,:2]-target).norm(dim=-1)*512)[moving].cpu())
+                        errors.setdefault("posterior_noise_image_change",[]).append((noisy_own.float()-own.float()).square().mean((1,2,3)).cpu())
                 if len(image_rows)<16:
                     image_rows.extend([(frames[i].cpu(),generated[i].cpu(),anchor[i].cpu()) for i in range(min(len(pixels),16-len(image_rows)))])
         for ep,start in zip(batch["episode"].cpu(),batch["start"].cpu()):records.append(dict(episode=int(ep),start=int(start)))

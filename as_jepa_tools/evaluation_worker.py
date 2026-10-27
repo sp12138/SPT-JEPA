@@ -52,10 +52,10 @@ def main():
             collapsed=(step>=8000 and model.mode=="L2" and model.domain=="standard"
                        and capacity is not None and capacity<.05 and result.get("h7_agent_ratio",0)>=.9
                        and result.get("state_permutation_intervention_mse",1)<.0002)
-            if collapsed and not (run/"STOP").exists():
+            if collapsed and not (run/"STOP").exists() and not (run/"STOP_DISABLED").exists():
                 reason=dict(reason="early stop: noisy state carries <0.05 nats by empirical channel bound, is permutation-insensitive, and rollout does not beat copying",step=step,noisy_state_information_upper_bound_nats=capacity,posterior_to_anchor_agent_error=ratio,feature_std=result["feature_std"],zero_state_intervention_mse=result["zero_state_intervention_mse"],evidence=str(out/"metrics.json"),time=time.time())
                 (run/"early_stop.json").write_text(json.dumps(reason,indent=2));(run/"STOP").write_text(json.dumps(reason))
-            with (c/"evaluation-index.jsonl").open("a") as f:f.write(json.dumps(dict(model=name,step=step,posterior_to_anchor_ratio=ratio,early_stop=collapsed,h7_agent_ratio=result.get("h7_agent_ratio"),h7_block_ratio=result.get("h7_block_ratio"),output=str(out),finished_at=time.time()))+"\n")
+            with (c/"evaluation-index.jsonl").open("a") as f:f.write(json.dumps(dict(model=name,step=step,posterior_to_anchor_ratio=ratio,early_stop=collapsed and not (run/"STOP_DISABLED").exists(),collapse_gate_triggered=collapsed,h7_agent_ratio=result.get("h7_agent_ratio"),h7_block_ratio=result.get("h7_block_ratio"),output=str(out),finished_at=time.time()))+"\n")
             del model;torch.cuda.empty_cache()
         except Exception as error:
             out.mkdir(parents=True,exist_ok=True);(out/"evaluation_error.txt").write_text(traceback.format_exc());seen.add(key)
