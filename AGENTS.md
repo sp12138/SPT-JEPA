@@ -2,7 +2,7 @@
 
 User instructions, 2026-10-27:
 - Authoritative code, environments, data, logs, checkpoints, reports and recovery instructions live under /efs/prescottsun/SPT-JEPA. This overrides inherited SPT and parent workspace locations.
-- Authorized compute: dev2 and dev13, 8 H200 each. Other compute workloads on these hosts may be cleared per user instruction; preserve system services.
+- Authorized compute: dev2, dev13 and dev15, 8 H200 each (dev15 added by the user at 2026-10-27 12:04 UTC). Other compute workloads on these hosts may be cleared per user instruction; preserve system services.
 - This campaign is insight-first within 12 hours. Use single seeds, common held-out cases, early collapse gates and focused ablations; do not require all three-seed grids. Record every departure from the original spec and distinguish exploratory evidence from final benchmark claims.
 - Preserve immutable committed source/config snapshots for running experiments and periodic resumable checkpoints. Never modify other projects or shared inputs.
 - Local storage is limited to small Git-managed code and presentation artifacts.

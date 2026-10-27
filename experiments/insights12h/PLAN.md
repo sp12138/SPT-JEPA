@@ -1,6 +1,6 @@
 # Twelve-hour AS-JEPA insight campaign
 
-User authorization: 2026-10-27, dev2 and dev13 (16 H200 total), deadline 2026-10-27 22:24:58 UTC. Single-seed screening and early stopping take priority over completing the original three-seed grid. All authoritative files live under /efs/prescottsun/SPT-JEPA.
+User authorization: 2026-10-27, dev2, replacement dev13 and dev15 (24 H200 total after 12:04 UTC), deadline 2026-10-27 22:24:58 UTC. Single-seed screening and early stopping take priority over completing the original three-seed grid. All authoritative files live under /efs/prescottsun/SPT-JEPA.
 
 ## Questions and evidence
 
@@ -17,7 +17,7 @@ User authorization: 2026-10-27, dev2 and dev13 (16 H200 total), deadline 2026-10
 - Data uses the original read-only HDF5 expert frames, not Lance JPEG. Export one frameskip-aligned phase: every fifth raw frame, 224px encoder and uint8-rounded 64px renderer. This cuts redundant window starts by approximately five; report steps and windows seen, not equivalence to the paper's epochs.
 - First stage: beta grid and baselines on standard data. Stop demonstrably collapsed arms only after enough training for the renderer to use state (with an evaluator floor and matched controls); high early loss or weak first-step gradients are not collapse.
 - Continue the useful beta(s), run mechanism ablations, and evaluate. Use one seed first; spend replication only on conclusions that could change the next decision.
-- A hard controller deadline writes STOP requests, saves full Lightning/Native checkpoints and exits. Maximum compute is 192 H200 GPU-hours; actual usage is logged per run. Use single-GPU independent runs by default.
+- A hard controller deadline writes STOP requests, saves full Lightning/Native checkpoints and exits. The original 12-hour wall-clock deadline is unchanged when hosts are added. Actual GPU-hours are logged per run; the original 16-card allocation was expanded by the user at 12:04 UTC. Use single-GPU independent runs by default.
 - Keep committed immutable source snapshots, exact configurations, RNG state, data offsets, package versions and recovery instructions. Shared projects, datasets and environments are read-only.
 
 ## Reporting boundaries
