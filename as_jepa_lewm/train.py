@@ -36,6 +36,9 @@ class TrainModule(pl.LightningModule):
         loss,metrics=self.model.loss(batch,self.global_step,self.cfg.get("ramp_steps",0))
         if not torch.isfinite(loss):raise FloatingPointError(f"nonfinite loss at {self.global_step}")
         self.last_metrics={k:float(v.detach()) for k,v in metrics.items()}
+        if self.cfg.get("trace_batches",False):
+            with (Path(self.cfg["output"])/"batch_trace.jsonl").open("a") as trace:
+                trace.write(json.dumps(dict(step=int(self.global_step),episodes=batch["episode"].detach().cpu().tolist(),starts=batch["start"].detach().cpu().tolist()))+"\n")
         return loss
     def configure_optimizers(self):
         renderer=[];other=[]
@@ -68,7 +71,7 @@ class PersistentProgress(Callback):
         row=dict(state=state,step=step,elapsed_seconds=now-self.started,updated_at=now,pid=os.getpid(),host=os.uname().nodename,**module.last_metrics)
         row["seconds_per_step"]=(now-self.last_time)/max(1,step-self.last_step)
         row["peak_gib"]=torch.cuda.max_memory_allocated()/2**30
-        row["learning_rates"]=[group["lr"] for group in trainer.optimizers[0].param_groups]
+        row["learning_rates"]=[group["lr"] for group in (trainer.optimizers[0].param_groups if trainer.optimizers else [])]
         path=self.root/"status.json";tmp=path.with_suffix(".tmp");tmp.write_text(json.dumps(row,indent=2));tmp.replace(path)
         with (self.root/"metrics.jsonl").open("a") as f:f.write(json.dumps(row)+"\n")
         self.last_time=now;self.last_step=step
@@ -111,6 +114,6 @@ def main():
     trainer=pl.Trainer(accelerator="gpu",devices=1,precision="bf16-mixed",max_steps=cfg["max_steps"],max_epochs=-1,
                        max_time=datetime.timedelta(seconds=cfg.get("max_seconds",36000)),gradient_clip_val=1.,logger=False,enable_checkpointing=False,
                        enable_progress_bar=False,enable_model_summary=False,num_sanity_val_steps=0,callbacks=[progress],log_every_n_steps=100,default_root_dir=str(root))
-    trainer.fit(module,train_dataloaders=loader,ckpt_path=resume)
+    trainer.fit(module,train_dataloaders=loader,ckpt_path=resume,weights_only=False)
 
 if __name__=="__main__":main()

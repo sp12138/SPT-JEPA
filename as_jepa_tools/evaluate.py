@@ -107,7 +107,10 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
                 zero_changes.append((own.float()-zero.float()).square().mean((1,2,3)).cpu());anchor_changes.append((own.float()-swap.float()).square().mean((1,2,3)).cpu())
                 if pose is not None:
                     ownpose=pose(own.clamp(-1,1)).float();zeropose=pose(zero.clamp(-1,1)).float();anchorpose=pose(anchor).float();target=batch["state"][:,3,:2].float()/512
-                    for name,values in [("posterior_agent",(ownpose[:,:2]-target).norm(dim=-1)*512),("zero_agent",(zeropose[:,:2]-target).norm(dim=-1)*512),("anchor_agent",(anchorpose[:,:2]-target).norm(dim=-1)*512)]:errors.setdefault(name,[]).append(values.cpu())
+                    anchortruth=torch.tensor(np.array(data.states[pastrows,:2]),device=target.device)
+                    if model.anchor_gap==0:anchortruth=batch["state"][:,0,:2].float()
+                    moving=(target*512-anchortruth).norm(dim=-1)>10
+                    for name,values in [("posterior_agent",(ownpose[:,:2]-target).norm(dim=-1)*512),("zero_agent",(zeropose[:,:2]-target).norm(dim=-1)*512),("anchor_agent",(anchorpose[:,:2]-target).norm(dim=-1)*512)]:errors.setdefault(name,[]).append(values[moving].cpu())
                 if len(image_rows)<16:
                     image_rows.extend([(frames[i].cpu(),generated[i].cpu(),anchor[i].cpu()) for i in range(min(len(pixels),16-len(image_rows)))])
         for ep,start in zip(batch["episode"].cpu(),batch["start"].cpu()):records.append(dict(episode=int(ep),start=int(start)))
