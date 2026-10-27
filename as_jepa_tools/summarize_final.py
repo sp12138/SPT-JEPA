@@ -110,13 +110,14 @@ def main():
     result=dict(collected_at=stamp,models=rows,pending=pending,color_probe_comparisons=color_comparisons,
                 source_campaign=str(campaign),scope="Exploratory campaign; no claim of the original three-training-seed generation gate")
     (out/"summary.json").write_text(json.dumps(result,indent=2,allow_nan=False))
-    fields=["model","step","seed","mode","domain","beta","precision","sampler_rule","renderer_width","renderer_depth","plan_mean","plan_sd","h7_agent_ratio","h7_moving_block_ratio","cf_accuracy","agent_r2","block_r2","nuisance_r2","output"]
+    fields=["model","step","seed","mode","domain","beta","precision","sampler_rule","renderer_width","renderer_depth","plan_mean","plan_sd","h7_agent_ratio","h7_moving_block_ratio","sample_h7_agent_ratio","sample_h7_moving_block_ratio","sample_cases","samples","cf_accuracy","agent_r2","block_r2","nuisance_r2","output"]
     with (out/"summary.csv").open("w") as handle:
         writer=csv.DictWriter(handle,fieldnames=fields);writer.writeheader()
         for row in rows:
-            pp=row["probes"].get("noisy") or row["probes"].get("mean") or {};gg=row.get("generation_mean") or {};plan=row.get("planning") or {}
+            pp=row["probes"].get("noisy") or row["probes"].get("mean") or {};gg=row.get("generation_mean") or {};gs=row.get("generation_sample") or {};plan=row.get("planning") or {}
             writer.writerow({**{k:row.get(k) for k in fields if k in row},"plan_mean":plan.get("mean"),"plan_sd":plan.get("std"),
                              "h7_agent_ratio":gg.get("h7_agent_ratio"),"h7_moving_block_ratio":gg.get("h7_moving_block_ratio"),
+                             "sample_h7_agent_ratio":gs.get("h7_agent_ratio"),"sample_h7_moving_block_ratio":gs.get("h7_moving_block_ratio"),"sample_cases":gs.get("cases"),"samples":gs.get("samples"),
                              "cf_accuracy":row.get("counterfactual",{}).get("action_identification_accuracy"),
                              "agent_r2":pp.get("agent_r2"),"block_r2":pp.get("block_position_r2"),"nuisance_r2":pp.get("nuisance_r2")})
     import matplotlib
@@ -148,8 +149,8 @@ def main():
         axes[0].set_yticks(y,labels);axes[0].set(xlim=(-2,102),xlabel="P0 success (%), mean +/- SD",title="Three evaluation seeds")
         axes[0].invert_yaxis()
         axes[1].axvline(.5,color="#b64d4d",linestyle="--",linewidth=1);axes[1].axvline(1,color="#888888",linestyle=":",linewidth=1)
-        axes[1].set(xlabel="h7 agent error / copy error",title="256 fixed windows")
-        axes[2].axvline(1,color="#888888",linestyle=":",linewidth=1);axes[2].set(xlabel="h7 moving-block error / copy error",title="Moving-block subset")
+        axes[1].set(xlabel="h7 agent error / copy error",title="Mean states, 256 fixed cases")
+        axes[2].axvline(1,color="#888888",linestyle=":",linewidth=1);axes[2].set(xlabel="h7 moving-block error / copy error",title="Mean states, moving-block subset")
         fig.supxlabel("Generation intervals: 95% episode-cluster bootstrap, conditional on each trained model. Training seeds are shown separately.",fontsize=9)
         fig.savefig(out/"final-comparison.png",bbox_inches="tight");fig.savefig(out/"final-comparison.svg",bbox_inches="tight");plt.close(fig)
     color=[r for r in rows if r["domain"]=="color" and r["model"].startswith(("L2-color-calibrated1-b025","L2-color-noanchor-calibrated1-b025","L1-color-bn"))]
@@ -174,6 +175,7 @@ def main():
         fig.savefig(out/"color-mechanism.png",bbox_inches="tight");fig.savefig(out/"color-mechanism.svg",bbox_inches="tight");plt.close(fig)
     text=["# SPT-JEPA：统一评估结果",f"核查时间：{stamp}","",
           "这是单次探索性 campaign 的结果。不同训练种子分别列出；规划为 3 个评估种子的均值与标准差，生成比值的 95% 区间按测试 episode 重采样。未完成项目不会算作通过。",
+          "生成主表使用均值状态推进；每 case 4 次状态采样的独立结果见 summary.json 中的 generation_sample，以及 summary.csv 的 sample_* 字段。",
           "","| 模型 | 步数 | P0 均值±SD (%) | h7 agent / copy | h7 moving block / copy | 反事实动作识别 |",
           "| --- | ---: | ---: | ---: | ---: | ---: |"]
     def num(value,digits=3):return "—" if value is None else f"{value:.{digits}f}"
