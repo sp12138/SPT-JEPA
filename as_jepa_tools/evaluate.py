@@ -130,7 +130,7 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8,fp3
                         errors.setdefault("posterior_noise_image_change",[]).append((noisy_own.float()-own.float()).square().mean((1,2,3)).cpu())
                 if len(image_rows)<16:
                     image_rows.extend([(frames[i].cpu(),generated[i].cpu(),anchor[i].cpu()) for i in range(min(len(pixels),16-len(image_rows)))])
-        for ep,start in zip(batch["episode"].cpu(),batch["start"].cpu()):records.append(dict(episode=int(ep),start=int(start)))
+        for ep,start in zip(batch["episode"].cpu(),batch["start"].cpu()):records.append(dict(episode=int(ep),start=int(start),moving_block=bool(np.linalg.norm(np.array(data.states[int(data.offsets[int(ep)])+int(start):int(data.offsets[int(ep)])+int(start)+16,2:4])-np.array(data.states[int(data.offsets[int(ep)])+int(start),2:4]),axis=1).max()>10)))
     result=dict(float32_matmul_precision=torch.get_float32_matmul_precision(),feature_forward_precision="FP32" if fp32 else "BF16 autocast",pose_weights=str(pose_path),cases=len(records),sampler_steps=steps,seconds=time.time()-started,feature_std=float(torch.stack(feature_stds).mean()),latent_mse_by_horizon=torch.cat(latent_errors).mean(0).tolist(),shuffled_action_latent_mse_by_horizon=torch.cat(shuffled_errors).mean(0).tolist(),scope="single-seed exploratory fixed held-out windows; not a three-seed benchmark")
     means=torch.cat(all_means);variance=means.var(0,unbiased=False)
     result["state_std_per_dimension"]=variance.sqrt().tolist()
@@ -144,6 +144,10 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8,fp3
         for h in [1,3,7,13]:
             result[f"h{h}_agent_ratio"]=float(arrays["agent"][:,h-1].mean()/max(1e-6,arrays["copy_agent"][:,h-1].mean()))
             result[f"h{h}_block_ratio"]=float(arrays["block"][:,h-1].mean()/max(1e-6,arrays["copy_block"][:,h-1].mean()))
+    moving=np.asarray([row["moving_block"] for row in records])
+    result["moving_block_cases"]=int(moving.sum())
+    if "block" in arrays and moving.any():result["h7_moving_block_ratio"]=float(arrays["block"][moving,6].mean()/max(1e-6,arrays["copy_block"][moving,6].mean()))
+    if "pixel_mse" in arrays:result["psnr_by_horizon"]=(10*np.log10(4/np.maximum(arrays["pixel_mse"],1e-12))).mean(0).tolist()
     (output/"metrics.json").write_text(json.dumps(result,indent=2));(output/"cases.json").write_text(json.dumps(records,indent=2));np.savez(output/"per_case.npz",**arrays)
     if image_rows:gallery(image_rows,output)
     return result
