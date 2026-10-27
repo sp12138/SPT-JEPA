@@ -35,10 +35,17 @@ class TrainModule(pl.LightningModule):
         loss,metrics=self.model.loss(batch,self.global_step,self.cfg.get("ramp_steps",0))
         if not torch.isfinite(loss):raise FloatingPointError(f"nonfinite loss at {self.global_step}")
         self.last_metrics={k:float(v.detach()) for k,v in metrics.items()}
+        self.last_metrics["encoder_frozen"]=float(self.global_step<self.cfg.get("freeze_encoder_steps",0))
         if self.cfg.get("trace_batches",False):
             with (Path(self.cfg["output"])/"batch_trace.jsonl").open("a") as trace:
                 trace.write(json.dumps(dict(step=int(self.global_step),episodes=batch["episode"].detach().cpu().tolist(),starts=batch["start"].detach().cpu().tolist()))+"\n")
         return loss
+    def on_before_optimizer_step(self,optimizer):
+        if self.global_step>=self.cfg.get("freeze_encoder_steps",0):return
+        # Diagnostic curriculum only: preserve a known informative initial code
+        # while the existing prior/renderer optimizers learn to use it.
+        for name,param in self.model.named_parameters():
+            if name.startswith(("encoder.","pool.")):param.grad=None
     def configure_optimizers(self):
         renderer=[];other=[]
         for name,param in self.model.named_parameters():

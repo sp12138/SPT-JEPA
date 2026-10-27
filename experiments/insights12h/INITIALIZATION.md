@@ -9,3 +9,7 @@ A separate diagnostic initializes only the ViT encoder from this campaign's 25k 
 Matched frozen-weight probes show that several amplified-initialization checkpoints have BF16 feature std around .15-.2 while full FP32 std is only roughly .0001-.0004. Their noisy FP32 state probes remain near chance. Thus high BF16 variance in these arms contains substantial numerical variation; it is not evidence of useful retained information. Normal L1+BN and beta0 controls have similar BF16/FP32 position scores.
 
 Two additional beta=.25/std=1 controls keep the same mathematical model/loss, batch128 and data: BF16 encoder with an FP32 QueryPool, and full FP32 training. Both use float32 matmul precision=highest. Record actual speed/memory before committing a long budget; a successful FP32 inference probe alone does not prove FP32 training will prevent optimization collapse.
+
+## Staged optimization diagnostic
+
+The encoder-only warm initial model has noisy-code position R² .516/.792 on fixed test frames, but after 4k joint updates its beta=.25 version falls to .125/.153 and beta=4 approaches zero. A separate diagnostic freezes encoder and pool optimizer updates for the first 4k steps while prior and renderer learn, then resumes joint updates. This is explicitly a staged-training ablation; it is not the canonical from-scratch, end-to-end method. Lightning's existing optimizer hook and complete checkpoints are used, with no new Trainer/checkpoint implementation. Verify the frozen weights remain exactly equal to the initial export during the first 200-step smoke.
