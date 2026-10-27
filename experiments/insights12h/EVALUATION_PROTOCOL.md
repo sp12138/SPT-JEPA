@@ -11,3 +11,7 @@ The frozen pose evaluator's real-frame error is measured separately on standard,
 One default-initialization beta4 arm is deliberately continued to 25k after the initial 8k screen. Its STOP_DISABLED marker is declared before launch; the evaluator records a triggered collapse gate but does not stop that single control. This audits whether stopping at 8k was premature. Other screened arms remain stopped.
 
 New evaluator snapshots additionally compare a noisy posterior state with the deterministic mean using identical renderer noise. Existing metrics directories retain their original protocol and are never overwritten.
+
+The early streaming S0/S1 pixel evaluations used gap=0 in window enumeration while latent-model evaluations used gap=8; consequently those early pixel baselines did not share the same case IDs. Corrected evaluations use gap=8 for all models, while S0/S1 still receive their configured first-frame anchor. Final output directories must use the corrected snapshot and retain cases.json; do not claim paired case comparisons for the older streaming measurements.
+
+The planner wrapper passes the pinned script's absolute Hydra config path. Loading that script through a named module otherwise makes Hydra infer a nonexistent '..config' package. Failed startup batches are retained as failures and excluded from results.

@@ -22,7 +22,7 @@ def main():
     if not dataset.exists():dataset.symlink_to("/efs/prescottsun/SPT/data/pusht_hjepa/assets/pusht_expert_train.h5")
     command=[os.sys.executable,"-u","-m","as_jepa_tools.planner_entry",
              f"policy={policy}",f"+cache_dir={cache}",f"eval.num_eval={a.episodes}",f"seed={a.seed}",
-             "+plan_config.history_len=3",f"bf16={str(a.bf16).lower()}","compile=false",f"hydra.run.dir={out}/hydra"]
+             "+plan_config.history_len=3",f"bf16={str(a.bf16).lower()}","compile=false",f"hydra.run.dir={out}/hydra",f"world.num_envs={a.episodes}","--config-path",str(Path(a.upstream).resolve()/"scripts/plan/config")]
     import hdf5plugin
     env={**os.environ,"HDF5_PLUGIN_PATH":hdf5plugin.PLUGINS_PATH,"STABLEWM_HOME":str(cache),
          "MUJOCO_GL":"egl","SDL_VIDEODRIVER":"dummy","PYGLET_HEADLESS":"true",

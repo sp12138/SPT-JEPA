@@ -160,7 +160,7 @@ def gallery(rows,output):
 
 @torch.no_grad()
 def evaluate_pixel(model,root,output,count,steps,pose_path,batch_size):
-    output=Path(output);data=PushTWindows(root,window=16,gap=0,split="test");indices=select_windows(data,count)
+    output=Path(output);data=PushTWindows(root,window=16,gap=8,split="test");indices=select_windows(data,count)
     loader=DataLoader(Subset(data,indices),batch_size=min(4,batch_size),num_workers=2,pin_memory=True)
     pose=pose_net(pose_path) if pose_path else None;errors={};images=[];started=time.time()
     for batch_id,batch in enumerate(loader):
@@ -181,7 +181,7 @@ def evaluate_pixel(model,root,output,count,steps,pose_path,batch_size):
         for h in [1,3,7,13]:
             result[f"h{h}_agent_ratio"]=float(arrays["agent"][:,h-1].mean()/max(1e-6,arrays["copy_agent"][:,h-1].mean()))
             result[f"h{h}_block_ratio"]=float(arrays["block"][:,h-1].mean()/max(1e-6,arrays["copy_block"][:,h-1].mean()))
-    output.mkdir(parents=True,exist_ok=True);(output/"metrics.json").write_text(json.dumps(result,indent=2));np.savez(output/"per_case.npz",**arrays);gallery(images,output);return result
+    output.mkdir(parents=True,exist_ok=True);(output/"metrics.json").write_text(json.dumps(result,indent=2));(output/"cases.json").write_text(json.dumps([dict(episode=int(data.locate(i)[0]),start=int(data.locate(i)[1])) for i in indices],indent=2));np.savez(output/"per_case.npz",**arrays);gallery(images,output);return result
 
 
 def main():
