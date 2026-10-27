@@ -3,3 +3,9 @@ At step 2000, standard-data L2 at beta 1 through 256, beta=0 and the unpriced L1
 ## Encoder warm-start diagnostic
 
 A separate diagnostic initializes only the ViT encoder from this campaign's 25k L0 checkpoint. Pooling, action encoder, prior, renderer and optimizer remain fresh; the AS-JEPA objective is unchanged. One-time head calibration and an initial portable export are recorded. This tests the joint-optimization barrier and must not be reported as learning from scratch or as a matched compute comparison. Full resume skips both encoder initialization and calibration.
+
+## Numerical precision controls
+
+Matched frozen-weight probes show that several amplified-initialization checkpoints have BF16 feature std around .15-.2 while full FP32 std is only roughly .0001-.0004. Their noisy FP32 state probes remain near chance. Thus high BF16 variance in these arms contains substantial numerical variation; it is not evidence of useful retained information. Normal L1+BN and beta0 controls have similar BF16/FP32 position scores.
+
+Two additional beta=.25/std=1 controls keep the same mathematical model/loss, batch128 and data: BF16 encoder with an FP32 QueryPool, and full FP32 training. Both use float32 matmul precision=highest. Record actual speed/memory before committing a long budget; a successful FP32 inference probe alone does not prove FP32 training will prevent optimization collapse.

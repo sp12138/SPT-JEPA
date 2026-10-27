@@ -122,7 +122,7 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument("config");parser.add_argument("--resume",action="store_true");args=parser.parse_args()
     cfg=json.loads(Path(args.config).read_text());cfg["is_resuming"]=args.resume;root=Path(cfg["output"]);root.mkdir(parents=True,exist_ok=True)
     torch.set_num_threads(cfg.get("cpu_threads",2));pl.seed_everything(cfg["seed"],workers=True)
-    torch.backends.cuda.matmul.allow_tf32=True;torch.set_float32_matmul_precision("high")
+    torch.backends.cuda.matmul.allow_tf32=True;torch.set_float32_matmul_precision(cfg.get("float32_matmul_precision","high"))
     use_cpu=cfg.get("device")=="cpu"
     initialize_ops(OpsConfig(backend="sdpa_math" if use_cpu else "sdpa",allow_fallback=False),device=torch.device("cpu") if use_cpu else torch.device("cuda",0),parallel_state=None)
     module=TrainModule(cfg)
@@ -144,7 +144,7 @@ def main():
     sampler=WindowSampler(dataset,start=start,seed=cfg["seed"],batch_size=cfg["batch_size"])
     loader=DataLoader(dataset,batch_size=cfg["batch_size"],sampler=sampler,generator=torch.Generator().manual_seed(cfg["seed"]+999),num_workers=cfg.get("workers",4),persistent_workers=cfg.get("workers",4)>0,pin_memory=True,drop_last=True,worker_init_fn=seed_worker)
     progress=PersistentProgress(root,cfg)
-    trainer=pl.Trainer(accelerator="cpu" if use_cpu else "gpu",devices=1,precision="32-true" if use_cpu else "bf16-mixed",max_steps=cfg["max_steps"],max_epochs=-1,
+    trainer=pl.Trainer(accelerator="cpu" if use_cpu else "gpu",devices=1,precision="32-true" if use_cpu else cfg.get("precision","bf16-mixed"),max_steps=cfg["max_steps"],max_epochs=-1,
                        max_time=datetime.timedelta(seconds=cfg.get("max_seconds",36000)),gradient_clip_val=1.,logger=False,enable_checkpointing=False,
                        enable_progress_bar=False,enable_model_summary=False,num_sanity_val_steps=0,callbacks=[progress],log_every_n_steps=100,default_root_dir=str(root))
     trainer.fit(module,train_dataloaders=loader,ckpt_path=resume,weights_only=False)

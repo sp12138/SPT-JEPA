@@ -37,7 +37,7 @@ def main():
                     model.pool.head.weight.mul_(scale["scale"]);model.pool.head.bias.sub_(mean).mul_(scale["scale"])
         if model.mode!="L2":raise ValueError("Gradient diagnostic currently covers the priced LeWM model")
         model.train();data=PushTWindows(cfg["data"],window=model.window,gap=cfg.get("gap",8),split="train")
-        indices=np.random.default_rng(90).choice(len(data),8,replace=False)
+        indices=np.random.default_rng(job.get("batch_seed",90)).choice(len(data),8,replace=False)
         batch=next(iter(DataLoader(Subset(data,indices),batch_size=8,num_workers=0)))
         batch={k:v.cuda() if torch.is_tensor(v) else v for k,v in batch.items()}
         original=model.encode;captured=[]
@@ -52,7 +52,7 @@ def main():
         gf=torch.autograd.grad(metrics["fm"],[mu]+params,retain_graph=True,allow_unused=True)
         beta=model.beta*min(1.,job.get("step",0)/max(1,cfg.get("ramp_steps",0))) if cfg.get("ramp_steps",0) else model.beta
         gr=torch.autograd.grad(beta*metrics["rate"],[mu]+params,allow_unused=True)
-        result=dict(id=job["id"],step=job.get("step",0),checkpoint=job.get("checkpoint"),
+        result=dict(id=job["id"],batch_seed=job.get("batch_seed",90),step=job.get("step",0),checkpoint=job.get("checkpoint"),
                     state_std=float(mu.float().std((0,1)).mean()),sigma0=model.sigma0,
                     fm=float(metrics["fm"]),rate=float(metrics["rate"]),beta=beta,
                     state_gradient=stats(gf[:1],gr[:1]),encoder_head_gradient=stats(gf[1:],gr[1:]),
