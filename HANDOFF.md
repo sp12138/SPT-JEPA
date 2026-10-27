@@ -1,3 +1,21 @@
+# SPT-JEPA insight campaign, 2026-10-27
+
+Current authoritative project root is `/efs/prescottsun/SPT-JEPA`, including code and Git metadata. The user authorized dev2 and dev13 (8 H200 each) for a 12-hour insight-first campaign starting 2026-10-27 10:24:58 UTC, ending 22:24:58 UTC. Single-seed screens and early stopping are authorized. No other hosts are authorized by this campaign.
+
+Read `runs/insights12h_20261027/plan.json`, the per-host worker JSONs, `execution.json`, `source_manifest*.json`, and actual processes before operating. Every running experiment has an immutable source archive and explicit config. Source development branch: `insights/12h-20261027`, based on Kong's `9e81418`. All 903 inherited runtime hashes remain unchanged.
+
+Data is the existing read-only PushT expert HDF5, exported under this project's `data/pusht`. Export validation checks 1000 random original/resized frames and disjoint train/test episodes. Insight runs use one frameskip-aligned phase, rather than all five raw-frame phases, and a small renderer (192 wide, 6 blocks). Main AS-JEPA LeWM model: 21,580,398 parameters; Native S2: 10,589,072; small SPT baselines: about 9.12M. These are exploratory settings, not a complete reproduction of the original experiment budget.
+
+At 11:28 UTC dev13 stopped updating training/worker heartbeats and became unreachable by SSH. Treat its process state as unknown, not Running. User has been asked to restore it or provide a replacement. dev2 remains operational. New recovery outputs use new directories to avoid concurrent writes if the old node returns. The evaluation service has moved to dev2. Saved checkpoints and all data survive on EFS.
+
+`cross_host_recovery_PASS.json` demonstrates exact FP32 CPU recovery: 5 steps on dev13 plus 15 on dev2 matches a 20-step uninterrupted reference, including all episode/start IDs and every parameter (max difference 0). The current training entry explicitly restores trusted full Lightning checkpoints; older source snapshots need that restore fix. The GPU SDPA trajectory is nondeterministic and is not claimed bitwise identical.
+
+Initial 2000-step renderings do not beat copying the last context frame. Original state std is about 0.0007 vs injected sigma0=0.1, so a channel-capacity diagnostic and one-time affine head initialization ablation were added. L1's documented BatchNorm fallback is separate from AS-JEPA. No successful generation/planning claim has been made.
+
+Run/evaluation logs and generated files are experiment state outside Git. The following inherited SPT handoff is historical baseline evidence only and does not authorize restarting its jobs.
+
+---
+
 # SPT handoff
 
 Checked 2026-10-12T15:32:51.608851+00:00 on dev3 (prescottsun-dev3-2d-worker-0).

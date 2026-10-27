@@ -12,7 +12,7 @@ from as_jepa_tools.data import PushTWindows
 
 
 def build_train_components(request):
-    cfg=dict(request.extras);data=Path(cfg.pop("data_root"));model_cfg=dict(cfg.pop("as_jepa"));kind=model_cfg.pop("kind","S2");output=Path(cfg.pop("campaign_output"));output.mkdir(parents=True,exist_ok=True)
+    cfg=dict(request.extras);data=Path(cfg.pop("data_root"));model_cfg=dict(cfg.pop("as_jepa"));kind=model_cfg.pop("kind","S2");legacy_output=cfg.pop("campaign_output",None);output=Path(request.output_dir);output.mkdir(parents=True,exist_ok=True)
     dataset=PushTWindows(data,window=model_cfg.get("window",8),gap=model_cfg.get("anchor_gap",8) if kind=="S2" else 0,seed=request.sampler_seed)
     loader=build_resumable_loader(dataset,parallel_state=get_parallel_state(),batch_size=request.batch_size,num_workers=request.num_workers,drop_last=request.drop_last,seed=request.sampler_seed,shuffle=request.shuffle,pin_memory=request.pin_memory,persistent_workers=request.persistent_workers,prefetch_factor=request.prefetch_factor)
     def build():
