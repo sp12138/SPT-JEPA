@@ -17,6 +17,7 @@ def main():
         args=["--checkpoint",job["checkpoint"],"--data",job["data"],"--output",str(dest),
               "--train",str(job.get("train",20000)),"--test",str(job.get("test",5000))]
         if job.get("noisy",False):args.append("--noisy")
+        if job.get("fp32",False):args.append("--fp32")
         try:
             with (dest/"probe.log").open("w") as log,contextlib.redirect_stdout(log),contextlib.redirect_stderr(log):
                 probe(args,initialize=False)
