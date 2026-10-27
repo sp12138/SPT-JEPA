@@ -32,7 +32,7 @@ def main():
     import stable_worldmodel as swm
     original_evaluate=swm.World.evaluate
     def recorded_evaluate(world,*args,**kwargs):
-        random.seed(seed);np.random.seed(seed);torch.manual_seed(seed)
+        random.seed(seed);np.random.seed(seed);torch.manual_seed(seed);torch.set_float32_matmul_precision("highest")
         started=time.time()
         result=original_evaluate(world,*args,**kwargs)
         episodes=kwargs.get("episodes_idx",[])
@@ -40,7 +40,7 @@ def main():
             raise AssertionError("Planner selected an episode outside the held-out split")
         report=dict(metrics=to_json(result),episodes=to_json(episodes),
                     start_steps=to_json(kwargs.get("start_steps")),split=split,
-                    seed=seed,solver_rng_seed=seed,seconds=time.time()-started,
+                    seed=seed,solver_rng_seed=seed,float32_matmul_precision=torch.get_float32_matmul_precision(),seconds=time.time()-started,
                     scope="Pinned upstream P0; deterministic posterior means; single trained seed")
         (output/"metrics.json").write_text(json.dumps(report,indent=2))
         return result
