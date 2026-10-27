@@ -4,6 +4,8 @@
 
 原始全量实验规格尚未全部完成，逐项状态见[任务核对](experiments/insights12h/TASK_AUDIT_20261028.md)。
 
+后续方法的[10个候选和验证方案](experiments/ideas20261028/README.md)已准备，当前仅完成数学前提检查；实际方法实验尚未启动，执行范围与追加预算待确认。
+
 本轮权重、数据与运行状态保存在 /efs/prescottsun/SPT-JEPA，Git 发布聚合数值及关键 PNG/SVG。当前计算已结束；下文是继承的 SPT 基线文档。
 
 Initialized from [sp12138/SPT](https://github.com/sp12138/SPT) at commit

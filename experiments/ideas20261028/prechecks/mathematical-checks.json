@@ -1,0 +1,67 @@
+{
+  "scope": "Mathematical prerequisites and negative controls only; zero candidate world-model experiments completed.",
+  "I01": {
+    "uniform_quadrature_relative_error": 1.7510863049231205e-14,
+    "current_sampler_gaussian_toy_slope_ratio_min": 0.003893147819644018,
+    "current_sampler_gaussian_toy_slope_ratio_max": 21.904295241025793,
+    "flow_sampler": {
+      "mean": 0.8,
+      "std": 0.8,
+      "shift": 1.7420771050673962
+    },
+    "interpretation": "FM optimum is not a constant multiple of Gaussian entropy over varying residual variance. This does not estimate the real model's likelihood or prove a calibrated replacement."
+  },
+  "I02": {
+    "gaussian_kl_coordinate_transform_abs_error": 1.5631940186722204e-13,
+    "condition": "Both posterior and prior, including entry reference distribution, must transform. A fixed unit prior is not invariant under arbitrary linear scaling."
+  },
+  "I03": {
+    "full_joint_kl": 6.607472052249621,
+    "correct_chain_kl": 6.607472052249637,
+    "abs_error": 1.5987211554602254e-14,
+    "incorrect_independent_formula": 8.071692685887701,
+    "interpretation": "Correlated posterior noise requires a new conditional KL; keeping the old independent formula misprices the same Gaussian chain."
+  },
+  "I04": {
+    "linear_style_removal_error": 7.327374219405542e-16,
+    "retained_dynamics_rank": 3,
+    "caveat": "Requires separable subspaces in this toy; arbitrary anchor subtraction can remove absolute geometry. No image canonicalizer has been validated."
+  },
+  "I06": {
+    "first_order_fm_change": -1.0,
+    "first_order_original_priced_objective_change": 9.0,
+    "interpretation": "The constrained update can improve FM while increasing the original priced objective. It must be evaluated as a changed optimization rule."
+  },
+  "I07": {
+    "analytic_optimum_variance": 4.0,
+    "numeric_optimum_variance": 4.001289735406987,
+    "no_log_penalty_optimum": "infinity",
+    "caveat": "Variance predictor must not read target pixels; this regression identity does not make weighted FM an endpoint NLL."
+  },
+  "I08": {
+    "latent_transition_gain": 0.95,
+    "encode_decode_gain": 1.2,
+    "pixel_feedback_gain": 1.14,
+    "condition": "A toy can have stable latent recurrence and unstable encode/decode feedback. If E*D=I, the two recurrences are equivalent. Neither condition is established for trained Native by this toy."
+  },
+  "I10": {
+    "control_energy_original": 10.314747915181727,
+    "control_energy_transformed": 10.314747915182256,
+    "invariant_absolute_error": 5.293543381412746e-13,
+    "euclidean_cost_original": 18.379017150730313,
+    "euclidean_cost_transformed": 282.057243679007,
+    "caveat": "Ridge must use covariant C, not a fixed identity. Local control Jacobians and PushT benefit remain untested."
+  },
+  "not_checked_empirically": [
+    "I01",
+    "I02",
+    "I03",
+    "I04",
+    "I05",
+    "I06",
+    "I07",
+    "I08",
+    "I09",
+    "I10"
+  ]
+}

@@ -1,5 +1,7 @@
 # Completed insight campaign — 2026-10-27T20:56:14.635676+00:00
 
+Current research preparation is on research/ideas-20261028: read [research recovery](RECOVERY_RESEARCH_20261028.md). Ten candidates and CPU mathematical checks are prepared; scope/budget replies are pending and no new method training has started.
+
 Original full-spec completion was audited separately: [remaining tasks](experiments/insights12h/TASK_AUDIT_20261028.md). The original full spec is incomplete; the 28 selected endpoint finalizers are complete.
 
 The selected 28 main finalizers and all late diagnostics are complete. Read
