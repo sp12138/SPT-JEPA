@@ -18,7 +18,6 @@ class WindowSampler(Sampler):
     def __len__(self):return self.length
     def __iter__(self):
         n=self.dataset.natural_length;epoch=-1;start=self.start
-        self.start=start+self.length
         for k in range(start,start+self.length):
             current=k//n
             if current!=epoch:
@@ -70,7 +69,7 @@ class PersistentProgress(Callback):
         now=time.time();step=int(trainer.global_step)
         row=dict(state=state,step=step,elapsed_seconds=now-self.started,updated_at=now,pid=os.getpid(),host=os.uname().nodename,**module.last_metrics)
         row["seconds_per_step"]=(now-self.last_time)/max(1,step-self.last_step)
-        row["peak_gib"]=torch.cuda.max_memory_allocated()/2**30
+        row["peak_gib"]=torch.cuda.max_memory_allocated()/2**30 if self.cfg.get("device")!="cpu" else 0.
         row["learning_rates"]=[group["lr"] for group in (trainer.optimizers[0].param_groups if trainer.optimizers else [])]
         path=self.root/"status.json";tmp=path.with_suffix(".tmp");tmp.write_text(json.dumps(row,indent=2));tmp.replace(path)
         with (self.root/"metrics.jsonl").open("a") as f:f.write(json.dumps(row)+"\n")
@@ -92,6 +91,8 @@ class PersistentProgress(Callback):
         if step and step%self.cfg.get("checkpoint_every",2000)==0:self.save(trainer,module)
         if (self.root/"STOP").exists():trainer.should_stop=True
         if self.cfg.get("stop_after")==step and module.initial_step==0:trainer.should_stop=True
+    def on_train_epoch_end(self,trainer,module):
+        trainer.train_dataloader.sampler.start=module.samples_consumed
     def on_train_end(self,trainer,module):self.save(trainer,module);self.status(trainer,module,"finished")
     def on_exception(self,trainer,module,exception):
         (self.root/"error.txt").write_text(repr(exception));self.status(trainer,module,"failed")
@@ -102,7 +103,8 @@ def main():
     cfg=json.loads(Path(args.config).read_text());root=Path(cfg["output"]);root.mkdir(parents=True,exist_ok=True)
     torch.set_num_threads(cfg.get("cpu_threads",2));pl.seed_everything(cfg["seed"],workers=True)
     torch.backends.cuda.matmul.allow_tf32=True;torch.set_float32_matmul_precision("high")
-    initialize_ops(OpsConfig(backend="sdpa",allow_fallback=False),device=torch.device("cuda",0),parallel_state=None)
+    use_cpu=cfg.get("device")=="cpu"
+    initialize_ops(OpsConfig(backend="sdpa_math" if use_cpu else "sdpa",allow_fallback=False),device=torch.device("cpu") if use_cpu else torch.device("cuda",0),parallel_state=None)
     module=TrainModule(cfg)
     (root/"model_size.json").write_text(json.dumps(dict(total=sum(p.numel() for p in module.model.parameters()),encoder=sum(p.numel() for p in module.model.encoder.parameters()),prior=sum(p.numel() for p in module.model.predictor.parameters()),renderer=sum(p.numel() for p in module.model.renderer.parameters()) if module.model.renderer else 0),indent=2))
     checkpoint=root/"last.ckpt";resume=str(checkpoint) if args.resume and checkpoint.exists() else None
@@ -111,7 +113,7 @@ def main():
     sampler=WindowSampler(dataset,start=start,seed=cfg["seed"],batch_size=cfg["batch_size"])
     loader=DataLoader(dataset,batch_size=cfg["batch_size"],sampler=sampler,generator=torch.Generator().manual_seed(cfg["seed"]+999),num_workers=cfg.get("workers",4),persistent_workers=cfg.get("workers",4)>0,pin_memory=True,drop_last=True,worker_init_fn=seed_worker)
     progress=PersistentProgress(root,cfg)
-    trainer=pl.Trainer(accelerator="gpu",devices=1,precision="bf16-mixed",max_steps=cfg["max_steps"],max_epochs=-1,
+    trainer=pl.Trainer(accelerator="cpu" if use_cpu else "gpu",devices=1,precision="32-true" if use_cpu else "bf16-mixed",max_steps=cfg["max_steps"],max_epochs=-1,
                        max_time=datetime.timedelta(seconds=cfg.get("max_seconds",36000)),gradient_clip_val=1.,logger=False,enable_checkpointing=False,
                        enable_progress_bar=False,enable_model_summary=False,num_sanity_val_steps=0,callbacks=[progress],log_every_n_steps=100,default_root_dir=str(root))
     trainer.fit(module,train_dataloaders=loader,ckpt_path=resume,weights_only=False)
