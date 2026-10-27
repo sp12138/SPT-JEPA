@@ -1,0 +1,201 @@
+{
+  "prepared_at": "2026-10-27T21:34:42.147842+00:00",
+  "status": "preparatory hypotheses; not empirical method validation",
+  "basis_result_commit": "b9356dba26d1e797defb695a35803d96917da1eb",
+  "task_audit_commit": "ab645dbf0dda0ecbd883302a7595f448c6384e9b",
+  "execution_scope_and_additional_budget_pending": true,
+  "ideas": [
+    {
+      "id": "I01",
+      "name": "把生成收益和状态价格统一到 nats",
+      "priority": 1,
+      "evidence": "当前可用设置 β=.01，而 β≥1 多数失败；flow-MSE并不自动是图像NLL。原故事也把校准β列为开放问题。",
+      "mechanism": "用正确的密度/去噪积分估计状态带来的条件码长收益，再与Gaussian KL比较；先验证likelihood差分估计的残差和边界项，不能把普通CFM差值直接叫log-ratio。",
+      "prediction": "相同物理数据在RGB单位、噪声时刻分布改变后，不必重新大范围搜索β；动态信息仍保留，随机dot RGB泄漏下降。",
+      "control": "相同网络/数据/步数，普通FM+β网格对照；单独控制时间权重、边界修正、额外训练时间。",
+      "falsifier": "换像素单位仍要大幅改β，或只是数值缩放而没有改善噪声状态/生成/规划；密度差估计不能在可精确求解的Gaussian例子复原真实值。",
+      "first_check": "线性Gaussian路径上验证最优uniform-time FM风险=π√v/2，而熵=.5log(2πev)，二者不成固定比例。这个toy不是当前logit-normal时间采样器的精确损失。",
+      "related": [
+        "CFM_NLL",
+        "I_MMSE"
+      ],
+      "novelty": "校准β的动机已在原计划中出现；候选贡献是可检查的估计器与world-model码长选择流程，不把已知I-MMSE或CFM理论宣称为新定理。"
+    },
+    {
+      "id": "I02",
+      "name": "按解码器几何分配状态噪声",
+      "priority": 5,
+      "evidence": "高BF16方差可以没有可用信息；各状态方向对图像/动作的影响很不均衡。",
+      "mechanism": "从训练数据估计全局decoder pullback度量F，令q/p共享Q∝(F+εI)^−1；用完整Gaussian KL计费，令噪声在可见图像变化上接近等强。Q只用训练段估计并保存，不从未来图像决定部署噪声。",
+      "prediction": "任意线性重参数化不再改变有效噪声和surprise；同样状态码长下小agent信息更早变得可用。",
+      "control": "固定等方差噪声、仅对角Q、随机旋转Q，以及同等计算的FP32对照；报告entry先验是否同时变换。",
+      "falsifier": "收益只来自增加实际信道容量；同码长下生成或规划没有改善，或Q退化为数值不稳定的近奇异矩阵。",
+      "first_check": "完整Gaussian KL在均值和q/p协方差一起做可逆线性变换后不变；固定N(0,I)不一起变换则不应声称全目标不变。",
+      "related": [
+        "VJEPA"
+      ],
+      "novelty": "不是普通whitening或把MSE改成Gaussian NLL；候选是把解码可见性、共享噪声与真实KL统一。"
+    },
+    {
+      "id": "I03",
+      "name": "为缓慢动力学设计有时间相关性的后验噪声",
+      "priority": 6,
+      "evidence": "独立帧噪声在prior中形成额外预测负担，当前prior需要处理噪声与真实运动；长rollout仍有误差累积。",
+      "mechanism": "定义q(s_t|s_{t−1},x_t,x_{t−1})=N(μ_t+ρ(s_{t−1}−μ_{t−1}),σ²(1−ρ²)I)，保持每帧边际噪声σ不变；用真实Markov chain KL训练并匹配部署采样。",
+      "prediction": "相同每帧噪声和总KL下，慢变化维度不再反复支付独立抖动的代价，长horizon误差下降。",
+      "control": "ρ=0、错误地仍按独立后验计费、相同总rate的基线；同时检查agent灵敏性是否因过平滑而损失。",
+      "falsifier": "收益完全是噪声变小；真实joint KL没有下降或动作响应受抑制。",
+      "first_check": "joint Gaussian KL必须与正确的条件KL之和相等；原来的per-frame独立公式通常不适用。旧纯度证明需要重推，不能直接沿用。",
+      "related": [
+        "WARPED_NOISE"
+      ],
+      "novelty": "视频相关噪声已有工作；候选区别在状态后验的联合码长与prior闭环，而非仅重用renderer噪声。"
+    },
+    {
+      "id": "I04",
+      "name": "让anchor定义外观坐标系，而不是让state反复学外观不变性",
+      "priority": 7,
+      "evidence": "anchor配色分工两种子复现，但state仍有残余palette R²；直接相减anchor也可能抹掉动力学几何。",
+      "mechanism": "由anchor估计受约束的点式颜色canonicalizer，再编码canonicalized当前帧；只允许共享颜色变换，不允许空间attention把anchor中的物块位置传进state。目标图像仍由anchor恢复原配色。",
+      "prediction": "在颜色变化下state的背景泄漏下降，几何信息保持；跨palette目标规划更稳。",
+      "control": "无canonicalizer、仅全局颜色标准化、无约束anchor cross-attention、直接减anchor的负对照；同一物理窗口改变palette。",
+      "falsifier": "去除颜色同时损失位置/接触信息，或只在合成RGB affine而非新的外观变化上有效。",
+      "first_check": "线性style子空间投影保留动力学需要明确的子空间条件；另造反例展示盲目减anchor会丢绝对位置。",
+      "related": [],
+      "novelty": "不是把已成功的anchor swap换个名字；新增的实质是限制encoder的外观规范化路径，并验证它不泄漏几何。"
+    },
+    {
+      "id": "I05",
+      "name": "直接训练prior状态也能渲染的条件分布",
+      "priority": 2,
+      "evidence": "50k后后验物块重建约5px，但预测状态的h13物块约19px；当前renderer主要读后验state训练。",
+      "mechanism": "固定比例选择后验state或多步prior-state作为同一个FM renderer的条件，预测路径从真实过去出发，目标仍是真实未来图像；让生成损失直接给prior和过去encoder提供任务信号。",
+      "prediction": "相同训练步数下posterior/forecast重建差缩小，噪声rollout与动作反事实改善。",
+      "control": "后验条件基线、单步/多步prior条件、相同总FM调用数；分别报告后验重建是否退化。",
+      "falsifier": "renderer为兼容差prior而学会忽略state，或prior视觉改善来自牺牲goal embedding和P0。",
+      "first_check": "在可微toy里确认forecast rendering对prior的梯度通路存在；真正效果只能由完整world-model对照决定。",
+      "related": [],
+      "novelty": "候选重点是用同一生成条件分布把码长训练和部署状态接通；不能只叫scheduled sampling而不检查信息路径。"
+    },
+    {
+      "id": "I06",
+      "name": "用局部梯度约束越过坍塌势垒",
+      "priority": 8,
+      "evidence": "默认初始化时renderer到state的初始梯度为0；固定小批量诊断中某些配置的rate梯度远大于FM梯度，暖启动/冻结本身没有打通规划。",
+      "mechanism": "对encoder的rate更新施加局部约束：不允许它在一阶近似上破坏当前可见重建信号；冲突方向投影，renderer尚无state梯度时不收缩encoder。保留原始priced loss用于诊断。",
+      "prediction": "高β更少落入空状态，且不需要L0预训练；有效信息和生成共同改善。",
+      "control": "原始更新、固定warmup/冻结、PCGrad通用实现、等计算基线；记录投影比例和原始目标变化。",
+      "falsifier": "只是人为强留无用方差，或只有牺牲原始目标才变好且生成/规划无收益。",
+      "first_check": "投影可保证一阶FM不增，但不能保证原始FM+βKL单调下降；必须明确它是优化约束的改变。",
+      "related": [
+        "PCGRAD",
+        "LAGGING"
+      ],
+      "novelty": "gradient surgery本身已有工作；候选创新必须体现在对码长坍塌势垒的特定约束与可预测的机制结果。"
+    },
+    {
+      "id": "I07",
+      "name": "按可预测性而不是像素面积分配生成梯度",
+      "priority": 3,
+      "evidence": "小agent在25k后验重建很弱，50k才改善；flow在dot控制中保留大量无关RGB。",
+      "mechanism": "让仅看过去/动作/anchor的网络估计每patch的不可预测残差方差v，用r²/(2v)+.5log v的异方差FM回归，避免随机dot消耗大量编码梯度，增加可预测的小运动信号的相对权重。",
+      "prediction": "agent信息更早出现，dot RGB leakage下降，同时动态生成和P0保住；不是简单降低所有细节质量。",
+      "control": "普通FM、固定空间权重、motion magnitude权重、去掉log v的负对照；v不得读取目标帧或目标state。",
+      "falsifier": "权重只是把难区域藏起来、视觉对象消失，或随机dot反而因变化大而获得更高权重。",
+      "first_check": "正确log方差项的最优v是条件均方残差；去掉log项会通过v→∞作弊。加权FM也不自动等于端点NLL。",
+      "related": [
+        "CFM_NLL"
+      ],
+      "novelty": "异方差回归是已知工具；候选是用因果可预测性处理小agent与随机细节之间的梯度竞争。"
+    },
+    {
+      "id": "I08",
+      "name": "Native把语义记忆闭环和图像生成闭环分开",
+      "priority": 4,
+      "evidence": "Native S1同检查点h7真实历史agent/block16.7/6.6px，自由rollout145.4/58.1px；裁剪生成历史反而更差。",
+      "mechanism": "传播专门的语义记忆并由它生成图像，生成图片不再作为唯一动力学历史重新编码；收到真实观测时再做状态校正。优先从已有S1表征进行匹配finetune，另设同预训练预算的对照。",
+      "prediction": "一阶预测不变或接近，h7/h13漂移下降；改进集中在反馈路径，而不是单步能力。",
+      "control": "原S1、裁剪history、真实history oracle、latent carry；相同预训练与finetune预算，记录是否冻结encoder。",
+      "falsifier": "latent自身同样不稳定，或图像质量变好但动作/物块接触更差。",
+      "first_check": "在线性toy中区分A与A·E·D的反馈谱半径；当E·D=I时没有结构性优势，不能保证所有latent carry都更稳。",
+      "related": [
+        "VJEPA"
+      ],
+      "novelty": "latent world model本身不新；候选要用当前Native受控结果定位接口，并验证保留语义记忆能解决已观测的反馈放大。"
+    },
+    {
+      "id": "I09",
+      "name": "按真实动作干预压缩状态",
+      "priority": 9,
+      "evidence": "低latent误差和高rank不能保证动作跟随；50k反事实识别整体88.3%，物块68.8%，仍有可改进空间。",
+      "mechanism": "从训练段的真实模拟器状态收集多动作fork，训练encoded真实future在给定共同过去时识别候选动作，辅以原生成/码长目标；约束的是观测到的动作后果，不能让分类器直接读prior动作输入取巧。",
+      "prediction": "更少编码只与外观/随机dot有关的信息，接触相关block动作识别上升，规划不下降。",
+      "control": "相同fork数据但无干预项、打乱动作标签、只给prior输出的作弊负对照；训练/确认测试fork严格分开。",
+      "falsifier": "识别来自branch编号/随机种子泄漏，或只学agent而block和控制没有提高。",
+      "first_check": "共同nuisance和独立标签下不应能靠背景/ID识别动作；专门审计新数据中的branch-key泄漏。",
+      "related": [
+        "ACTION_AUDIT",
+        "MC_JEPA"
+      ],
+      "novelty": "动作相关性在原故事中已有开放问题；候选是可验证的同状态fork信息约束与抗泄漏控制，不把反事实评估本身叫新方法。"
+    },
+    {
+      "id": "I10",
+      "name": "把latent距离改成局部可控能量",
+      "priority": 1,
+      "evidence": "50k生成/反事实已好但P0仍有波动；GoalMSE依赖任意embedding坐标的尺度，未必衡量达到目标的动作代价。",
+      "mechanism": "冻结世界模型，用J=∂z_H/∂u估计局部可控Gramian，G=JJᵀ+αC_train；规划成本dᵀG⁻¹d。C只用训练features估计，G可每次replan估计一次，以低秩更新控制开销。",
+      "prediction": "在相同CEM搜索预算下P0提升，对可逆线性state重参数化更稳；生成结果保持原值，因为模型冻结。",
+      "control": "原GoalMSE、仅C_train的Mahalanobis、随机低秩G、相同墙钟时间/函数调用预算；α只在训练段或新增validation选择。",
+      "falsifier": "只靠增加CEM时间获益，局部J不可靠，或改变坐标后目标选择依然严重变化。",
+      "first_check": "若C和J按同一可逆坐标变换，dᵀ(JJᵀ+αC)⁻¹d严格不变；ridge I不相应变换时不成立。",
+      "related": [
+        "ACTION_AUDIT",
+        "VJEPA"
+      ],
+      "novelty": "Gramian/控制能量是经典概念；候选贡献是由JEPA几何诊断得到的、无需重训且有坐标不变检验的规划接口。它是新cost协议，不能冒充原P0 GoalMSE。"
+    }
+  ],
+  "sources": {
+    "CFM_NLL": {
+      "title": "When Can Conditional Flow Matching Replace Pointwise Negative Log-Likelihood?",
+      "url": "https://arxiv.org/abs/2608.28010",
+      "relevance": "CFM/NLL替代需要检查残差与边界条件；支持校准审计，不证明本项目候选有效。"
+    },
+    "I_MMSE": {
+      "title": "Mutual Information and Minimum Mean-square Error in Gaussian Channels",
+      "url": "https://arxiv.org/abs/cs/0412108",
+      "relevance": "Gaussian通道中MI对SNR导数与MMSE相关，作为nats校准的理论工具。"
+    },
+    "PCGRAD": {
+      "title": "Gradient Surgery for Multi-Task Learning",
+      "url": "https://arxiv.org/abs/2001.06782",
+      "relevance": "梯度冲突投影的既有方法，需与本项目特定约束区分。"
+    },
+    "LAGGING": {
+      "title": "Lagging Inference Networks and Posterior Collapse in Variational Autoencoders",
+      "url": "https://arxiv.org/abs/1901.05534",
+      "relevance": "把posterior collapse与训练动力学/推断滞后联系起来；并非本项目的直接证据。"
+    },
+    "WARPED_NOISE": {
+      "title": "Go-with-the-Flow: Motion-Controllable Video Diffusion Models Using Real-Time Warped Noise",
+      "url": "https://arxiv.org/abs/2501.08331",
+      "relevance": "视频时间相关噪声已有研究，本候选需要额外的latent joint-KL推导。"
+    },
+    "ACTION_AUDIT": {
+      "title": "Counterfactual Action Evaluation, Observation Bottlenecks, and Representation Geometry in Joint-Embedding Predictive World Models",
+      "url": "https://arxiv.org/abs/2610.02860",
+      "relevance": "支持将动作通路、可见性和表示几何分别审计；不直接证明新cost或损失有效。"
+    },
+    "VJEPA": {
+      "title": "VJEPA: Variational Joint Embedding Predictive Architectures as Probabilistic World Models",
+      "url": "https://arxiv.org/abs/2601.14354",
+      "relevance": "概率latent预测与控制的相关框架；本文候选不宣称首先提出概率JEPA。"
+    },
+    "MC_JEPA": {
+      "title": "MC-JEPA: A Joint-Embedding Predictive Architecture for Self-Supervised Learning of Motion and Content Features",
+      "url": "https://arxiv.org/abs/2307.12698",
+      "relevance": "内容与运动的联合学习已有工作，作为动作/运动表征候选的相关背景。"
+    }
+  }
+}
