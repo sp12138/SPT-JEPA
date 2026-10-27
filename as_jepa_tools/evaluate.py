@@ -16,6 +16,9 @@ def load_model(folder,device="cuda"):
     if target=="vforge.models.as_jepa.model.ASJepaSPT":
         from vforge.models.as_jepa.model import ASJepaSPT
         model=ASJepaSPT(**cfg).to(device)
+    elif target=="vforge.models.as_jepa.spt_baseline.ActionRepWorld":
+        from vforge.models.as_jepa.spt_baseline import ActionRepWorld
+        model=ActionRepWorld(**cfg).to(device)
     else:model=ASJepaLeWM(**cfg).to(device)
     model.load_state_dict(torch.load(folder/"weights.pt",map_location=device,weights_only=True),strict=True);return model.eval()
 
@@ -61,6 +64,7 @@ def pose_net(path):
 @torch.no_grad()
 def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8):
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
+    if model.mode in {"S0","S1"}:return evaluate_pixel(model,root,output,count,steps,pose_path,batch_size)
     data=PushTWindows(root,window=16,gap=8,split="test");indices=select_windows(data,count)
     loader=DataLoader(Subset(data,indices),batch_size=batch_size,num_workers=2,pin_memory=True)
     pose=pose_net(pose_path) if pose_path else None
@@ -135,6 +139,32 @@ def gallery(rows,output):
             for k,frame in enumerate([truth[t],pred[t-3]]):
                 image=((frame.permute(1,2,0).float().clamp(-1,1)+1)*127.5).byte().numpy();canvas.paste(Image.fromarray(image).resize((tile,tile)),((j*2+k)*tile,i*tile))
     canvas.save(output/"gallery.png")
+
+
+@torch.no_grad()
+def evaluate_pixel(model,root,output,count,steps,pose_path,batch_size):
+    output=Path(output);data=PushTWindows(root,window=16,gap=0,split="test");indices=select_windows(data,count)
+    loader=DataLoader(Subset(data,indices),batch_size=min(4,batch_size),num_workers=2,pin_memory=True)
+    pose=pose_net(pose_path) if pose_path else None;errors={};images=[];started=time.time()
+    for batch_id,batch in enumerate(loader):
+        batch={k:v.cuda(non_blocking=True) if torch.is_tensor(v) else v for k,v in batch.items()}
+        with torch.autocast("cuda",dtype=torch.bfloat16):
+            _,frames,_=model.prepare(batch);anchor=frames[:,0]
+            generated=model.rollout_frames(frames[:,:3],batch["action"],anchor,horizon=13,steps=steps,seed=1000+batch_id).float().clamp(-1,1)
+            copy=frames[:,2:3].expand_as(generated)
+            errors.setdefault("pixel_mse",[]).append((generated-frames[:,3:]).square().mean((-3,-2,-1)).cpu())
+            errors.setdefault("copy_pixel_mse",[]).append((copy-frames[:,3:]).square().mean((-3,-2,-1)).cpu())
+            if pose is not None:
+                prediction=pose(generated.flatten(0,1)).float().reshape(len(frames),13,6);copypose=pose(copy.flatten(0,1)).float().reshape(len(frames),13,6);truth=batch["state"][:,3:,:4].float()/512
+                for name,values in [("agent",(prediction[:,:,:2]-truth[:,:,:2]).norm(dim=-1)*512),("block",(prediction[:,:,2:4]-truth[:,:,2:4]).norm(dim=-1)*512),("copy_agent",(copypose[:,:,:2]-truth[:,:,:2]).norm(dim=-1)*512),("copy_block",(copypose[:,:,2:4]-truth[:,:,2:4]).norm(dim=-1)*512)]:errors.setdefault(name,[]).append(values.cpu())
+            if len(images)<16:images.extend([(frames[i].cpu(),generated[i].cpu(),anchor[i].cpu()) for i in range(min(len(frames),16-len(images)))])
+    arrays={k:torch.cat(v).numpy() for k,v in errors.items()};result=dict(cases=len(indices),sampler_steps=steps,seconds=time.time()-started,model=model.mode,scope="single-seed SPT pixel-autoregressive baseline on the same held-out window IDs")
+    for key,value in arrays.items():result[key+"_by_horizon"]=value.mean(0).tolist()
+    if "agent" in arrays:
+        for h in [1,3,7,13]:
+            result[f"h{h}_agent_ratio"]=float(arrays["agent"][:,h-1].mean()/max(1e-6,arrays["copy_agent"][:,h-1].mean()))
+            result[f"h{h}_block_ratio"]=float(arrays["block"][:,h-1].mean()/max(1e-6,arrays["copy_block"][:,h-1].mean()))
+    output.mkdir(parents=True,exist_ok=True);(output/"metrics.json").write_text(json.dumps(result,indent=2));np.savez(output/"per_case.npz",**arrays);gallery(images,output);return result
 
 
 def main():
