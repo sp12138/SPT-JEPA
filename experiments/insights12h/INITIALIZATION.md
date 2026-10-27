@@ -13,3 +13,7 @@ Two additional beta=.25/std=1 controls keep the same mathematical model/loss, ba
 ## Staged optimization diagnostic
 
 The encoder-only warm initial model has noisy-code position R² .516/.792 on fixed test frames, but after 4k joint updates its beta=.25 version falls to .125/.153 and beta=4 approaches zero. A separate diagnostic freezes encoder and pool optimizer updates for the first 4k steps while prior and renderer learn, then resumes joint updates. This is explicitly a staged-training ablation; it is not the canonical from-scratch, end-to-end method. Lightning's existing optimizer hook and complete checkpoints are used, with no new Trainer/checkpoint implementation. Verify the frozen weights remain exactly equal to the initial export during the first 200-step smoke.
+
+## L1 projector clarification
+
+The early L1 fallback uses a direct BatchNorm1d(64) after QueryPool. It is recorded as BN(64), not LeWM's full MLP projector. A new L1-only control uses LeWM's MLP(64,2048,64, BatchNorm1d) after QueryPool, with the same SIGReg+prediction+flow objective and 25k schedule. This distinguishes the small-state architecture from the precise fallback choice. L2 never receives either normalization.

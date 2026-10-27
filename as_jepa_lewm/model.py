@@ -20,10 +20,10 @@ class ASJepaLeWM(LeWM):
     def __init__(self, mode="L2", beta=4.0, sigma0=.1, window=8, use_anchor=True,
                  renderer_width=192, renderer_depth=6, renderer_heads=3,
                  carry=True, domain="standard", encoder_size=224, encoder_depth=12,
-                 lambda_sigreg=.09, objective="flow", anchor_gap=8, batchnorm_state=False, fp32_pool=False):
+                 lambda_sigreg=.09, objective="flow", anchor_gap=8, batchnorm_state=False, fp32_pool=False, batchnorm_projector=False):
         self.mode=mode; self.beta=beta; self.sigma0=sigma0; self.window=window
         self.carry=carry; self.domain=domain; self.encoder_size=encoder_size
-        self.lambda_sigreg=lambda_sigreg; self.objective=objective; self.anchor_gap=anchor_gap; self.batchnorm_state=batchnorm_state; self.fp32_pool=fp32_pool
+        self.lambda_sigreg=lambda_sigreg; self.objective=objective; self.anchor_gap=anchor_gap; self.batchnorm_state=batchnorm_state; self.fp32_pool=fp32_pool; self.batchnorm_projector=batchnorm_projector
         encoder=ViTModel(ViTConfig(hidden_size=192,num_hidden_layers=12,num_attention_heads=3,intermediate_size=768,image_size=224,patch_size=14),add_pooling_layer=False,use_mask_token=False)
         encoder.config.interpolate_pos_encoding=True
         if encoder_depth!=12:encoder.encoder.layer=encoder.encoder.layer[:encoder_depth]
@@ -36,7 +36,9 @@ class ASJepaLeWM(LeWM):
         super().__init__(encoder,predictor,action_encoder,projector,pred_proj)
         self.pool=None if baseline else QueryPool(192,3,K,d)
         if self.pool is not None:self.pool.initialize()
-        self.state_bn=nn.BatchNorm1d(STATE_DIM) if batchnorm_state else nn.Identity()
+        if batchnorm_projector and (batchnorm_state or mode!="L1"):
+            raise ValueError("MLP BatchNorm projector is an explicit L1-only control")
+        self.state_bn=MLP(STATE_DIM,2048,STATE_DIM,norm_fn=nn.BatchNorm1d) if batchnorm_projector else (nn.BatchNorm1d(STATE_DIM) if batchnorm_state else nn.Identity())
         if batchnorm_state and mode!="L1":raise ValueError("BatchNorm state is only the explicit L1 fallback, never AS-JEPA")
         if not baseline and carry:
             nn.init.zeros_(self.predictor.transformer.output_proj.weight);nn.init.zeros_(self.predictor.transformer.output_proj.bias)
