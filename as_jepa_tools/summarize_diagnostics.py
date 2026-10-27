@@ -2,7 +2,7 @@
 import argparse,csv,datetime,json
 from pathlib import Path
 import numpy as np
-from as_jepa_tools.summarize_final import read,interval_ratio
+from as_jepa_tools.summarize_final import read,interval_ratio,generation
 
 
 def paired_generation(anchor,noanchor,moving_only=False,entity="block"):
@@ -71,7 +71,7 @@ def main():
                 pending.append(dict(job=job["id"],state=status.get("state")));continue
             destination.append(dict(job=job["id"],parent=job.get("model"),source=read(root/"actual_source.json"),matched_control=read(root/"control.json"),**score))
     decomposition=[]
-    for file in sorted((c/"decode-decomposition-batch-dev15/results").glob("*-n128/decomposition.json")):
+    for file in sorted(c.glob("decode-decomposition-*/results/*-n128/decomposition.json")):
         decomposition.append(dict(model=file.parent.name.removesuffix("-n128"),**read(file)))
     color=[]
     for seed in [0,1]:
@@ -83,8 +83,34 @@ def main():
     for name in ["L2-dot-flow-calibrated-b001-seed0","L2-dot-mse-calibrated-b001-seed0","L1-dot-bn-seed0"]:
         root=c/("final-"+name);pp=read(root/"probes/noisy/probes.json") or read(root/"probes/mean/probes.json")
         if pp:dot.append(dict(model=name,probe=pp,metrics=read(root/"generation/mean/metrics.json")))
+    budget=[]
+    def budget_row(label,step,training_budget,probe_root,gen_root,plan_files,cf_root=None):
+        probe=read(probe_root/"noisy/probes.json");gen=generation(gen_root);plans=[]
+        if not probe or not gen:return None
+        for file in plan_files:
+            score=read(file)
+            if not score:return None
+            plans.append(dict(seed=score["seed"],success_rate=score["metrics"]["success_rate"],episodes=len(score["metrics"]["episode_successes"]),path=str(file)))
+        assert len(plans)==3
+        row=dict(label=label,step=step,training_budget=training_budget,noisy_agent_r2=probe["agent_r2"],noisy_block_r2=probe["block_position_r2"],generation=gen,
+                 planning=dict(trials=plans,mean=float(np.mean([r["success_rate"] for r in plans])),std=float(np.std([r["success_rate"] for r in plans],ddof=1))),generation_root=str(gen_root))
+        cf=read(cf_root/"counterfactual.json") if cf_root else None
+        if cf:
+            details=cf["details"];row["counterfactual"]=dict(value=cf["action_identification_accuracy"],oracle=cf["oracle_pose_action_identification_accuracy"],interval=interval_ratio([np.mean(r["correct"]) for r in details],np.ones(len(details)),[r["episode"] for r in details]))
+        return row
+    short=c/"final-L2-standard-calibrated-b001-seed0";long=c/"final-L2-standard-calibrated-b001-50k-seed0";mid=c/"budget24k-main-dev2"
+    for label,step,training_budget,probe_root,gen_root,plan_files,cf_root in [
+        ("25k budget @25k",25000,25000,short/"probes",short/"generation/mean",[short/f"planning/seed{seed}/metrics.json" for seed in [42,43,44]],short/"counterfactual"),
+        ("50k budget @24k",24000,50000,mid/"probes",mid/"generation",[c/f"budget24k-planning-seed{seed}-dev2/results/metrics.json" for seed in [42,43,44]],None),
+        ("50k budget @50k",50000,50000,long/"probes",long/"generation/mean",[long/f"planning/seed{seed}/metrics.json" for seed in [42,43,44]],long/"counterfactual")]:
+        row=budget_row(label,step,training_budget,probe_root,gen_root,plan_files,cf_root)
+        if row:budget.append(row)
+        else:pending.append(dict(job=label,state="budget evidence incomplete"))
+    if len(budget)==3:
+        identities=[[(x["episode"],x["start"]) for x in read(Path(row["generation_root"])/"cases.json")] for row in budget]
+        assert identities[0]==identities[1]==identities[2],"Budget comparison case identities differ"
     result=dict(collected_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),probes=probes,native=native,
-                decomposition=decomposition,native_context=teacher_forcing,native_feedback=feedback,color_geometry=geometry,color_generation_comparisons=color,dot=dot,pending=pending,
+                decomposition=decomposition,native_context=teacher_forcing,native_feedback=feedback,color_geometry=geometry,budget_comparison=budget,color_generation_comparisons=color,dot=dot,pending=pending,
                 scope="Final pinned diagnostics; single training seeds unless listed; uncertainty is conditional on trained weights")
     (out/"diagnostics.json").write_text(json.dumps(result,indent=2,allow_nan=False))
     with (out/"late-probes.csv").open("w") as f:
@@ -95,7 +121,8 @@ def main():
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     plt.rcParams.update({"font.size":10,"axes.spines.top":False,"axes.spines.right":False,"savefig.dpi":170})
-    chosen=[r for r in decomposition if r["model"] in ["L2-standard-calibrated-b001-seed0","L1-standard-bn-dev2"]]
+    decomp_order=["L2-standard-calibrated-b001-seed0","L2-standard-calibrated-b001-50k-seed0","L1-standard-bn-dev2"]
+    chosen=sorted([r for r in decomposition if r["model"] in decomp_order],key=lambda r:decomp_order.index(r["model"]))
     if chosen:
         fig,axes=plt.subplots(2,len(chosen),figsize=(6*len(chosen),7.5),squeeze=False,layout="constrained")
         styles=[("posterior_mean","True-future state (oracle)","#375c93"),("forecast_mean","Forecast state","#cf8a43"),("copy","Copy context","#777777"),("real_floor","Real-frame pose floor","#4e9a89")]
@@ -103,7 +130,7 @@ def main():
             for axis,entity in zip(axes[:,col],["agent","block"]):
                 for key,label,color_value in styles:axis.plot(row["horizons"],row["mean_error"][key+"_"+entity],marker="o",label=label,color=color_value)
                 axis.set(xlabel="Forecast horizon",ylabel=entity.capitalize()+" position error (px)",xticks=row["horizons"],ylim=(0,None))
-                axis.set_title(("L2 beta .01" if row["model"].startswith("L2") else "L1 BN64")+" - "+entity)
+                axis.set_title(("L2 beta .01 @50k" if "50k" in row["model"] else "L2 beta .01 @25k" if row["model"].startswith("L2") else "L1 BN64 @25k")+" - "+entity)
         axes[0,0].legend(frameon=False,fontsize=9);fig.supxlabel("128 fixed held-out cases. Oracle states encode actual future images; this is a diagnostic, not deployable prediction.",fontsize=9)
         for suffix in ["png","svg"]:fig.savefig(out/("posterior-forecast."+suffix),bbox_inches="tight")
         plt.close(fig)
@@ -166,6 +193,24 @@ def main():
         fig.supxlabel("128 matched posterior-state interventions per seed; same donor pairing and rendering noise. Means are conditional on each trained model.",fontsize=9)
         for suffix in ["png","svg"]:fig.savefig(out/("color-geometry-interventions."+suffix),bbox_inches="tight")
         plt.close(fig)
+    if len(budget)==3:
+        fig,axes=plt.subplots(2,2,figsize=(12,8),layout="constrained");x=np.arange(3);labels=[r["label"] for r in budget]
+        for offset,key,label,color_value in [(-.18,"noisy_agent_r2","Agent","#375c93"),(.18,"noisy_block_r2","Block","#4e9a89")]:axes[0,0].bar(x+offset,[r[key] for r in budget],.36,label=label,color=color_value)
+        axes[0,0].set(ylabel="Held-out noisy-code probe R2",ylim=(0,1),title="State information");axes[0,0].legend(frameon=False)
+        for offset,key,label,color_value in [(-.08,"agent_h7_ratio_ci","Agent","#375c93"),(.08,"moving_block_h7_ratio_ci","Moving block","#4e9a89")]:
+            ci=[r["generation"][key] for r in budget];value=np.array([z["value"] for z in ci]);low=np.array([z["lower"] for z in ci]);high=np.array([z["upper"] for z in ci]);axes[0,1].errorbar(x+offset,value,yerr=np.stack([value-low,high-value]),fmt="o",color=color_value,capsize=3,label=label)
+        axes[0,1].axhline(1,color="#777777",linestyle="--");axes[0,1].axhline(.5,color="#b64d4d",linestyle=":");axes[0,1].set(ylabel="h7 error / copy error",ylim=(0,None),title="256 fixed windows, mean states");axes[0,1].legend(frameon=False)
+        axes[1,0].bar(x,[r["planning"]["mean"] for r in budget],yerr=[r["planning"]["std"] for r in budget],capsize=3,color=["#9ba8b8","#6e8eb7","#375c93"]);axes[1,0].set(ylabel="P0 success (%)",ylim=(0,100),title="Three evaluation seeds: mean +/- SD")
+        cf_rows=[r for r in budget if r.get("counterfactual")];cx=np.arange(len(cf_rows));value=np.array([r["counterfactual"]["value"]*100 for r in cf_rows]);low=np.array([r["counterfactual"]["interval"]["lower"]*100 for r in cf_rows]);high=np.array([r["counterfactual"]["interval"]["upper"]*100 for r in cf_rows])
+        axes[1,1].bar(cx,value,yerr=np.stack([value-low,high-value]),capsize=3,color=["#9ba8b8","#375c93"]);axes[1,1].axhline(25,color="#777777",linestyle="--",label="Chance");axes[1,1].axhline(cf_rows[-1]["counterfactual"]["oracle"]*100,color="#4e9a89",linestyle=":",label="Real-frame pose reference")
+        axes[1,1].set_xticks(cx,[r["label"] for r in cf_rows],rotation=12,ha="right");axes[1,1].set(ylabel="Counterfactual action ID (%)",ylim=(0,100),title="64 reset states, four action sequences");axes[1,1].legend(frameon=False,fontsize=8)
+        for axis in [axes[0,0],axes[0,1],axes[1,0]]:axis.set_xticks(x,labels,rotation=12,ha="right")
+        fig.supxlabel("Seed 0. The last two checkpoints are one continuous 50k run; the short run has a different cosine budget. Generation/CF intervals condition on trained weights.",fontsize=9)
+        for suffix in ["png","svg"]:fig.savefig(out/("training-budget-evidence."+suffix),bbox_inches="tight")
+        plt.close(fig)
+        with (out/"budget-comparison.csv").open("w") as f:
+            fields=["label","step","training_budget","noisy_agent_r2","noisy_block_r2","h7_agent_ratio","h7_moving_block_ratio","planning_mean","planning_sd"];w=csv.DictWriter(f,fieldnames=fields);w.writeheader()
+            for row in budget:w.writerow({**{k:row[k] for k in fields if k in row},"h7_agent_ratio":row["generation"]["h7_agent_ratio"],"h7_moving_block_ratio":row["generation"]["h7_moving_block_ratio"],"planning_mean":row["planning"]["mean"],"planning_sd":row["planning"]["std"]})
     names=[("L2-standard-calibrated-b025-resume-dev15","std .1, beta .25"),("L2-standard-calibrated1-b025-seed0","std 1, beta .25"),("L2-standard-calibrated1-b4-seed0","std 1, beta 4"),("L2-standard-direct-calibrated1-b4-seed0","Direct prior"),("L2-standard-w16g4-calibrated1-b4-seed0","W16 / gap4"),("L2-standard-warmencoder-b4-seed0","Warm encoder, beta 4")]
     lookup={r["model"]:r for r in probes};chosen=[(lookup[n],label) for n,label in names if n in lookup]
     if chosen:
@@ -178,7 +223,17 @@ def main():
         fig.supxlabel("25k final checkpoints. A large BF16 feature variance alone is insufficient evidence of useful state information.",fontsize=9)
         for suffix in ["png","svg"]:fig.savefig(out/("precision-diagnostics."+suffix),bbox_inches="tight")
         plt.close(fig)
-    print(json.dumps(dict(output=str(out),probe_models=len(probes),native_completed=len(native),color_pairs=len(color),decompositions=len(decomposition),native_context=len(teacher_forcing),native_feedback=len(feedback),color_geometry=len(geometry),pending=pending),indent=2))
+    gallery_path=long/"generation/mean/gallery.png"
+    if gallery_path.exists():
+        from PIL import Image,ImageDraw
+        original=Image.open(gallery_path).convert("RGB");tile=original.width//8;cases=read(long/"generation/mean/cases.json")[:16]
+        assert len(cases)==16 and all(r.get("moving_block") for r in cases),"First16 gallery must match moving-block metadata"
+        canvas=Image.new("RGB",(original.width+94,original.height+48),"white");canvas.paste(original,(94,48));draw=ImageDraw.Draw(canvas)
+        draw.text((6,3),"beta=0.01, 50k, seed 0 | first 16 fixed moving-block cases; no error-based selection",fill="black")
+        for j,label in enumerate(["GT h1","50k h1","GT h3","50k h3","GT h7","50k h7","GT h13","50k h13"]):draw.text((94+j*tile+3,28),label,fill="black")
+        for i,record in enumerate(cases):draw.text((4,48+i*tile+tile//3),"ep"+str(record["episode"])+"\nstart "+str(record["start"]),fill="black")
+        canvas.save(out/"rollout-50k-first16.png");(out/"rollout-50k-first16-cases.json").write_text(json.dumps(dict(cases=cases,selection="First16 of fixed256 evaluation order; all are in the moving-block subset; no error-based selection",horizons=[1,3,7,13],checkpoint=str(long/"checkpoint"),scope="Qualitative examples; aggregate performance is measured on all256 cases"),indent=2))
+    print(json.dumps(dict(output=str(out),probe_models=len(probes),native_completed=len(native),color_pairs=len(color),decompositions=len(decomposition),native_context=len(teacher_forcing),native_feedback=len(feedback),color_geometry=len(geometry),budget_points=len(budget),pending=pending),indent=2))
 
 
 if __name__=="__main__":main()

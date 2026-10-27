@@ -83,13 +83,24 @@ def main():
                     source_checks[key]=dict(path=str(path),sha256=actual_hash,passed=actual_hash==expected_hash)
                     check(actual_hash==expected_hash,"Immutable training source differs: "+str(path))
         records.append(dict(model=label,step=manifest["checkpoint_step"],weights_sha256=digest(pin/"weights.pt"),training_source=src))
-    for registry in ["late_native_quality_registry.json","native_context_registry.json","native_feedback_registry.json","color_geometry_registry.json"]:
+    for registry in ["late_native_quality_registry.json","native_context_registry.json","native_feedback_registry.json","color_geometry_registry.json","long_budget_diagnostics_registry.json"]:
         for job in read(c/registry) or []:
             root=Path(job["output"])
             if not finished(root,job["id"]):continue
-            if registry in ["native_context_registry.json","native_feedback_registry.json","color_geometry_registry.json"]:
+            if registry in ["native_context_registry.json","native_feedback_registry.json"]:
                 score=read(root/"results"/("teacher_forcing.json" if registry=="native_context_registry.json" else "feedback_clipping.json")) or {}
                 check(score.get("cases")==256 and score.get("control",{}).get("passed",False),job["id"]+": matched-context intervention contract")
+    mid=c/"budget24k-main-dev2";manifest=read(mid/"checkpoint_manifest.json")
+    if manifest:
+        check(digest(Path(manifest["checkpoint"])/"weights.pt")==manifest["weights_sha256"],"Earlier24k checkpoint pin changed")
+        probe_status=read(mid/"probes/status.json") or {};check(probe_status.get("completed")==3 and not any(x.get("error") for x in probe_status.get("results",[])),"Earlier24k probes failed/incomplete")
+        cases=read(mid/"generation/cases.json") or [];check([(x["episode"],x["start"]) for x in cases]==reference,"Earlier24k generation case IDs")
+        for seed in [42,43,44]:
+            score=read(c/f"budget24k-planning-seed{seed}-dev2/results/metrics.json")
+            if score:check(list(zip(score["episodes"],score["start_steps"]))==planner_cases[seed],"Earlier24k planner case IDs")
+        long_cases=read(c/"decode-decomposition-long50k-dev2/results/L2-standard-calibrated-b001-50k-seed0-n128/cases.json")
+        old_cases=read(c/"decode-decomposition-batch-dev15/results/L2-standard-calibrated-b001-seed0-n128/cases.json")
+        check(bool(long_cases) and long_cases==old_cases,"Posterior decomposition case IDs differ across25k/50k")
     for name in ["late-probes-standard-dev2","late-probes-native-dev2"]:
         root=c/name;status=read(root/"results/status.json") or {}
         if status.get("state")!="finished":pending.append(dict(job=name,state=status.get("state")));continue

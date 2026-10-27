@@ -41,7 +41,7 @@ def main():
                     kind="planning";successes=metric["metrics"]["episode_successes"];metric["trial_count"]=len(successes);metric["success_count"]=int(sum(successes))
                 elif "h7_agent_ratio" in metric:kind="generation"
                 else:continue
-            final=root.name.startswith("final-");supp=root.name.startswith(("late-probes-","quality-late-","native-context-","native-feedback-","color-geometry-","decode-decomposition-"))
+            final=root.name.startswith("final-");supp=root.name.startswith(("late-probes-","quality-late-","native-context-","native-feedback-","color-geometry-","budget24k-","decode-decomposition-"))
             tier="final" if final else "final diagnostic" if supp else "historical exploratory"
             flags=[]
             if tier=="historical exploratory":flags.append("Historical protocol; not pooled into final comparisons. See EVALUATION_PROTOCOL.md.")
