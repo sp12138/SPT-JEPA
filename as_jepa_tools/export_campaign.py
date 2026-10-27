@@ -54,10 +54,9 @@ def main():
             if file.name not in kinds:continue
             parts=file.relative_to(root).parts
             if any(x.startswith("model-step") or x in ["checkpoint","checkpoints","source","runtime"] for x in parts):continue
-            metric=read(file)
+            kind=kinds[file.name];metric=read(file)
             if kind=="gradient_diagnostic" and isinstance(metric,list):metric=dict(records=metric)
             if not isinstance(metric,dict):continue
-            kind=kinds[file.name]
             if kind=="metric":
                 if "episode_successes" in metric.get("metrics",{}):
                     kind="planning";successes=metric["metrics"]["episode_successes"];metric["trial_count"]=len(successes);metric["success_count"]=int(sum(successes))
