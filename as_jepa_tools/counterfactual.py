@@ -39,7 +39,7 @@ def main():
     from stable_worldmodel.envs.pusht import PushT as PushTEnv
     from PIL import Image
     data=PushTWindows(a.data,window=16,gap=8,split="test");data.open()
-    model=load_model(a.checkpoint);pose=pose_net(a.pose);rng=np.random.default_rng(42)
+    model=load_model(a.checkpoint);torch.set_float32_matmul_precision("highest" if a.fp32 or getattr(model,"fp32_pool",False) else "high");pose=pose_net(a.pose);rng=np.random.default_rng(42)
     if model.domain!="standard":raise ValueError("Counterfactual simulator protocol currently covers the standard domain")
     if model.mode=="L0":raise ValueError("L0 has no pixel renderer; evaluate it with P0 planning")
     candidate=rng.choice(len(data),min(5000,len(data)),replace=False)
@@ -99,7 +99,7 @@ def main():
             galleries.append(dict(case=case,truth=truth_images,prediction=pred))
     env.close();out=Path(a.output);out.mkdir(parents=True,exist_ok=True)
     def average(key):return float(np.mean([r[key] for r in records]))
-    report=dict(feature_forward_precision="FP32" if a.fp32 else "BF16 autocast",checkpoint=str(Path(a.checkpoint).resolve()),cases=len(records),rollouts=4*len(records),
+    report=dict(float32_matmul_precision=torch.get_float32_matmul_precision(),feature_forward_precision="FP32" if a.fp32 else "BF16 autocast",checkpoint=str(Path(a.checkpoint).resolve()),cases=len(records),rollouts=4*len(records),
                 action_identification_accuracy=average("correct"),agent_action_identification_accuracy=average("agent_correct"),
                 block_action_identification_accuracy=average("block_correct"),oracle_pose_action_identification_accuracy=average("oracle_pose_correct"),
                 chance=.25,sampler_steps=a.steps,seconds=time.time()-started,common_sampler_noise=True,

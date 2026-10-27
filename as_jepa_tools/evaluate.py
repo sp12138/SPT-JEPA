@@ -64,6 +64,7 @@ def pose_net(path):
 @torch.no_grad()
 def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8,fp32=False):
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
+    torch.set_float32_matmul_precision("highest" if fp32 or getattr(model,"fp32_pool",False) else "high")
     if model.mode in {"S0","S1"}:return evaluate_pixel(model,root,output,count,steps,pose_path,batch_size,fp32=fp32)
     data=PushTWindows(root,window=16,gap=8,split="test");indices=select_windows(data,count)
     loader=DataLoader(Subset(data,indices),batch_size=batch_size,num_workers=2,pin_memory=True)
@@ -130,7 +131,7 @@ def evaluate(model,root,output,count=64,steps=20,pose_path=None,batch_size=8,fp3
                 if len(image_rows)<16:
                     image_rows.extend([(frames[i].cpu(),generated[i].cpu(),anchor[i].cpu()) for i in range(min(len(pixels),16-len(image_rows)))])
         for ep,start in zip(batch["episode"].cpu(),batch["start"].cpu()):records.append(dict(episode=int(ep),start=int(start)))
-    result=dict(feature_forward_precision="FP32" if fp32 else "BF16 autocast",pose_weights=str(pose_path),cases=len(records),sampler_steps=steps,seconds=time.time()-started,feature_std=float(torch.stack(feature_stds).mean()),latent_mse_by_horizon=torch.cat(latent_errors).mean(0).tolist(),shuffled_action_latent_mse_by_horizon=torch.cat(shuffled_errors).mean(0).tolist(),scope="single-seed exploratory fixed held-out windows; not a three-seed benchmark")
+    result=dict(float32_matmul_precision=torch.get_float32_matmul_precision(),feature_forward_precision="FP32" if fp32 else "BF16 autocast",pose_weights=str(pose_path),cases=len(records),sampler_steps=steps,seconds=time.time()-started,feature_std=float(torch.stack(feature_stds).mean()),latent_mse_by_horizon=torch.cat(latent_errors).mean(0).tolist(),shuffled_action_latent_mse_by_horizon=torch.cat(shuffled_errors).mean(0).tolist(),scope="single-seed exploratory fixed held-out windows; not a three-seed benchmark")
     means=torch.cat(all_means);variance=means.var(0,unbiased=False)
     result["state_std_per_dimension"]=variance.sqrt().tolist()
     if model.mode in {"L2","S2"}:
@@ -175,7 +176,7 @@ def evaluate_pixel(model,root,output,count,steps,pose_path,batch_size,fp32=False
                 prediction=pose(generated.flatten(0,1)).float().reshape(len(frames),13,6);copypose=pose(copy.flatten(0,1)).float().reshape(len(frames),13,6);truth=batch["state"][:,3:,:4].float()/512
                 for name,values in [("agent",(prediction[:,:,:2]-truth[:,:,:2]).norm(dim=-1)*512),("block",(prediction[:,:,2:4]-truth[:,:,2:4]).norm(dim=-1)*512),("copy_agent",(copypose[:,:,:2]-truth[:,:,:2]).norm(dim=-1)*512),("copy_block",(copypose[:,:,2:4]-truth[:,:,2:4]).norm(dim=-1)*512)]:errors.setdefault(name,[]).append(values.cpu())
             if len(images)<16:images.extend([(frames[i].cpu(),generated[i].cpu(),anchor[i].cpu()) for i in range(min(len(frames),16-len(images)))])
-    arrays={k:torch.cat(v).numpy() for k,v in errors.items()};result=dict(feature_forward_precision="FP32" if fp32 else "BF16 autocast",pose_weights=str(pose_path),cases=len(indices),sampler_steps=steps,seconds=time.time()-started,model=model.mode,scope="single-seed SPT pixel-autoregressive baseline on the same held-out window IDs")
+    arrays={k:torch.cat(v).numpy() for k,v in errors.items()};result=dict(float32_matmul_precision=torch.get_float32_matmul_precision(),feature_forward_precision="FP32" if fp32 else "BF16 autocast",pose_weights=str(pose_path),cases=len(indices),sampler_steps=steps,seconds=time.time()-started,model=model.mode,scope="single-seed SPT pixel-autoregressive baseline on the same held-out window IDs")
     for key,value in arrays.items():result[key+"_by_horizon"]=value.mean(0).tolist()
     if "agent" in arrays:
         for h in [1,3,7,13]:
