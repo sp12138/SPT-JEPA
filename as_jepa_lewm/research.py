@@ -83,8 +83,8 @@ class ResearchLeWM(ASJepaLeWM):
         else:fm=(residual*weight.reshape(-1,1,1,1,1)).mean()
         inverse=fm*0
         if self.method=="action_forks" and "fork_futures" in batch:
-            context=batch["fork_context"]
-            futures=batch["fork_futures"]
+            context=self.normalize(batch["fork_context"])
+            futures=self.normalize(batch["fork_futures"])
             bf,alternatives=futures.shape[:2]
             pair=self.encode(dict(pixels=torch.cat([context[:,None],futures],1)))["emb"]
             candidates=batch["fork_actions"].flatten(2)

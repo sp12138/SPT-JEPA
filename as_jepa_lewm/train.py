@@ -32,6 +32,14 @@ class TrainModule(pl.LightningModule):
         super().__init__();self.cfg=cfg;self.model=(__import__("as_jepa_lewm.research",fromlist=["ResearchLeWM"]).ResearchLeWM if cfg.get("research_variant",False) else ASJepaLeWM)(**cfg["model"]);self.last_metrics={};self.initial_step=0;self.samples_consumed=0
         self.save_hyperparameters(cfg)
     def training_step(self,batch,batch_idx):
+        if self.cfg.get("fork_data"):
+            if not hasattr(self,"_fork_bank"):
+                root=Path(self.cfg["fork_data"])
+                self._fork_bank={k:np.load(root/(name+".npy"),mmap_mode="r") for k,name in [("context","contexts"),("futures","futures"),("actions","actions"),("indices","train_indices")]}
+            bank=self._fork_bank;rng=np.random.default_rng(self.cfg["seed"]+int(self.global_step)*1009);ids=rng.choice(bank["indices"],size=16,replace=False)
+            batch["fork_context"]=torch.from_numpy(np.array(bank["context"][ids])).permute(0,3,1,2).to(self.device)
+            batch["fork_futures"]=torch.from_numpy(np.array(bank["futures"][ids])).permute(0,1,4,2,3).to(self.device)
+            batch["fork_actions"]=torch.from_numpy(np.array(bank["actions"][ids])).to(self.device)
         loss,metrics=self.model.loss(batch,self.global_step,self.cfg.get("ramp_steps",0))
         if not torch.isfinite(loss):raise FloatingPointError(f"nonfinite loss at {self.global_step}")
         self.last_metrics={k:float(v.detach()) for k,v in metrics.items()}
