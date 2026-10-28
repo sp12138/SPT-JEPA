@@ -27,6 +27,8 @@ def build_train_components(request):
     def step_fn(model,batch,step,context):
         frames=batch["render"].to(context.device,dtype=torch.float32)/127.5-1.;anchor=batch["anchor"].to(context.device,dtype=torch.float32)/127.5-1.;actions=batch["action"].to(context.device)
         result=model(frames=frames,actions=actions,anchor=anchor,return_metrics=True,**(dict(beta_scale=min(1.,step/max(1,ramp_steps))) if kind=="S2" and ramp_steps else {}))
+        if not bool(torch.isfinite(result["loss"]).all()):
+            raise FloatingPointError(f"Nonfinite {kind} training loss before backward at optimizer step {step}")
         return StepOutput(loss=result["loss"],metrics=result["metrics"],workload={"local_batch":len(frames),"local_tokens":len(frames)*(frames.shape[1]-1)*256},metadata={"sample_ids":[f"{int(ep)}:{int(start)}" for ep,start in zip(batch["episode"],batch["start"])]})
     def export(model,step,context,output_record):
         completed=step+1
@@ -43,6 +45,8 @@ def build_train_components(request):
         if completed%export_every:return diagnostics
         folder=output/f"model-step{completed:07d}";folder.mkdir(exist_ok=True)
         weights={k:(v.full_tensor() if hasattr(v,"full_tensor") else v).detach().cpu() for k,v in model.state_dict().items()}
+        invalid=[name for name,value in weights.items() if not bool(torch.isfinite(value).all())]
+        if invalid:raise FloatingPointError(f"Nonfinite model parameters before portable export at {completed}: {invalid[:8]}")
         torch.save(weights,folder/"weights.pt");(folder/"config.json").write_text(json.dumps(dict(_target_="vforge.models.as_jepa.model.ASJepaSPT" if kind=="S2" else "vforge.models.as_jepa.semantic_carry.SemanticCarry" if kind=="S1Carry" else "vforge.models.as_jepa.spt_baseline.ActionRepWorld",**model_cfg),indent=2))
         return diagnostics
     def initialize(model):

@@ -26,7 +26,10 @@ def load_model(folder,device="cuda"):
         from as_jepa_lewm.research import ResearchLeWM
         model=ResearchLeWM(**cfg).to(device)
     else:model=ASJepaLeWM(**cfg).to(device)
-    model.load_state_dict(torch.load(folder/"weights.pt",map_location=device,weights_only=True),strict=True);return model.eval()
+    weights=torch.load(folder/"weights.pt",map_location=device,weights_only=True)
+    invalid=[name for name,value in weights.items() if not bool(torch.isfinite(value).all())]
+    if invalid:raise FloatingPointError(f"Nonfinite checkpoint tensors in {folder}: {invalid[:8]}")
+    model.load_state_dict(weights,strict=True);return model.eval()
 
 @torch.no_grad()
 def predict_states(model,context,actions,horizon,sample_noise=False):
