@@ -21,7 +21,7 @@ def main():
     src=exports[-1];ck=out/"checkpoint";ck.mkdir(exist_ok=True)
     if not (ck/"weights.pt").exists():shutil.copy2(src/"config.json",ck/"config.json");os.link(src/"weights.pt",ck/"weights.pt")
     model_cfg=json.loads((ck/"config.json").read_text());mode=model_cfg["mode"];domain=model_cfg.get("domain","standard");fp32=cfg.get("precision")=="32-true"
-    step=int(src.name.split("step")[1]);python=os.sys.executable;data=str(base/"data/pusht");pose=str(campaign/"pose-v2/weights.pt")
+    step=int(src.name.split("step")[1]);python=os.sys.executable;data=cfg.get("evaluation_data",str(base/"data/pusht"));pose=cfg.get("pose_weights",str(campaign/"pose-v2/weights.pt"))
     atomic(out/"checkpoint_manifest.json",dict(parent=str(run),checkpoint=str(src),checkpoint_step=step,
            parent_status=status,training_max_steps=cfg["max_steps"],reached_max_steps=status["step"]>=cfg["max_steps"],
            model_config=model_cfg,forward_precision=cfg.get("precision","bf16-mixed"),pose_weights=pose))
@@ -29,9 +29,9 @@ def main():
     probe_jobs=[]
     for noisy in ([False,True] if mode=="L2" else [False]):
         dest=out/"probes"/("noisy" if noisy else "mean")
-        probe_jobs.append(dict(model=run.name,checkpoint=str(ck),data=data,output=str(dest),noisy=noisy,fp32=fp32,train=20000,test=5000))
+        probe_jobs.append(dict(model=run.name,checkpoint=str(ck),data=data,output=str(dest),noisy=noisy,fp32=fp32,train=cfg.get("probe_train_frames",50000),test=5000))
     if mode=="L2" and not fp32:
-        probe_jobs.append(dict(model=run.name,checkpoint=str(ck),data=data,output=str(out/"probes/mean-fp32"),noisy=False,fp32=True,train=20000,test=5000))
+        probe_jobs.append(dict(model=run.name,checkpoint=str(ck),data=data,output=str(out/"probes/mean-fp32"),noisy=False,fp32=True,train=cfg.get("probe_train_frames",50000),test=5000))
     (out/"probe_jobs.json").write_text(json.dumps(probe_jobs,indent=2))
     jobs.append(dict(id="probes",command=[python,"-u","-m","as_jepa_tools.probe_batch","--jobs",str(out/"probe_jobs.json"),"--output",str(out/"probes")]))
     if not a.probe_only:
@@ -62,7 +62,7 @@ def main():
     jobs.sort(key=priority)
     atomic(out/"jobs.json",jobs);results=[];deadline=json.loads((campaign/"plan.json").read_text())["deadline"];stopped=False
     for job in jobs:
-        if (out/"STOP").exists() or time.time()>deadline-90:stopped=True;break
+        if (out/"STOP").exists() or (deadline is not None and time.time()>deadline-90):stopped=True;break
         log=out/(job["id"]+".log");started=time.time()
         with log.open("w") as handle:code=subprocess.run(job["command"],stdout=handle,stderr=subprocess.STDOUT).returncode
         results.append(dict(**job,returncode=code,seconds=time.time()-started,finished_at=time.time()))

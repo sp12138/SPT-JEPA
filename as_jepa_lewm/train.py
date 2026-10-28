@@ -110,7 +110,8 @@ class PersistentProgress(Callback):
         # Keep just the last two portable model exports, plus the resumable checkpoint.
         exports=sorted(self.root.glob("model-step*"))
         import shutil
-        for older in exports[:-2]:shutil.rmtree(older)
+        for older in exports[:-2]:
+            if int(older.name.split("step")[1]) not in self.cfg.get("retain_steps",[]):shutil.rmtree(older)
     def on_train_batch_end(self,trainer,module,outputs,batch,batch_idx):
         step=int(trainer.global_step)
         module.samples_consumed+=self.cfg["batch_size"]
