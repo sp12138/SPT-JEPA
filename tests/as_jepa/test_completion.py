@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from vforge.ops import OpsConfig,initialize_ops
 from as_jepa_lewm.model import ASJepaLeWM
-from as_jepa_tools.data import FullPushTWindows
+from as_jepa_tools.data import FullPushTWindows,full_phase_sampler
 
 class CompletionContracts(unittest.TestCase):
  @classmethod
@@ -37,5 +37,9 @@ class CompletionContracts(unittest.TestCase):
     self.assertTrue(np.array_equal(np.diff(rows),np.full(7,5)))
     self.assertLess(int(rows[-1]),51);self.assertEqual((b["anchor_row"]-int(rows[0]))%5,0)
    self.assertEqual(starts,list(range(16)))
+   sampler=full_phase_sampler(d,dp_rank=0,dp_world_size=1,batch_size=1,seed=0,shuffle=False,drop_last=False)
+   sampler.set_epoch(1);encoded=list(sampler)
+   self.assertEqual(encoded,list(range(16,32)))
+   self.assertEqual([d.locate(i) for i in encoded],[d.locate(i) for i in range(16)])
 
 if __name__=="__main__":unittest.main()

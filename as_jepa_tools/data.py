@@ -79,3 +79,12 @@ class FullPushTWindows(PushTWindows):
                     anchor224=torch.from_numpy(np.array(self.p224[offset+anchor])).permute(2,0,1),
                     action=torch.from_numpy(np.array(self.actions[rows])),state=torch.from_numpy(np.array(self.states[rows])),
                     episode=ep,start=start,rows=torch.from_numpy(rows.copy()),anchor_row=offset+anchor,anchor_fallback=not bool(len(eligible)))
+
+
+class EpochEncodedDistributedSampler(torch.utils.data.DistributedSampler):
+    def __iter__(self):
+        offset=self.epoch*self.dataset.natural_length
+        return iter(index+offset for index in super().__iter__())
+
+def full_phase_sampler(dataset,*,dp_rank,dp_world_size,batch_size,seed,shuffle,drop_last):
+    return EpochEncodedDistributedSampler(dataset,num_replicas=dp_world_size,rank=dp_rank,seed=seed,shuffle=shuffle,drop_last=drop_last)

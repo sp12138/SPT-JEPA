@@ -8,13 +8,14 @@ from vforge.models.factory import ModelSpec
 from vforge.models.as_jepa.model import ASJepaSPT
 from vforge.training.recipe import TrainComponents,StepOutput
 from vforge.utils.training import build_optimizer_factory,build_scheduler_factory
-from as_jepa_tools.data import PushTWindows,FullPushTWindows
+from as_jepa_tools.data import PushTWindows,FullPushTWindows,full_phase_sampler
+from vforge.data.spec import DataSpec
 
 
 def build_train_components(request):
     cfg=dict(request.extras);all_phase_data=cfg.pop("all_phase_data",False);warm_start=cfg.pop("warm_start_checkpoint",None);initial_state_std=cfg.pop("initial_state_std",None);export_every=cfg.pop("export_every",1000);data=Path(cfg.pop("data_root"));model_cfg=dict(cfg.pop("as_jepa"));kind=model_cfg.pop("kind","S2");legacy_output=cfg.pop("campaign_output",None);output=Path(request.output_dir);output.mkdir(parents=True,exist_ok=True)
     dataset=(FullPushTWindows if all_phase_data else PushTWindows)(data,window=model_cfg.get("window",8),gap=model_cfg.get("anchor_gap",8) if kind=="S2" else 0,seed=request.sampler_seed)
-    loader=build_resumable_loader(dataset,parallel_state=get_parallel_state(),batch_size=request.batch_size,num_workers=request.num_workers,drop_last=request.drop_last,seed=request.sampler_seed,shuffle=request.shuffle,pin_memory=request.pin_memory,persistent_workers=request.persistent_workers,prefetch_factor=request.prefetch_factor)
+    loader=build_resumable_loader(DataSpec(dataset,sampler_factory=full_phase_sampler) if all_phase_data else dataset,parallel_state=get_parallel_state(),batch_size=request.batch_size,num_workers=request.num_workers,drop_last=request.drop_last,seed=request.sampler_seed,shuffle=request.shuffle,pin_memory=request.pin_memory,persistent_workers=request.persistent_workers,prefetch_factor=request.prefetch_factor)
     def build():
         with torch.device(request.init_device):
             if kind=="S2":return ASJepaSPT(**model_cfg)
@@ -53,5 +54,5 @@ def build_train_components(request):
             scale=float(initial_state_std)/float(std);model.pool.head.weight.mul_(scale);model.pool.head.bias.sub_(mean).mul_(scale)
         model.train(was_training)
         (output/"initial_scale.json").write_text(json.dumps(dict(target_std=initial_state_std,original_std=float(std),scale=scale,scope="One-time Native initializer before training or checkpoint restore; any full restore replaces these initial weights."),indent=2))
-    contract=dict(dataset="as_jepa_pusht_phase0_v1",data_card_sha256=hashlib.sha256((data/"dataset_card.json").read_bytes()).hexdigest(),window=dataset.window,gap=dataset.gap)
+    contract=dict(dataset="as_jepa_pusht_lance_allstarts_v1" if all_phase_data else "as_jepa_pusht_phase0_v1",data_card_sha256=hashlib.sha256((data/"dataset_card.json").read_bytes()).hexdigest(),window=dataset.window,gap=dataset.gap)
     return TrainComponents(model=ModelSpec(build),dataloader=loader,optimizer_factory=build_optimizer_factory(learning_rate=request.learning_rate,weight_decay=request.weight_decay,betas=request.betas,eps=request.eps),step_fn=step_fn,scheduler_factory=build_scheduler_factory(name=request.scheduler_name,factor=request.scheduler_factor,warmup_steps=request.warmup_steps,start_factor=request.scheduler_start_factor,end_factor=request.scheduler_end_factor,total_iters=request.scheduler_total_iters),model_initializer=initialize,dataloader_resume_contract=contract,post_optimizer_step=export)
