@@ -29,18 +29,39 @@ class WindowSampler(Sampler):
 
 class TrainModule(pl.LightningModule):
     def __init__(self,cfg):
-        super().__init__();self.cfg=cfg;self.model=ASJepaLeWM(**cfg["model"]);self.last_metrics={};self.initial_step=0;self.samples_consumed=0
+        super().__init__();self.cfg=cfg;self.model=(__import__("as_jepa_lewm.research",fromlist=["ResearchLeWM"]).ResearchLeWM if cfg.get("research_variant",False) else ASJepaLeWM)(**cfg["model"]);self.last_metrics={};self.initial_step=0;self.samples_consumed=0
         self.save_hyperparameters(cfg)
     def training_step(self,batch,batch_idx):
         loss,metrics=self.model.loss(batch,self.global_step,self.cfg.get("ramp_steps",0))
         if not torch.isfinite(loss):raise FloatingPointError(f"nonfinite loss at {self.global_step}")
         self.last_metrics={k:float(v.detach()) for k,v in metrics.items()}
+        if self.cfg.get("research_variant") and self.cfg["model"].get("method")=="gradient_constraint":
+            named=[(name,p) for name,p in self.model.named_parameters() if name.startswith(("encoder.","pool.")) and p.requires_grad]
+            fm,rate=self.model._loss_terms
+            gf=torch.autograd.grad(fm,[p for _,p in named],retain_graph=True,allow_unused=True)
+            gr=torch.autograd.grad(rate,[p for _,p in named],retain_graph=True,allow_unused=True)
+            dot=sum((a.float()*b.float()).sum() for a,b in zip(gf,gr) if a is not None and b is not None)
+            norm=sum(a.float().square().sum() for a in gf if a is not None)
+            coefficient=torch.minimum(torch.as_tensor(0.,device=loss.device),dot)/torch.as_tensor(norm,device=loss.device).clamp_min(1e-20)
+            no_signal=float(torch.as_tensor(norm).detach())<1e-20
+            self._constrained=[(p,None if a is None else (a if no_signal else a+(b if b is not None else 0)-coefficient*a).detach()) for (_,p),a,b in zip(named,gf,gr)]
+            self.last_metrics["constraint_no_signal"]=float(no_signal)
+            self.last_metrics["constraint_projection"]=float(coefficient.detach())
+        if hasattr(self.model,"rate_dimensions") and self.global_step%2000==0:
+            with (Path(self.cfg["output"])/"dimension_rates.jsonl").open("a") as f:f.write(json.dumps(dict(step=int(self.global_step),rate=self.model.rate_dimensions))+"\n")
         self.last_metrics["encoder_frozen"]=float(self.global_step<self.cfg.get("freeze_encoder_steps",0))
         if self.cfg.get("trace_batches",False):
             with (Path(self.cfg["output"])/"batch_trace.jsonl").open("a") as trace:
                 trace.write(json.dumps(dict(step=int(self.global_step),episodes=batch["episode"].detach().cpu().tolist(),starts=batch["start"].detach().cpu().tolist()))+"\n")
         return loss
     def on_before_optimizer_step(self,optimizer):
+        if hasattr(self,"_constrained"):
+            for p,g in self._constrained:p.grad=g
+            del self._constrained
+        if self.global_step%100==0:
+            for prefix in ["encoder","predictor","renderer"]:
+                total=sum(p.grad.float().square().sum() for name,p in self.model.named_parameters() if name.startswith(prefix+".") and p.grad is not None)
+                self.last_metrics["grad_norm_"+prefix]=float(torch.as_tensor(total).sqrt())
         if self.global_step>=self.cfg.get("freeze_encoder_steps",0):return
         # Diagnostic curriculum only: preserve a known informative initial code
         # while the existing prior/renderer optimizers learn to use it.
@@ -77,7 +98,7 @@ class TrainModule(pl.LightningModule):
         if self.cfg.get("export_initial",False):
             initial=Path(self.cfg["output"])/"initial-model";initial.mkdir(exist_ok=True)
             torch.save(self.model.state_dict(),initial/"weights.pt")
-            (initial/"config.json").write_text(json.dumps(dict(_target_="as_jepa_lewm.model.ASJepaLeWM",**self.cfg["model"]),indent=2))
+            (initial/"config.json").write_text(json.dumps(dict(_target_="as_jepa_lewm.research.ResearchLeWM" if self.cfg.get("research_variant") else "as_jepa_lewm.model.ASJepaLeWM",**self.cfg["model"]),indent=2))
         (Path(self.cfg["output"])/"initial_scale.json").write_text(json.dumps(dict(target_std=self.cfg["calibrate_state_std"],original_std=float(current),scale=scale,mean_before=values.mean(0).cpu().tolist(),note="One fixed affine head initialization from 128 train windows; no target labels, batch normalization, stop-gradient or objective change."),indent=2))
     def on_save_checkpoint(self,checkpoint):
         checkpoint["campaign_rng"]=dict(python=random.getstate(),numpy=np.random.get_state(),torch=torch.get_rng_state(),cuda=torch.cuda.get_rng_state_all())
@@ -106,7 +127,7 @@ class PersistentProgress(Callback):
         trainer.save_checkpoint(tmp);tmp.replace(path)
         checkpoint=self.root/f"model-step{trainer.global_step:07d}";checkpoint.mkdir(exist_ok=True)
         torch.save(module.model.state_dict(),checkpoint/"weights.pt")
-        (checkpoint/"config.json").write_text(json.dumps(dict(_target_="as_jepa_lewm.model.ASJepaLeWM",**self.cfg["model"]),indent=2))
+        (checkpoint/"config.json").write_text(json.dumps(dict(_target_="as_jepa_lewm.research.ResearchLeWM" if self.cfg.get("research_variant") else "as_jepa_lewm.model.ASJepaLeWM",**self.cfg["model"]),indent=2))
         # Keep just the last two portable model exports, plus the resumable checkpoint.
         exports=sorted(self.root.glob("model-step*"))
         import shutil

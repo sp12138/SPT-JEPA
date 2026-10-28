@@ -44,6 +44,7 @@ def main():
     blocks=np.stack([action[np.minimum(rows+k,limits)] for k in range(5)],1)
     normalized=((blocks-mean)/std).reshape(len(rows),10).astype(np.float32)
     test=np.sort(np.random.default_rng(0).permutation(len(lengths))[:round(.05*len(lengths))])
+    np.save(out/"action_raw.npy",action)
     arrays=dict(offsets=offsets,lengths=lengths,raw_rows=rows,states=raw_state,actions=normalized,test_episodes=test,episode_indices=episodes,step_indices=steps)
     for name,array in arrays.items():
         path=out/(name+".npy")
@@ -63,6 +64,7 @@ def main():
     view_lengths=(lengths+4)//5;view_offsets=np.r_[0,np.cumsum(view_lengths[:-1])]
     for name,array in dict(offsets=view_offsets,lengths=view_lengths,raw_rows=view_rows,states=raw_state[view_rows],actions=normalized[view_rows],test_episodes=test,pixel_row_indices=view_rows).items():np.save(view/(name+".npy"),array)
     view_card={**card,"phases":1,"phase":0,"raw_storage":str(out),"kept_frames":len(view_rows)}
+    (view/"action_raw.npy").symlink_to(out/"action_raw.npy") if not (view/"action_raw.npy").exists() else None
     (view/"dataset_card.json").write_text(json.dumps(view_card,indent=2))
     validation=[]
     from PIL import Image

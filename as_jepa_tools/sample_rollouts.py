@@ -30,12 +30,12 @@ def main():
         generator=torch.Generator(device="cuda").manual_seed(20261027+int(index)*101)
         with torch.autocast("cuda",dtype=torch.bfloat16,enabled=not a.fp32):
             pixels,frames,anchor=model.prepare(batch);mu=model.encode(dict(pixels=pixels[:,:3]))["emb"].float()
-            states=mu.expand(a.samples,-1,-1)+model.sigma0*torch.randn((a.samples,*mu.shape[1:]),device="cuda",generator=generator)
+            states=model.context_samples(mu,a.samples,generator) if hasattr(model,"context_samples") else mu.expand(a.samples,-1,-1)+model.sigma0*torch.randn((a.samples,*mu.shape[1:]),device="cuda",generator=generator)
             history=list(states.unbind(1));action=model.action_encoder(batch["action"].expand(a.samples,-1,-1))
             for horizon in range(13):
                 lo=max(0,len(history)-(model.window-1))
                 predicted=model.predict(torch.stack(history[lo:],1),action[:,lo:len(history)])[:,-1].float()
-                history.append(predicted+model.sigma0*torch.randn(predicted.shape,device="cuda",generator=generator))
+                history.append(predicted+(model.transition_noise(predicted,generator) if hasattr(model,"transition_noise") else model.sigma0*torch.randn(predicted.shape,device="cuda",generator=generator)))
             future=torch.stack(history[3:],1);aa=anchor.expand(a.samples*13,-1,-1,-1)
             rendered=[]
             flat=future.flatten(0,1)
