@@ -1,5 +1,8 @@
 # SPT-JEPA current execution policy
 
+User instructions, 2026-10-29 (Beijing):
+- Prioritize key insights. Preserve and early-stop persistent collapse. Defer exhaustive grids and low-value extra seeds; complete decisive controls, existing checkpoint quality/planning and promising I08 replications first. Deferred original experiments remain unfinished.
+
 User instructions, 2026-10-28:
 - Continue unfinished original experiments and validate the ten candidate methods. dev2/dev13/dev15 have no campaign wall-clock limit; the previous12-hour deadline is lifted for new work. Publish useful additional numerical results and insightful figures. Preserve all historical run snapshots.
 

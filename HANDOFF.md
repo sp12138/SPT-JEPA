@@ -1,3 +1,8 @@
+
+## 最新优先级，2026-10-29（北京时间）
+
+用户要求关键 insights 优先：持续坍塌保留证据和可恢复检查点后早停；未启动长网格、额外种子及条件扩展暂缓。优先补候选共同基线、三个 epoch checkpoint 生成/规划、I08 匹配复现。完整原方案仍未完成，暂停项不是成功或失败。实际调度见 EFS 的 early-stops/、scheduling/insight-priority-20261028.json 及 plan.json。数值及图见 experiments/completion20261028/results/EARLY-STOP-TRIAGE.md。
+
 # Active completion campaign — 2026-10-28
 
 Latest authorization: complete outstanding original experiments and validate the ten candidates; dev2/dev13/dev15 have no time limit. Read [current recovery](RECOVERY_RESEARCH_20261028.md), then the authoritative EFS plan and actual processes. Historical completed/stopped statements below describe the prior12-hour campaign only.

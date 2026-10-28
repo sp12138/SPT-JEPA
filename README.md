@@ -1,5 +1,7 @@
 # SPT-JEPA
 
+最新优先级：[关键 insight 与早停记录](experiments/completion20261028/results/EARLY-STOP-TRIAGE.md)。持续坍塌的高 β 运行提前停止，资源优先补已有 checkpoint 的生成/规划及候选关键对照。完整长预算方案暂缓项仍保留。
+
 当前在 `research/ideas-20261028` 继续原始全量实验和十个候选方法验证。用户已授权 dev2/dev13/dev15 持续运行，没有本轮时间上限。运行与恢复入口见 [研究恢复](RECOVERY_RESEARCH_20261028.md) 和 [追加实验状态](experiments/completion20261028/README.md)。
 
 新窗口确认见[数值与图](experiments/completion20261028/results/CONFIRMATION.md)：同一L2seed0的h7 agent/copy=.126、移动物块/copy=.193，反事实识别86.72%。它与旧诊断clip不共享帧，仍来自同一test episode split。
