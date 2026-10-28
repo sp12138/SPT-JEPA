@@ -1,5 +1,7 @@
 # SPT-JEPA
 
+当前正在验证全数据 beta=.25、三 epoch 的跨训练种子稳定性；新结果尚未产生。见[本轮协议](experiments/stability20261029/README.md)和[恢复入口](RECOVERY_STABILITY_20261029.md)。用户已授权稳定后继续有价值的 Lingjing 实验，不稳定则研究同规模改进，并及时提交新结论。以下主结论是上一轮已完成的历史结果。
+
 本轮主要结论已完成：[主要结论、完整数值与关键图](experiments/completion20261028/results/MAIN-CONCLUSIONS.md)。
 
 原始全数据 L2 的三 epoch checkpoint：beta=0.25 的 P0=89.33%；更低 beta 两配置为 84.67%/83.33%。beta=1 仍有 55 个活跃维度，但 P0=8.67%。这是单训练种子的中期结果。

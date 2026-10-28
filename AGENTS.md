@@ -1,5 +1,9 @@
 # SPT-JEPA current execution policy
 
+User instruction,2026-10-29, renewed reproduction and research authorization:
+- First verify full-data AS-JEPA L2 beta=.25 at three epochs across independent training seeds. If stable, perform valuable remaining Lingjing experiments; if unstable, investigate and develop a more stable/better method at comparable model size. dev2/dev13/dev15 remain authorized. Stop unneeded experiments promptly. Commit and push useful new conclusions with numerical results and key figures.
+- This supersedes the earlier major-conclusions-only hold for this new campaign. Old snapshots and the old held plan stay unchanged. Current scope/protocol: runs/stability_20261029/protocol.json.
+
 User instruction, 2026-10-29, major conclusions only:
 - Finish the major conclusions and necessary direct controls, then notify the user. Leave other work aside. Do not resume deferred original grids, capacity extensions, additional ideas or unrelated fixes without a new user instruction. The active allowed scope is recorded in runs/completion_20261028/scheduling/main-conclusions-only-20261029.json.
 

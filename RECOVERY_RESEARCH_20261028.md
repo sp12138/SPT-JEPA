@@ -1,3 +1,9 @@
+# New stability campaign active
+
+Latest user instruction supersedes the prior hold. Read [current stability recovery](RECOVERY_STABILITY_20261029.md) and experiments/stability20261029/protocol.json. Old completion_20261028 jobs remain held; only the new evidence-directed campaign may launch.
+
+---
+
 # Major conclusions complete — 2026-10-28T18:57:13.226920+00:00
 
 User scope: finish the major conclusions and necessary direct controls, notify the user, leave other work deferred.
