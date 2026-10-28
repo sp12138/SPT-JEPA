@@ -19,6 +19,9 @@ def load_model(folder,device="cuda"):
     elif target=="vforge.models.as_jepa.spt_baseline.ActionRepWorld":
         from vforge.models.as_jepa.spt_baseline import ActionRepWorld
         model=ActionRepWorld(**cfg).to(device)
+    elif target=="vforge.models.as_jepa.semantic_carry.SemanticCarry":
+        from vforge.models.as_jepa.semantic_carry import SemanticCarry
+        model=SemanticCarry(**cfg).to(device)
     elif target=="as_jepa_lewm.research.ResearchLeWM":
         from as_jepa_lewm.research import ResearchLeWM
         model=ResearchLeWM(**cfg).to(device)

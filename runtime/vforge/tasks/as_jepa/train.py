@@ -12,12 +12,15 @@ from as_jepa_tools.data import PushTWindows,FullPushTWindows
 
 
 def build_train_components(request):
-    cfg=dict(request.extras);all_phase_data=cfg.pop("all_phase_data",False);initial_state_std=cfg.pop("initial_state_std",None);export_every=cfg.pop("export_every",1000);data=Path(cfg.pop("data_root"));model_cfg=dict(cfg.pop("as_jepa"));kind=model_cfg.pop("kind","S2");legacy_output=cfg.pop("campaign_output",None);output=Path(request.output_dir);output.mkdir(parents=True,exist_ok=True)
+    cfg=dict(request.extras);all_phase_data=cfg.pop("all_phase_data",False);warm_start=cfg.pop("warm_start_checkpoint",None);initial_state_std=cfg.pop("initial_state_std",None);export_every=cfg.pop("export_every",1000);data=Path(cfg.pop("data_root"));model_cfg=dict(cfg.pop("as_jepa"));kind=model_cfg.pop("kind","S2");legacy_output=cfg.pop("campaign_output",None);output=Path(request.output_dir);output.mkdir(parents=True,exist_ok=True)
     dataset=(FullPushTWindows if all_phase_data else PushTWindows)(data,window=model_cfg.get("window",8),gap=model_cfg.get("anchor_gap",8) if kind=="S2" else 0,seed=request.sampler_seed)
     loader=build_resumable_loader(dataset,parallel_state=get_parallel_state(),batch_size=request.batch_size,num_workers=request.num_workers,drop_last=request.drop_last,seed=request.sampler_seed,shuffle=request.shuffle,pin_memory=request.pin_memory,persistent_workers=request.persistent_workers,prefetch_factor=request.prefetch_factor)
     def build():
         with torch.device(request.init_device):
             if kind=="S2":return ASJepaSPT(**model_cfg)
+            if kind=="S1Carry":
+                from vforge.models.as_jepa.semantic_carry import SemanticCarry
+                return SemanticCarry(**model_cfg)
             from vforge.models.as_jepa.spt_baseline import ActionRepWorld
             return ActionRepWorld(**model_cfg)
     def step_fn(model,batch,step,context):
@@ -29,10 +32,15 @@ def build_train_components(request):
         if completed%export_every:return {}
         folder=output/f"model-step{completed:07d}";folder.mkdir(exist_ok=True)
         weights={k:(v.full_tensor() if hasattr(v,"full_tensor") else v).detach().cpu() for k,v in model.state_dict().items()}
-        torch.save(weights,folder/"weights.pt");(folder/"config.json").write_text(json.dumps(dict(_target_="vforge.models.as_jepa.model.ASJepaSPT" if kind=="S2" else "vforge.models.as_jepa.spt_baseline.ActionRepWorld",**model_cfg),indent=2))
+        torch.save(weights,folder/"weights.pt");(folder/"config.json").write_text(json.dumps(dict(_target_="vforge.models.as_jepa.model.ASJepaSPT" if kind=="S2" else "vforge.models.as_jepa.semantic_carry.SemanticCarry" if kind=="S1Carry" else "vforge.models.as_jepa.spt_baseline.ActionRepWorld",**model_cfg),indent=2))
         return {}
     def initialize(model):
         model.initialize_weights()
+        if warm_start:
+            weights=torch.load(Path(warm_start)/"weights.pt",map_location=next(model.parameters()).device,weights_only=True)
+            incompatible=model.load_state_dict(weights,strict=False)
+            if incompatible.unexpected_keys or any(not k.startswith(("transition.","spatial.")) for k in incompatible.missing_keys):raise RuntimeError(str(incompatible))
+            (output/"warm_start.json").write_text(json.dumps(dict(source=warm_start,scope="ExistingS1 initialization; new carry transition only remains fresh; training time counted separately."),indent=2))
         if initial_state_std is None or kind!="S2":return
         from torch.utils.data import DataLoader,Subset
         was_training=model.training;model.eval();values=[];device=next(model.parameters()).device
