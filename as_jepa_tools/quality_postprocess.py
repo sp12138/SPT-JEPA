@@ -26,6 +26,7 @@ def main():
     mse=((rgb.astype(float)-target.astype(float))**2).mean((-3,-2,-1))
     all_metrics.setdefault(label+"_lpips",[]).append(lp);all_metrics.setdefault(label+"_ssim",[]).append(ssim);all_metrics.setdefault(label+"_psnr",[]).append(10*np.log10(255**2/np.maximum(mse,1e-12)))
    evaluate(copy,"copy")
+   evaluate(np.array(np.load(root/"mean-rgb.npy",mmap_mode="r")[start:start+4]),"mean_uint8")
    if samples is not None:
     for sample in range(samples.shape[1]):
      rgb=np.array(samples[start:start+4,sample]);evaluate(rgb,f"sample{sample}")
@@ -33,6 +34,6 @@ def main():
  arrays={k:np.concatenate(v) for k,v in all_metrics.items()}
  real=np.concatenate(real_features);scores=[module.frechet_distance(real,np.concatenate(parts)) for parts in sample_features]
  np.savez(out/"per-case-quality.npz",**arrays)
- result=dict(quality_source=str(root),metrics_sha256=hashlib.sha256((root/"metrics.json").read_bytes()).hexdigest(),cases=len(truth),mean_by_horizon={k:v.mean(0).tolist() for k,v in arrays.items()},sample_fvd=scores,scope="Each sampled-trajectory FVD uses256 real and256 fake clips; four draws reported separately,not pooled as1024 independent real cases. Copy and sample perceptual metrics use the saveduint8bank.")
+ result=dict(quality_source=str(root),metrics_sha256=hashlib.sha256((root/"metrics.json").read_bytes()).hexdigest(),cases=len(truth),mean_by_horizon={k:v.mean(0).tolist() for k,v in arrays.items()},sample_fvd=scores,scope="Mean/copy/sample perceptual comparisons here all use the same saved uint8 pixels. Each sampled-trajectory FVD uses256 real and256 fake clips; four draws reported separately,not pooled as1024 independent real cases. Copy and sample perceptual metrics use the saveduint8bank.")
  (out/"metrics.json").write_text(json.dumps(result,indent=2));print(json.dumps(dict(cases=len(truth),sample_fvd=[x["fvd"] for x in scores])))
 if __name__=="__main__":main()

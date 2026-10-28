@@ -1,12 +1,10 @@
 # SPT-JEPA
 
-当前完成的 SPT-JEPA insight campaign（2026-10-28）：[关键结论](experiments/insights12h/results/INSIGHTS.md)、[完整数值与图索引](experiments/insights12h/results/README.md)。28 组所选主终点评估已核验完成；轻量 L2 β=.01/50k 的单训练种子 P0 均值为70%，h7 agent/移动物块误差比均约.234。三训练种子统计仍待验证。
+当前在 `research/ideas-20261028` 继续原始全量实验和十个候选方法验证。用户已授权 dev2/dev13/dev15 持续运行，没有本轮时间上限。运行与恢复入口见 [研究恢复](RECOVERY_RESEARCH_20261028.md) 和 [追加实验状态](experiments/completion20261028/README.md)。
 
-原始全量实验规格尚未全部完成，逐项状态见[任务核对](experiments/insights12h/TASK_AUDIT_20261028.md)。
+已发布的12小时探索结果保留在 [关键结论](experiments/insights12h/results/INSIGHTS.md)；28个当时选定终点完成不等于原始全量方案完成，缺项见 [任务审计](experiments/insights12h/TASK_AUDIT_20261028.md)。新一轮正在补三训练种子、Native精确25k终点、完整生成指标、原始全数据曝光量与三epoch坍塌筛选，并验证 [十个候选](experiments/ideas20261028/README.md)。
 
-后续方法的[10个候选和验证方案](experiments/ideas20261028/README.md)已准备，当前仅完成数学前提检查；实际方法实验尚未启动，执行范围与追加预算待确认。
-
-本轮权重、数据与运行状态保存在 /efs/prescottsun/SPT-JEPA，Git 发布聚合数值及关键 PNG/SVG。当前计算已结束；下文是继承的 SPT 基线文档。
+权威代码、环境、数据、检查点、日志、媒体和恢复状态均在 `/efs/prescottsun/SPT-JEPA`。Git只发布代码、配置、完整数值和关键科学图。以下是继承的SPT基线文档，历史机器与目录不覆盖当前授权。
 
 Initialized from [sp12138/SPT](https://github.com/sp12138/SPT) at commit
 [`d43a452`](https://github.com/sp12138/SPT/commit/d43a4528a6aaaaf76f10a92a67a294d91f1996b6) on 2026-10-24.

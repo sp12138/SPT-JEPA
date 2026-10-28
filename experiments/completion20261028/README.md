@@ -1,0 +1,11 @@
+# 追加实验：原始方案补齐与十候选验证
+
+用户已撤销新一轮12小时限制，授权dev2/dev13/dev15持续完成未结束任务和十候选验证。权威运行状态在EFS的 `runs/completion_20261028/plan.json`、`workers/`、`exits/`；恢复入口见[恢复说明](../../RECOVERY_RESEARCH_20261028.md)。本文是执行进度，不能当成全部任务完成声明。
+
+- 正在补齐：轻量L2成功配置seed1/2、L0/L1匹配三训练种子、g0和128维状态对照、NativeS2低beta筛选及S0/S1额外种子、原大renderer余下步数。
+- 全数据：Lance固定revision的2,336,736行、18,685episode、934testepisode已保存；像素/episode拆分核验通过。W8每epoch12,491步，10epoch124,910步。原尺寸L2/L0已通过200步GPU训练smoke；全beta网格先跑37,473步，之后按真实含噪后验/anchor和active-dim规则筛选。
+- 终点评估：50k训练帧/5k测试帧probe、逐维rate、256例mean/sample生成、LPIPS/SSIM/PSNR/FVD、角度、64例动作反事实、标准GoalMSE规划和32例gallery。内部子任务错误必须显式判失败，外层退出0不算完成证据。
+- 新方法与原方案分开报告。修改后的噪声、目标、优化器梯度、canonicalizer、fork训练数据和语义记忆路径均不是原AS-JEPA同一协议。
+- 仍待完成：完整预算选择、最终配置额外种子、条件继续训练/消融、正式人工gallery签收。不得用smoke、旧单种子或AI视觉审阅代替。
+
+已有额外结果将保存于本目录；完整原始媒体、权重和数组留在EFS。原12小时结果目录保持不变。

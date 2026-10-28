@@ -1,3 +1,17 @@
+# Active completion campaign — 2026-10-28
+
+Latest authorization: complete outstanding original experiments and validate the ten candidates; dev2/dev13/dev15 have no time limit. Read [current recovery](RECOVERY_RESEARCH_20261028.md), then the authoritative EFS plan and actual processes. Historical completed/stopped statements below describe the prior12-hour campaign only.
+
+The new campaign is `/efs/prescottsun/SPT-JEPA/runs/completion_20261028`, branch `research/ideas-20261028`. Per-host detached dispatchers survived a transient local SSH proxy outage. New seed replications, matched method controls and full-data runs are active. Sources/configs already launched remain immutable. Do not relaunch old workers or interpret old statuses as live processes.
+
+Validated additions: full Lance/JPEG cohort exported with all five raw-start phases; original-size L2/L0 GPU training smokes exited0;19 CPU contracts passed at source35d069d; exactNative25000DCP weights forS0/S1 exported through torchDCP. The semantic carry GPU retry also exited0. Completion is still pending, including final seeds, formal gallery review, final full-budget selection and candidate evidence.
+
+Additional completed measurements: tinyL2seed0/50k FVD278.21 versus copy1628.62 under the explicit256case16-frame protocol; sampledFVD286.18/282.16/278.33/289.32. I10 geometric planner tests on eval seeds142/143/144 strongly underperformGoalMSE; preserve this negative result. Neither observation replaces final matched comparisons or the three-training-seed gate.
+
+The following entries are historical.
+
+---
+
 # Completed insight campaign — 2026-10-27T20:56:14.635676+00:00
 
 Current research preparation is on research/ideas-20261028: read [research recovery](RECOVERY_RESEARCH_20261028.md). Ten candidates and CPU mathematical checks are prepared; scope/budget replies are pending and no new method training has started.
