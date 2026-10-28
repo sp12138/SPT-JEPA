@@ -1,22 +1,9 @@
-# Research preparation, 2026-10-28
+# Active completion campaign,2026-10-28
 
-The user requested 10 mechanism-led candidate ideas and validation after the
-previous branch tasks are handled. The140-entry task audit and scope corrections
-are published at insights/12h-20261027 commit ab645db. The 28 selected endpoint
-finalizers are complete; the original full spec is not.
+User explicitly resolved both pending questions: finish outstanding experiments, three hosts dev2/dev13/dev15 have no time limit, and validate ten ideas. No repeat approval needed. Old12h deadline applies only to immutable historical runs, not new campaign.
 
-Two asynchronous questions are pending: whether completion means the agreed 12h
-insight scope or the original full spec, and whether to add 12h/24h/use only the
-original remaining window. Do not infer a budget extension from elapsed time.
-The original deadline remains 2026-10-27T22:24:58UTC until the user changes it.
-No new training or GPU inference has been launched.
+Authoritative root:/efs/prescottsun/SPT-JEPA. Active code branch:research/ideas-20261028. New campaign:runs/completion_20261028. Read itsplan.json,workers and actual processes before scheduling. Training uses existing Lightning/Native implementations. New workflow dispatcher is not a Trainer.
 
-This branch contains preliminary 10 hypotheses, primary-source checks and
-mathematical prerequisite checks. They do not establish empirical effectiveness
-or novelty. Frozen CPU checks completed; inspect the Gaussian-units plot and publish
-the reviewable draft. Additional method training depends on the scope/budget reply.
+First priority: missing successful50k seeds, matched baselines, Native search/replication and full evaluation/gate. Also complete exact data/budget cohort and ten candidate empirical tests. Original task audit has the remaining checklist. Do not declare complete until each required item is done or specifically falsified under authorized early-stop rules.
 
-Authoritative root:/efs/prescottsun/SPT-JEPA.
-Preparation:reports/ideas-preparation-20261028.
-Python:/efs/prescottsun/project_jepa/envs/lewm/bin/python.
-All original run/source/config snapshots stay immutable. No subagents authorized.
+All run/source/config snapshots immutable. Logs,weights,datasets,raw arrays and videos on EFS. Git holds code,configs,aggregate numbers,metadata and key figures. Publication authorized; no subagents authorized.

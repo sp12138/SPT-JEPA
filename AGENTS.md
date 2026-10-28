@@ -1,5 +1,8 @@
 # SPT-JEPA current execution policy
 
+User instructions, 2026-10-28:
+- Continue unfinished original experiments and validate the ten candidate methods. dev2/dev13/dev15 have no campaign wall-clock limit; the previous12-hour deadline is lifted for new work. Publish useful additional numerical results and insightful figures. Preserve all historical run snapshots.
+
 User instructions, 2026-10-27:
 - Authoritative code, environments, data, logs, checkpoints, reports and recovery instructions live under /efs/prescottsun/SPT-JEPA. This overrides inherited SPT and parent workspace locations.
 - Authorized compute: dev2, dev13 and dev15, 8 H200 each (dev15 added by the user at 2026-10-27 12:04 UTC). Other compute workloads on these hosts may be cleared per user instruction; preserve system services.
