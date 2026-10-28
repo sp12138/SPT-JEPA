@@ -32,3 +32,7 @@ I10在同一个冻结模型上比较原GoalMSE、训练协方差距离与局部G
 新窗口确认：[完整数值和horizon图](CONFIRMATION.md)。同一训练seed0，clip不与旧诊断窗口共享帧；跨训练种子评估继续。
 
 主要复现：[L2 50k三训练种子及g0对照](L2-50K-STABILITY.md)。包含seed1动作/规划失败；正式gate未通过。
+
+方法/机制结果：[I08语义记忆的同权重反馈对照](I08-SEMANTIC-FEEDBACK.md)。
+
+方法/机制结果：[128维状态容量检查](STATE_CAPACITY.md)。

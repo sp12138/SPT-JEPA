@@ -156,3 +156,5 @@ Historical measurements and run status are in `HANDOFF.md`. Component licenses
 and provenance are preserved in `runtime/`; vendored components are not relicensed.
 
 [三训练种子50k完整结果](experiments/completion20261028/results/L2-50K-STABILITY.md)已齐：mean h7 agent/copy=.411，但动作识别平均74.22%低于75%阈值，P0=46.67±29.87%。不能把单种子正面结果当作稳定解决；原始完整预算和方法验证继续。
+
+候选方法已有正面机制结果：[I08同权重语义反馈对照](experiments/completion20261028/results/I08-SEMANTIC-FEEDBACK.md)。h7agent误差24.15px对125.20px，但h13仍漂移；一个预训练种子，匹配复现继续。

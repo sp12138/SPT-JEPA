@@ -1,0 +1,21 @@
+{
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-numerics-v21",
+    "source_commit": "cf915f879777bb4e1cc1f87383f4d4262be4650b",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-numerics-v21.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-numerics-v21:/efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-numerics-v21/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+  },
+  "jobs": [
+    "S2-halfLR-numerics-smoke200",
+    "S2-beta0.0025-halfLR-50k-seed0-retry1",
+    "eval-S2-beta0.0025-halfLR-50k-seed0-retry1",
+    "S2-beta0.01-halfLR-50k-seed0-retry1",
+    "eval-S2-beta0.01-halfLR-50k-seed0-retry1",
+    "S2-beta0.04-halfLR-50k-seed0-retry1",
+    "eval-S2-beta0.04-halfLR-50k-seed0-retry1",
+    "diagnostic-S2-beta001-finite29k"
+  ],
+  "learning_rate": 5e-05,
+  "retry_policy": "Fromscratch,halfLRperoriginalNaNresponse,newindependentfolders;oldfailedweights/logsretained.",
+  "total": 1422
+}
