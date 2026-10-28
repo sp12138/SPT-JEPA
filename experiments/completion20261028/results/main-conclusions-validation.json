@@ -1,0 +1,314 @@
+{
+  "validated_at_utc": "2026-10-28T18:57:13.226920+00:00",
+  "complete_major_scope": true,
+  "endpoint_count": 46,
+  "confirmed_early_collapse_count": 8,
+  "paired_comparison_count": 30,
+  "all_endpoint_exits_zero": true,
+  "all_numerical_arrays_finite": true,
+  "numerical_values_in_npz": 3807232,
+  "prior_published_artifacts_unchanged_before_staging": true,
+  "statistical_checks": {
+    "checked_at_utc": "2026-10-28T17:44:09.724567+00:00",
+    "checks": [
+      "constant signed paired difference",
+      "zero-effect episode-cluster interval",
+      "unpaired case rejection",
+      "same core initialization and exact fork/null initialization",
+      "permuted Q identical spectrum"
+    ],
+    "passed": true
+  },
+  "pretraining_seed_provenance": {
+    "checked_at_utc": "2026-10-28T18:20:07.925634+00:00",
+    "rows": [
+      {
+        "job": "idea-I08-native-carry-25k-seed0",
+        "runtime_seed": 0,
+        "data_sampler_seed": 0,
+        "max_steps": 25000,
+        "config_sha256": "ca056840702211f3e601b61c34bfc0ee4b69886e0298e382320c04a3a7654191",
+        "initialization_fields": {
+          "warm_start_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/endpoint-source-S1-25k-seed0/model-step0025000"
+        },
+        "warm_start_weights_sha256": "fb3321378a5864a77717aa509a56180dec1aaad06d8f376e7d6e2361cb9f0238"
+      },
+      {
+        "job": "idea-I08-native-carry-25k-seed1",
+        "runtime_seed": 1,
+        "data_sampler_seed": 1,
+        "max_steps": 25000,
+        "config_sha256": "542600359075f6e5a0cf540cd57d3b2e246dee27a0d7675d3754fa580b8f22ba",
+        "initialization_fields": {
+          "warm_start_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/S1-25k-seed1/model-step0025000"
+        },
+        "warm_start_weights_sha256": "1f6fe6cfc368c6a4720269f20cb9fcc37d9f6e506e3cb1b357c1098cf62308ce"
+      },
+      {
+        "job": "idea-I08-native-carry-25k-seed2",
+        "runtime_seed": 2,
+        "data_sampler_seed": 2,
+        "max_steps": 25000,
+        "config_sha256": "7bd5e51e8e027d4d0246ddc19a645e2bc65b500fd35db3083a13a0399484f464",
+        "initialization_fields": {
+          "warm_start_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/S1-25k-seed2/model-step0025000"
+        },
+        "warm_start_weights_sha256": "65d10c2be0c52c36318a85aaffd8290c07ffe3d5eabdba290a645eff3460e70c"
+      }
+    ],
+    "all_pretraining_weights_distinct": true
+  },
+  "confirmation_weight_identity": {
+    "checked_at_utc": "2026-10-28T18:28:42.373776+00:00",
+    "all_confirmation_weights_verified": true,
+    "rows": [
+      {
+        "arm": "base001",
+        "diagnostic": "eval-idea-baseline-standard-b0.01-50k-seed0",
+        "confirmation": "confirm-idea-baseline-standard-b0.01-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-baseline-standard-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-baseline-standard-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "986eada4b7828539bdd087a9a067b84322cb4c0dd50efc4775a06fef4aecef4f"
+      },
+      {
+        "arm": "snr",
+        "diagnostic": "eval-idea-snr_weighted-standard-b1-50k-seed0",
+        "confirmation": "confirm-idea-snr_weighted-standard-b1-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-snr_weighted-standard-b1-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-snr_weighted-standard-b1-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "9dbf8579f6a46ece62d1dc640ffe90329b3c8ca16122358734dbc4b165d70fef"
+      },
+      {
+        "arm": "vdm",
+        "diagnostic": "eval-idea-vdm_nats-standard-b1.0-50k-seed0",
+        "confirmation": "confirm-idea-vdm_nats-standard-b1.0-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-vdm_nats-standard-b1.0-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-vdm_nats-standard-b1.0-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "d4679f634e45a0f738cd82ba4419328c8599f855aff2bd2d22e99c8dd63dc69e"
+      },
+      {
+        "arm": "geometry",
+        "diagnostic": "eval-idea-geometry_noise-50k-seed0",
+        "confirmation": "confirm-idea-geometry_noise-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-geometry_noise-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-geometry_noise-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "f6ff95cc484ec09c453699124097b42c40e6a6b10e7d7a6b31630ad1c9b1d69e"
+      },
+      {
+        "arm": "permuted",
+        "diagnostic": "eval-idea-geometry_noise-permutedQ-50k-seed0",
+        "confirmation": "confirm-idea-geometry_noise-permutedQ-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-geometry_noise-permutedQ-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-geometry_noise-permutedQ-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "bd1c4824a5075f09e34a431018c97df99856ced541a21d8f37c19d585557bc13"
+      },
+      {
+        "arm": "correlated",
+        "diagnostic": "eval-idea-correlated_noise-standard-b0.01-50k-seed0",
+        "confirmation": "confirm-idea-correlated_noise-standard-b0.01-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-correlated_noise-standard-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-correlated_noise-standard-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "0e139ccaf6ca6f5ec68196a40ee78fc1e6daaa56fad364ec968ea4753f7da3e5"
+      },
+      {
+        "arm": "color",
+        "diagnostic": "eval-idea-canonical_color-color-b0.01-50k-seed0",
+        "confirmation": "confirm-idea-canonical_color-color-b0.01-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-canonical_color-color-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-canonical_color-color-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "59f73bb10ade80b979e2046a823bc37191987016da8bf25f642add62e0f4449e"
+      },
+      {
+        "arm": "anchor_color",
+        "diagnostic": "eval-idea-anchor_canonical_color-color-b0.01-50k-seed0",
+        "confirmation": "confirm-idea-anchor_canonical_color-color-b0.01-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-anchor_canonical_color-color-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-anchor_canonical_color-color-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "53d97755679e489114a2033f5c945834a1d3270a435f996b14874495f4d61981"
+      },
+      {
+        "arm": "forecast",
+        "diagnostic": "eval-idea-forecast_render-standard-b0.01-50k-seed0",
+        "confirmation": "confirm-idea-forecast_render-standard-b0.01-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-forecast_render-standard-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-forecast_render-standard-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "8fa1feec2a640e0faad761df4707f4b73a9b731ea8ddb17593f47801d6ba32dd"
+      },
+      {
+        "arm": "gradient",
+        "diagnostic": "eval-idea-gradient_constraint-standard-b1-50k-seed0",
+        "confirmation": "confirm-idea-gradient_constraint-standard-b1-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-gradient_constraint-standard-b1-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-gradient_constraint-standard-b1-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "466ca1d60e390a851f33f8754bcb194a1c8fa6d08b295694642167c38830e97c"
+      },
+      {
+        "arm": "predictable",
+        "diagnostic": "eval-idea-predictable_weight-dot-b0.01-50k-seed0",
+        "confirmation": "confirm-idea-predictable_weight-dot-b0.01-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-predictable_weight-dot-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-predictable_weight-dot-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "e53ed44e72c3ca0bab8cb69d338355f142a92168607cbdbe3715ef07c50dc51c"
+      },
+      {
+        "arm": "fork",
+        "diagnostic": "eval-idea-action_forks-50k-seed0",
+        "confirmation": "confirm-idea-action_forks-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-action_forks-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-action_forks-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "3f6a56ab6998535a496fd60cba2763dfc8b21e4eccfb86c00d132c6ff98ea08d"
+      },
+      {
+        "arm": "fork_null",
+        "diagnostic": "eval-idea-action_forks_null-50k-seed0",
+        "confirmation": "confirm-idea-action_forks_null-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-action_forks_null-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-action_forks_null-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "bd1933de36619aa1453a06df8c118c1920d4a31a998588bdff9a9d9409dbea31"
+      },
+      {
+        "arm": "base1",
+        "diagnostic": "eval-idea-baseline-standard-b1-50k-seed0",
+        "confirmation": "confirm-idea-baseline-standard-b1-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-baseline-standard-b1-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-baseline-standard-b1-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "3064ef8aaee0784b8dafda2e492d25148004b485474bdf15c302927c5e180747"
+      },
+      {
+        "arm": "base_color",
+        "diagnostic": "eval-idea-baseline-color-b0.01-50k-seed0",
+        "confirmation": "confirm-idea-baseline-color-b0.01-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-baseline-color-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-baseline-color-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "eff6c899466b1ee713fd11c3d7196239dfd48fb4e2efb842323426d57a80c76d"
+      },
+      {
+        "arm": "base_dot",
+        "diagnostic": "eval-idea-baseline-dot-b0.01-50k-seed0",
+        "confirmation": "confirm-idea-baseline-dot-b0.01-50k-seed0",
+        "diagnostic_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-baseline-dot-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "confirmation_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-idea-baseline-dot-b0.01-50k-seed0/results/checkpoint/weights.pt",
+        "same_weight_file": true,
+        "weights_sha256": "6b27905d0861aacd01f681142c863019911ece42cb1db86dd54c38edfd218248"
+      }
+    ]
+  },
+  "seed2_control_identity": {
+    "checked_at_utc": "2026-10-28T18:34:48.870149+00:00",
+    "same_weights": true,
+    "first_step_all256_agent_and_block_identical": true
+  },
+  "causal_input_audit": {
+    "implementation": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-numerics-v21/runtime/vforge/models/as_jepa/semantic_carry.py",
+    "true_context_frames": 3,
+    "future_rgb_passed_to_rollout": false,
+    "future_actions": "Known conditional actions, supplied equally to both feedback variants",
+    "semantic_memory_window": 9,
+    "context_eviction_starts_at_prediction_horizon": 8,
+    "note": "Long-horizon drift coincides with window eviction; no new mechanistic ablation is claimed."
+  },
+  "delivery_script_sha256": "08efc67bc40d1c88cfce44394c3b37c51d2797692ba5a18bafe0f894abc14589",
+  "scope_limits": [
+    "Three evaluation seeds do not constitute three independent training seeds.",
+    "Ten-candidate comparisons use one training seed and matching controls; confirmation clips are temporally disjoint but from the same test episode split.",
+    "I08 uses three training/pretraining seeds only when all listed endpoints are finished; same-weight feedback controls isolate inference feedback.",
+    "Original full-data results at three epochs cannot be used as an equal-budget architecture ranking against lightweight 25k/50k baselines.",
+    "No human gallery signoff has been substituted by the report or AI review."
+  ],
+  "post_delivery_compute": {
+    "dev2": {
+      "checked_at_utc": "2026-10-28T18:58:51.035798+00:00",
+      "host": "prescottsun-dev2-worker-0",
+      "alias": "dev2",
+      "gpu_compute_processes": [],
+      "all_dispatch_held": true,
+      "stopped_project_monitors": [
+        {
+          "pid": 1976783,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.workflow --plan /efs/prescottsun/SPT-JEPA/runs/completion_20261028/plan.json --host dev2",
+          "signal": "SIGTERM"
+        },
+        {
+          "pid": 2042476,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u /efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-numerical-watch-v24.py --plan /efs/prescottsun/SPT-JEPA/runs/completion_20261028/plan.json --host dev2",
+          "signal": "SIGTERM"
+        }
+      ],
+      "remaining_known_processes": []
+    },
+    "dev13": {
+      "checked_at_utc": "2026-10-28T18:58:51.305464+00:00",
+      "host": "prescottsun-dev13-2d-1027-worker-0",
+      "alias": "dev13",
+      "gpu_compute_processes": [],
+      "all_dispatch_held": true,
+      "stopped_project_monitors": [
+        {
+          "pid": 64624,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.workflow --plan /efs/prescottsun/SPT-JEPA/runs/completion_20261028/plan.json --host dev13",
+          "signal": "SIGTERM"
+        },
+        {
+          "pid": 150970,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u /efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-numerical-watch-v24.py --plan /efs/prescottsun/SPT-JEPA/runs/completion_20261028/plan.json --host dev13",
+          "signal": "SIGTERM"
+        }
+      ],
+      "remaining_known_processes": []
+    },
+    "dev15": {
+      "checked_at_utc": "2026-10-28T18:58:51.261408+00:00",
+      "host": "prescottsun-dev15-2d-1027-worker-0",
+      "alias": "dev15",
+      "gpu_compute_processes": [],
+      "all_dispatch_held": true,
+      "stopped_project_monitors": [
+        {
+          "pid": 90563,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.workflow --plan /efs/prescottsun/SPT-JEPA/runs/completion_20261028/plan.json --host dev15",
+          "signal": "SIGTERM"
+        },
+        {
+          "pid": 145185,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u /efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-followup-v14/as_jepa_tools/full_protocol.py --registry /efs/prescottsun/SPT-JEPA/runs/completion_20261028/full-protocol-registry.json --watch",
+          "signal": "SIGTERM"
+        },
+        {
+          "pid": 163953,
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u /efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-numerical-watch-v24.py --plan /efs/prescottsun/SPT-JEPA/runs/completion_20261028/plan.json --host dev15",
+          "signal": "SIGTERM"
+        }
+      ],
+      "remaining_known_processes": []
+    }
+  },
+  "generated_text_postprocessing": {
+    "files": [
+      "MAIN-CONCLUSIONS.md",
+      "main-candidate-planning.svg",
+      "main-I08-same-weights.svg",
+      "main-full-data-checkpoints.svg",
+      "main-mechanism-controls.svg",
+      "main-I10-planning-costs.svg"
+    ],
+    "action": "Remove trailing line whitespace and blank lines at EOF for Git checks",
+    "non_whitespace_content_identical": true,
+    "all_svg_xml_valid": true,
+    "numerical_outputs_unchanged": true
+  }
+}

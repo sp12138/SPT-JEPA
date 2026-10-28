@@ -1,3 +1,14 @@
+# Major conclusions complete — 2026-10-28T18:57:13.226920+00:00
+
+User scope: finish the major conclusions and necessary direct controls, notify the user, leave other work deferred.
+The completed report is experiments/completion20261028/results/MAIN-CONCLUSIONS.md.
+Checked delivery: 46 completed endpoints, 30 paired comparisons, eight independently confirmed collapsed checkpoints, three independent I08 pretraining/finetuning seeds and same-weight feedback controls.
+Authoritative completion evidence: /efs/prescottsun/SPT-JEPA/runs/completion_20261028/MAIN-CONCLUSIONS-COMPLETE.json
+Frozen reporter source: /efs/prescottsun/SPT-JEPA/runs/completion_20261028/main-report-source-v2.json
+All new dispatch is held after completion. Do not resume other original grids, capacity/20-epoch extensions, extra ideas or unrelated repairs without a new user instruction.
+The original full-budget protocol remains incomplete. Historical long-continuation errors and deferred jobs are preserved; do not relaunch from old handoff statements.
+
+---
 
 ## 最新优先级，2026-10-29（北京时间）
 

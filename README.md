@@ -1,17 +1,14 @@
 # SPT-JEPA
 
-最新优先级：[关键 insight 与早停记录](experiments/completion20261028/results/EARLY-STOP-TRIAGE.md)。持续坍塌的高 β 运行提前停止，资源优先补已有 checkpoint 的生成/规划及候选关键对照。完整长预算方案暂缓项仍保留。
+本轮主要结论已完成：[主要结论、完整数值与关键图](experiments/completion20261028/results/MAIN-CONCLUSIONS.md)。
 
-当前在 `research/ideas-20261028` 继续原始全量实验和十个候选方法验证。用户已授权 dev2/dev13/dev15 持续运行，没有本轮时间上限。运行与恢复入口见 [研究恢复](RECOVERY_RESEARCH_20261028.md) 和 [追加实验状态](experiments/completion20261028/README.md)。
+原始全数据 L2 的三 epoch checkpoint：beta=0.25 的 P0=89.33%；更低 beta 两配置为 84.67%/83.33%。beta=1 仍有 55 个活跃维度，但 P0=8.67%。这是单训练种子的中期结果。
 
-新窗口确认见[数值与图](experiments/completion20261028/results/CONFIRMATION.md)：同一L2seed0的h7 agent/copy=.126、移动物块/copy=.193，反事实识别86.72%。它与旧诊断clip不共享帧，仍来自同一test episode split。
+I08 三个训练种子的同权重反馈对照：h7 agent 误差均值 31.85px vs 143.44px；长期漂移和较弱的物块动作识别仍保留，未宣称 I08 规划收益。
 
-追加实测见[生成质量、规划几何及固定32例图](experiments/completion20261028/results/README.md)和[25k基线的三训练种子终点](experiments/completion20261028/results/BASELINES_25K.md)。轻量L2seed0的256例FVD=278.21（copy=1628.62）；I10修复缓存后的Gramian规划均值8.7%（GoalMSE=71.3%），是明确负面结果。三训练种子与原始全量方案仍在推进。
-
-已发布的12小时探索结果保留在 [关键结论](experiments/insights12h/results/INSIGHTS.md)；28个当时选定终点完成不等于原始全量方案完成，缺项见 [任务审计](experiments/insights12h/TASK_AUDIT_20261028.md)。新一轮正在补三训练种子、Native精确25k终点、完整生成指标、原始全数据曝光量与三epoch坍塌筛选，并验证 [十个候选](experiments/ideas20261028/README.md)。
-
-权威代码、环境、数据、检查点、日志、媒体和恢复状态均在 `/efs/prescottsun/SPT-JEPA`。Git只发布代码、配置、完整数值和关键科学图。以下是继承的SPT基线文档，历史机器与目录不覆盖当前授权。
-
+用户 2026-10-29 最新要求：先完成主要结论，其他工作暂缓。本轮主结论终点已齐，其余原始长预算、额外种子与条件扩展保持暂停，未记为完成。权威代码、数据、环境、日志、检查点及恢复状态均在 /efs/prescottsun/SPT-JEPA。
+恢复入口见 [研究恢复](RECOVERY_RESEARCH_20261028.md)。历史探索见 [12小时结果](experiments/insights12h/results/INSIGHTS.md)、[三训练种子稳定性](experiments/completion20261028/results/L2-50K-STABILITY.md)和[提前停止依据](experiments/completion20261028/results/EARLY-STOP-TRIAGE.md)。
+以下为继承的 SPT 基线文档，历史机器、路径与活动状态不覆盖上述当前政策。
 Initialized from [sp12138/SPT](https://github.com/sp12138/SPT) at commit
 [`d43a452`](https://github.com/sp12138/SPT/commit/d43a4528a6aaaaf76f10a92a67a294d91f1996b6) on 2026-10-24.
 The original SPT baseline documentation follows.
@@ -156,7 +153,3 @@ PYTHONPATH=runtime "$PY" -B -m unittest discover -s tests
 Original-report paths are audit inputs, not training/inference dependencies.
 Historical measurements and run status are in `HANDOFF.md`. Component licenses
 and provenance are preserved in `runtime/`; vendored components are not relicensed.
-
-[三训练种子50k完整结果](experiments/completion20261028/results/L2-50K-STABILITY.md)已齐：mean h7 agent/copy=.411，但动作识别平均74.22%低于75%阈值，P0=46.67±29.87%。不能把单种子正面结果当作稳定解决；原始完整预算和方法验证继续。
-
-候选方法已有正面机制结果：[I08同权重语义反馈对照](experiments/completion20261028/results/I08-SEMANTIC-FEEDBACK.md)。h7agent误差24.15px对125.20px，但h13仍漂移；一个预训练种子，匹配复现继续。

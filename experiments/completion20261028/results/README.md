@@ -1,3 +1,7 @@
+最新：[主要结论与关键图](MAIN-CONCLUSIONS.md)、[完整数值](main-conclusions-results.json)、[逐例数值](main-conclusions-per-case.npz)、[验证依据](main-conclusions-validation.json)。
+
+主结论终点已完成，其他原始长预算/额外扩展暂缓。I02 使用额外预训练参考模型估计 Q，未宣称等计算优势；I08 成本为 25k 预训练加 25k finetune。
+
 最新：[持续坍塌的早停证据与曲线](EARLY-STOP-TRIAGE.md)。关键 insight 优先，完整长预算方案未完成。
 
 # 追加结果：生成指标与规划度量
