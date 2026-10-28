@@ -11,19 +11,52 @@ from as_jepa_tools.data import PushTWindows
 from as_jepa_tools.quality_complete import video
 
 
+def link_planning_videos(planning_root,out,checkpoint,weights_hash):
+    planning_records=[]
+    counts={"success":0,"failure":0}
+    for metric_path in sorted(Path(planning_root).glob("seed*/metrics.json")):
+        record=json.loads(metric_path.read_text())
+        for env_index,success in enumerate(record["metrics"]["episode_successes"]):
+            label="success" if success else "failure"
+            if counts[label]>=5:continue
+            original=metric_path.parent/f"env_{env_index}.mp4"
+            if not original.exists():raise FileNotFoundError(original)
+            destination=out/"planning"/label/f"{counts[label]:02d}.mp4"
+            destination.parent.mkdir(parents=True,exist_ok=True)
+            if not destination.exists():destination.hardlink_to(original)
+            planning_records.append(dict(outcome=label,episode=int(record["episodes"][env_index]),
+                                         start=int(record["start_steps"][env_index]),evaluation_seed=record["seed"],
+                                         source_video=str(original),gallery_video=str(destination),environment_index=env_index,
+                                         checkpoint=str(checkpoint),checkpoint_sha256=weights_hash))
+            counts[label]+=1
+    (out/"planning").mkdir(exist_ok=True)
+    (out/"planning/index.json").write_text(json.dumps(dict(videos=planning_records,counts=counts,scope="Firstfiveavailable successes/failures,fromexistingexactP0episodes;noadditionalplanningruns."),indent=2))
+    return planning_records
+
+
 def main():
     parser=argparse.ArgumentParser()
-    for name in ["quality","checkpoint","data","output"]:
+    for name in ["checkpoint","output"]:
         parser.add_argument("--"+name,required=True)
     parser.add_argument("--planning")
+    parser.add_argument("--quality")
+    parser.add_argument("--data")
+    parser.add_argument("--planning-only",action="store_true")
     args=parser.parse_args()
-    quality,checkpoint,out=Path(args.quality),Path(args.checkpoint),Path(args.output)
+    checkpoint,out=Path(args.checkpoint),Path(args.output)
+    quality=Path(args.quality) if args.quality else None
     out.mkdir(parents=True,exist_ok=True)
     if (out/"complete.json").exists():
         raise RuntimeError("Completed gallery already exists; preserve it")
     cases=json.loads((quality/"cases.json").read_text())
     cfg=json.loads((checkpoint/"config.json").read_text())
     weights_hash=hashlib.sha256((checkpoint/"weights.pt").read_bytes()).hexdigest()
+    if args.planning_only:
+        if not args.planning:parser.error("--planning is required for --planning-only")
+        records=link_planning_videos(args.planning,out,checkpoint,weights_hash)
+        (out/"complete.json").write_text(json.dumps(dict(planning_videos=len(records),checkpoint_sha256=weights_hash,scope="Planning-onlygalleryforthemodelwithoutapixelrenderer."),indent=2))
+        print(json.dumps(dict(planning_videos=len(records))));return
+    if not args.quality or not args.data:parser.error("--quality and --data are required for frame galleries")
     quality_protocol=json.loads((quality/"metrics.json").read_text())
     pixel_feedback=any(name in cfg.get("_target_","") for name in ["ActionRepWorld","SemanticCarry"])
     metrics=np.load(quality/"per-case-metrics.npz")
@@ -88,27 +121,7 @@ def main():
             (folder/"meta.json").write_text(json.dumps(metadata,indent=2))
             review.append(f"{position:02d},{episode},{start},pending,")
         (directory/"review.csv").write_text("case,episode,start,pass_fail,reason\n"+"\n".join(review)+"\n")
-    planning_records=[]
-    if args.planning:
-        planning_root=Path(args.planning)
-        counts={"success":0,"failure":0}
-        for metric_path in sorted(planning_root.glob("seed*/metrics.json")):
-            record=json.loads(metric_path.read_text())
-            for env_index,success in enumerate(record["metrics"]["episode_successes"]):
-                label="success" if success else "failure"
-                if counts[label]>=5:continue
-                original=metric_path.parent/f"env_{env_index}.mp4"
-                if not original.exists():raise FileNotFoundError(original)
-                destination=out/"planning"/label/f"{counts[label]:02d}.mp4"
-                destination.parent.mkdir(parents=True,exist_ok=True)
-                if not destination.exists():destination.hardlink_to(original)
-                planning_records.append(dict(outcome=label,episode=int(record["episodes"][env_index]),
-                                             start=int(record["start_steps"][env_index]),evaluation_seed=record["seed"],
-                                             source_video=str(original),gallery_video=str(destination),environment_index=env_index,
-                                             checkpoint=str(checkpoint),checkpoint_sha256=weights_hash))
-                counts[label]+=1
-        (out/"planning").mkdir(exist_ok=True)
-        (out/"planning/index.json").write_text(json.dumps(dict(videos=planning_records,counts=counts,scope="Firstfiveavailable successes/failures,fromexistingexactP0episodes;noadditionalplanningruns."),indent=2))
+    planning_records=link_planning_videos(args.planning,out,checkpoint,weights_hash) if args.planning else []
     (out/"complete.json").write_text(json.dumps(dict(groups=groups,planning_video_count=len(planning_records),checkpoint=str(checkpoint),
                                                     checkpoint_sha256=weights_hash,human_review_complete=False,
                                                     scope="Completefixed/best/worstmediaandmetadatafromsaveduint8banks;userreviewremainsrequired.Counterfactual/swap/planningmediahaveindependentdirectories."),indent=2))

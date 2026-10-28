@@ -95,7 +95,7 @@ def main():
             jobs.append(dict(id="counterfactual", artifact=str(out / "counterfactual/counterfactual.json"),
                              command=[py, "-B", "-u", "-m", "as_jepa_tools.counterfactual",
                                       "--checkpoint", str(pin), "--data", a.data, "--pose", a.pose,
-                                      "--output", str(out / "counterfactual"), "--cases", "64", "--steps", "50"]))
+                                      "--output", str(out / "counterfactual"), "--cases", "64", "--steps", "50", "--media"]))
     if a.mode.startswith("L") and cfg.get("domain", "standard") == "standard":
         for seed in [42, 43, 44]:
             folder = out / "planning" / ("seed" + str(seed))
@@ -105,6 +105,17 @@ def main():
                                       "--upstream", a.upstream, "--data-root", a.planning_data,
                                       "--test-episodes", str(Path(a.data) / "test_episodes.npy"),
                                       "--seed", str(seed), "--episodes", "50"]))
+    if a.mode!="L0" and not a.no_quality:
+        jobs.append(dict(id="anchor-swaps",artifact=str(out/"anchor-swaps/metrics.json"),
+                         command=[py,"-B","-u","-m","as_jepa_tools.swap_gallery",
+                                  "--checkpoint",str(pin),"--data",a.data,"--pose",a.pose,
+                                  "--cases",str(out/"quality/cases.json"),"--output",str(out/"anchor-swaps")]))
+    if a.mode=="L0" or not a.no_quality:
+        gallery_command=[py,"-B","-u","-m","as_jepa_tools.gallery_complete",
+                         "--checkpoint",str(pin),"--output",str(out/"gallery-complete"),
+                         "--planning",str(out/"planning")]
+        gallery_command+=(["--planning-only"] if a.mode=="L0" else ["--quality",str(out/"quality"),"--data",a.data])
+        jobs.append(dict(id="gallery-complete",artifact=str(out/"gallery-complete/complete.json"),command=gallery_command))
     atomic(out / "jobs.json", jobs)
     results = []
     for job in jobs:
