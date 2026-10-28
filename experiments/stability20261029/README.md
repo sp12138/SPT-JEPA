@@ -9,3 +9,5 @@ The frozen plan and numerical decision criteria are in [protocol.json](protocol.
 Evaluate original P0 seeds42/43/44 and prespecified fresh seeds1042/1043/1044 on common heldout start/goal cases. Report across-training-seed statistics separately from evaluation-seed variation, retain bad seeds, and distinguish practical stability checks from formal benchmark claims.
 
 Authoritative runtime: /efs/prescottsun/SPT-JEPA/runs/stability_20261029. All useful new conclusions will be committed and pushed with complete numerical results and key figures.
+
+首个已完成检查：[seed0原案例精确复跑与新案例](results/SEED0-REEVALUATION.md)。这仍只是同一训练种子的评测，不是跨训练种子稳定性证明。

@@ -1,6 +1,7 @@
 # SPT-JEPA current execution policy
 
 User instruction,2026-10-29, renewed reproduction and research authorization:
+- Wait efficiently: when no independent work remains during long training, poll around every30-60minutes and sleep between checks; shorten only near completion or an active failure. This is the latest explicit user preference.
 - First verify full-data AS-JEPA L2 beta=.25 at three epochs across independent training seeds. If stable, perform valuable remaining Lingjing experiments; if unstable, investigate and develop a more stable/better method at comparable model size. dev2/dev13/dev15 remain authorized. Stop unneeded experiments promptly. Commit and push useful new conclusions with numerical results and key figures.
 - This supersedes the earlier major-conclusions-only hold for this new campaign. Old snapshots and the old held plan stay unchanged. Current scope/protocol: runs/stability_20261029/protocol.json.
 

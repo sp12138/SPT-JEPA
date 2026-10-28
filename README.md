@@ -1,6 +1,6 @@
 # SPT-JEPA
 
-当前正在验证全数据 beta=.25、三 epoch 的跨训练种子稳定性；新结果尚未产生。见[本轮协议](experiments/stability20261029/README.md)和[恢复入口](RECOVERY_STABILITY_20261029.md)。用户已授权稳定后继续有价值的 Lingjing 实验，不稳定则研究同规模改进，并及时提交新结论。以下主结论是上一轮已完成的历史结果。
+当前正在验证全数据 beta=.25、三 epoch 的跨训练种子稳定性；独立训练种子的结果尚未产生；[seed0规划复跑和新案例检查](experiments/stability20261029/results/SEED0-REEVALUATION.md)已完成。见[本轮协议](experiments/stability20261029/README.md)和[恢复入口](RECOVERY_STABILITY_20261029.md)。用户已授权稳定后继续有价值的 Lingjing 实验，不稳定则研究同规模改进，并及时提交新结论。以下主结论是上一轮已完成的历史结果。
 
 本轮主要结论已完成：[主要结论、完整数值与关键图](experiments/completion20261028/results/MAIN-CONCLUSIONS.md)。
 
