@@ -11,6 +11,19 @@ from as_jepa_tools.data import PushTWindows
 from as_jepa_tools.evaluate import load_model
 from vforge.ops import initialize_ops,OpsConfig
 
+def add_posterior_noise(mu,model):
+ diagonal=getattr(model,"noise_diagonal",torch.ones(mu.shape[-1],device=mu.device))
+ return mu+model.sigma0*torch.randn_like(mu)*diagonal.sqrt()
+
+def noisy_channel_bounds(covariance,sigma0,noise_diagonal=None):
+ covariance=np.asarray(covariance);diagonal=np.ones(len(covariance)) if noise_diagonal is None else np.asarray(noise_diagonal)
+ if np.any(diagonal<=0):raise ValueError("Positive noise covariance diagonal required")
+ whitened=covariance/np.sqrt(diagonal[:,None]*diagonal[None,:])
+ eigen=np.clip(np.linalg.eigvalsh(whitened),0,None)
+ return dict(covariance_bound=float(.5*np.log1p(eigen/sigma0**2).sum()),
+             diagonal_bound=float(.5*np.log1p(np.diag(whitened)/sigma0**2).sum()),
+             noise_whitened_eigenvalues=eigen.tolist())
+
 @torch.no_grad()
 def features(model,root,split,count,seed,noisy=False,fp32=False):
  data=PushTWindows(root,window=1,gap=0,split=split);rng=np.random.default_rng(seed);indices=rng.choice(len(data),size=min(count,len(data)),replace=False)
@@ -20,7 +33,7 @@ def features(model,root,split,count,seed,noisy=False,fp32=False):
   batch={k:v.cuda(non_blocking=True) if torch.is_tensor(v) else v for k,v in batch.items()}
   with torch.autocast('cuda',dtype=torch.bfloat16,enabled=not fp32):
    pixels,_,_=model.prepare(batch);mu=model.encode(dict(pixels=pixels))['emb'][:,0].float()
-   if noisy and model.mode in {"L2","S2"}:mu=mu+model.sigma0*torch.randn_like(mu)
+   if noisy and model.mode in {"L2","S2"}:mu=add_posterior_noise(mu,model)
   state=batch['state'][:,0].float();target=torch.cat([state[:,:4],state[:,4:5].sin(),state[:,4:5].cos(),state[:,5:7]],1)
   if model.domain=='color':
    ep=batch['episode'].float();colors=torch.stack([.35+.65*torch.remainder(torch.sin(ep*12.9898+k*78.233)*43758.5453,1) for k in range(3)],1)
@@ -44,10 +57,15 @@ def main(argv=None,initialize=True):
  if len(scores)>8:result['nuisance_r2']=float(scores[8:].mean())
  if not a.noisy and model.mode in {"L2","S2"}:
   test_cov=np.cov(test_x,rowvar=False,bias=True);test_eigen=np.clip(np.linalg.eigvalsh(test_cov),0,None)
-  result["heldout_noisy_channel_covariance_bound_nats"]=float(.5*np.log1p(test_eigen/model.sigma0**2).sum())
-  result["heldout_noisy_channel_diagonal_bound_nats"]=float(.5*np.log1p(np.diag(test_cov)/model.sigma0**2).sum())
+  diagonal=getattr(model,"noise_diagonal",None)
+  if diagonal is not None:diagonal=diagonal.detach().cpu().numpy()
+  bound=noisy_channel_bounds(test_cov,model.sigma0,diagonal)
+  result["heldout_noisy_channel_covariance_bound_nats"]=bound["covariance_bound"]
+  result["heldout_noisy_channel_diagonal_bound_nats"]=bound["diagonal_bound"]
+  result["heldout_noise_whitened_covariance_eigenvalues"]=bound["noise_whitened_eigenvalues"]
+  result["noise_covariance_diagonal"]=None if diagonal is None else diagonal.tolist()
   result["heldout_covariance_eigenvalues"]=test_eigen.tolist()
-  result["information_bound_scope"]="Empirical covariance Gaussian-noise channel upper bound on uniformly sampled test frames; not task mutual information."
+  result["information_bound_scope"]="Empirical covariance Gaussian-noise channel upper bound using the declared posterior sigma^2 Q,on uniformly sampled test frames; not task mutual information."
 
  out=Path(a.output);out.mkdir(parents=True,exist_ok=True);(out/'probes.json').write_text(json.dumps(result,indent=2));np.savez(out/'probe_predictions.npz',truth=test_y,prediction=prediction);print(json.dumps(result,indent=2))
 

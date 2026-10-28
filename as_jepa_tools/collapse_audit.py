@@ -13,6 +13,10 @@ from as_jepa_tools.evaluate import load_model, pose_net, select_windows
 from vforge.ops import OpsConfig, initialize_ops
 
 
+def variable_dimension_rate(means,surprise,transition_variance_constant=0.):
+    return .5*means[:,0].square()+(surprise-transition_variance_constant).sum(1)
+
+
 def summarize_errors(posterior, anchor, moving, dimension_rate, ratio_limit=.9):
     posterior, anchor = np.asarray(posterior), np.asarray(anchor)
     moving, dimension_rate = np.asarray(moving, dtype=bool), np.asarray(dimension_rate)
@@ -94,7 +98,7 @@ def main():
             surprise = surprise + markov_constant
             entry = .5 * (means[:, 0].square() + model.sigma0 ** 2 * diagonal - 1
                           - torch.log(model.sigma0 ** 2 * diagonal))
-            variable_rate = .5 * means[:, 0].square() + surprise.sum(1)
+            variable_rate = variable_dimension_rate(means, surprise, markov_constant)
             states = noisy[:, 1:].flatten(0, 1)
             anchors = anchor.repeat_interleave(width - 1, 0)
             generated = torch.cat([
@@ -135,7 +139,7 @@ def main():
         state_permutation_intervention_mse=float(np.mean([x["permutation_mse"] for x in interventions])),
         seconds=time.time() - started,
         protocol="All training-window targets t>=1; own posterior sample; common fixed heldout windows; primary past anchor; agent moved>10px from anchor; collapsed if ratio>=.9 or active_dims<2.",
-        active_scope="Per-window variable entry .5*mu0^2 plus summed transition KL per dimension; shared fixed-variance entry constants excluded from activity.",
+        active_scope="Per-window variable entry .5*mu0^2 plus summed transition KL per dimension; shared fixed-variance entry and transition constants excluded from activity.",
         forward_precision="BF16 autocast; Gaussian rate and pose errors FP32; highest FP32 matmul",
     )
     np.savez(out / "per-case.npz", **arrays)
