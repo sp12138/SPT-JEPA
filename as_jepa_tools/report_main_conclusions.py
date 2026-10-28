@@ -284,8 +284,11 @@ def main():
     findings = []
     if full:
         names = ", ".join(k + "=" + format_num(v["summary"]["p0_mean"]) + "%" for k, v in full.items() if v["summary"]["p0_mean"] is not None)
-        findings.append("原始全数据模型已得到真实闭环规划的正面结果（" + names + "），但这仍是单训练种子的三 epoch checkpoint，不是完整十 epoch 或等预算架构胜出。")
-    findings.append("八条高 beta 运行均由独立含噪后验评测确认零活跃维度，已提前停止。早期短暂退化不等于最终坍塌：原始 L2 beta=1 的训练曲线出现延迟恢复，因此只对成熟且持续退化的运行早停。")
+        findings.append("原始全数据模型的三 epoch P0 结果为（" + names + "）；低 beta 配置已有真正闭环规划的正面结果，但这仍是单训练种子，不是完整十 epoch 或等预算架构胜出。")
+    findings.append("八条高 beta 运行均由独立含噪后验评测确认零活跃维度，已提前停止。早期短暂退化不等于最终坍塌：原始 L2 beta=1 的表征活跃维度出现延迟恢复，因此只对成熟且持续退化的运行早停；表征恢复不等于规划恢复。")
+    if "L2-beta1" in full:
+        z = full["L2-beta1"]["summary"]
+        findings.append("坍塌门不是唯一的早停依据：原始 L2 beta=1 在三 epoch 的活跃维度为 " + format_num(z["active_dims"], 0) + "，h7 agent/copy=" + format_num(z["h7_agent_copy"], 3) + "，但 P0 只有 " + format_num(z["p0_mean"]) + "%。非空表征和可用控制是不同门槛。")
     n_feedback = feedback_statistics.get("semantic", {}).get("training_seeds", 0)
     findings.append(f"I08 已完成 {n_feedback} 个训练种子的语义反馈终点；同权重开关和第一生成步一致性检查用于隔离反馈路径。中期 agent 误差和动作识别的改变，不等于长时域物块控制或规划已解决；完整逐种子结果见表。")
     if n_feedback:
@@ -312,13 +315,13 @@ def main():
     table = [
         "# 主要结论", "", "本报告只汇总能直接回答主要问题的结果。原始十 epoch 及其他条件扩展仍暂缓。", "",
         "## 原始全数据与 renderer：三个 epoch", "",
-        "| 配置 | h7 agent/copy ↓ | h7 moving block/copy ↓ | FVD-256 ↓ | 动作反事实识别 % ↑ | P0 三评测种子 % ↑ |",
-        "| --- | ---: | ---: | ---: | ---: | --- |",
+        "| 配置 | 活跃维度 | h7 agent/copy ↓ | h7 moving block/copy ↓ | FVD-256 ↓ | 动作反事实识别 % ↑ | P0 三评测种子 % ↑ |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | --- |",
     ]
     for name, item in full.items():
         s = item["summary"]
         plans = " / ".join(format_num(x, 0) for x in s["p0_values"]) if s["p0_values"] else "未测"
-        table.append(f"| {name} | {format_num(s['h7_agent_copy'],3)} | {format_num(s['h7_moving_block_copy'],3)} | {format_num(s['fvd'])} | {format_num(100*s['cf']) if s['cf'] is not None else '—'} | {plans} |")
+        table.append(f"| {name} | {format_num(s['active_dims'],0)} | {format_num(s['h7_agent_copy'],3)} | {format_num(s['h7_moving_block_copy'],3)} | {format_num(s['fvd'])} | {format_num(100*s['cf']) if s['cf'] is not None else '—'} | {plans} |")
     table += [
         "", "上述是三 epoch 的中期 checkpoint，单训练种子；不能宣称完成原方案或优于未做的等预算 LeWM 基线。高 beta 的八条运行全部由独立含噪后验判据确认零活跃维度，已保存检查点并提前停止。", "",
         "## 十候选及关键对照", "",

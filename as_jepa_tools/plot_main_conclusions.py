@@ -110,8 +110,8 @@ def main():
             if title.startswith("P0"):
                 ax.set_ylim(0, 100)
             clean(ax)
-        fig.suptitle("Original full-data model at three epochs: checkpoint diagnostics, training seed 0")
-        fig.text(.5, -.01, "Same 256-case quality protocol; no equal-budget architecture superiority claim. Native S2 planning was not tested.",
+        fig.suptitle("Full-data checkpoints at three epochs: passing the collapse gate does not ensure useful control")
+        fig.text(.5, -.01, "Training seed 0; all shown checkpoints pass the noisy-posterior collapse gate. Native S2 planning was not tested.",
                  ha="center", fontsize=8)
         fig.tight_layout(rect=[0, .04, 1, .92])
         finish(fig, out, "main-full-data-checkpoints")
