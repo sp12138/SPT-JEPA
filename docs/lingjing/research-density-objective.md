@@ -11,3 +11,5 @@
 I04另增加 `anchor_canonical_color`：由anchor通道极值决定共享的点式颜色变换，当前帧仅经此颜色变换再编码；不能读取anchor空间排列。CPU检查完整空间置换anchor不会改变编码输入。旧framewise分位数方法 `canonical_color` 保留作为不同的颜色标准化对照；两者都不等于原AS-JEPA的anchor-isolated encoder。
 
 NativeS2增加可选 `state_width=32` 做128维容量检查，默认仍4×16；训练记录microbatch可变rate、rate_share及模块梯度范数。正式active_dims和逐维rate由固定heldout的collapse audit给出，不能把train microbatch计数冒充正式容量结论。
+
+原规格全部价格坍塌的固定fallback在NativeS2上通过公开beta_scale参数实现，由Native任务的step给定前5%进度；常规运行默认1，不改变任何旧snapshot。没有新增Trainer或checkpoint实现。

@@ -13,7 +13,7 @@ from vforge.data.spec import DataSpec
 
 
 def build_train_components(request):
-    cfg=dict(request.extras);all_phase_data=cfg.pop("all_phase_data",False);warm_start=cfg.pop("warm_start_checkpoint",None);initial_state_std=cfg.pop("initial_state_std",None);export_every=cfg.pop("export_every",1000);data=Path(cfg.pop("data_root"));model_cfg=dict(cfg.pop("as_jepa"));kind=model_cfg.pop("kind","S2");legacy_output=cfg.pop("campaign_output",None);output=Path(request.output_dir);output.mkdir(parents=True,exist_ok=True)
+    cfg=dict(request.extras);ramp_steps=cfg.pop("ramp_steps",0);all_phase_data=cfg.pop("all_phase_data",False);warm_start=cfg.pop("warm_start_checkpoint",None);initial_state_std=cfg.pop("initial_state_std",None);export_every=cfg.pop("export_every",1000);data=Path(cfg.pop("data_root"));model_cfg=dict(cfg.pop("as_jepa"));kind=model_cfg.pop("kind","S2");legacy_output=cfg.pop("campaign_output",None);output=Path(request.output_dir);output.mkdir(parents=True,exist_ok=True)
     dataset=(FullPushTWindows if all_phase_data else PushTWindows)(data,window=model_cfg.get("window",8),gap=model_cfg.get("anchor_gap",8) if kind=="S2" else 0,seed=request.sampler_seed)
     loader=build_resumable_loader(DataSpec(dataset,sampler_factory=full_phase_sampler) if all_phase_data else dataset,parallel_state=get_parallel_state(),batch_size=request.batch_size,num_workers=request.num_workers,drop_last=request.drop_last,seed=request.sampler_seed,shuffle=request.shuffle,pin_memory=request.pin_memory,persistent_workers=request.persistent_workers,prefetch_factor=request.prefetch_factor)
     def build():
@@ -26,7 +26,7 @@ def build_train_components(request):
             return ActionRepWorld(**model_cfg)
     def step_fn(model,batch,step,context):
         frames=batch["render"].to(context.device,dtype=torch.float32)/127.5-1.;anchor=batch["anchor"].to(context.device,dtype=torch.float32)/127.5-1.;actions=batch["action"].to(context.device)
-        result=model(frames=frames,actions=actions,anchor=anchor,return_metrics=True)
+        result=model(frames=frames,actions=actions,anchor=anchor,return_metrics=True,**(dict(beta_scale=min(1.,step/max(1,ramp_steps))) if kind=="S2" and ramp_steps else {}))
         return StepOutput(loss=result["loss"],metrics=result["metrics"],workload={"local_batch":len(frames),"local_tokens":len(frames)*(frames.shape[1]-1)*256},metadata={"sample_ids":[f"{int(ep)}:{int(start)}" for ep,start in zip(batch["episode"],batch["start"])]})
     def export(model,step,context,output_record):
         completed=step+1

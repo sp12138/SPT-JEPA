@@ -37,4 +37,13 @@ class NativeContracts(unittest.TestCase):
   self.assertEqual(tuple(model.training_variable_rate.shape),(128,))
   self.assertIn("rate_share",result["metrics"])
   state=model.encode(dict(pixels=frames))["emb"];self.assertEqual(tuple(model.predict(state[:,:2],actions[:,:2]).shape),(2,2,128))
+ def test_declared_native_all_price_collapse_fallback_only_scales_rate(self):
+  model=ASJepaSPT(width=96,encoder_depth=2,prior_depth=2,renderer_depth=2).eval()
+  frames=torch.randn(1,3,3,64,64);actions=torch.randn(1,3,10)
+  torch.manual_seed(51);full=model(frames,actions,frames[:,0],return_metrics=True)
+  torch.manual_seed(51);zero=model(frames,actions,frames[:,0],return_metrics=True,beta_scale=0.)
+  torch.testing.assert_close(full["metrics"]["loss_fm"],zero["metrics"]["loss_fm"],rtol=0,atol=0)
+  torch.testing.assert_close(full["loss"]-zero["loss"],model.beta*full["metrics"]["rate_per_value"],rtol=1e-4,atol=1e-7)
+  self.assertEqual(zero["metrics"]["beta_effective"],0.)
+
 if __name__=="__main__":unittest.main()

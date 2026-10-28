@@ -30,15 +30,15 @@ class ASJepaSPT(nn.Module):
         b,w=frames.shape[:2];latents=pack(frames.flatten(0,1)).reshape(b,w,48,16,16).transpose(1,2)
         tokens=self.encoder(latents)
         return self.pool(tokens.flatten(0,1)).reshape(b,w,self.state_slots,self.state_width)
-    def forward(self,frames,actions,anchor,return_metrics=False):
+    def forward(self,frames,actions,anchor,return_metrics=False,beta_scale=1.):
         mu=self.encoded(frames);s=mu+self.sigma0*torch.randn_like(mu);m=self.prior(s[:,:-1],actions[:,:-1])
         entry=entry_nats(mu[:,0],self.sigma0);surprise=surprise_nats(mu[:,1:],m,self.sigma0)
         y=pack(frames[:,1:].flatten(0,1));a=pack(anchor).repeat_interleave(frames.shape[1]-1,0)
         fm=flow_loss(self.renderer,y,s[:,1:].flatten(0,1),a,self.shift);rate=(entry+surprise.sum(1)).mean()/((frames.shape[1]-1)*FRAME_ELEMS)
-        loss=fm+self.beta*rate
+        loss=fm+self.beta*beta_scale*rate
         variable_rate=(.5*mu[:,0].float().square()+(mu[:,1:].float()-m.float()).square().sum(1)/(2*self.sigma0**2)).mean(0).flatten()
         self.training_variable_rate=variable_rate.detach()
-        metrics=dict(loss_fm=fm.detach(),entry_nats=entry.mean().detach(),surprise_nats=surprise.mean().detach(),rate_per_value=rate.detach(),rate_share=(self.beta*rate/fm.detach().clamp_min(1e-8)).detach(),active_dims_train_microbatch=(variable_rate>.1).sum().detach(),feature_std=mu.float().std((0,1)).mean().detach())
+        metrics=dict(beta_effective=self.beta*beta_scale,loss_fm=fm.detach(),entry_nats=entry.mean().detach(),surprise_nats=surprise.mean().detach(),rate_per_value=rate.detach(),rate_share=(self.beta*beta_scale*rate/fm.detach().clamp_min(1e-8)).detach(),active_dims_train_microbatch=(variable_rate>.1).sum().detach(),feature_std=mu.float().std((0,1)).mean().detach())
         return dict(loss=loss,metrics=metrics) if return_metrics else loss
     def prepare(self,batch):
         frames=batch["render"].float()/127.5-1.;anchor=batch["anchor"].float()/127.5-1.
