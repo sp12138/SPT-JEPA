@@ -71,7 +71,7 @@ def main():
         feature_real.append(extractor._infer(list(gt)));feature_fake.append(extractor._infer(list(clips)));feature_copy.append(extractor._infer(list(copyclips)))
         for i,(ep,start) in enumerate(zip(batch["episode"].cpu(),batch["start"].cpu())):
             state=batch["state"][i].float();moving=float((state[:,2:4]-state[0,2:4]).norm(dim=-1).max())>10
-            mean_records.append(dict(episode=int(ep),start=int(start),moving_block=moving,index=int(ids[len(mean_records)]),mean_renderer_seed=1000+batch_id*100))
+            mean_records.append(dict(episode=int(ep),start=int(start),moving_block=moving,index=int(ids[len(mean_records)]),mean_renderer_seed=(1000+batch_id if model.mode in {"S0","S1"} else 1000+batch_id*100)))
         all_truth.append(gt);all_mean.append(pred)
         (out/"status.json").write_text(json.dumps(dict(state="mean_evaluating",completed=len(mean_records),total=len(ids),updated_at=time.time())))
     arrays={k:np.concatenate(v) for k,v in arrays.items()};truth=np.concatenate(all_truth);prediction=np.concatenate(all_mean);moving=np.array([r["moving_block"] for r in mean_records])
@@ -118,7 +118,7 @@ def main():
             grid.save(folder/"grid.png");(folder/"meta.json").write_text(json.dumps(mean_records[case],indent=2))
         (review/"review.csv").write_text("case,episode,start,pass_fail,reason\n"+"".join(f"{i:02d},{r['episode']},{r['start']},pending,\n" for i,r in enumerate(mean_records[:32])))
     means={key:np.asarray(value).mean(tuple(range(value.ndim-1))).tolist() for key,value in arrays.items()}
-    result=dict(checkpoint=str(Path(a.checkpoint).resolve()),selection_seed=a.selection_seed,excluded_cases=a.exclude_cases,excluded_overlapping_window_starts=len(excluded),cases=len(ids),sampler_steps=a.steps,samples=a.samples if sample_results else 0,mean_by_horizon=means,
+    result=dict(evaluation_batch_size=a.batch,checkpoint=str(Path(a.checkpoint).resolve()),selection_seed=a.selection_seed,excluded_cases=a.exclude_cases,excluded_overlapping_window_starts=len(excluded),cases=len(ids),sampler_steps=a.steps,samples=a.samples if sample_results else 0,mean_by_horizon=means,
                 h7_agent_ratio=float(arrays["mean_agent"][:,6].mean()/arrays["copy_agent"][:,6].mean()),h7_moving_block_ratio=float(arrays["mean_block"][moving,6].mean()/arrays["copy_block"][moving,6].mean()),
                 fvd=fvd,copy_fvd=copy_fvd,detector=extractor.identity,
                 fvd_protocol="256 matched16-frame clips:3 true context+13 generated,64->224 bilinear; this is not inheritedRGB16FVD2048",

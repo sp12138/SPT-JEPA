@@ -33,7 +33,10 @@ def gallery(cases,output):
 def main():
     p=argparse.ArgumentParser();p.add_argument("--checkpoint",required=True);p.add_argument("--data",required=True)
     p.add_argument("--pose",required=True);p.add_argument("--output",required=True);p.add_argument("--cases",type=int,default=32)
-    p.add_argument("--steps",type=int,default=50);p.add_argument("--fp32",action="store_true");p.add_argument("--selection-seed",type=int,default=42);p.add_argument("--exclude-cases");a=p.parse_args()
+    p.add_argument("--steps",type=int,default=50);p.add_argument("--fp32",action="store_true");p.add_argument("--media",action="store_true");p.add_argument("--selection-seed",type=int,default=42);p.add_argument("--exclude-cases");a=p.parse_args()
+    media_output=Path(a.output)
+    if (media_output/"counterfactual.json").exists():raise RuntimeError("Completedcounterfactualoutputalreadyexists;useanindependentdirectory")
+    media_output.mkdir(parents=True,exist_ok=True)
     torch.set_num_threads(2);torch.manual_seed(42)
     initialize_ops(OpsConfig(backend="sdpa",allow_fallback=False),device=torch.device("cuda",0),parallel_state=None)
     from stable_worldmodel.envs.pusht import PushT as PushTEnv
@@ -98,6 +101,24 @@ def main():
                  oracle_pose_correct=(oracle_matrix.argmin(1)==np.arange(4)).tolist(),
                  cost_matrix=matrix.tolist(),recorded_action_replay_agent_error=float(replay_error[0]),
                  recorded_action_replay_block_error=float(replay_error[1]))
+        if a.media and case<8:
+            from as_jepa_tools.quality_complete import video
+            from PIL import ImageDraw
+            folder=media_output/"gallery"/f"{case:02d}";folder.mkdir(parents=True,exist_ok=True)
+            prediction_rgb=((generated.float().clamp(-1,1)+1)*127.5).byte().permute(0,1,3,4,2).cpu().numpy()
+            grid=Image.new("RGB",(70+8*64,8*64+22),"white");draw=ImageDraw.Draw(grid)
+            for branch in range(4):
+                video(folder/f"true_future_{branch}.mp4",truth_images[branch])
+                video(folder/f"pred_action_{branch}.mp4",prediction_rgb[branch])
+                for row,images in enumerate([truth_images[branch],prediction_rgb[branch]]):
+                    line=branch*2+row;draw.text((2,25+line*64),f"{branch} "+("true" if row==0 else "pred"),fill="black")
+                    for h,rgb in enumerate(images):grid.paste(Image.fromarray(rgb),(70+h*64,22+line*64))
+            grid.save(folder/"grid.png")
+            (folder/"meta.json").write_text(json.dumps(dict(**rec,checkpoint=str(Path(a.checkpoint).resolve()),
+                                                          normalized_candidate_actions=np.asarray(normalized).tolist(),initial_simulator_state=initial.tolist(),
+                                                          primary_anchor_row=anchor_row,context_rows=rows[:3].tolist(),
+                                                          common_renderer_seed=123+case,noise_precision="FP32" if a.fp32 else "BF16autocast",
+                                                          scope="Fourmatchedsimulatorresetsandcommonrenderernoise;unsavedblockvelocitynotrestored."),indent=2))
         records.append(rec);truth_all.append(target);prediction_all.append(positions);pose_truth_all.append(real_pose.cpu().numpy())
         if len(galleries)<4:
             pred=((generated.float().clamp(-1,1)+1)*127.5).byte().permute(0,1,3,4,2).cpu().numpy()
@@ -107,7 +128,7 @@ def main():
     report=dict(float32_matmul_precision=torch.get_float32_matmul_precision(),feature_forward_precision="FP32" if a.fp32 else "BF16 autocast",checkpoint=str(Path(a.checkpoint).resolve()),selection_seed=a.selection_seed,excluded_cases=a.exclude_cases,cases=len(records),rollouts=4*len(records),
                 action_identification_accuracy=average("correct"),agent_action_identification_accuracy=average("agent_correct"),
                 block_action_identification_accuracy=average("block_correct"),block_angle_error_deg=average("block_angle_error_deg"),oracle_pose_action_identification_accuracy=average("oracle_pose_correct"),
-                chance=.25,sampler_steps=a.steps,actual_renderer_sampler=("finiteGaussianDiffusion"+str(model.density_steps)+"transitions+8bitGaussianEndpoint" if getattr(model,"method","")=="vdm_nats" else "Euler"+str(a.steps)),seconds=time.time()-started,common_sampler_noise=True,
+                chance=.25,gallery_cases=min(8,len(records)) if a.media else 0,sampler_steps=a.steps,actual_renderer_sampler=("finiteGaussianDiffusion"+str(model.density_steps)+"transitions+8bitGaussianEndpoint" if getattr(model,"method","")=="vdm_nats" else "Euler"+str(a.steps)),seconds=time.time()-started,common_sampler_noise=True,
                 recorded_action_replay_agent_error=average("recorded_action_replay_agent_error"),
                 recorded_action_replay_block_error=average("recorded_action_replay_block_error"),
                 scope="Single-seed matched-reset simulator counterfactuals; deterministic mean-state dynamics; reset cannot recover unsaved block velocity",
