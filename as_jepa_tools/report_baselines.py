@@ -84,6 +84,8 @@ def main():
     s = readme.read_text()
     s += '\n补充：[九个25k匹配终点的完整结果与probe/闭环图](BASELINES_25K.md)。\n'
     readme.write_text(s)
+    for artifact in list(out.glob("*.svg"))+list(out.glob("*.md")):
+        artifact.write_text("\n".join(line.rstrip() for line in artifact.read_text().splitlines()).rstrip()+"\n")
     manifest = json.loads((out / 'manifest.json').read_text())
     manifest['files'] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in out.iterdir() if p.is_file() and p.name != 'manifest.json'}
     manifest['supplement_scope'] = 'All nine specified25k baseline endpoints exit0 and stage-finished before inclusion.'

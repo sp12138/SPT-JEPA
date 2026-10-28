@@ -1,0 +1,499 @@
+{
+  "checked_at": "2026-10-28T07:44:04.391953+00:00",
+  "campaign": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028",
+  "methods": [
+    {
+      "id": "I01",
+      "hypothesis": "\u5c06\u751f\u6210\u6536\u76ca\u4e0e\u72b6\u6001KL\u7edf\u4e00\u5230nats",
+      "actual_implementation": "snr_weighted\u4e3a\u622a\u65ad\u52a0\u6743surrogate\uff1bvdm_nats\u4e3a\u542bprior\u548c\u79bb\u6563\u91cd\u5efa\u7aef\u70b9\u768464\u6b65\u8d1fELBO\uff0c\u975e\u7cbe\u786eNLL",
+      "primary": [
+        {
+          "id": "idea-snr_weighted-standard-b1-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "98aa0591b3d737e49f5088078f11d552c6b79f0a0294203e8f32572528f113a7",
+          "host": "dev2",
+          "gpu": 5,
+          "state": "running",
+          "step": 40900,
+          "exit": null
+        },
+        {
+          "id": "idea-vdm_nats-standard-b1.0-50k-seed0",
+          "source_commit": "def169a9b8195f2d2685e3839f3ff955ad34e2f8",
+          "config_sha256": "11fe9b0f259426b71c2464c090b104680d96bef292efcfa48f4d5e234397a5d5",
+          "host": "dev15",
+          "gpu": 2,
+          "state": "running",
+          "step": 7600,
+          "exit": null
+        }
+      ],
+      "controls": [
+        {
+          "id": "idea-baseline-standard-b1-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "5aa7140800c1b563cc3e55f52e1ba8e6f84d8c64d7a0fef66954473728de6272",
+          "host": "dev15",
+          "gpu": 0,
+          "state": "running",
+          "step": 11700,
+          "exit": null
+        },
+        {
+          "id": "idea-baseline-standard-b0.01-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "50fdc9f3b9806618e9ba80f3ad0e4db56fe7b11e1b39ea2eb50e7c633d2019cc",
+          "host": "dev2",
+          "gpu": 4,
+          "state": "running",
+          "step": 40800,
+          "exit": null
+        }
+      ],
+      "world_model_effect": "Not established until matched final and confirmation metrics"
+    },
+    {
+      "id": "I02",
+      "hypothesis": "\u6309decoder\u51e0\u4f55\u5206\u914d\u72b6\u6001\u566a\u58f0",
+      "actual_implementation": "\u8bad\u7ec3\u53c2\u8003renderer\u7684Jacobian\u5bf9\u89d2\u8fd1\u4f3c\uff0c\u6b63GaussianQ\uff1b\u53c2\u8003\u8bad\u7ec3\u6210\u672c\u5355\u72ec\u8ba1\u5165",
+      "primary": [
+        {
+          "id": "idea-geometry_noise-50k-seed0",
+          "source_commit": "fa658a629bce7bb57aa30e9435128b62d1356ba7",
+          "config_sha256": "8f43836e4fc90bee49c3ad3e68718f90615e9e0f2c341cd10dd5a4cef3d24ade",
+          "host": "dev2",
+          "gpu": 6,
+          "state": "running",
+          "step": 37700,
+          "exit": null
+        }
+      ],
+      "controls": [
+        {
+          "id": "idea-baseline-standard-b0.01-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "50fdc9f3b9806618e9ba80f3ad0e4db56fe7b11e1b39ea2eb50e7c633d2019cc",
+          "host": "dev2",
+          "gpu": 4,
+          "state": "running",
+          "step": 40800,
+          "exit": null
+        },
+        {
+          "id": "idea-geometry_noise-permutedQ-50k-seed0",
+          "source_commit": "fa658a629bce7bb57aa30e9435128b62d1356ba7",
+          "config_sha256": "3f7808ae87111710c07fc95b7dcac7a579d48b50322f30a0145901f1fe54d2fc",
+          "host": "dev15",
+          "gpu": 0,
+          "state": "queued",
+          "step": null,
+          "exit": null
+        }
+      ],
+      "world_model_effect": "Not established until matched final and confirmation metrics"
+    },
+    {
+      "id": "I03",
+      "hypothesis": "\u76f8\u5173\u540e\u9a8c\u566a\u58f0\u4e0e\u771f\u5b9ejointKL",
+      "actual_implementation": "rho=.8\uff0c\u8fb9\u9645sigma=.1\uff1bMarkov\u65b9\u5dee\u5e38\u6570\u8ba1\u5165\u603bKL\uff0cactive\u7ef4\u6570\u4e0d\u8ba1\u4e0d\u53ef\u7ea6\u5e38\u6570",
+      "primary": [
+        {
+          "id": "idea-correlated_noise-standard-b0.01-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "33f581a319d28ba16399eb9ead2dedfeb72c038fd6a7eeb0b4e2f4c65161527c",
+          "host": "dev2",
+          "gpu": 7,
+          "state": "running",
+          "step": 40800,
+          "exit": null
+        }
+      ],
+      "controls": [
+        {
+          "id": "idea-baseline-standard-b0.01-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "50fdc9f3b9806618e9ba80f3ad0e4db56fe7b11e1b39ea2eb50e7c633d2019cc",
+          "host": "dev2",
+          "gpu": 4,
+          "state": "running",
+          "step": 40800,
+          "exit": null
+        }
+      ],
+      "world_model_effect": "Not established until matched final and confirmation metrics"
+    },
+    {
+      "id": "I04",
+      "hypothesis": "\u8ba9anchor\u5b9a\u4e49\u989c\u8272\u5750\u6807",
+      "actual_implementation": "framewise\u5206\u4f4d\u6570\u662f\u72ec\u7acb\u63a7\u5236\uff1banchor_canonical_color\u53ea\u770banchor\u901a\u9053\u6781\u503c\uff0c\u4e0d\u80fd\u8bfb\u53d6\u7a7a\u95f4\u6392\u5217",
+      "primary": [
+        {
+          "id": "idea-canonical_color-color-b0.01-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "ad0b6f00e287a255cebc5f1db321dc0dd81224366b9013214340097bd8a1d3d2",
+          "host": "dev15",
+          "gpu": 4,
+          "state": "running",
+          "step": 38100,
+          "exit": null
+        },
+        {
+          "id": "idea-anchor_canonical_color-color-b0.01-50k-seed0",
+          "source_commit": "def169a9b8195f2d2685e3839f3ff955ad34e2f8",
+          "config_sha256": "ddce60027194259b48e93a146d82b3a4d85b3638bbc13282cc65922b822aceab",
+          "host": "dev2",
+          "gpu": 6,
+          "state": "queued",
+          "step": null,
+          "exit": null
+        }
+      ],
+      "controls": [
+        {
+          "id": "idea-baseline-color-b0.01-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "11275fdd9a1c2645df5800de8e7d39252330c4347962d3a8d5eea75bd356bd51",
+          "host": "dev2",
+          "gpu": 0,
+          "state": "running",
+          "step": 40600,
+          "exit": null
+        }
+      ],
+      "world_model_effect": "Not established until matched final and confirmation metrics"
+    },
+    {
+      "id": "I05",
+      "hypothesis": "\u76f4\u63a5\u8bad\u7ec3forecast\u72b6\u6001\u7684\u751f\u6210\u6761\u4ef6",
+      "actual_implementation": "50%\u591a\u6b65prior\u6761\u4ef6\uff1b\u6bcf\u6b65FM\u8c03\u7528\u6570\u4e0d\u53d8\uff0c\u76ee\u6807\u4e0e\u539fAS-JEPA\u4e0d\u540c",
+      "primary": [
+        {
+          "id": "idea-forecast_render-standard-b0.01-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "dc3db5a3830636536f5325d7fde7f960005874c67b148c3d736a6e4e0e86a1e6",
+          "host": "dev15",
+          "gpu": 5,
+          "state": "running",
+          "step": 34300,
+          "exit": null
+        }
+      ],
+      "controls": [
+        {
+          "id": "idea-baseline-standard-b0.01-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "50fdc9f3b9806618e9ba80f3ad0e4db56fe7b11e1b39ea2eb50e7c633d2019cc",
+          "host": "dev2",
+          "gpu": 4,
+          "state": "running",
+          "step": 40800,
+          "exit": null
+        }
+      ],
+      "world_model_effect": "Not established until matched final and confirmation metrics"
+    },
+    {
+      "id": "I06",
+      "hypothesis": "\u4fdd\u62a4FM\u68af\u5ea6\u7684encoder\u66f4\u65b0",
+      "actual_implementation": "\u6295\u5f71\u51b2\u7a81rate\u68af\u5ea6\uff1b\u6ca1\u6709FM\u4fe1\u53f7\u65f6\u4e0d\u6536\u7f29encoder\uff1b\u4e0d\u662f\u539fpriced\u76ee\u6807\u7684\u540c\u4e00\u4f18\u5316\u5668",
+      "primary": [
+        {
+          "id": "idea-gradient_constraint-standard-b1-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "53429c9ff3ebe93c96b2b922d0e1cf2103ab78f422038e79866b5506d26c2dcf",
+          "host": "dev15",
+          "gpu": 6,
+          "state": "running",
+          "step": 23400,
+          "exit": null
+        }
+      ],
+      "controls": [
+        {
+          "id": "idea-baseline-standard-b1-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "5aa7140800c1b563cc3e55f52e1ba8e6f84d8c64d7a0fef66954473728de6272",
+          "host": "dev15",
+          "gpu": 0,
+          "state": "running",
+          "step": 11700,
+          "exit": null
+        }
+      ],
+      "world_model_effect": "Not established until matched final and confirmation metrics"
+    },
+    {
+      "id": "I07",
+      "hypothesis": "\u6309\u56e0\u679c\u53ef\u9884\u6d4b\u6027\u52a0\u6743FM",
+      "actual_implementation": "\u53ea\u770b\u8fc7\u53bb\u72b6\u6001\u9884\u6d4b\u4e0etime\u7684\u5f02\u65b9\u5deepatch\u56de\u5f52\uff0c\u542blogvariance\u60e9\u7f5a\uff1b\u8d1floss\u53ef\u5408\u6cd5\uff0c\u4e0d\u80fd\u76f4\u63a5\u6bd4\u539fFM\u6570\u503c",
+      "primary": [
+        {
+          "id": "idea-predictable_weight-dot-b0.01-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "0d67340d828fb25e928df42a328454a3db36c529a11767a260c028e7b59ca056",
+          "host": "dev15",
+          "gpu": 7,
+          "state": "running",
+          "step": 39700,
+          "exit": null
+        }
+      ],
+      "controls": [
+        {
+          "id": "idea-baseline-dot-b0.01-50k-seed0",
+          "source_commit": "fa97dbe40db5dec38f7664d36047de650edf8d16",
+          "config_sha256": "01ef461ede9a3ce3d2359451135c2f4a0f39e219b3924518eab3a83c86d6d95e",
+          "host": "dev15",
+          "gpu": 3,
+          "state": "running",
+          "step": 10800,
+          "exit": null
+        }
+      ],
+      "world_model_effect": "Not established until matched final and confirmation metrics"
+    },
+    {
+      "id": "I08",
+      "hypothesis": "\u5206\u79bb\u8bed\u4e49\u8bb0\u5fc6\u4e0e\u56fe\u50cf\u53cd\u9988",
+      "actual_implementation": "\u540c\u4e00S1\u7cbe\u786e25k\u521d\u59cb\u5316\uff0c\u56fa\u5b9aencoder\uff0c\u989d\u591625kfinetune\uff1b\u540c\u65f6\u6bd4\u8f83\u540c\u6743\u91cdpixel\u53cd\u9988\u548c\u76f8\u540c\u9884\u7b97\u65e0\u8f85\u52a9\u8bad\u7ec3",
+      "primary": [
+        {
+          "id": "idea-I08-native-carry-25k-seed0",
+          "source_commit": "35d069d064118f5711a7edd298fc9929a891111e",
+          "config_sha256": "ca056840702211f3e601b61c34bfc0ee4b69886e0298e382320c04a3a7654191",
+          "host": "dev2",
+          "gpu": 1,
+          "state": "running",
+          "step": 19500,
+          "exit": null
+        }
+      ],
+      "controls": [
+        {
+          "id": "idea-I08-native-pixel-matched-25k-seed0",
+          "source_commit": "35d069d064118f5711a7edd298fc9929a891111e",
+          "config_sha256": "4711b636d31376700240f5d55182a6206c3d4c4bc8ebf295d74bb7b61c9b963e",
+          "host": "dev2",
+          "gpu": 2,
+          "state": "running",
+          "step": 21200,
+          "exit": null
+        },
+        {
+          "id": "eval-idea-I08-native-carry-25k-seed0-same-weights-pixel",
+          "source_commit": "9df7c9bd4e1c53ddf5b252f294e2fb853d5cd690",
+          "config_sha256": null,
+          "host": "dev2",
+          "gpu": 1,
+          "state": "queued",
+          "step": null,
+          "exit": null
+        }
+      ],
+      "world_model_effect": "Not established until matched final and confirmation metrics"
+    },
+    {
+      "id": "I09",
+      "hypothesis": "\u7528\u771f\u5b9e\u52a8\u4f5cfork\u7ea6\u675f\u72b6\u6001",
+      "actual_implementation": "\u53ea\u7528train episodes\u7684\u6a21\u62df\u5668fork\uff1b\u72ec\u7acbepisode\u9a8c\u8bc1\u4e0e\u5019\u9009\u7f6e\u6362/\u540c\u52a8\u4f5c\u6cc4\u6f0f\u68c0\u67e5\uff1bzero-weight\u63a7\u5236",
+      "primary": [
+        {
+          "id": "idea-action_forks-50k-seed0",
+          "source_commit": "fa658a629bce7bb57aa30e9435128b62d1356ba7",
+          "config_sha256": "15d2a7b34f924007c8b5a22fd6b5f210a97d21f0fe114caa5332e185810d78f6",
+          "host": "dev2",
+          "gpu": 1,
+          "state": "queued",
+          "step": null,
+          "exit": null
+        }
+      ],
+      "controls": [
+        {
+          "id": "idea-action_forks_null-50k-seed0",
+          "source_commit": "fa658a629bce7bb57aa30e9435128b62d1356ba7",
+          "config_sha256": "3e02de7ef15a3a819a72b9a4cf6392fc166c2de99db7b3d834ca3bad740e65a1",
+          "host": "dev2",
+          "gpu": 2,
+          "state": "queued",
+          "step": null,
+          "exit": null
+        }
+      ],
+      "world_model_effect": "Not established until matched final and confirmation metrics"
+    },
+    {
+      "id": "I10",
+      "hypothesis": "\u5c40\u90e8\u53ef\u63a7\u80fd\u91cf\u89c4\u5212",
+      "actual_implementation": "\u51bb\u7ed3\u540c\u4e00\u6a21\u578b\uff0c\u4ec5\u66ff\u6362\u76ee\u6807\u6210\u672c\uff1b\u5b8c\u6574context\u7f13\u5b58\u5df2\u4fee\u590d\uff0c\u8bb0\u5f55\u989d\u5916rollout\u4e0e\u65f6\u95f4",
+      "primary": [
+        {
+          "id": "idea-I10-gramian-contextfix-seed142",
+          "source_commit": "44d7e435348d6f8f253b6d4ba30ff2824e078cd5",
+          "config_sha256": null,
+          "host": "dev2",
+          "gpu": 1,
+          "state": "exit0",
+          "step": null,
+          "exit": {
+            "id": "idea-I10-gramian-contextfix-seed142",
+            "returncode": 0,
+            "started_at": 1793166334.3081892,
+            "finished_at": 1793166517.8686528,
+            "pid": 1995944,
+            "host": "prescottsun-dev2-worker-0",
+            "gpu": 1
+          }
+        },
+        {
+          "id": "idea-I10-gramian-contextfix-seed143",
+          "source_commit": "44d7e435348d6f8f253b6d4ba30ff2824e078cd5",
+          "config_sha256": null,
+          "host": "dev2",
+          "gpu": 1,
+          "state": "exit0",
+          "step": null,
+          "exit": {
+            "id": "idea-I10-gramian-contextfix-seed143",
+            "returncode": 0,
+            "started_at": 1793166524.7698002,
+            "finished_at": 1793166725.8412533,
+            "pid": 1998381,
+            "host": "prescottsun-dev2-worker-0",
+            "gpu": 1
+          }
+        },
+        {
+          "id": "idea-I10-gramian-contextfix-seed144",
+          "source_commit": "44d7e435348d6f8f253b6d4ba30ff2824e078cd5",
+          "config_sha256": null,
+          "host": "dev2",
+          "gpu": 1,
+          "state": "exit0",
+          "step": null,
+          "exit": {
+            "id": "idea-I10-gramian-contextfix-seed144",
+            "returncode": 0,
+            "started_at": 1793166739.0728264,
+            "finished_at": 1793166952.138818,
+            "pid": 2000753,
+            "host": "prescottsun-dev2-worker-0",
+            "gpu": 1
+          }
+        }
+      ],
+      "controls": [
+        {
+          "id": "idea-I10-goal_mse-seed142",
+          "source_commit": "565cfc894969648449754d1ad346a7757fc3ec87",
+          "config_sha256": null,
+          "host": "dev13",
+          "gpu": 7,
+          "state": "exit0",
+          "step": null,
+          "exit": {
+            "id": "idea-I10-goal_mse-seed142",
+            "returncode": 0,
+            "started_at": 1793159992.3460205,
+            "finished_at": 1793160142.9986103,
+            "pid": 65837,
+            "host": "prescottsun-dev13-2d-1027-worker-0",
+            "gpu": 7
+          }
+        },
+        {
+          "id": "idea-I10-goal_mse-seed143",
+          "source_commit": "565cfc894969648449754d1ad346a7757fc3ec87",
+          "config_sha256": null,
+          "host": "dev13",
+          "gpu": 7,
+          "state": "exit0",
+          "step": null,
+          "exit": {
+            "id": "idea-I10-goal_mse-seed143",
+            "returncode": 0,
+            "started_at": 1793160486.3365617,
+            "finished_at": 1793160647.1431885,
+            "pid": 76365,
+            "host": "prescottsun-dev13-2d-1027-worker-0",
+            "gpu": 7
+          }
+        },
+        {
+          "id": "idea-I10-goal_mse-seed144",
+          "source_commit": "565cfc894969648449754d1ad346a7757fc3ec87",
+          "config_sha256": null,
+          "host": "dev13",
+          "gpu": 7,
+          "state": "exit0",
+          "step": null,
+          "exit": {
+            "id": "idea-I10-goal_mse-seed144",
+            "returncode": 0,
+            "started_at": 1793161011.8252656,
+            "finished_at": 1793161182.661603,
+            "pid": 83463,
+            "host": "prescottsun-dev13-2d-1027-worker-0",
+            "gpu": 7
+          }
+        },
+        {
+          "id": "idea-I10-covariance-seed142",
+          "source_commit": "565cfc894969648449754d1ad346a7757fc3ec87",
+          "config_sha256": null,
+          "host": "dev13",
+          "gpu": 7,
+          "state": "exit0",
+          "step": null,
+          "exit": {
+            "id": "idea-I10-covariance-seed142",
+            "returncode": 0,
+            "started_at": 1793160143.3247085,
+            "finished_at": 1793160314.4671345,
+            "pid": 68226,
+            "host": "prescottsun-dev13-2d-1027-worker-0",
+            "gpu": 7
+          }
+        },
+        {
+          "id": "idea-I10-covariance-seed143",
+          "source_commit": "565cfc894969648449754d1ad346a7757fc3ec87",
+          "config_sha256": null,
+          "host": "dev13",
+          "gpu": 7,
+          "state": "exit0",
+          "step": null,
+          "exit": {
+            "id": "idea-I10-covariance-seed143",
+            "returncode": 0,
+            "started_at": 1793160648.4619262,
+            "finished_at": 1793160829.6887558,
+            "pid": 78731,
+            "host": "prescottsun-dev13-2d-1027-worker-0",
+            "gpu": 7
+          }
+        },
+        {
+          "id": "idea-I10-covariance-seed144",
+          "source_commit": "565cfc894969648449754d1ad346a7757fc3ec87",
+          "config_sha256": null,
+          "host": "dev13",
+          "gpu": 7,
+          "state": "exit0",
+          "step": null,
+          "exit": {
+            "id": "idea-I10-covariance-seed144",
+            "returncode": 0,
+            "started_at": 1793161183.1203594,
+            "finished_at": 1793161343.7068062,
+            "pid": 85829,
+            "host": "prescottsun-dev13-2d-1027-worker-0",
+            "gpu": 7
+          }
+        }
+      ],
+      "world_model_effect": "Negative: GoalMSE71.33%,covariance7.33%,fixedGramian8.67%,150pairedtestepisodespercost"
+    }
+  ],
+  "scope": "Implementation and live execution inventory. Running,smokePASSandfinite lossesarenotworldmodeleffectiveness;alltenoriginal hypothesesremainfalsifiable."
+}

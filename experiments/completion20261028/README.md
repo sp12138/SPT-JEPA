@@ -10,6 +10,6 @@
 
 已有额外结果将保存于本目录；完整原始媒体、权重和数组留在EFS。原12小时结果目录保持不变。
 
-已发布追加材料：[完整数值、科学图和固定32例总览](results/README.md)，[六个25k对照终点](results/BASELINES_25K.md)，[冻结配置和规划队列快照](configs/planned-jobs.json)。这些材料不代表全部训练已完成。
+已发布追加材料：[完整数值、科学图和固定32例总览](results/README.md)，[25k基线的三训练种子对比](results/BASELINES_25K.md)，[冻结配置和规划队列快照](configs/planned-jobs.json)。这些材料不代表全部训练已完成。
 
 自动后续使用原规格的选择次序：排除坍塌；generation score在最佳10%以内；L2在tie中用P0的10百分点窗口；再选最低heldout rate。网格边界按4倍扩展；全部价格坍塌才启用前5%更新线性beta的原规格fallback。最终种子、g0、128维及20epoch任务使用独立、冻结目录，只有对应的科学条件满足才解锁。Dormant条目只是条件配置，不会自动消耗全部网格的多种子预算。人工gallery签收仍须另行完成，自动判据不代替它。

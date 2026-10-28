@@ -176,6 +176,8 @@ I10在同一个冻结模型上比较原GoalMSE、训练协方差距离与局部G
 逐例、逐horizon及四个sample的全部质量数值另见\n[quality-per-case-metrics.npz](quality-per-case-metrics.npz)和[quality-additional-per-case.npz](quality-additional-per-case.npz)。这些是小型数值结果，没有像素或权重。完整数值、每例规划成功/失败、case身份、计时、源版本、参数和证据哈希见[additional-results.json](additional-results.json)；图提供PNG及SVG。原始RGB数组、视频、训练日志和权重均在EFS，Git中不含这些大文件。生成结果仍须匹配其他模型和训练种子，完整方案的完成状态见[执行进度](../README.md)。
 """
     (out / "README.md").write_text(text)
+    for artifact in list(out.glob("*.svg"))+list(out.glob("*.md")):
+        artifact.write_text("\n".join(line.rstrip() for line in artifact.read_text().splitlines()).rstrip()+"\n")
     files = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in out.iterdir()
              if p.is_file() and p.name != "manifest.json"}
     (out / "manifest.json").write_text(json.dumps(dict(files=files, source="as_jepa_tools/report_additional.py",
