@@ -65,12 +65,13 @@ class FullPushTWindows(PushTWindows):
         super().__init__(root,window,gap,split,length,seed)
         self.episodes=np.asarray([ep for ep in self.episodes if self.lengths[ep]>(window-1)*5],dtype=np.int32)
         self.counts=np.asarray([self.lengths[ep]-(window-1)*5 for ep in self.episodes],dtype=np.int64)
-        self.ends=np.cumsum(self.counts);self.natural_length=int(self.ends[-1]);self.length=length or self.natural_length
+        self.ends=np.cumsum(self.counts);self.natural_length=int(self.ends[-1]);self.length=length or self.natural_length;self.encode_epoch_index=True
     def __getitem__(self,index):
+        epoch=int(index)//self.natural_length
         self.open();ep,start=self.locate(index);offset=int(self.offsets[ep]);n=int(self.lengths[ep]);w=self.window
         phase=start%5;aligned=np.arange(phase,n,5)
         eligible=aligned[(aligned<=start-self.gap*5)|(aligned>=start+(w-1+self.gap)*5)] if self.gap else np.asarray([start])
-        anchor=int(eligible[hash((ep,start,self.seed))%len(eligible)]) if len(eligible) else int(aligned[0] if start>n-(start+(w-1)*5) else aligned[-1])
+        anchor=int(eligible[int(torch.randint(len(eligible),(1,),generator=torch.Generator().manual_seed(hash((ep,start,epoch))&0x7FFFFFFF)))]) if len(eligible) else int(aligned[0] if start>n-(start+(w-1)*5) else aligned[-1])
         rows=offset+start+np.arange(w)*5
         return dict(pixels=torch.from_numpy(np.array(self.p224[rows])).permute(0,3,1,2),
                     render=torch.from_numpy(np.array(self.p64[rows])).permute(0,3,1,2),

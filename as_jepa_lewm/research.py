@@ -15,7 +15,7 @@ class ResearchLeWM(ASJepaLeWM):
         if diagonal.shape!=(self.state_dim,) or bool((diagonal<=0).any()):raise ValueError("Positive state-width noise diagonal required")
         self.register_buffer("noise_diagonal",diagonal)
         self.variance_head=nn.Sequential(nn.Linear(self.state_dim+1,128),nn.GELU(),nn.Linear(128,256)) if method=="predictable_weight" else None
-        self.inverse_head=nn.Sequential(nn.Linear(2*self.state_dim+80,192),nn.GELU(),nn.Linear(192,1)) if method=="action_forks" else None
+        self.inverse_head=nn.Sequential(nn.Linear(2*self.state_dim+80,192),nn.GELU(),nn.Linear(192,1)) if method in {"action_forks","action_forks_null"} else None
         self._loss_terms=None
     def encode(self,info):
         if self.method=="canonical_color":
@@ -82,7 +82,7 @@ class ResearchLeWM(ASJepaLeWM):
             fm=(.5*torch.exp(-logv)*residual+.5*logv).mean()
         else:fm=(residual*weight.reshape(-1,1,1,1,1)).mean()
         inverse=fm*0
-        if self.method=="action_forks" and "fork_futures" in batch:
+        if self.method in {"action_forks","action_forks_null"} and "fork_futures" in batch:
             context=self.normalize(batch["fork_context"])
             futures=self.normalize(batch["fork_futures"])
             bf,alternatives=futures.shape[:2]
@@ -93,7 +93,7 @@ class ResearchLeWM(ASJepaLeWM):
             action=candidates[:,None].expand(-1,alternatives,-1,-1)
             logits=self.inverse_head(torch.cat([origin,endpoint,action],-1)).squeeze(-1)
             inverse=F.cross_entropy(logits.flatten(0,1),torch.arange(alternatives,device=logits.device).repeat(bf))
-        loss=fm+self.beta*rate+inverse
+        loss=fm+self.beta*rate+(inverse if self.method=="action_forks" else inverse*0)
         self._loss_terms=(fm,self.beta*rate)
         metrics=dict(loss=loss,fm=fm,raw_fm=raw_fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),
                      feature_std=flat.float().std((0,1)).mean(),rate_share=self.beta*rate/fm.detach().abs().clamp_min(1e-8),

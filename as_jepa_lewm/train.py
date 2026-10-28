@@ -24,7 +24,7 @@ class WindowSampler(Sampler):
                 epoch=current;generator=np.random.default_rng(self.seed+epoch*1000003)
                 a=int(generator.integers(1,n));b=int(generator.integers(0,n))
                 while math.gcd(a,n)!=1:a=(a+1)%n or 1
-            yield (a*(k%n)+b)%n
+            yield (a*(k%n)+b)%n+(current*n if getattr(self.dataset,"encode_epoch_index",False) else 0)
 
 
 class TrainModule(pl.LightningModule):
