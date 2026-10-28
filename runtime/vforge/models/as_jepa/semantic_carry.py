@@ -30,7 +30,10 @@ class SemanticCarry(ActionRepWorld):
     def forward(self,frames,actions,anchor,return_metrics=False):
         result=super().forward(frames,actions,anchor,return_metrics=True)
         b,w=frames.shape[:2];packed=pack(frames.flatten(0,1)).reshape(b,w,48,16,16).transpose(1,2)
-        encoded=self.causal_semantic_encoder.vit_e(packed)
+        frame_encoder=self.causal_semantic_encoder.vit_e
+        previous=frame_encoder.training;frame_encoder.eval()
+        try:encoded=frame_encoder(packed)
+        finally:frame_encoder.train(previous)
         predicted=self.advance(encoded[:,:-1],actions[:,:-1]);latent=F.mse_loss(predicted.float(),encoded[:,1:].detach().float())
         result["loss"]=result["loss"]+self.latent_weight*latent
         result["metrics"]={**result.get("metrics",{}),"carry_prediction_mse":latent.detach()}

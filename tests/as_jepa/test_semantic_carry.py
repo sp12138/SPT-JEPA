@@ -15,4 +15,11 @@ class SemanticCarryContracts(unittest.TestCase):
   context=torch.randn(1,3,3,64,64);actions=torch.randn(1,4,10);anchor=torch.randn(1,3,64,64)
   value=m.rollout_frames(context,actions,anchor,horizon=1,steps=2)
   self.assertEqual(tuple(value.shape),(1,1,3,64,64));self.assertTrue(bool(torch.isfinite(value).all()))
+ def test_training_auxiliary_uses_dense_frozen_frame_tokens(self):
+  m=SemanticCarry(width=96,renderer_depth=2,window=4).train()
+  frames=torch.randn(1,4,3,64,64);actions=torch.randn(1,4,10)
+  result=m(frames,actions,frames[:,0],return_metrics=True)
+  self.assertTrue(bool(torch.isfinite(result["loss"])))
+  result["loss"].backward()
+  self.assertTrue(any(p.grad is not None for p in m.transition.parameters()))
 if __name__=="__main__":unittest.main()
