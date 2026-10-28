@@ -2,6 +2,8 @@
 
 当前在 `research/ideas-20261028` 继续原始全量实验和十个候选方法验证。用户已授权 dev2/dev13/dev15 持续运行，没有本轮时间上限。运行与恢复入口见 [研究恢复](RECOVERY_RESEARCH_20261028.md) 和 [追加实验状态](experiments/completion20261028/README.md)。
 
+追加实测见[生成质量、规划几何及固定32例图](experiments/completion20261028/results/README.md)和[六个25k基线终点](experiments/completion20261028/results/BASELINES_25K.md)。轻量L2seed0的256例FVD=278.21（copy=1628.62）；I10修复缓存后的Gramian规划均值8.7%（GoalMSE=71.3%），是明确负面结果。三训练种子与原始全量方案仍在推进。
+
 已发布的12小时探索结果保留在 [关键结论](experiments/insights12h/results/INSIGHTS.md)；28个当时选定终点完成不等于原始全量方案完成，缺项见 [任务审计](experiments/insights12h/TASK_AUDIT_20261028.md)。新一轮正在补三训练种子、Native精确25k终点、完整生成指标、原始全数据曝光量与三epoch坍塌筛选，并验证 [十个候选](experiments/ideas20261028/README.md)。
 
 权威代码、环境、数据、检查点、日志、媒体和恢复状态均在 `/efs/prescottsun/SPT-JEPA`。Git只发布代码、配置、完整数值和关键科学图。以下是继承的SPT基线文档，历史机器与目录不覆盖当前授权。

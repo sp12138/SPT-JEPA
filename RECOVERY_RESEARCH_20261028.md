@@ -19,3 +19,15 @@ Completed additional evidence: quality`quality-50k-seed0-full256/results`, FVD27
 FormalgalleryAIreview existsat`reports/completion-qualitative-review`;human_review_complete=false,formal_gate_passed=false. Prepare final reviewable galleries before asking human signoff. AIinspection is not user review.
 
 Keep code,configs,aggregateJSON and keyPNG/SVG in Git; all datasets,logs,weights,rawarrays,checkpoints andvideos stayEFS. Source/config snapshots already launched are immutable. Training/checkpoints remain owned by existing Lightning/Native implementations.
+
+## Latest durable additions,2026-10-28 06:25UTC
+
+- Active plan currently222jobs,including originalfullL2 stage3/conditional10epoch continuations,fullNativeS2grid,fullNativeS0/S1seeds and fullLeWM baselines. Original selected extra seeds,edge-grid extensions and20epoch decisions remain dependent on future scientific selection;do notdeclarecomplete.
+- `control-source-v12.json` points2b101a6;source-control-v12 uses immutableNative runtimev11. Detached metadata gate monitor PID2003266 ondev2,recordedcampaign-state-launch.json. It validatesNative fullsmokes,setsnoncollapsefamilymarkers,andrefreshesreports/progress_latest.json. It does nottrainorauto-selectfinalconfigs.
+- v11source def169a,29CPUcontracts pass. NativeS1fullGPUbatch64xaccum2smoke exit0 andgatePASS. FullNativeS2smoke active,fullS0smoke queued. Bothnewdensity64stepboundandanchorcolorcandidatespassed200stepGPUtraining;density50kstarteddev15GPU2. Useactualsamplerlabel;64reverseGaussiantransitions+discreteendpointisnot50Euler.
+- NewI01vdm_nats includesGaussianprior,discrete8bitreconstructionandfiniteGaussiantransitionKL;negativeELBO/nats,notexactNLL. I04anchor_canonical_colorusesanchorchannelmin/maxonly;spacepermutationcontractpasses. ExistingweightedFM/framewisequantilearmsremainseparatecontrols.
+- I10exactcontextcachefix rerunscomplete:6/12/8%,mean8.67vsGoalMSE64/78/72%,mean71.33. OldGramianmomentcacheinvalidatedandpreserved. Statsrecordactualextra_rollouts.
+- Formalresumecontrol:`resume-control-v10/PASS.json` confirmsuninterrupted4CPUstepsvs3+1newdirectoryfullstate,weightmaxdifference0,identicaloptimizer,scheduler,batchcursor. ConditionalfullL2continuationsrequireboththismarkerandformalstage3PASS.
+- All6new25kbaselineendpointsfinished:S0/S1seed1/2,L1MLPBNseed1/2. L1P0means27.33/16%;NativeS1agentprobe~.75/.80buth7agenterror/copy5.97/4.94. ExactNativeS0/S1seed0endpointsandL0matchedseedsalsoevaluating.
+- AdditionalcompleteJSON,per-casenumericalNPZ,andPNG/SVGfigurespreparedin`experiments/completion20261028/results`;reporterscommitted.Source-report-baselines-v13.pypins3445b44. Mainreportsource-control-v12. FigurevisualQAdone.Nohumanformalgallerysignoff.
+- Formalnoise-awareprobesfixanisotropicQ;GaussianchannelboundwhitensQ.Markovvarianceconstantisexcludedfromactivevariable-ratecounts.CPU3testsPASS.Noactiverunssource/configswereedited.

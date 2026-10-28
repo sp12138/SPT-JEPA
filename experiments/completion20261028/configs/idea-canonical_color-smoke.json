@@ -1,0 +1,25 @@
+{
+  "output": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/idea-canonical_color-smoke",
+  "data": "/efs/prescottsun/SPT-JEPA/data/pusht",
+  "seed": 0,
+  "batch_size": 128,
+  "workers": 4,
+  "cpu_threads": 2,
+  "max_steps": 50000,
+  "max_seconds": 31536000,
+  "checkpoint_every": 100,
+  "gap": 8,
+  "model": {
+    "mode": "L2",
+    "beta": 0.01,
+    "sigma0": 0.1,
+    "window": 8,
+    "anchor_gap": 8,
+    "method": "canonical_color",
+    "domain": "color"
+  },
+  "calibrate_state_std": 0.1,
+  "export_initial": true,
+  "research_variant": true,
+  "stop_after": 200
+}
