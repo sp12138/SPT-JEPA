@@ -12,7 +12,7 @@
 | full-L2-beta256-stage3-seed0 | 31567 | 0.0 | 0.000331767 | COLLAPSED; active=0; posterior/anchor=0.6530 |
 | full-S2-beta4-stage3-seed0 | 24399 | 0.0 | 0.00029911 | COLLAPSED; active=0; posterior/anchor=0.7096 |
 | full-S2-beta16-stage3-seed0 | 20199 | 0.0 | 0.000503704 | COLLAPSED; active=0; posterior/anchor=0.6888 |
-| full-S2-beta64-stage3-seed0 | 12999 | 0.0 | 0.000579201 | stopped; independent audit pending |
+| full-S2-beta64-stage3-seed0 | 12999 | 0.0 | 0.000579201 | COLLAPSED; active=0; posterior/anchor=0.6924 |
 | full-S2-beta256-stage3-seed0 | 24999 | 0.0 | 0.000390209 | COLLAPSED; active=0; posterior/anchor=0.6689 |
 
 筛选要求连续 10 个日志点均为零活跃维度，且表征标准差小于 0.001。独立 audit 使用既有含噪后验、训练窗所有目标帧、256 固定 case 的正式判据。Native audit 可使用更早的周期导出；全部精确 checkpoint 和指标保存在 JSON。
