@@ -80,13 +80,14 @@ def main():
                 generated=torch.stack([model.render_states(states[i],anchor.expand(8,-1,-1,-1),steps=a.steps,seed=123+case) for i in range(4)])
             estimate=pose(generated.flatten(0,1).clamp(-1,1)).float().reshape(4,8,6)
             positions=(estimate[:,:,:4]*512).cpu().numpy()
+            block_angle_error=torch.remainder(torch.atan2(estimate[:,:,4],estimate[:,:,5])-torch.from_numpy(truth[:,:,4]).to(estimate.device)+torch.pi,2*torch.pi).sub(torch.pi).abs()*180/torch.pi
             real=torch.from_numpy(truth_images.copy()).permute(0,1,4,2,3).cuda().float()/127.5-1.
             real_pose=pose(real.flatten(0,1)).float().reshape(4,8,6)[:,:,:4]*512
         target=truth[:,:,:4];matrix=costs(positions,target);assignment=matrix.argmin(1)
         oracle_matrix=costs(real_pose.cpu().numpy(),target)
         replay_error=np.linalg.norm(target[0].reshape(8,2,2)-np.array(state[rows[3:11],:4]).reshape(8,2,2),axis=-1).mean(0)
         entity_matrix=((positions[:,None]-target[None]).reshape(4,4,8,2,2)**2).sum(-1).mean(2)
-        rec=dict(case=case,episode=int(ep),start=int(start),source_raw_row=origin_raw,donor_raw_rows=donors,
+        rec=dict(block_angle_error_deg=float(block_angle_error.mean()),case=case,episode=int(ep),start=int(start),source_raw_row=origin_raw,donor_raw_rows=donors,
                  assigned=assignment.tolist(),correct=(assignment==np.arange(4)).tolist(),
                  agent_correct=(entity_matrix[:,:,0].argmin(1)==np.arange(4)).tolist(),
                  block_correct=(entity_matrix[:,:,1].argmin(1)==np.arange(4)).tolist(),
@@ -101,7 +102,7 @@ def main():
     def average(key):return float(np.mean([r[key] for r in records]))
     report=dict(float32_matmul_precision=torch.get_float32_matmul_precision(),feature_forward_precision="FP32" if a.fp32 else "BF16 autocast",checkpoint=str(Path(a.checkpoint).resolve()),cases=len(records),rollouts=4*len(records),
                 action_identification_accuracy=average("correct"),agent_action_identification_accuracy=average("agent_correct"),
-                block_action_identification_accuracy=average("block_correct"),oracle_pose_action_identification_accuracy=average("oracle_pose_correct"),
+                block_action_identification_accuracy=average("block_correct"),block_angle_error_deg=average("block_angle_error_deg"),oracle_pose_action_identification_accuracy=average("oracle_pose_correct"),
                 chance=.25,sampler_steps=a.steps,seconds=time.time()-started,common_sampler_noise=True,
                 recorded_action_replay_agent_error=average("recorded_action_replay_agent_error"),
                 recorded_action_replay_block_error=average("recorded_action_replay_block_error"),
