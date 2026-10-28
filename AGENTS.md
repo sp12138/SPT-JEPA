@@ -1,5 +1,9 @@
 # SPT-JEPA current execution policy
 
+User instruction, 2026-10-29, major conclusions only:
+- Finish the major conclusions and necessary direct controls, then notify the user. Leave other work aside. Do not resume deferred original grids, capacity extensions, additional ideas or unrelated fixes without a new user instruction. The active allowed scope is recorded in runs/completion_20261028/scheduling/main-conclusions-only-20261029.json.
+
+
 User instructions, 2026-10-29 (Beijing):
 - Prioritize key insights. Preserve and early-stop persistent collapse. Defer exhaustive grids and low-value extra seeds; complete decisive controls, existing checkpoint quality/planning and promising I08 replications first. Deferred original experiments remain unfinished.
 
