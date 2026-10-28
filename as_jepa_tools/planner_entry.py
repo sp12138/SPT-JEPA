@@ -18,6 +18,9 @@ def main():
     output=Path(os.environ["ASJEPA_PLANNER_OUTPUT"])
     split=os.environ.get("ASJEPA_PLANNER_SPLIT","all")
     seed=int(os.environ.get("ASJEPA_PLANNER_SEED","42"))
+    if os.environ.get("ASJEPA_GEOMETRY_COST"):
+        from as_jepa_tools.geometry_planning import install
+        install()
     spec=importlib.util.spec_from_file_location("asjepa_pinned_planner",upstream/"scripts/plan/eval_wm.py")
     module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
     if split=="heldout":
@@ -41,7 +44,8 @@ def main():
         report=dict(metrics=to_json(result),episodes=to_json(episodes),
                     start_steps=to_json(kwargs.get("start_steps")),split=split,
                     seed=seed,solver_rng_seed=seed,float32_matmul_precision=torch.get_float32_matmul_precision(),seconds=time.time()-started,
-                    scope="Pinned upstream P0; deterministic posterior means; single trained seed")
+                    scope="Pinned upstream P0; deterministic posterior means; single trained seed" if not os.environ.get("ASJEPA_GEOMETRY_COST") else "Experimental geometry cost; same simulator/CEM/data protocol; not the original GoalMSE P0",
+                    geometry_cost=os.environ.get("ASJEPA_GEOMETRY_COST"))
         (output/"metrics.json").write_text(json.dumps(report,indent=2))
         return result
     swm.World.evaluate=recorded_evaluate
