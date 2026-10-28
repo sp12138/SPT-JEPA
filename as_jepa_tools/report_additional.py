@@ -95,7 +95,7 @@ def main():
         ax.set(xlabel="Future kept-frame horizon", ylabel=label, xticks=[1, 3, 7, 10, 13])
         ax.grid(alpha=.2)
     axes[0, 0].legend(fontsize=8)
-    fig.suptitle("Successful tiny L2, seed0 / 50k: generation improves on copying\n256 fixed cases; three observed context frames; single training seed", fontsize=12)
+    fig.suptitle("Tiny L2, training seed 0 / 50k updates: generation improves on copying\n256 fixed cases; three observed context frames; single training seed", fontsize=12)
     fig.tight_layout()
     for ext in ["png", "svg"]:
         fig.savefig(out / ("quality-horizons." + ext), dpi=180)
@@ -103,11 +103,11 @@ def main():
 
     values = [quality["copy_fvd"]["fvd"], quality["fvd"]["fvd"]] + [x["fvd"] for x in additional["sample_fvd"]]
     fig, ax = plt.subplots(figsize=(8, 4))
-    bars = ax.bar(["Copy", "Mean state", "Draw1", "Draw2", "Draw3", "Draw4"],
+    bars = ax.bar(["Copy", "Mean state", "Draw 1", "Draw 2", "Draw 3", "Draw 4"],
                   values, color=["#777777", colors[0]] + [colors[1]] * 4)
     ax.bar_label(bars, fmt="%.1f", padding=3)
     ax.set(ylabel="FVD (lower is better)", ylim=(0, max(values) * 1.13))
-    ax.set_title("Matched256-case FVD: 3 true context +13 generated frames\n64px to224px; I3D400; each draw separately256real/256fake")
+    ax.set_title("Matched 256-case FVD: 3 real context + 13 generated frames\n64 to 224 px; I3D-400; each draw: 256 real / 256 generated clips")
     fig.tight_layout()
     for ext in ["png", "svg"]:
         fig.savefig(out / ("fvd-comparison." + ext), dpi=180)
@@ -119,7 +119,7 @@ def main():
     for i, name in enumerate(names):
         axes[0].bar(i, scores[i].mean(), color=colors[i], alpha=.65)
         axes[0].scatter(i + np.linspace(-.09, .09, 3), scores[i], color=colors[i], edgecolors="black", s=30)
-        axes[0].text(i, scores[i].mean() + 3, f"{scores[i].mean():.1f}%", ha="center")
+        axes[0].text(i, scores[i].max() + 3, f"{scores[i].mean():.1f}%", ha="center")
         ratios = times[i] / times[0]
         axes[1].bar(i, ratios.mean(), color=colors[i], alpha=.65)
         axes[1].scatter(i + np.linspace(-.09, .09, 3), ratios, color=colors[i], edgecolors="black", s=30)
@@ -129,7 +129,7 @@ def main():
     axes[0].set(ylabel="Planning success (%)", ylim=(0, 100))
     axes[1].set(ylabel="Evaluation wall time / paired GoalMSE")
     axes[1].axhline(1, color="#555555", linestyle="--", linewidth=1)
-    fig.suptitle("I10: paired planner comparison on eval seeds142/143/144\nOne frozen training model,50episodes/seed; dots are evaluation seeds", fontsize=12)
+    fig.suptitle("I10: paired planner comparison on evaluation seeds 142, 143, 144\nOne frozen model; 50 episodes per seed; dots show evaluation seeds", fontsize=12)
     fig.tight_layout()
     for ext in ["png", "svg"]:
         fig.savefig(out / ("planning-geometry." + ext), dpi=180)
