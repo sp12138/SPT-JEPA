@@ -30,11 +30,21 @@ def build_train_components(request):
         return StepOutput(loss=result["loss"],metrics=result["metrics"],workload={"local_batch":len(frames),"local_tokens":len(frames)*(frames.shape[1]-1)*256},metadata={"sample_ids":[f"{int(ep)}:{int(start)}" for ep,start in zip(batch["episode"],batch["start"])]})
     def export(model,step,context,output_record):
         completed=step+1
-        if completed%export_every:return {}
+        diagnostics={}
+        if completed%100==0 and kind=="S2":
+            for label,prefixes in [("encoder",("encoder.","pool.")),("prior",("prior.",)),("renderer",("renderer.",))]:
+                values=[p.grad.detach() for name,p in model.named_parameters() if name.startswith(prefixes) and p.grad is not None]
+                local=[g.to_local() if hasattr(g,"to_local") else g for g in values]
+                total=sum((g.float().square().sum() for g in local),torch.zeros((),device=context.device))
+                diagnostics["grad_norm_"+label+"_post_clip"]=float(total.sqrt())
+        if completed%2000==0 and hasattr(model,"training_variable_rate"):
+            with (output/"training_dimension_rates.jsonl").open("a") as stream:
+                stream.write(json.dumps(dict(step=completed,rate=model.training_variable_rate.cpu().tolist(),scope="Training last microbatch,variable per-window rate; formal activity is measured separately on heldout windows."))+"\n")
+        if completed%export_every:return diagnostics
         folder=output/f"model-step{completed:07d}";folder.mkdir(exist_ok=True)
         weights={k:(v.full_tensor() if hasattr(v,"full_tensor") else v).detach().cpu() for k,v in model.state_dict().items()}
         torch.save(weights,folder/"weights.pt");(folder/"config.json").write_text(json.dumps(dict(_target_="vforge.models.as_jepa.model.ASJepaSPT" if kind=="S2" else "vforge.models.as_jepa.semantic_carry.SemanticCarry" if kind=="S1Carry" else "vforge.models.as_jepa.spt_baseline.ActionRepWorld",**model_cfg),indent=2))
-        return {}
+        return diagnostics
     def initialize(model):
         model.initialize_weights()
         if warm_start:

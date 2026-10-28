@@ -129,6 +129,7 @@ def main():
     result.update(
         checkpoint=str(Path(args.checkpoint).resolve()), cases=len(records),
         target_frames_per_window=width - 1, sampler_steps=args.steps, sigma0=model.sigma0,
+        actual_renderer_sampler=("finiteGaussianDiffusion"+str(model.density_steps)+"transitions+8bitGaussianEndpoint" if getattr(model,"method","")=="vdm_nats" else "Euler"+str(args.steps)),
         rate_nats_per_frame=float((arrays["entry"].sum(-1) + arrays["surprise"].sum((1, 2))).mean() / width),
         zero_state_intervention_mse=float(np.mean([x["zero_mse"] for x in interventions])),
         state_permutation_intervention_mse=float(np.mean([x["permutation_mse"] for x in interventions])),

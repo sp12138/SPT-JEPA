@@ -27,4 +27,14 @@ class NativeContracts(unittest.TestCase):
   self.assertEqual(float(model.net.anchor_embed.proj.weight.abs().sum()),0)
   self.assertEqual(float(model.causal_semantic_encoder.action_proj.weight.abs().sum()),0)
 
+ def test_s2_doubled_state_width_and_rate_diagnostics(self):
+  torch.manual_seed(42)
+  model=ASJepaSPT(width=96,encoder_depth=2,prior_depth=2,renderer_depth=2,state_width=32)
+  frames=torch.randn(2,3,3,64,64);actions=torch.randn(2,3,10);result=model(frames,actions,frames[:,0],return_metrics=True)
+  self.assertTrue(bool(torch.isfinite(result["loss"])))
+  result["loss"].backward()
+  self.assertEqual(model.state_dim,128);self.assertEqual(tuple(model.encoded(frames).shape),(2,3,4,32))
+  self.assertEqual(tuple(model.training_variable_rate.shape),(128,))
+  self.assertIn("rate_share",result["metrics"])
+  state=model.encode(dict(pixels=frames))["emb"];self.assertEqual(tuple(model.predict(state[:,:2],actions[:,:2]).shape),(2,2,128))
 if __name__=="__main__":unittest.main()

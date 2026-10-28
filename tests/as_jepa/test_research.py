@@ -8,7 +8,7 @@ class ResearchContracts(unittest.TestCase):
  def setUpClass(cls):
   torch.set_num_threads(2);initialize_ops(OpsConfig(backend="sdpa_math",allow_fallback=False),device=torch.device("cpu"),parallel_state=None)
  def test_all_variants_are_finite_and_checkpoint_roundtrip(self):
-  for method in ["baseline","snr_weighted","geometry_noise","correlated_noise","canonical_color","forecast_render","gradient_constraint","predictable_weight","action_forks"]:
+  for method in ["baseline","snr_weighted","geometry_noise","correlated_noise","canonical_color","forecast_render","gradient_constraint","predictable_weight","action_forks","anchor_canonical_color","vdm_nats"]:
    with self.subTest(method=method):
     torch.manual_seed(14)
     cfg=dict(method=method,encoder_depth=1,renderer_width=48,renderer_depth=2,renderer_heads=3)

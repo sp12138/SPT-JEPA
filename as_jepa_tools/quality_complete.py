@@ -120,7 +120,7 @@ def main():
                 fvd=fvd,copy_fvd=copy_fvd,detector=extractor.identity,
                 fvd_protocol="256 matched16-frame clips:3 true context+13 generated,64->224 bilinear; this is not inheritedRGB16FVD2048",
                 lpips="AlexNet LPIPS0.1.4; input[-1,1]",ssim="skimage channel_axis=-1,uint8,data_range255,defaultwin7",angle="wrapped absolute atan2(sin,cos) minus simulator angle,in degrees",
-                seconds=time.time()-started,forward_precision="FP32" if a.fp32 else "BF16",tf32=False,scope="Complete quality metrics; independent protocol directory; final32-case pass/fail review still required.")
+                seconds=time.time()-started,forward_precision="FP32" if a.fp32 else "BF16",tf32=False,actual_renderer_sampler=("finiteGaussianDiffusion"+str(model.density_steps)+"transitions+8bitGaussianEndpoint" if getattr(model,"method","")=="vdm_nats" else "Euler"+str(a.steps)),scope="Complete quality metrics; independent protocol directory; final32-case pass/fail review still required.")
     np.savez(out/"per-case-metrics.npz",**arrays);(out/"cases.json").write_text(json.dumps(mean_records,indent=2));(out/"metrics.json").write_text(json.dumps(result,indent=2))
     (out/"status.json").write_text(json.dumps(dict(state="finished",completed=len(ids),updated_at=time.time())))
     print(json.dumps(dict(cases=len(ids),fvd=fvd["fvd"],h7_agent_ratio=result["h7_agent_ratio"],seconds=result["seconds"]),indent=2))

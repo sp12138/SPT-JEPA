@@ -5,18 +5,34 @@ from torch import nn
 from torch.nn import functional as F
 from as_jepa_lewm.model import ASJepaLeWM
 from vforge.models.as_jepa.codes import entry_nats
-from vforge.models.as_jepa.pixels import pack
+from vforge.models.as_jepa.pixels import pack,unpack
 from vforge.models.as_jepa.flow import draw_timesteps
 
 class ResearchLeWM(ASJepaLeWM):
-    def __init__(self,method="baseline",rho=.8,forecast_fraction=.5,noise_diagonal=None,**kwargs):
-        super().__init__(**kwargs);self.method=method;self.rho=rho;self.forecast_fraction=forecast_fraction
+    def __init__(self,method="baseline",rho=.8,forecast_fraction=.5,noise_diagonal=None,density_steps=64,**kwargs):
+        super().__init__(**kwargs);self.method=method;self.rho=rho;self.forecast_fraction=forecast_fraction;self.density_steps=density_steps
         diagonal=torch.tensor(noise_diagonal if noise_diagonal is not None else [1.]*self.state_dim,dtype=torch.float32)
         if diagonal.shape!=(self.state_dim,) or bool((diagonal<=0).any()):raise ValueError("Positive state-width noise diagonal required")
         self.register_buffer("noise_diagonal",diagonal)
         self.variance_head=nn.Sequential(nn.Linear(self.state_dim+1,128),nn.GELU(),nn.Linear(128,256)) if method=="predictable_weight" else None
         self.inverse_head=nn.Sequential(nn.Linear(2*self.state_dim+80,192),nn.GELU(),nn.Linear(192,1)) if method in {"action_forks","action_forks_null"} else None
         self._loss_terms=None
+    def prepare(self,batch):
+        pixels,render,anchor=super().prepare(batch)
+        if self.method=="anchor_canonical_color":
+            color=(anchor.float()+1)/2
+            lower=color.amin((-2,-1));upper=color.amax((-2,-1))
+            raw=pixels*self.image_std+self.image_mean
+            canonical=(raw-lower[:,None,:,None,None])/(upper-lower).clamp_min(.05)[:,None,:,None,None]
+            pixels=(canonical-self.image_mean)/self.image_std
+        return pixels,render,anchor
+    @torch.no_grad()
+    def render_states(self,states,anchor,steps=50,seed=0):
+        if self.method!="vdm_nats":return super().render_states(states,anchor,steps,seed)
+        from as_jepa_lewm.density import sample_diffusion
+        condition=states.unflatten(-1,(self.state_slots,self.state_width)) if states.shape[-1]==self.state_dim else states
+        generator=torch.Generator(device=states.device).manual_seed(seed)
+        return unpack(sample_diffusion(self.renderer,condition,pack(anchor),steps=self.density_steps,generator=generator))
     def encode(self,info):
         if self.method=="canonical_color":
             x=info["pixels"];flat=x.flatten(0,1)
@@ -65,22 +81,28 @@ class ResearchLeWM(ASJepaLeWM):
             conditioning=torch.where(choose,future,conditioning)
         y=pack(render[:,1:].flatten(0,1));aa=pack(anchor).repeat_interleave(w-1,0)
         condition=conditioning.flatten(0,1).unflatten(-1,(self.state_slots,self.state_width))
-        n=len(y);eps=torch.randn_like(y)
-        if self.method=="snr_weighted":
-            ell=torch.rand(n,1,device=y.device)*20-10;t=torch.sigmoid(-.5*ell)
-            weight=10*(1-t).square()
+        density_metrics={}
+        if self.method=="vdm_nats":
+            from as_jepa_lewm.density import diffusion_vlb
+            fm,density_metrics=diffusion_vlb(self.renderer,y,condition,aa,steps=self.density_steps)
+            raw_fm=density_metrics.pop("raw_flow_mse")
         else:
-            t=draw_timesteps(n,y.device,self.shift);weight=torch.ones_like(t)
-        tv=t.reshape(-1,1,1,1,1)
-        with self.renderer.anchored(aa):velocity=self.renderer((1-tv)*y+tv*eps,t,condition=condition)
-        residual=(y-eps-velocity).float().square()
-        raw_fm=residual.mean()
-        if self.method=="predictable_weight":
-            # Causal forecast and noise time only; no future state/target pixel enters variance prediction.
-            variance_input=torch.cat([predicted.flatten(0,1).float(),t.float()],-1)
-            logv=self.variance_head(variance_input).clamp(-8,4).reshape(n,1,1,16,16)
-            fm=(.5*torch.exp(-logv)*residual+.5*logv).mean()
-        else:fm=(residual*weight.reshape(-1,1,1,1,1)).mean()
+            n=len(y);eps=torch.randn_like(y)
+            if self.method=="snr_weighted":
+                ell=torch.rand(n,1,device=y.device)*20-10;t=torch.sigmoid(-.5*ell)
+                weight=10*(1-t).square()
+            else:
+                t=draw_timesteps(n,y.device,self.shift);weight=torch.ones_like(t)
+            tv=t.reshape(-1,1,1,1,1)
+            with self.renderer.anchored(aa):velocity=self.renderer((1-tv)*y+tv*eps,t,condition=condition)
+            residual=(y-eps-velocity).float().square()
+            raw_fm=residual.mean()
+            if self.method=="predictable_weight":
+                # Causal forecast and noise time only; no future state/target pixel enters variance prediction.
+                variance_input=torch.cat([predicted.flatten(0,1).float(),t.float()],-1)
+                logv=self.variance_head(variance_input).clamp(-8,4).reshape(n,1,1,16,16)
+                fm=(.5*torch.exp(-logv)*residual+.5*logv).mean()
+            else:fm=(residual*weight.reshape(-1,1,1,1,1)).mean()
         inverse=fm*0
         if self.method in {"action_forks","action_forks_null"} and "fork_futures" in batch:
             context=self.normalize(batch["fork_context"])
@@ -98,5 +120,6 @@ class ResearchLeWM(ASJepaLeWM):
         metrics=dict(loss=loss,fm=fm,raw_fm=raw_fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),
                      feature_std=flat.float().std((0,1)).mean(),rate_share=self.beta*rate/fm.detach().abs().clamp_min(1e-8),
                      active_dims=(per_dim.mean((0,1))>.1).sum(),inverse_action=inverse)
+        metrics.update(density_metrics)
         if step%2000==0:self.rate_dimensions=(.5*flat[:,0].float().square()+per_dim.sum(1)).mean(0).detach().cpu().tolist()
         return loss,metrics

@@ -103,7 +103,7 @@ def main():
     report=dict(float32_matmul_precision=torch.get_float32_matmul_precision(),feature_forward_precision="FP32" if a.fp32 else "BF16 autocast",checkpoint=str(Path(a.checkpoint).resolve()),cases=len(records),rollouts=4*len(records),
                 action_identification_accuracy=average("correct"),agent_action_identification_accuracy=average("agent_correct"),
                 block_action_identification_accuracy=average("block_correct"),block_angle_error_deg=average("block_angle_error_deg"),oracle_pose_action_identification_accuracy=average("oracle_pose_correct"),
-                chance=.25,sampler_steps=a.steps,seconds=time.time()-started,common_sampler_noise=True,
+                chance=.25,sampler_steps=a.steps,actual_renderer_sampler=("finiteGaussianDiffusion"+str(model.density_steps)+"transitions+8bitGaussianEndpoint" if getattr(model,"method","")=="vdm_nats" else "Euler"+str(a.steps)),seconds=time.time()-started,common_sampler_noise=True,
                 recorded_action_replay_agent_error=average("recorded_action_replay_agent_error"),
                 recorded_action_replay_block_error=average("recorded_action_replay_block_error"),
                 scope="Single-seed matched-reset simulator counterfactuals; deterministic mean-state dynamics; reset cannot recover unsaved block velocity",
