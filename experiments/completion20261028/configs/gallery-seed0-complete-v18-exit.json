@@ -1,0 +1,26 @@
+{
+  "returncode": 0,
+  "command": [
+    "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "as_jepa_tools.gallery_complete",
+    "--quality",
+    "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/quality-50k-seed0-full256/results",
+    "--checkpoint",
+    "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/endpoint-source-L2-50k-seed0/model-step0050000",
+    "--data",
+    "/efs/prescottsun/SPT-JEPA/data/pusht",
+    "--planning",
+    "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-endpoint-source-L2-50k-seed0/results/planning",
+    "--output",
+    "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/gallery-seed0-complete-v18"
+  ],
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-media-v18",
+    "source_commit": "84309ff06adee0ce6797934ea059c337a6a82ace",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-media-v18.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-media-v18:/efs/prescottsun/SPT-JEPA/runs/completion_20261028/source-media-v18/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+  }
+}

@@ -2,6 +2,8 @@
 
 当前在 `research/ideas-20261028` 继续原始全量实验和十个候选方法验证。用户已授权 dev2/dev13/dev15 持续运行，没有本轮时间上限。运行与恢复入口见 [研究恢复](RECOVERY_RESEARCH_20261028.md) 和 [追加实验状态](experiments/completion20261028/README.md)。
 
+新窗口确认见[数值与图](experiments/completion20261028/results/CONFIRMATION.md)：同一L2seed0的h7 agent/copy=.126、移动物块/copy=.193，反事实识别86.72%。它与旧诊断clip不共享帧，仍来自同一test episode split。
+
 追加实测见[生成质量、规划几何及固定32例图](experiments/completion20261028/results/README.md)和[25k基线的三训练种子终点](experiments/completion20261028/results/BASELINES_25K.md)。轻量L2seed0的256例FVD=278.21（copy=1628.62）；I10修复缓存后的Gramian规划均值8.7%（GoalMSE=71.3%），是明确负面结果。三训练种子与原始全量方案仍在推进。
 
 已发布的12小时探索结果保留在 [关键结论](experiments/insights12h/results/INSIGHTS.md)；28个当时选定终点完成不等于原始全量方案完成，缺项见 [任务审计](experiments/insights12h/TASK_AUDIT_20261028.md)。新一轮正在补三训练种子、Native精确25k终点、完整生成指标、原始全数据曝光量与三epoch坍塌筛选，并验证 [十个候选](experiments/ideas20261028/README.md)。
@@ -152,3 +154,5 @@ PYTHONPATH=runtime "$PY" -B -m unittest discover -s tests
 Original-report paths are audit inputs, not training/inference dependencies.
 Historical measurements and run status are in `HANDOFF.md`. Component licenses
 and provenance are preserved in `runtime/`; vendored components are not relicensed.
+
+[三训练种子50k完整结果](experiments/completion20261028/results/L2-50K-STABILITY.md)已齐：mean h7 agent/copy=.411，但动作识别平均74.22%低于75%阈值，P0=46.67±29.87%。不能把单种子正面结果当作稳定解决；原始完整预算和方法验证继续。

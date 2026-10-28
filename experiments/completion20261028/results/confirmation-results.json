@@ -1,0 +1,7554 @@
+{
+  "protocol": {
+    "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-endpoint-source-L2-50k-seed0/results/checkpoint",
+    "weights_sha256": "d1368e3d590f694cd15823cbb33961106ccb4b69b113393452f5062ba0ffc0fe",
+    "config": {
+      "_target_": "as_jepa_lewm.model.ASJepaLeWM",
+      "mode": "L2",
+      "beta": 0.01,
+      "sigma0": 0.1,
+      "window": 8,
+      "anchor_gap": 8
+    },
+    "quality_selection_seed": 20261028,
+    "counterfactual_selection_seed": 142,
+    "planning_seeds": [
+      242,
+      243,
+      244
+    ],
+    "exclude_quality": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/quality-50k-seed0-full256/results/cases.json",
+    "exclude_counterfactual": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/final-L2-standard-calibrated-b001-50k-seed0/counterfactual/counterfactual.json",
+    "scope": "Confirmation windows exclude overlapping diagnostic clips; same original test episodes,not a new dataset or training seed."
+  },
+  "quality": {
+    "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-endpoint-source-L2-50k-seed0/results/checkpoint",
+    "selection_seed": 20261028,
+    "excluded_cases": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/quality-50k-seed0-full256/results/cases.json",
+    "excluded_overlapping_window_starts": 2785,
+    "cases": 256,
+    "sampler_steps": 50,
+    "samples": 4,
+    "mean_by_horizon": {
+      "mean_agent": [
+        14.166121482849121,
+        15.231986045837402,
+        14.089973449707031,
+        17.72952651977539,
+        16.123382568359375,
+        15.06960391998291,
+        16.250993728637695,
+        16.064626693725586,
+        17.246856689453125,
+        15.125594139099121,
+        15.6668701171875,
+        17.55271339416504,
+        16.466529846191406
+      ],
+      "mean_block": [
+        4.101927757263184,
+        5.133469104766846,
+        6.001652240753174,
+        7.346226692199707,
+        8.361804962158203,
+        8.966400146484375,
+        10.68927001953125,
+        11.496986389160156,
+        12.726520538330078,
+        14.47340202331543,
+        15.539860725402832,
+        16.4370059967041,
+        17.466962814331055
+      ],
+      "mean_angle_deg": [
+        2.029540777206421,
+        3.2011325359344482,
+        3.6862826347351074,
+        4.713253974914551,
+        5.177250862121582,
+        5.798384189605713,
+        6.268054485321045,
+        6.611584663391113,
+        6.764218807220459,
+        7.979434967041016,
+        9.031270980834961,
+        9.483907699584961,
+        9.550802230834961
+      ],
+      "copy_agent": [
+        45.659393310546875,
+        78.67743682861328,
+        99.90889739990234,
+        113.09610748291016,
+        119.70209503173828,
+        123.59060668945312,
+        128.96109008789062,
+        133.86949157714844,
+        139.6396942138672,
+        144.1233673095703,
+        151.0707244873047,
+        155.790771484375,
+        154.8348388671875
+      ],
+      "copy_block": [
+        11.32089614868164,
+        20.313711166381836,
+        28.661775588989258,
+        35.753299713134766,
+        42.98685836791992,
+        49.67433547973633,
+        55.313358306884766,
+        59.66463088989258,
+        63.256893157958984,
+        67.8395004272461,
+        71.88301849365234,
+        75.67130279541016,
+        78.70853424072266
+      ],
+      "copy_angle_deg": [
+        6.194420337677002,
+        11.369592666625977,
+        15.741154670715332,
+        19.018680572509766,
+        22.13127899169922,
+        24.913267135620117,
+        27.13202476501465,
+        28.994426727294922,
+        30.275863647460938,
+        31.63956642150879,
+        32.78205490112305,
+        33.360469818115234,
+        33.698123931884766
+      ],
+      "real_agent": [
+        2.1539132595062256,
+        2.1773922443389893,
+        2.2186079025268555,
+        2.593858003616333,
+        1.9789738655090332,
+        1.9061081409454346,
+        1.9054665565490723,
+        2.044520378112793,
+        1.9245643615722656,
+        1.919913649559021,
+        1.7420316934585571,
+        1.7867263555526733,
+        1.7707024812698364
+      ],
+      "real_block": [
+        1.4376088380813599,
+        1.4043382406234741,
+        1.4890342950820923,
+        1.4290679693222046,
+        1.34066641330719,
+        1.3842893838882446,
+        1.3379000425338745,
+        1.352141261100769,
+        1.4528602361679077,
+        1.3324466943740845,
+        1.3775486946105957,
+        1.378246545791626,
+        1.3089120388031006
+      ],
+      "real_angle_deg": [
+        0.27802789211273193,
+        0.2645432949066162,
+        0.2932831645011902,
+        0.28089043498039246,
+        0.25988316535949707,
+        0.26798245310783386,
+        0.27245885133743286,
+        0.27585792541503906,
+        0.27688130736351013,
+        0.25363847613334656,
+        0.2439432144165039,
+        0.2514471411705017,
+        0.26062703132629395
+      ],
+      "mean_psnr": [
+        30.889972686767578,
+        30.33555793762207,
+        29.985824584960938,
+        29.836153030395508,
+        29.624235153198242,
+        29.444332122802734,
+        29.289472579956055,
+        29.059215545654297,
+        28.941442489624023,
+        28.828245162963867,
+        28.716354370117188,
+        28.58229637145996,
+        28.47987937927246
+      ],
+      "mean_lpips": [
+        0.039545606821775436,
+        0.042310141026973724,
+        0.045512694865465164,
+        0.04694698005914688,
+        0.04727369546890259,
+        0.04928932338953018,
+        0.05178477615118027,
+        0.054820459336042404,
+        0.057190414518117905,
+        0.06157711520791054,
+        0.06302233785390854,
+        0.06427039951086044,
+        0.06717479228973389
+      ],
+      "mean_ssim": [
+        0.8418864261505524,
+        0.8364224301363512,
+        0.8317646084261086,
+        0.8300952910053653,
+        0.8264553044767908,
+        0.8232064395969898,
+        0.8239427070226316,
+        0.8211676926320963,
+        0.8180546992190265,
+        0.8144098355533304,
+        0.8123617762217626,
+        0.8091491367334969,
+        0.8082721429280508
+      ],
+      "sample_agent": [
+        16.026132583618164,
+        16.76487922668457,
+        17.436437606811523,
+        19.573535919189453,
+        18.278812408447266,
+        17.280677795410156,
+        19.73543357849121,
+        18.953630447387695,
+        20.4462833404541,
+        19.824262619018555,
+        20.715482711791992,
+        20.0638427734375,
+        20.69781494140625
+      ],
+      "sample_block": [
+        4.786755084991455,
+        5.773057460784912,
+        6.834595203399658,
+        8.35290813446045,
+        9.754301071166992,
+        10.919771194458008,
+        12.47024917602539,
+        13.512304306030273,
+        14.988569259643555,
+        16.37201499938965,
+        17.234134674072266,
+        18.24918556213379,
+        19.05638313293457
+      ],
+      "sample_angle_deg": [
+        2.4150261878967285,
+        3.5172715187072754,
+        4.175381660461426,
+        4.902724742889404,
+        5.634738922119141,
+        6.346430778503418,
+        7.263585567474365,
+        7.770357608795166,
+        8.66324234008789,
+        9.934151649475098,
+        10.732560157775879,
+        11.602076530456543,
+        11.763406753540039
+      ],
+      "sample_lpips": [
+        0.040869154036045074,
+        0.04307052865624428,
+        0.04646295681595802,
+        0.04784413054585457,
+        0.04915141686797142,
+        0.05166628956794739,
+        0.05480298772454262,
+        0.0569201335310936,
+        0.059821370989084244,
+        0.063414566218853,
+        0.0660296380519867,
+        0.06897470355033875,
+        0.07224060595035553
+      ]
+    },
+    "h7_agent_ratio": 0.12601467967033386,
+    "h7_moving_block_ratio": 0.19324924051761627,
+    "fvd": {
+      "fvd": 230.72103058686344,
+      "mean_term": 167.06811251889573,
+      "covariance_term": 63.652918067967676,
+      "raw_fvd": 230.72103058686344,
+      "covariance_ddof": 1,
+      "num_real": 256,
+      "num_fake": 256,
+      "feature_dim": 400
+    },
+    "copy_fvd": {
+      "fvd": 1345.1097666550204,
+      "mean_term": 1007.3297565030033,
+      "covariance_term": 337.7800101520171,
+      "raw_fvd": 1345.1097666550204,
+      "covariance_ddof": 1,
+      "num_real": 256,
+      "num_fake": 256,
+      "feature_dim": 400
+    },
+    "detector": {
+      "version": "i3d-kinetics400-styleganv-logits-v1",
+      "weights_sha256": "bec6519f66ea534e953026b4ae2c65553c17bf105611c746d904657e5860a5e2",
+      "implementation_sha256": "d0229a9055084132c93628edd98157fbbd5a8818f11834c27bd1a80b7e220f33",
+      "torch_version": "2.9.1+cu130",
+      "cuda_version": "13.0",
+      "cudnn_version": 91300,
+      "device_type": "cuda",
+      "device_name": "NVIDIA H200",
+      "precision": "float32; no autocast; TF32 disabled",
+      "batch_size": 4,
+      "resize": "bilinear 224x224, align_corners=False, antialias=False, no crop",
+      "normalization": "uint8 RGB / 255 * 2 - 1",
+      "feature": "400 logits, before softmax, temporal mean"
+    },
+    "fvd_protocol": "256 matched16-frame clips:3 true context+13 generated,64->224 bilinear; this is not inheritedRGB16FVD2048",
+    "lpips": "AlexNet LPIPS0.1.4; input[-1,1]",
+    "ssim": "skimage channel_axis=-1,uint8,data_range255,defaultwin7",
+    "angle": "wrapped absolute atan2(sin,cos) minus simulator angle,in degrees",
+    "seconds": 182.21157670021057,
+    "forward_precision": "BF16",
+    "tf32": false,
+    "actual_renderer_sampler": "Euler50",
+    "scope": "Complete quality metrics; independent protocol directory; final32-case pass/fail review still required."
+  },
+  "additional": {
+    "quality_source": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/confirm-endpoint-source-L2-50k-seed0/results/quality",
+    "metrics_sha256": "5d1c66831409acac5d8d89b0308b807eb6e012918df27505e0574579e5bfb2de",
+    "cases": 256,
+    "mean_by_horizon": {
+      "copy_lpips": [
+        0.032700713723897934,
+        0.05560949072241783,
+        0.06839846819639206,
+        0.0794895738363266,
+        0.08750547468662262,
+        0.09487929195165634,
+        0.10230841487646103,
+        0.10954402387142181,
+        0.11788509786128998,
+        0.12676618993282318,
+        0.13519605994224548,
+        0.1422923356294632,
+        0.14842097461223602
+      ],
+      "copy_ssim": [
+        0.9463087938214202,
+        0.9262910415320358,
+        0.9137690793501194,
+        0.9035322703371316,
+        0.8932651973295377,
+        0.8860351648291304,
+        0.8798948447742838,
+        0.875701818632407,
+        0.8724747947984495,
+        0.86895678509842,
+        0.8656808453042909,
+        0.8635158382956984,
+        0.8622452312718669
+      ],
+      "copy_psnr": [
+        27.923511697027568,
+        26.47899775558357,
+        25.765796518065933,
+        25.221133337587972,
+        24.578176290410198,
+        24.180213098165424,
+        23.821373251518484,
+        23.590736911884356,
+        23.407818330220238,
+        23.259135191249428,
+        23.10943530718401,
+        22.997625829803965,
+        22.942836165118674
+      ],
+      "mean_uint8_lpips": [
+        0.042063236236572266,
+        0.044896673411130905,
+        0.04816306754946709,
+        0.049566272646188736,
+        0.04995867609977722,
+        0.05194084346294403,
+        0.05448409169912338,
+        0.05751984193921089,
+        0.05996827781200409,
+        0.06449589133262634,
+        0.06592153757810593,
+        0.06711661070585251,
+        0.07007236778736115
+      ],
+      "mean_uint8_ssim": [
+        0.8418864261505524,
+        0.8364224301363512,
+        0.8317646084261086,
+        0.8300952910053653,
+        0.8264553044767908,
+        0.8232064395969898,
+        0.8239427070226316,
+        0.8211676926320963,
+        0.8180546992190265,
+        0.8144098355533304,
+        0.8123617762217626,
+        0.8091491367334969,
+        0.8082721429280508
+      ],
+      "mean_uint8_psnr": [
+        30.727045267809107,
+        30.18782282358643,
+        29.84542171659514,
+        29.699350797591908,
+        29.48885308969472,
+        29.31213136642993,
+        29.16156486051325,
+        28.93566345574734,
+        28.818948483487258,
+        28.706859687293115,
+        28.597674248923152,
+        28.46482359190817,
+        28.364496117435653
+      ],
+      "sample0_lpips": [
+        0.04280185326933861,
+        0.04536638781428337,
+        0.0486767441034317,
+        0.04988035187125206,
+        0.05174051225185394,
+        0.054897427558898926,
+        0.05802079662680626,
+        0.0601578913629055,
+        0.06202319636940956,
+        0.06591109931468964,
+        0.0679488331079483,
+        0.06994973868131638,
+        0.07447267323732376
+      ],
+      "sample0_ssim": [
+        0.8397172143569079,
+        0.8347931523650711,
+        0.8315350218273122,
+        0.8265580472583276,
+        0.8231249744378972,
+        0.8182316728998694,
+        0.8174445811668417,
+        0.8157121120746984,
+        0.8131251695537645,
+        0.8096595608138512,
+        0.8086293801948409,
+        0.8060883246645444,
+        0.8041730543147556
+      ],
+      "sample0_psnr": [
+        30.28480478403788,
+        29.848983258550696,
+        29.50448278772562,
+        29.129145387970592,
+        28.87943729538548,
+        28.614889965723417,
+        28.432705679046,
+        28.23788077813819,
+        28.123852266910397,
+        28.044278239108266,
+        27.992448588495975,
+        27.87990979822504,
+        27.639694518285445
+      ],
+      "sample1_lpips": [
+        0.04404161497950554,
+        0.045895084738731384,
+        0.049305036664009094,
+        0.05092697963118553,
+        0.05221731215715408,
+        0.055031996220350266,
+        0.05812378600239754,
+        0.05991750210523605,
+        0.06352070719003677,
+        0.0666990727186203,
+        0.0696241483092308,
+        0.07407354563474655,
+        0.07748199254274368
+      ],
+      "sample1_ssim": [
+        0.8396222389420555,
+        0.8344128648373407,
+        0.8304699207837813,
+        0.8268617774773556,
+        0.8229441030187779,
+        0.8191533028876247,
+        0.8182988127020719,
+        0.8156974576684906,
+        0.8116523378351714,
+        0.808289089763313,
+        0.8071600169633534,
+        0.8041292732485065,
+        0.8041231765937539
+      ],
+      "sample1_psnr": [
+        30.31691988495038,
+        29.800955145567485,
+        29.448933305086175,
+        29.127930334420686,
+        28.843902919265812,
+        28.667298015157076,
+        28.367664968876507,
+        28.17531615696448,
+        28.049846972737427,
+        27.9487744335408,
+        27.76421496839193,
+        27.665734837620672,
+        27.619858911269226
+      ],
+      "sample2_lpips": [
+        0.042954716831445694,
+        0.04591444507241249,
+        0.049374114722013474,
+        0.0500500462949276,
+        0.05202184244990349,
+        0.05407026782631874,
+        0.057742562144994736,
+        0.059555549174547195,
+        0.06291826069355011,
+        0.066428542137146,
+        0.06934370845556259,
+        0.07092709839344025,
+        0.07353582978248596
+      ],
+      "sample2_ssim": [
+        0.8395674192854737,
+        0.8336947509277495,
+        0.829928575417653,
+        0.8271897730934221,
+        0.8242957710423265,
+        0.8201553762041184,
+        0.8195330322517541,
+        0.8154427192138977,
+        0.8133201916401849,
+        0.8100239890952236,
+        0.8081855699332162,
+        0.8057701509393772,
+        0.805040369822918
+      ],
+      "sample2_psnr": [
+        30.284462888409074,
+        29.740403494192595,
+        29.416564063148236,
+        29.050947846750088,
+        28.881056569808834,
+        28.75919902189011,
+        28.52444842834503,
+        28.225169045232875,
+        28.13882159558019,
+        28.015887197605544,
+        27.90577355451924,
+        27.839344849476387,
+        27.774541773710567
+      ],
+      "sample3_lpips": [
+        0.043742112815380096,
+        0.0452943816781044,
+        0.04889465495944023,
+        0.05080943927168846,
+        0.051099743694067,
+        0.053169943392276764,
+        0.05589548125863075,
+        0.058709338307380676,
+        0.061612751334905624,
+        0.06577689945697784,
+        0.06830643862485886,
+        0.07211517542600632,
+        0.07480776309967041
+      ],
+      "sample3_ssim": [
+        0.839551594218935,
+        0.8354557298831302,
+        0.8298132404154855,
+        0.8281732201456833,
+        0.822863839103397,
+        0.8204734120592074,
+        0.8204999772658068,
+        0.8177844654491528,
+        0.8148542003332189,
+        0.8112451098530021,
+        0.8088337362345619,
+        0.8062810716439641,
+        0.80599147758087
+      ],
+      "sample3_psnr": [
+        30.22196653667051,
+        29.875090051723717,
+        29.431334927267486,
+        29.17844138980621,
+        28.912796410768163,
+        28.756954284000813,
+        28.533336230142208,
+        28.353565162567566,
+        28.194836801296443,
+        28.184410284416657,
+        28.00123045082066,
+        27.83650748697036,
+        27.84499699216625
+      ]
+    },
+    "sample_fvd": [
+      {
+        "fvd": 232.9729807152729,
+        "mean_term": 172.14483594720153,
+        "covariance_term": 60.82814476807141,
+        "raw_fvd": 232.9729807152729,
+        "covariance_ddof": 1,
+        "num_real": 256,
+        "num_fake": 256,
+        "feature_dim": 400
+      },
+      {
+        "fvd": 226.37623740888773,
+        "mean_term": 165.44923413776434,
+        "covariance_term": 60.92700327112368,
+        "raw_fvd": 226.37623740888773,
+        "covariance_ddof": 1,
+        "num_real": 256,
+        "num_fake": 256,
+        "feature_dim": 400
+      },
+      {
+        "fvd": 222.67510201673645,
+        "mean_term": 163.45577414229174,
+        "covariance_term": 59.21932787444484,
+        "raw_fvd": 222.67510201673645,
+        "covariance_ddof": 1,
+        "num_real": 256,
+        "num_fake": 256,
+        "feature_dim": 400
+      },
+      {
+        "fvd": 230.68661905063357,
+        "mean_term": 170.64045382255193,
+        "covariance_term": 60.04616522808158,
+        "raw_fvd": 230.68661905063357,
+        "covariance_ddof": 1,
+        "num_real": 256,
+        "num_fake": 256,
+        "feature_dim": 400
+      }
+    ],
+    "scope": "Mean/copy/sample perceptual comparisons here all use the same saved uint8 pixels. Each sampled-trajectory FVD uses256 real and256 fake clips; four draws reported separately,not pooled as1024 independent real cases. Copy and sample perceptual metrics use the saveduint8bank."
+  },
+  "cases": [
+    {
+      "episode": 1984,
+      "start": 9,
+      "moving_block": true,
+      "index": 868,
+      "mean_renderer_seed": 1000
+    },
+    {
+      "episode": 1381,
+      "start": 14,
+      "moving_block": true,
+      "index": 659,
+      "mean_renderer_seed": 1000
+    },
+    {
+      "episode": 11169,
+      "start": 8,
+      "moving_block": true,
+      "index": 5444,
+      "mean_renderer_seed": 1000
+    },
+    {
+      "episode": 8906,
+      "start": 14,
+      "moving_block": true,
+      "index": 4407,
+      "mean_renderer_seed": 1000
+    },
+    {
+      "episode": 4477,
+      "start": 15,
+      "moving_block": true,
+      "index": 2210,
+      "mean_renderer_seed": 1000
+    },
+    {
+      "episode": 14589,
+      "start": 8,
+      "moving_block": true,
+      "index": 7827,
+      "mean_renderer_seed": 1000
+    },
+    {
+      "episode": 2957,
+      "start": 16,
+      "moving_block": true,
+      "index": 1321,
+      "mean_renderer_seed": 1000
+    },
+    {
+      "episode": 12068,
+      "start": 12,
+      "moving_block": true,
+      "index": 6039,
+      "mean_renderer_seed": 1000
+    },
+    {
+      "episode": 11962,
+      "start": 9,
+      "moving_block": true,
+      "index": 5948,
+      "mean_renderer_seed": 1100
+    },
+    {
+      "episode": 3877,
+      "start": 11,
+      "moving_block": true,
+      "index": 1936,
+      "mean_renderer_seed": 1100
+    },
+    {
+      "episode": 5134,
+      "start": 8,
+      "moving_block": true,
+      "index": 2692,
+      "mean_renderer_seed": 1100
+    },
+    {
+      "episode": 6557,
+      "start": 14,
+      "moving_block": true,
+      "index": 3415,
+      "mean_renderer_seed": 1100
+    },
+    {
+      "episode": 3542,
+      "start": 10,
+      "moving_block": true,
+      "index": 1787,
+      "mean_renderer_seed": 1100
+    },
+    {
+      "episode": 10809,
+      "start": 16,
+      "moving_block": true,
+      "index": 5081,
+      "mean_renderer_seed": 1100
+    },
+    {
+      "episode": 12577,
+      "start": 8,
+      "moving_block": true,
+      "index": 6353,
+      "mean_renderer_seed": 1100
+    },
+    {
+      "episode": 13146,
+      "start": 10,
+      "moving_block": true,
+      "index": 6691,
+      "mean_renderer_seed": 1100
+    },
+    {
+      "episode": 5907,
+      "start": 13,
+      "moving_block": true,
+      "index": 3051,
+      "mean_renderer_seed": 1200
+    },
+    {
+      "episode": 13951,
+      "start": 14,
+      "moving_block": true,
+      "index": 7276,
+      "mean_renderer_seed": 1200
+    },
+    {
+      "episode": 3542,
+      "start": 8,
+      "moving_block": true,
+      "index": 1785,
+      "mean_renderer_seed": 1200
+    },
+    {
+      "episode": 4711,
+      "start": 8,
+      "moving_block": true,
+      "index": 2254,
+      "mean_renderer_seed": 1200
+    },
+    {
+      "episode": 14655,
+      "start": 10,
+      "moving_block": true,
+      "index": 7889,
+      "mean_renderer_seed": 1200
+    },
+    {
+      "episode": 11216,
+      "start": 12,
+      "moving_block": true,
+      "index": 5508,
+      "mean_renderer_seed": 1200
+    },
+    {
+      "episode": 873,
+      "start": 9,
+      "moving_block": true,
+      "index": 368,
+      "mean_renderer_seed": 1200
+    },
+    {
+      "episode": 6959,
+      "start": 11,
+      "moving_block": true,
+      "index": 3522,
+      "mean_renderer_seed": 1200
+    },
+    {
+      "episode": 1674,
+      "start": 9,
+      "moving_block": true,
+      "index": 777,
+      "mean_renderer_seed": 1300
+    },
+    {
+      "episode": 3788,
+      "start": 12,
+      "moving_block": true,
+      "index": 1898,
+      "mean_renderer_seed": 1300
+    },
+    {
+      "episode": 3037,
+      "start": 11,
+      "moving_block": true,
+      "index": 1421,
+      "mean_renderer_seed": 1300
+    },
+    {
+      "episode": 5121,
+      "start": 22,
+      "moving_block": true,
+      "index": 2660,
+      "mean_renderer_seed": 1300
+    },
+    {
+      "episode": 16196,
+      "start": 14,
+      "moving_block": true,
+      "index": 8660,
+      "mean_renderer_seed": 1300
+    },
+    {
+      "episode": 4724,
+      "start": 8,
+      "moving_block": true,
+      "index": 2271,
+      "mean_renderer_seed": 1300
+    },
+    {
+      "episode": 9496,
+      "start": 12,
+      "moving_block": true,
+      "index": 4519,
+      "mean_renderer_seed": 1300
+    },
+    {
+      "episode": 11203,
+      "start": 8,
+      "moving_block": true,
+      "index": 5492,
+      "mean_renderer_seed": 1300
+    },
+    {
+      "episode": 4888,
+      "start": 13,
+      "moving_block": true,
+      "index": 2410,
+      "mean_renderer_seed": 1400
+    },
+    {
+      "episode": 15157,
+      "start": 10,
+      "moving_block": true,
+      "index": 8074,
+      "mean_renderer_seed": 1400
+    },
+    {
+      "episode": 17274,
+      "start": 11,
+      "moving_block": true,
+      "index": 9047,
+      "mean_renderer_seed": 1400
+    },
+    {
+      "episode": 5229,
+      "start": 12,
+      "moving_block": true,
+      "index": 2790,
+      "mean_renderer_seed": 1400
+    },
+    {
+      "episode": 12372,
+      "start": 11,
+      "moving_block": true,
+      "index": 6230,
+      "mean_renderer_seed": 1400
+    },
+    {
+      "episode": 15904,
+      "start": 9,
+      "moving_block": true,
+      "index": 8377,
+      "mean_renderer_seed": 1400
+    },
+    {
+      "episode": 17715,
+      "start": 11,
+      "moving_block": true,
+      "index": 9342,
+      "mean_renderer_seed": 1400
+    },
+    {
+      "episode": 11081,
+      "start": 11,
+      "moving_block": true,
+      "index": 5345,
+      "mean_renderer_seed": 1400
+    },
+    {
+      "episode": 5945,
+      "start": 12,
+      "moving_block": true,
+      "index": 3080,
+      "mean_renderer_seed": 1500
+    },
+    {
+      "episode": 15874,
+      "start": 9,
+      "moving_block": true,
+      "index": 8344,
+      "mean_renderer_seed": 1500
+    },
+    {
+      "episode": 3062,
+      "start": 10,
+      "moving_block": true,
+      "index": 1432,
+      "mean_renderer_seed": 1500
+    },
+    {
+      "episode": 11716,
+      "start": 9,
+      "moving_block": true,
+      "index": 5864,
+      "mean_renderer_seed": 1500
+    },
+    {
+      "episode": 3953,
+      "start": 11,
+      "moving_block": true,
+      "index": 2012,
+      "mean_renderer_seed": 1500
+    },
+    {
+      "episode": 17782,
+      "start": 18,
+      "moving_block": true,
+      "index": 9401,
+      "mean_renderer_seed": 1500
+    },
+    {
+      "episode": 13975,
+      "start": 11,
+      "moving_block": true,
+      "index": 7336,
+      "mean_renderer_seed": 1500
+    },
+    {
+      "episode": 5056,
+      "start": 19,
+      "moving_block": true,
+      "index": 2496,
+      "mean_renderer_seed": 1500
+    },
+    {
+      "episode": 8969,
+      "start": 13,
+      "moving_block": true,
+      "index": 4451,
+      "mean_renderer_seed": 1600
+    },
+    {
+      "episode": 15111,
+      "start": 13,
+      "moving_block": true,
+      "index": 8005,
+      "mean_renderer_seed": 1600
+    },
+    {
+      "episode": 627,
+      "start": 15,
+      "moving_block": true,
+      "index": 253,
+      "mean_renderer_seed": 1600
+    },
+    {
+      "episode": 717,
+      "start": 9,
+      "moving_block": true,
+      "index": 264,
+      "mean_renderer_seed": 1600
+    },
+    {
+      "episode": 3897,
+      "start": 11,
+      "moving_block": true,
+      "index": 1955,
+      "mean_renderer_seed": 1600
+    },
+    {
+      "episode": 16060,
+      "start": 10,
+      "moving_block": true,
+      "index": 8475,
+      "mean_renderer_seed": 1600
+    },
+    {
+      "episode": 12115,
+      "start": 15,
+      "moving_block": true,
+      "index": 6074,
+      "mean_renderer_seed": 1600
+    },
+    {
+      "episode": 16235,
+      "start": 9,
+      "moving_block": true,
+      "index": 8717,
+      "mean_renderer_seed": 1600
+    },
+    {
+      "episode": 5056,
+      "start": 22,
+      "moving_block": true,
+      "index": 2499,
+      "mean_renderer_seed": 1700
+    },
+    {
+      "episode": 3899,
+      "start": 18,
+      "moving_block": true,
+      "index": 1981,
+      "mean_renderer_seed": 1700
+    },
+    {
+      "episode": 17947,
+      "start": 9,
+      "moving_block": true,
+      "index": 9551,
+      "mean_renderer_seed": 1700
+    },
+    {
+      "episode": 6557,
+      "start": 13,
+      "moving_block": true,
+      "index": 3414,
+      "mean_renderer_seed": 1700
+    },
+    {
+      "episode": 5158,
+      "start": 10,
+      "moving_block": true,
+      "index": 2740,
+      "mean_renderer_seed": 1700
+    },
+    {
+      "episode": 14602,
+      "start": 8,
+      "moving_block": true,
+      "index": 7847,
+      "mean_renderer_seed": 1700
+    },
+    {
+      "episode": 9841,
+      "start": 9,
+      "moving_block": true,
+      "index": 4648,
+      "mean_renderer_seed": 1700
+    },
+    {
+      "episode": 1674,
+      "start": 12,
+      "moving_block": true,
+      "index": 780,
+      "mean_renderer_seed": 1700
+    },
+    {
+      "episode": 17276,
+      "start": 25,
+      "moving_block": true,
+      "index": 9087,
+      "mean_renderer_seed": 1800
+    },
+    {
+      "episode": 553,
+      "start": 10,
+      "moving_block": true,
+      "index": 204,
+      "mean_renderer_seed": 1800
+    },
+    {
+      "episode": 13655,
+      "start": 9,
+      "moving_block": true,
+      "index": 7215,
+      "mean_renderer_seed": 1800
+    },
+    {
+      "episode": 3899,
+      "start": 15,
+      "moving_block": true,
+      "index": 1978,
+      "mean_renderer_seed": 1800
+    },
+    {
+      "episode": 12203,
+      "start": 9,
+      "moving_block": true,
+      "index": 6120,
+      "mean_renderer_seed": 1800
+    },
+    {
+      "episode": 14162,
+      "start": 19,
+      "moving_block": true,
+      "index": 7446,
+      "mean_renderer_seed": 1800
+    },
+    {
+      "episode": 16621,
+      "start": 9,
+      "moving_block": true,
+      "index": 8813,
+      "mean_renderer_seed": 1800
+    },
+    {
+      "episode": 13653,
+      "start": 8,
+      "moving_block": true,
+      "index": 7204,
+      "mean_renderer_seed": 1800
+    },
+    {
+      "episode": 17173,
+      "start": 9,
+      "moving_block": true,
+      "index": 9008,
+      "mean_renderer_seed": 1900
+    },
+    {
+      "episode": 14177,
+      "start": 14,
+      "moving_block": true,
+      "index": 7463,
+      "mean_renderer_seed": 1900
+    },
+    {
+      "episode": 15127,
+      "start": 12,
+      "moving_block": true,
+      "index": 8046,
+      "mean_renderer_seed": 1900
+    },
+    {
+      "episode": 3547,
+      "start": 8,
+      "moving_block": true,
+      "index": 1796,
+      "mean_renderer_seed": 1900
+    },
+    {
+      "episode": 14213,
+      "start": 8,
+      "moving_block": true,
+      "index": 7523,
+      "mean_renderer_seed": 1900
+    },
+    {
+      "episode": 14532,
+      "start": 8,
+      "moving_block": true,
+      "index": 7794,
+      "mean_renderer_seed": 1900
+    },
+    {
+      "episode": 4882,
+      "start": 8,
+      "moving_block": true,
+      "index": 2391,
+      "mean_renderer_seed": 1900
+    },
+    {
+      "episode": 5061,
+      "start": 19,
+      "moving_block": true,
+      "index": 2519,
+      "mean_renderer_seed": 1900
+    },
+    {
+      "episode": 13678,
+      "start": 8,
+      "moving_block": true,
+      "index": 7224,
+      "mean_renderer_seed": 2000
+    },
+    {
+      "episode": 7175,
+      "start": 8,
+      "moving_block": true,
+      "index": 3631,
+      "mean_renderer_seed": 2000
+    },
+    {
+      "episode": 13140,
+      "start": 10,
+      "moving_block": true,
+      "index": 6675,
+      "mean_renderer_seed": 2000
+    },
+    {
+      "episode": 14198,
+      "start": 9,
+      "moving_block": true,
+      "index": 7502,
+      "mean_renderer_seed": 2000
+    },
+    {
+      "episode": 12574,
+      "start": 22,
+      "moving_block": true,
+      "index": 6315,
+      "mean_renderer_seed": 2000
+    },
+    {
+      "episode": 13605,
+      "start": 8,
+      "moving_block": true,
+      "index": 7167,
+      "mean_renderer_seed": 2000
+    },
+    {
+      "episode": 16235,
+      "start": 20,
+      "moving_block": true,
+      "index": 8728,
+      "mean_renderer_seed": 2000
+    },
+    {
+      "episode": 2957,
+      "start": 13,
+      "moving_block": true,
+      "index": 1318,
+      "mean_renderer_seed": 2000
+    },
+    {
+      "episode": 4071,
+      "start": 9,
+      "moving_block": true,
+      "index": 2077,
+      "mean_renderer_seed": 2100
+    },
+    {
+      "episode": 4869,
+      "start": 12,
+      "moving_block": true,
+      "index": 2367,
+      "mean_renderer_seed": 2100
+    },
+    {
+      "episode": 6071,
+      "start": 16,
+      "moving_block": true,
+      "index": 3149,
+      "mean_renderer_seed": 2100
+    },
+    {
+      "episode": 11163,
+      "start": 9,
+      "moving_block": true,
+      "index": 5421,
+      "mean_renderer_seed": 2100
+    },
+    {
+      "episode": 13161,
+      "start": 8,
+      "moving_block": true,
+      "index": 6705,
+      "mean_renderer_seed": 2100
+    },
+    {
+      "episode": 17274,
+      "start": 19,
+      "moving_block": true,
+      "index": 9055,
+      "mean_renderer_seed": 2100
+    },
+    {
+      "episode": 2082,
+      "start": 12,
+      "moving_block": true,
+      "index": 973,
+      "mean_renderer_seed": 2100
+    },
+    {
+      "episode": 2876,
+      "start": 11,
+      "moving_block": true,
+      "index": 1288,
+      "mean_renderer_seed": 2100
+    },
+    {
+      "episode": 12574,
+      "start": 11,
+      "moving_block": true,
+      "index": 6304,
+      "mean_renderer_seed": 2200
+    },
+    {
+      "episode": 17274,
+      "start": 20,
+      "moving_block": true,
+      "index": 9056,
+      "mean_renderer_seed": 2200
+    },
+    {
+      "episode": 12765,
+      "start": 11,
+      "moving_block": true,
+      "index": 6424,
+      "mean_renderer_seed": 2200
+    },
+    {
+      "episode": 4888,
+      "start": 8,
+      "moving_block": true,
+      "index": 2405,
+      "mean_renderer_seed": 2200
+    },
+    {
+      "episode": 7484,
+      "start": 17,
+      "moving_block": true,
+      "index": 3864,
+      "mean_renderer_seed": 2200
+    },
+    {
+      "episode": 11160,
+      "start": 8,
+      "moving_block": true,
+      "index": 5408,
+      "mean_renderer_seed": 2200
+    },
+    {
+      "episode": 14213,
+      "start": 18,
+      "moving_block": true,
+      "index": 7533,
+      "mean_renderer_seed": 2200
+    },
+    {
+      "episode": 2629,
+      "start": 10,
+      "moving_block": true,
+      "index": 1168,
+      "mean_renderer_seed": 2200
+    },
+    {
+      "episode": 2958,
+      "start": 9,
+      "moving_block": true,
+      "index": 1349,
+      "mean_renderer_seed": 2300
+    },
+    {
+      "episode": 5395,
+      "start": 9,
+      "moving_block": true,
+      "index": 2880,
+      "mean_renderer_seed": 2300
+    },
+    {
+      "episode": 193,
+      "start": 9,
+      "moving_block": true,
+      "index": 66,
+      "mean_renderer_seed": 2300
+    },
+    {
+      "episode": 4778,
+      "start": 10,
+      "moving_block": true,
+      "index": 2305,
+      "mean_renderer_seed": 2300
+    },
+    {
+      "episode": 11939,
+      "start": 9,
+      "moving_block": true,
+      "index": 5936,
+      "mean_renderer_seed": 2300
+    },
+    {
+      "episode": 14655,
+      "start": 15,
+      "moving_block": true,
+      "index": 7894,
+      "mean_renderer_seed": 2300
+    },
+    {
+      "episode": 4117,
+      "start": 14,
+      "moving_block": true,
+      "index": 2142,
+      "mean_renderer_seed": 2300
+    },
+    {
+      "episode": 361,
+      "start": 10,
+      "moving_block": true,
+      "index": 135,
+      "mean_renderer_seed": 2300
+    },
+    {
+      "episode": 16196,
+      "start": 26,
+      "moving_block": true,
+      "index": 8672,
+      "mean_renderer_seed": 2400
+    },
+    {
+      "episode": 3062,
+      "start": 9,
+      "moving_block": true,
+      "index": 1431,
+      "mean_renderer_seed": 2400
+    },
+    {
+      "episode": 14718,
+      "start": 16,
+      "moving_block": true,
+      "index": 7946,
+      "mean_renderer_seed": 2400
+    },
+    {
+      "episode": 2957,
+      "start": 34,
+      "moving_block": true,
+      "index": 1339,
+      "mean_renderer_seed": 2400
+    },
+    {
+      "episode": 7484,
+      "start": 9,
+      "moving_block": true,
+      "index": 3856,
+      "mean_renderer_seed": 2400
+    },
+    {
+      "episode": 2845,
+      "start": 9,
+      "moving_block": true,
+      "index": 1244,
+      "mean_renderer_seed": 2400
+    },
+    {
+      "episode": 13162,
+      "start": 15,
+      "moving_block": true,
+      "index": 6728,
+      "mean_renderer_seed": 2400
+    },
+    {
+      "episode": 17820,
+      "start": 14,
+      "moving_block": true,
+      "index": 9445,
+      "mean_renderer_seed": 2400
+    },
+    {
+      "episode": 16196,
+      "start": 18,
+      "moving_block": true,
+      "index": 8664,
+      "mean_renderer_seed": 2500
+    },
+    {
+      "episode": 4913,
+      "start": 12,
+      "moving_block": true,
+      "index": 2423,
+      "mean_renderer_seed": 2500
+    },
+    {
+      "episode": 1669,
+      "start": 9,
+      "moving_block": true,
+      "index": 764,
+      "mean_renderer_seed": 2500
+    },
+    {
+      "episode": 11097,
+      "start": 14,
+      "moving_block": true,
+      "index": 5363,
+      "mean_renderer_seed": 2500
+    },
+    {
+      "episode": 2082,
+      "start": 11,
+      "moving_block": true,
+      "index": 972,
+      "mean_renderer_seed": 2500
+    },
+    {
+      "episode": 2073,
+      "start": 9,
+      "moving_block": true,
+      "index": 957,
+      "mean_renderer_seed": 2500
+    },
+    {
+      "episode": 3070,
+      "start": 11,
+      "moving_block": true,
+      "index": 1457,
+      "mean_renderer_seed": 2500
+    },
+    {
+      "episode": 945,
+      "start": 9,
+      "moving_block": true,
+      "index": 442,
+      "mean_renderer_seed": 2500
+    },
+    {
+      "episode": 17626,
+      "start": 14,
+      "moving_block": true,
+      "index": 9276,
+      "mean_renderer_seed": 2600
+    },
+    {
+      "episode": 15152,
+      "start": 15,
+      "moving_block": true,
+      "index": 8063,
+      "mean_renderer_seed": 2600
+    },
+    {
+      "episode": 14489,
+      "start": 13,
+      "moving_block": true,
+      "index": 7776,
+      "mean_renderer_seed": 2600
+    },
+    {
+      "episode": 1328,
+      "start": 12,
+      "moving_block": true,
+      "index": 640,
+      "mean_renderer_seed": 2600
+    },
+    {
+      "episode": 8223,
+      "start": 12,
+      "moving_block": true,
+      "index": 4137,
+      "mean_renderer_seed": 2600
+    },
+    {
+      "episode": 4758,
+      "start": 14,
+      "moving_block": true,
+      "index": 2294,
+      "mean_renderer_seed": 2600
+    },
+    {
+      "episode": 17947,
+      "start": 8,
+      "moving_block": true,
+      "index": 9550,
+      "mean_renderer_seed": 2600
+    },
+    {
+      "episode": 17782,
+      "start": 19,
+      "moving_block": true,
+      "index": 9402,
+      "mean_renderer_seed": 2600
+    },
+    {
+      "episode": 8223,
+      "start": 14,
+      "moving_block": true,
+      "index": 4139,
+      "mean_renderer_seed": 2700
+    },
+    {
+      "episode": 3547,
+      "start": 9,
+      "moving_block": true,
+      "index": 1797,
+      "mean_renderer_seed": 2700
+    },
+    {
+      "episode": 5945,
+      "start": 11,
+      "moving_block": true,
+      "index": 3079,
+      "mean_renderer_seed": 2700
+    },
+    {
+      "episode": 17820,
+      "start": 8,
+      "moving_block": true,
+      "index": 9439,
+      "mean_renderer_seed": 2700
+    },
+    {
+      "episode": 2845,
+      "start": 13,
+      "moving_block": true,
+      "index": 1248,
+      "mean_renderer_seed": 2700
+    },
+    {
+      "episode": 627,
+      "start": 9,
+      "moving_block": true,
+      "index": 247,
+      "mean_renderer_seed": 2700
+    },
+    {
+      "episode": 5248,
+      "start": 10,
+      "moving_block": true,
+      "index": 2804,
+      "mean_renderer_seed": 2700
+    },
+    {
+      "episode": 919,
+      "start": 8,
+      "moving_block": true,
+      "index": 411,
+      "mean_renderer_seed": 2700
+    },
+    {
+      "episode": 12068,
+      "start": 8,
+      "moving_block": true,
+      "index": 6035,
+      "mean_renderer_seed": 2800
+    },
+    {
+      "episode": 5056,
+      "start": 11,
+      "moving_block": true,
+      "index": 2488,
+      "mean_renderer_seed": 2800
+    },
+    {
+      "episode": 3393,
+      "start": 8,
+      "moving_block": true,
+      "index": 1694,
+      "mean_renderer_seed": 2800
+    },
+    {
+      "episode": 13384,
+      "start": 14,
+      "moving_block": true,
+      "index": 7018,
+      "mean_renderer_seed": 2800
+    },
+    {
+      "episode": 14177,
+      "start": 10,
+      "moving_block": true,
+      "index": 7459,
+      "mean_renderer_seed": 2800
+    },
+    {
+      "episode": 16060,
+      "start": 17,
+      "moving_block": true,
+      "index": 8482,
+      "mean_renderer_seed": 2800
+    },
+    {
+      "episode": 2876,
+      "start": 9,
+      "moving_block": true,
+      "index": 1286,
+      "mean_renderer_seed": 2800
+    },
+    {
+      "episode": 14463,
+      "start": 18,
+      "moving_block": true,
+      "index": 7666,
+      "mean_renderer_seed": 2800
+    },
+    {
+      "episode": 1381,
+      "start": 13,
+      "moving_block": true,
+      "index": 658,
+      "mean_renderer_seed": 2900
+    },
+    {
+      "episode": 4778,
+      "start": 9,
+      "moving_block": true,
+      "index": 2304,
+      "mean_renderer_seed": 2900
+    },
+    {
+      "episode": 2263,
+      "start": 10,
+      "moving_block": true,
+      "index": 1055,
+      "mean_renderer_seed": 2900
+    },
+    {
+      "episode": 1553,
+      "start": 8,
+      "moving_block": true,
+      "index": 724,
+      "mean_renderer_seed": 2900
+    },
+    {
+      "episode": 873,
+      "start": 11,
+      "moving_block": true,
+      "index": 370,
+      "mean_renderer_seed": 2900
+    },
+    {
+      "episode": 5134,
+      "start": 20,
+      "moving_block": true,
+      "index": 2704,
+      "mean_renderer_seed": 2900
+    },
+    {
+      "episode": 9961,
+      "start": 10,
+      "moving_block": true,
+      "index": 4699,
+      "mean_renderer_seed": 2900
+    },
+    {
+      "episode": 6508,
+      "start": 12,
+      "moving_block": true,
+      "index": 3341,
+      "mean_renderer_seed": 2900
+    },
+    {
+      "episode": 8969,
+      "start": 10,
+      "moving_block": true,
+      "index": 4448,
+      "mean_renderer_seed": 3000
+    },
+    {
+      "episode": 5248,
+      "start": 8,
+      "moving_block": true,
+      "index": 2802,
+      "mean_renderer_seed": 3000
+    },
+    {
+      "episode": 11216,
+      "start": 13,
+      "moving_block": true,
+      "index": 5509,
+      "mean_renderer_seed": 3000
+    },
+    {
+      "episode": 3426,
+      "start": 9,
+      "moving_block": true,
+      "index": 1708,
+      "mean_renderer_seed": 3000
+    },
+    {
+      "episode": 13146,
+      "start": 9,
+      "moving_block": true,
+      "index": 6690,
+      "mean_renderer_seed": 3000
+    },
+    {
+      "episode": 5089,
+      "start": 14,
+      "moving_block": true,
+      "index": 2583,
+      "mean_renderer_seed": 3000
+    },
+    {
+      "episode": 14213,
+      "start": 12,
+      "moving_block": true,
+      "index": 7527,
+      "mean_renderer_seed": 3000
+    },
+    {
+      "episode": 11163,
+      "start": 10,
+      "moving_block": true,
+      "index": 5422,
+      "mean_renderer_seed": 3000
+    },
+    {
+      "episode": 14468,
+      "start": 8,
+      "moving_block": true,
+      "index": 7679,
+      "mean_renderer_seed": 3100
+    },
+    {
+      "episode": 3102,
+      "start": 9,
+      "moving_block": true,
+      "index": 1503,
+      "mean_renderer_seed": 3100
+    },
+    {
+      "episode": 13162,
+      "start": 10,
+      "moving_block": true,
+      "index": 6723,
+      "mean_renderer_seed": 3100
+    },
+    {
+      "episode": 4812,
+      "start": 10,
+      "moving_block": true,
+      "index": 2320,
+      "mean_renderer_seed": 3100
+    },
+    {
+      "episode": 16113,
+      "start": 22,
+      "moving_block": true,
+      "index": 8562,
+      "mean_renderer_seed": 3100
+    },
+    {
+      "episode": 2038,
+      "start": 10,
+      "moving_block": true,
+      "index": 932,
+      "mean_renderer_seed": 3100
+    },
+    {
+      "episode": 1603,
+      "start": 8,
+      "moving_block": true,
+      "index": 750,
+      "mean_renderer_seed": 3100
+    },
+    {
+      "episode": 9961,
+      "start": 11,
+      "moving_block": true,
+      "index": 4700,
+      "mean_renderer_seed": 3100
+    },
+    {
+      "episode": 11923,
+      "start": 8,
+      "moving_block": true,
+      "index": 5923,
+      "mean_renderer_seed": 3200
+    },
+    {
+      "episode": 17080,
+      "start": 11,
+      "moving_block": true,
+      "index": 8942,
+      "mean_renderer_seed": 3200
+    },
+    {
+      "episode": 1669,
+      "start": 10,
+      "moving_block": true,
+      "index": 765,
+      "mean_renderer_seed": 3200
+    },
+    {
+      "episode": 14718,
+      "start": 8,
+      "moving_block": true,
+      "index": 7938,
+      "mean_renderer_seed": 3200
+    },
+    {
+      "episode": 5395,
+      "start": 12,
+      "moving_block": true,
+      "index": 2883,
+      "mean_renderer_seed": 3200
+    },
+    {
+      "episode": 3037,
+      "start": 8,
+      "moving_block": true,
+      "index": 1418,
+      "mean_renderer_seed": 3200
+    },
+    {
+      "episode": 6919,
+      "start": 14,
+      "moving_block": true,
+      "index": 3495,
+      "mean_renderer_seed": 3200
+    },
+    {
+      "episode": 11974,
+      "start": 11,
+      "moving_block": true,
+      "index": 5998,
+      "mean_renderer_seed": 3200
+    },
+    {
+      "episode": 4882,
+      "start": 13,
+      "moving_block": true,
+      "index": 2396,
+      "mean_renderer_seed": 3300
+    },
+    {
+      "episode": 17782,
+      "start": 15,
+      "moving_block": true,
+      "index": 9398,
+      "mean_renderer_seed": 3300
+    },
+    {
+      "episode": 5357,
+      "start": 11,
+      "moving_block": true,
+      "index": 2856,
+      "mean_renderer_seed": 3300
+    },
+    {
+      "episode": 15152,
+      "start": 8,
+      "moving_block": true,
+      "index": 8056,
+      "mean_renderer_seed": 3300
+    },
+    {
+      "episode": 10968,
+      "start": 8,
+      "moving_block": true,
+      "index": 5258,
+      "mean_renderer_seed": 3300
+    },
+    {
+      "episode": 1674,
+      "start": 10,
+      "moving_block": true,
+      "index": 778,
+      "mean_renderer_seed": 3300
+    },
+    {
+      "episode": 10103,
+      "start": 20,
+      "moving_block": true,
+      "index": 4779,
+      "mean_renderer_seed": 3300
+    },
+    {
+      "episode": 4724,
+      "start": 12,
+      "moving_block": true,
+      "index": 2275,
+      "mean_renderer_seed": 3300
+    },
+    {
+      "episode": 17706,
+      "start": 8,
+      "moving_block": true,
+      "index": 9326,
+      "mean_renderer_seed": 3400
+    },
+    {
+      "episode": 5248,
+      "start": 15,
+      "moving_block": true,
+      "index": 2809,
+      "mean_renderer_seed": 3400
+    },
+    {
+      "episode": 807,
+      "start": 9,
+      "moving_block": true,
+      "index": 314,
+      "mean_renderer_seed": 3400
+    },
+    {
+      "episode": 7330,
+      "start": 9,
+      "moving_block": true,
+      "index": 3732,
+      "mean_renderer_seed": 3400
+    },
+    {
+      "episode": 2864,
+      "start": 8,
+      "moving_block": true,
+      "index": 1271,
+      "mean_renderer_seed": 3400
+    },
+    {
+      "episode": 10103,
+      "start": 14,
+      "moving_block": true,
+      "index": 4773,
+      "mean_renderer_seed": 3400
+    },
+    {
+      "episode": 12574,
+      "start": 25,
+      "moving_block": true,
+      "index": 6318,
+      "mean_renderer_seed": 3400
+    },
+    {
+      "episode": 15157,
+      "start": 11,
+      "moving_block": true,
+      "index": 8075,
+      "mean_renderer_seed": 3400
+    },
+    {
+      "episode": 13371,
+      "start": 18,
+      "moving_block": true,
+      "index": 6976,
+      "mean_renderer_seed": 3500
+    },
+    {
+      "episode": 2245,
+      "start": 10,
+      "moving_block": true,
+      "index": 1042,
+      "mean_renderer_seed": 3500
+    },
+    {
+      "episode": 4812,
+      "start": 13,
+      "moving_block": true,
+      "index": 2323,
+      "mean_renderer_seed": 3500
+    },
+    {
+      "episode": 16091,
+      "start": 12,
+      "moving_block": true,
+      "index": 8502,
+      "mean_renderer_seed": 3500
+    },
+    {
+      "episode": 5061,
+      "start": 15,
+      "moving_block": true,
+      "index": 2515,
+      "mean_renderer_seed": 3500
+    },
+    {
+      "episode": 17276,
+      "start": 8,
+      "moving_block": true,
+      "index": 9070,
+      "mean_renderer_seed": 3500
+    },
+    {
+      "episode": 4970,
+      "start": 11,
+      "moving_block": true,
+      "index": 2450,
+      "mean_renderer_seed": 3500
+    },
+    {
+      "episode": 14162,
+      "start": 9,
+      "moving_block": true,
+      "index": 7436,
+      "mean_renderer_seed": 3500
+    },
+    {
+      "episode": 15212,
+      "start": 10,
+      "moving_block": true,
+      "index": 8090,
+      "mean_renderer_seed": 3600
+    },
+    {
+      "episode": 1076,
+      "start": 8,
+      "moving_block": true,
+      "index": 526,
+      "mean_renderer_seed": 3600
+    },
+    {
+      "episode": 7484,
+      "start": 8,
+      "moving_block": true,
+      "index": 3855,
+      "mean_renderer_seed": 3600
+    },
+    {
+      "episode": 2957,
+      "start": 31,
+      "moving_block": true,
+      "index": 1336,
+      "mean_renderer_seed": 3600
+    },
+    {
+      "episode": 3141,
+      "start": 13,
+      "moving_block": true,
+      "index": 1519,
+      "mean_renderer_seed": 3600
+    },
+    {
+      "episode": 15157,
+      "start": 8,
+      "moving_block": true,
+      "index": 8072,
+      "mean_renderer_seed": 3600
+    },
+    {
+      "episode": 14177,
+      "start": 20,
+      "moving_block": true,
+      "index": 7469,
+      "mean_renderer_seed": 3600
+    },
+    {
+      "episode": 14473,
+      "start": 12,
+      "moving_block": true,
+      "index": 7706,
+      "mean_renderer_seed": 3600
+    },
+    {
+      "episode": 2034,
+      "start": 10,
+      "moving_block": true,
+      "index": 919,
+      "mean_renderer_seed": 3700
+    },
+    {
+      "episode": 7298,
+      "start": 9,
+      "moving_block": true,
+      "index": 3696,
+      "mean_renderer_seed": 3700
+    },
+    {
+      "episode": 11464,
+      "start": 9,
+      "moving_block": true,
+      "index": 5754,
+      "mean_renderer_seed": 3700
+    },
+    {
+      "episode": 14462,
+      "start": 12,
+      "moving_block": true,
+      "index": 7637,
+      "mean_renderer_seed": 3700
+    },
+    {
+      "episode": 15212,
+      "start": 8,
+      "moving_block": true,
+      "index": 8088,
+      "mean_renderer_seed": 3700
+    },
+    {
+      "episode": 17947,
+      "start": 11,
+      "moving_block": true,
+      "index": 9553,
+      "mean_renderer_seed": 3700
+    },
+    {
+      "episode": 12372,
+      "start": 13,
+      "moving_block": true,
+      "index": 6232,
+      "mean_renderer_seed": 3700
+    },
+    {
+      "episode": 17820,
+      "start": 18,
+      "moving_block": true,
+      "index": 9449,
+      "mean_renderer_seed": 3700
+    },
+    {
+      "episode": 11147,
+      "start": 9,
+      "moving_block": true,
+      "index": 5397,
+      "mean_renderer_seed": 3800
+    },
+    {
+      "episode": 11249,
+      "start": 19,
+      "moving_block": true,
+      "index": 5555,
+      "mean_renderer_seed": 3800
+    },
+    {
+      "episode": 4711,
+      "start": 12,
+      "moving_block": true,
+      "index": 2258,
+      "mean_renderer_seed": 3800
+    },
+    {
+      "episode": 1992,
+      "start": 8,
+      "moving_block": true,
+      "index": 907,
+      "mean_renderer_seed": 3800
+    },
+    {
+      "episode": 15157,
+      "start": 14,
+      "moving_block": true,
+      "index": 8078,
+      "mean_renderer_seed": 3800
+    },
+    {
+      "episode": 11967,
+      "start": 11,
+      "moving_block": true,
+      "index": 5962,
+      "mean_renderer_seed": 3800
+    },
+    {
+      "episode": 795,
+      "start": 8,
+      "moving_block": true,
+      "index": 303,
+      "mean_renderer_seed": 3800
+    },
+    {
+      "episode": 6469,
+      "start": 14,
+      "moving_block": true,
+      "index": 3289,
+      "mean_renderer_seed": 3800
+    },
+    {
+      "episode": 9943,
+      "start": 9,
+      "moving_block": true,
+      "index": 4684,
+      "mean_renderer_seed": 3900
+    },
+    {
+      "episode": 15157,
+      "start": 15,
+      "moving_block": true,
+      "index": 8079,
+      "mean_renderer_seed": 3900
+    },
+    {
+      "episode": 873,
+      "start": 14,
+      "moving_block": true,
+      "index": 373,
+      "mean_renderer_seed": 3900
+    },
+    {
+      "episode": 8223,
+      "start": 13,
+      "moving_block": true,
+      "index": 4138,
+      "mean_renderer_seed": 3900
+    },
+    {
+      "episode": 12765,
+      "start": 13,
+      "moving_block": true,
+      "index": 6426,
+      "mean_renderer_seed": 3900
+    },
+    {
+      "episode": 10624,
+      "start": 12,
+      "moving_block": true,
+      "index": 5017,
+      "mean_renderer_seed": 3900
+    },
+    {
+      "episode": 5078,
+      "start": 11,
+      "moving_block": true,
+      "index": 2534,
+      "mean_renderer_seed": 3900
+    },
+    {
+      "episode": 12574,
+      "start": 23,
+      "moving_block": true,
+      "index": 6316,
+      "mean_renderer_seed": 3900
+    },
+    {
+      "episode": 6933,
+      "start": 10,
+      "moving_block": true,
+      "index": 3506,
+      "mean_renderer_seed": 4000
+    },
+    {
+      "episode": 4072,
+      "start": 10,
+      "moving_block": true,
+      "index": 2093,
+      "mean_renderer_seed": 4000
+    },
+    {
+      "episode": 1603,
+      "start": 9,
+      "moving_block": true,
+      "index": 751,
+      "mean_renderer_seed": 4000
+    },
+    {
+      "episode": 4882,
+      "start": 9,
+      "moving_block": true,
+      "index": 2392,
+      "mean_renderer_seed": 4000
+    },
+    {
+      "episode": 9939,
+      "start": 12,
+      "moving_block": true,
+      "index": 4673,
+      "mean_renderer_seed": 4000
+    },
+    {
+      "episode": 13320,
+      "start": 11,
+      "moving_block": true,
+      "index": 6884,
+      "mean_renderer_seed": 4000
+    },
+    {
+      "episode": 4877,
+      "start": 13,
+      "moving_block": true,
+      "index": 2382,
+      "mean_renderer_seed": 4000
+    },
+    {
+      "episode": 17951,
+      "start": 10,
+      "moving_block": true,
+      "index": 9565,
+      "mean_renderer_seed": 4000
+    },
+    {
+      "episode": 365,
+      "start": 9,
+      "moving_block": true,
+      "index": 146,
+      "mean_renderer_seed": 4100
+    },
+    {
+      "episode": 2102,
+      "start": 12,
+      "moving_block": true,
+      "index": 1012,
+      "mean_renderer_seed": 4100
+    },
+    {
+      "episode": 5134,
+      "start": 11,
+      "moving_block": true,
+      "index": 2695,
+      "mean_renderer_seed": 4100
+    },
+    {
+      "episode": 16060,
+      "start": 21,
+      "moving_block": true,
+      "index": 8486,
+      "mean_renderer_seed": 4100
+    },
+    {
+      "episode": 14655,
+      "start": 12,
+      "moving_block": true,
+      "index": 7891,
+      "mean_renderer_seed": 4100
+    },
+    {
+      "episode": 11147,
+      "start": 8,
+      "moving_block": true,
+      "index": 5396,
+      "mean_renderer_seed": 4100
+    },
+    {
+      "episode": 17080,
+      "start": 16,
+      "moving_block": true,
+      "index": 8947,
+      "mean_renderer_seed": 4100
+    },
+    {
+      "episode": 6557,
+      "start": 11,
+      "moving_block": true,
+      "index": 3412,
+      "mean_renderer_seed": 4100
+    }
+  ],
+  "counterfactual": {
+    "float32_matmul_precision": "high",
+    "feature_forward_precision": "BF16 autocast",
+    "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/eval-endpoint-source-L2-50k-seed0/results/checkpoint",
+    "selection_seed": 142,
+    "excluded_cases": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/final-L2-standard-calibrated-b001-50k-seed0/counterfactual/counterfactual.json",
+    "cases": 64,
+    "rollouts": 256,
+    "action_identification_accuracy": 0.8671875,
+    "agent_action_identification_accuracy": 0.86328125,
+    "block_action_identification_accuracy": 0.7109375,
+    "block_angle_error_deg": 8.090678439166476,
+    "oracle_pose_action_identification_accuracy": 0.875,
+    "chance": 0.25,
+    "sampler_steps": 50,
+    "actual_renderer_sampler": "Euler50",
+    "seconds": 116.74636554718018,
+    "common_sampler_noise": true,
+    "recorded_action_replay_agent_error": 0.9345287680511132,
+    "recorded_action_replay_block_error": 0.6426692158425341,
+    "scope": "Single-seed matched-reset simulator counterfactuals; deterministic mean-state dynamics; reset cannot recover unsaved block velocity",
+    "details": [
+      {
+        "block_angle_error_deg": 10.50684719038579,
+        "case": 0,
+        "episode": 6556,
+        "start": 16,
+        "source_raw_row": 818660,
+        "donor_raw_rows": [
+          818660,
+          1838184,
+          213392,
+          1820801
+        ],
+        "assigned": [
+          0,
+          0,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "block_correct": [
+          false,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            870.3158076653783,
+            4489.080525815705,
+            15842.304511315659,
+            3204.252139351931
+          ],
+          [
+            1981.910865169384,
+            2073.9839484879285,
+            16097.368121022495,
+            5372.865472900263
+          ],
+          [
+            13331.74407267963,
+            15223.798548980343,
+            3030.4769310776173,
+            9797.223076983537
+          ],
+          [
+            3727.0697410258645,
+            10411.599290729157,
+            13096.911422283185,
+            662.3876825867357
+          ]
+        ],
+        "recorded_action_replay_agent_error": 2.8151343982054917,
+        "recorded_action_replay_block_error": 1.6637055338445492
+      },
+      {
+        "block_angle_error_deg": 2.345132214419851,
+        "case": 1,
+        "episode": 14483,
+        "start": 15,
+        "source_raw_row": 1824717,
+        "donor_raw_rows": [
+          1824717,
+          349876,
+          2125710,
+          594930
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            39.75090201262361,
+            7579.390066490119,
+            32461.37347690307,
+            16593.3636887474
+          ],
+          [
+            5694.437065074497,
+            371.139678620876,
+            33478.601873989974,
+            22116.09552291059
+          ],
+          [
+            32033.902086990383,
+            34817.93405520855,
+            1459.117899456651,
+            75305.13635780035
+          ],
+          [
+            6343.792233090816,
+            12035.374053414747,
+            53481.417853421706,
+            5518.48353499584
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.6782130020803785,
+        "recorded_action_replay_block_error": 0.680811595675257
+      },
+      {
+        "block_angle_error_deg": 4.649564834807054,
+        "case": 2,
+        "episode": 13952,
+        "start": 11,
+        "source_raw_row": 1753869,
+        "donor_raw_rows": [
+          1753869,
+          221222,
+          2239415,
+          1622313
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            99.41251903468569,
+            41339.236213719894,
+            2722.2697387041876,
+            3688.8172439969226
+          ],
+          [
+            23250.79680703354,
+            7616.158594773413,
+            28862.152739056597,
+            23651.721472562007
+          ],
+          [
+            2090.0641508063445,
+            44853.89991597288,
+            475.15170228656643,
+            3555.8145805320873
+          ],
+          [
+            3971.28887330594,
+            40142.9639775453,
+            4437.1729351454305,
+            169.72353885563706
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.7496656331079076,
+        "recorded_action_replay_block_error": 0.7486917954585899
+      },
+      {
+        "block_angle_error_deg": 7.5967090888180575,
+        "case": 3,
+        "episode": 14601,
+        "start": 9,
+        "source_raw_row": 1842987,
+        "donor_raw_rows": [
+          1842987,
+          1792090,
+          1668906,
+          1578998
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            42.93318664066246,
+            11493.581269509647,
+            23872.834535657494,
+            38685.32935375783
+          ],
+          [
+            10434.301859883722,
+            811.7987241422471,
+            28507.555097365454,
+            34276.29093706749
+          ],
+          [
+            23421.135112725322,
+            38976.20399740526,
+            4629.038586386146,
+            34248.37985214466
+          ],
+          [
+            15613.921685586913,
+            21563.608932848056,
+            14792.745942896057,
+            6793.74884153324
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.4476883531913763,
+        "recorded_action_replay_block_error": 0.43756673124144235
+      },
+      {
+        "block_angle_error_deg": 4.316285397026918,
+        "case": 4,
+        "episode": 6545,
+        "start": 11,
+        "source_raw_row": 816864,
+        "donor_raw_rows": [
+          816864,
+          1811927,
+          1891412,
+          1695353
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            163.37134110787505,
+            6053.759894581227,
+            21746.602982569595,
+            8869.946778492698
+          ],
+          [
+            4891.545216798344,
+            479.3074325828429,
+            20156.67434178645,
+            2337.24787124149
+          ],
+          [
+            14145.43032530426,
+            10764.039642665663,
+            1732.828857299833,
+            8781.552011702597
+          ],
+          [
+            10516.843726436697,
+            1592.1684299393382,
+            15438.96354361721,
+            87.31267475246591
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.7424802426579398,
+        "recorded_action_replay_block_error": 0.15866771088837994
+      },
+      {
+        "block_angle_error_deg": 11.743061826111727,
+        "case": 5,
+        "episode": 6469,
+        "start": 15,
+        "source_raw_row": 804648,
+        "donor_raw_rows": [
+          804648,
+          244985,
+          988227,
+          1216195
+        ],
+        "assigned": [
+          0,
+          0,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            51.79039923528602,
+            9457.205181089095,
+            12153.210878674261,
+            7199.022735352141
+          ],
+          [
+            6612.442946676872,
+            11433.706182946818,
+            25420.43599690685,
+            13043.642556832852
+          ],
+          [
+            10386.822968479717,
+            14477.859692246175,
+            856.6482650150933,
+            9569.991808202481
+          ],
+          [
+            4107.855334050491,
+            6073.796169692115,
+            5210.652393151071,
+            4084.4664834523087
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.6347079782459008,
+        "recorded_action_replay_block_error": 0.314906586872019
+      },
+      {
+        "block_angle_error_deg": 3.7850280809384143,
+        "case": 6,
+        "episode": 5144,
+        "start": 17,
+        "source_raw_row": 649421,
+        "donor_raw_rows": [
+          649421,
+          2043986,
+          1382759,
+          38903
+        ],
+        "assigned": [
+          3,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          false,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          false,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          false,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            10083.277969888946,
+            8023.664552931366,
+            14511.640717534356,
+            7801.315382353458
+          ],
+          [
+            8850.185756335319,
+            489.00097293887166,
+            13430.97891801,
+            15410.189715647448
+          ],
+          [
+            38518.10527251309,
+            21782.700299249063,
+            2016.7634519106552,
+            21329.03597105606
+          ],
+          [
+            14836.43426241269,
+            10386.026264552089,
+            9678.093688299203,
+            6827.328484309282
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.94410492066842,
+        "recorded_action_replay_block_error": 0.0
+      },
+      {
+        "block_angle_error_deg": 2.759886850489213,
+        "case": 7,
+        "episode": 10646,
+        "start": 12,
+        "source_raw_row": 1314978,
+        "donor_raw_rows": [
+          1314978,
+          1666729,
+          532641,
+          64597
+        ],
+        "assigned": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "cost_matrix": [
+          [
+            1324.2077616476527,
+            5495.778125886997,
+            32556.274534924647,
+            26222.730365029136
+          ],
+          [
+            5508.911827307085,
+            1130.0977009078406,
+            28372.82794869884,
+            24352.886518026717
+          ],
+          [
+            26464.208612347025,
+            31298.295184383172,
+            54396.94300035435,
+            51987.10992251446
+          ],
+          [
+            10574.847865217569,
+            14449.045997221832,
+            25484.60207997419,
+            19733.34679212871
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.8253781924174061,
+        "recorded_action_replay_block_error": 0.6474965912621615
+      },
+      {
+        "block_angle_error_deg": 2.045428577052473,
+        "case": 8,
+        "episode": 16158,
+        "start": 19,
+        "source_raw_row": 2032336,
+        "donor_raw_rows": [
+          2032336,
+          1370978,
+          742750,
+          645107
+        ],
+        "assigned": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "correct": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "agent_correct": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "cost_matrix": [
+          [
+            1579.7513475315768,
+            19481.27147114971,
+            20563.505729408622,
+            13029.293380333716
+          ],
+          [
+            13690.923675633081,
+            30518.957910262627,
+            33369.98574574088,
+            24123.727975153855
+          ],
+          [
+            14917.27222897284,
+            25758.01787147156,
+            26010.90983238,
+            25080.15798988298
+          ],
+          [
+            6335.200151026161,
+            13863.251943955795,
+            15128.873766983108,
+            13436.953302312988
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.679176557516546,
+        "recorded_action_replay_block_error": 0.6130860486145274
+      },
+      {
+        "block_angle_error_deg": 23.555378932403993,
+        "case": 9,
+        "episode": 2992,
+        "start": 16,
+        "source_raw_row": 358180,
+        "donor_raw_rows": [
+          358180,
+          1009967,
+          40288,
+          288718
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          false,
+          false,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            275.24591091442437,
+            13277.565422693217,
+            5313.580310188954,
+            12417.559393450165
+          ],
+          [
+            9338.992239537321,
+            4706.1556541756045,
+            8766.351236827864,
+            21867.98705731907
+          ],
+          [
+            7816.202421824243,
+            16969.048314955042,
+            1572.3137438419885,
+            5908.31774803995
+          ],
+          [
+            11439.03201120842,
+            29505.76318584842,
+            5385.915397472612,
+            1193.5940691763944
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.49353172855333494,
+        "recorded_action_replay_block_error": 0.1270903321456754
+      },
+      {
+        "block_angle_error_deg": 7.335206208767304,
+        "case": 10,
+        "episode": 5089,
+        "start": 9,
+        "source_raw_row": 639041,
+        "donor_raw_rows": [
+          639041,
+          1983855,
+          1625215,
+          1518161
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            130.92042461801748,
+            13421.293778933892,
+            21981.06407943154,
+            5803.220513032355
+          ],
+          [
+            9981.970777823235,
+            623.5871465515409,
+            3804.363443390095,
+            10495.744566319996
+          ],
+          [
+            16371.752769401923,
+            2379.9130557095623,
+            486.7924777866889,
+            12960.32153832129
+          ],
+          [
+            7169.493132882593,
+            19278.685673931144,
+            23155.752471194577,
+            1197.1315779549782
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.3731899227592648,
+        "recorded_action_replay_block_error": 0.24084942310407048
+      },
+      {
+        "block_angle_error_deg": 3.2743003159068556,
+        "case": 11,
+        "episode": 8334,
+        "start": 9,
+        "source_raw_row": 1031768,
+        "donor_raw_rows": [
+          1031768,
+          684458,
+          1576203,
+          183079
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            1161.1209708771073,
+            17803.08812310899,
+            10312.650099047627,
+            13336.05948699477
+          ],
+          [
+            14772.429929253987,
+            337.89190632178173,
+            9618.69957180805,
+            3895.7494690181793
+          ],
+          [
+            7864.737619378679,
+            10754.050592050833,
+            239.09274552736025,
+            3021.712869237119
+          ],
+          [
+            11596.928697077374,
+            3316.21489710658,
+            3642.8261669754747,
+            295.07642847156046
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.461555067921336,
+        "recorded_action_replay_block_error": 1.13057180491999
+      },
+      {
+        "block_angle_error_deg": 4.816262611633002,
+        "case": 12,
+        "episode": 15687,
+        "start": 18,
+        "source_raw_row": 1959697,
+        "donor_raw_rows": [
+          1959697,
+          589913,
+          1257863,
+          389406
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            102.3028473342248,
+            27156.099923735055,
+            27072.049323653417,
+            6445.1007376289635
+          ],
+          [
+            18511.10092216644,
+            948.3785719798956,
+            5210.364867097405,
+            20414.841591495067
+          ],
+          [
+            21442.24184033376,
+            4952.737261943757,
+            427.992457351196,
+            25103.957730660495
+          ],
+          [
+            5973.866582215447,
+            26527.648210624335,
+            29546.23003095986,
+            242.63617740973302
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.180817321200545,
+        "recorded_action_replay_block_error": 0.020675686921480526
+      },
+      {
+        "block_angle_error_deg": 6.863717086297503,
+        "case": 13,
+        "episode": 11962,
+        "start": 8,
+        "source_raw_row": 1493140,
+        "donor_raw_rows": [
+          1493140,
+          515071,
+          13296,
+          249295
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          0
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            78.804646703777,
+            4894.188086370872,
+            8429.943428274379,
+            14341.127814447853
+          ],
+          [
+            2803.519985955678,
+            595.3591202354488,
+            7074.948620785541,
+            9826.706771702118
+          ],
+          [
+            6933.640202740118,
+            7404.154847649163,
+            649.7258195498644,
+            24050.439220542583
+          ],
+          [
+            3751.634240745094,
+            6968.158522687722,
+            6671.31603008818,
+            21244.920900246645
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.47542011190804473,
+        "recorded_action_replay_block_error": 0.36066674943255395
+      },
+      {
+        "block_angle_error_deg": 2.8460718298536483,
+        "case": 14,
+        "episode": 16158,
+        "start": 11,
+        "source_raw_row": 2032296,
+        "donor_raw_rows": [
+          2032296,
+          1606732,
+          1647307,
+          2307836
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            3280.863479060893,
+            55691.83269302968,
+            45715.35049136994,
+            21946.975394031608
+          ],
+          [
+            25436.87874858892,
+            12932.650905930946,
+            17786.678285534344,
+            20748.11525805536
+          ],
+          [
+            35491.455585468684,
+            8403.50953629814,
+            4580.809626754764,
+            33592.8724238917
+          ],
+          [
+            18209.762115990146,
+            32134.98793764769,
+            36353.17551048501,
+            1536.4364159458958
+          ]
+        ],
+        "recorded_action_replay_agent_error": 2.3962659139198967,
+        "recorded_action_replay_block_error": 1.1121236587036765
+      },
+      {
+        "block_angle_error_deg": 2.379340779218681,
+        "case": 15,
+        "episode": 16183,
+        "start": 11,
+        "source_raw_row": 2037957,
+        "donor_raw_rows": [
+          2037957,
+          1898238,
+          2187082,
+          251120
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "cost_matrix": [
+          [
+            88.75376836515949,
+            34547.790099429774,
+            47455.83726955463,
+            41437.11100442422
+          ],
+          [
+            13947.976347385767,
+            10533.73443750372,
+            18743.684747046187,
+            20387.9811523187
+          ],
+          [
+            19917.202022351878,
+            10634.84789193846,
+            7998.201495600209,
+            28313.083491013233
+          ],
+          [
+            27925.966547287895,
+            10983.99283774377,
+            29509.60816309081,
+            4977.024401730902
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.0098941486683999,
+        "recorded_action_replay_block_error": 1.1689792249429674
+      },
+      {
+        "block_angle_error_deg": 19.19984507936165,
+        "case": 16,
+        "episode": 12055,
+        "start": 12,
+        "source_raw_row": 1506135,
+        "donor_raw_rows": [
+          1506135,
+          2223691,
+          349871,
+          284964
+        ],
+        "assigned": [
+          0,
+          2,
+          2,
+          2
+        ],
+        "correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "block_correct": [
+          false,
+          false,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            445.94977044414003,
+            34354.214174001056,
+            22145.346819086386,
+            55429.09604990976
+          ],
+          [
+            31215.928784365653,
+            21025.192691339733,
+            4646.149638302858,
+            41279.583721233255
+          ],
+          [
+            15089.522517655914,
+            20387.822740914115,
+            2423.7550103482645,
+            42255.07066989834
+          ],
+          [
+            14797.582756778596,
+            19731.13827611764,
+            9052.46460893805,
+            35149.792910412645
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.529685231456347,
+        "recorded_action_replay_block_error": 0.303037525643427
+      },
+      {
+        "block_angle_error_deg": 5.503589669315578,
+        "case": 17,
+        "episode": 12915,
+        "start": 10,
+        "source_raw_row": 1622333,
+        "donor_raw_rows": [
+          1622333,
+          238910,
+          1007051,
+          1822807
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            1511.627571708619,
+            21759.064272925658,
+            30391.456084015277,
+            9302.131051876944
+          ],
+          [
+            17503.85551979226,
+            457.74320535014516,
+            45725.79181630364,
+            13905.215624265998
+          ],
+          [
+            29310.385839288996,
+            34608.972238766415,
+            1662.751531630992,
+            11875.292654195757
+          ],
+          [
+            12871.816097959989,
+            12610.561083175488,
+            19401.86762977598,
+            361.7229024276012
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.1447169869829157,
+        "recorded_action_replay_block_error": 0.69971620123806
+      },
+      {
+        "block_angle_error_deg": 3.421982562197227,
+        "case": 18,
+        "episode": 13259,
+        "start": 10,
+        "source_raw_row": 1667208,
+        "donor_raw_rows": [
+          1667208,
+          1531348,
+          768268,
+          1825803
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            70.33749337869486,
+            11435.17267927893,
+            10205.082647417668,
+            13495.35612700079
+          ],
+          [
+            9840.08024458003,
+            279.3357554055564,
+            11937.98511367707,
+            3378.9829413975976
+          ],
+          [
+            8149.152028363204,
+            10154.260007218507,
+            464.9421366878796,
+            10545.648739149752
+          ],
+          [
+            7850.049766016922,
+            5016.772681376334,
+            9633.174661004752,
+            2865.6506798922273
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.7868894905696915,
+        "recorded_action_replay_block_error": 0.723376164787031
+      },
+      {
+        "block_angle_error_deg": 29.23418750766924,
+        "case": 19,
+        "episode": 12804,
+        "start": 13,
+        "source_raw_row": 1606620,
+        "donor_raw_rows": [
+          1606620,
+          603333,
+          1375852,
+          1579238
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            56.31472138057393,
+            6184.201190341061,
+            9500.819733816366,
+            20164.298138752194
+          ],
+          [
+            5959.089497559464,
+            474.5316175142907,
+            10169.762595076041,
+            19461.704723611427
+          ],
+          [
+            6933.073412547758,
+            8496.069644453699,
+            461.12232156100805,
+            16238.709642862812
+          ],
+          [
+            12433.721974479631,
+            14668.112651296276,
+            12849.936900878123,
+            4759.300004752547
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.3062757604337091,
+        "recorded_action_replay_block_error": 0.31132066952608817
+      },
+      {
+        "block_angle_error_deg": 3.052661907233765,
+        "case": 20,
+        "episode": 8038,
+        "start": 11,
+        "source_raw_row": 988917,
+        "donor_raw_rows": [
+          988917,
+          2250897,
+          1757686,
+          372793
+        ],
+        "assigned": [
+          0,
+          1,
+          3,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "cost_matrix": [
+          [
+            150.85217001576115,
+            11750.767576694263,
+            18966.913135444018,
+            4276.346702227862
+          ],
+          [
+            12332.260588732684,
+            1055.4202860230107,
+            38852.916642450975,
+            14572.030468801664
+          ],
+          [
+            8505.24059928119,
+            26473.39842857796,
+            5152.737557949294,
+            4674.754417185137
+          ],
+          [
+            3441.6329700569363,
+            15063.240772390203,
+            8396.493730909076,
+            96.63702171936508
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.4110040946420135,
+        "recorded_action_replay_block_error": 0.43325811384225316
+      },
+      {
+        "block_angle_error_deg": 1.8513578062548437,
+        "case": 21,
+        "episode": 14463,
+        "start": 19,
+        "source_raw_row": 1821017,
+        "donor_raw_rows": [
+          1821017,
+          2104326,
+          1103915,
+          1729953
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          2
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            246.99852107638975,
+            25466.395774650286,
+            13648.045877147233,
+            23007.079430783015
+          ],
+          [
+            18028.2605257818,
+            2523.6082743722977,
+            11723.150372868939,
+            13896.85054838768
+          ],
+          [
+            12860.427968394713,
+            17965.15460468374,
+            508.01159225393053,
+            6129.67357465892
+          ],
+          [
+            15927.05049570206,
+            9799.006019036566,
+            6519.915935601614,
+            7947.034263152391
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.6405789123249217,
+        "recorded_action_replay_block_error": 0.5927103005784402
+      },
+      {
+        "block_angle_error_deg": 1.414501265197445,
+        "case": 22,
+        "episode": 5883,
+        "start": 9,
+        "source_raw_row": 733278,
+        "donor_raw_rows": [
+          733278,
+          1531323,
+          1668846,
+          1691729
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            930.0816808552692,
+            15364.91302750584,
+            33409.76962709412,
+            13328.754714163293
+          ],
+          [
+            9582.337687370487,
+            1900.734180414804,
+            28252.334525723738,
+            8494.498264075766
+          ],
+          [
+            29211.552007778497,
+            33202.47248197111,
+            1450.1855379054691,
+            4058.981539220169
+          ],
+          [
+            14506.31699821753,
+            17509.924843076886,
+            6877.620197073043,
+            122.02878289105354
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.5511164493291489,
+        "recorded_action_replay_block_error": 0.4167920238461876
+      },
+      {
+        "block_angle_error_deg": 2.5499131834416335,
+        "case": 23,
+        "episode": 5115,
+        "start": 11,
+        "source_raw_row": 643939,
+        "donor_raw_rows": [
+          643939,
+          229541,
+          1796557,
+          891344
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            1269.310057631791,
+            6041.042030557351,
+            23805.200238792037,
+            4161.784402447217
+          ],
+          [
+            4737.064350041586,
+            162.9886826161705,
+            18554.350541767642,
+            6545.642319997616
+          ],
+          [
+            20662.193987804363,
+            17672.502266791682,
+            570.9662790879274,
+            12499.108171100957
+          ],
+          [
+            5364.999174611517,
+            6583.351080860226,
+            15134.860041932272,
+            2491.0397100781756
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.7724269109555301,
+        "recorded_action_replay_block_error": 0.33380578668693056
+      },
+      {
+        "block_angle_error_deg": 4.863368812489559,
+        "case": 24,
+        "episode": 627,
+        "start": 13,
+        "source_raw_row": 69346,
+        "donor_raw_rows": [
+          69346,
+          1407622,
+          315728,
+          2212110
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            70.0570124475752,
+            2523.676322125948,
+            16602.467613765697,
+            7460.020682222475
+          ],
+          [
+            3495.171124974586,
+            628.1763500827689,
+            13365.55470046881,
+            10122.271195632264
+          ],
+          [
+            13927.666315510302,
+            8451.966641700026,
+            3575.354083260927,
+            18241.82816309212
+          ],
+          [
+            8100.171639999195,
+            8111.693967522686,
+            13382.092488929127,
+            2651.8086269687205
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.778004420434899,
+        "recorded_action_replay_block_error": 0.7357100664644629
+      },
+      {
+        "block_angle_error_deg": 8.651497026547696,
+        "case": 25,
+        "episode": 8038,
+        "start": 9,
+        "source_raw_row": 988907,
+        "donor_raw_rows": [
+          988907,
+          1326280,
+          873867,
+          632897
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            432.21420484464323,
+            3568.686746768035,
+            17457.247962339075,
+            5438.903559372711
+          ],
+          [
+            5076.118842859702,
+            2364.7629183151203,
+            16396.009193248115,
+            4167.668584441279
+          ],
+          [
+            11879.956196161085,
+            16401.665013234076,
+            1432.7249221777731,
+            19559.33608506007
+          ],
+          [
+            5918.497814959361,
+            2556.883508934336,
+            23801.803120131794,
+            394.0315509271851
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.50933019917551,
+        "recorded_action_replay_block_error": 1.150423784009727
+      },
+      {
+        "block_angle_error_deg": 4.379528012140718,
+        "case": 26,
+        "episode": 919,
+        "start": 9,
+        "source_raw_row": 114496,
+        "donor_raw_rows": [
+          114496,
+          1781551,
+          2250837,
+          1613268
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            76.29308554850655,
+            5461.7978846397,
+            27525.042700703336,
+            9413.878809438576
+          ],
+          [
+            5060.805496529978,
+            735.5614332952684,
+            25956.582140875922,
+            12994.037374430016
+          ],
+          [
+            16904.851219325697,
+            21914.004993896888,
+            4751.914979644019,
+            7938.305984025779
+          ],
+          [
+            8423.257302916198,
+            14504.6670075261,
+            15528.61554081579,
+            184.72885846264043
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.8281628841692237,
+        "recorded_action_replay_block_error": 0.14958069260848944
+      },
+      {
+        "block_angle_error_deg": 6.176284943275146,
+        "case": 27,
+        "episode": 16091,
+        "start": 21,
+        "source_raw_row": 2019147,
+        "donor_raw_rows": [
+          2019147,
+          512106,
+          2283545,
+          2125685
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          2
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            746.3523027987901,
+            7465.397433944234,
+            23000.97157209654,
+            51612.72610084686
+          ],
+          [
+            5768.974796410245,
+            2415.1322514067683,
+            14112.05925953035,
+            38230.62102960873
+          ],
+          [
+            12286.490237570826,
+            15076.655917608881,
+            1956.6114845855977,
+            16618.703911530407
+          ],
+          [
+            15736.813770367913,
+            19317.04885029868,
+            8900.416220922478,
+            15364.613920228303
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.6247261141210048,
+        "recorded_action_replay_block_error": 0.6581716121356265
+      },
+      {
+        "block_angle_error_deg": 10.82875071484104,
+        "case": 28,
+        "episode": 10927,
+        "start": 8,
+        "source_raw_row": 1353331,
+        "donor_raw_rows": [
+          1353331,
+          2264365,
+          407670,
+          2250862
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          0
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            55.94194313526412,
+            9562.386962134005,
+            19950.185140107675,
+            41594.22069658178
+          ],
+          [
+            10325.576797683536,
+            1405.362954340984,
+            10483.707855884079,
+            51589.356293024
+          ],
+          [
+            16259.964491353554,
+            9830.276065509972,
+            2562.4023356141347,
+            51087.94065746433
+          ],
+          [
+            19957.885019588735,
+            31338.931181203632,
+            37577.34419098186,
+            20690.555581954053
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.6622115471174805,
+        "recorded_action_replay_block_error": 0.423359970279498
+      },
+      {
+        "block_angle_error_deg": 15.877151852713144,
+        "case": 29,
+        "episode": 5080,
+        "start": 13,
+        "source_raw_row": 637369,
+        "donor_raw_rows": [
+          637369,
+          1723424,
+          2007606,
+          1598068
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            81.65581421175658,
+            15888.634469111412,
+            6900.743464026673,
+            16352.19906717152
+          ],
+          [
+            19976.570470144285,
+            1665.4968542787703,
+            28181.667029427103,
+            46351.72872463425
+          ],
+          [
+            7102.996107609721,
+            23415.682751018525,
+            1057.512166791029,
+            8853.141250178927
+          ],
+          [
+            13737.254088792602,
+            39742.31277362266,
+            6392.704334193154,
+            2062.5022139063285
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.34028801354941035,
+        "recorded_action_replay_block_error": 0.28115024849558934
+      },
+      {
+        "block_angle_error_deg": 1.270633850655232,
+        "case": 30,
+        "episode": 5883,
+        "start": 12,
+        "source_raw_row": 733293,
+        "donor_raw_rows": [
+          733293,
+          1337301,
+          1040740,
+          622247
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            150.6235403763419,
+            11838.758027197899,
+            49404.73445881792,
+            34607.790173667505
+          ],
+          [
+            8200.650764970607,
+            793.0525601775882,
+            53602.15056444015,
+            14764.091382321807
+          ],
+          [
+            23279.442512775204,
+            22188.18220954066,
+            18596.660953388484,
+            21637.988792095697
+          ],
+          [
+            18342.540403570907,
+            7293.2108370721435,
+            33212.7546709357,
+            5505.365704164547
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.6073498137525288,
+        "recorded_action_replay_block_error": 0.3663248877786284
+      },
+      {
+        "block_angle_error_deg": 2.8651288899761553,
+        "case": 31,
+        "episode": 12234,
+        "start": 9,
+        "source_raw_row": 1531363,
+        "donor_raw_rows": [
+          1531363,
+          900891,
+          2239400,
+          1242176
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            46.84976173917728,
+            35404.96666415827,
+            8546.992715223036,
+            6916.001697833266
+          ],
+          [
+            25516.80923201816,
+            5391.073598819001,
+            21152.06786572819,
+            44969.69787061355
+          ],
+          [
+            7678.3154332116355,
+            20585.80435571492,
+            812.427432138963,
+            20916.731827405474
+          ],
+          [
+            4318.022708842358,
+            53842.856310596646,
+            14778.323875135025,
+            2959.566125371418
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.2011507381373823,
+        "recorded_action_replay_block_error": 1.4816147700390618
+      },
+      {
+        "block_angle_error_deg": 9.761607973098418,
+        "case": 32,
+        "episode": 13229,
+        "start": 9,
+        "source_raw_row": 1662615,
+        "donor_raw_rows": [
+          1662615,
+          349540,
+          64592,
+          1475579
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            586.1149867672929,
+            8035.561416584365,
+            27576.090343761924,
+            22745.264531311434
+          ],
+          [
+            4270.762016042589,
+            2044.6819696726648,
+            32635.786557681873,
+            19732.45431282348
+          ],
+          [
+            16488.68507533241,
+            16894.785293865083,
+            8313.352463057106,
+            10548.235931185332
+          ],
+          [
+            24050.836243957623,
+            15606.28852525755,
+            11793.967270803823,
+            316.1459143922398
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.15634040224308293,
+        "recorded_action_replay_block_error": 0.24093557732352314
+      },
+      {
+        "block_angle_error_deg": 3.819327797535298,
+        "case": 33,
+        "episode": 873,
+        "start": 11,
+        "source_raw_row": 106626,
+        "donor_raw_rows": [
+          106626,
+          922382,
+          1679523,
+          1667233
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            2105.857893191019,
+            20093.384783863075,
+            4935.670949986455,
+            4137.080659195637
+          ],
+          [
+            15358.082721109597,
+            450.7685913119507,
+            30116.015618980746,
+            25510.149122906965
+          ],
+          [
+            5959.534972842124,
+            30690.607176266763,
+            76.76232092598332,
+            4772.666337002731
+          ],
+          [
+            4019.91180879313,
+            27012.85279047442,
+            4020.3281707948695,
+            1841.4886614832965
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.6987722917441554,
+        "recorded_action_replay_block_error": 0.12078183886848025
+      },
+      {
+        "block_angle_error_deg": 5.442134880049335,
+        "case": 34,
+        "episode": 12574,
+        "start": 13,
+        "source_raw_row": 1578653,
+        "donor_raw_rows": [
+          1578653,
+          1384491,
+          1614400,
+          1430991
+        ],
+        "assigned": [
+          0,
+          3,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            294.2805429265911,
+            20791.243686833346,
+            6895.386219113894,
+            25715.491867886747
+          ],
+          [
+            22596.749851366898,
+            9697.781637254557,
+            16301.869054441102,
+            6454.667981906181
+          ],
+          [
+            9675.93681708128,
+            10250.158040259068,
+            2816.3750286896307,
+            11274.752082250816
+          ],
+          [
+            17749.25809638969,
+            8585.8976576583,
+            10855.014226087238,
+            1292.5296012387648
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.8198240835323485,
+        "recorded_action_replay_block_error": 0.8016501359395671
+      },
+      {
+        "block_angle_error_deg": 1.1657300637054009,
+        "case": 35,
+        "episode": 5897,
+        "start": 13,
+        "source_raw_row": 735370,
+        "donor_raw_rows": [
+          735370,
+          1688034,
+          69291,
+          290863
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            73.39372257782534,
+            22814.314085949944,
+            14970.371732334961,
+            8948.175174698395
+          ],
+          [
+            14310.415918650473,
+            1363.6555790919754,
+            28473.810765518938,
+            2569.0576442871265
+          ],
+          [
+            7635.566349217717,
+            29016.74508875295,
+            1298.6950298258994,
+            14051.769811813178
+          ],
+          [
+            7230.333655106601,
+            7177.942432603343,
+            19244.686384302287,
+            240.4964276159744
+          ]
+        ],
+        "recorded_action_replay_agent_error": 2.675880675389584,
+        "recorded_action_replay_block_error": 1.5754625720515991
+      },
+      {
+        "block_angle_error_deg": 18.47466194614167,
+        "case": 36,
+        "episode": 17272,
+        "start": 15,
+        "source_raw_row": 2165426,
+        "donor_raw_rows": [
+          2165426,
+          238160,
+          1382719,
+          1687476
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "cost_matrix": [
+          [
+            109.65064176876366,
+            28160.58555352705,
+            11089.999600700801,
+            11623.885702347281
+          ],
+          [
+            22114.700944632496,
+            2023.8335055785506,
+            34643.19528706999,
+            9741.810235114486
+          ],
+          [
+            9952.288414379975,
+            16360.306292199466,
+            8586.898194999045,
+            14854.48608183955
+          ],
+          [
+            10051.383952906519,
+            11457.52287263991,
+            31379.088810593174,
+            1637.4500395424834
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.671535087578258,
+        "recorded_action_replay_block_error": 0.5460282297042748
+      },
+      {
+        "block_angle_error_deg": 30.179468744199983,
+        "case": 37,
+        "episode": 13404,
+        "start": 15,
+        "source_raw_row": 1691794,
+        "donor_raw_rows": [
+          1691794,
+          1672849,
+          238165,
+          465683
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          false,
+          false,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            3036.019883312363,
+            13480.386280939552,
+            11963.067691211309,
+            19961.00074160209
+          ],
+          [
+            10673.521237356495,
+            1924.719865795938,
+            11688.112513747496,
+            14690.578428378292
+          ],
+          [
+            7846.118735503353,
+            7930.1060513181055,
+            1935.3551411129934,
+            23543.337657120053
+          ],
+          [
+            18716.66951302158,
+            20399.342402162725,
+            26984.182418971395,
+            1959.7383214834642
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.8063358880562529,
+        "recorded_action_replay_block_error": 0.6600763196444113
+      },
+      {
+        "block_angle_error_deg": 15.018062225090317,
+        "case": 38,
+        "episode": 5080,
+        "start": 22,
+        "source_raw_row": 637414,
+        "donor_raw_rows": [
+          637414,
+          1065030,
+          1040785,
+          108451
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          0
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            58.81835898645944,
+            9710.420428134166,
+            12786.932570244837,
+            9362.609735800574
+          ],
+          [
+            4721.132947506719,
+            1638.273610696376,
+            23861.72231308579,
+            16147.610729568529
+          ],
+          [
+            12975.09346607696,
+            35517.28110930996,
+            812.3435538171277,
+            5503.7553214901345
+          ],
+          [
+            4007.269459443603,
+            14130.45427623878,
+            8915.450680577796,
+            4750.784902707225
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.07399360501555452,
+        "recorded_action_replay_block_error": 0.12400754181044055
+      },
+      {
+        "block_angle_error_deg": 7.284626186274295,
+        "case": 39,
+        "episode": 12915,
+        "start": 9,
+        "source_raw_row": 1622328,
+        "donor_raw_rows": [
+          1622328,
+          1364935,
+          482862,
+          902718
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            1045.35691201088,
+            13621.831970845586,
+            15528.124383314811,
+            28709.453947208338
+          ],
+          [
+            10102.279258917511,
+            1466.8871211688347,
+            22385.898656500438,
+            43445.572158682386
+          ],
+          [
+            11808.519275666738,
+            31019.053712072564,
+            540.9556098742853,
+            15449.873261970692
+          ],
+          [
+            22999.057986939883,
+            48012.94512658869,
+            14090.926211873706,
+            1383.441555949449
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.6678056254184492,
+        "recorded_action_replay_block_error": 1.719690193393399
+      },
+      {
+        "block_angle_error_deg": 2.0778670603096865,
+        "case": 40,
+        "episode": 5121,
+        "start": 16,
+        "source_raw_row": 645092,
+        "donor_raw_rows": [
+          645092,
+          1446371,
+          1821957,
+          804598
+        ],
+        "assigned": [
+          0,
+          0,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "block_correct": [
+          false,
+          true,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            166.37056050536154,
+            19983.48676224397,
+            33154.68544723468,
+            19061.552979260552
+          ],
+          [
+            5299.436374808969,
+            12063.950945739321,
+            23711.530502960195,
+            13311.226710095158
+          ],
+          [
+            19359.68176287946,
+            4397.139223718802,
+            3713.7064767491493,
+            9345.845483346986
+          ],
+          [
+            10047.343085786999,
+            9984.673887904166,
+            21803.44759104175,
+            8452.5131724595
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.572350591230946,
+        "recorded_action_replay_block_error": 0.14575767492433017
+      },
+      {
+        "block_angle_error_deg": 19.555762157928353,
+        "case": 41,
+        "episode": 2082,
+        "start": 11,
+        "source_raw_row": 251145,
+        "donor_raw_rows": [
+          251145,
+          1280037,
+          1722199,
+          1385677
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            634.8282725216169,
+            6737.824915960111,
+            9151.053581371725,
+            7971.498980139546
+          ],
+          [
+            7534.023142690758,
+            1546.3782260666821,
+            4945.714987085747,
+            12421.350986928966
+          ],
+          [
+            10037.108892532524,
+            6367.370968675328,
+            1030.372023244406,
+            6491.158819712908
+          ],
+          [
+            9630.482018084458,
+            12813.668334646274,
+            6893.940241644072,
+            788.4897807120487
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.6580777727898466,
+        "recorded_action_replay_block_error": 0.36537617427059843
+      },
+      {
+        "block_angle_error_deg": 4.4373356385302625,
+        "case": 42,
+        "episode": 3897,
+        "start": 9,
+        "source_raw_row": 482504,
+        "donor_raw_rows": [
+          482504,
+          1397919,
+          735365,
+          2112910
+        ],
+        "assigned": [
+          0,
+          1,
+          1,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "cost_matrix": [
+          [
+            171.84062441787765,
+            15623.107144170608,
+            26907.135433531876,
+            3646.860627140335
+          ],
+          [
+            8591.502552880254,
+            2259.9574878912526,
+            8002.184649035929,
+            13250.422000713175
+          ],
+          [
+            25540.86883474033,
+            18773.458432159452,
+            21262.58528660957,
+            33355.93073306566
+          ],
+          [
+            2274.2095882023896,
+            16064.334837101524,
+            29922.55959634952,
+            501.1465592742609
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.5644311365721602,
+        "recorded_action_replay_block_error": 0.5121303672559554
+      },
+      {
+        "block_angle_error_deg": 1.732227868420456,
+        "case": 43,
+        "episode": 13162,
+        "start": 10,
+        "source_raw_row": 1652436,
+        "donor_raw_rows": [
+          1652436,
+          1446421,
+          1097773,
+          2325707
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            124.34267230588478,
+            17863.19451179695,
+            21530.454516965023,
+            13894.406457378711
+          ],
+          [
+            14698.888449648808,
+            647.8660850606184,
+            1853.0795504447788,
+            3095.8285916704076
+          ],
+          [
+            19026.303040226972,
+            1293.032122758816,
+            284.94254500695376,
+            2680.381168658302
+          ],
+          [
+            15434.86927505889,
+            3880.3022235176527,
+            3497.61559199537,
+            320.42552133360095
+          ]
+        ],
+        "recorded_action_replay_agent_error": 2.853411559461663,
+        "recorded_action_replay_block_error": 0.30672218054809763
+      },
+      {
+        "block_angle_error_deg": 3.420778775726065,
+        "case": 44,
+        "episode": 941,
+        "start": 9,
+        "source_raw_row": 117180,
+        "donor_raw_rows": [
+          117180,
+          1420290,
+          159347,
+          1432908
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          false,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            302.89331772463663,
+            25980.11433979767,
+            8723.22012266782,
+            10606.429260111385
+          ],
+          [
+            19385.7552369325,
+            5808.689809396918,
+            20023.70237436706,
+            40173.32132161261
+          ],
+          [
+            8675.457616159845,
+            29466.963700143184,
+            377.4310882730501,
+            4794.053821661141
+          ],
+          [
+            11361.300778093413,
+            51977.27088785778,
+            5622.86979793131,
+            259.55079714845874
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.8416602825158404,
+        "recorded_action_replay_block_error": 0.16215282151458876
+      },
+      {
+        "block_angle_error_deg": 3.128567970460341,
+        "case": 45,
+        "episode": 9939,
+        "start": 10,
+        "source_raw_row": 1216225,
+        "donor_raw_rows": [
+          1216225,
+          2145922,
+          442543,
+          508406
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            126.57216007427026,
+            32195.2927149939,
+            17268.27949935066,
+            17889.012383392488
+          ],
+          [
+            21731.06608229875,
+            7786.455088494773,
+            25162.39655333647,
+            12441.105270521082
+          ],
+          [
+            14751.055097920362,
+            43030.47815628656,
+            700.2983417881936,
+            37834.553780239235
+          ],
+          [
+            14268.72604109714,
+            11322.488161155861,
+            36252.04168226197,
+            1349.9829512262124
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.5691762793691135,
+        "recorded_action_replay_block_error": 0.5131278179651748
+      },
+      {
+        "block_angle_error_deg": 2.783807232070104,
+        "case": 46,
+        "episode": 13229,
+        "start": 12,
+        "source_raw_row": 1662630,
+        "donor_raw_rows": [
+          1662630,
+          1691749,
+          2020638,
+          2187097
+        ],
+        "assigned": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            101.5305764521305,
+            2986.383431108582,
+            13718.249142651308,
+            16176.791728974124
+          ],
+          [
+            2713.0346767098567,
+            847.7400437447891,
+            7101.239327920957,
+            9494.963763116892
+          ],
+          [
+            3077.7606669473525,
+            4560.156706760629,
+            10696.88266476967,
+            13438.594863026494
+          ],
+          [
+            4676.155773751743,
+            3064.740254936491,
+            5175.7065939187905,
+            4761.962423289142
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.32349763730398,
+        "recorded_action_replay_block_error": 0.4949783266022811
+      },
+      {
+        "block_angle_error_deg": 4.234480691105944,
+        "case": 47,
+        "episode": 4117,
+        "start": 8,
+        "source_raw_row": 515056,
+        "donor_raw_rows": [
+          515056,
+          1257833,
+          1757942,
+          482504
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            142.67420829403912,
+            7213.237035786746,
+            18291.342099950656,
+            8554.62974617549
+          ],
+          [
+            6507.07436255911,
+            218.18672562715304,
+            36560.91096470212,
+            18769.583744845502
+          ],
+          [
+            9742.8551886171,
+            27322.73485984378,
+            4355.245843994067,
+            7845.081343770152
+          ],
+          [
+            4446.332065280439,
+            17409.060240561877,
+            8614.795892441023,
+            2949.0409167779744
+          ]
+        ],
+        "recorded_action_replay_agent_error": 2.019318108504236,
+        "recorded_action_replay_block_error": 1.3740304371192669
+      },
+      {
+        "block_angle_error_deg": 54.53172233123169,
+        "case": 48,
+        "episode": 7571,
+        "start": 11,
+        "source_raw_row": 941432,
+        "donor_raw_rows": [
+          941432,
+          887082,
+          1844426,
+          1431021
+        ],
+        "assigned": [
+          0,
+          0,
+          2,
+          2
+        ],
+        "correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            3821.9552580785685,
+            5236.864275667179,
+            22657.479184606134,
+            23077.39626103673
+          ],
+          [
+            3194.070736925223,
+            4700.524611416345,
+            23237.454373180248,
+            23143.809137246637
+          ],
+          [
+            16520.56292461321,
+            20880.795498806125,
+            1536.6774213606832,
+            8647.560212499562
+          ],
+          [
+            14337.00929546184,
+            15303.317443224241,
+            7921.394657331885,
+            8468.154437206775
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.339455809770593,
+        "recorded_action_replay_block_error": 0.15076347620539407
+      },
+      {
+        "block_angle_error_deg": 6.567373767883986,
+        "case": 49,
+        "episode": 16130,
+        "start": 21,
+        "source_raw_row": 2026830,
+        "donor_raw_rows": [
+          2026830,
+          437580,
+          512106,
+          900876
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          1
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            3942.5455007816013,
+            48422.2771006082,
+            9301.556589914237,
+            59971.52268944835
+          ],
+          [
+            19801.744398673472,
+            2853.3185217924156,
+            24663.43054754546,
+            22504.66094454904
+          ],
+          [
+            6831.636889587585,
+            41197.51166419908,
+            1889.5714072252194,
+            47006.17368021501
+          ],
+          [
+            23781.73499026606,
+            15594.337717504624,
+            31097.88666300221,
+            19180.80964909179
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.5239124009706105,
+        "recorded_action_replay_block_error": 0.6290973625953596
+      },
+      {
+        "block_angle_error_deg": 7.088273585334796,
+        "case": 50,
+        "episode": 3899,
+        "start": 16,
+        "source_raw_row": 482877,
+        "donor_raw_rows": [
+          482877,
+          1541206,
+          407690,
+          875027
+        ],
+        "assigned": [
+          0,
+          1,
+          0,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            176.82260260783193,
+            11791.808923585715,
+            15963.817922060862,
+            47276.69683358461
+          ],
+          [
+            11478.646562715388,
+            295.8615721704034,
+            23436.025052182114,
+            18853.52538525659
+          ],
+          [
+            6701.992769023922,
+            8372.791883468684,
+            10852.084911480328,
+            32389.251107082586
+          ],
+          [
+            28547.133419698504,
+            9787.216321988291,
+            31634.883127357156,
+            5573.984935601963
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.5277994082290686,
+        "recorded_action_replay_block_error": 0.503068661607627
+      },
+      {
+        "block_angle_error_deg": 10.339062882784415,
+        "case": 51,
+        "episode": 11585,
+        "start": 12,
+        "source_raw_row": 1453800,
+        "donor_raw_rows": [
+          1453800,
+          586973,
+          1244981,
+          1581333
+        ],
+        "assigned": [
+          0,
+          0,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            345.44473915866877,
+            26212.184695891265,
+            20728.492837455422,
+            12934.501141146775
+          ],
+          [
+            6358.467097038179,
+            19524.767497172845,
+            17082.067322405113,
+            13146.540799016198
+          ],
+          [
+            15787.899755875243,
+            14841.578594470142,
+            451.4132391808344,
+            5403.391058805077
+          ],
+          [
+            10214.548728135,
+            26935.99840898765,
+            6273.258944232868,
+            649.6290428568767
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.28761830751938283,
+        "recorded_action_replay_block_error": 0.0
+      },
+      {
+        "block_angle_error_deg": 5.808265113690185,
+        "case": 52,
+        "episode": 11739,
+        "start": 8,
+        "source_raw_row": 1470859,
+        "donor_raw_rows": [
+          1470859,
+          1430847,
+          1859698,
+          1453790
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            37.28020410228959,
+            22789.85778744615,
+            25219.509794370395,
+            24467.0444257537
+          ],
+          [
+            21323.55906204854,
+            616.5842322682935,
+            11704.111223516327,
+            2104.6835640310314
+          ],
+          [
+            22429.972925842252,
+            16993.28626922368,
+            1423.0609515620818,
+            15753.636017093366
+          ],
+          [
+            23603.374262331592,
+            1485.2047250187543,
+            11488.099293130956,
+            103.44575390651227
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.5866047887116004,
+        "recorded_action_replay_block_error": 0.3904747400537456
+      },
+      {
+        "block_angle_error_deg": 10.320871848396107,
+        "case": 53,
+        "episode": 14473,
+        "start": 15,
+        "source_raw_row": 1822857,
+        "donor_raw_rows": [
+          1822857,
+          1026748,
+          581685,
+          880861
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            157.3711514310271,
+            8350.841835641899,
+            23033.266501851802,
+            26968.229974235674
+          ],
+          [
+            6037.998706532328,
+            1181.6452635226128,
+            11089.572431420169,
+            30692.52086099478
+          ],
+          [
+            18634.383369158822,
+            6804.120861631102,
+            1161.3636068435974,
+            55937.06329237274
+          ],
+          [
+            19342.428320194635,
+            20456.596532959564,
+            43007.3994522087,
+            4906.119356287067
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.696829232596401,
+        "recorded_action_replay_block_error": 0.6894360862741902
+      },
+      {
+        "block_angle_error_deg": 9.699030202667702,
+        "case": 54,
+        "episode": 15111,
+        "start": 13,
+        "source_raw_row": 1896569,
+        "donor_raw_rows": [
+          1896569,
+          1846622,
+          736810,
+          771958
+        ],
+        "assigned": [
+          0,
+          1,
+          0,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "cost_matrix": [
+          [
+            315.8760094888788,
+            7038.73172375353,
+            29783.61506982751,
+            6009.110367351866
+          ],
+          [
+            7551.854129047353,
+            837.7502165407851,
+            45229.859345609875,
+            4089.3004398146168
+          ],
+          [
+            8921.075728767248,
+            19436.899406677258,
+            21256.10005142439,
+            20101.64193505598
+          ],
+          [
+            6421.602514746335,
+            5101.5481677015105,
+            39682.56053404551,
+            704.0420787397477
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.16321984224349884,
+        "recorded_action_replay_block_error": 0.05875115129066788
+      },
+      {
+        "block_angle_error_deg": 6.975594931777092,
+        "case": 55,
+        "episode": 17125,
+        "start": 9,
+        "source_raw_row": 2145311,
+        "donor_raw_rows": [
+          2145311,
+          1838209,
+          2197935,
+          775731
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            550.7817105231419,
+            25022.70789244447,
+            45919.862699306424,
+            9080.439777314306
+          ],
+          [
+            26771.427343625455,
+            474.3518688074741,
+            5858.5048578013875,
+            8196.92471257378
+          ],
+          [
+            38988.63636743481,
+            7113.27871495129,
+            1760.3448792203826,
+            18961.18217171282
+          ],
+          [
+            10773.484386971943,
+            7259.0678376072465,
+            20714.240305067586,
+            292.3026614289849
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.757322761257853,
+        "recorded_action_replay_block_error": 6.14722460890071
+      },
+      {
+        "block_angle_error_deg": 4.18888518676605,
+        "case": 56,
+        "episode": 2876,
+        "start": 10,
+        "source_raw_row": 335073,
+        "donor_raw_rows": [
+          335073,
+          140870,
+          707660,
+          875022
+        ],
+        "assigned": [
+          0,
+          3,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            387.0767119503061,
+            46974.4739502005,
+            13564.582300315247,
+            62210.394295897
+          ],
+          [
+            37370.21312583919,
+            9030.330519614425,
+            26047.43990542162,
+            6284.477652008805
+          ],
+          [
+            10836.086952498763,
+            14477.012830440573,
+            6215.963021805175,
+            25354.549834701458
+          ],
+          [
+            45782.354317146775,
+            48680.312975658606,
+            55046.39518204694,
+            35351.607570656306
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.9126849944746556,
+        "recorded_action_replay_block_error": 1.1332361778965323
+      },
+      {
+        "block_angle_error_deg": 14.262642263777835,
+        "case": 57,
+        "episode": 14237,
+        "start": 10,
+        "source_raw_row": 1796522,
+        "donor_raw_rows": [
+          1796522,
+          422863,
+          2250797,
+          1552590
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            1372.4737748480854,
+            23011.048524621154,
+            49247.88702685569,
+            11717.889937730966
+          ],
+          [
+            18193.2739405429,
+            863.0498971372866,
+            11509.850522561437,
+            6381.349957300979
+          ],
+          [
+            34957.53543598958,
+            5303.391360724466,
+            2550.6118078818718,
+            19896.686248105027
+          ],
+          [
+            6390.224963746996,
+            10068.737970536456,
+            32805.96863563798,
+            1407.7892187286743
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.0506183388948347,
+        "recorded_action_replay_block_error": 0.8977359589370633
+      },
+      {
+        "block_angle_error_deg": 4.182767915600481,
+        "case": 58,
+        "episode": 10893,
+        "start": 16,
+        "source_raw_row": 1348602,
+        "donor_raw_rows": [
+          1348602,
+          2260970,
+          596726,
+          2165386
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          0
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            642.8180367823097,
+            7397.381305640136,
+            12950.405687544393,
+            13125.581096702368
+          ],
+          [
+            7607.796521460963,
+            1244.769525487139,
+            12567.092455443484,
+            23282.896179467887
+          ],
+          [
+            6852.642064838215,
+            3804.1188176023556,
+            2010.789703526988,
+            8788.520228346584
+          ],
+          [
+            4001.000774342357,
+            10176.394707045089,
+            8798.310289349825,
+            5552.918763718156
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.2234309053172496,
+        "recorded_action_replay_block_error": 0.5201949139646098
+      },
+      {
+        "block_angle_error_deg": 12.650894993057902,
+        "case": 59,
+        "episode": 4882,
+        "start": 10,
+        "source_raw_row": 605233,
+        "donor_raw_rows": [
+          605233,
+          2212125,
+          1662595,
+          754330
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          1
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            380.28454341257867,
+            6755.348778738453,
+            8897.217837659393,
+            20380.11706988937
+          ],
+          [
+            8244.805625367484,
+            3542.942061431781,
+            15672.326076010684,
+            34259.81881540584
+          ],
+          [
+            7233.3492829828265,
+            8612.330663055229,
+            2516.5165113739367,
+            9662.530720657887
+          ],
+          [
+            8500.13046040361,
+            7015.271648871488,
+            11209.711816177392,
+            15310.499995628597
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.7132719328859687,
+        "recorded_action_replay_block_error": 0.4653878844372799
+      },
+      {
+        "block_angle_error_deg": 3.0445111629551422,
+        "case": 60,
+        "episode": 15913,
+        "start": 10,
+        "source_raw_row": 1988960,
+        "donor_raw_rows": [
+          1988960,
+          2250233,
+          1196176,
+          2313778
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          0
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "block_correct": [
+          true,
+          false,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "cost_matrix": [
+          [
+            313.47036572572046,
+            10520.991688535914,
+            19312.817358475666,
+            30211.951366261976
+          ],
+          [
+            7320.036178655857,
+            793.4938285406029,
+            46930.84083843943,
+            27757.579453668877
+          ],
+          [
+            14610.345761382281,
+            42687.24454481297,
+            3207.9692734900955,
+            46624.217755453516
+          ],
+          [
+            8775.707832623315,
+            15282.036446446607,
+            24858.86818150726,
+            21942.548160053844
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.4331189756785638,
+        "recorded_action_replay_block_error": 0.37943338671408955
+      },
+      {
+        "block_angle_error_deg": 2.781175044113382,
+        "case": 61,
+        "episode": 6495,
+        "start": 13,
+        "source_raw_row": 808824,
+        "donor_raw_rows": [
+          808824,
+          1606413,
+          1227952,
+          927057
+        ],
+        "assigned": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            97.81735448530017,
+            14979.208753723678,
+            2056.70244461012,
+            9082.51347601166
+          ],
+          [
+            10861.026150573929,
+            3676.431430167665,
+            9444.015965022163,
+            17702.923701816348
+          ],
+          [
+            1557.4706208648195,
+            14702.32761861309,
+            155.81104050142127,
+            12243.190057792508
+          ],
+          [
+            9295.947975756664,
+            27776.620909169396,
+            13913.520138205371,
+            2018.215907214237
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.9182717916747372,
+        "recorded_action_replay_block_error": 0.25650356943947894
+      },
+      {
+        "block_angle_error_deg": 2.0220684632828627,
+        "case": 62,
+        "episode": 10103,
+        "start": 17,
+        "source_raw_row": 1234570,
+        "donor_raw_rows": [
+          1234570,
+          1549425,
+          2032251,
+          1031763
+        ],
+        "assigned": [
+          0,
+          1,
+          1,
+          3
+        ],
+        "correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "agent_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "block_correct": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "oracle_pose_correct": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "cost_matrix": [
+          [
+            68.8112144109476,
+            14285.907443328453,
+            41173.80031730159,
+            4396.459173265621
+          ],
+          [
+            13987.5466683378,
+            188.57301019764841,
+            18693.691252555025,
+            10021.719612800047
+          ],
+          [
+            17997.138468269703,
+            9452.687514985988,
+            10132.656705023655,
+            13466.903126904643
+          ],
+          [
+            4213.2871788250795,
+            8737.010657968176,
+            34627.54898913071,
+            177.1890405193182
+          ]
+        ],
+        "recorded_action_replay_agent_error": 0.6503847555997704,
+        "recorded_action_replay_block_error": 0.7603713346826002
+      },
+      {
+        "block_angle_error_deg": 8.865228295248365,
+        "case": 63,
+        "episode": 8275,
+        "start": 9,
+        "source_raw_row": 1021950,
+        "donor_raw_rows": [
+          1021950,
+          727473,
+          127801,
+          589898
+        ],
+        "assigned": [
+          2,
+          1,
+          1,
+          3
+        ],
+        "correct": [
+          false,
+          true,
+          false,
+          true
+        ],
+        "agent_correct": [
+          false,
+          true,
+          false,
+          true
+        ],
+        "block_correct": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "oracle_pose_correct": [
+          false,
+          true,
+          true,
+          true
+        ],
+        "cost_matrix": [
+          [
+            19401.49204518336,
+            18713.28520827462,
+            14260.04570622419,
+            27200.33906816277
+          ],
+          [
+            20332.98648193705,
+            4773.825887901379,
+            7627.3951340413205,
+            9522.506538557707
+          ],
+          [
+            16081.748242054457,
+            3326.5256762463255,
+            4096.182939343473,
+            9271.315444593445
+          ],
+          [
+            10295.530991677217,
+            3096.354743409489,
+            2838.0191316041564,
+            1629.5889665827335
+          ]
+        ],
+        "recorded_action_replay_agent_error": 1.45174482254708,
+        "recorded_action_replay_block_error": 0.0
+      }
+    ]
+  },
+  "planning": [
+    {
+      "metrics": {
+        "success_rate": 68.0,
+        "episode_successes": [
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        "seeds": null
+      },
+      "episodes": [
+        515,
+        531,
+        858,
+        868,
+        977,
+        1729,
+        2495,
+        2510,
+        2513,
+        3141,
+        3167,
+        4888,
+        5129,
+        5134,
+        5784,
+        5928,
+        5978,
+        6000,
+        6278,
+        6589,
+        6978,
+        7325,
+        7493,
+        7716,
+        7760,
+        8269,
+        8269,
+        9302,
+        9961,
+        11033,
+        11216,
+        12234,
+        12562,
+        12803,
+        13098,
+        13163,
+        13296,
+        13317,
+        13717,
+        15157,
+        15279,
+        15285,
+        15690,
+        16060,
+        16113,
+        17129,
+        17547,
+        17612,
+        17797,
+        17939
+      ],
+      "start_steps": [
+        54,
+        11,
+        103,
+        131,
+        69,
+        24,
+        44,
+        16,
+        2,
+        91,
+        23,
+        83,
+        145,
+        32,
+        66,
+        2,
+        10,
+        56,
+        47,
+        38,
+        39,
+        14,
+        56,
+        69,
+        0,
+        47,
+        117,
+        29,
+        26,
+        75,
+        72,
+        73,
+        30,
+        89,
+        90,
+        59,
+        31,
+        14,
+        77,
+        55,
+        12,
+        63,
+        35,
+        51,
+        129,
+        33,
+        13,
+        8,
+        38,
+        99
+      ],
+      "split": "heldout",
+      "seed": 242,
+      "solver_rng_seed": 242,
+      "float32_matmul_precision": "highest",
+      "seconds": 55.41467046737671,
+      "scope": "Pinned upstream P0; deterministic posterior means; single trained seed",
+      "geometry_cost": null
+    },
+    {
+      "metrics": {
+        "success_rate": 66.0,
+        "episode_successes": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false,
+          false,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true,
+          true,
+          false
+        ],
+        "seeds": null
+      },
+      "episodes": [
+        919,
+        1225,
+        2957,
+        2957,
+        3141,
+        3183,
+        3455,
+        3578,
+        3625,
+        3788,
+        4477,
+        4596,
+        5284,
+        5395,
+        5718,
+        5978,
+        6024,
+        6052,
+        6509,
+        7276,
+        7469,
+        8223,
+        8906,
+        8969,
+        9010,
+        9755,
+        10522,
+        10968,
+        11739,
+        12203,
+        12510,
+        12805,
+        12805,
+        13161,
+        13163,
+        13200,
+        13317,
+        13371,
+        13708,
+        14177,
+        14198,
+        15250,
+        15638,
+        16196,
+        16763,
+        17349,
+        17429,
+        17706,
+        17922,
+        17939
+      ],
+      "start_steps": [
+        59,
+        60,
+        47,
+        214,
+        95,
+        52,
+        66,
+        58,
+        30,
+        19,
+        71,
+        45,
+        28,
+        43,
+        33,
+        79,
+        31,
+        42,
+        25,
+        56,
+        15,
+        15,
+        43,
+        57,
+        19,
+        18,
+        35,
+        66,
+        68,
+        40,
+        6,
+        77,
+        95,
+        115,
+        106,
+        9,
+        122,
+        71,
+        43,
+        135,
+        1,
+        29,
+        74,
+        39,
+        28,
+        1,
+        68,
+        69,
+        98,
+        13
+      ],
+      "split": "heldout",
+      "seed": 243,
+      "solver_rng_seed": 243,
+      "float32_matmul_precision": "highest",
+      "seconds": 53.17274808883667,
+      "scope": "Pinned upstream P0; deterministic posterior means; single trained seed",
+      "geometry_cost": null
+    },
+    {
+      "metrics": {
+        "success_rate": 66.0,
+        "episode_successes": [
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false
+        ],
+        "seeds": null
+      },
+      "episodes": [
+        474,
+        768,
+        1089,
+        1931,
+        2876,
+        3212,
+        3534,
+        3625,
+        3958,
+        4099,
+        4178,
+        4758,
+        4812,
+        5116,
+        5121,
+        5144,
+        5900,
+        6281,
+        6919,
+        7098,
+        7448,
+        7702,
+        7892,
+        7939,
+        8033,
+        8269,
+        8334,
+        8392,
+        9499,
+        10019,
+        10103,
+        10893,
+        11125,
+        11415,
+        11585,
+        11939,
+        12576,
+        12803,
+        12923,
+        13423,
+        14124,
+        14462,
+        14601,
+        15212,
+        15418,
+        15809,
+        16030,
+        16209,
+        16741,
+        18411
+      ],
+      "start_steps": [
+        26,
+        21,
+        9,
+        73,
+        110,
+        4,
+        37,
+        64,
+        65,
+        80,
+        17,
+        103,
+        106,
+        69,
+        155,
+        45,
+        5,
+        2,
+        121,
+        80,
+        31,
+        60,
+        41,
+        34,
+        32,
+        107,
+        140,
+        15,
+        38,
+        18,
+        33,
+        138,
+        47,
+        120,
+        27,
+        49,
+        1,
+        37,
+        73,
+        12,
+        68,
+        145,
+        79,
+        23,
+        28,
+        45,
+        123,
+        81,
+        9,
+        40
+      ],
+      "split": "heldout",
+      "seed": 244,
+      "solver_rng_seed": 244,
+      "float32_matmul_precision": "highest",
+      "seconds": 50.98203897476196,
+      "scope": "Pinned upstream P0; deterministic posterior means; single trained seed",
+      "geometry_cost": null
+    }
+  ],
+  "scope": "Complete quality stage on sealed nonoverlapping windows; other stages included only when their numerical artifact exists. Same training seed0 and original heldout episodes; no claim of a new model or new dataset.",
+  "stage_status": {
+    "state": "finished",
+    "results": [
+      {
+        "id": "quality",
+        "returncode": 0,
+        "seconds": 239.2239134311676
+      },
+      {
+        "id": "quality-postprocess",
+        "returncode": 0,
+        "seconds": 27.428090810775757
+      },
+      {
+        "id": "counterfactual",
+        "returncode": 0,
+        "seconds": 146.13381028175354
+      },
+      {
+        "id": "planning-242",
+        "returncode": 0,
+        "seconds": 166.57974314689636
+      },
+      {
+        "id": "planning-243",
+        "returncode": 0,
+        "seconds": 201.79718351364136
+      },
+      {
+        "id": "planning-244",
+        "returncode": 0,
+        "seconds": 149.10725855827332
+      }
+    ],
+    "updated_at": 1793174566.0246084
+  },
+  "source_hashes": {
+    "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/confirm-endpoint-source-L2-50k-seed0/results/quality/metrics.json": "5d1c66831409acac5d8d89b0308b807eb6e012918df27505e0574579e5bfb2de",
+    "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/confirm-endpoint-source-L2-50k-seed0/results/quality-additional/metrics.json": "d99dad62431a13b8fcf6dab67b4db87def0e1ad008fbb774e091cb44a6679aca",
+    "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/confirm-endpoint-source-L2-50k-seed0/results/protocol.json": "ab9e8f8eeaea0d4628ab887f8531c19deef1ae4559ad9326123604f7eb53b9ab"
+  }
+}
