@@ -6,7 +6,7 @@ import torch
 from torch.utils.data import DataLoader,Sampler
 import lightning as pl
 from lightning.pytorch.callbacks import Callback
-from as_jepa_tools.data import PushTWindows,seed_worker
+from as_jepa_tools.data import PushTWindows,FullPushTWindows,seed_worker
 from as_jepa_lewm.model import ASJepaLeWM
 from vforge.ops import OpsConfig,initialize_ops
 
@@ -62,7 +62,7 @@ class TrainModule(pl.LightningModule):
     def on_fit_start(self):
         if self.cfg.get("calibrate_state_std") is None or self.cfg.get("is_resuming",False):return
         # One-time affine head initialization. No per-batch normalization is added to AS-JEPA.
-        dataset=PushTWindows(self.cfg["data"],window=self.cfg["model"]["window"],gap=self.cfg.get("gap",8),seed=self.cfg["seed"])
+        dataset=(FullPushTWindows if self.cfg.get("all_phase_data",False) else PushTWindows)(self.cfg["data"],window=self.cfg["model"]["window"],gap=self.cfg.get("gap",8),seed=self.cfg["seed"])
         generator=torch.Generator().manual_seed(91);indices=torch.randperm(len(dataset),generator=generator)[:128].tolist()
         from torch.utils.data import Subset
         loader=DataLoader(Subset(dataset,indices),batch_size=16,num_workers=0)
@@ -71,7 +71,7 @@ class TrainModule(pl.LightningModule):
             for batch in loader:
                 batch={k:v.to(self.device) if torch.is_tensor(v) else v for k,v in batch.items()}
                 pixels,_,_=self.model.prepare(batch);values.append(self.model.encode(dict(pixels=pixels))["emb"].float().flatten(0,1))
-            values=torch.cat(values);mean=values.mean(0).unflatten(-1,(4,16)).mean(0);current=values.std(0).mean().clamp_min(1e-8);scale=float(self.cfg["calibrate_state_std"])/float(current)
+            values=torch.cat(values);mean=values.mean(0).unflatten(-1,(self.model.state_slots,self.model.state_width)).mean(0);current=values.std(0).mean().clamp_min(1e-8);scale=float(self.cfg["calibrate_state_std"])/float(current)
             head=self.model.pool.head;head.weight.mul_(scale);head.bias.sub_(mean).mul_(scale)
         self.model.train(was_training)
         if self.cfg.get("export_initial",False):
@@ -147,7 +147,7 @@ def main():
     (root/"model_size.json").write_text(json.dumps(dict(total=sum(p.numel() for p in module.model.parameters()),encoder=sum(p.numel() for p in module.model.encoder.parameters()),prior=sum(p.numel() for p in module.model.predictor.parameters()),renderer=sum(p.numel() for p in module.model.renderer.parameters()) if module.model.renderer else 0),indent=2))
     checkpoint=root/"last.ckpt";resume=str(checkpoint) if args.resume and checkpoint.exists() else None
     start=int(torch.load(checkpoint,map_location="cpu",weights_only=False).get("campaign_samples",0)) if resume else 0
-    dataset=PushTWindows(cfg["data"],window=cfg["model"]["window"],gap=cfg.get("gap",8),seed=cfg["seed"])
+    dataset=(FullPushTWindows if cfg.get("all_phase_data",False) else PushTWindows)(cfg["data"],window=cfg["model"]["window"],gap=cfg.get("gap",8),seed=cfg["seed"])
     sampler=WindowSampler(dataset,start=start,seed=cfg["seed"],batch_size=cfg["batch_size"])
     loader=DataLoader(dataset,batch_size=cfg["batch_size"],sampler=sampler,generator=torch.Generator().manual_seed(cfg["seed"]+999),num_workers=cfg.get("workers",4),persistent_workers=cfg.get("workers",4)>0,pin_memory=True,drop_last=True,worker_init_fn=seed_worker)
     progress=PersistentProgress(root,cfg)

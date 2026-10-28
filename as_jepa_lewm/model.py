@@ -20,7 +20,8 @@ class ASJepaLeWM(LeWM):
     def __init__(self, mode="L2", beta=4.0, sigma0=.1, window=8, use_anchor=True,
                  renderer_width=192, renderer_depth=6, renderer_heads=3,
                  carry=True, domain="standard", encoder_size=224, encoder_depth=12,
-                 lambda_sigreg=.09, objective="flow", anchor_gap=8, batchnorm_state=False, fp32_pool=False, batchnorm_projector=False):
+                 lambda_sigreg=.09, objective="flow", anchor_gap=8, batchnorm_state=False, fp32_pool=False, batchnorm_projector=False, state_slots=4, state_width=16):
+        self.state_slots=state_slots;self.state_width=state_width;self.state_dim=state_slots*state_width
         self.mode=mode; self.beta=beta; self.sigma0=sigma0; self.window=window
         self.carry=carry; self.domain=domain; self.encoder_size=encoder_size
         self.lambda_sigreg=lambda_sigreg; self.objective=objective; self.anchor_gap=anchor_gap; self.batchnorm_state=batchnorm_state; self.fp32_pool=fp32_pool; self.batchnorm_projector=batchnorm_projector
@@ -28,25 +29,25 @@ class ASJepaLeWM(LeWM):
         encoder.config.interpolate_pos_encoding=True
         if encoder_depth!=12:encoder.encoder.layer=encoder.encoder.layer[:encoder_depth]
         if hasattr(encoder,"set_attn_implementation"):encoder.set_attn_implementation("sdpa")
-        baseline=mode=="L0"; state_dim=192 if baseline else STATE_DIM
+        baseline=mode=="L0"; state_dim=192 if baseline else self.state_dim
         predictor=Predictor(num_frames=window-1,depth=6,heads=16,mlp_dim=2048,input_dim=state_dim,hidden_dim=192,output_dim=state_dim,dim_head=64,dropout=.1,emb_dropout=0.)
         action_encoder=Embedder(input_dim=10,smoothed_dim=10,emb_dim=state_dim,mlp_scale=4)
         projector=MLP(192,2048,192,norm_fn=nn.BatchNorm1d) if baseline else None
         pred_proj=MLP(192,2048,192,norm_fn=nn.BatchNorm1d) if baseline else None
         super().__init__(encoder,predictor,action_encoder,projector,pred_proj)
-        self.pool=None if baseline else QueryPool(192,3,K,d)
+        self.pool=None if baseline else QueryPool(192,3,self.state_slots,self.state_width)
         if self.pool is not None:self.pool.initialize()
         if batchnorm_projector and (batchnorm_state or mode!="L1"):
             raise ValueError("MLP BatchNorm projector is an explicit L1-only control")
-        self.state_bn=MLP(STATE_DIM,2048,STATE_DIM,norm_fn=nn.BatchNorm1d) if batchnorm_projector else (nn.BatchNorm1d(STATE_DIM) if batchnorm_state else nn.Identity())
+        self.state_bn=MLP(self.state_dim,2048,self.state_dim,norm_fn=nn.BatchNorm1d) if batchnorm_projector else (nn.BatchNorm1d(self.state_dim) if batchnorm_state else nn.Identity())
         if batchnorm_state and mode!="L1":raise ValueError("BatchNorm state is only the explicit L1 fallback, never AS-JEPA")
         if not baseline and carry:
             nn.init.zeros_(self.predictor.transformer.output_proj.weight);nn.init.zeros_(self.predictor.transformer.output_proj.bias)
         self.sigreg=SIGReg()
         self.renderer=None
         if not baseline:
-            cfg=replace(renderer_config(d),width=renderer_width,depth=renderer_depth,heads=renderer_heads,adaln_lora_dim=min(256,renderer_width))
-            self.renderer=AnchoredWorldDiT(cfg,state_dim=d,num_slots=K,use_anchor=use_anchor)
+            cfg=replace(renderer_config(self.state_width),width=renderer_width,depth=renderer_depth,heads=renderer_heads,adaln_lora_dim=min(256,renderer_width))
+            self.renderer=AnchoredWorldDiT(cfg,state_dim=self.state_width,num_slots=self.state_slots,use_anchor=use_anchor)
             self.renderer.sequence_parallel=False
             self.shift=timestep_shift(cfg)
         self.register_buffer("image_mean",torch.tensor([.485,.456,.406]).view(1,3,1,1),persistent=False)
@@ -59,7 +60,7 @@ class ASJepaLeWM(LeWM):
             with torch.autocast(device_type=tokens.device.type,enabled=False):
                 pooled=self.pool(tokens.float())
         else:pooled=self.pool(tokens)
-        info["emb"]=self.state_bn(pooled.reshape(b*w,STATE_DIM)).reshape(b,w,STATE_DIM)
+        info["emb"]=self.state_bn(pooled.reshape(b*w,self.state_dim)).reshape(b,w,self.state_dim)
         if "action" in info:info["act_emb"]=self.action_encoder(info["action"])
         return info
     def predict(self,emb,act_emb):
@@ -104,7 +105,7 @@ class ASJepaLeWM(LeWM):
             pred=self.predict(flat[:,:-1],info["act_emb"][:,:-1]);prediction=F.mse_loss(pred.float(),flat[:,1:].float())
             sigreg=self.sigreg(flat.float().transpose(0,1));loss=prediction+self.lambda_sigreg*sigreg
             return loss,dict(loss=loss,pred=prediction,sigreg=sigreg,feature_std=flat.float().std((0,1)).mean())
-        mu=flat.reshape(b,w,K,d)
+        mu=flat.reshape(b,w,self.state_slots,self.state_width)
         s=mu+self.sigma0*torch.randn_like(mu) if self.mode=="L2" else mu
         predicted=self.predict(s.flatten(2)[:,:-1],info["act_emb"][:,:-1]).reshape_as(mu[:,1:])
         entry=entry_nats(mu[:,0],self.sigma0);surprise=surprise_nats(mu[:,1:],predicted,self.sigma0)
@@ -123,7 +124,7 @@ class ASJepaLeWM(LeWM):
         return loss,dict(loss=loss,fm=fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),rate_share=self.beta*rate/fm.detach().clamp_min(1e-8),feature_std=mu.float().std((0,1)).mean(),active_dims=((.5*mu[:,0].float().square()+(mu[:,1:].float()-predicted.float()).square().sum(1)/(2*self.sigma0**2)).mean(0)>.1).sum())
     @torch.no_grad()
     def render_states(self,states,anchor,steps=50,seed=0):
-        states=states.unflatten(-1,(K,d)) if states.shape[-1]==STATE_DIM else states
+        states=states.unflatten(-1,(self.state_slots,self.state_width)) if states.shape[-1]==self.state_dim else states
         if self.objective=="mse":
             with self.renderer.anchored(pack(anchor)):
                 return unpack(self.renderer(torch.zeros(len(states),48,1,16,16,device=states.device),torch.ones(len(states),1,device=states.device),condition=states))
