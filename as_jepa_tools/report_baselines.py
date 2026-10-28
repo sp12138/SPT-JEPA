@@ -57,7 +57,7 @@ def main():
         q = x['quality']
         p = x['probes']
         rates = [z['metrics']['success_rate'] for z in x['planning']]
-        table.append(f'| {x['family']} seed{x['seed']} | {p['agent_r2']:.3f} / {p['block_position_r2']:.3f} | {q['h7_agent_ratio']:.3f} / {q['h7_moving_block_ratio']:.3f} | {q['fvd']['fvd']:.1f} | {x['counterfactual']['action_identification_accuracy'] * 100:.1f} | ' + (f'{np.mean(rates):.1f}' if rates else '未运行（原规格可选）') + ' |')
+        table.append(f'| {x['family']} seed{x['seed']} | {p['agent_r2']:.3f} / {p['block_position_r2']:.3f} | {q['h7_agent_ratio']:.3f} / {q['h7_moving_block_ratio']:.3f} | {q['fvd']['fvd']:.1f} | {x['counterfactual']['action_identification_accuracy'] * 100:.1f} | ' + (f'{np.mean(rates):.1f}' if rates else '—（原规格未要求）') + ' |')
     text = '# 25k匹配终点：probe、生成与控制分别报告\n\n这六个终点都已跑完完整评估，训练为25k更新、生成用同一256例和同一pose/I3D协议。架构、训练目标和每窗口帧数不同，这张表不是最终完整预算下的架构排名。\n\n| 模型 | agent/block位置probe R2 | h7 agent / moving-block相对copy误差 | FVD | 动作识别(%) | P0均值(%) |\n| --- | --- | --- | --- | --- | --- |\n' + '\n'.join(table) + '\n\n![Probe与闭环误差](probe-versus-rollout-25k.png)\n\n两个NativeS1新种子的agent probe约.75/.80，但h7误差约为copy的5.97/4.94倍；可线性读取物理位置不保证自由闭环有效。这个结果支持继续验证语义记忆/图像反馈对照，不能单凭它认定某个反馈修复已经成功。\n\nNativeS0 seed2的FVD约1243，优于copy的1629，但h7 agent/moving-block误差比约1.12/1.31，均比copy差。更好的FVD本身也不足以证明动力学或动作控制。L1两个种子的物块生成优于copy，但agent仍近copy，P0分别约27.3%和16.0%。\n\n[完整逐模型数值和每例动作/规划记录](baselines-25k.json)包含模型配置、checkpoint哈希、全部horizon的质量指标、50k帧训练probe、5k帧测试probe及case身份。baseline-*-quality.npz保留逐例数值误差；像素、权重、视频和原始数据均留在EFS。其余训练种子和完整10epoch结果仍在继续。\n'
     (out / 'BASELINES_25K.md').write_text(text)
     readme = out / 'README.md'

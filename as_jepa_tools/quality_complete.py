@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader,Subset
 from as_jepa_tools.data import PushTWindows
-from as_jepa_tools.evaluate import load_model,pose_net,select_windows,predict_states
+from as_jepa_tools.evaluate import load_model,pose_net,select_windows,predict_states,excluded_window_indices
 from vforge.ops import initialize_ops,OpsConfig
 
 def video(path,frames,fps=10):
@@ -19,7 +19,7 @@ def video(path,frames,fps=10):
 @torch.no_grad()
 def main():
     p=argparse.ArgumentParser();p.add_argument("--checkpoint",required=True);p.add_argument("--data",required=True);p.add_argument("--pose",required=True);p.add_argument("--output",required=True);p.add_argument("--i3d",required=True)
-    p.add_argument("--cases",type=int,default=256);p.add_argument("--samples",type=int,default=4);p.add_argument("--steps",type=int,default=50);p.add_argument("--batch",type=int,default=8);p.add_argument("--fp32",action="store_true");p.add_argument("--media",action="store_true");a=p.parse_args()
+    p.add_argument("--cases",type=int,default=256);p.add_argument("--samples",type=int,default=4);p.add_argument("--steps",type=int,default=50);p.add_argument("--batch",type=int,default=8);p.add_argument("--fp32",action="store_true");p.add_argument("--media",action="store_true");p.add_argument("--selection-seed",type=int,default=0);p.add_argument("--exclude-cases");a=p.parse_args()
     out=Path(a.output);out.mkdir(parents=True,exist_ok=True)
     if (out/"metrics.json").exists():raise RuntimeError("Quality output already complete; use an independent directory")
     os.environ["TORCH_HOME"]=str(out.parents[2]/"cache/torch")
@@ -35,7 +35,10 @@ def main():
     spec=importlib.util.spec_from_file_location("project_i3d",detector_path);detector=importlib.util.module_from_spec(spec);spec.loader.exec_module(detector)
     extractor=detector.I3DExtractor(a.i3d,device="cuda:0",cache_dir=None,batch_size=4)
     # This detector fixes TF32 flags; world-model protocol is explicitly recorded below.
-    data=PushTWindows(a.data,window=16,gap=8,split="test");data.open();ids=select_windows(data,a.cases)
+    data=PushTWindows(a.data,window=16,gap=8,split="test");data.open()
+    excluded=excluded_window_indices(data,json.loads(Path(a.exclude_cases).read_text())) if a.exclude_cases else []
+    ids=select_windows(data,a.cases,seed=a.selection_seed,exclude=excluded)
+    if set(ids).intersection(excluded):raise AssertionError("Confirmation bank overlaps excluded cases")
     mean_records=[];all_truth=[];all_mean=[];arrays={};feature_real=[];feature_fake=[];feature_copy=[];started=time.time()
     for batch_id,batch in enumerate(DataLoader(Subset(data,ids),batch_size=a.batch,num_workers=2,pin_memory=True)):
         batch={k:v.cuda(non_blocking=True) if torch.is_tensor(v) else v for k,v in batch.items()}
@@ -115,7 +118,7 @@ def main():
             grid.save(folder/"grid.png");(folder/"meta.json").write_text(json.dumps(mean_records[case],indent=2))
         (review/"review.csv").write_text("case,episode,start,pass_fail,reason\n"+"".join(f"{i:02d},{r['episode']},{r['start']},pending,\n" for i,r in enumerate(mean_records[:32])))
     means={key:np.asarray(value).mean(tuple(range(value.ndim-1))).tolist() for key,value in arrays.items()}
-    result=dict(checkpoint=str(Path(a.checkpoint).resolve()),cases=len(ids),sampler_steps=a.steps,samples=a.samples if sample_results else 0,mean_by_horizon=means,
+    result=dict(checkpoint=str(Path(a.checkpoint).resolve()),selection_seed=a.selection_seed,excluded_cases=a.exclude_cases,excluded_overlapping_window_starts=len(excluded),cases=len(ids),sampler_steps=a.steps,samples=a.samples if sample_results else 0,mean_by_horizon=means,
                 h7_agent_ratio=float(arrays["mean_agent"][:,6].mean()/arrays["copy_agent"][:,6].mean()),h7_moving_block_ratio=float(arrays["mean_block"][moving,6].mean()/arrays["copy_block"][moving,6].mean()),
                 fvd=fvd,copy_fvd=copy_fvd,detector=extractor.identity,
                 fvd_protocol="256 matched16-frame clips:3 true context+13 generated,64->224 bilinear; this is not inheritedRGB16FVD2048",

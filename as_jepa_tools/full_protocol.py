@@ -112,7 +112,7 @@ def update(registry):
             decision.update(family=family, phase=phase, checked_at=time.time(),
                             trial_ids=[x["id"] for x in active],
                             rule="Generation <=1.10*best; L2tiedP0within10points; lowestheldoutrate; edgefactor4extension;20epochsif8to10improvement>.05.",
-                            scope="Automatic application of the committed original protocol; no new method tuning or human gallery approval.")
+                            scope="Prespecified price,seed,capacity and20epoch decisions. Final human gallery approval,close-comparison seeds3/4 and conditionalL1 SIGReg screening still require their statistical review.")
             summary["families"][family] = decision
             atomic(selection / (family + "-" + phase + "-progress.json"), decision)
             if decision["state"] == "all_collapsed":

@@ -33,17 +33,21 @@ def gallery(cases,output):
 def main():
     p=argparse.ArgumentParser();p.add_argument("--checkpoint",required=True);p.add_argument("--data",required=True)
     p.add_argument("--pose",required=True);p.add_argument("--output",required=True);p.add_argument("--cases",type=int,default=32)
-    p.add_argument("--steps",type=int,default=50);p.add_argument("--fp32",action="store_true");a=p.parse_args()
+    p.add_argument("--steps",type=int,default=50);p.add_argument("--fp32",action="store_true");p.add_argument("--selection-seed",type=int,default=42);p.add_argument("--exclude-cases");a=p.parse_args()
     torch.set_num_threads(2);torch.manual_seed(42)
     initialize_ops(OpsConfig(backend="sdpa",allow_fallback=False),device=torch.device("cuda",0),parallel_state=None)
     from stable_worldmodel.envs.pusht import PushT as PushTEnv
     from PIL import Image
     data=PushTWindows(a.data,window=16,gap=8,split="test");data.open()
-    model=load_model(a.checkpoint);torch.set_float32_matmul_precision("highest" if a.fp32 or getattr(model,"fp32_pool",False) else "high");pose=pose_net(a.pose);rng=np.random.default_rng(42)
+    model=load_model(a.checkpoint);torch.set_float32_matmul_precision("highest" if a.fp32 or getattr(model,"fp32_pool",False) else "high");pose=pose_net(a.pose);rng=np.random.default_rng(a.selection_seed)
     if model.domain!="standard":raise ValueError("Counterfactual simulator protocol currently covers the standard domain")
     if model.mode=="L0":raise ValueError("L0 has no pixel renderer; evaluate it with P0 planning")
     candidate=rng.choice(len(data),min(5000,len(data)),replace=False)
-    eligible=[int(i) for i in candidate if data.locate(i)[1]>=8][:a.cases]
+    excluded=json.loads(Path(a.exclude_cases).read_text()) if a.exclude_cases else []
+    if isinstance(excluded,dict):excluded=excluded["details"]
+    blocked={}
+    for row in excluded:blocked.setdefault(int(row["episode"]),[]).append(int(row["start"]))
+    eligible=[int(i) for i in candidate if data.locate(i)[1]>=8 and all(abs(data.locate(i)[1]-start)>=16 for start in blocked.get(data.locate(i)[0],[]))][:a.cases]
     env=PushTEnv(render_mode="rgb_array")
     root=Path(a.data);raw=np.load(root/"action_raw.npy",mmap_mode="r");raw_rows=np.load(root/"raw_rows.npy")
     state=np.load(root/"states.npy",mmap_mode="r");card=json.loads((root/"dataset_card.json").read_text())
@@ -100,7 +104,7 @@ def main():
             galleries.append(dict(case=case,truth=truth_images,prediction=pred))
     env.close();out=Path(a.output);out.mkdir(parents=True,exist_ok=True)
     def average(key):return float(np.mean([r[key] for r in records]))
-    report=dict(float32_matmul_precision=torch.get_float32_matmul_precision(),feature_forward_precision="FP32" if a.fp32 else "BF16 autocast",checkpoint=str(Path(a.checkpoint).resolve()),cases=len(records),rollouts=4*len(records),
+    report=dict(float32_matmul_precision=torch.get_float32_matmul_precision(),feature_forward_precision="FP32" if a.fp32 else "BF16 autocast",checkpoint=str(Path(a.checkpoint).resolve()),selection_seed=a.selection_seed,excluded_cases=a.exclude_cases,cases=len(records),rollouts=4*len(records),
                 action_identification_accuracy=average("correct"),agent_action_identification_accuracy=average("agent_correct"),
                 block_action_identification_accuracy=average("block_correct"),block_angle_error_deg=average("block_angle_error_deg"),oracle_pose_action_identification_accuracy=average("oracle_pose_correct"),
                 chance=.25,sampler_steps=a.steps,actual_renderer_sampler=("finiteGaussianDiffusion"+str(model.density_steps)+"transitions+8bitGaussianEndpoint" if getattr(model,"method","")=="vdm_nats" else "Euler"+str(a.steps)),seconds=time.time()-started,common_sampler_noise=True,

@@ -41,11 +41,24 @@ def predict_states(model,context,actions,horizon,sample_noise=False):
     return torch.stack(history[h:],1)
 
 
-def select_windows(dataset,count,seed=0):
+def excluded_window_indices(dataset,records,span=16):
+    excluded=set()
+    episode_to_slot={int(ep):slot for slot,ep in enumerate(dataset.episodes)}
+    for row in records:
+        slot=episode_to_slot.get(int(row["episode"]))
+        if slot is None:continue
+        base=int(dataset.ends[slot-1]) if slot else 0
+        start=int(row["start"]);count=int(dataset.counts[slot])
+        excluded.update(base+i for i in range(max(0,start-span+1),min(count,start+span)))
+    return excluded
+
+
+def select_windows(dataset,count,seed=0,exclude=()):
     dataset.open();rng=np.random.default_rng(seed)
     candidates=rng.permutation(len(dataset))[:min(10000,len(dataset))]
-    moving=[];static=[]
+    moving=[];static=[];excluded=set(map(int,exclude))
     for index in candidates:
+        if int(index) in excluded:continue
         ep,start=dataset.locate(index)
         if start<8:continue
         rows=np.arange(int(dataset.offsets[ep])+start,int(dataset.offsets[ep])+start+dataset.window)

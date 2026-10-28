@@ -12,3 +12,5 @@
 I01保留log-SNR加权surrogate控制，并增加含离散重建/噪声先验边界的64步Gaussian负ELBO候选，不能把bound叫精确NLL。I02当前先用训练参考decoder估计对角Q。I04保留framewise分位数控制，并增加只看anchor颜色极值的点式canonicalizer。新实现及CPU检查见[概率目标与实际差异](../../docs/lingjing/research-density-objective.md)，GPUworld-model收益仍待验证。
 
 world-model收益尚在验证，方法有效性需看相同数据、预算、case和训练种子下的生成、动作跟随、规划与成本。数学检查和训练不崩都不足以宣布方法有效。
+
+候选确认另外使用预先声明的新heldout窗口种子20261028，移除与旧16帧窗口在时间上重叠的起点；反事实使用新种子142并排除旧case时间段，规划确认使用242/243/244。这些仍来自同一个test episode split，不应称为独立数据集或额外训练种子。原256例与P042/43/44保留作诊断。
