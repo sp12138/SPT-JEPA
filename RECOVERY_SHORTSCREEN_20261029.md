@@ -1,3 +1,9 @@
+# Active24GPUstaged sample-level research
+
+See [current recovery](RECOVERY_FRONTIER_20261029.md). Prior short-screen results are complete; old broad grids remain held. New20adaptation trials stop after600updates, alongside4selected bounded second-stage runs.
+
+---
+
 # Short-budget screening active — 2026-10-29
 
 User corrected the long candidate runs: inspect short-line outcomes before long training. All16runs in robustness_20261029 have STOP markers, full checkpoints and global HOLD_DISPATCH. They stopped successfully around9556-10293steps; status finished/exit0 means graceful pause, not completion of37473updates. Never clear their STOP or unhold that plan.

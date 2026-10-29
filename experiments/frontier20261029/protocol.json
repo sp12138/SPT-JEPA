@@ -1,0 +1,304 @@
+{
+  "created_at_utc": "2026-10-29T10:11:17.471689+00:00",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029",
+  "latest_user_authorization": "Use all24GPUs productively for high-performing sample-level algorithm research; retain short gates and stop unneeded runs.",
+  "concurrency": "20short adaptation trials plus4bounded stage2 continuations occupy all24 authorized GPU slots.",
+  "model_parameters": 51097134,
+  "state_dimension": 64,
+  "batch_size": 128,
+  "beta": 0.25,
+  "sigma0": 0.1,
+  "initial_step": 24982,
+  "first_stop_step": 25582,
+  "additional_training_updates": 600,
+  "scheduler_total_steps": 124910,
+  "training_seeds": [
+    1,
+    2
+  ],
+  "screening_scope": "Adaptation from an existing mature2epochmodel, not training from scratch. Every method has a matched original continuation from exactly the same weights, optimizer/scheduler/RNG/cursor. No candidate may continue beyond600updates until numerical/gradient/state-use and task evidence are reviewed.",
+  "methods": {
+    "original": {
+      "type": "exact control",
+      "hypothesis": "Same posterior/flow/rate objective; establishes continuation and runtime noise."
+    },
+    "clean-prior": {
+      "type": "surrogate",
+      "hypothesis": "Read posterior means in the dynamics prior while keeping rendering noise; remove the input-noise Jacobian penalty. This changes the code-length objective."
+    },
+    "innovation-corrected": {
+      "type": "surrogate",
+      "hypothesis": "Subtract known carried posterior perturbation from the predicted state before pricing innovations; preserve learning of physical residuals. Not the original Markov KL."
+    },
+    "antithetic-rate": {
+      "type": "estimator control",
+      "hypothesis": "Average squared errors for plus/minus posterior-noise draws; same expected rate under symmetric Gaussian noise, potentially lower gradient variance; extra prior compute."
+    },
+    "marginal-prior": {
+      "type": "surrogate",
+      "hypothesis": "Average plus/minus noisy prior means before pricing prediction error; removes local linear noise variation. Jensen changes the objective; not an unbiased original KL."
+    },
+    "overshoot": {
+      "type": "known-principle adaptation",
+      "hypothesis": "Mix one-step rate with deterministic multi-step predictions from3observations; match planning horizon. Both targets remain attached; no EMA/stop-gradient. Inspired by latent overshooting, not claimed invented."
+    },
+    "window-free-bits": {
+      "type": "sample-level adaptation",
+      "hypothesis": "Apply a0.5nat per-window/per-dimension floor to variable rate, retaining entry constants. No batch-expected freebits; not identical to literature objective."
+    },
+    "motion-weighted": {
+      "type": "sample-level adaptation",
+      "hypothesis": "Weight FM residuals by within-window target-frame changes, normalized only inside each sample. Emphasize small moving objects; no state labels or inference-time future frames."
+    },
+    "shared-flow-noise": {
+      "type": "necessary control",
+      "hypothesis": "Share renderer noise/time within a video window; same per-frame marginal flow objective with a different gradient estimator."
+    },
+    "differential-flow": {
+      "type": "sample-level candidate",
+      "hypothesis": "Add adjacent-time residual differences under shared renderer noise/time. Common noise cancels in differences, directing gradients to predicted motion; compare shared-noise control."
+    }
+  },
+  "runs": [
+    {
+      "id": "original-seed1-adapt600",
+      "method": "original",
+      "training_seed": 1,
+      "host": "dev13",
+      "gpu": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/original-seed1-adapt600/config.json",
+      "config_sha256": "462d24e52909948c1c23a98a3116340c074da65a6ddd4565c9af776a70b9472f",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982"
+    },
+    {
+      "id": "original-seed2-adapt600",
+      "method": "original",
+      "training_seed": 2,
+      "host": "dev15",
+      "gpu": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/original-seed2-adapt600/config.json",
+      "config_sha256": "c14b4fe949b5a3caa453726a2c14edca210ddc692f50a3493f1b30eb79eb2f4c",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982"
+    },
+    {
+      "id": "clean-prior-seed1-adapt600",
+      "method": "clean-prior",
+      "training_seed": 1,
+      "host": "dev2",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/clean-prior-seed1-adapt600/config.json",
+      "config_sha256": "f6132368f26bc432bc01da4e423e3c75ae27aec000b13d8ae6945843b3e52fbc",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982"
+    },
+    {
+      "id": "clean-prior-seed2-adapt600",
+      "method": "clean-prior",
+      "training_seed": 2,
+      "host": "dev13",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/clean-prior-seed2-adapt600/config.json",
+      "config_sha256": "60bc5f029c0476b27cb4995f9a0267e065ae2bd3be26031b264100a6b3555bbc",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982"
+    },
+    {
+      "id": "innovation-corrected-seed1-adapt600",
+      "method": "innovation-corrected",
+      "training_seed": 1,
+      "host": "dev15",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/innovation-corrected-seed1-adapt600/config.json",
+      "config_sha256": "d4929c0cb02d2eb78be6d45bfbf09002272d02a6d41b3809613787f55b4b7219",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982"
+    },
+    {
+      "id": "innovation-corrected-seed2-adapt600",
+      "method": "innovation-corrected",
+      "training_seed": 2,
+      "host": "dev2",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/innovation-corrected-seed2-adapt600/config.json",
+      "config_sha256": "df6e09e9ee2ec2ef058df246cc90d92b5a78171dbe11c3d7d4ad88e0b4ae6bee",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982"
+    },
+    {
+      "id": "antithetic-rate-seed1-adapt600",
+      "method": "antithetic-rate",
+      "training_seed": 1,
+      "host": "dev13",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/antithetic-rate-seed1-adapt600/config.json",
+      "config_sha256": "47ba03e96186e600fe5d920123f2bd2eac2c00bb66aeeee92ed7302263f2a905",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982"
+    },
+    {
+      "id": "antithetic-rate-seed2-adapt600",
+      "method": "antithetic-rate",
+      "training_seed": 2,
+      "host": "dev15",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/antithetic-rate-seed2-adapt600/config.json",
+      "config_sha256": "41b9289c45074813c7dad642f69955c7f46f3260d9e5cd4c4b3c651f008acdb8",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982"
+    },
+    {
+      "id": "marginal-prior-seed1-adapt600",
+      "method": "marginal-prior",
+      "training_seed": 1,
+      "host": "dev2",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/marginal-prior-seed1-adapt600/config.json",
+      "config_sha256": "3738ddec1c15117c9f89b630566ebde946a6d3e8c8659fe32d8dbef18182aad9",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982"
+    },
+    {
+      "id": "marginal-prior-seed2-adapt600",
+      "method": "marginal-prior",
+      "training_seed": 2,
+      "host": "dev13",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/marginal-prior-seed2-adapt600/config.json",
+      "config_sha256": "2f5eab512d724cc84bd099b1a10d25dda1c3caf0cb4f18b54850776915193773",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982"
+    },
+    {
+      "id": "overshoot-seed1-adapt600",
+      "method": "overshoot",
+      "training_seed": 1,
+      "host": "dev15",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/overshoot-seed1-adapt600/config.json",
+      "config_sha256": "b6189c392baf26b392095bff26198c67de45b59e175ea9216d6a2eb2bf9ac3ac",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982"
+    },
+    {
+      "id": "overshoot-seed2-adapt600",
+      "method": "overshoot",
+      "training_seed": 2,
+      "host": "dev2",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/overshoot-seed2-adapt600/config.json",
+      "config_sha256": "d85832176d2ee7cee0c800a573bc1ce219210c84e3b48a02af74ba212f7bd6ee",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982"
+    },
+    {
+      "id": "window-free-bits-seed1-adapt600",
+      "method": "window-free-bits",
+      "training_seed": 1,
+      "host": "dev13",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/window-free-bits-seed1-adapt600/config.json",
+      "config_sha256": "0d109444c17b0fb3309e8f7eedbafd064367ce2fbcd46c5d2fd5e6d13f8c7ca9",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982"
+    },
+    {
+      "id": "window-free-bits-seed2-adapt600",
+      "method": "window-free-bits",
+      "training_seed": 2,
+      "host": "dev15",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/window-free-bits-seed2-adapt600/config.json",
+      "config_sha256": "0179d14433df366c243416817a5b930c40457e735dc4ec212c731d69035869be",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982"
+    },
+    {
+      "id": "motion-weighted-seed1-adapt600",
+      "method": "motion-weighted",
+      "training_seed": 1,
+      "host": "dev2",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/motion-weighted-seed1-adapt600/config.json",
+      "config_sha256": "85c0e3e8e7be128e5c8861be1ae57250c183e7d5c639e3bba6b4b388cb7648b5",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982"
+    },
+    {
+      "id": "motion-weighted-seed2-adapt600",
+      "method": "motion-weighted",
+      "training_seed": 2,
+      "host": "dev13",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/motion-weighted-seed2-adapt600/config.json",
+      "config_sha256": "09017686a3e896245f94346a5739ae0427ccb28dc5ab59341c52b8b52659765a",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982"
+    },
+    {
+      "id": "shared-flow-noise-seed1-adapt600",
+      "method": "shared-flow-noise",
+      "training_seed": 1,
+      "host": "dev15",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/shared-flow-noise-seed1-adapt600/config.json",
+      "config_sha256": "722ea417b9b9264681726ad5820098d4d6408db5d723c4c7f64e7c2a4efb9a12",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982"
+    },
+    {
+      "id": "shared-flow-noise-seed2-adapt600",
+      "method": "shared-flow-noise",
+      "training_seed": 2,
+      "host": "dev2",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/shared-flow-noise-seed2-adapt600/config.json",
+      "config_sha256": "27a0e49ef6f4f173c2f7a36b9ada9de907401f668fd8fa4ec19de1846b8fb876",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982"
+    },
+    {
+      "id": "differential-flow-seed1-adapt600",
+      "method": "differential-flow",
+      "training_seed": 1,
+      "host": "dev13",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/differential-flow-seed1-adapt600/config.json",
+      "config_sha256": "003f6a80c5298f4898e4e900501ac5d54e73c8af358f67ae81127e20c4185eda",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982"
+    },
+    {
+      "id": "differential-flow-seed2-adapt600",
+      "method": "differential-flow",
+      "training_seed": 2,
+      "host": "dev15",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/frontier_20261029/differential-flow-seed2-adapt600/config.json",
+      "config_sha256": "8c8f0eb9d98d892a487a04d22a176e717cd0f57882e911472d3f68961ec9bbe3",
+      "parent_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982"
+    }
+  ],
+  "sources": [
+    {
+      "name": "PlaNet latent overshooting",
+      "url": "https://arxiv.org/abs/1811.04551",
+      "relationship": "Prior multi-step latent training principle; our deterministic attached-target mix is an adaptation, not the same variational bound."
+    },
+    {
+      "name": "Differentiable Antithetic Sampling",
+      "url": "https://arxiv.org/abs/1810.02555",
+      "relationship": "Known variance-reduction principle; not our invention."
+    },
+    {
+      "name": "Improving Variational Inference with IAF",
+      "url": "https://arxiv.org/abs/1606.04934",
+      "relationship": "Prior free-bits context; our per-sample floor explicitly differs from a batch-expected KL floor."
+    },
+    {
+      "name": "Noise regularization analysis",
+      "url": "https://arxiv.org/abs/1104.3250",
+      "relationship": "Input noise induces derivative regularization; motivates exact linear-Gaussian diagnostic, not a new theorem."
+    }
+  ],
+  "loss_constraints": [
+    "Each objective is an average of per-video-window terms.",
+    "No cross-sample statistics, SIGReg, contrastive negatives from other samples, BatchNorm, EMA or target network.",
+    "Exact same trainable tensors/parameter count and inference architecture.",
+    "Frame motion weights use same-sample training targets only; rollout never receives futureRGB.",
+    "Additional compute is reported; same update count is not an equal-compute claim.",
+    "Surrogates must not be called exact KL or a proven likelihood bound."
+  ],
+  "first_gate": {
+    "training": "600updates,finite weights/loss and gradients; checkpoint saved and stopped.",
+    "posterior_health": "32cases,Euler20,own noisy state vs anchor plus zero/permuted interventions; interpret alongside matched original.",
+    "task": "P0seeds42/43,50episodes;16same-reset actionCF,64generation clips,1sample,Euler20 initially.",
+    "reference": "Original continued600updates is primary; saved originalepoch2checkpoint is a no-update reference.",
+    "bad_methods": "Stop on numerical/gradient contract failure; defer a method clearly worsening paired task metrics without compensating signal.",
+    "ambiguous": "Only one limited next stage for at most3promisingmechanismfamilies, based on paired evidence and cost; no automatic full3epochgrid."
+  },
+  "reserved_confirmation": "Methods/diagnostic seeds are selected; final winner needs reserved unseen training seeds and fresh eval cases.",
+  "publication": "Commit/push useful positive, negative and inconclusive results with complete numerical outcomes and key scientific figures."
+}

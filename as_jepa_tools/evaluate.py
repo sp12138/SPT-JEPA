@@ -22,6 +22,9 @@ def load_model(folder,device="cuda"):
     elif target=="vforge.models.as_jepa.semantic_carry.SemanticCarry":
         from vforge.models.as_jepa.semantic_carry import SemanticCarry
         model=SemanticCarry(**cfg).to(device)
+    elif target=="as_jepa_lewm.frontier.FrontierLeWM":
+        from as_jepa_lewm.frontier import FrontierLeWM
+        model=FrontierLeWM(**cfg).to(device)
     elif target=="as_jepa_lewm.robust.RobustLeWM":
         from as_jepa_lewm.robust import RobustLeWM
         model=RobustLeWM(**cfg).to(device)

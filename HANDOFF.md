@@ -1,3 +1,9 @@
+# Active24GPUstaged sample-level research
+
+See [current recovery](RECOVERY_FRONTIER_20261029.md). Prior short-screen results are complete; old broad grids remain held. New20adaptation trials stop after600updates, alongside4selected bounded second-stage runs.
+
+---
+
 # User redirected to short-budget screening
 
 Read [current recovery](RECOVERY_SHORTSCREEN_20261029.md). The old16run long matrix is gracefully paused; do not restart from historical statements.

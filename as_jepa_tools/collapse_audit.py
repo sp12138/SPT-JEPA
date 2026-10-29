@@ -142,6 +142,9 @@ def main():
         active_scope="Per-window variable entry .5*mu0^2 plus summed transition KL per dimension; shared fixed-variance entry and transition constants excluded from activity.",
         forward_precision="BF16 autocast; Gaussian rate and pose errors FP32; highest FP32 matmul",
     )
+    if hasattr(model, "frontier_method"):
+        result["training_objective_variant"] = model.frontier_method
+        result["rate_diagnostic_note"] = "This audit uses the original noisy one-step prior as a reference; surrogate training rate may differ. Posterior reconstruction and interventions evaluate the declared marginal posterior."
     np.savez(out / "per-case.npz", **arrays)
     (out / "cases.json").write_text(json.dumps(records, indent=2))
     (out / "metrics.json").write_text(json.dumps(result, indent=2))

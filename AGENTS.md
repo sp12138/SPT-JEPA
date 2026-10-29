@@ -1,5 +1,7 @@
 # SPT-JEPA current execution policy
 
+Latest user instruction: use all24H200s on dev2/dev13/dev15 productively for strong sample-level algorithms. Preserve short gates. Current frontier protocol runs/frontier_20261029/protocol.json schedules20same-size600update adaptations plus4evidence-selected bounded stage2runs; no automatic long candidate grid. Publish useful new conclusions promptly.
+
 Latest clarification: future method trials first save and inspect an approximately600update(about10minute) health stage, including numerical/gradient/state-use checks. A finite200step smoke is not a functional noncollapse result; do not skip directly to long grids. Early not-yet-learned behavior is inconclusive unless persistent failure is independently verified.
 
 Latest user correction,2026-10-29: inspect short-budget method results before long experiments. The16run robustness matrix is gracefully paused with recoverable state. Only seeds1/2 of four methods may finish the first epoch for matched short screening; do not resume the long grid automatically. Current scope: runs/shortscreen_20261029/protocol.json.
