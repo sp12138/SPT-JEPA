@@ -1,0 +1,75 @@
+{
+  "created_at_utc": "2026-10-29T13:07:13.933804+00:00",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/stage2eval_20261029",
+  "scope": "Matched24982update checkpoints of the evidence-selected second-stage arms. No new training. Primaryeval42/43belong to parentcampaign; this supplement uses fresh1042/1043/1044, health32,quality64Euler20,CF16Euler20.",
+  "methods": [
+    "original",
+    "lower-beta",
+    "temporal-forecast"
+  ],
+  "training_seeds": [
+    1,
+    2
+  ],
+  "model_parameters": 51097134,
+  "records": [
+    {
+      "method": "original",
+      "training_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0024982/weights.pt"
+      ]
+    },
+    {
+      "method": "original",
+      "training_seed": 2,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0024982/weights.pt"
+      ]
+    },
+    {
+      "method": "lower-beta",
+      "training_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/lower-beta-seed1-epoch2/model-step0024982",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/lower-beta-seed1-epoch2/stage-complete.json",
+        "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/lower-beta-seed1-epoch2/model-step0024982/weights.pt"
+      ]
+    },
+    {
+      "method": "lower-beta",
+      "training_seed": 2,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/lower-beta-seed2-epoch2/model-step0024982",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/lower-beta-seed2-epoch2/stage-complete.json",
+        "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/lower-beta-seed2-epoch2/model-step0024982/weights.pt"
+      ]
+    },
+    {
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/temporal-forecast-seed1-epoch2/model-step0024982",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/temporal-forecast-seed1-epoch2/stage-complete.json",
+        "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/temporal-forecast-seed1-epoch2/model-step0024982/weights.pt"
+      ]
+    },
+    {
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/temporal-forecast-seed2-epoch2/model-step0024982",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/temporal-forecast-seed2-epoch2/stage-complete.json",
+        "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/temporal-forecast-seed2-epoch2/model-step0024982/weights.pt"
+      ]
+    }
+  ],
+  "automatic_long_continuation": false,
+  "limitations": [
+    "Two diagnostic training seeds, exploratory2epochcheckpoints, not final3epochstability.",
+    "Fresh cases may share exactquerieswithprimary; reporter counts/excludes overlap in a separate analysis.",
+    "Lossbeta differs deliberately forlower-beta; sharedsampler/source and model size retained."
+  ]
+}
