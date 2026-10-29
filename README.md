@@ -1,6 +1,6 @@
 # SPT-JEPA
 
-当前确认 [anchor 探索的正面信号](experiments/anchorconfirm20261029/README.md)：25% anchor dropout 的四种子初筛规划变化为 +4/+3/+5/0 个百分点。12 张卡做相同初始完整状态的短训练复跑，8 张卡做新评测案例与线性 probes，另外 4 张卡继续先前筛选出的第二阶段训练。恢复见 [RECOVERY_ANCHOR_CONFIRM_20261029.md](RECOVERY_ANCHOR_CONFIRM_20261029.md)。这些仍是已有模型的短适应，未证明从头稳定达到89.3%。
+[Anchor 初筛的正面信号未通过确认](experiments/anchorconfirm20261029/results/DECISION.md)：Drop25 初筛平均 +3.0 个百分点，新案例 +0.17，训练复跑 0；全部 120 项确认端点已完成。目前没有新算法证明稳定优于原版 AS-JEPA。当前只完成先前选出的两条方向的第二 epoch 与匹配任务评测，见 [评测协议](experiments/stage2eval20261029/README.md)。不延长未获支持的短测候选。
 
 [四种子动作排序](experiments/actionrank20261029/results/ACTIONRANK-SHORT.md)已完成全部 120 项端点，未发现跨种子稳定规划收益，已停止。
 

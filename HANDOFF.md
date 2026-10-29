@@ -1,3 +1,9 @@
+# Current: finish selected two-epoch task evidence
+
+Anchorconfirmation120endpoints completed0; initialdrop25lead failed freshcase/numericalrepeatconfirmation. Fullresults:experiments/anchorconfirm20261029/results. No new algorithm has proven stable planning superiority overoriginalAS-JEPA. Oldshortgrids remainheld. Currentselectedtraining:shortscreen2_20261029 stops24982. Supplementalmatchedtaskevaluation:stage2eval_20261029; no new training there. Preserve sources/plans and distinguish originalhyperparametertuning from newmethods.
+
+---
+
 # Current: confirm the anchor lead before longer training
 
 Read [RECOVERY_ANCHOR_CONFIRM_20261029.md](RECOVERY_ANCHOR_CONFIRM_20261029.md), actual EFS protocol/plan/source and workers. Parent anchor120endpoints complete0; drop25primarychanges+4/+3/+5/0pp. Current confirmation stays600updates:12same-state/RNGrepeats+8freshcase/probeslots, beside4selectedshortscreen2jobs. Do not treat numerical repeats as new training seeds or restart oldheldgrids.

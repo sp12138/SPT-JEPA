@@ -1,5 +1,7 @@
 # SPT-JEPA current execution policy
 
+Current evidence: anchorconfirmation completed120exits0; the apparent drop25lead did not survive freshcases/numericalrepeat. Do not continue those candidates. Finish only the already evidence-selected shortscreen2twoepochruns and stage2evalmatchedtaskchecks before the next researchdecision. Earlier taskauthorization remains, but do not launch blanket long grids. No newalgorithm/stable89%claim is supported yet.
+
 Current confirmation: anchor_20261029 completed120exits0; drop25primaryP0effects+4/+3/+5/0pp warrant confirmation, not a performanceclaim. anchorconfirm_20261029 uses12same-state600updaterepeats+8fresh-evaluation/probeGPUslots, with4unchangedshortscreen2slots. No automatic longertraining; context-mask is a secondarycontrast. Preserve source799a66c and allolderheldplans.
 
 Current stage: anchor_20261029 schedules20matched600updateadaptations (original,anchor dropout0.1/0.25/0.5,observed-context-mask)x4existingseeds, preserving original full gradients/model size. Three prior short screens completedall120endpoints0 each and remainheld. Fourselectedshortscreen2runs remainunchanged. Past-anchor shortcut is a hypothesis; judge actual task evidence before more budget.
