@@ -1,0 +1,5 @@
+# Current bounded action-ranking screen
+
+Root:/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029. Read protocol/plan/source hashes and actual worker/GPU processes. Five settings x four existing training seeds; complete seed-matched2epoch optimizer/scheduler/RNG/cursor resume24982->25582, then pairedP0/health/generation/action checks. No automatic long continuation. Other4GPUslots remain selectedshortscreen2jobs to24982.
+
+This uses the original model/prior as an action-ranking energy, with within-video reversed/shifted alternatives and no auxiliary head or cross-sample statistics. All original full gradients stay attached. No extra model parameters. Alternative actions are not proved to cause different outcomes; preserve that limitation. Two earlier short grids are complete and held; renderer-stop showed planning deterioration in everyseed while still passing the coarse posterior collapse rule. Preserve all failures/negative controls. Authoritative files remain underEFS; only smallGitartifacts are local.

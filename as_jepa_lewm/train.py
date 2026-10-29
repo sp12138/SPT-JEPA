@@ -66,7 +66,7 @@ class TrainModule(pl.LightningModule):
         if hasattr(self,"_constrained"):
             for p,g in self._constrained:p.grad=g
             del self._constrained
-        if self.global_step%100==0:
+        if (self.global_step+1)%100==0:
             for prefix in ["encoder","predictor","renderer"]:
                 total=sum(p.grad.float().square().sum() for name,p in self.model.named_parameters() if name.startswith(prefix+".") and p.grad is not None)
                 self.last_metrics["grad_norm_"+prefix]=float(torch.as_tensor(total).sqrt())

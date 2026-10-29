@@ -9,12 +9,13 @@ from vforge.models.as_jepa.pixels import pack
 
 METHODS = {"original", "clean-prior", "innovation-corrected", "antithetic-rate", "marginal-prior",
            "overshoot", "window-free-bits", "motion-weighted", "shared-flow-noise", "differential-flow",
-           "target-stop", "input-stop", "rate-stop", "render-stop"}
+           "target-stop", "input-stop", "rate-stop", "render-stop", "action-ranking"}
 
 
 class FrontierLeWM(ASJepaLeWM):
     def __init__(self, frontier_method="original", auxiliary_fraction=.5, free_nats=.5,
-                 motion_strength=4., difference_weight=.25, private_seed=20261029, **kwargs):
+                 motion_strength=4., difference_weight=.25, private_seed=20261029,
+                 ranking_mode="one-step", ranking_weight=1e-4, **kwargs):
         super().__init__(**kwargs)
         if self.mode != "L2" or self.objective != "flow" or frontier_method not in METHODS:
             raise ValueError("Require a named L2 flow ablation")
@@ -24,6 +25,10 @@ class FrontierLeWM(ASJepaLeWM):
         self.motion_strength = float(motion_strength)
         self.difference_weight = float(difference_weight)
         self.private_seed = int(private_seed)
+        if ranking_mode not in {"one-step", "terminal"} or ranking_weight < 0:
+            raise ValueError("Invalid within-video ranking configuration")
+        self.ranking_mode = ranking_mode
+        self.ranking_weight = float(ranking_weight)
         if not 0 <= self.auxiliary_fraction <= 1 or self.free_nats < 0:
             raise ValueError("Invalid fixed objective coefficient")
 
@@ -37,7 +42,7 @@ class FrontierLeWM(ASJepaLeWM):
         method = self.frontier_method
         if method == "original":
             return super().loss(batch, step, ramp_steps)
-        if method in {"target-stop", "input-stop", "rate-stop", "render-stop"}:
+        if method in {"target-stop", "input-stop", "rate-stop", "render-stop", "action-ranking"}:
             return self._routing_loss(batch, step, ramp_steps)
         pixels, frames, anchor = self.prepare(batch)
         info = self.encode(dict(pixels=pixels, action=batch["action"]))
@@ -116,7 +121,10 @@ class FrontierLeWM(ASJepaLeWM):
         rate = priced.mean() / ((w - 1) * FRAME_ELEMS)
         raw_rate = raw_rate_per_window.mean() / ((w - 1) * FRAME_ELEMS)
         beta = self.beta * min(1., step / max(1, ramp_steps)) if ramp_steps else self.beta
-        loss = fm + beta * rate
+        ranking = fm * 0
+        if self.frontier_method == "action-ranking":
+            ranking, _ = self._action_ranking(flat, batch["action"], step)
+        loss = fm + beta * rate + self.ranking_weight * ranking
         variable = .5 * mu[:, 0].float().square() + per_window
         return loss, dict(loss=loss, fm=fm, rate=rate, raw_rate=raw_rate,
                           entry=entry.mean(), surprise=per_dim.sum(-1).mean(),
@@ -151,8 +159,36 @@ class FrontierLeWM(ASJepaLeWM):
         fm = flow_loss(self.renderer, y, condition, anchors, self.shift)
         rate = (entry + surprise.sum(1)).mean() / ((w - 1) * FRAME_ELEMS)
         beta = self.beta * min(1., step / max(1, ramp_steps)) if ramp_steps else self.beta
-        loss = fm + beta * rate
+        ranking = fm * 0
+        if self.frontier_method == "action-ranking":
+            ranking, _ = self._action_ranking(flat, batch["action"], step)
+        loss = fm + beta * rate + self.ranking_weight * ranking
         variable = .5 * mu[:, 0].float().square() + (mu[:, 1:].float() - prediction.float()).square().sum(1) / (2 * self.sigma0 ** 2)
         return loss, dict(loss=loss, fm=fm, rate=rate, entry=entry.mean(), surprise=surprise.mean(),
                           rate_share=beta * rate / fm.detach().clamp_min(1e-8),
-                          feature_std=mu.float().std((0, 1)).mean(), active_dims=(variable.mean(0) > .1).sum())
+                          feature_std=mu.float().std((0, 1)).mean(), active_dims=(variable.mean(0) > .1).sum(), action_ranking=ranking)
+
+    def _action_ranking(self, mu, raw_actions, step):
+        """Within-video action alternatives; not simulator-confirmed counterfactuals."""
+        actions = raw_actions[:, :-1]
+        alternatives = [actions, actions.flip(1), actions.roll(1, 1)]
+        devices = [mu.device.index] if mu.is_cuda else []
+        errors = []
+        with torch.random.fork_rng(devices=devices):
+            for candidate in alternatives:
+                # Identical actions must yield identical stochastic predictions.
+                torch.manual_seed(self.private_seed + int(step))
+                act = self.action_encoder(candidate)
+                if self.ranking_mode == "one-step":
+                    predicted = self.predict(mu[:, :-1], act)
+                    error = (predicted.float() - mu[:, 1:].float()).square().mean((1, 2))
+                else:
+                    context = min(3, mu.shape[1] - 1)
+                    history = list(mu[:, :context].unbind(1))
+                    for t in range(context, mu.shape[1]):
+                        nxt = self.predict(torch.stack(history, 1), act[:, :t])[:, -1]
+                        history.append(nxt)
+                    error = (history[-1].float() - mu[:, -1].float()).square().mean(-1)
+                errors.append(error / self.sigma0 ** 2)
+        costs = torch.stack(errors, 1)
+        return torch.nn.functional.cross_entropy(-costs, torch.zeros(len(mu), device=mu.device, dtype=torch.long)), costs
