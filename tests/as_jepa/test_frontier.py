@@ -65,7 +65,7 @@ class FrontierContracts(unittest.TestCase):
         for method in sorted(METHODS-{"original"}):
             with self.subTest(method=method):
                 m=self.model(method)
-                with patch('torch.randn_like',fixednoise),patch('as_jepa_lewm.frontier.draw_timesteps',fixedtime):
+                with patch('torch.randn_like',fixednoise),patch('as_jepa_lewm.frontier.draw_timesteps',fixedtime),patch('vforge.models.as_jepa.flow.draw_timesteps',fixedtime):
                     whole,_=m.loss(batch,step=0)
                     separate=[m.loss({k:v[i:i+1] for k,v in batch.items()},step=0)[0] for i in range(2)]
                 torch.testing.assert_close(whole,torch.stack(separate).mean(),rtol=5e-5,atol=5e-6)

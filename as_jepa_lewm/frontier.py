@@ -8,7 +8,8 @@ from vforge.models.as_jepa.flow import draw_timesteps
 from vforge.models.as_jepa.pixels import pack
 
 METHODS = {"original", "clean-prior", "innovation-corrected", "antithetic-rate", "marginal-prior",
-           "overshoot", "window-free-bits", "motion-weighted", "shared-flow-noise", "differential-flow"}
+           "overshoot", "window-free-bits", "motion-weighted", "shared-flow-noise", "differential-flow",
+           "target-stop", "input-stop", "rate-stop", "render-stop"}
 
 
 class FrontierLeWM(ASJepaLeWM):
@@ -36,6 +37,8 @@ class FrontierLeWM(ASJepaLeWM):
         method = self.frontier_method
         if method == "original":
             return super().loss(batch, step, ramp_steps)
+        if method in {"target-stop", "input-stop", "rate-stop", "render-stop"}:
+            return self._routing_loss(batch, step, ramp_steps)
         pixels, frames, anchor = self.prepare(batch)
         info = self.encode(dict(pixels=pixels, action=batch["action"]))
         mu = info["emb"]
@@ -120,3 +123,36 @@ class FrontierLeWM(ASJepaLeWM):
                           rate_share=beta * rate / fm.detach().clamp_min(1e-8),
                           feature_std=mu.float().std((0, 1)).mean(),
                           active_dims=(variable.mean(0) > .1).sum(), differential_flow=differential)
+
+    def _routing_loss(self, batch, step=0, ramp_steps=0):
+        """Same forward loss, experimental sample-level semigradient routing."""
+        from vforge.models.as_jepa.codes import surprise_nats
+        from vforge.models.as_jepa.flow import flow_loss
+        pixels, render, anchor = self.prepare(batch)
+        info = self.encode(dict(pixels=pixels, action=batch["action"]))
+        flat = info["emb"]
+        b, w = flat.shape[:2]
+        mu = flat.reshape(b, w, self.state_slots, self.state_width)
+        states = mu + self.sigma0 * torch.randn_like(mu)
+        prior_input = states.flatten(2)[:, :-1]
+        if self.frontier_method in {"input-stop", "rate-stop"}:
+            prior_input = prior_input.detach()
+        prediction = self.predict(prior_input, info["act_emb"][:, :-1]).reshape_as(mu[:, 1:])
+        target = mu[:, 1:]
+        if self.frontier_method in {"target-stop", "rate-stop"}:
+            target = target.detach()
+        entry = entry_nats(mu[:, 0], self.sigma0)
+        surprise = surprise_nats(target, prediction, self.sigma0)
+        condition = states[:, 1:].flatten(0, 1)
+        if self.frontier_method == "render-stop":
+            condition = condition.detach()
+        y = pack(render[:, 1:].flatten(0, 1))
+        anchors = pack(anchor).repeat_interleave(w - 1, 0)
+        fm = flow_loss(self.renderer, y, condition, anchors, self.shift)
+        rate = (entry + surprise.sum(1)).mean() / ((w - 1) * FRAME_ELEMS)
+        beta = self.beta * min(1., step / max(1, ramp_steps)) if ramp_steps else self.beta
+        loss = fm + beta * rate
+        variable = .5 * mu[:, 0].float().square() + (mu[:, 1:].float() - prediction.float()).square().sum(1) / (2 * self.sigma0 ** 2)
+        return loss, dict(loss=loss, fm=fm, rate=rate, entry=entry.mean(), surprise=surprise.mean(),
+                          rate_share=beta * rate / fm.detach().clamp_min(1e-8),
+                          feature_std=mu.float().std((0, 1)).mean(), active_dims=(variable.mean(0) > .1).sum())

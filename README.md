@@ -1,22 +1,15 @@
 # SPT-JEPA
 
-当前按用户纠正执行[1epoch短线筛选](experiments/shortscreen20261029/README.md)：旧16运行已保存后暂停，只补两个诊断种子到同预算checkpoint，先看规划/生成/动作证据，再决定是否续跑。恢复见[当前入口](RECOVERY_SHORTSCREEN_20261029.md)。以下原长矩阵叙述是历史状态。
+当前在 dev2、dev13、dev15 上执行 [sample-level 方法短测](experiments/frontier20261029/README.md)：20 个同规模、600 更新的配对适应试验，加上上轮证据选出的 4 个有上限的第二阶段训练。新方法先检查短线结果，不自动续跑长网格。权威状态与恢复入口见 [RECOVERY_FRONTIER_20261029.md](RECOVERY_FRONTIER_20261029.md)。
 
-最新：[全数据beta=.25的五训练种子复现](experiments/stability20261029/results/FULL-DATA-STABILITY.md)已完成。新增四种子P0为84.00±6.28%，最差74.67%；新评测83.67±6.50%。89.33%是历史单种子结果，尚未稳定复现。全部五种子都未坍塌。正在验证[同规模改进对照](experiments/robustness20261029/README.md)，恢复见[当前入口](RECOVERY_ROBUSTNESS_20261029.md)。
+[五训练种子复现](experiments/stability20261029/results/FULL-DATA-STABILITY.md)已完成：新增四种子 P0 为 84.00±6.28%，最差 74.67%；新评测为 83.67±6.50%。历史单种子的 89.33% 尚未稳定复现，五模型均未坍塌。
 
-以下记录保留历史结果，当前状态以上述为准。
+[第一 epoch 筛选的完整数值、关键图和继续依据](experiments/shortscreen20261029/results/SHORT-SCREEN.md)已发布：尚无明确规划胜者；仅 lower-beta 与 temporal-forecast 获得两诊断种子的第二阶段预算，到第二 epoch 停止。旧 16 运行长矩阵保持暂停。
 
-当前正在验证全数据 beta=.25、三 epoch 的跨训练种子稳定性；独立训练种子的结果尚未产生；[seed0规划复跑和新案例检查](experiments/stability20261029/results/SEED0-REEVALUATION.md)已完成。见[本轮协议](experiments/stability20261029/README.md)和[恢复入口](RECOVERY_STABILITY_20261029.md)。用户已授权稳定后继续有价值的 Lingjing 实验，不稳定则研究同规模改进，并及时提交新结论。以下主结论是上一轮已完成的历史结果。
+[主要历史结论](experiments/completion20261028/results/MAIN-CONCLUSIONS.md)、[12 小时探索](experiments/insights12h/results/INSIGHTS.md)与 [活跃维度反例](experiments/shortscreen20261029/ACTIVE-DIMENSION-COUNTEREXAMPLE.md)保留完整证据；暂停或延后任务未记为完成。所有数据、环境、日志、检查点和运行恢复文件位于 /efs/prescottsun/SPT-JEPA，本地仅保留小型 Git 代码与结果图表。
 
-本轮主要结论已完成：[主要结论、完整数值与关键图](experiments/completion20261028/results/MAIN-CONCLUSIONS.md)。
+以下为继承的 SPT 基线文档；历史机器、路径与活动状态不覆盖当前政策。
 
-原始全数据 L2 的三 epoch checkpoint：beta=0.25 的 P0=89.33%；更低 beta 两配置为 84.67%/83.33%。beta=1 仍有 55 个活跃维度，但 P0=8.67%。这是单训练种子的中期结果。
-
-I08 三个训练种子的同权重反馈对照：h7 agent 误差均值 31.85px vs 143.44px；长期漂移和较弱的物块动作识别仍保留，未宣称 I08 规划收益。
-
-用户 2026-10-29 最新要求：先完成主要结论，其他工作暂缓。本轮主结论终点已齐，其余原始长预算、额外种子与条件扩展保持暂停，未记为完成。权威代码、数据、环境、日志、检查点及恢复状态均在 /efs/prescottsun/SPT-JEPA。
-恢复入口见 [研究恢复](RECOVERY_RESEARCH_20261028.md)。历史探索见 [12小时结果](experiments/insights12h/results/INSIGHTS.md)、[三训练种子稳定性](experiments/completion20261028/results/L2-50K-STABILITY.md)和[提前停止依据](experiments/completion20261028/results/EARLY-STOP-TRIAGE.md)。
-以下为继承的 SPT 基线文档，历史机器、路径与活动状态不覆盖上述当前政策。
 Initialized from [sp12138/SPT](https://github.com/sp12138/SPT) at commit
 [`d43a452`](https://github.com/sp12138/SPT/commit/d43a4528a6aaaaf76f10a92a67a294d91f1996b6) on 2026-10-24.
 The original SPT baseline documentation follows.
