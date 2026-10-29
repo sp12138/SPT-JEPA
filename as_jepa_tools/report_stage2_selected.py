@@ -71,6 +71,17 @@ def main():
                         if kind=="fresh-excluding-primary" and (ep,start) in primarycases:continue
                         delta.append(100*(float(lval)-float(rval)));groups.append(ep)
                 effects.setdefault(m,{}).setdefault(s,{})[kind]=cluster_ci(delta,groups)
+    effects["temporal-forecast-vs-lower-beta"]={}
+    for seed in seeds:
+        primarycases={(ep,start) for x in rows["original"][seed]["primary"].values() for ep,start in zip(x["metrics"]["episodes"],x["metrics"]["start_steps"])}
+        for kind in ["primary","fresh","fresh-excluding-primary"]:
+            selection="fresh" if kind=="fresh-excluding-primary" else kind;delta=[];groups=[]
+            for es,left in rows["temporal-forecast"][seed][selection].items():
+                lv=left["metrics"];rv=rows["lower-beta"][seed][selection][es]["metrics"]
+                for ep,start,lval,rval in zip(lv["episodes"],lv["start_steps"],lv["metrics"]["episode_successes"],rv["metrics"]["episode_successes"]):
+                    if kind=="fresh-excluding-primary" and (ep,start) in primarycases:continue
+                    delta.append(100*(float(lval)-float(rval)));groups.append(ep)
+            effects["temporal-forecast-vs-lower-beta"].setdefault(seed,{})[kind]=cluster_ci(delta,groups)
     result=dict(all_selected_stage_jobs_complete=True,total_updates=24982,model_parameters=51097134,summary=summaries,paired_effects=effects,
         complete_numeric_endpoints=rows,protocol=protocol,reporter_sha256=sha(__file__),
         limits=["Two selected diagnostic training seeds, not full final model-stability evidence.","Exact24982update budget and124910scheduler horizon; methodbeta/noise/forecast changes explicit.","Generation64clipsEuler20andCF16resetcases are a screen; not FVD or originalfullbenchmark.","Freshcase overlaps with primary excluded in secondaryeffects; bootstrapconditionalonweights.","No automatic furthertraining; decide using taskoutcomes and retainmixed/negative results."])
