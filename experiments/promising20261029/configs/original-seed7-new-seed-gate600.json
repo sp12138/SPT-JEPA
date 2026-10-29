@@ -1,0 +1,29 @@
+{
+  "output": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/original-seed7-new-seed-gate600",
+  "data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1",
+  "evaluation_data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+  "pose_weights": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+  "seed": 7,
+  "batch_size": 128,
+  "workers": 4,
+  "cpu_threads": 2,
+  "max_steps": 124910,
+  "max_seconds": 31536000,
+  "checkpoint_every": 2500,
+  "all_phase_data": true,
+  "stop_after": 600,
+  "retain_steps": [
+    600
+  ],
+  "model": {
+    "mode": "L2",
+    "beta": 0.25,
+    "sigma0": 0.1,
+    "window": 8,
+    "anchor_gap": 8,
+    "renderer_width": 384,
+    "renderer_depth": 12,
+    "renderer_heads": 6
+  },
+  "record_initial_weights": true
+}

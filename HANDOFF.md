@@ -1,3 +1,9 @@
+# Current: evidence-supported temporal-forecast replication
+
+Read [RECOVERY_PROMISING_20261029.md](RECOVERY_PROMISING_20261029.md), actualprotocol/plan/sourcehashes andhostGPUprocesses.24boundedtrainingjobs:4selected3epoch,4heldseed3/4first600innewoutputs,4monocomponent2epoch,12newseed5-8first600. Priorselectedstage52jobscomplete0.AlloldSTOP/heldplanspreserved.Temporalforecast2seedP088/90andfresh85.33/87.33vsoriginal73/43and73.33/36.67;strongtasklead,notfinalstable89%ornoveltyproof.
+
+---
+
 # Current: finish selected two-epoch task evidence
 
 Anchorconfirmation120endpoints completed0; initialdrop25lead failed freshcase/numericalrepeatconfirmation. Fullresults:experiments/anchorconfirm20261029/results. No new algorithm has proven stable planning superiority overoriginalAS-JEPA. Oldshortgrids remainheld. Currentselectedtraining:shortscreen2_20261029 stops24982. Supplementalmatchedtaskevaluation:stage2eval_20261029; no new training there. Preserve sources/plans and distinguish originalhyperparametertuning from newmethods.

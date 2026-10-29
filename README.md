@@ -1,6 +1,8 @@
 # SPT-JEPA
 
-[Anchor 初筛的正面信号未通过确认](experiments/anchorconfirm20261029/results/DECISION.md)：Drop25 初筛平均 +3.0 个百分点，新案例 +0.17，训练复跑 0；全部 120 项确认端点已完成。目前没有新算法证明稳定优于原版 AS-JEPA。当前只完成先前选出的两条方向的第二 epoch 与匹配任务评测，见 [评测协议](experiments/stage2eval20261029/README.md)。不延长未获支持的短测候选。
+最新[第二 epoch 匹配结果](experiments/shortscreen2_20261029/results/DECISION.md)：Temporal-forecast 两种子 P0 为 88%/90%，原版 β=.25 为 73%/43%；新案例为85.33%/87.33%，原版为73.33%/36.67%。原版调参 β=.0625 也显著改善。当前按[新复现协议](experiments/promising20261029/README.md)验证更多种子、第三epoch和单独组件，恢复入口 [RECOVERY_PROMISING_20261029.md](RECOVERY_PROMISING_20261029.md)。这更新了早先“尚无更好算法”的时点判断，但仍未证明最终跨种子稳定性或学术新颖性。
+
+[Anchor 初筛未通过确认](experiments/anchorconfirm20261029/results/DECISION.md)，相应候选已停止。
 
 [四种子动作排序](experiments/actionrank20261029/results/ACTIONRANK-SHORT.md)已完成全部 120 项端点，未发现跨种子稳定规划收益，已停止。
 
