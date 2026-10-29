@@ -1,3 +1,15 @@
+# Active followup: harder tasks, reviewed 600 -> 2000 updates
+
+All20 Cube/TwoRoom gates stop exactly600 and all20 full-state/gradient audits pass;550 initial tensors match within each task/seed. Numerical health is not task effectiveness. TwoRoom state/action use is still weak. Cube shows small action sensitivity, with no established high-noise planning gain. Explicit decision: preserve all5 arms and both seeds and continue only to2000, beyond1249 warmup, then run enhanced different-video-state checks and50 fixed strict-validation cases. No automatic longer run.
+
+Active root: `/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030`; source-v1 commit `bf184904a0a3b426ea39ee83862f088d72cfb56e`;20 exact full-checkpoint copies and SHA256 proofs in resume-audit.json. Original optimizer, scheduler, RNG, sample cursor, data splits and model settings are preserved. Current data reader is byte-identical and faster. Ten TwoRoom continuations use dev2 GPUs2–7/dev13 GPUs0–3. Ten Cube continuations use dev2 GPUs0–1/dev13 GPUs4–7/dev15 GPUs0–3 after old closure; four random/released references use dev15 GPUs4–7. Existing workflow checks actual GPU occupancy.
+
+Closure watcher: harder-task gate root/close-legacy-v1.py, immutable source8caa1be, PID664315 ondev13. It checks every56forecast-confirm and120new-seed-epoch2 endpoint, exact training caps, and empty worker queues before writing PUSHT-CLOSURE-REVIEWED.json and old HOLD_DISPATCH markers. It polls locally every5minutes without API calls. It makes no research-performance decision. Failures remain recorded and prevent slot release. The two older3epoch forecast-only controls and twelve2epoch new-seed replications finish once; no old grid is resumed.
+
+Next review: inspect all60 learning-stage endpoints (20train+20health+20planning), paired validation successes and state/action interventions. This may justify longer selected learning or a simpler forecast-only component; neither is automatically launched. Test episodes remain held out. Compare against the queued released reference with its distinct size/budget/data-exposure caveats. Full reports: experiments/hardtasks20261030/results. No novelty or substantial harder-task-gain claim is established.
+
+---
+
 # Harder-task campaign recovery — 2026-10-30
 
 Authority: `/efs/prescottsun/SPT-JEPA`; branch `research/ideas-20261028`. User redirect prioritizes harder tasks, effectiveness, self-contained simplicity, genuine conceptual novelty and understanding, with low API-token use. New method objectives remain sample-level. Long runs are allowed after evidence review; do not claim that a noise schedule alone is novel.

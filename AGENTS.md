@@ -1,3 +1,5 @@
+Reviewed all20 harder-task600 gates: full-state/gradient/initial-tensor checks pass, but task superiority is unproven. hardtasks_learn2000_20261030 resumes all5arms x2seeds x2tasks only to2000, then enhanced state-use diagnostics and50 fixed strict-validation cases. No automatic longer training. Sourcebf18490 and all prior snapshots/STOPs remain immutable; old PushT controls close once. See RECOVERY_HARDTASKS_20261030.md.
+
 # Active harder-task short gates
 
 Read RECOVERY_HARDTASKS_20261030.md and the authoritative EFS plan. Twenty matched Cube/TwoRoom runs stop600before full-state/gradient/state-use review; no automatic longer training. Ten TwoRoom runs are launched; Cube reuses their slots after health and evaluator preflight. Preserve14near-complete PushT control chains, then retire PushT training. The four nonessential forecast firstepoch runs are stopped with audited recoverable state. Noise shifting is an experimental control, not a novelty claim.

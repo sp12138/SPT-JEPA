@@ -1,0 +1,2007 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030",
+  "deadline": null,
+  "environment": {
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MUJOCO_GL": "egl",
+    "SDL_VIDEODRIVER": "dummy",
+    "PYGLET_HEADLESS": "true",
+    "MPLCONFIGDIR": "/efs/prescottsun/SPT-JEPA/cache/matplotlib",
+    "TMPDIR": "/efs/prescottsun/SPT-JEPA/tmp/hardtasks20261030",
+    "STABLEWM_HOME": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/planning"
+  },
+  "jobs": [
+    {
+      "host": "dev2",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original",
+      "training_seed": 1,
+      "id": "tworoom-original-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-seed1-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-seed1-learn2000/config.json",
+      "config_sha256": "20d0bd0955ef2d072a33e4f99ac7b5dba7314ada303a632c02b4675bd5fbdd82",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-seed1-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": []
+    },
+    {
+      "host": "dev2",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original",
+      "training_seed": 1,
+      "id": "health-tworoom-original-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-original-seed1-learn2000",
+      "depends_on": [
+        "tworoom-original-seed1-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-seed1-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-original-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original",
+      "training_seed": 1,
+      "id": "planning-tworoom-original-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-original-seed1-learn2000",
+      "depends_on": [
+        "health-tworoom-original-seed1-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-seed1-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-original-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original",
+      "training_seed": 2,
+      "id": "tworoom-original-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-seed2-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-seed2-learn2000/config.json",
+      "config_sha256": "209bfbd12dedd9f9968a0635cdaab4fdedcbda105b3c081e463072e34e7b23e5",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-seed2-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": []
+    },
+    {
+      "host": "dev2",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original",
+      "training_seed": 2,
+      "id": "health-tworoom-original-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-original-seed2-learn2000",
+      "depends_on": [
+        "tworoom-original-seed2-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-seed2-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-original-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original",
+      "training_seed": 2,
+      "id": "planning-tworoom-original-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-original-seed2-learn2000",
+      "depends_on": [
+        "health-tworoom-original-seed2-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-seed2-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-original-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 4,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "id": "tworoom-lower-beta-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-lower-beta-seed1-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-lower-beta-seed1-learn2000/config.json",
+      "config_sha256": "653b287bec54e07ad2fae07089a5f6dd0fd888a16e904e7f6906d77ae8a46d13",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-lower-beta-seed1-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": []
+    },
+    {
+      "host": "dev2",
+      "gpu": 4,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "id": "health-tworoom-lower-beta-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-lower-beta-seed1-learn2000",
+      "depends_on": [
+        "tworoom-lower-beta-seed1-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-lower-beta-seed1-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-lower-beta-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 4,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "id": "planning-tworoom-lower-beta-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-lower-beta-seed1-learn2000",
+      "depends_on": [
+        "health-tworoom-lower-beta-seed1-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-lower-beta-seed1-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-lower-beta-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 5,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "id": "tworoom-lower-beta-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-lower-beta-seed2-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-lower-beta-seed2-learn2000/config.json",
+      "config_sha256": "b3f90ae7fbb8fd7c7adf7b62601b066923549fb1e85ff1315c7ba2609a5d1d39",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-lower-beta-seed2-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": []
+    },
+    {
+      "host": "dev2",
+      "gpu": 5,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "id": "health-tworoom-lower-beta-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-lower-beta-seed2-learn2000",
+      "depends_on": [
+        "tworoom-lower-beta-seed2-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-lower-beta-seed2-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-lower-beta-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 5,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "id": "planning-tworoom-lower-beta-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-lower-beta-seed2-learn2000",
+      "depends_on": [
+        "health-tworoom-lower-beta-seed2-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-lower-beta-seed2-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-lower-beta-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 6,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "id": "tworoom-temporal-forecast-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed1-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed1-learn2000/config.json",
+      "config_sha256": "6313c7500398f9f0af9ae8e48c104d73ee2dcd0dc130d335a1a2a33e3a84c86b",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed1-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": []
+    },
+    {
+      "host": "dev2",
+      "gpu": 6,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "id": "health-tworoom-temporal-forecast-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-temporal-forecast-seed1-learn2000",
+      "depends_on": [
+        "tworoom-temporal-forecast-seed1-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed1-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-temporal-forecast-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 6,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "id": "planning-tworoom-temporal-forecast-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-temporal-forecast-seed1-learn2000",
+      "depends_on": [
+        "health-tworoom-temporal-forecast-seed1-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed1-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-temporal-forecast-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 7,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "id": "tworoom-temporal-forecast-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed2-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed2-learn2000/config.json",
+      "config_sha256": "6a5c58d612097b9fd809f6ae70c33cf650aac92acd08428a944ba276c8caef4e",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed2-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": []
+    },
+    {
+      "host": "dev2",
+      "gpu": 7,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "id": "health-tworoom-temporal-forecast-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-temporal-forecast-seed2-learn2000",
+      "depends_on": [
+        "tworoom-temporal-forecast-seed2-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed2-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-temporal-forecast-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 7,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "id": "planning-tworoom-temporal-forecast-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-temporal-forecast-seed2-learn2000",
+      "depends_on": [
+        "health-tworoom-temporal-forecast-seed2-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed2-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-temporal-forecast-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original-highnoise",
+      "training_seed": 1,
+      "id": "tworoom-original-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-highnoise-seed1-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-highnoise-seed1-learn2000/config.json",
+      "config_sha256": "1c9fc92e19960f179ed99f667dd6b65e2c141fa25f66a98bca12e466b1032d06",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-highnoise-seed1-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": []
+    },
+    {
+      "host": "dev13",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original-highnoise",
+      "training_seed": 1,
+      "id": "health-tworoom-original-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-original-highnoise-seed1-learn2000",
+      "depends_on": [
+        "tworoom-original-highnoise-seed1-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-highnoise-seed1-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-original-highnoise-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original-highnoise",
+      "training_seed": 1,
+      "id": "planning-tworoom-original-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-original-highnoise-seed1-learn2000",
+      "depends_on": [
+        "health-tworoom-original-highnoise-seed1-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-highnoise-seed1-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-original-highnoise-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original-highnoise",
+      "training_seed": 2,
+      "id": "tworoom-original-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-highnoise-seed2-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-highnoise-seed2-learn2000/config.json",
+      "config_sha256": "da232055023215ebc47886e3de544c584094babaf1ef16975c46fe56161d73f8",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-highnoise-seed2-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": []
+    },
+    {
+      "host": "dev13",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original-highnoise",
+      "training_seed": 2,
+      "id": "health-tworoom-original-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-original-highnoise-seed2-learn2000",
+      "depends_on": [
+        "tworoom-original-highnoise-seed2-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-highnoise-seed2-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-original-highnoise-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "original-highnoise",
+      "training_seed": 2,
+      "id": "planning-tworoom-original-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-original-highnoise-seed2-learn2000",
+      "depends_on": [
+        "health-tworoom-original-highnoise-seed2-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-original-highnoise-seed2-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-original-highnoise-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 1,
+      "id": "tworoom-temporal-forecast-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-highnoise-seed1-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-highnoise-seed1-learn2000/config.json",
+      "config_sha256": "f503cdd75fc9543b9361009f0c3967a3eb26aea8ce80e1bd5b8f1a75aefc0e13",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-highnoise-seed1-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": []
+    },
+    {
+      "host": "dev13",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 1,
+      "id": "health-tworoom-temporal-forecast-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-temporal-forecast-highnoise-seed1-learn2000",
+      "depends_on": [
+        "tworoom-temporal-forecast-highnoise-seed1-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-highnoise-seed1-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-temporal-forecast-highnoise-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 1,
+      "id": "planning-tworoom-temporal-forecast-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-temporal-forecast-highnoise-seed1-learn2000",
+      "depends_on": [
+        "health-tworoom-temporal-forecast-highnoise-seed1-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-highnoise-seed1-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-temporal-forecast-highnoise-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 2,
+      "id": "tworoom-temporal-forecast-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-highnoise-seed2-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-highnoise-seed2-learn2000/config.json",
+      "config_sha256": "da214946845fb52adb8a536a0b4402fb3ff563e30a27eefa502d7afbd875ab0e",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-highnoise-seed2-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": []
+    },
+    {
+      "host": "dev13",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 2,
+      "id": "health-tworoom-temporal-forecast-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-temporal-forecast-highnoise-seed2-learn2000",
+      "depends_on": [
+        "tworoom-temporal-forecast-highnoise-seed2-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-highnoise-seed2-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-tworoom-temporal-forecast-highnoise-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 2,
+      "id": "planning-tworoom-temporal-forecast-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-temporal-forecast-highnoise-seed2-learn2000",
+      "depends_on": [
+        "health-tworoom-temporal-forecast-highnoise-seed2-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-highnoise-seed2-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-tworoom-temporal-forecast-highnoise-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 1,
+      "id": "cube-original-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-seed1-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-seed1-learn2000/config.json",
+      "config_sha256": "a91eae4925b6c965846f5b518c7ceab683a9d1a2365fc352d568ae9f65dd1fb5",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-seed1-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 1,
+      "id": "health-cube-original-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-original-seed1-learn2000",
+      "depends_on": [
+        "cube-original-seed1-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-seed1-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-original-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 1,
+      "id": "planning-cube-original-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-original-seed1-learn2000",
+      "depends_on": [
+        "health-cube-original-seed1-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "0",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-seed1-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-original-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 2,
+      "id": "cube-original-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-seed2-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-seed2-learn2000/config.json",
+      "config_sha256": "bc9b9f9b86e74889e61899842fad005a412c03d328442863592073143a23b487",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-seed2-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 2,
+      "id": "health-cube-original-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-original-seed2-learn2000",
+      "depends_on": [
+        "cube-original-seed2-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-seed2-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-original-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 2,
+      "id": "planning-cube-original-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-original-seed2-learn2000",
+      "depends_on": [
+        "health-cube-original-seed2-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "1",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-seed2-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-original-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 4,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "id": "cube-lower-beta-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-lower-beta-seed1-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-lower-beta-seed1-learn2000/config.json",
+      "config_sha256": "c58dc0f6f6a8e99eddd297c18611284932b5a14a9da8f577f3fe71f960519a04",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-lower-beta-seed1-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 4,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "id": "health-cube-lower-beta-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-lower-beta-seed1-learn2000",
+      "depends_on": [
+        "cube-lower-beta-seed1-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-lower-beta-seed1-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-lower-beta-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 4,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "id": "planning-cube-lower-beta-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-lower-beta-seed1-learn2000",
+      "depends_on": [
+        "health-cube-lower-beta-seed1-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "4",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-lower-beta-seed1-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-lower-beta-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 5,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "id": "cube-lower-beta-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-lower-beta-seed2-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-lower-beta-seed2-learn2000/config.json",
+      "config_sha256": "f515e10e5398927416c30338b7ab9da1c9eb0d72e7e66cacde8357d7e26c145d",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-lower-beta-seed2-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 5,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "id": "health-cube-lower-beta-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-lower-beta-seed2-learn2000",
+      "depends_on": [
+        "cube-lower-beta-seed2-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-lower-beta-seed2-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-lower-beta-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 5,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "id": "planning-cube-lower-beta-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-lower-beta-seed2-learn2000",
+      "depends_on": [
+        "health-cube-lower-beta-seed2-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "5",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-lower-beta-seed2-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-lower-beta-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 6,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "id": "cube-temporal-forecast-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed1-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed1-learn2000/config.json",
+      "config_sha256": "e53e067e3778783765671ccb38ce05304a22ca775b2e196c5dc54c160a4c88af",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed1-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 6,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "id": "health-cube-temporal-forecast-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-temporal-forecast-seed1-learn2000",
+      "depends_on": [
+        "cube-temporal-forecast-seed1-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed1-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-temporal-forecast-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 6,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "id": "planning-cube-temporal-forecast-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-temporal-forecast-seed1-learn2000",
+      "depends_on": [
+        "health-cube-temporal-forecast-seed1-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "6",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed1-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-temporal-forecast-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 7,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "id": "cube-temporal-forecast-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed2-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed2-learn2000/config.json",
+      "config_sha256": "ee255d9bda12a94e7738aa0b1906397903d8c5557d7f9a412670a48a4d4b0894",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed2-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 7,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "id": "health-cube-temporal-forecast-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-temporal-forecast-seed2-learn2000",
+      "depends_on": [
+        "cube-temporal-forecast-seed2-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed2-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-temporal-forecast-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 7,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "id": "planning-cube-temporal-forecast-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-temporal-forecast-seed2-learn2000",
+      "depends_on": [
+        "health-cube-temporal-forecast-seed2-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "7",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed2-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-temporal-forecast-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original-highnoise",
+      "training_seed": 1,
+      "id": "cube-original-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-highnoise-seed1-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-highnoise-seed1-learn2000/config.json",
+      "config_sha256": "44de9831174d52bb8ea30f29829cf57de737495d2e5834a4f6d0cfdd15ecc8e0",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-highnoise-seed1-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original-highnoise",
+      "training_seed": 1,
+      "id": "health-cube-original-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-original-highnoise-seed1-learn2000",
+      "depends_on": [
+        "cube-original-highnoise-seed1-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-highnoise-seed1-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-original-highnoise-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original-highnoise",
+      "training_seed": 1,
+      "id": "planning-cube-original-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-original-highnoise-seed1-learn2000",
+      "depends_on": [
+        "health-cube-original-highnoise-seed1-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "0",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-highnoise-seed1-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-original-highnoise-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original-highnoise",
+      "training_seed": 2,
+      "id": "cube-original-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-highnoise-seed2-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-highnoise-seed2-learn2000/config.json",
+      "config_sha256": "88302899f315157d01b207549b6d726660b2a4620de4a60d613cd17ecfda33f9",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-highnoise-seed2-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original-highnoise",
+      "training_seed": 2,
+      "id": "health-cube-original-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-original-highnoise-seed2-learn2000",
+      "depends_on": [
+        "cube-original-highnoise-seed2-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-highnoise-seed2-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-original-highnoise-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original-highnoise",
+      "training_seed": 2,
+      "id": "planning-cube-original-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-original-highnoise-seed2-learn2000",
+      "depends_on": [
+        "health-cube-original-highnoise-seed2-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "1",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-original-highnoise-seed2-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-original-highnoise-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 1,
+      "id": "cube-temporal-forecast-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-highnoise-seed1-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-highnoise-seed1-learn2000/config.json",
+      "config_sha256": "9a52505b844cec1b1466f0c04ab1d40c1e62317026855e6e08508d9cb2171901",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-highnoise-seed1-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 1,
+      "id": "health-cube-temporal-forecast-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-temporal-forecast-highnoise-seed1-learn2000",
+      "depends_on": [
+        "cube-temporal-forecast-highnoise-seed1-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-highnoise-seed1-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-temporal-forecast-highnoise-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 1,
+      "id": "planning-cube-temporal-forecast-highnoise-seed1-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-temporal-forecast-highnoise-seed1-learn2000",
+      "depends_on": [
+        "health-cube-temporal-forecast-highnoise-seed1-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "2",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-highnoise-seed1-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-temporal-forecast-highnoise-seed1-learn2000"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 2,
+      "id": "cube-temporal-forecast-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-highnoise-seed2-learn2000",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-highnoise-seed2-learn2000/config.json",
+      "config_sha256": "ecd2dfa4dda7de95cb13c49fbca12deb5ee7fbe08cb1e0aaf098872de62e2d82",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-highnoise-seed2-learn2000/config.json",
+        "--stop-step",
+        "2000",
+        "--resume"
+      ],
+      "phase": "learn2000",
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 2,
+      "id": "health-cube-temporal-forecast-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-temporal-forecast-highnoise-seed2-learn2000",
+      "depends_on": [
+        "cube-temporal-forecast-highnoise-seed2-learn2000"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-highnoise-seed2-learn2000",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-temporal-forecast-highnoise-seed2-learn2000"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1",
+        "source_commit": "bf184904a0a3b426ea39ee83862f088d72cfb56e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 2,
+      "id": "planning-cube-temporal-forecast-highnoise-seed2-learn2000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-temporal-forecast-highnoise-seed2-learn2000",
+      "depends_on": [
+        "health-cube-temporal-forecast-highnoise-seed2-learn2000"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "3",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-highnoise-seed2-learn2000/model-step0002000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-temporal-forecast-highnoise-seed2-learn2000"
+      ]
+    }
+  ]
+}

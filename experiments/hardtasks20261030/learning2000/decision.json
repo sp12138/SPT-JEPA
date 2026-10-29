@@ -1,0 +1,11 @@
+{
+  "created_at": 1793309375.6130798,
+  "review_root": "/efs/prescottsun/SPT-JEPA/reports/hardtasks-gate600-review-20261030",
+  "approved_cap": 2000,
+  "initial_step": 600,
+  "training_runs": 20,
+  "all_five_arms_and_both_seeds": true,
+  "reason": "All20 exact600 gates pass full-state/gradient and initial-weight checks. TwoRoom state/action use remains immature; Cube shows small action sensitivity but no task superiority, and high-noise advantage is unproven. Permit only a matched post-warmup learning stage to2000 and50-case strict-validation endpoints. No automatic further training.",
+  "source_training_changes": "Only byte-identical HDF5 read optimization for TwoRoom continuations. Algorithms, optimizer/scheduler horizons, data splits, seeds and initial checkpoints remain matched.",
+  "new_diagnostics": "Different-video state conditions preserve identical posterior-noise draws, separating informative state use from constant conditioning bias."
+}
