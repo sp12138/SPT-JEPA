@@ -1,3 +1,15 @@
+# Active causal followup: harder-task anchor information, 2000 -> 2600
+
+The complete2000 screen has60 exits0 and is held. Strict50-case validation: TwoRoom original8/2%, temporal-forecast2/6%, temporal-forecast-highnoise14/4%; Cube original6/12%, temporal-forecast12/6%, temporal-forecast-highnoise12/6%. Released LeWM scores72%/30% on the same cases with different budget/size/data exposure. These are early results and do not establish a method win. TwoRoom remains almost state-independent; Cube has learned state/action dependence without a planning advantage.
+
+Active16 same-state adaptations: `/efs/prescottsun/SPT-JEPA/runs/hardtasks_anchor_20261030`, source-v1 commit `a5e3857683786531502c9d03c1f45561e0f2fe75`. Four branches per task/seed: observed versus constant-zero renderer anchor, crossed with0 versus0.8 additional training flow-logit shift. All start from the identical ordinary-noise temporal-forecast2000 full checkpoint within task/seed. All parameters and original optimizer/RNG/cursor/scheduler are preserved; constant-anchor generation also ignores raw anchor images. Eight contract tests pass, including nonzero-anchor-weight generation invariance. Each branch stops at2600 (600 extra updates), then enhanced state-use diagnostics and50 fixed strict-validation cases;48 endpoints total. This is an adaptation diagnosis, not a fresh-training method claim. No automatic longer stage.
+
+Slots: TwoRoom dev2 GPUs2–7 +dev13 GPUs0–1; Cube dev13 GPUs2–7 +dev15 GPUs0–1. Other GPUs may remain idle rather than run unsupported grids. All previous600/2000 and PushT snapshots stay immutable. All retained old PushT controls finished56/56 and120/120 exits0; old and completed harder-task dispatchers were verified idle and terminated. No old STOP marker was cleared.
+
+Published evidence: experiments/hardtasks20261030/results/learn2000 and legacy-closure. Next: inspect the complete48 adaptation endpoints before any further training decision. Test episodes stay held out. A useful mechanism must improve actual task control; noise scheduling/anchor removal alone is not a novelty claim.
+
+---
+
 # Active followup: harder tasks, reviewed 600 -> 2000 updates
 
 All20 Cube/TwoRoom gates stop exactly600 and all20 full-state/gradient audits pass;550 initial tensors match within each task/seed. Numerical health is not task effectiveness. TwoRoom state/action use is still weak. Cube shows small action sensitivity, with no established high-noise planning gain. Explicit decision: preserve all5 arms and both seeds and continue only to2000, beyond1249 warmup, then run enhanced different-video-state checks and50 fixed strict-validation cases. No automatic longer run.

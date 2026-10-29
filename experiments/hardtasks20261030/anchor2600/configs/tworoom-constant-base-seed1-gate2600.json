@@ -1,0 +1,32 @@
+{
+  "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_anchor_20261030/tworoom-constant-base-seed1-gate2600",
+  "data": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+  "dataset_kind": "benchmark_hdf5",
+  "seed": 1,
+  "batch_size": 128,
+  "workers": 4,
+  "cpu_threads": 2,
+  "max_steps": 124910,
+  "max_seconds": 31536000,
+  "checkpoint_every": 600,
+  "record_initial_weights": true,
+  "robust_variant": true,
+  "retain_steps": [
+    2600
+  ],
+  "model": {
+    "mode": "L2",
+    "sigma0": 0.1,
+    "window": 8,
+    "renderer_width": 384,
+    "renderer_depth": 12,
+    "renderer_heads": 6,
+    "forecast_seed": 20361032,
+    "action_dim": 10,
+    "beta": 0.25,
+    "rho": 0.8,
+    "forecast_fraction": 0.5,
+    "flow_logit_shift": 0.0,
+    "renderer_anchor_mode": "zero"
+  }
+}

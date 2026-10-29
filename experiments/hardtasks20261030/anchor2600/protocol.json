@@ -1,0 +1,32 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_anchor_20261030",
+  "source_commit": "a5e3857683786531502c9d03c1f45561e0f2fe75",
+  "starting_step": 2000,
+  "stop_step": 2600,
+  "additional_updates": 600,
+  "training_runs": 16,
+  "arms": {
+    "observed-base": [
+      "observed",
+      0.0
+    ],
+    "observed-highnoise": [
+      "observed",
+      0.8
+    ],
+    "constant-base": [
+      "zero",
+      0.0
+    ],
+    "constant-highnoise": [
+      "zero",
+      0.8
+    ]
+  },
+  "all_seeds_preserved": true,
+  "same_state_per_task_and_seed": true,
+  "unchanged_parameter_count": true,
+  "unchanged_inference_planner": true,
+  "scope": "A causal adaptation test of clean visual access versus corruption, not a fresh-training or novelty claim. All four branches start at the same ordinary-noise temporal-forecast checkpoint.",
+  "no_automatic_long_training": true
+}

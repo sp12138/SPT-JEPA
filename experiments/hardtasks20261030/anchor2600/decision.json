@@ -1,0 +1,11 @@
+{
+  "created_at": 1793312620.4203172,
+  "approved_stop_step": 2600,
+  "initial_step": 2000,
+  "additional_updates": 600,
+  "training_runs": 16,
+  "all_seeds_preserved": true,
+  "reason": "TwoRoom remains functionally near state-independent at2000 despite a large denoising-loss drop and has poor50-case control; higher corruption alone is not a demonstrated cure. Cube has learned measurable state/action dependence. Test whether clean visual access is the bypass in a fixed2x2 anchor-information/noise factorial on both tasks, all branches from the same ordinary-noise temporal-forecast checkpoint within each task and seed. This is an adaptation diagnosis, not a fresh-training performance or novelty claim.",
+  "changes": "renderer_anchor_mode observed versus constant zero, preserving every parameter tensor; additional training flow logit shift0 versus0.8. Preserve optimizer/RNG/data/sample cursor and original LR horizon. Same restriction during training and generation. Existing inference planner unchanged.",
+  "constraints": "All16 stop after600 additional updates with full-state and paired state-use checks and50 fixed strict-validation cases. No automatic longer training. Existing2000 snapshots remain held."
+}
