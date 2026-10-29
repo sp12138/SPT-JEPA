@@ -122,5 +122,43 @@
   "evaluation_limits": "Small fixed diagnostic samples are for screening. FVD64 is not a final-quality claim. These seeds and cases are not independent final confirmation.",
   "publication": "Commit and push informative short-budget results, including negative/inconclusive outcomes, full per-case numbers, runtime costs and scientific figures.",
   "collapse_cases": 64,
-  "resume_control": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/stage-resume-control-v1/PASS.json"
+  "resume_control": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/stage-resume-control-v1/PASS.json",
+  "early_health_policy": {
+    "user_instruction": "Inspect approximate10minute short-run health before long experiments.",
+    "past_execution_gap": "The original200step smoke covered numerics/execution; a10minute checkpoint was not saved. Historical metrics can be inspected, but a retrospective10minute functional audit cannot be claimed.",
+    "immediate_diagnostic": {
+      "jobs": [
+        "early-health-lower-beta-seed1",
+        "early-health-lower-beta-seed2",
+        "early-health-temporal-noise-seed1",
+        "early-health-temporal-noise-seed2",
+        "early-health-forecast-render-seed1",
+        "early-health-forecast-render-seed2",
+        "early-health-temporal-forecast-seed1",
+        "early-health-temporal-forecast-seed2"
+      ],
+      "cases": 32,
+      "sampler_steps": 20,
+      "checkpoint_steps": [
+        10276,
+        10244,
+        10248,
+        10065,
+        9562,
+        9743,
+        9744,
+        9730
+      ],
+      "checks": [
+        "finite training",
+        "posterior own-state reconstruction vs anchor",
+        "zero-state intervention",
+        "state-permutation intervention",
+        "active variable-rate dimensions"
+      ]
+    },
+    "future_experiments": "Run and save a roughly600update(~10min) stage first, inspect finite loss/gradients, state response and quick same-reset predictions before longer stages. If early semantic use is not learned, record inconclusive and require trend/context evidence rather than calling it a failed method.",
+    "stop_immediately": "NaN/Inf, OOM, broken action/state gradient paths, constant outputs insensitive to state after sustained opportunity to learn; preserve checkpoints.",
+    "avoid_false_collapse": "Small initial state variance or poor early P0 alone cannot establish persistent collapse; the original useful model also learns late."
+  }
 }
