@@ -4,11 +4,18 @@ from pathlib import Path
 from dataclasses import replace
 import numpy as np
 import clear_lewm.manifests as manifests
+import clear_lewm.tasks as tasks
 from clear_lewm.protocols import get_protocol
 
 def main():
     p=argparse.ArgumentParser();p.add_argument("task",choices=["cube","tworoom"]);a=p.parse_args()
     b=Path("/efs/prescottsun/SPT-JEPA");root=b/"data/hardtasks-v1"/(a.task+"-metadata");card=json.loads((root/"dataset_card.json").read_text())
+    # HDF5 fancy indexing requires sorted unique rows. Preserve the public
+    # sampler's exact order and duplicates through an inverse index.
+    def read_rows(dataset, key, rows):
+        unique,inverse=np.unique(rows,return_inverse=True)
+        return np.asarray(dataset[key][unique])[inverse]
+    tasks._read_pair=lambda dataset,key,starts,goals:(read_rows(dataset,key,starts),read_rows(dataset,key,goals))
     train=np.load(root/"train_episodes.npy");out=root/"manifests";out.mkdir(exist_ok=False)
     for split,count in [("validation",50),("test",100)]:
         allowed=np.load(root/(split+"_episodes.npy"))
