@@ -82,6 +82,27 @@ class RobustnessContracts(unittest.TestCase):
         loss.backward()
         self.assertTrue(any(x.grad is not None and bool(x.grad.abs().sum() > 0) for x in forecast.predictor.parameters()))
 
+    def test_forecast_rate_uses_the_same_causal_trajectory_as_renderer(self):
+        model=self.model(rho=.8,forecast_fraction=1.,rate_prior="forecast")
+        batch=self.batch();predictions=[];conditions=[]
+        from vforge.models.as_jepa.codes import surprise_nats
+        def rate(target,predicted,sigma):
+            predictions.append(predicted.detach().clone())
+            return surprise_nats(target,predicted,sigma)
+        def flow(renderer,y,state,anchor,shift):
+            conditions.append(state.detach().clone())
+            return state.square().mean()
+        torch.manual_seed(39)
+        with patch("as_jepa_lewm.robust.surprise_nats",rate),patch("as_jepa_lewm.robust.flow_loss",flow):
+            loss,_=model.loss(batch,step=7)
+        torch.testing.assert_close(predictions[-1].flatten(0,1),conditions[-1],atol=0,rtol=0)
+        causal=predictions[-1];changed={**batch,"pixels":batch["pixels"].clone()};changed["pixels"][:,1:]=255-changed["pixels"][:,1:]
+        torch.manual_seed(39)
+        with patch("as_jepa_lewm.robust.surprise_nats",rate),patch("as_jepa_lewm.robust.flow_loss",flow):model.loss(changed,step=7)
+        torch.testing.assert_close(causal,predictions[-1],atol=0,rtol=0)
+        loss.backward()
+        for module in [model.encoder,model.predictor]:self.assertTrue(any(p.grad is not None and bool(p.grad.abs().sum()>0) for p in module.parameters()))
+
     def test_markov_marginals_and_conditional_gaussian_kl(self):
         model = self.model(rho=.8)
         draws = model.context_samples(torch.zeros(1, 3, 64), 8192, torch.Generator().manual_seed(23))
@@ -101,9 +122,9 @@ class RobustnessContracts(unittest.TestCase):
         fixed_noise = lambda value, *a, **k: torch.full_like(value, .3)
         fixed_time = lambda count, device, shift: torch.full((count, 1), .5, device=device)
         fixed_choose = lambda *shape, **kw: torch.full(shape, .3, **kw)
-        for rho, fraction in [(.8, 0.), (0., .5), (.8, .5)]:
-            with self.subTest(rho=rho, forecast_fraction=fraction):
-                model = self.model(rho=rho, forecast_fraction=fraction)
+        for rho, fraction, rate_prior in [(.8, 0., "one-step"), (0., .5, "one-step"), (.8, .5, "one-step"), (.8, .5, "forecast")]:
+            with self.subTest(rho=rho, forecast_fraction=fraction, rate_prior=rate_prior):
+                model = self.model(rho=rho, forecast_fraction=fraction, rate_prior=rate_prior)
                 with patch("torch.randn_like", fixed_noise), patch("torch.rand", fixed_choose), patch("vforge.models.as_jepa.flow.draw_timesteps", fixed_time):
                     whole, _ = model.loss(batch, step=3)
                     separate = [model.loss({k: v[i:i+1] for k, v in batch.items()}, step=3)[0] for i in range(2)]

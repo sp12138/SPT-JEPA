@@ -9,12 +9,14 @@ from vforge.models.as_jepa.pixels import pack
 
 
 class RobustLeWM(ASJepaLeWM):
-    def __init__(self, rho=0., forecast_fraction=0., forecast_seed=20261029, **kwargs):
+    def __init__(self, rho=0., forecast_fraction=0., forecast_seed=20261029, rate_prior="one-step", **kwargs):
         super().__init__(**kwargs)
         if self.mode != "L2" or self.objective != "flow":
             raise ValueError("This controlled extension applies only to AS-JEPA L2 flow loss")
         if not 0 <= rho < 1 or not 0 <= forecast_fraction <= 1:
             raise ValueError("Require0<=rho<1 and0<=forecast_fraction<=1")
+        if rate_prior not in {"one-step","forecast"}:raise ValueError("Unknown rate prior")
+        self.rate_prior = rate_prior
         self.rho = float(rho)
         self.forecast_fraction = float(forecast_fraction)
         self.forecast_seed = int(forecast_seed)
@@ -32,7 +34,7 @@ class RobustLeWM(ASJepaLeWM):
         return self.sigma0 * torch.randn(value.shape, device=value.device, generator=generator)
 
     def loss(self, batch, step=0, ramp_steps=0):
-        if not self.rho and not self.forecast_fraction:
+        if not self.rho and not self.forecast_fraction and self.rate_prior == "one-step":
             return super().loss(batch, step, ramp_steps)
         pixels, render, anchor = self.prepare(batch)
         info = self.encode(dict(pixels=pixels, action=batch["action"]))
@@ -51,7 +53,7 @@ class RobustLeWM(ASJepaLeWM):
         variance_kl_per_dimension = .5 * (-self.rho ** 2 - math.log1p(-self.rho ** 2))
         surprise = surprise + self.state_dim * variance_kl_per_dimension
         condition = noisy[:, 1:]
-        if self.forecast_fraction:
+        if self.forecast_fraction or self.rate_prior == "forecast":
             devices = [flat.device.index] if flat.is_cuda else []
             # Extra predictor dropout and condition masks use a separate stream.
             # Common posterior/renderer noise keeps its original draw order across arms.
@@ -67,6 +69,13 @@ class RobustLeWM(ASJepaLeWM):
                 future = torch.stack(future, 1).reshape_as(condition)
                 choose = torch.rand(b, w - 1, 1, 1, device=flat.device) < self.forecast_fraction
                 condition = torch.where(choose, future, condition)
+        if self.rate_prior == "forecast":
+            # The rate and renderer constrain the same causal forecast trajectory.
+            # The reference one-step forward above preserves common RNG draw order
+            # for the matched adaptation control; it contributes no extra objective.
+            predicted = future
+            surprise = surprise_nats(target_mean, predicted, self.sigma0)
+            surprise = surprise + self.state_dim * variance_kl_per_dimension
         y = pack(render[:, 1:].flatten(0, 1))
         anchors = pack(anchor).repeat_interleave(w - 1, dim=0)
         fm = flow_loss(self.renderer, y, condition.flatten(0, 1), anchors, self.training_shift)
