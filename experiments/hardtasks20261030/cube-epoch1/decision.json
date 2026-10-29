@@ -1,0 +1,19 @@
+{
+  "approved_stop_step": 11671,
+  "training_runs": 6,
+  "methods": [
+    "original",
+    "lower-beta",
+    "temporal-forecast"
+  ],
+  "training_seeds": [
+    1,
+    2
+  ],
+  "task": "cube",
+  "reason": "All six established Cube runs have finite full state and nonzero gradients, appreciable state/action dependence, but only 0.17-0.22 window epochs. A bounded first-epoch comparison is necessary to assess transfer beyond PushT. This is not evidence that temporal-forecast already wins. High-noise, anchor and shared-prior adaptations show no consistent control gain and remain held; persistent TwoRoom state degeneration is not sent to a blind long run.",
+  "preserve_full_resume": true,
+  "no_automatic_second_epoch": true,
+  "test_untouched": true,
+  "sharedprior_review": "/efs/prescottsun/SPT-JEPA/reports/hardtasks-sharedprior2600-review-20261030/results.json"
+}

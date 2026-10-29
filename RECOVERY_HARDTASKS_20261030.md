@@ -1,3 +1,21 @@
+# Current active work: six bounded Cube first-epoch runs
+
+The shared-prior short test completed all 12 endpoints with exit 0. TwoRoom shared-prior success was 2/6% versus ordinary temporal-forecast 6/2%; Cube was 10/12% versus 14/10%. It has no consistent control advantage. All shared-prior, noise-shift and anchor-information candidates are held. TwoRoom remains nearly invariant to encoded-state substitutions despite action-sensitive denoising in some arms; do not send this unresolved failure into a blind long grid.
+
+Only six training runs are now authorized and launched: Cube original beta=.25, lower-beta=.0625, and ordinary temporal-forecast, each with training seeds 1/2. Root: /efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030. Frozen source: 84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1. All six established runs had finite full state, nonzero encoder/prior/renderer gradients and appreciable state/action dependence. At 2000-2600 updates they covered only about 0.17-0.22 window epochs. This continuation distinguishes undertraining from method effectiveness; it does not promote a new candidate or assert a temporal-forecast gain.
+
+Hard stop: 11,671 total updates, covering 1,493,888 of 1,494,000 training windows at batch 128. Unchanged LR horizon 124,910 and unchanged model objectives. Original/lower-beta resume exact 2000-step full checkpoints; ordinary temporal-forecast resumes its unchanged completed 2600-step control. SHA256 copies preserve model, optimizer, scheduler, RNG and sample cursor. Portable checkpoints at 4000/8000 and the endpoint are retained, with periodic full resumable state.
+
+Slots: dev2 GPUs 0/1 original; dev13 GPUs 0/1 lower-beta; dev15 GPUs 0/1 temporal-forecast. Other GPUs are free. All old PushT and harder-task dispatchers were verified idle and closed; snapshots and old STOP markers stay unchanged. Current dispatcher PIDs at launch: 2734706/733552/809506 respectively; verify live command lines before using PIDs.
+
+The durable plan schedules six training + six full-state/state-use audits + six fixed 50-case strict-validation evaluations, followed by one aggregation job. Health failure blocks its planning job; any failed endpoint blocks aggregate publication. No automatic second epoch. The final report will be written by the queued local job to /efs/prescottsun/SPT-JEPA/reports/hardtasks-cube-epoch1-review-20261030/{RESULTS.md,results.json,planning.png,planning.svg}. Test episodes remain untouched. Released LeWM's 30% Cube result uses different model/training/data-exposure conditions and is not a matched internal baseline.
+
+Reports published in experiments/hardtasks20261030/results/{learn2000,anchor2600,sharedprior2600}. All examined charts have been visually checked. The mechanistic finding is that denoising state/action sensitivity does not establish useful goal-planning geometry or generated-sample quality. A shared multistep prior is related to latent overshooting; neither it nor a noise schedule establishes academic novelty.
+
+To save API use, let the bounded training/evaluation/aggregation queue run. If actively monitoring, check around every 30-60 minutes unless an error or endpoint is near. Review all six final seeds together before deciding on any further budget. Commit/push useful numerical results and figures after reviewing the generated report; no automatic research promotion.
+
+---
+
 # Active short test: one causal forecast for rate and renderer
 
 The16 anchor-information adaptations completed all48 endpoints0 and remain held. They did not establish a control improvement: TwoRoom per-seed successes observed6/2%, observed+highnoise2/0%, constant6/4%, constant+highnoise12/4%; Cube14/10%,12/12%,8/16%,4/14%. TwoRoom can show action-sensitive denoising while its encoded-state substitution has negligible effect; Cube shows strong state/action denoising dependence without strong goal planning.

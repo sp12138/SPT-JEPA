@@ -1,0 +1,665 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030",
+  "deadline": null,
+  "environment": {
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MUJOCO_GL": "egl",
+    "SDL_VIDEODRIVER": "dummy",
+    "PYGLET_HEADLESS": "true",
+    "MPLCONFIGDIR": "/efs/prescottsun/SPT-JEPA/cache/matplotlib",
+    "TMPDIR": "/efs/prescottsun/SPT-JEPA/tmp/hardtasks20261030",
+    "STABLEWM_HOME": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/planning"
+  },
+  "jobs": [
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 1,
+      "id": "cube-original-seed1-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed1-epoch1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed1-epoch1/config.json",
+      "config_sha256": "c98b27e6e6d85a3035fe8d8f9822be96d0fc6bff1161d39d1eb9cb7852357839",
+      "phase": "epoch1",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed1-epoch1/config.json",
+        "--stop-step",
+        "11671",
+        "--resume"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 1,
+      "id": "health-cube-original-seed1-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-original-seed1-epoch1",
+      "depends_on": [
+        "cube-original-seed1-epoch1"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed1-epoch1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-original-seed1-epoch1"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 1,
+      "id": "planning-cube-original-seed1-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-original-seed1-epoch1",
+      "depends_on": [
+        "health-cube-original-seed1-epoch1"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_GL": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "0",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed1-epoch1/model-step0011671",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-original-seed1-epoch1"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 2,
+      "id": "cube-original-seed2-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed2-epoch1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed2-epoch1/config.json",
+      "config_sha256": "f20f2397f9ed9b0974b063268544157ec7a65336a7c2c74149b7de13849b3132",
+      "phase": "epoch1",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed2-epoch1/config.json",
+        "--stop-step",
+        "11671",
+        "--resume"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 2,
+      "id": "health-cube-original-seed2-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-original-seed2-epoch1",
+      "depends_on": [
+        "cube-original-seed2-epoch1"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed2-epoch1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-original-seed2-epoch1"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "original",
+      "training_seed": 2,
+      "id": "planning-cube-original-seed2-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-original-seed2-epoch1",
+      "depends_on": [
+        "health-cube-original-seed2-epoch1"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_GL": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "1",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed2-epoch1/model-step0011671",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-original-seed2-epoch1"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "id": "cube-lower-beta-seed1-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-lower-beta-seed1-epoch1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-lower-beta-seed1-epoch1/config.json",
+      "config_sha256": "10de9689838498ba5a983633474c0756c2e5165666e3367236c881f1ab730d85",
+      "phase": "epoch1",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-lower-beta-seed1-epoch1/config.json",
+        "--stop-step",
+        "11671",
+        "--resume"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "id": "health-cube-lower-beta-seed1-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-lower-beta-seed1-epoch1",
+      "depends_on": [
+        "cube-lower-beta-seed1-epoch1"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-lower-beta-seed1-epoch1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-lower-beta-seed1-epoch1"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "id": "planning-cube-lower-beta-seed1-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-lower-beta-seed1-epoch1",
+      "depends_on": [
+        "health-cube-lower-beta-seed1-epoch1"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_GL": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "0",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-lower-beta-seed1-epoch1/model-step0011671",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-lower-beta-seed1-epoch1"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "id": "cube-lower-beta-seed2-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-lower-beta-seed2-epoch1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-lower-beta-seed2-epoch1/config.json",
+      "config_sha256": "8b336a57f6468cabe31a96bc20abbdcd60b08b38ea9ab1047fa141f689729632",
+      "phase": "epoch1",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-lower-beta-seed2-epoch1/config.json",
+        "--stop-step",
+        "11671",
+        "--resume"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "id": "health-cube-lower-beta-seed2-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-lower-beta-seed2-epoch1",
+      "depends_on": [
+        "cube-lower-beta-seed2-epoch1"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-lower-beta-seed2-epoch1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-lower-beta-seed2-epoch1"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "id": "planning-cube-lower-beta-seed2-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-lower-beta-seed2-epoch1",
+      "depends_on": [
+        "health-cube-lower-beta-seed2-epoch1"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_GL": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "1",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-lower-beta-seed2-epoch1/model-step0011671",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-lower-beta-seed2-epoch1"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "id": "cube-temporal-forecast-seed1-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-temporal-forecast-seed1-epoch1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-temporal-forecast-seed1-epoch1/config.json",
+      "config_sha256": "5d16eeea57b4053402e0600a3c563fba9e9115dd9fb390d8555527f7a0e3f452",
+      "phase": "epoch1",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-temporal-forecast-seed1-epoch1/config.json",
+        "--stop-step",
+        "11671",
+        "--resume"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "id": "health-cube-temporal-forecast-seed1-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-temporal-forecast-seed1-epoch1",
+      "depends_on": [
+        "cube-temporal-forecast-seed1-epoch1"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-temporal-forecast-seed1-epoch1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-temporal-forecast-seed1-epoch1"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "id": "planning-cube-temporal-forecast-seed1-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-temporal-forecast-seed1-epoch1",
+      "depends_on": [
+        "health-cube-temporal-forecast-seed1-epoch1"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_GL": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "0",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-temporal-forecast-seed1-epoch1/model-step0011671",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-temporal-forecast-seed1-epoch1"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "id": "cube-temporal-forecast-seed2-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-temporal-forecast-seed2-epoch1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-temporal-forecast-seed2-epoch1/config.json",
+      "config_sha256": "d4a9baa22a122c89555eb012c670f8be5a8706fd885905ecee85cdebaf1fee20",
+      "phase": "epoch1",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-temporal-forecast-seed2-epoch1/config.json",
+        "--stop-step",
+        "11671",
+        "--resume"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "id": "health-cube-temporal-forecast-seed2-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-temporal-forecast-seed2-epoch1",
+      "depends_on": [
+        "cube-temporal-forecast-seed2-epoch1"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-temporal-forecast-seed2-epoch1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/health-cube-temporal-forecast-seed2-epoch1"
+      ]
+    },
+    {
+      "host": "dev15",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "id": "planning-cube-temporal-forecast-seed2-epoch1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-temporal-forecast-seed2-epoch1",
+      "depends_on": [
+        "health-cube-temporal-forecast-seed2-epoch1"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_GL": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "1",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-temporal-forecast-seed2-epoch1/model-step0011671",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/planning-cube-temporal-forecast-seed2-epoch1"
+      ]
+    },
+    {
+      "id": "aggregate-cube-epoch1",
+      "host": "dev15",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1",
+        "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "phase": "report",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/aggregate",
+      "depends_on": [
+        "cube-original-seed1-epoch1",
+        "health-cube-original-seed1-epoch1",
+        "planning-cube-original-seed1-epoch1",
+        "cube-original-seed2-epoch1",
+        "health-cube-original-seed2-epoch1",
+        "planning-cube-original-seed2-epoch1",
+        "cube-lower-beta-seed1-epoch1",
+        "health-cube-lower-beta-seed1-epoch1",
+        "planning-cube-lower-beta-seed1-epoch1",
+        "cube-lower-beta-seed2-epoch1",
+        "health-cube-lower-beta-seed2-epoch1",
+        "planning-cube-lower-beta-seed2-epoch1",
+        "cube-temporal-forecast-seed1-epoch1",
+        "health-cube-temporal-forecast-seed1-epoch1",
+        "planning-cube-temporal-forecast-seed1-epoch1",
+        "cube-temporal-forecast-seed2-epoch1",
+        "health-cube-temporal-forecast-seed2-epoch1",
+        "planning-cube-temporal-forecast-seed2-epoch1"
+      ],
+      "environment": {
+        "MPLCONFIGDIR": "/efs/prescottsun/SPT-JEPA/cache/matplotlib"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/source-v1/experiments/hardtasks20261030/review_cube_epoch1.py"
+      ]
+    }
+  ]
+}

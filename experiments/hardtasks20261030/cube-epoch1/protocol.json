@@ -1,0 +1,26 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030",
+  "source_commit": "84890f61f1ef2b9bd495aeb8ac8e346575e6ebe1",
+  "stop_step": 11671,
+  "training_runs": 6,
+  "scientific_endpoints": 18,
+  "aggregation_jobs": 1,
+  "natural_training_windows": 1494000,
+  "batch_size": 128,
+  "window_epoch_definition": "floor(1494000/128); 112 trailing windows remain",
+  "scheduler_horizon": 124910,
+  "methods": [
+    "original",
+    "lower-beta",
+    "temporal-forecast"
+  ],
+  "training_seeds": [
+    1,
+    2
+  ],
+  "validation_cases": 50,
+  "test_untouched": true,
+  "model_objectives_unchanged": true,
+  "scope": "A bounded learning comparison, not promotion of a new candidate. Resume exact full states; no noise, anchor or shared-prior long grids. Stop after first window epoch and evaluate.",
+  "no_automatic_second_epoch": true
+}

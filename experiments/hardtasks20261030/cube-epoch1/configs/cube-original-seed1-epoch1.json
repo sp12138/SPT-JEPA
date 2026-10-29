@@ -1,0 +1,33 @@
+{
+  "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030/cube-original-seed1-epoch1",
+  "data": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+  "dataset_kind": "benchmark_hdf5",
+  "seed": 1,
+  "batch_size": 128,
+  "workers": 4,
+  "cpu_threads": 2,
+  "max_steps": 124910,
+  "max_seconds": 31536000,
+  "checkpoint_every": 2000,
+  "record_initial_weights": true,
+  "robust_variant": true,
+  "retain_steps": [
+    4000,
+    8000,
+    11671
+  ],
+  "model": {
+    "mode": "L2",
+    "sigma0": 0.1,
+    "window": 8,
+    "renderer_width": 384,
+    "renderer_depth": 12,
+    "renderer_heads": 6,
+    "forecast_seed": 20361032,
+    "action_dim": 25,
+    "beta": 0.25,
+    "rho": 0.0,
+    "forecast_fraction": 0.0,
+    "flow_logit_shift": 0.0
+  }
+}
