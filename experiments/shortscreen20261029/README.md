@@ -1,3 +1,11 @@
+# 一epoch短线筛选已完成
+
+[完整结果与关键图](results/SHORT-SCREEN.md)、[筛选决定](results/DECISION.md)。没有明确规划赢家；暂停单独I03/I05，只保留降低beta与组合方向做有上限的第二阶段。
+
+以下为执行前协议。
+
+---
+
 # Short-budget method screen
 
 The user corrected the long16run matrix: inspect short-run evidence before deciding whether to continue. All16 old methods/seeds were gracefully paused around9.6-10.3k updates with finite full optimizer/scheduler/RNG/data cursor checkpoints. No long continuation is automatic.

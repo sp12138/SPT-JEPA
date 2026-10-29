@@ -1,0 +1,36 @@
+{
+  "decided_at_utc": "2026-10-29T10:03:48.753274+00:00",
+  "stage1_all66_exit0": true,
+  "stage1_no_clear_planning_winner": true,
+  "first_epoch_original_P0": {
+    "seed1": 10.0,
+    "seed2": 9.0
+  },
+  "second_epoch_saved_original_P0": {
+    "1": {
+      "values": [
+        74.0,
+        72.0
+      ],
+      "mean": 73.0
+    },
+    "2": {
+      "values": [
+        40.0,
+        46.0
+      ],
+      "mean": 43.0
+    }
+  },
+  "temporarily_defer": {
+    "forecast-render": "Moving-block error/copy worsens on both seeds(.532->.789 and.606->.790), without a coherent P0 gain.",
+    "temporal-noise": "No consistent P0/agent improvement(0/-3pp P0), despite one block-motion gain; reduce priority, not universal disproof."
+  },
+  "eligible_for_limited_second_stage": {
+    "lower-beta": "Both diagnostic seeds improve agent and moving-block generation, action identification and slightly P0; simplest retuning control.",
+    "temporal-forecast": "Both seeds improve agent generation, action identification and slightly P0; modest exploratory signals, no proven task gain."
+  },
+  "second_stage_limit": "Only these2directions,seeds1/2,to24982updates(2epochs),then reevaluate; no automatic3epoch continuation. Existing second-epoch reference P0 is73%/43%, so this stage is meaningfully beyond the unlearned first-epoch regime.",
+  "new_user_scope": "Use all24GPUs productively for additional sample-level candidate research and staged experiments. New candidate trials must first save/evaluate~600updates and preserve equal model size.",
+  "limits": "Selected diagnostic seeds and small case banks; no method is yet proven better or more stable than original."
+}
