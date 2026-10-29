@@ -1,0 +1,21 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030",
+  "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+  "starting_step": 2000,
+  "stop_step": 2600,
+  "additional_updates": 600,
+  "training_runs": 4,
+  "reused_control_runs": 4,
+  "arms": {
+    "shared-forecast": [
+      "observed",
+      0.0
+    ]
+  },
+  "all_seeds_preserved": true,
+  "same_state_per_task_and_seed": true,
+  "unchanged_parameter_count": true,
+  "unchanged_inference_planner": true,
+  "scope": "Replace the one-step teacher-forced rate prior with the exact causal forecast used by the DiT. Preserve all weights, loss coefficients, data and planner; no new head or stop-gradient. The reference one-step forward retains common random-number consumption. Completed observed/base controls are reused only after exact default-loss/gradient/RNG regression and identical full initial-checkpoint proofs. This is a600-update adaptation, not a fresh-training result or novelty claim.",
+  "no_automatic_long_training": true
+}

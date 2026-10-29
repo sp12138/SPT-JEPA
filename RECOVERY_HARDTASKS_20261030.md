@@ -1,3 +1,15 @@
+# Active short test: one causal forecast for rate and renderer
+
+The16 anchor-information adaptations completed all48 endpoints0 and remain held. They did not establish a control improvement: TwoRoom per-seed successes observed6/2%, observed+highnoise2/0%, constant6/4%, constant+highnoise12/4%; Cube14/10%,12/12%,8/16%,4/14%. TwoRoom can show action-sensitive denoising while its encoded-state substitution has negligible effect; Cube shows strong state/action denoising dependence without strong goal planning.
+
+Active root `/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030`, sourcee6713dddabd8b940b58fa56d338c018db3850f7d. Only4 new600-update adaptations (2tasks x2seeds), from the same ordinary temporal-forecast2000 full states; all stop2600 and run health plus50 fixed strict-validation cases (12 endpoints). Change only rate_prior=forecast: the KL/rate constrains the same causal free-running forecast used by the DiT. No new parameters, coefficients, head, stop-gradient, data or planner change. One-step reference forward is retained to preserve common RNG consumption, not as an extra objective.
+
+The4 completed observed/base-noise2600 controls are reused. Their full initial checkpoint hashes match, and a training-mode CPU regression proves exact unchanged default losses,181 gradient tensors and outer RNG, including predictor dropout. Nine objective/data/noise/anchor contract tests pass; the shared trajectory is causal, has full encoder/prior gradients, and the loss factorizes per video with fixed randomness. No fresh-training, broad-stability, generated-sample-quality or novelty claim is made. Related prior work includes latent overshooting/multistep consistency; an objective change alone does not establish novelty.
+
+Slots: dev2 GPUs2/3 (TwoRoom), dev13 GPUs2/3 (Cube). Previous anchor and all old PushT/600/2000 dispatchers are closed. Next review: inspect all12 endpoints against the exact4 retained controls. No automatic continuation of this new candidate. All test cases remain held out.
+
+---
+
 # Active causal followup: harder-task anchor information, 2000 -> 2600
 
 The complete2000 screen has60 exits0 and is held. Strict50-case validation: TwoRoom original8/2%, temporal-forecast2/6%, temporal-forecast-highnoise14/4%; Cube original6/12%, temporal-forecast12/6%, temporal-forecast-highnoise12/6%. Released LeWM scores72%/30% on the same cases with different budget/size/data exposure. These are early results and do not establish a method win. TwoRoom remains almost state-independent; Cube has learned state/action dependence without a planning advantage.

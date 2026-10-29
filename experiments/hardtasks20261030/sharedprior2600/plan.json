@@ -1,0 +1,407 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030",
+  "deadline": null,
+  "environment": {
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MUJOCO_GL": "egl",
+    "SDL_VIDEODRIVER": "dummy",
+    "PYGLET_HEADLESS": "true",
+    "MPLCONFIGDIR": "/efs/prescottsun/SPT-JEPA/cache/matplotlib",
+    "TMPDIR": "/efs/prescottsun/SPT-JEPA/tmp/hardtasks20261030",
+    "STABLEWM_HOME": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/planning"
+  },
+  "jobs": [
+    {
+      "host": "dev2",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "shared-forecast",
+      "training_seed": 1,
+      "id": "tworoom-shared-forecast-seed1-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/tworoom-shared-forecast-seed1-gate2600",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/tworoom-shared-forecast-seed1-gate2600/config.json",
+      "config_sha256": "c69ad759cd3818ecce14b6ab68149ab474277fc4ca0c14dd24caee16693bca86",
+      "phase": "adapt600",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/tworoom-shared-forecast-seed1-gate2600/config.json",
+        "--stop-step",
+        "2600",
+        "--resume"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "shared-forecast",
+      "training_seed": 1,
+      "id": "health-tworoom-shared-forecast-seed1-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/health-tworoom-shared-forecast-seed1-gate2600",
+      "depends_on": [
+        "tworoom-shared-forecast-seed1-gate2600"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/tworoom-shared-forecast-seed1-gate2600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/health-tworoom-shared-forecast-seed1-gate2600"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "shared-forecast",
+      "training_seed": 1,
+      "id": "planning-tworoom-shared-forecast-seed1-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/planning-tworoom-shared-forecast-seed1-gate2600",
+      "depends_on": [
+        "health-tworoom-shared-forecast-seed1-gate2600"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/tworoom-shared-forecast-seed1-gate2600/model-step0002600",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/planning-tworoom-shared-forecast-seed1-gate2600"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "shared-forecast",
+      "training_seed": 2,
+      "id": "tworoom-shared-forecast-seed2-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/tworoom-shared-forecast-seed2-gate2600",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/tworoom-shared-forecast-seed2-gate2600/config.json",
+      "config_sha256": "afb1564a8358cbbddddfd5d1eb31fc25aa8af9cbea3b21b8aea3e2075405807b",
+      "phase": "adapt600",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/tworoom-shared-forecast-seed2-gate2600/config.json",
+        "--stop-step",
+        "2600",
+        "--resume"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "shared-forecast",
+      "training_seed": 2,
+      "id": "health-tworoom-shared-forecast-seed2-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/health-tworoom-shared-forecast-seed2-gate2600",
+      "depends_on": [
+        "tworoom-shared-forecast-seed2-gate2600"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/tworoom-shared-forecast-seed2-gate2600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/health-tworoom-shared-forecast-seed2-gate2600"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "tworoom",
+      "method": "shared-forecast",
+      "training_seed": 2,
+      "id": "planning-tworoom-shared-forecast-seed2-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/planning-tworoom-shared-forecast-seed2-gate2600",
+      "depends_on": [
+        "health-tworoom-shared-forecast-seed2-gate2600"
+      ],
+      "phase": "planning",
+      "environment": {},
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/tworoom-shared-forecast-seed2-gate2600/model-step0002600",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/planning-tworoom-shared-forecast-seed2-gate2600"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "shared-forecast",
+      "training_seed": 1,
+      "id": "cube-shared-forecast-seed1-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/cube-shared-forecast-seed1-gate2600",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/cube-shared-forecast-seed1-gate2600/config.json",
+      "config_sha256": "562b73aaa658cce7afc08b0162d53098808aa122081443f23ab9d4594b472085",
+      "phase": "adapt600",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/cube-shared-forecast-seed1-gate2600/config.json",
+        "--stop-step",
+        "2600",
+        "--resume"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "shared-forecast",
+      "training_seed": 1,
+      "id": "health-cube-shared-forecast-seed1-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/health-cube-shared-forecast-seed1-gate2600",
+      "depends_on": [
+        "cube-shared-forecast-seed1-gate2600"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/cube-shared-forecast-seed1-gate2600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/health-cube-shared-forecast-seed1-gate2600"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 2,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "shared-forecast",
+      "training_seed": 1,
+      "id": "planning-cube-shared-forecast-seed1-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/planning-cube-shared-forecast-seed1-gate2600",
+      "depends_on": [
+        "health-cube-shared-forecast-seed1-gate2600"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "2",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/cube-shared-forecast-seed1-gate2600/model-step0002600",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/planning-cube-shared-forecast-seed1-gate2600"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "shared-forecast",
+      "training_seed": 2,
+      "id": "cube-shared-forecast-seed2-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/cube-shared-forecast-seed2-gate2600",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/cube-shared-forecast-seed2-gate2600/config.json",
+      "config_sha256": "1e5c4a33877da9bc34a5778154632b2cc48faadf2510784066d926f5a0a6c9c0",
+      "phase": "adapt600",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/cube-shared-forecast-seed2-gate2600/config.json",
+        "--stop-step",
+        "2600",
+        "--resume"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "shared-forecast",
+      "training_seed": 2,
+      "id": "health-cube-shared-forecast-seed2-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/health-cube-shared-forecast-seed2-gate2600",
+      "depends_on": [
+        "cube-shared-forecast-seed2-gate2600"
+      ],
+      "phase": "health",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/cube-shared-forecast-seed2-gate2600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/health-cube-shared-forecast-seed2-gate2600"
+      ]
+    },
+    {
+      "host": "dev13",
+      "gpu": 3,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1",
+        "source_commit": "e6713dddabd8b940b58fa56d338c018db3850f7d",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "method": "shared-forecast",
+      "training_seed": 2,
+      "id": "planning-cube-shared-forecast-seed2-gate2600",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/planning-cube-shared-forecast-seed2-gate2600",
+      "depends_on": [
+        "health-cube-shared-forecast-seed2-gate2600"
+      ],
+      "phase": "planning",
+      "environment": {
+        "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+        "PYOPENGL_PLATFORM": "egl",
+        "MUJOCO_EGL_DEVICE_ID": "3",
+        "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/cube-shared-forecast-seed2-gate2600/model-step0002600",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_sharedprior_20261030/planning-cube-shared-forecast-seed2-gate2600"
+      ]
+    }
+  ]
+}
