@@ -33,6 +33,31 @@ def main():
         assert execution["checkpoint"]==str(expected_checkpoint)
         rows[m][s][kind][es]=dict(metrics=v,execution=execution)
         arrays[f"{kind}/{m}/seed{s}/eval{es}/successes"]=np.asarray(v["metrics"]["episode_successes"],np.int8)
+    ancillary={}
+    for j in plan["jobs"]:
+        m,seed,phase=j["method"],str(j["training_seed"]),j["phase"]
+        if phase in {"planning","fresh-planning","probe"}:continue
+        folder=Path(j["output"]);record={"exit":read(r/"exits"/(j["id"]+".json"))}
+        if phase=="adaptation600":
+            record.update(status=read(folder/"status.json"),stage=read(folder/"stage-complete.json"),model_size=read(folder/"model_size.json"),config=read(folder/"config.json"),weights_sha256=sha(folder/"model-step0025582/weights.pt"))
+            assert record["stage"]["initial_step"]==24982 and record["stage"]["stop_step"]==25582
+            assert record["model_size"]["total"]==51097134
+            record["training_trace"]=[json.loads(line) for line in (folder/"metrics.jsonl").read_text().splitlines()]
+        elif phase=="health":
+            record.update(metrics=read(folder/"metrics.json"),cases=read(folder/"cases.json"))
+            with np.load(folder/"per-case.npz",allow_pickle=False) as z:
+                for k in z.files:
+                    assert np.isfinite(z[k]).all();arrays[f"repeat-health/{m}/seed{seed}/{k}"]=z[k].copy()
+        elif phase=="quality":
+            record.update(metrics=read(folder/"metrics.json"),cases=read(folder/"cases.json"))
+            assert record["metrics"]["cases"]==64 and record["metrics"]["sampler_steps"]==20
+            with np.load(folder/"per-case-metrics.npz",allow_pickle=False) as z:
+                for k in z.files:
+                    assert np.isfinite(z[k]).all();arrays[f"repeat-quality/{m}/seed{seed}/{k}"]=z[k].copy()
+        elif phase=="counterfactual":
+            record["metrics"]=read(folder/"counterfactual.json");assert record["metrics"]["cases"]==16
+        else:raise AssertionError("Unknown phase:"+phase)
+        ancillary.setdefault(m,{}).setdefault(seed,{})[phase]=record
     summaries={};effects={}
     for m,values in rows.items():
         summaries[m]={};effects[m]={}
@@ -66,7 +91,7 @@ def main():
                     differences.extend(((np.asarray(lv["metrics"]["episode_successes"],float)-np.asarray(rv["metrics"]["episode_successes"],float))*100)[keep])
                     episodes.extend(np.asarray(lv["episodes"])[keep])
                 effects[m].setdefault(s,{})[kind]=cluster_ci(differences,episodes)
-    result=dict(all_confirmation_endpoints_complete=True,source_scope=protocol,summary=summaries,paired_effects=effects,complete_planning_endpoints=rows,complete_probes=probes,
+    result=dict(all_confirmation_endpoints_complete=True,source_scope=protocol,summary=summaries,paired_effects=effects,complete_planning_endpoints=rows,complete_probes=probes,complete_training_health_quality_counterfactual=ancillary,
         reporter_sha256=sha(__file__),limitations=["Twelve600update numerical repeats reuse existing training seeds and identical initial full states/RNG.","Fresh planning evaluates the original selected short-screenweights; repeats use primary42/43cases.","Seeds1-4 are existing trained models, not new from-scratch samples.","Drop25/context-mask were selected from a larger exploratory screen; no novelty or stable89%claim.","Bootstrap conditions on fixed trained weights/episode clusters and is not training-seed uncertainty. Exact primary/fresh case overlaps are counted and also excluded in a separate paired effect."])
     assert not out.exists();out.mkdir(parents=True)
     (out/"anchor-confirmation-results.json").write_text(json.dumps(result,indent=2)+"\n");np.savez_compressed(out/"anchor-confirmation-per-case.npz",**arrays)
