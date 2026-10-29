@@ -1,3 +1,9 @@
+# Active harder-task short gates
+
+Read RECOVERY_HARDTASKS_20261030.md and the authoritative EFS plan. Twenty matched Cube/TwoRoom runs stop600before full-state/gradient/state-use review; no automatic longer training. Ten TwoRoom runs are launched; Cube reuses their slots after health and evaluator preflight. Preserve14near-complete PushT control chains, then retire PushT training. The four nonessential forecast firstepoch runs are stopped with audited recoverable state. Noise shifting is an experimental control, not a novelty claim.
+
+---
+
 # Current redirect — harder tasks, 2026-10-30
 
 The user authorized stopping nonessential experiments and moving temporal-forecast to harder tasks, prioritizing performance, self-contained simplicity, substantive novelty and understanding. Further PushT expansion is held. Forecast-only seeds5–8 firstepoch were gracefully stopped with full checkpoints. Retain only the already near-complete two forecast-only third-epoch and twelve paired newseed second-epoch jobs through their existing caps/evaluations; no further PushT training. Completed seed3/4 secondepoch is held. Prepare Cube and TwoRoom under experiments/hardtasks20261030, keeping original snapshots/STOPs and shared assets untouched. Short health gates remain; evidence-supported long runs are authorized. Keep API-token usage low and poll long jobs at30–60minute intervals when no independent work remains.

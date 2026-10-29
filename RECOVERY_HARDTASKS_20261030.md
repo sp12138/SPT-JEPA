@@ -1,0 +1,31 @@
+# Harder-task campaign recovery — 2026-10-30
+
+Authority: `/efs/prescottsun/SPT-JEPA`; branch `research/ideas-20261028`. User redirect prioritizes harder tasks, effectiveness, self-contained simplicity, genuine conceptual novelty and understanding, with low API-token use. New method objectives remain sample-level. Long runs are allowed after evidence review; do not claim that a noise schedule alone is novel.
+
+## Active work
+
+`runs/hardtasks_gate600_20261030/plan.json` is authoritative. Training source is frozen at9c8abbded858ce495fd2954f3bbb97a0be052afd. Twenty600-update runs: Cube and TwoRoom, original/.0625-beta/temporal-forecast/original-highnoise/temporal-forecast-highnoise, training seeds1/2. All start from fresh paired initial weights per task/seed. Batch128,51.1M-scale model, raw pixel/action inputs, first-observed-frame anchor, fixed LR horizon124910. Extra training-only logit shift.8; inference sampler/parameter count unchanged.7 focused contracts and both2-update GPU execution preflights passed; neither is a functional gate result.
+
+TwoRoom uses dev2 GPUs2–7 +dev13 GPUs0–3. Each Cube run will reuse its corresponding slot after TwoRoom health completes, and only after `CUBE-EVALUATOR-PREFLIGHT-PASSED.json` appears. Exact operational routing amendment is in `slot-reuse-review.json`; the old queue is retained as `plan-before-slot-reuse.json`. No trainer/checkpoint reimplementation. Original source/configs/STOPs remain unchanged.
+
+The two-case Cube evaluator preflight is itself a frozen scheduled job on dev2 GPU2 after original-seed1 health. It uses project-local EGL dispatch libraries in `environments/egl-lib`; system services/shared Python were not changed. The first Cube evaluator attempt failed only for missing EGL dispatch libraries; its logs remain under `runs/hardtasks_preflight_20261030`. GPU training preflight passed. TwoRoom random and released-LeWM evaluator2-case preflights passed, no performance inference.
+
+Four strict-validation reference evaluations (random/official LeWM x2tasks) remain on dev15 GPUs4–7 behind `reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json`. Create that marker only when all56forecast_confirm and120newseed_epoch2 jobs have exited0 and their live processes are gone. The original PushT parents must finish existing endpoint chains without additional training. The queued references do not block Cube training.
+
+## Stopped/retained PushT work
+
+Forecast-only fresh seeds5–8 firstepoch stopped gracefully at6777/6808/6800/6778. All four full optimizer/scheduler/RNG/cursor and portable/full-equality audits passed. Their parent is held; old STOP markers are permanent. Idle dev2/dev13 firstepoch dispatchers and completed seed34 dispatcher were closed after checking actual command lines and empty running sets.
+
+Retained only14already-near-complete trainings: two forecast-only third-epoch to37473, twelve original/lower/combined newseed second-epoch to24982, with their planned endpoints. No further PushT training. Seed3/4 two-epoch all58exit0, all4fullstates audited; all numerical outcomes and reviewed figure are in `experiments/promisingseed34epoch2_20261029/results` (92f4a86 plus per-case artifact followup).
+
+## Data/evaluation
+
+Official Cube and TwoRoom datasets and released weights are acquired and hash/revision recorded in `data/hardtasks-v1`. Each has9000train/500validation/500test episodes. Test episodes are not used for model selection. Action normalization uses train episodes for our models; released LeWM retains its full-data normalization and may have trained on evaluation episodes. Report different model size/training exposure separately.
+
+Pinned CLEAR scoring14acb4924f6cb9a658b62c9be63efb78e59f1987 supplies strict/moderate task semantics and swept-disk navigation. Our adapter uses the project's existing SWM CEM300x30,topk30,batch1,history3,horizon5,budget50. These are custom SPT manifests, not canonical CLEAR leaderboard results. TwoRoom test100queries have60/61episode clusters; do not assume100independent episodes. Original raw navigation training data may include trajectories invalid under corrected physics; this mismatch is explicit and shared across matched arms. Cube initial-success candidates (~38%) are excluded before evaluation.
+
+## Next review
+
+When gates finish, inspect all exits,20full-state health reports, encoder/predictor/renderer gradient norms and fixed-noise posterior/forecast/zero/carry/wrong-action curves. Check initial-model weights match across five arms within each task/seed.600updates are not mature planning evidence. Prepare a fresh bounded learning stage only after this review, preserving all seeds and controls; evaluate validation manifolds at learning endpoints, then reserve test manifests for confirmation. Preserve failed preflights and do not edit frozen snapshots.
+
+Use long waits once no independent work remains (30–60minutes; shorter near gates/failures). Record useful findings with full numbers and reviewed figures, then commit/push via EFS->local ff-only sync. Read actual processes/checkpoints, not stale PIDs. Do not spawn subagents.
