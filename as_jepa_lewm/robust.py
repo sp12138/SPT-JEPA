@@ -69,7 +69,7 @@ class RobustLeWM(ASJepaLeWM):
                 condition = torch.where(choose, future, condition)
         y = pack(render[:, 1:].flatten(0, 1))
         anchors = pack(anchor).repeat_interleave(w - 1, dim=0)
-        fm = flow_loss(self.renderer, y, condition.flatten(0, 1), anchors, self.shift)
+        fm = flow_loss(self.renderer, y, condition.flatten(0, 1), anchors, self.training_shift)
         rate = (entry + surprise.sum(1)).mean() / ((w - 1) * FRAME_ELEMS)
         beta = self.beta * min(1., step / max(1, ramp_steps)) if ramp_steps else self.beta
         loss = fm + beta * rate

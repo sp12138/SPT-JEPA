@@ -20,7 +20,9 @@ class ASJepaLeWM(LeWM):
     def __init__(self, mode="L2", beta=4.0, sigma0=.1, window=8, use_anchor=True,
                  renderer_width=192, renderer_depth=6, renderer_heads=3,
                  carry=True, domain="standard", encoder_size=224, encoder_depth=12,
-                 lambda_sigreg=.09, objective="flow", anchor_gap=8, batchnorm_state=False, fp32_pool=False, batchnorm_projector=False, state_slots=4, state_width=16):
+                 lambda_sigreg=.09, objective="flow", anchor_gap=8, batchnorm_state=False, fp32_pool=False, batchnorm_projector=False, state_slots=4, state_width=16, action_dim=10, flow_logit_shift=0.):
+        if action_dim < 1 or not math.isfinite(flow_logit_shift):raise ValueError("Invalid action dimension or flow logit shift")
+        self.flow_logit_shift=float(flow_logit_shift)
         self.state_slots=state_slots;self.state_width=state_width;self.state_dim=state_slots*state_width
         self.mode=mode; self.beta=beta; self.sigma0=sigma0; self.window=window
         self.carry=carry; self.domain=domain; self.encoder_size=encoder_size
@@ -31,7 +33,7 @@ class ASJepaLeWM(LeWM):
         if hasattr(encoder,"set_attn_implementation"):encoder.set_attn_implementation("sdpa")
         baseline=mode=="L0"; state_dim=192 if baseline else self.state_dim
         predictor=Predictor(num_frames=window-1,depth=6,heads=16,mlp_dim=2048,input_dim=state_dim,hidden_dim=192,output_dim=state_dim,dim_head=64,dropout=.1,emb_dropout=0.)
-        action_encoder=Embedder(input_dim=10,smoothed_dim=10,emb_dim=state_dim,mlp_scale=4)
+        action_encoder=Embedder(input_dim=action_dim,smoothed_dim=action_dim,emb_dim=state_dim,mlp_scale=4)
         projector=MLP(192,2048,192,norm_fn=nn.BatchNorm1d) if baseline else None
         pred_proj=MLP(192,2048,192,norm_fn=nn.BatchNorm1d) if baseline else None
         super().__init__(encoder,predictor,action_encoder,projector,pred_proj)
@@ -50,6 +52,9 @@ class ASJepaLeWM(LeWM):
             self.renderer=AnchoredWorldDiT(cfg,state_dim=self.state_width,num_slots=self.state_slots,use_anchor=use_anchor)
             self.renderer.sequence_parallel=False
             self.shift=timestep_shift(cfg)
+            # Multiplication of odds adds exactly this amount in logit space.
+            # Keep the inference schedule unchanged for matched evaluation.
+            self.training_shift=self.shift*math.exp(self.flow_logit_shift)
         self.register_buffer("image_mean",torch.tensor([.485,.456,.406]).view(1,3,1,1),persistent=False)
         self.register_buffer("image_std",torch.tensor([.229,.224,.225]).view(1,3,1,1),persistent=False)
     def encode(self,info):
@@ -113,7 +118,7 @@ class ASJepaLeWM(LeWM):
         if self.objective=="mse":
             with self.renderer.anchored(a):velocity=self.renderer(torch.zeros_like(y),torch.ones(len(y),1,device=y.device),condition=condition)
             fm=F.mse_loss(velocity.float(),y.float())
-        else:fm=flow_loss(self.renderer,y,condition,a,self.shift)
+        else:fm=flow_loss(self.renderer,y,condition,a,self.training_shift)
         rate=(entry+surprise.sum(1)).mean()/((w-1)*FRAME_ELEMS)
         if self.mode=="L1":
             predloss=F.mse_loss(predicted.float().flatten(2),flat[:,1:].float())

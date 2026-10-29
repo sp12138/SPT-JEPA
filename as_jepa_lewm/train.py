@@ -8,6 +8,7 @@ import lightning as pl
 from lightning.pytorch.callbacks import Callback
 from as_jepa_tools.data import PushTWindows,FullPushTWindows,seed_worker
 from as_jepa_lewm.model import ASJepaLeWM
+from as_jepa_tools.benchmark_data import make_training_dataset
 from vforge.ops import OpsConfig,initialize_ops
 
 
@@ -91,7 +92,7 @@ class TrainModule(pl.LightningModule):
     def on_fit_start(self):
         if self.cfg.get("calibrate_state_std") is None or self.cfg.get("is_resuming",False):return
         # One-time affine head initialization. No per-batch normalization is added to AS-JEPA.
-        dataset=(FullPushTWindows if self.cfg.get("all_phase_data",False) else PushTWindows)(self.cfg["data"],window=self.cfg["model"]["window"],gap=self.cfg.get("gap",8),seed=self.cfg["seed"])
+        dataset=make_training_dataset(self.cfg)
         generator=torch.Generator().manual_seed(91);indices=torch.randperm(len(dataset),generator=generator)[:128].tolist()
         from torch.utils.data import Subset
         loader=DataLoader(Subset(dataset,indices),batch_size=16,num_workers=0)
@@ -182,7 +183,7 @@ def main():
         (initial/"config.json").write_text(json.dumps(dict(_target_=target,**cfg["model"]),indent=2))
     checkpoint=root/"last.ckpt";resume=str(checkpoint) if args.resume and checkpoint.exists() else None
     start=int(torch.load(checkpoint,map_location="cpu",weights_only=False).get("campaign_samples",0)) if resume else 0
-    dataset=(FullPushTWindows if cfg.get("all_phase_data",False) else PushTWindows)(cfg["data"],window=cfg["model"]["window"],gap=cfg.get("gap",8),seed=cfg["seed"])
+    dataset=make_training_dataset(cfg)
     sampler=WindowSampler(dataset,start=start,seed=cfg["seed"],batch_size=cfg["batch_size"])
     loader=DataLoader(dataset,batch_size=cfg["batch_size"],sampler=sampler,generator=torch.Generator().manual_seed(cfg["seed"]+999),num_workers=cfg.get("workers",4),persistent_workers=cfg.get("workers",4)>0,pin_memory=True,drop_last=True,worker_init_fn=seed_worker)
     progress=PersistentProgress(root,cfg)
