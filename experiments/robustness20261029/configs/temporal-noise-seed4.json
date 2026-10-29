@@ -1,0 +1,35 @@
+{
+  "output": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-noise-seed4",
+  "data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1",
+  "evaluation_data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+  "pose_weights": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+  "seed": 4,
+  "batch_size": 128,
+  "workers": 4,
+  "cpu_threads": 2,
+  "max_steps": 124910,
+  "max_seconds": 31536000,
+  "checkpoint_every": 12491,
+  "all_phase_data": true,
+  "stop_after": 37473,
+  "retain_steps": [
+    37473,
+    99928,
+    124910
+  ],
+  "model": {
+    "mode": "L2",
+    "beta": 0.25,
+    "sigma0": 0.1,
+    "window": 8,
+    "anchor_gap": 8,
+    "renderer_width": 384,
+    "renderer_depth": 12,
+    "renderer_heads": 6,
+    "rho": 0.8,
+    "forecast_fraction": 0.0,
+    "forecast_seed": 20661041
+  },
+  "record_initial_weights": true,
+  "robust_variant": true
+}

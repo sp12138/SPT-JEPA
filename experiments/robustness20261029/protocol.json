@@ -1,0 +1,229 @@
+{
+  "created_at_utc": "2026-10-29T05:54:31.598241+00:00",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029",
+  "trigger": "Full-data beta=.25 new training seeds1-4 give primary84.0+-6.28%, worst74.67%, failing the predeclared stable-high-performance screen; same under fresh evaluation seeds83.67+-6.50%.",
+  "reference_campaign": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029",
+  "reference_config": "/efs/prescottsun/SPT-JEPA/runs/completion_20261028/full-L2-beta0.25-stage3-seed0/config.json",
+  "model_parameter_count": 51097134,
+  "state_dimension": 64,
+  "data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1",
+  "training_steps": 37473,
+  "scheduler_total_steps": 124910,
+  "batch_size": 128,
+  "sigma0": 0.1,
+  "training_seeds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "primary_eval_seeds": [
+    42,
+    43,
+    44
+  ],
+  "confirmation_eval_seeds": [
+    1042,
+    1043,
+    1044
+  ],
+  "episodes_per_eval_seed": 50,
+  "methods": {
+    "lower-beta": {
+      "description": "Original AS-JEPA objective and architecture at beta=.0625; a simpler retuning control",
+      "beta": 0.0625,
+      "rho": 0.0,
+      "forecast_fraction": 0.0,
+      "robust_variant": false
+    },
+    "temporal-noise": {
+      "description": "I03: Markov posterior with unchanged marginal sigma=.1, correct conditional KL, rho=.8",
+      "beta": 0.25,
+      "rho": 0.8,
+      "forecast_fraction": 0.0,
+      "robust_variant": true
+    },
+    "forecast-render": {
+      "description": "I05:50percent causal prior forecasts as renderer conditions",
+      "beta": 0.25,
+      "rho": 0.0,
+      "forecast_fraction": 0.5,
+      "robust_variant": true
+    },
+    "temporal-forecast": {
+      "description": "Factorial combination of I03 and I05 with no additional model parameters",
+      "beta": 0.25,
+      "rho": 0.8,
+      "forecast_fraction": 0.5,
+      "robust_variant": true
+    }
+  },
+  "runs": [
+    {
+      "id": "lower-beta-seed1",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/lower-beta-seed1/config.json",
+      "config_sha256": "b9ab281d555884797f24fb52b7ce99b63334ecd8d77892cd87ede148440bab4b"
+    },
+    {
+      "id": "lower-beta-seed2",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/lower-beta-seed2/config.json",
+      "config_sha256": "6cf28181f70444dbb27e36d03bf6aad5f6eeb1d4ef4a4c9c13bcfe43aae7880b"
+    },
+    {
+      "id": "lower-beta-seed3",
+      "method": "lower-beta",
+      "training_seed": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/lower-beta-seed3/config.json",
+      "config_sha256": "29efe6bcebb88bd28777cd47c0fa56fb1ff08b335cf51ec3fd6ed93553c3f118"
+    },
+    {
+      "id": "lower-beta-seed4",
+      "method": "lower-beta",
+      "training_seed": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/lower-beta-seed4/config.json",
+      "config_sha256": "811034c0ff403dd1ccfe8cb92d1e3959bce929ca1671d6d2170ffdac26e6ea91"
+    },
+    {
+      "id": "temporal-noise-seed1",
+      "method": "temporal-noise",
+      "training_seed": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-noise-seed1/config.json",
+      "config_sha256": "8a12fb555b4b5cbf75139d6943bc9a54f5df28fab94edadbbef8d3739b7a863c"
+    },
+    {
+      "id": "temporal-noise-seed2",
+      "method": "temporal-noise",
+      "training_seed": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-noise-seed2/config.json",
+      "config_sha256": "105cdb8392f759320fbf0335b73cc460df5931896fa87bdd14f80e94ca9c8700"
+    },
+    {
+      "id": "temporal-noise-seed3",
+      "method": "temporal-noise",
+      "training_seed": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-noise-seed3/config.json",
+      "config_sha256": "f2c934d8c019f0d77d336d163650a056abeb2ec689c503a46af1d5dcd872f35f"
+    },
+    {
+      "id": "temporal-noise-seed4",
+      "method": "temporal-noise",
+      "training_seed": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-noise-seed4/config.json",
+      "config_sha256": "518aa0295b568c9229ff27e5ed1054d2e1c045276e13b8f93b41b33e2972a4c1"
+    },
+    {
+      "id": "forecast-render-seed1",
+      "method": "forecast-render",
+      "training_seed": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/forecast-render-seed1/config.json",
+      "config_sha256": "973966144026516eb8dee5401849838ba242bccc6d4e037b62e8c15ff3fbaced"
+    },
+    {
+      "id": "forecast-render-seed2",
+      "method": "forecast-render",
+      "training_seed": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/forecast-render-seed2/config.json",
+      "config_sha256": "97e6d197db6110f28426a959b5cb507ccba70396bc1b4eec440374e043384087"
+    },
+    {
+      "id": "forecast-render-seed3",
+      "method": "forecast-render",
+      "training_seed": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/forecast-render-seed3/config.json",
+      "config_sha256": "9983ddfc4da97332b2c63b54cb850bedf76a29ea99b9281cbb3231e96ef2cd86"
+    },
+    {
+      "id": "forecast-render-seed4",
+      "method": "forecast-render",
+      "training_seed": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/forecast-render-seed4/config.json",
+      "config_sha256": "9decea0e9037b500c28617637195cf1fdc438b3c2da934e6c9ffaac192d79911"
+    },
+    {
+      "id": "temporal-forecast-seed1",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-forecast-seed1/config.json",
+      "config_sha256": "2bb71ef2041c5554569f0704f61509f0c8f90bb40146a38a0cef44b125a6419c"
+    },
+    {
+      "id": "temporal-forecast-seed2",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-forecast-seed2/config.json",
+      "config_sha256": "e6d0c3f202bdf18fea80d7cf78d906478ae327ada0b98a790f76a146ef3f7d4d"
+    },
+    {
+      "id": "temporal-forecast-seed3",
+      "method": "temporal-forecast",
+      "training_seed": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-forecast-seed3/config.json",
+      "config_sha256": "973c742684a8791138d313c77e30d13c0a92c43aff8c67c3e3e479ddbcfda5d1"
+    },
+    {
+      "id": "temporal-forecast-seed4",
+      "method": "temporal-forecast",
+      "training_seed": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-forecast-seed4/config.json",
+      "config_sha256": "5e7813c09276bf301dd7353d504b8c8e70534abfb0f3fbbc2d2018b372aaf161"
+    },
+    {
+      "id": "smoke-lower-beta-seed2",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "smoke": true,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/smoke-lower-beta-seed2/config.json",
+      "config_sha256": "9d126c7a4b7b2c41ce8a74e9e07e08adae3050c25112bccf3a00abe2e60ec3dc"
+    },
+    {
+      "id": "smoke-temporal-noise-seed2",
+      "method": "temporal-noise",
+      "training_seed": 2,
+      "smoke": true,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/smoke-temporal-noise-seed2/config.json",
+      "config_sha256": "0981024c6af3caac18e49ac2837e22e7c070c9250879e2f05bc72c9609492786"
+    },
+    {
+      "id": "smoke-forecast-render-seed2",
+      "method": "forecast-render",
+      "training_seed": 2,
+      "smoke": true,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/smoke-forecast-render-seed2/config.json",
+      "config_sha256": "96b435116c9d65c581e327a8430f17e0d80b8a4287ea5963014c8781e046c5e1"
+    },
+    {
+      "id": "smoke-temporal-forecast-seed2",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "smoke": true,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/smoke-temporal-forecast-seed2/config.json",
+      "config_sha256": "3abaeb06a04ae25925381a5bcec08185fd240dd6fac22ae2ed619c59bb1519cf"
+    }
+  ],
+  "matching": {
+    "data": "Same full dataset, heldout split and sampler seed/order for each paired training seed.",
+    "model": "All trainable tensors, initial values and parameter count must match the original AS-JEPA. No extra network, batch statistic loss, BatchNorm or initialization calibration.",
+    "optimizer": "Same AdamW groups, initial learning rates, clipping, BF16, batch128, and124910-step schedule.",
+    "randomness": "Posterior and renderer random draws retain the original order; extra forecast dropout/masks use a separate restored RNG stream. Disabled extension is bitwise equal to original loss and gradients in the CPU control.",
+    "cost": "Report actual GPU-time; forecast prior unrolling adds compute. No equal-compute superiority claim from equal update counts."
+  },
+  "selection": {
+    "prespecified_primary": "Four matched training seeds, preserve all failures. Compare per-seed P0 means, across-seed SD/min, noisy-posterior audits, generation and counterfactuals.",
+    "stable_approx85": "Mean>=85%, worst>=80%, SD<=5pp across new training seeds, no numerical/collapse failure; confirmation must agree qualitatively.",
+    "stable_near89": "Mean>=88%, worst>=85%, SD<=3pp; report all fresh-case results rather than selecting favorable evaluation seeds.",
+    "heldout_training_replication": "If a candidate improves or stabilizes the matched four-seed results, choose at most one simple winner and test prespecified new training seeds5/6, with fresh planning seeds2042/2043/2044. No fine-tuning after seeing their outcomes.",
+    "if_no_candidate": "Inspect per-case dynamics/control errors before designing another intervention; no automatic broad hyperparameter grid."
+  },
+  "early_stopping": {
+    "smoke": "All four variants must pass200 real GPU steps and initial-state identity checks before any full variant launches.",
+    "numerics": "Existing trainer checks finite loss each batch; stop failures, preserve outputs, diagnose before any retry.",
+    "collapse": "Only persistent zero activity for>=11000 consecutive updates plus two independent noisy-posterior audits failing; do not cull a finite nonempty seed merely for weak early planning.",
+    "budget": "Stop exactly at37473 updates; no automatic10epoch/20epoch extension. Do not run old held grids."
+  },
+  "publication": "Commit and push useful new positive and negative conclusions with full per-case numerical results and PNG/SVG scientific figures. Experimental code/configs are committed and frozen before launching.",
+  "limitations": "No promise of a superior algorithm in advance; distinguish empirical improvement, seed stability, mechanistic hypotheses and novelty."
+}
