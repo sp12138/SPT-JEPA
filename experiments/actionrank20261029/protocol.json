@@ -1,0 +1,224 @@
+{
+  "created_at_utc": "2026-10-29T11:27:27.458117+00:00",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029",
+  "model_parameters": 51097134,
+  "state_dimension": 64,
+  "batch_size": 128,
+  "beta": 0.25,
+  "sigma0": 0.1,
+  "initial_step": 24982,
+  "first_stop_step": 25582,
+  "additional_training_updates": 600,
+  "scheduler_total_steps": 124910,
+  "training_seeds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "methods": {
+    "original": "Exact original continuation control.",
+    "one-step-small": "Within-video action ranking, one-step prior, coefficient0.0001.",
+    "one-step-large": "Within-video action ranking, one-step prior, coefficient0.001.",
+    "terminal-small": "Within-video action ranking,5-step deterministic endpoint, coefficient0.0001.",
+    "terminal-large": "Within-video action ranking,5-step deterministic endpoint, coefficient0.001."
+  },
+  "runs": [
+    {
+      "id": "original-seed1-adapt600",
+      "host": "dev13",
+      "gpu": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/original-seed1-adapt600/config.json",
+      "config_sha256": "b90489c85a41aea4eb5b81211a01e3c20c4b34a640b21869993a30dc65e43802",
+      "method": "original",
+      "training_seed": 1
+    },
+    {
+      "id": "original-seed2-adapt600",
+      "host": "dev15",
+      "gpu": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/original-seed2-adapt600/config.json",
+      "config_sha256": "740a57b81d9886e8bb5a872d3de7bfef97e2c21d7c10a8b4bf141ac196639583",
+      "method": "original",
+      "training_seed": 2
+    },
+    {
+      "id": "original-seed3-adapt600",
+      "host": "dev2",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/original-seed3-adapt600/config.json",
+      "config_sha256": "368d0c45dafcfa9335edae428c92304c306dc69d8170bf1aa40c025c82e42e88",
+      "method": "original",
+      "training_seed": 3
+    },
+    {
+      "id": "original-seed4-adapt600",
+      "host": "dev13",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/original-seed4-adapt600/config.json",
+      "config_sha256": "72bde89906b87fb5a0e7b5956373e48e696548e1b6c48516a411990f84ec1b27",
+      "method": "original",
+      "training_seed": 4
+    },
+    {
+      "id": "one-step-small-seed1-adapt600",
+      "host": "dev15",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/one-step-small-seed1-adapt600/config.json",
+      "config_sha256": "2dd1222b70738bc06a732e99ad755c1c29fb7975691fec998ffcad0ed8480c3f",
+      "method": "one-step-small",
+      "training_seed": 1
+    },
+    {
+      "id": "one-step-small-seed2-adapt600",
+      "host": "dev2",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/one-step-small-seed2-adapt600/config.json",
+      "config_sha256": "119a70e48fa8a342339c04731c2bbd0a7afd7a42be73dd4c4e863ca6f58788e1",
+      "method": "one-step-small",
+      "training_seed": 2
+    },
+    {
+      "id": "one-step-small-seed3-adapt600",
+      "host": "dev13",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/one-step-small-seed3-adapt600/config.json",
+      "config_sha256": "161f876434d9388b8f8968de7e70c49b4eb01c33a02dfffc91a25865dbe882f5",
+      "method": "one-step-small",
+      "training_seed": 3
+    },
+    {
+      "id": "one-step-small-seed4-adapt600",
+      "host": "dev15",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/one-step-small-seed4-adapt600/config.json",
+      "config_sha256": "6bee517014262dcbbac0b74c6c5a2cab501be013cf6e88b3646f3bdb4f62b126",
+      "method": "one-step-small",
+      "training_seed": 4
+    },
+    {
+      "id": "one-step-large-seed1-adapt600",
+      "host": "dev2",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/one-step-large-seed1-adapt600/config.json",
+      "config_sha256": "cdaacc3a92efb2be6a6ab55bfc31eeab518ad1ad738be5dce4c5094b60e095ab",
+      "method": "one-step-large",
+      "training_seed": 1
+    },
+    {
+      "id": "one-step-large-seed2-adapt600",
+      "host": "dev13",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/one-step-large-seed2-adapt600/config.json",
+      "config_sha256": "9f0a32bf2b4226ac56a3b323685f479f785ab220dbd583de04a1f0cd769d8636",
+      "method": "one-step-large",
+      "training_seed": 2
+    },
+    {
+      "id": "one-step-large-seed3-adapt600",
+      "host": "dev15",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/one-step-large-seed3-adapt600/config.json",
+      "config_sha256": "c48c6fc026ef4090d640279f65bd022698316e25aaabea9563ae8711b13f7f13",
+      "method": "one-step-large",
+      "training_seed": 3
+    },
+    {
+      "id": "one-step-large-seed4-adapt600",
+      "host": "dev2",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/one-step-large-seed4-adapt600/config.json",
+      "config_sha256": "e8cd231d3d43709aaa3848ac5a721eb85d2e5fca9bcf639a5afba29eb048ded5",
+      "method": "one-step-large",
+      "training_seed": 4
+    },
+    {
+      "id": "terminal-small-seed1-adapt600",
+      "host": "dev13",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/terminal-small-seed1-adapt600/config.json",
+      "config_sha256": "8fa916c93608831dc1859e55ba80a4edf30fcb379179455eaa93a35c786d792a",
+      "method": "terminal-small",
+      "training_seed": 1
+    },
+    {
+      "id": "terminal-small-seed2-adapt600",
+      "host": "dev15",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/terminal-small-seed2-adapt600/config.json",
+      "config_sha256": "fd21e19cbfd66b2cfd5d3c48432aeb4d4e7df91db73b584453e4062348f58633",
+      "method": "terminal-small",
+      "training_seed": 2
+    },
+    {
+      "id": "terminal-small-seed3-adapt600",
+      "host": "dev2",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/terminal-small-seed3-adapt600/config.json",
+      "config_sha256": "c1e7bd6e29145bfb1480098f55d312b12674239129ac3c61d81684ee1f4afe11",
+      "method": "terminal-small",
+      "training_seed": 3
+    },
+    {
+      "id": "terminal-small-seed4-adapt600",
+      "host": "dev13",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/terminal-small-seed4-adapt600/config.json",
+      "config_sha256": "6c8a09b94bd758b42856b24fa905364d96f02878ee8fe87a7c518b2ba78862ba",
+      "method": "terminal-small",
+      "training_seed": 4
+    },
+    {
+      "id": "terminal-large-seed1-adapt600",
+      "host": "dev15",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/terminal-large-seed1-adapt600/config.json",
+      "config_sha256": "76971e017554c6fa7ab8f045a8a87f0916240c13b4aadc3c34a12b48a7b088e2",
+      "method": "terminal-large",
+      "training_seed": 1
+    },
+    {
+      "id": "terminal-large-seed2-adapt600",
+      "host": "dev2",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/terminal-large-seed2-adapt600/config.json",
+      "config_sha256": "2f489659eec052d66020b36e86fa8e76eeed6a1c8c12837dd6490d6d89fe5343",
+      "method": "terminal-large",
+      "training_seed": 2
+    },
+    {
+      "id": "terminal-large-seed3-adapt600",
+      "host": "dev13",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/terminal-large-seed3-adapt600/config.json",
+      "config_sha256": "0b0e5691922a22c5d71613e6f382be5adf7d5e5733d636fc46d191f016557864",
+      "method": "terminal-large",
+      "training_seed": 3
+    },
+    {
+      "id": "terminal-large-seed4-adapt600",
+      "host": "dev15",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/actionrank_20261029/terminal-large-seed4-adapt600/config.json",
+      "config_sha256": "dc4c00a20b1a46fdddddb7aa46ead4e49ea3e69f6f88105c1b29916bf93176a4",
+      "method": "terminal-large",
+      "training_seed": 4
+    }
+  ],
+  "basis": "First two screens gave no robust planning winner. Renderer-to-encoder grounding is essential. Test action-ranking energy using the actual prior and Euclidean goal metric, without an auxiliary head.",
+  "scope": "Existing mature models, short adaptation only. All candidates remain sample-level, no cross-sample statistics, EMA or additional parameters. All targets and prior inputs remain attached; preserve RGB grounding gradients. Original flow/rate plus a declared contrastive surrogate.",
+  "gate": "Stop all20training at600extra updates; review finite weights, posterior/interventions, paired P0 before any continuation. Action alternatives are reversed/shifted within the same window, not simulator-confirmed wrong outcomes; false negatives are possible.",
+  "references": [
+    {
+      "title": "CAPE: action-conditioned contrastive objective",
+      "url": "https://arxiv.org/abs/2606.07304",
+      "scope": "Related principle; this is a distinct sample-local prior-energy adaptation, not a reproduction or novelty claim."
+    },
+    {
+      "title": "TWISTER: action-conditioned CPC",
+      "url": "https://arxiv.org/abs/2503.04416",
+      "scope": "Known contrastive predictive world-model research; our experiment uses no cross-sample negatives."
+    }
+  ],
+  "automatic_long_continuation": false
+}

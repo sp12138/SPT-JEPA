@@ -1,6 +1,8 @@
 # SPT-JEPA
 
-当前执行 [sample-level 梯度路由短测](experiments/routing20261029/README.md)：5 个设置（含原算法和负面对照）×4 个已有训练种子，各适应 600 更新；另有 4 个先前选出的第二阶段训练。新候选不自动续跑。权威状态与恢复入口见 [RECOVERY_ROUTING_20261029.md](RECOVERY_ROUTING_20261029.md)。
+当前执行 [sample-level 动作排序短测](experiments/actionrank20261029/README.md)：原算法加 4 个 prior-energy 排序设置 ×4 个已有训练种子，各适应 600 更新；另有 4 个先前选出的第二阶段训练。权威状态与恢复入口见 [RECOVERY_ACTIONRANK_20261029.md](RECOVERY_ACTIONRANK_20261029.md)。新候选先看短线结果，不自动续跑。
+
+[四种子梯度路由的完整结果](experiments/routing20261029/results/ROUTING-SHORT.md)已完成：未确认稳定规划胜者；移除 renderer 对编码器的梯度使四种子 P0 降到 2–5%，同时仍通过粗略后验坍塌判据。见[机制证据与停止决定](experiments/routing20261029/results/DECISION.md)。
 
 [五训练种子复现](experiments/stability20261029/results/FULL-DATA-STABILITY.md)已完成：新增四种子 P0 为 84.00±6.28%，最差 74.67%；新评测为 83.67±6.50%。历史单种子的 89.33% 尚未稳定复现，五模型均未坍塌。
 

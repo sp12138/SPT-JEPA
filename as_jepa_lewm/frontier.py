@@ -133,7 +133,7 @@ class FrontierLeWM(ASJepaLeWM):
                           active_dims=(variable.mean(0) > .1).sum(), differential_flow=differential)
 
     def _routing_loss(self, batch, step=0, ramp_steps=0):
-        """Same forward loss, experimental sample-level semigradient routing."""
+        """Original flow/rate with explicit routing or a sample-local ranking term."""
         from vforge.models.as_jepa.codes import surprise_nats
         from vforge.models.as_jepa.flow import flow_loss
         pixels, render, anchor = self.prepare(batch)

@@ -1,3 +1,9 @@
+# Current: bounded sample-level action ranking
+
+Read [RECOVERY_ACTIONRANK_20261029.md](RECOVERY_ACTIONRANK_20261029.md), EFS plan/source hashes and actual workers. Twenty matched600updateadaptations use prior energy with within-video action alternatives; no auxiliary head or extra parameters. Four selectedshortscreen2continuations remain separate. Both earlier120endpoint screens are complete/held; renderer grounding-gradient negative control strongly worsens control acrossfour seeds but passes coarsecollapsegate.
+
+---
+
 # Current: bounded four-seed gradient routing
 
 Read [RECOVERY_ROUTING_20261029.md](RECOVERY_ROUTING_20261029.md) and actual EFS plan/worker processes. Previous frontier120endpoints completed0; none earned longer training. Twenty new routing trials keep the original forward loss and51.1Mparameters; stop600extra updates. Four separately selected shortscreen2 continuations keep their independent budgets.

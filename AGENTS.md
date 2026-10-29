@@ -1,5 +1,7 @@
 # SPT-JEPA current execution policy
 
+Latest current stage: frontier and routing short screens completed120exits0 each. Preserve their held grids. New actionrank_20261029 runs20same-size600updateadaptations (original+4within-video action-ranking settings)x4existingtrainingseeds, retaining original flow/rate gradients and no extra head. Four shortscreen2GPUjobs remain unchanged. Review tasks/health before any further budget. Avoid novelty/stability claims from adaptation.
+
 Current evidence-driven stage: frontier_20261029 completed all120endpoints with no consistent two-seed planning winner and remains held. New routing_20261029 uses5forward-identical gradient settings (original,3targeted candidates,1grounding negative control)x4existing training seeds. All20adaptations stop after600updates before review. Preserve the separate4selected shortscreen2 jobs. No blanket continuation or from-scratch stability claim.
 
 Latest user instruction: use all24H200s on dev2/dev13/dev15 productively for strong sample-level algorithms. Preserve short gates. Current frontier protocol runs/frontier_20261029/protocol.json schedules20same-size600update adaptations plus4evidence-selected bounded stage2runs; no automatic long candidate grid. Publish useful new conclusions promptly.
