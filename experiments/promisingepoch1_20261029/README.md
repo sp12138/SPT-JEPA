@@ -1,0 +1,3 @@
+# First-epoch confirmation after600updateaudit
+
+All16shorttrialsreviewed;advanceonlyto12491updates.ThenpairedP0/health/generation/actionchecks.Noseedselection,nodroppingweakoutcomes.Same51.1Mparameters,batch128,124910LRhorizon.Parent8longerselected/componentjobsstayintheirimmutablecampaign.

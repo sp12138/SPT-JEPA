@@ -96,5 +96,19 @@ class RobustnessContracts(unittest.TestCase):
         torch.testing.assert_close(actual, expected, rtol=2e-6, atol=2e-5)
 
 
+    def test_loss_factorizes_per_video_with_fixed_randomness(self):
+        batch = self.batch()
+        fixed_noise = lambda value, *a, **k: torch.full_like(value, .3)
+        fixed_time = lambda count, device, shift: torch.full((count, 1), .5, device=device)
+        fixed_choose = lambda *shape, **kw: torch.full(shape, .3, **kw)
+        for rho, fraction in [(.8, 0.), (0., .5), (.8, .5)]:
+            with self.subTest(rho=rho, forecast_fraction=fraction):
+                model = self.model(rho=rho, forecast_fraction=fraction)
+                with patch("torch.randn_like", fixed_noise), patch("torch.rand", fixed_choose), patch("vforge.models.as_jepa.flow.draw_timesteps", fixed_time):
+                    whole, _ = model.loss(batch, step=3)
+                    separate = [model.loss({k: v[i:i+1] for k, v in batch.items()}, step=3)[0] for i in range(2)]
+                torch.testing.assert_close(whole, torch.stack(separate).mean(), rtol=5e-5, atol=5e-6)
+
+
 if __name__ == "__main__":
     unittest.main()
