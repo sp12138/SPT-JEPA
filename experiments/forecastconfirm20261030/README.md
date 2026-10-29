@@ -1,0 +1,3 @@
+# Simpler forecast path and new-case confirmation
+
+ComponentI05forecast-renderreaches90/90%attwoepochs,matchingcombinedI03+I05withinuncertainty. Twoforecast-onlythird-epochcontinuationsarejustifiedbysamebudgettaskevidence;moreseedsfirst600updatesonly. Existing94/94%combinedresultischeckedonnewevaluationseeds2042/2043/2044againstoriginal/retunedAS-JEPA. Noautomaticbroadgrid;all51.1Mparameters,sample-levelloss,originalfullgradients,noaddednetwork.
