@@ -1,0 +1,3 @@
+# Forecast-only short gates -> first epoch
+
+Allsixforecast-only600updategatesreviewed:existingseeds3/4andnewseeds5-8.Finitestate/optimizer/scheduler,causalgradients,posterior/state-usechecks;newinitialtensorsmatchtheoriginalcontrols.Advanceonlyto12491andstopforP0/health/generation/CF.ThisisconfirmationofthesimplerI05candidatewith2epoch90/90evidence,notanautomaticlonggrid.
