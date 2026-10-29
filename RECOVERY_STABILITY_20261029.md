@@ -1,3 +1,9 @@
+# Same-size robustness followup
+
+The primary multi-seed P0 replication is complete and does not meet the prespecified stable89% target. See [active recovery](RECOVERY_ROBUSTNESS_20261029.md); useful new conclusions are being published. Old snapshots stay immutable.
+
+---
+
 # Active stability reproduction — 2026-10-29
 
 Latest user authorization: reproduce the full-data beta=.25 three-epoch89.33% P0 configuration across training seeds, then pursue useful Lingjing experiments if stable or evidence-driven method improvements at the same model size if unstable. Publish useful new numerical conclusions and key figures without another approval.

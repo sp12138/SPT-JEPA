@@ -1,3 +1,9 @@
+# Same-size robustness followup
+
+The primary multi-seed P0 replication is complete and does not meet the prespecified stable89% target. See [active recovery](RECOVERY_ROBUSTNESS_20261029.md); useful new conclusions are being published. Old snapshots stay immutable.
+
+---
+
 # New stability campaign active
 
 Latest user instruction supersedes the prior hold. Read [current stability recovery](RECOVERY_STABILITY_20261029.md) and experiments/stability20261029/protocol.json. Old completion_20261028 jobs remain held; only the new evidence-directed campaign may launch.
