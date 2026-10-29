@@ -38,13 +38,14 @@ def main():
             noise=torch.randn_like(mu);rho=getattr(model,"rho",0.)
             for t in range(1,w):noise[:,t]=rho*noise[:,t-1]+math.sqrt(1-rho*rho)*noise[:,t]
             noisy=mu+model.sigma0*noise
-            def forecast(actions):
-                acts=model.action_encoder(actions);history=[noisy[:,0]]
+            def forecast(actions, first=None):
+                acts=model.action_encoder(actions);history=[noisy[:,0] if first is None else first]
                 for t in range(w-1):history.append(model.predict(torch.stack(history,1),acts[:,:t+1])[:,-1])
                 return torch.stack(history[1:],1)
             prior=forecast(batch["action"]);wrong=forecast(torch.roll(batch["action"],1,1))
+            wrong_state=forecast(batch["action"],mu.flip(0)[:,0]+model.sigma0*noise[:,0])
             y=pack(render[:,1:].flatten(0,1));anc=pack(anchor).repeat_interleave(w-1,0);eps=torch.randn_like(y)
-            conditions=dict(posterior=noisy[:,1:],forecast=prior,wrong_actions=wrong,carry=noisy[:,:1].expand(-1,w-1,-1),zero=torch.zeros_like(prior))
+            conditions=dict(posterior=noisy[:,1:],shuffled_posterior=mu.flip(0)[:,1:]+model.sigma0*noise[:,1:],forecast=prior,wrong_state=wrong_state,wrong_actions=wrong,carry=noisy[:,:1].expand(-1,w-1,-1),zero=torch.zeros_like(prior))
             values={}
             for level in [.2,.5,.8,.95]:
                 t=torch.full((len(y),1),level,device=y.device)
@@ -54,6 +55,6 @@ def main():
                     values[f"fm_t{level}_{name}"]=(y-eps-v).square().flatten(1).mean(1).reshape(b,w-1).mean(1).cpu().tolist()
             for i in range(b):rows.append(dict(episode=int(batch["episode"][i]),start=int(batch["start"][i]),**{k:v[i] for k,v in values.items()}))
             embeddings.append(mu.cpu().flatten(0,1))
-    emb=torch.cat(embeddings);report=dict(audit=audit,cases=rows,summary={k:float(np.mean([x[k] for x in rows])) for k in rows[0] if k.startswith("fm_")},feature_std=float(emb.std(0).mean()),parameters=sum(p.numel() for p in model.parameters()),inference_shift=model.shift,training_shift=model.training_shift,scope="Validation-only matched-noise diagnostics; 600-step health is not learned control or generation success.")
+    emb=torch.cat(embeddings);report=dict(audit=audit,cases=rows,summary={k:float(np.mean([x[k] for x in rows])) for k in rows[0] if k.startswith("fm_")},feature_std=float(emb.std(0).mean()),feature_signal_to_posterior_noise=float(emb.std(0).mean())/model.sigma0,parameters=sum(p.numel() for p in model.parameters()),inference_shift=model.shift,training_shift=model.training_shift,scope="Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success.")
     assert finite(report);(out/"health.json").write_text(json.dumps(report,indent=2)+"\n");print(json.dumps({k:v for k,v in report.items() if k!="cases"}),flush=True)
 if __name__=="__main__":main()
