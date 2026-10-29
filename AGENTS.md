@@ -1,5 +1,7 @@
 # SPT-JEPA current execution policy
 
+600updatefollowupreviewcomplete:all16gateauditspass,all3methodinitialtensorsmatchpernewseed. promising_epoch1_20261029 advancesonlythese16runsto12491andstopsfortaskevaluation. The8selected/componentjobsinpromising_20261029continueunchanged. Noautomatic2epochcontinuationfornewseeds;nooldSTOPclearing.
+
 New strongest evidence: complete52selectedstage/endpointevaluations show temporal-forecastseed1/2twoepochP0=88/90vsoriginal73/43;fresh85.33/87.33vs73.33/36.67.Lowerbeta=.0625isstrongretuningcontrol.Newpromising_20261029protocoluses24boundedjobs:4selectedthird-epoch,4existingseed3/4first600,4monocomponentsecond-epoch,12newseed5-8first600. Thisisspecificfollowupafteractualtaskevidence,noblanketoldgridresume. PreserveshortgatesandoldSTOPmarkers;matchedmodelsize/sample-levelloss. Novelty/finalstabilitystillunproven.
 
 Current evidence: anchorconfirmation completed120exits0; the apparent drop25lead did not survive freshcases/numericalrepeat. Do not continue those candidates. Finish only the already evidence-selected shortscreen2twoepochruns and stage2evalmatchedtaskchecks before the next researchdecision. Earlier taskauthorization remains, but do not launch blanket long grids. No newalgorithm/stable89%claim is supported yet.

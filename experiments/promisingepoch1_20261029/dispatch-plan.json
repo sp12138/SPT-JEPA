@@ -1,0 +1,3702 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029",
+  "created_at_utc": "2026-10-29T14:39:32.559109+00:00",
+  "deadline": null,
+  "environment": {
+    "OMP_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "WANDB_MODE": "disabled",
+    "TOKENIZERS_PARALLELISM": "false",
+    "USE_TF": "0",
+    "USE_FLAX": "0",
+    "HF_HOME": "/efs/prescottsun/SPT-JEPA/cache/huggingface",
+    "MPLCONFIGDIR": "/efs/prescottsun/SPT-JEPA/cache/matplotlib",
+    "TORCH_HOME": "/efs/prescottsun/SPT-JEPA/cache/torch",
+    "XDG_CACHE_HOME": "/efs/prescottsun/SPT-JEPA/cache",
+    "TMPDIR": "/efs/prescottsun/SPT-JEPA/tmp/promising_epoch1_20261029"
+  },
+  "scope": "Onlyto12491updates,thenreview.Original/lower/combinednewseeds5-8andlower/combinedexistingseeds3/4.Noautomatic2epochcontinuation.",
+  "jobs": [
+    {
+      "id": "lower-beta-seed3-epoch1",
+      "host": "dev2",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed3-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed3-epoch1/config.json",
+      "config_sha256": "f89899f7dbf467a190187fa78689410b765b8ef65710696a0c33caa91c038134",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed3-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "lower-beta",
+      "training_seed": 3,
+      "initial_step": 10664,
+      "stop_step": 12491
+    },
+    {
+      "id": "lower-beta-seed4-epoch1",
+      "host": "dev2",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed4-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed4-epoch1/config.json",
+      "config_sha256": "714ee5fab691db649cf5a71e91ac68112231c3cb0282c44685f12676a47da28d",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed4-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "lower-beta",
+      "training_seed": 4,
+      "initial_step": 10893,
+      "stop_step": 12491
+    },
+    {
+      "id": "temporal-forecast-seed3-epoch1",
+      "host": "dev2",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed3-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed3-epoch1/config.json",
+      "config_sha256": "4e675feaf6f4f633bbebce1a4991e78a1140755ba7a4d0e45dd44bce7cd434df",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed3-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "temporal-forecast",
+      "training_seed": 3,
+      "initial_step": 10161,
+      "stop_step": 12491
+    },
+    {
+      "id": "temporal-forecast-seed4-epoch1",
+      "host": "dev2",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed4-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed4-epoch1/config.json",
+      "config_sha256": "0e69dd96c6dd9b4797d4cc2860c000e2c07217256b2f3a522d9fe79d52370ad7",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed4-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "temporal-forecast",
+      "training_seed": 4,
+      "initial_step": 10311,
+      "stop_step": 12491
+    },
+    {
+      "id": "original-seed5-epoch1",
+      "host": "dev13",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed5-epoch1/config.json",
+      "config_sha256": "7bd3a0061afe0cd8fb37c51747c5048c3e35a9d9af4ea833edd83d4e3c564464",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed5-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "original",
+      "training_seed": 5,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "original-seed6-epoch1",
+      "host": "dev13",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed6-epoch1/config.json",
+      "config_sha256": "b2180da09aa46ef16abaf9b9cdd48e6fcaa4aae77ef95c6c80fc25cf5512b6e6",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed6-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "original",
+      "training_seed": 6,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "original-seed7-epoch1",
+      "host": "dev13",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed7-epoch1/config.json",
+      "config_sha256": "c11948ef54aa3180b2e0c86c79ad7ee10ffad2462e0436c47989d6360eed6847",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed7-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "original",
+      "training_seed": 7,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "original-seed8-epoch1",
+      "host": "dev13",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed8-epoch1/config.json",
+      "config_sha256": "dd979c74e16aad95b04c6da951652692f2581f24dd9ce2cc43a2c0684427b425",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed8-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "original",
+      "training_seed": 8,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "lower-beta-seed5-epoch1",
+      "host": "dev15",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed5-epoch1/config.json",
+      "config_sha256": "fa0a941dee9839fe6b11e9472ebb44d552bf5316007ed5815c664d2d31a33a97",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed5-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "lower-beta",
+      "training_seed": 5,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "lower-beta-seed6-epoch1",
+      "host": "dev15",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed6-epoch1/config.json",
+      "config_sha256": "9ae255dfc2fa3b3f7b05f9d2406d3746520d8bf81841913c1f5cab75031f1730",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed6-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "lower-beta",
+      "training_seed": 6,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "lower-beta-seed7-epoch1",
+      "host": "dev15",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed7-epoch1/config.json",
+      "config_sha256": "7e555203feba144f658296bec5468fdab71890f5798fa082e730bd64d8fd4de8",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed7-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "lower-beta",
+      "training_seed": 7,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "lower-beta-seed8-epoch1",
+      "host": "dev15",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed8-epoch1/config.json",
+      "config_sha256": "3f4661d6ef23f572adbab6ced88eb53f1075f72710bb659e841f1c7b9c8b50a3",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed8-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "lower-beta",
+      "training_seed": 8,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "temporal-forecast-seed5-epoch1",
+      "host": "dev15",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed5-epoch1/config.json",
+      "config_sha256": "8d4691617d3d76433e54c553cac62daa444ae742c09037de2503f143ee262f8a",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed5-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "temporal-forecast",
+      "training_seed": 5,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "temporal-forecast-seed6-epoch1",
+      "host": "dev15",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed6-epoch1/config.json",
+      "config_sha256": "f9f89470855d6bd28306363d01344abae97b3311592a99ff47c16ee1944277c6",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed6-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "temporal-forecast",
+      "training_seed": 6,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "temporal-forecast-seed7-epoch1",
+      "host": "dev15",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed7-epoch1/config.json",
+      "config_sha256": "ef353f759a93c756bf5feb0e47eadf2c964bed86d61433bd86012a89dbb45057",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed7-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "temporal-forecast",
+      "training_seed": 7,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "temporal-forecast-seed8-epoch1",
+      "host": "dev15",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed8-epoch1/config.json",
+      "config_sha256": "d703e4fbc878f7dcff37522c5ce9ec1f28c9d7ee76b0923bc9c92b259d4297fa",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed8-epoch1/config.json",
+        "--stop-step",
+        "12491",
+        "--resume"
+      ],
+      "phase": "first-epoch",
+      "method": "temporal-forecast",
+      "training_seed": 8,
+      "initial_step": 600,
+      "stop_step": 12491
+    },
+    {
+      "id": "planning-lower-beta-seed3-epoch1-eval42",
+      "host": "dev2",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed3-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed3-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed3-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 3,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "lower-beta-seed3-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed3-epoch1-eval43",
+      "host": "dev2",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed3-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed3-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed3-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 3,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "lower-beta-seed3-epoch1"
+      ]
+    },
+    {
+      "id": "health-lower-beta-seed3-epoch1",
+      "host": "dev2",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed3-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed3-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed3-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "lower-beta",
+      "training_seed": 3,
+      "depends_on": [
+        "lower-beta-seed3-epoch1"
+      ]
+    },
+    {
+      "id": "quality-lower-beta-seed3-epoch1",
+      "host": "dev2",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed3-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed3-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed3-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "lower-beta",
+      "training_seed": 3,
+      "depends_on": [
+        "lower-beta-seed3-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-lower-beta-seed3-epoch1",
+      "host": "dev2",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed3-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed3-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed3-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "lower-beta",
+      "training_seed": 3,
+      "depends_on": [
+        "lower-beta-seed3-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed4-epoch1-eval42",
+      "host": "dev2",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed4-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed4-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed4-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 4,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "lower-beta-seed4-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed4-epoch1-eval43",
+      "host": "dev2",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed4-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed4-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed4-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 4,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "lower-beta-seed4-epoch1"
+      ]
+    },
+    {
+      "id": "health-lower-beta-seed4-epoch1",
+      "host": "dev2",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed4-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed4-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed4-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "lower-beta",
+      "training_seed": 4,
+      "depends_on": [
+        "lower-beta-seed4-epoch1"
+      ]
+    },
+    {
+      "id": "quality-lower-beta-seed4-epoch1",
+      "host": "dev2",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed4-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed4-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed4-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "lower-beta",
+      "training_seed": 4,
+      "depends_on": [
+        "lower-beta-seed4-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-lower-beta-seed4-epoch1",
+      "host": "dev2",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed4-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed4-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed4-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "lower-beta",
+      "training_seed": 4,
+      "depends_on": [
+        "lower-beta-seed4-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed3-epoch1-eval42",
+      "host": "dev2",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed3-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed3-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed3-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 3,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "temporal-forecast-seed3-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed3-epoch1-eval43",
+      "host": "dev2",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed3-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed3-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed3-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 3,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "temporal-forecast-seed3-epoch1"
+      ]
+    },
+    {
+      "id": "health-temporal-forecast-seed3-epoch1",
+      "host": "dev2",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed3-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed3-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed3-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "temporal-forecast",
+      "training_seed": 3,
+      "depends_on": [
+        "temporal-forecast-seed3-epoch1"
+      ]
+    },
+    {
+      "id": "quality-temporal-forecast-seed3-epoch1",
+      "host": "dev2",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed3-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed3-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed3-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "temporal-forecast",
+      "training_seed": 3,
+      "depends_on": [
+        "temporal-forecast-seed3-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-temporal-forecast-seed3-epoch1",
+      "host": "dev2",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed3-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed3-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed3-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "temporal-forecast",
+      "training_seed": 3,
+      "depends_on": [
+        "temporal-forecast-seed3-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed4-epoch1-eval42",
+      "host": "dev2",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed4-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed4-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed4-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 4,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "temporal-forecast-seed4-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed4-epoch1-eval43",
+      "host": "dev2",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed4-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed4-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed4-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 4,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "temporal-forecast-seed4-epoch1"
+      ]
+    },
+    {
+      "id": "health-temporal-forecast-seed4-epoch1",
+      "host": "dev2",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed4-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed4-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed4-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "temporal-forecast",
+      "training_seed": 4,
+      "depends_on": [
+        "temporal-forecast-seed4-epoch1"
+      ]
+    },
+    {
+      "id": "quality-temporal-forecast-seed4-epoch1",
+      "host": "dev2",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed4-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed4-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed4-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "temporal-forecast",
+      "training_seed": 4,
+      "depends_on": [
+        "temporal-forecast-seed4-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-temporal-forecast-seed4-epoch1",
+      "host": "dev2",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed4-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed4-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed4-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "temporal-forecast",
+      "training_seed": 4,
+      "depends_on": [
+        "temporal-forecast-seed4-epoch1"
+      ]
+    },
+    {
+      "id": "planning-original-seed5-epoch1-eval42",
+      "host": "dev13",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed5-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed5-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "original",
+      "training_seed": 5,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "original-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "planning-original-seed5-epoch1-eval43",
+      "host": "dev13",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed5-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed5-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "original",
+      "training_seed": 5,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "original-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "health-original-seed5-epoch1",
+      "host": "dev13",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-original-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-original-seed5-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "original",
+      "training_seed": 5,
+      "depends_on": [
+        "original-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "quality-original-seed5-epoch1",
+      "host": "dev13",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-original-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-original-seed5-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "original",
+      "training_seed": 5,
+      "depends_on": [
+        "original-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-original-seed5-epoch1",
+      "host": "dev13",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-original-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-original-seed5-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "original",
+      "training_seed": 5,
+      "depends_on": [
+        "original-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "planning-original-seed6-epoch1-eval42",
+      "host": "dev13",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed6-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed6-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "original",
+      "training_seed": 6,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "original-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "planning-original-seed6-epoch1-eval43",
+      "host": "dev13",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed6-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed6-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "original",
+      "training_seed": 6,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "original-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "health-original-seed6-epoch1",
+      "host": "dev13",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-original-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-original-seed6-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "original",
+      "training_seed": 6,
+      "depends_on": [
+        "original-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "quality-original-seed6-epoch1",
+      "host": "dev13",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-original-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-original-seed6-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "original",
+      "training_seed": 6,
+      "depends_on": [
+        "original-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-original-seed6-epoch1",
+      "host": "dev13",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-original-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-original-seed6-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "original",
+      "training_seed": 6,
+      "depends_on": [
+        "original-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "planning-original-seed7-epoch1-eval42",
+      "host": "dev13",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed7-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed7-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "original",
+      "training_seed": 7,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "original-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "planning-original-seed7-epoch1-eval43",
+      "host": "dev13",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed7-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed7-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "original",
+      "training_seed": 7,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "original-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "health-original-seed7-epoch1",
+      "host": "dev13",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-original-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-original-seed7-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "original",
+      "training_seed": 7,
+      "depends_on": [
+        "original-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "quality-original-seed7-epoch1",
+      "host": "dev13",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-original-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-original-seed7-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "original",
+      "training_seed": 7,
+      "depends_on": [
+        "original-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-original-seed7-epoch1",
+      "host": "dev13",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-original-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-original-seed7-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "original",
+      "training_seed": 7,
+      "depends_on": [
+        "original-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "planning-original-seed8-epoch1-eval42",
+      "host": "dev13",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed8-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed8-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "original",
+      "training_seed": 8,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "original-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "planning-original-seed8-epoch1-eval43",
+      "host": "dev13",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed8-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-original-seed8-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "original",
+      "training_seed": 8,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "original-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "health-original-seed8-epoch1",
+      "host": "dev13",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-original-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-original-seed8-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "original",
+      "training_seed": 8,
+      "depends_on": [
+        "original-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "quality-original-seed8-epoch1",
+      "host": "dev13",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-original-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-original-seed8-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "original",
+      "training_seed": 8,
+      "depends_on": [
+        "original-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-original-seed8-epoch1",
+      "host": "dev13",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-original-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/original-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-original-seed8-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "original",
+      "training_seed": 8,
+      "depends_on": [
+        "original-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed5-epoch1-eval42",
+      "host": "dev15",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed5-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed5-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 5,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "lower-beta-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed5-epoch1-eval43",
+      "host": "dev15",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed5-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed5-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 5,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "lower-beta-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "health-lower-beta-seed5-epoch1",
+      "host": "dev15",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed5-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "lower-beta",
+      "training_seed": 5,
+      "depends_on": [
+        "lower-beta-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "quality-lower-beta-seed5-epoch1",
+      "host": "dev15",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed5-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "lower-beta",
+      "training_seed": 5,
+      "depends_on": [
+        "lower-beta-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-lower-beta-seed5-epoch1",
+      "host": "dev15",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed5-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "lower-beta",
+      "training_seed": 5,
+      "depends_on": [
+        "lower-beta-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed6-epoch1-eval42",
+      "host": "dev15",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed6-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed6-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 6,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "lower-beta-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed6-epoch1-eval43",
+      "host": "dev15",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed6-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed6-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 6,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "lower-beta-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "health-lower-beta-seed6-epoch1",
+      "host": "dev15",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed6-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "lower-beta",
+      "training_seed": 6,
+      "depends_on": [
+        "lower-beta-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "quality-lower-beta-seed6-epoch1",
+      "host": "dev15",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed6-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "lower-beta",
+      "training_seed": 6,
+      "depends_on": [
+        "lower-beta-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-lower-beta-seed6-epoch1",
+      "host": "dev15",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed6-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "lower-beta",
+      "training_seed": 6,
+      "depends_on": [
+        "lower-beta-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed7-epoch1-eval42",
+      "host": "dev15",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed7-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed7-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 7,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "lower-beta-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed7-epoch1-eval43",
+      "host": "dev15",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed7-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed7-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 7,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "lower-beta-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "health-lower-beta-seed7-epoch1",
+      "host": "dev15",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed7-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "lower-beta",
+      "training_seed": 7,
+      "depends_on": [
+        "lower-beta-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "quality-lower-beta-seed7-epoch1",
+      "host": "dev15",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed7-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "lower-beta",
+      "training_seed": 7,
+      "depends_on": [
+        "lower-beta-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-lower-beta-seed7-epoch1",
+      "host": "dev15",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed7-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "lower-beta",
+      "training_seed": 7,
+      "depends_on": [
+        "lower-beta-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed8-epoch1-eval42",
+      "host": "dev15",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed8-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed8-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 8,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "lower-beta-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "planning-lower-beta-seed8-epoch1-eval43",
+      "host": "dev15",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed8-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-lower-beta-seed8-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "lower-beta",
+      "training_seed": 8,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "lower-beta-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "health-lower-beta-seed8-epoch1",
+      "host": "dev15",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-lower-beta-seed8-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "lower-beta",
+      "training_seed": 8,
+      "depends_on": [
+        "lower-beta-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "quality-lower-beta-seed8-epoch1",
+      "host": "dev15",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-lower-beta-seed8-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "lower-beta",
+      "training_seed": 8,
+      "depends_on": [
+        "lower-beta-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-lower-beta-seed8-epoch1",
+      "host": "dev15",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/lower-beta-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-lower-beta-seed8-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "lower-beta",
+      "training_seed": 8,
+      "depends_on": [
+        "lower-beta-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed5-epoch1-eval42",
+      "host": "dev15",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed5-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed5-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 5,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "temporal-forecast-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed5-epoch1-eval43",
+      "host": "dev15",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed5-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed5-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 5,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "temporal-forecast-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "health-temporal-forecast-seed5-epoch1",
+      "host": "dev15",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed5-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "temporal-forecast",
+      "training_seed": 5,
+      "depends_on": [
+        "temporal-forecast-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "quality-temporal-forecast-seed5-epoch1",
+      "host": "dev15",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed5-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "temporal-forecast",
+      "training_seed": 5,
+      "depends_on": [
+        "temporal-forecast-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-temporal-forecast-seed5-epoch1",
+      "host": "dev15",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed5-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed5-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed5-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "temporal-forecast",
+      "training_seed": 5,
+      "depends_on": [
+        "temporal-forecast-seed5-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed6-epoch1-eval42",
+      "host": "dev15",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed6-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed6-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 6,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "temporal-forecast-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed6-epoch1-eval43",
+      "host": "dev15",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed6-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed6-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 6,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "temporal-forecast-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "health-temporal-forecast-seed6-epoch1",
+      "host": "dev15",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed6-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "temporal-forecast",
+      "training_seed": 6,
+      "depends_on": [
+        "temporal-forecast-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "quality-temporal-forecast-seed6-epoch1",
+      "host": "dev15",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed6-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "temporal-forecast",
+      "training_seed": 6,
+      "depends_on": [
+        "temporal-forecast-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-temporal-forecast-seed6-epoch1",
+      "host": "dev15",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed6-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed6-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed6-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "temporal-forecast",
+      "training_seed": 6,
+      "depends_on": [
+        "temporal-forecast-seed6-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed7-epoch1-eval42",
+      "host": "dev15",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed7-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed7-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 7,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "temporal-forecast-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed7-epoch1-eval43",
+      "host": "dev15",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed7-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed7-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 7,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "temporal-forecast-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "health-temporal-forecast-seed7-epoch1",
+      "host": "dev15",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed7-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "temporal-forecast",
+      "training_seed": 7,
+      "depends_on": [
+        "temporal-forecast-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "quality-temporal-forecast-seed7-epoch1",
+      "host": "dev15",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed7-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "temporal-forecast",
+      "training_seed": 7,
+      "depends_on": [
+        "temporal-forecast-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-temporal-forecast-seed7-epoch1",
+      "host": "dev15",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed7-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed7-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed7-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "temporal-forecast",
+      "training_seed": 7,
+      "depends_on": [
+        "temporal-forecast-seed7-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed8-epoch1-eval42",
+      "host": "dev15",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed8-epoch1-eval42",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed8-epoch1-eval42",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 8,
+      "evaluation_seed": 42,
+      "depends_on": [
+        "temporal-forecast-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "planning-temporal-forecast-seed8-epoch1-eval43",
+      "host": "dev15",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed8-epoch1-eval43",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/planning-temporal-forecast-seed8-epoch1-eval43",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "43",
+        "--episodes",
+        "50"
+      ],
+      "phase": "planning",
+      "method": "temporal-forecast",
+      "training_seed": 8,
+      "evaluation_seed": 43,
+      "depends_on": [
+        "temporal-forecast-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "health-temporal-forecast-seed8-epoch1",
+      "host": "dev15",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.collapse_audit",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/health-temporal-forecast-seed8-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "32",
+        "--steps",
+        "20"
+      ],
+      "phase": "health",
+      "method": "temporal-forecast",
+      "training_seed": 8,
+      "depends_on": [
+        "temporal-forecast-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "quality-temporal-forecast-seed8-epoch1",
+      "host": "dev15",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.quality_complete",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/quality-temporal-forecast-seed8-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--i3d",
+        "/efs/prescottsun/SPT-JEPA/weights/i3d_torchscript.pt",
+        "--cases",
+        "64",
+        "--samples",
+        "1",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "quality",
+      "method": "temporal-forecast",
+      "training_seed": 8,
+      "depends_on": [
+        "temporal-forecast-seed8-epoch1"
+      ]
+    },
+    {
+      "id": "counterfactual-temporal-forecast-seed8-epoch1",
+      "host": "dev15",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed8-epoch1",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1",
+        "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/promising_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.counterfactual",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed8-epoch1/model-step0012491",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/counterfactual-temporal-forecast-seed8-epoch1",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+        "--pose",
+        "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+        "--cases",
+        "16",
+        "--steps",
+        "20",
+        "--selection-seed",
+        "20261029"
+      ],
+      "phase": "counterfactual",
+      "method": "temporal-forecast",
+      "training_seed": 8,
+      "depends_on": [
+        "temporal-forecast-seed8-epoch1"
+      ]
+    }
+  ]
+}

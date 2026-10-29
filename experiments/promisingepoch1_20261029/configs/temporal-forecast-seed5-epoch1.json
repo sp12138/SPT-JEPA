@@ -1,0 +1,33 @@
+{
+  "output": "/efs/prescottsun/SPT-JEPA/runs/promising_epoch1_20261029/temporal-forecast-seed5-epoch1",
+  "data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1",
+  "evaluation_data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+  "pose_weights": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+  "seed": 5,
+  "batch_size": 128,
+  "workers": 4,
+  "cpu_threads": 2,
+  "max_steps": 124910,
+  "max_seconds": 31536000,
+  "checkpoint_every": 2500,
+  "all_phase_data": true,
+  "stop_after": 12491,
+  "retain_steps": [
+    12491
+  ],
+  "model": {
+    "mode": "L2",
+    "beta": 0.25,
+    "sigma0": 0.1,
+    "window": 8,
+    "anchor_gap": 8,
+    "renderer_width": 384,
+    "renderer_depth": 12,
+    "renderer_heads": 6,
+    "rho": 0.8,
+    "forecast_fraction": 0.5,
+    "forecast_seed": 20761044
+  },
+  "record_initial_weights": false,
+  "robust_variant": true
+}

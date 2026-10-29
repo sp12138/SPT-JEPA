@@ -1,3 +1,9 @@
+# Reviewed short gates -> first epoch only
+
+Currentrecovery:RECOVERY_PROMISING_20261029.md. runs/promising_20261029has8selected/componentlongjobs;its16shortgatescompletedandpassedfullstate/gradient/healthaudit. runs/promising_epoch1_20261029nowowns16boundedfirstepochcontinuationsonfreedslots,andstops12491fortaskevaluation. Alloldparents/STOPmarkersimmutable. Twoseed2epochpositiveTemporalforecastresultispublished;moreseed/finalclaimsremainpending.
+
+---
+
 # Current: evidence-supported temporal-forecast replication
 
 Read [RECOVERY_PROMISING_20261029.md](RECOVERY_PROMISING_20261029.md), actualprotocol/plan/sourcehashes andhostGPUprocesses.24boundedtrainingjobs:4selected3epoch,4heldseed3/4first600innewoutputs,4monocomponent2epoch,12newseed5-8first600. Priorselectedstage52jobscomplete0.AlloldSTOP/heldplanspreserved.Temporalforecast2seedP088/90andfresh85.33/87.33vsoriginal73/43and73.33/36.67;strongtasklead,notfinalstable89%ornoveltyproof.
