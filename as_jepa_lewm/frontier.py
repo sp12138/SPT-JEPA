@@ -9,13 +9,13 @@ from vforge.models.as_jepa.pixels import pack
 
 METHODS = {"original", "clean-prior", "innovation-corrected", "antithetic-rate", "marginal-prior",
            "overshoot", "window-free-bits", "motion-weighted", "shared-flow-noise", "differential-flow",
-           "target-stop", "input-stop", "rate-stop", "render-stop", "action-ranking"}
+           "target-stop", "input-stop", "rate-stop", "render-stop", "action-ranking", "anchor-dropout", "anchor-context-mask"}
 
 
 class FrontierLeWM(ASJepaLeWM):
     def __init__(self, frontier_method="original", auxiliary_fraction=.5, free_nats=.5,
                  motion_strength=4., difference_weight=.25, private_seed=20261029,
-                 ranking_mode="one-step", ranking_weight=1e-4, **kwargs):
+                 ranking_mode="one-step", ranking_weight=1e-4, anchor_dropout_p=.25, **kwargs):
         super().__init__(**kwargs)
         if self.mode != "L2" or self.objective != "flow" or frontier_method not in METHODS:
             raise ValueError("Require a named L2 flow ablation")
@@ -29,6 +29,9 @@ class FrontierLeWM(ASJepaLeWM):
             raise ValueError("Invalid within-video ranking configuration")
         self.ranking_mode = ranking_mode
         self.ranking_weight = float(ranking_weight)
+        if not 0 <= anchor_dropout_p <= 1:
+            raise ValueError("Anchor dropout probability must be in[0,1]")
+        self.anchor_dropout_p = float(anchor_dropout_p)
         if not 0 <= self.auxiliary_fraction <= 1 or self.free_nats < 0:
             raise ValueError("Invalid fixed objective coefficient")
 
@@ -42,7 +45,7 @@ class FrontierLeWM(ASJepaLeWM):
         method = self.frontier_method
         if method == "original":
             return super().loss(batch, step, ramp_steps)
-        if method in {"target-stop", "input-stop", "rate-stop", "render-stop", "action-ranking"}:
+        if method in {"target-stop", "input-stop", "rate-stop", "render-stop", "action-ranking", "anchor-dropout", "anchor-context-mask"}:
             return self._routing_loss(batch, step, ramp_steps)
         pixels, frames, anchor = self.prepare(batch)
         info = self.encode(dict(pixels=pixels, action=batch["action"]))
@@ -155,7 +158,8 @@ class FrontierLeWM(ASJepaLeWM):
         if self.frontier_method == "render-stop":
             condition = condition.detach()
         y = pack(render[:, 1:].flatten(0, 1))
-        anchors = pack(anchor).repeat_interleave(w - 1, 0)
+        effective_anchor = self._training_anchor(render, anchor, step)
+        anchors = pack(effective_anchor).repeat_interleave(w - 1, 0)
         fm = flow_loss(self.renderer, y, condition, anchors, self.shift)
         rate = (entry + surprise.sum(1)).mean() / ((w - 1) * FRAME_ELEMS)
         beta = self.beta * min(1., step / max(1, ramp_steps)) if ramp_steps else self.beta
@@ -192,3 +196,18 @@ class FrontierLeWM(ASJepaLeWM):
                 errors.append(error / self.sigma0 ** 2)
         costs = torch.stack(errors, 1)
         return torch.nn.functional.cross_entropy(-costs, torch.zeros(len(mu), device=mu.device, dtype=torch.long)), costs
+
+    def _training_anchor(self, frames, anchor, step):
+        """Augment only each sample's past side information; inference is unchanged."""
+        if self.frontier_method == "anchor-dropout":
+            devices = [anchor.device.index] if anchor.is_cuda else []
+            with torch.random.fork_rng(devices=devices):
+                torch.manual_seed(self.private_seed + int(step))
+                drop = torch.rand(len(anchor), 1, 1, 1, device=anchor.device) < self.anchor_dropout_p
+            return torch.where(drop, torch.zeros_like(anchor), anchor)
+        if self.frontier_method == "anchor-context-mask":
+            # First observed frame and past anchor only; no future target constructs this mask.
+            changed = (frames[:, 0].float() - anchor.float()).abs().amax(1, keepdim=True) > .1
+            changed = torch.nn.functional.max_pool2d(changed.float(), 5, stride=1, padding=2) > 0
+            return torch.where(changed, torch.zeros_like(anchor), anchor)
+        return anchor
