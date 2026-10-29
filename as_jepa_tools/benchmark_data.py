@@ -37,7 +37,10 @@ class BenchmarkWindows(Dataset):
     def __getitem__(self,index):
         self.open();ep,start=self.locate(index);offset=int(self.offsets[ep]);n=int(self.lengths[ep]);w=self.window
         rows=offset+start+np.arange(w)*self.stride
-        raw=np.asarray(self.file["pixels"][rows])
+        # Read the small enclosing interval before selecting rows in NumPy.
+        # HDF5 fancy selection is expensive for the supplied 100-frame chunks.
+        # This preserves every selected byte, including the final valid window.
+        raw=np.asarray(self.file["pixels"][int(rows[0]):int(rows[-1])+1])[::self.stride]
         pixels=torch.from_numpy(raw.copy())
         if pixels.shape[-1] in (3,4):pixels=pixels[...,:3].permute(0,3,1,2)
         if pixels.shape[1]!=3:raise ValueError("Expected RGB pixels")

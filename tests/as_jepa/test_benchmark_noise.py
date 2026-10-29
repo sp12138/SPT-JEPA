@@ -31,6 +31,7 @@ class BenchmarkContracts(unittest.TestCase):
             x=ds[6];self.assertEqual(x["episode"],10);self.assertEqual(x["anchor_row"],6)
             torch.testing.assert_close(x["anchor224"],x["pixels"][0],atol=0,rtol=0)
             np.testing.assert_array_equal(x["rows"].numpy(),np.arange(6,42,5))
+            np.testing.assert_array_equal(x["pixels"][:,0,0,0].numpy(),np.arange(6,42,5,dtype=np.uint8))
             np.testing.assert_allclose(x["action"][0].numpy(),((actions[6:11]-[1,2])/[2,3]).reshape(-1),rtol=1e-6)
             self.assertEqual(BenchmarkWindows(p,split="test")[0]["episode"],20)
             ds.file.close()
