@@ -1,0 +1,68 @@
+{
+  "created_at_utc": "2026-10-29T10:08:03.116185+00:00",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029",
+  "reason": "Both selected directions show cross-diagnostic-seed generation/action signals at epoch1; all other directions deferred. Original epoch2 models have meaningful P073/43%, so stage2 is informative.",
+  "stage1_decision": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/reports/STAGE1-DECISION.json",
+  "candidate_runs": [
+    {
+      "id": "lower-beta-seed1-epoch2",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "host": "dev2",
+      "gpu": 0,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/lower-beta-seed1-epoch1",
+      "initial_step": 12491,
+      "stop_step": 24982,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/lower-beta-seed1-epoch2/config.json",
+      "config_sha256": "84098b66231884b874e34394f9621b89820f18244202e38b5ed4c81e1488fa54"
+    },
+    {
+      "id": "lower-beta-seed2-epoch2",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "host": "dev13",
+      "gpu": 0,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/lower-beta-seed2-epoch1",
+      "initial_step": 12491,
+      "stop_step": 24982,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/lower-beta-seed2-epoch2/config.json",
+      "config_sha256": "a794e0b74e1780be2f97fd9462328e76e2ee716304730b3a31e35807ae617417"
+    },
+    {
+      "id": "temporal-forecast-seed1-epoch2",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "host": "dev15",
+      "gpu": 0,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/temporal-forecast-seed1-epoch1",
+      "initial_step": 12491,
+      "stop_step": 24982,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/temporal-forecast-seed1-epoch2/config.json",
+      "config_sha256": "eb3b13ceb6e7e4e358aaad9a93cf2ff221c70beeefa37a6364c59a3a364c34e0"
+    },
+    {
+      "id": "temporal-forecast-seed2-epoch2",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "host": "dev2",
+      "gpu": 1,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/temporal-forecast-seed2-epoch1",
+      "initial_step": 12491,
+      "stop_step": 24982,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen2_20261029/temporal-forecast-seed2-epoch2/config.json",
+      "config_sha256": "bae87b767bac0ebfd1c66ba62d3247282f7f09e93f0c1d2811c6f79d3484fd61"
+    }
+  ],
+  "maximum_step": 24982,
+  "scheduler_total_steps": 124910,
+  "model_parameters": 51097134,
+  "batch_size": 128,
+  "sample_level_only": true,
+  "automatic_three_epoch_continuation": false,
+  "eval_seeds": [
+    42,
+    43
+  ],
+  "episodes_each": 50,
+  "next_decision": "Inspect paired P0 at24982 before any additional budget; preserve nonwinners and report inconclusive evidence honestly."
+}
