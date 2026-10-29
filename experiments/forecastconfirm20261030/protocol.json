@@ -1,0 +1,121 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/forecast_confirm_20261030",
+  "created_at_utc": "2026-10-29T18:00:02.321955+00:00",
+  "source_commit": "d18c3dce98082f5a773ab1f2e52fb2744c372ec3",
+  "runs": [
+    {
+      "id": "forecast-render-seed1-forecast-epoch3",
+      "host": "dev2",
+      "gpu": 0,
+      "phase": "forecast-epoch3",
+      "method": "forecast-render",
+      "training_seed": 1,
+      "initial_step": 24982,
+      "stop_step": 37473,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/forecast_confirm_20261030/forecast-render-seed1-forecast-epoch3/config.json",
+      "config_sha256": "332e79a2dabd5b9b8cb5e6c55133b8ce39c4612adccaa7c7547a792e0fc8db1d"
+    },
+    {
+      "id": "forecast-render-seed2-forecast-epoch3",
+      "host": "dev2",
+      "gpu": 1,
+      "phase": "forecast-epoch3",
+      "method": "forecast-render",
+      "training_seed": 2,
+      "initial_step": 24982,
+      "stop_step": 37473,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/forecast_confirm_20261030/forecast-render-seed2-forecast-epoch3/config.json",
+      "config_sha256": "c6cfdf6ea17afe1d761ceac3e777d8edc3a056a728db951d653ac94908b411b1"
+    },
+    {
+      "id": "forecast-render-seed3-existing-forecast-gate600",
+      "host": "dev2",
+      "gpu": 2,
+      "phase": "existing-forecast-gate600",
+      "method": "forecast-render",
+      "training_seed": 3,
+      "initial_step": 9717,
+      "stop_step": 10317,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/forecast_confirm_20261030/forecast-render-seed3-existing-forecast-gate600/config.json",
+      "config_sha256": "966bee3c54b763dbbe4d6c75f2f28950df721f1a69bbb8c2a1f0dead72f8d45c"
+    },
+    {
+      "id": "forecast-render-seed4-existing-forecast-gate600",
+      "host": "dev2",
+      "gpu": 3,
+      "phase": "existing-forecast-gate600",
+      "method": "forecast-render",
+      "training_seed": 4,
+      "initial_step": 9556,
+      "stop_step": 10156,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/forecast_confirm_20261030/forecast-render-seed4-existing-forecast-gate600/config.json",
+      "config_sha256": "1df205d0399918552b9295b1961694103b68c7a668d8f043987703307ca29cb1"
+    },
+    {
+      "id": "forecast-render-seed5-new-forecast-gate600",
+      "host": "dev13",
+      "gpu": 0,
+      "phase": "new-forecast-gate600",
+      "method": "forecast-render",
+      "training_seed": 5,
+      "initial_step": 0,
+      "stop_step": 600,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/forecast_confirm_20261030/forecast-render-seed5-new-forecast-gate600/config.json",
+      "config_sha256": "3a2af9b1c0b8c8bd72c1d99848bc06635de225dea30df60f66c9e0c6102abef6"
+    },
+    {
+      "id": "forecast-render-seed6-new-forecast-gate600",
+      "host": "dev13",
+      "gpu": 1,
+      "phase": "new-forecast-gate600",
+      "method": "forecast-render",
+      "training_seed": 6,
+      "initial_step": 0,
+      "stop_step": 600,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/forecast_confirm_20261030/forecast-render-seed6-new-forecast-gate600/config.json",
+      "config_sha256": "95280773f456cc87efa79d8e7aae2ad867aa47916caf62cb86660415338684ef"
+    },
+    {
+      "id": "forecast-render-seed7-new-forecast-gate600",
+      "host": "dev13",
+      "gpu": 2,
+      "phase": "new-forecast-gate600",
+      "method": "forecast-render",
+      "training_seed": 7,
+      "initial_step": 0,
+      "stop_step": 600,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/forecast_confirm_20261030/forecast-render-seed7-new-forecast-gate600/config.json",
+      "config_sha256": "87cbda61b5ca6f97e692a08950b219e87dc69a1d132865b6ec68a28dc5e9b6e5"
+    },
+    {
+      "id": "forecast-render-seed8-new-forecast-gate600",
+      "host": "dev13",
+      "gpu": 3,
+      "phase": "new-forecast-gate600",
+      "method": "forecast-render",
+      "training_seed": 8,
+      "initial_step": 0,
+      "stop_step": 600,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/forecast_confirm_20261030/forecast-render-seed8-new-forecast-gate600/config.json",
+      "config_sha256": "a0f9a926e83d07e7b44da0a5e29084f252b222270ac84191e4ac15dd145121c9"
+    }
+  ],
+  "basis": "Combined3epochP094/94additional93.33/91.33;forecastonly2epoch90/90matchescombinedwithinuncertainty. Testasimplerpathandnewcases.",
+  "model_parameters": 51097134,
+  "state_dimension": 64,
+  "batch_size": 128,
+  "scheduler_total_steps": 124910,
+  "scope": "18fixedweightplanningchecksonnewseeds2042/2043/2044;2forecastonlythird-epochcontinuations;6forecastonly600updategates(existingseeds3/4,newseeds5-8).Allothersremainintheirexistingcappedcampaigns.",
+  "controls": [
+    "FixedfirstresultandretunedAS-JEPAplanningweights;sameP0budget,caseidentities,precision.",
+    "OldSTOPmarkerspreserved,fulloptimizer/scheduler/RNG/cursorresumes.",
+    "Newseedinitialtensorsmustmatchoriginal/lower/combinedfrompromisinggate600."
+  ],
+  "limitations": [
+    "2initialtrainingseedsnotbroadstability.",
+    "Newcasequeryoverlapmustbecountedandexcludedinasecondaryanalysis.",
+    "Sameparameters/updatesnotFLOPs;forecastingaddscompute.",
+    "Noacademicnoveltyclaim."
+  ],
+  "automatic_long_continuation": false
+}

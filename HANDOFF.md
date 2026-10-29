@@ -1,3 +1,9 @@
+# Forecast-path simplification and expanded replication active
+
+Read RECOVERY_PROMISING_20261029.md and EFS plans. Parentpromising112endpoints complete0;3epochcombination94/94and93.33/91.33additionalpublished(386e470). Forecast-only2epoch90/90matchescombinationwithinuncertainty. forecast_confirm_20261030takes8freedslotswithnewcasechecks+2forecast3epoch+6forecast600gates. Newseed5-8firstepochandseed3/4second-epochremainindependentactivecampaigns. Noautomaticoldgridresume,nofinalbroadstability/noveltyclaim.
+
+---
+
 # Reviewed short gates -> first epoch only
 
 Currentrecovery:RECOVERY_PROMISING_20261029.md. runs/promising_20261029has8selected/componentlongjobs;its16shortgatescompletedandpassedfullstate/gradient/healthaudit. runs/promising_epoch1_20261029nowowns16boundedfirstepochcontinuationsonfreedslots,andstops12491fortaskevaluation. Alloldparents/STOPmarkersimmutable. Twoseed2epochpositiveTemporalforecastresultispublished;moreseed/finalclaimsremainpending.
