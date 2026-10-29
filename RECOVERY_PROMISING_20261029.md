@@ -1,3 +1,13 @@
+# Latest: forecast-only six-seed first-epoch confirmation
+
+The authoritative root is `/efs/prescottsun/SPT-JEPA/runs/forecast_firstepoch_20261030`; read its committed plan/config hashes and actual workers. Six short gates passed full-state audit. Resume seeds 3/4 on dev2 GPUs 2/3 and fresh seeds 5–8 on dev13 GPUs 0–3 only to update 12,491, followed by twelve P0 and eighteen health/generation/counterfactual endpoints (36 jobs total). No automatic second epoch.
+
+Frozen training/dispatcher source remains `runs/promising_20261029/source-v1`, commit d18c3dce98082f5a773ab1f2e52fb2744c372ec3. The full Lightning optimizer/scheduler/RNG/data cursor resumes from the completed short gates. Do not rerun preparation or alter any parent STOP markers. Parent `forecast_confirm_20261030` still owns the two forecast-only third-epoch runs on dev2 GPUs 0/1. Seed 3/4 second-epoch and fresh seed 5–8 second-epoch campaigns retain their separate 16 slots.
+
+Published new-case confirmation: `experiments/forecastconfirm20261030/newcase-results/DECISION.md`. Combination P0 is 91.33%/94.00% on new paired queries; this is still two mature training seeds from the same held-out episode pool, not OOD evidence. Forecast-only two-epoch component P0 is 90%/90%; its simpler mechanism remains under confirmation.
+
+---
+
 # Current evidence-supported replication
 
 Root:/efs/prescottsun/SPT-JEPA/runs/promising_20261029. Read protocol/plan/frozenmanifest then actual hostGPUprocesses.24independentjobs:4selectedthird-epochruns,4existingseed3/4first600resumes,4monocomponentsecond-epochcontrols,12newseed5-8original/lower/combinedfirst600fromscratch. Everytrialhasahardstop;noautomaticfullgrid. PreservedoldSTOP/heldplansmustnotberesumed. ExistingLightningTrainer/checkpointcodeownstate;immutablecommittedsources/configs.

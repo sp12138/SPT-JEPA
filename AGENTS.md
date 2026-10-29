@@ -1,5 +1,7 @@
 # SPT-JEPA current execution policy
 
+Reviewed six forecast-only short gates: full-state/gradient/posterior checks pass and fresh initial tensors match original controls. `forecast_firstepoch_20261030` resumes only these six runs to update 12,491, then stops for P0/health/generation/CF review; no automatic second epoch. It uses dev2 GPUs 2/3 and dev13 GPUs 0–3. Preserve the parent's two live third-epoch forecast runs and the other 16 replication slots. New-case third-epoch results are published; two mature training seeds do not establish broad stability or academic novelty.
+
 Reviewednewseed5-8firstepoch:96jobscomplete0,all16fullstateauditspass;planningstillimmature,combinedagentgenerationbetterall4. promising_newseed_epoch2_20261030advancesall12original/lower/combinedrunsonlyto24982,withsamecasesandallseedspreserved. Other4seed34and8forecastconfirmationslotsremainseparate. Noautomatic3epochforthesenewseeds.
 
 Current8freedslots:forecast_confirm_20261030checksnewP0seeds2042/2043/2044,2forecast-only3epochrunsand6forecast-only600gatesbasedoncompleted2epochtaskgain90/90. Parentpromising112jobscompleteandheld. Otheractive12newseedfirstepochand4seed34second-epochslotsremainseparate.NoextraI03longrunsorfailedfrontiercontinuations.

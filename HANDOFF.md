@@ -1,3 +1,9 @@
+# Latest: forecast-only short-gate confirmation
+
+Read `RECOVERY_PROMISING_20261029.md` and actual EFS plans/workers. Six forecast-only short gates passed full-state audit; `forecast_firstepoch_20261030` resumes these six only to update 12,491 and then evaluates. The parent's two third-epoch forecast jobs and the 16 other replication slots remain separate. Do not restart old held grids or infer mature stability from short health checks.
+
+---
+
 # Forecast-path simplification and expanded replication active
 
 Read RECOVERY_PROMISING_20261029.md and EFS plans. Parentpromising112endpoints complete0;3epochcombination94/94and93.33/91.33additionalpublished(386e470). Forecast-only2epoch90/90matchescombinationwithinuncertainty. forecast_confirm_20261030takes8freedslotswithnewcasechecks+2forecast3epoch+6forecast600gates. Newseed5-8firstepochandseed3/4second-epochremainindependentactivecampaigns. Noautomaticoldgridresume,nofinalbroadstability/noveltyclaim.
