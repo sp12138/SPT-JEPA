@@ -1,3 +1,9 @@
+# Current redirect — harder tasks, 2026-10-30
+
+The user authorized stopping nonessential experiments and moving temporal-forecast to harder tasks, prioritizing performance, self-contained simplicity, substantive novelty and understanding. Further PushT expansion is held. Forecast-only seeds5–8 firstepoch were gracefully stopped with full checkpoints. Retain only the already near-complete two forecast-only third-epoch and twelve paired newseed second-epoch jobs through their existing caps/evaluations; no further PushT training. Completed seed3/4 secondepoch is held. Prepare Cube and TwoRoom under experiments/hardtasks20261030, keeping original snapshots/STOPs and shared assets untouched. Short health gates remain; evidence-supported long runs are authorized. Keep API-token usage low and poll long jobs at30–60minute intervals when no independent work remains.
+
+---
+
 # Latest: forecast-only short-gate confirmation
 
 Read `RECOVERY_PROMISING_20261029.md` and actual EFS plans/workers. Six forecast-only short gates passed full-state audit; `forecast_firstepoch_20261030` resumes these six only to update 12,491 and then evaluates. The parent's two third-epoch forecast jobs and the 16 other replication slots remain separate. Do not restart old held grids or infer mature stability from short health checks.

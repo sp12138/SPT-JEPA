@@ -1,3 +1,9 @@
+# Current redirect — harder tasks, 2026-10-30
+
+The user authorized stopping nonessential experiments and moving temporal-forecast to harder tasks, prioritizing performance, self-contained simplicity, substantive novelty and understanding. Further PushT expansion is held. Forecast-only seeds5–8 firstepoch were gracefully stopped with full checkpoints. Retain only the already near-complete two forecast-only third-epoch and twelve paired newseed second-epoch jobs through their existing caps/evaluations; no further PushT training. Completed seed3/4 secondepoch is held. Prepare Cube and TwoRoom under experiments/hardtasks20261030, keeping original snapshots/STOPs and shared assets untouched. Short health gates remain; evidence-supported long runs are authorized. Keep API-token usage low and poll long jobs at30–60minute intervals when no independent work remains.
+
+---
+
 # Latest: forecast-only six-seed first-epoch confirmation
 
 The authoritative root is `/efs/prescottsun/SPT-JEPA/runs/forecast_firstepoch_20261030`; read its committed plan/config hashes and actual workers. Six short gates passed full-state audit. Resume seeds 3/4 on dev2 GPUs 2/3 and fresh seeds 5–8 on dev13 GPUs 0–3 only to update 12,491, followed by twelve P0 and eighteen health/generation/counterfactual endpoints (36 jobs total). No automatic second epoch.
