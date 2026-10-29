@@ -1,3 +1,9 @@
+# Current: bounded four-seed gradient routing
+
+Read [RECOVERY_ROUTING_20261029.md](RECOVERY_ROUTING_20261029.md) and actual EFS plan/worker processes. Previous frontier120endpoints completed0; none earned longer training. Twenty new routing trials keep the original forward loss and51.1Mparameters; stop600extra updates. Four separately selected shortscreen2 continuations keep their independent budgets.
+
+---
+
 # Active24GPUstaged sample-level research
 
 See [current recovery](RECOVERY_FRONTIER_20261029.md). Prior short-screen results are complete; old broad grids remain held. New20adaptation trials stop after600updates, alongside4selected bounded second-stage runs.

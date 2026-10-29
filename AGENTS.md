@@ -1,5 +1,7 @@
 # SPT-JEPA current execution policy
 
+Current evidence-driven stage: frontier_20261029 completed all120endpoints with no consistent two-seed planning winner and remains held. New routing_20261029 uses5forward-identical gradient settings (original,3targeted candidates,1grounding negative control)x4existing training seeds. All20adaptations stop after600updates before review. Preserve the separate4selected shortscreen2 jobs. No blanket continuation or from-scratch stability claim.
+
 Latest user instruction: use all24H200s on dev2/dev13/dev15 productively for strong sample-level algorithms. Preserve short gates. Current frontier protocol runs/frontier_20261029/protocol.json schedules20same-size600update adaptations plus4evidence-selected bounded stage2runs; no automatic long candidate grid. Publish useful new conclusions promptly.
 
 Latest clarification: future method trials first save and inspect an approximately600update(about10minute) health stage, including numerical/gradient/state-use checks. A finite200step smoke is not a functional noncollapse result; do not skip directly to long grids. Early not-yet-learned behavior is inconclusive unless persistent failure is independently verified.

@@ -1,12 +1,14 @@
 # SPT-JEPA
 
-当前在 dev2、dev13、dev15 上执行 [sample-level 方法短测](experiments/frontier20261029/README.md)：20 个同规模、600 更新的配对适应试验，加上上轮证据选出的 4 个有上限的第二阶段训练。新方法先检查短线结果，不自动续跑长网格。权威状态与恢复入口见 [RECOVERY_FRONTIER_20261029.md](RECOVERY_FRONTIER_20261029.md)。
+当前执行 [sample-level 梯度路由短测](experiments/routing20261029/README.md)：5 个设置（含原算法和负面对照）×4 个已有训练种子，各适应 600 更新；另有 4 个先前选出的第二阶段训练。新候选不自动续跑。权威状态与恢复入口见 [RECOVERY_ROUTING_20261029.md](RECOVERY_ROUTING_20261029.md)。
 
 [五训练种子复现](experiments/stability20261029/results/FULL-DATA-STABILITY.md)已完成：新增四种子 P0 为 84.00±6.28%，最差 74.67%；新评测为 83.67±6.50%。历史单种子的 89.33% 尚未稳定复现，五模型均未坍塌。
 
 [第一 epoch 筛选的完整数值、关键图和继续依据](experiments/shortscreen20261029/results/SHORT-SCREEN.md)已发布：尚无明确规划胜者；仅 lower-beta 与 temporal-forecast 获得两诊断种子的第二阶段预算，到第二 epoch 停止。旧 16 运行长矩阵保持暂停。
 
 [主要历史结论](experiments/completion20261028/results/MAIN-CONCLUSIONS.md)、[12 小时探索](experiments/insights12h/results/INSIGHTS.md)与 [活跃维度反例](experiments/shortscreen20261029/ACTIVE-DIMENSION-COUNTEREXAMPLE.md)保留完整证据；暂停或延后任务未记为完成。所有数据、环境、日志、检查点和运行恢复文件位于 /efs/prescottsun/SPT-JEPA，本地仅保留小型 Git 代码与结果图表。
+
+[第一批 600 更新目标函数筛选](experiments/frontier20261029/results/FRONTIER-SHORT.md)已完成全部 120 项端点；没有同时改善两个种子的规划赢家。共享 flow 噪声改善物块运动预测但 P0 点估计各降 5 个百分点，生成指标不能替代规划。见[继续决定](experiments/frontier20261029/results/DECISION.md)。
 
 以下为继承的 SPT 基线文档；历史机器、路径与活动状态不覆盖当前政策。
 

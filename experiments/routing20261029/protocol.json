@@ -1,0 +1,219 @@
+{
+  "created_at_utc": "2026-10-29T10:52:41.078517+00:00",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029",
+  "model_parameters": 51097134,
+  "state_dimension": 64,
+  "batch_size": 128,
+  "beta": 0.25,
+  "sigma0": 0.1,
+  "initial_step": 24982,
+  "first_stop_step": 25582,
+  "additional_training_updates": 600,
+  "scheduler_total_steps": 124910,
+  "training_seeds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "methods": {
+    "original": "Exact original full gradient; repeat seeds1/2 quantifies numerical trajectory variation against the previous screen.",
+    "target-stop": "Detach only future means in transition rate; past encoder is trained to predict the current online target.",
+    "input-stop": "Detach only noisy past states in transition rate; future encoder is trained to follow the prior.",
+    "rate-stop": "Detach both transition inputs and targets; prior fits RGB-grounded codes while encoder keeps FM and entry gradients.",
+    "render-stop": "Negative control: detach renderer conditions; remove RGB grounding gradients from the encoder while preserving its rate gradients."
+  },
+  "runs": [
+    {
+      "id": "original-seed1-adapt600",
+      "host": "dev13",
+      "gpu": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/original-seed1-adapt600/config.json",
+      "config_sha256": "c614da0dbe1f8d2c460c0ef1a8613aa81ddf285f51805882449c02476315a4a8",
+      "method": "original",
+      "training_seed": 1
+    },
+    {
+      "id": "original-seed2-adapt600",
+      "host": "dev15",
+      "gpu": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/original-seed2-adapt600/config.json",
+      "config_sha256": "714d9e34812426a2594e26127cefd8197d82c0c34b3f2fb067421ed49b0e658e",
+      "method": "original",
+      "training_seed": 2
+    },
+    {
+      "id": "original-seed3-adapt600",
+      "host": "dev2",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/original-seed3-adapt600/config.json",
+      "config_sha256": "021454672522513feda294b49421aa59214c2500c8776627162ee874a3cb63dd",
+      "method": "original",
+      "training_seed": 3
+    },
+    {
+      "id": "original-seed4-adapt600",
+      "host": "dev13",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/original-seed4-adapt600/config.json",
+      "config_sha256": "f324cfd2c9502a61ba589ac9cd20e3110c4286498e25ddd0525e67f01729e0fa",
+      "method": "original",
+      "training_seed": 4
+    },
+    {
+      "id": "target-stop-seed1-adapt600",
+      "host": "dev15",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/target-stop-seed1-adapt600/config.json",
+      "config_sha256": "5191d24c9e6bc1fae90799af5a03db3de2fba379907380da854c47da072306e9",
+      "method": "target-stop",
+      "training_seed": 1
+    },
+    {
+      "id": "target-stop-seed2-adapt600",
+      "host": "dev2",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/target-stop-seed2-adapt600/config.json",
+      "config_sha256": "0b32e738935caaf401adc5310fe59082dcff98aaeee7e1b8a105e843ad04dc73",
+      "method": "target-stop",
+      "training_seed": 2
+    },
+    {
+      "id": "target-stop-seed3-adapt600",
+      "host": "dev13",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/target-stop-seed3-adapt600/config.json",
+      "config_sha256": "6b9d1470be48b7ef951f1ecec64cd7d302e5465aa86c484060391a6e3bf137c5",
+      "method": "target-stop",
+      "training_seed": 3
+    },
+    {
+      "id": "target-stop-seed4-adapt600",
+      "host": "dev15",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/target-stop-seed4-adapt600/config.json",
+      "config_sha256": "1abf872979dca6b10ac85f667f95ca960a9bb53266c8b7d3cbb8a8dc0c37d699",
+      "method": "target-stop",
+      "training_seed": 4
+    },
+    {
+      "id": "input-stop-seed1-adapt600",
+      "host": "dev2",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/input-stop-seed1-adapt600/config.json",
+      "config_sha256": "7c985da994340cb46737ee2492072e3a739be3b498e19a938f46ba920e7b22c7",
+      "method": "input-stop",
+      "training_seed": 1
+    },
+    {
+      "id": "input-stop-seed2-adapt600",
+      "host": "dev13",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/input-stop-seed2-adapt600/config.json",
+      "config_sha256": "98ad937f3ae655a86dcd4ef7edbcd41485ead002be684b18cb0ce5a20a99ed46",
+      "method": "input-stop",
+      "training_seed": 2
+    },
+    {
+      "id": "input-stop-seed3-adapt600",
+      "host": "dev15",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/input-stop-seed3-adapt600/config.json",
+      "config_sha256": "e54395459826a79fa3df34eda3982e6d2b3956d34a2088c0181107941ec9a372",
+      "method": "input-stop",
+      "training_seed": 3
+    },
+    {
+      "id": "input-stop-seed4-adapt600",
+      "host": "dev2",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/input-stop-seed4-adapt600/config.json",
+      "config_sha256": "2594aa4d3039d024a053612bc3035e2acb72591a259daf33c159fb7efcfeabf8",
+      "method": "input-stop",
+      "training_seed": 4
+    },
+    {
+      "id": "rate-stop-seed1-adapt600",
+      "host": "dev13",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/rate-stop-seed1-adapt600/config.json",
+      "config_sha256": "8aafca61f2ab4ade40590f860d740b1ac03fd46d5895e0852b00fbd353e09944",
+      "method": "rate-stop",
+      "training_seed": 1
+    },
+    {
+      "id": "rate-stop-seed2-adapt600",
+      "host": "dev15",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/rate-stop-seed2-adapt600/config.json",
+      "config_sha256": "53bcb8fa26044e4fe3f760456e4e7e7f044f71b2d6082b268c24f8739428f0b6",
+      "method": "rate-stop",
+      "training_seed": 2
+    },
+    {
+      "id": "rate-stop-seed3-adapt600",
+      "host": "dev2",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/rate-stop-seed3-adapt600/config.json",
+      "config_sha256": "3a6bcd20ca3e02a74e3b78140b1a219b918a981ad7324aace9216471faddd829",
+      "method": "rate-stop",
+      "training_seed": 3
+    },
+    {
+      "id": "rate-stop-seed4-adapt600",
+      "host": "dev13",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/rate-stop-seed4-adapt600/config.json",
+      "config_sha256": "545ca97c9821609bad69a2ac536d0e3aa9296dc0c31c57394a189edddd53df2d",
+      "method": "rate-stop",
+      "training_seed": 4
+    },
+    {
+      "id": "render-stop-seed1-adapt600",
+      "host": "dev15",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/render-stop-seed1-adapt600/config.json",
+      "config_sha256": "ee7fd773aab59985f46092536e08e14473ef7e8715e04f40d30b2f2f29436477",
+      "method": "render-stop",
+      "training_seed": 1
+    },
+    {
+      "id": "render-stop-seed2-adapt600",
+      "host": "dev2",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/render-stop-seed2-adapt600/config.json",
+      "config_sha256": "e6f3d7cc7e20685eb2fdb804448920578b8429f80533d79fcf025572f43603b3",
+      "method": "render-stop",
+      "training_seed": 2
+    },
+    {
+      "id": "render-stop-seed3-adapt600",
+      "host": "dev13",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/render-stop-seed3-adapt600/config.json",
+      "config_sha256": "0fb6cf3336f08cbc96da2492a0514135290a1d092ed824dcfc03fdb90e15c7c8",
+      "method": "render-stop",
+      "training_seed": 3
+    },
+    {
+      "id": "render-stop-seed4-adapt600",
+      "host": "dev15",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/routing_20261029/render-stop-seed4-adapt600/config.json",
+      "config_sha256": "45b5b043df33cdfd53fcea1e7515f93006030e0f843be1b8e7446867a3ed438c",
+      "method": "render-stop",
+      "training_seed": 4
+    }
+  ],
+  "basis": "First frontier screen completed120exits0 with no consistent paired planning improvement; distinguish encoder/prior coupling using forward-identical controls.",
+  "scope": "Existing mature models, short adaptation only. All candidates remain sample-level, no cross-sample statistics, EMA or additional parameters. stop-gradient update rules are not the original full-gradient KL objective.",
+  "gate": "Stop all20training at600extra updates; review finite weights, posterior/interventions, paired P0 before any continuation. render-stop is a negative control, not a promoted method.",
+  "references": [
+    {
+      "title": "SimSiam: stop-gradient without a momentum encoder",
+      "url": "https://arxiv.org/abs/2011.10566",
+      "scope": "Known optimization principle, not claimed invented or proven suitable for this model."
+    }
+  ],
+  "automatic_long_continuation": false
+}
