@@ -1,0 +1,97 @@
+{
+  "all4pass": true,
+  "seconds": 8.85531735420227,
+  "rows": [
+    {
+      "id": "lower-beta-seed1-epoch2",
+      "weights_and_optimizer_finite": true,
+      "full_and_portable_weights_identical": true,
+      "parameters": 51097134,
+      "global_step": 24982,
+      "samples_consumed": 3197696,
+      "batch_size": 128,
+      "learning_rate_horizon": 124910,
+      "model_config": {
+        "mode": "L2",
+        "beta": 0.0625,
+        "sigma0": 0.1,
+        "window": 8,
+        "anchor_gap": 8,
+        "renderer_width": 384,
+        "renderer_depth": 12,
+        "renderer_heads": 6
+      },
+      "sample_level_objective": true
+    },
+    {
+      "id": "lower-beta-seed2-epoch2",
+      "weights_and_optimizer_finite": true,
+      "full_and_portable_weights_identical": true,
+      "parameters": 51097134,
+      "global_step": 24982,
+      "samples_consumed": 3197696,
+      "batch_size": 128,
+      "learning_rate_horizon": 124910,
+      "model_config": {
+        "mode": "L2",
+        "beta": 0.0625,
+        "sigma0": 0.1,
+        "window": 8,
+        "anchor_gap": 8,
+        "renderer_width": 384,
+        "renderer_depth": 12,
+        "renderer_heads": 6
+      },
+      "sample_level_objective": true
+    },
+    {
+      "id": "temporal-forecast-seed1-epoch2",
+      "weights_and_optimizer_finite": true,
+      "full_and_portable_weights_identical": true,
+      "parameters": 51097134,
+      "global_step": 24982,
+      "samples_consumed": 3197696,
+      "batch_size": 128,
+      "learning_rate_horizon": 124910,
+      "model_config": {
+        "mode": "L2",
+        "beta": 0.25,
+        "sigma0": 0.1,
+        "window": 8,
+        "anchor_gap": 8,
+        "renderer_width": 384,
+        "renderer_depth": 12,
+        "renderer_heads": 6,
+        "rho": 0.8,
+        "forecast_fraction": 0.5,
+        "forecast_seed": 20361032
+      },
+      "sample_level_objective": true
+    },
+    {
+      "id": "temporal-forecast-seed2-epoch2",
+      "weights_and_optimizer_finite": true,
+      "full_and_portable_weights_identical": true,
+      "parameters": 51097134,
+      "global_step": 24982,
+      "samples_consumed": 3197696,
+      "batch_size": 128,
+      "learning_rate_horizon": 124910,
+      "model_config": {
+        "mode": "L2",
+        "beta": 0.25,
+        "sigma0": 0.1,
+        "window": 8,
+        "anchor_gap": 8,
+        "renderer_width": 384,
+        "renderer_depth": 12,
+        "renderer_heads": 6,
+        "rho": 0.8,
+        "forecast_fraction": 0.5,
+        "forecast_seed": 20461035
+      },
+      "sample_level_objective": true
+    }
+  ],
+  "scope": "Samefulltrainingcohort,steps,batch,LRhorizon,modelsize; intendedbeta/rho/forecastchangesexplicit. Twoexistingdiagnosticseeds,notgeneralstability."
+}

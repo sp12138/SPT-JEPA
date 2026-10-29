@@ -1,0 +1,7 @@
+# Current evidence-supported replication
+
+Root:/efs/prescottsun/SPT-JEPA/runs/promising_20261029. Read protocol/plan/frozenmanifest then actual hostGPUprocesses.24independentjobs:4selectedthird-epochruns,4existingseed3/4first600resumes,4monocomponentsecond-epochcontrols,12newseed5-8original/lower/combinedfirst600fromscratch. Everytrialhasahardstop;noautomaticfullgrid. PreservedoldSTOP/heldplansmustnotberesumed. ExistingLightningTrainer/checkpointcodeownstate;immutablecommittedsources/configs.
+
+Allmodelparameters51,097,134,state64,batch128,allfulldata,LRhorizon124910. Intentionalbeta/rho/forecastchangesexplicit. NoBN/SIGReg/crosssamplenegatives/EMA/addedparametersinL2loss. Forecastingiscausalbutaddscompute. Priorobjective/routing/actionranking/anchorgridscompletedanddidnotconfirmstablesuperiority;donotpromotetheirselectedwins.
+
+Twoepochleadcomplete:temporalforecast88/90primaryand85.33/87.33freshvsoriginal73/43and73.33/36.67. Lowerbeta87/85and81.33/76. Thisistwo-seedsamebudgetevidence,notstable89%orthreeepochfinalclaim. Results:experiments/shortscreen2_20261029/results. Userauthorizationpermitsstagedconfirmationandproductive24GPUuse;do_notaskagain. AllauthoritativestateunderEFS;smallGitartifactsonlylocal.

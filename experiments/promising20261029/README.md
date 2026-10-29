@@ -1,0 +1,5 @@
+# Confirm the two-epoch planning result
+
+Temporal-forecastseed1/2P0=88/90%versusoriginalbeta.25=73/43%;freshcases85.33/87.33versus73.33/36.67. Lowerbeta.0625istheretuningcontrol. Same51.1Mparameters,batch128,24982updates,124910LRhorizon. Allobjectives sample-level.
+
+Followupuses24independentGPUslots:4selected3epochcontinuations,4previouslyheldseed3/4resumesonly600steps,4monocomponent2epochcontrols,12newseed5-8original/lower/combinedfirst600steps. Allcapshardstopandrequireevidencereview. NeverclearoldSTOPmarkersorresumeoldgrids. Extra forecastingcomputereportedseparately;academicnoveltyandstable89%notyetproven.
