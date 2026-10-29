@@ -1,5 +1,7 @@
 # SPT-JEPA
 
+当前按用户纠正执行[1epoch短线筛选](experiments/shortscreen20261029/README.md)：旧16运行已保存后暂停，只补两个诊断种子到同预算checkpoint，先看规划/生成/动作证据，再决定是否续跑。恢复见[当前入口](RECOVERY_SHORTSCREEN_20261029.md)。以下原长矩阵叙述是历史状态。
+
 最新：[全数据beta=.25的五训练种子复现](experiments/stability20261029/results/FULL-DATA-STABILITY.md)已完成。新增四种子P0为84.00±6.28%，最差74.67%；新评测83.67±6.50%。89.33%是历史单种子结果，尚未稳定复现。全部五种子都未坍塌。正在验证[同规模改进对照](experiments/robustness20261029/README.md)，恢复见[当前入口](RECOVERY_ROBUSTNESS_20261029.md)。
 
 以下记录保留历史结果，当前状态以上述为准。
