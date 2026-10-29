@@ -35,8 +35,8 @@ def main():
             state_dict_elements_including_fixed_buffers=count,global_step=state["global_step"],samples_consumed=state["campaign_samples"],
             full_and_portable_tensors_equal=True,optimizer_tensors_finite=True,optimizer_tensor_elements=opt))
         del state,weights
-    result=dict(all20_passed=len(rows)==20,seconds=time.time()-started,rows=rows,
+    result=dict(all20_passed=len(rows)==20,all_expected_passed=len(rows)==sum(j["phase"]=="adaptation600" for j in plan["jobs"]),checked_training_runs=len(rows),seconds=time.time()-started,rows=rows,
         scope="Exact update and sample cursor; finite model/optimizer/scheduler tensors; full and portable model tensors exactly equal; RNG exists. Fixed state buffers are distinct from model parameters.")
-    assert result["all20_passed"];out=Path(a.output);assert not out.exists();out.write_text(json.dumps(result,indent=2)+"\n")
+    assert result["all_expected_passed"];out=Path(a.output);assert not out.exists();out.write_text(json.dumps(result,indent=2)+"\n")
     print(json.dumps({k:v for k,v in result.items() if k!="rows"}))
 if __name__=="__main__":main()
