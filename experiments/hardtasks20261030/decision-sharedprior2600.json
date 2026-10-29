@@ -1,0 +1,9 @@
+{
+  "approved_stop_step": 2600,
+  "initial_step": 2000,
+  "training_runs": 4,
+  "reused_controls": 4,
+  "reason": "The clean-anchor factorial yields no clear task improvement. In TwoRoom, action-sensitive denoising can coexist with state-insensitive encoding and poor control. In code, teacher-forced rate and free-running forecast rendering constrain different trajectories. Test a single structural replacement: use the same causal forecast for both terms, with original beta/rho/noise/forecast fraction and architecture. Reuse four already completed exact same-state ordinary controls after default-path loss/gradient/RNG equivalence checks.",
+  "novelty": "Related to known latent overshooting and multi-step latent consistency. Sharing the generative and rate prior is a testable objective change, not proof of an academically new algorithm.",
+  "scope": "Four600-update adaptations, full state/gradient/state-use checks and50 strict validation cases, then stop. No automatic long run."
+}
