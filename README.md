@@ -1,6 +1,8 @@
 # SPT-JEPA
 
-当前执行 [sample-level 动作排序短测](experiments/actionrank20261029/README.md)：原算法加 4 个 prior-energy 排序设置 ×4 个已有训练种子，各适应 600 更新；另有 4 个先前选出的第二阶段训练。权威状态与恢复入口见 [RECOVERY_ACTIONRANK_20261029.md](RECOVERY_ACTIONRANK_20261029.md)。新候选先看短线结果，不自动续跑。
+当前执行 [sample-level 旧图像侧信息短测](experiments/anchor20261029/README.md)：原算法加 4 个 anchor 增强设置 ×4 个已有训练种子，各适应 600 更新；另有 4 个先前选出的第二阶段训练。恢复入口见 [RECOVERY_ANCHOR_20261029.md](RECOVERY_ANCHOR_20261029.md)。先看短线任务结果，不自动续跑。
+
+[四种子动作排序](experiments/actionrank20261029/results/ACTIONRANK-SHORT.md)已完成全部 120 项端点，未发现跨种子稳定规划收益，已停止。
 
 [四种子梯度路由的完整结果](experiments/routing20261029/results/ROUTING-SHORT.md)已完成：未确认稳定规划胜者；移除 renderer 对编码器的梯度使四种子 P0 降到 2–5%，同时仍通过粗略后验坍塌判据。见[机制证据与停止决定](experiments/routing20261029/results/DECISION.md)。
 

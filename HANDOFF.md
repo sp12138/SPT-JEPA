@@ -1,3 +1,9 @@
+# Current: bounded past-anchor information test
+
+Read [RECOVERY_ANCHOR_20261029.md](RECOVERY_ANCHOR_20261029.md), EFS plan/source manifest and actual workers. Twenty paired600updateadaptations test own-past-anchor dropout/masking, same51.1Mparameters and original FM/rate gradients. Prior objective/routing/actionranking shortgrids completedallendpoints0 and remainheld. Four separate shortscreen2runs retain their selected budgets.
+
+---
+
 # Current: bounded sample-level action ranking
 
 Read [RECOVERY_ACTIONRANK_20261029.md](RECOVERY_ACTIONRANK_20261029.md), EFS plan/source hashes and actual workers. Twenty matched600updateadaptations use prior energy with within-video action alternatives; no auxiliary head or extra parameters. Four selectedshortscreen2continuations remain separate. Both earlier120endpoint screens are complete/held; renderer grounding-gradient negative control strongly worsens control acrossfour seeds but passes coarsecollapsegate.

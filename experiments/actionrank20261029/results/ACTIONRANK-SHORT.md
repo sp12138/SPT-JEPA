@@ -32,3 +32,9 @@
 [完整逐例结果、配对episodebootstrap、检查点身份与成本](actionrank-short-results.json)、[生成逐例数值](actionrank-short-per-case.npz)。
 
 所有新运行均已停在600更新上限。根据两种子的规划/生成/动作结果及成本作继续决定，不自动延长整组。
+
+## 配对效果与继续决定
+
+![Paired effects](actionrank-short-paired-effects.png)
+
+[完整四种子继续决定](DECISION.md)。本组没有跨种子稳定规划收益；强终点排序在四种子均下降。全部适应已停在600更新，不自动延长。

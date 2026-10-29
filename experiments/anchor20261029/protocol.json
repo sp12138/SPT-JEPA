@@ -1,0 +1,219 @@
+{
+  "created_at_utc": "2026-10-29T11:58:18.048481+00:00",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029",
+  "model_parameters": 51097134,
+  "state_dimension": 64,
+  "batch_size": 128,
+  "beta": 0.25,
+  "sigma0": 0.1,
+  "initial_step": 24982,
+  "first_stop_step": 25582,
+  "additional_training_updates": 600,
+  "scheduler_total_steps": 124910,
+  "training_seeds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "methods": {
+    "original": "Exact original continuation control.",
+    "drop10": "Drop each own past anchor with probability0.1 for the whole video window.",
+    "drop25": "Drop each own past anchor with probability0.25 for the whole video window.",
+    "drop50": "Drop each own past anchor with probability0.5 for the whole video window.",
+    "context-mask": "Mask changes between the own past anchor and first observed frame, with5x5dilation. No future target forms the mask."
+  },
+  "runs": [
+    {
+      "id": "original-seed1-adapt600",
+      "host": "dev13",
+      "gpu": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/original-seed1-adapt600/config.json",
+      "config_sha256": "4a99a274ae5cb8fdab1ee67ab011dbe1c5d454cdcb7f7af94f52fc8f17a4e724",
+      "method": "original",
+      "training_seed": 1
+    },
+    {
+      "id": "original-seed2-adapt600",
+      "host": "dev15",
+      "gpu": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/original-seed2-adapt600/config.json",
+      "config_sha256": "6fb240f6c5987f2c68efa0286b2d7a43f432a05627f120238d142ec2ccc88b7d",
+      "method": "original",
+      "training_seed": 2
+    },
+    {
+      "id": "original-seed3-adapt600",
+      "host": "dev2",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/original-seed3-adapt600/config.json",
+      "config_sha256": "85cc686efaa4534892484cf525221b01d7469008a314c3e1d818758063ea76e0",
+      "method": "original",
+      "training_seed": 3
+    },
+    {
+      "id": "original-seed4-adapt600",
+      "host": "dev13",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/original-seed4-adapt600/config.json",
+      "config_sha256": "a0cea2487a582bc30b6b2d4be1d5b1e5984764c3f273e2255845a02da3f92cc1",
+      "method": "original",
+      "training_seed": 4
+    },
+    {
+      "id": "drop10-seed1-adapt600",
+      "host": "dev15",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop10-seed1-adapt600/config.json",
+      "config_sha256": "0d54f1cd88456147b561a002216362544a5878d7642c7ac502797b9f09a96c75",
+      "method": "drop10",
+      "training_seed": 1
+    },
+    {
+      "id": "drop10-seed2-adapt600",
+      "host": "dev2",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop10-seed2-adapt600/config.json",
+      "config_sha256": "13c1b11f0f190833cf5ff183b1771339233f6e1f404810a9b6bb9a764d1d9678",
+      "method": "drop10",
+      "training_seed": 2
+    },
+    {
+      "id": "drop10-seed3-adapt600",
+      "host": "dev13",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop10-seed3-adapt600/config.json",
+      "config_sha256": "498746a3fa507fc7d30030c81605442b80ceaeceab9f795d06cf44473ffbc12a",
+      "method": "drop10",
+      "training_seed": 3
+    },
+    {
+      "id": "drop10-seed4-adapt600",
+      "host": "dev15",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop10-seed4-adapt600/config.json",
+      "config_sha256": "dcea19542baac521753aebc382d5ab0f7d4967804e9b65c9850642f000c20ed6",
+      "method": "drop10",
+      "training_seed": 4
+    },
+    {
+      "id": "drop25-seed1-adapt600",
+      "host": "dev2",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop25-seed1-adapt600/config.json",
+      "config_sha256": "b29ae3dadbc7f3353fd9d1a67b00dbf0ed0544f38f8de8c86897eb323cda6d30",
+      "method": "drop25",
+      "training_seed": 1
+    },
+    {
+      "id": "drop25-seed2-adapt600",
+      "host": "dev13",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop25-seed2-adapt600/config.json",
+      "config_sha256": "2fd6cf7a37b235235f0e6546db1ba19aeaf0916a092fd938bf903a36ee169e66",
+      "method": "drop25",
+      "training_seed": 2
+    },
+    {
+      "id": "drop25-seed3-adapt600",
+      "host": "dev15",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop25-seed3-adapt600/config.json",
+      "config_sha256": "f6339856aa68869e614affad5f7b7b4acacfb14ce4c5609f45458cb2d0d47d9e",
+      "method": "drop25",
+      "training_seed": 3
+    },
+    {
+      "id": "drop25-seed4-adapt600",
+      "host": "dev2",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop25-seed4-adapt600/config.json",
+      "config_sha256": "728d397a763d39affe66de43a9444a547432af8b537bb12a0e62e7c98868b32e",
+      "method": "drop25",
+      "training_seed": 4
+    },
+    {
+      "id": "drop50-seed1-adapt600",
+      "host": "dev13",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop50-seed1-adapt600/config.json",
+      "config_sha256": "c55ac6724a425850dd2ecdcab42d661a3236c2c4f2ae5f730002818d0ecd8453",
+      "method": "drop50",
+      "training_seed": 1
+    },
+    {
+      "id": "drop50-seed2-adapt600",
+      "host": "dev15",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop50-seed2-adapt600/config.json",
+      "config_sha256": "22a792b071af087194a1f88445babf9963e8b4748840755c975cd3f6adb11152",
+      "method": "drop50",
+      "training_seed": 2
+    },
+    {
+      "id": "drop50-seed3-adapt600",
+      "host": "dev2",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop50-seed3-adapt600/config.json",
+      "config_sha256": "d0c0baa10128a53717189373ab27368b470232c90cd01904d91e0a693555c6c0",
+      "method": "drop50",
+      "training_seed": 3
+    },
+    {
+      "id": "drop50-seed4-adapt600",
+      "host": "dev13",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/drop50-seed4-adapt600/config.json",
+      "config_sha256": "cce51e6b55568231675c7fa6dca93ff05ecbd07e065604229defe411da2c6bcf",
+      "method": "drop50",
+      "training_seed": 4
+    },
+    {
+      "id": "context-mask-seed1-adapt600",
+      "host": "dev15",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/context-mask-seed1-adapt600/config.json",
+      "config_sha256": "c610646aadaf4a5dd593c58fa6668004a4f2bab174bbadb1e929baf3d4cf8eba",
+      "method": "context-mask",
+      "training_seed": 1
+    },
+    {
+      "id": "context-mask-seed2-adapt600",
+      "host": "dev2",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/context-mask-seed2-adapt600/config.json",
+      "config_sha256": "c9ccb9c4d667fa5d273daef5adac281c4b158beb52992a9aceb1a858765df630",
+      "method": "context-mask",
+      "training_seed": 2
+    },
+    {
+      "id": "context-mask-seed3-adapt600",
+      "host": "dev13",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/context-mask-seed3-adapt600/config.json",
+      "config_sha256": "85278c6c00004df7684f83113adbfc19768cf2dc2a04eac246bbb23c6b915970",
+      "method": "context-mask",
+      "training_seed": 3
+    },
+    {
+      "id": "context-mask-seed4-adapt600",
+      "host": "dev15",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchor_20261029/context-mask-seed4-adapt600/config.json",
+      "config_sha256": "21fb7b3a469db63c81ac0c4f2399d183d214c673c689ba92ccbe5fd7827d2022",
+      "method": "context-mask",
+      "training_seed": 4
+    }
+  ],
+  "basis": "Prior short screens gave no robust planning winner. Test whether past-anchor side information permits omission of control-relevant scene information; retain all original grounding gradients.",
+  "scope": "Existing mature models, short adaptation only. All candidates remain sample-level, no cross-sample statistics, EMA or additional parameters. All targets and prior inputs remain attached; preserve RGB grounding gradients. Original flow/rate, sample-local past-anchor augmentation only. Inference still uses the normal past anchor.",
+  "gate": "Stop all20training at600extra updates; review finite weights, posterior/interventions, paired P0 before any continuation. Do not infer that side-information shortcuts are established before paired task/probe evidence. Rendering without an anchor is harder; raw loss units and learning balance must be reported.",
+  "references": [
+    {
+      "title": "Classifier-free diffusion guidance: conditioning dropout is a known principle",
+      "url": "https://arxiv.org/abs/2207.12598",
+      "scope": "Related training principle only; no classifier-free guidance or inference modification is used here."
+    }
+  ],
+  "automatic_long_continuation": false
+}

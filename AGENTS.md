@@ -1,5 +1,7 @@
 # SPT-JEPA current execution policy
 
+Current stage: anchor_20261029 schedules20matched600updateadaptations (original,anchor dropout0.1/0.25/0.5,observed-context-mask)x4existingseeds, preserving original full gradients/model size. Three prior short screens completedall120endpoints0 each and remainheld. Fourselectedshortscreen2runs remainunchanged. Past-anchor shortcut is a hypothesis; judge actual task evidence before more budget.
+
 Latest current stage: frontier and routing short screens completed120exits0 each. Preserve their held grids. New actionrank_20261029 runs20same-size600updateadaptations (original+4within-video action-ranking settings)x4existingtrainingseeds, retaining original flow/rate gradients and no extra head. Four shortscreen2GPUjobs remain unchanged. Review tasks/health before any further budget. Avoid novelty/stability claims from adaptation.
 
 Current evidence-driven stage: frontier_20261029 completed all120endpoints with no consistent two-seed planning winner and remains held. New routing_20261029 uses5forward-identical gradient settings (original,3targeted candidates,1grounding negative control)x4existing training seeds. All20adaptations stop after600updates before review. Preserve the separate4selected shortscreen2 jobs. No blanket continuation or from-scratch stability claim.
