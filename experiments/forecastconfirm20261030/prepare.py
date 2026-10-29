@@ -41,7 +41,7 @@ def main():
  index=0
  for method in ["original","lower-beta","temporal-forecast"]:
   for seed in [1,2]:
-   checkpoint=b/f"runs/stability_20261029/snapshots/trainseed{seed}/step0037473" if method=="original" else old/f"{method}-seed{seed}-selected-epoch3/model-step0037473"
+   checkpoint=b/f"runs/stability_20261029/full-L2-beta0.25-stage3-seed{seed}/model-step0037473" if method=="original" else old/f"{method}-seed{seed}-selected-epoch3/model-step0037473"
    assert(checkpoint/"weights.pt").exists()
    for es in [2042,2043,2044]:
     host,gpu=slots[index%8];index+=1;ident=f"newcases-{method}-seed{seed}-eval{es}";out=r/ident
