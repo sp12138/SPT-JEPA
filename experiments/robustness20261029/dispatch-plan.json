@@ -17,7 +17,7 @@
     "XDG_CACHE_HOME": "/efs/prescottsun/SPT-JEPA/cache",
     "TMPDIR": "/efs/prescottsun/SPT-JEPA/tmp/robustness_20261029"
   },
-  "protocol_sha256": "d695549c1be41433b0fcd19fb8363144f22d56fbcbaa5abf413c823f833da430",
+  "protocol_sha256": "32833878de3644a38337b2c0cd597f788b4b78c90274d9395689f4c34f92f4b6",
   "jobs": [
     {
       "id": "smoke-lower-beta-seed2",
@@ -118,6 +118,45 @@
       "phase": "smoke",
       "method": "temporal-forecast",
       "training_seed": 2
+    },
+    {
+      "id": "smoke-planning-robust",
+      "host": "dev13",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/smoke-planning-robust",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/source-v1",
+        "source_commit": "6b83290bc3c9f56f6df99a31eb45536f7c03fdaf",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/source-v1:/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel"
+      },
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.planning",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/smoke-temporal-forecast-seed2/model-step0000200",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/smoke-planning-robust",
+        "--upstream",
+        "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel",
+        "--data-root",
+        "/efs/prescottsun/SPT-JEPA/data/planning",
+        "--test-episodes",
+        "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0/test_episodes.npy",
+        "--seed",
+        "42",
+        "--episodes",
+        "2"
+      ],
+      "phase": "planning-smoke",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "depends_on": [
+        "smoke-temporal-forecast-seed2"
+      ]
     },
     {
       "id": "lower-beta-seed1",

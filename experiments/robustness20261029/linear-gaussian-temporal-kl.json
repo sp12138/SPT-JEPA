@@ -1,0 +1,75 @@
+{
+  "calculation": "One-step linear-Gaussian expected conditional transition KL",
+  "posterior_marginal_sigma": 0.1,
+  "dimension": 8,
+  "monte_carlo_draws": 131072,
+  "random_seed": 20261029,
+  "rows": [
+    {
+      "A": "identity",
+      "rho": 0.0,
+      "monte_carlo_kl": 4.247244056269297,
+      "analytic_kl": 4.247896321558189,
+      "absolute_error": 0.0006522652888918401,
+      "covariance_kl_constant": 0.0
+    },
+    {
+      "A": "identity",
+      "rho": 0.8,
+      "monte_carlo_kl": 1.9347200298500782,
+      "analytic_kl": 1.9345013116861147,
+      "absolute_error": 0.00021871816396346055,
+      "covariance_kl_constant": 1.5266049901279262
+    },
+    {
+      "A": "rho_identity",
+      "rho": 0.0,
+      "monte_carlo_kl": 2.8077236805488175,
+      "analytic_kl": 2.8078963215581894,
+      "absolute_error": 0.00017264100937186555,
+      "covariance_kl_constant": 0.0
+    },
+    {
+      "A": "rho_identity",
+      "rho": 0.8,
+      "monte_carlo_kl": 1.7745013116861146,
+      "analytic_kl": 1.7745013116861148,
+      "absolute_error": 2.220446049250313e-16,
+      "covariance_kl_constant": 1.5266049901279262
+    },
+    {
+      "A": "zero",
+      "rho": 0.0,
+      "monte_carlo_kl": 0.24789632155818883,
+      "analytic_kl": 0.24789632155818866,
+      "absolute_error": 1.6653345369377348e-16,
+      "covariance_kl_constant": 0.0
+    },
+    {
+      "A": "zero",
+      "rho": 0.8,
+      "monte_carlo_kl": 4.331880582921551,
+      "analytic_kl": 4.3345013116861155,
+      "absolute_error": 0.0026207287645645394,
+      "covariance_kl_constant": 1.5266049901279262
+    },
+    {
+      "A": "mixed",
+      "rho": 0.0,
+      "monte_carlo_kl": 2.89382187698072,
+      "analytic_kl": 2.893653353824975,
+      "absolute_error": 0.00016852315574489296,
+      "covariance_kl_constant": 0.0
+    },
+    {
+      "A": "mixed",
+      "rho": 0.8,
+      "monte_carlo_kl": 1.8606399836272116,
+      "analytic_kl": 1.8606747207306928,
+      "absolute_error": 3.473710348123049e-05,
+      "covariance_kl_constant": 1.5266049901279262
+    }
+  ],
+  "all_checks_pass": true,
+  "scope": "Exact for this linear one-step setting; hypothesis guide only for nonlinear multi-history transformer, not evidence of PushT improvement."
+}

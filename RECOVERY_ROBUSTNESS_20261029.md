@@ -4,7 +4,7 @@ The requested full-data beta=.25 three-epoch reproduction finished training seed
 
 Current root:/efs/prescottsun/SPT-JEPA/runs/robustness_20261029; protocol.json and plan.json are authoritative. Four methods: lower-beta(.0625), temporal-noise(rho=.8), forecast-render(fraction=.5), temporal-forecast(both). Seeds1-4, identical51,097,134parameters, batch128, sigma=.1,37473updates with124910-step LR schedule. No batch-level regularizer or BatchNorm. Forecast extra prior calls cost compute; report time.
 
-Source-v1 is frozen at6b83290. Existing Lightning train/checkpoint ownership remains. All132 planned jobs comprise4smokes,16training,96planning,16endpoint evaluations. Full training is blocked on gates/all-smokes-PASS.json and all four smoke exit0; do not bypass. Original completion_20261028 remains held, and the stability_20261029 evaluation phase will be closed after all its endpoints finish.
+Source-v1 is frozen at6b83290. Existing Lightning train/checkpoint ownership remains. All133 planned jobs comprise4training smokes,1loading/planning smoke,16training,96planning,16endpoint evaluations. Full training is blocked on gates/all-smokes-PASS.json and all four training smoke exits and the planning/loading smoke exit0; do not bypass. Original completion_20261028 remains held, and the stability_20261029 evaluation phase will be closed after all its endpoints finish.
 
 Three detached per-host dispatchers run the new root; inspect workers/launch-*.json and actual processes before doing anything. Do not duplicate workers or edit a launched source/config. Recovery from full-state checkpoint must enforce the37473-step cap despite original resume behavior bypassing stop_after. No ten-epoch continuation is authorized by this plan.
 
