@@ -6,6 +6,10 @@ import torch
 def main():
  torch.set_num_threads(2);b=Path("/efs/prescottsun/SPT-JEPA");c=b/"code";old=b/"runs/promising_20261029";r=b/"runs/forecast_confirm_20261030";assert not r.exists()
  assert not subprocess.check_output(["git","status","--porcelain"],cwd=c,text=True).strip()
+ for seed in [1,2]:
+  assert (b/f"runs/stability_20261029/full-L2-beta0.25-stage3-seed{seed}/model-step0037473/weights.pt").is_file()
+  for method in ["lower-beta","temporal-forecast"]:
+   assert (old/f"{method}-seed{seed}-selected-epoch3/model-step0037473/weights.pt").is_file()
  parent=json.loads((old/"plan.json").read_text());assert len(parent["jobs"])==112
  assert all(json.loads((old/"exits"/(j["id"]+".json")).read_text())["returncode"]==0 for j in parent["jobs"])
  source=parent["jobs"][0]["source"];templates=json.loads((b/"runs/anchor_20261029/plan.json").read_text());base=json.loads((b/"runs/stability_20261029/full-L2-beta0.25-stage3-seed1/config.json").read_text())
