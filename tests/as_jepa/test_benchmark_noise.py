@@ -20,6 +20,20 @@ class BenchmarkContracts(unittest.TestCase):
         u=torch.linspace(.001,.999,1000)[:,None]
         x=draw_timesteps(1000,"cpu",a.training_shift,uniform=u);y=draw_timesteps(1000,"cpu",b.training_shift,uniform=u)
         self.assertTrue(bool((y>x).all()));torch.testing.assert_close(torch.logit(y)-torch.logit(x),torch.full_like(x,.8),atol=2e-5,rtol=2e-5)
+    def test_constant_anchor_preserves_parameters_and_blocks_raw_visual_input(self):
+        cfg=dict(mode="L2",window=3,encoder_depth=1,renderer_width=48,renderer_depth=2,renderer_heads=3)
+        torch.manual_seed(13);a=ASJepaLeWM(**cfg).eval()
+        torch.manual_seed(13);b=ASJepaLeWM(**cfg,renderer_anchor_mode="zero").eval()
+        for k,v in a.state_dict().items():torch.testing.assert_close(v,b.state_dict()[k],atol=0,rtol=0)
+        anchor=torch.randn(2,3,64,64)
+        torch.testing.assert_close(a.render_anchor(anchor),anchor,atol=0,rtol=0)
+        self.assertEqual(torch.count_nonzero(b.render_anchor(anchor)).item(),0)
+        with torch.no_grad():
+            b.renderer.anchor_embed.proj.weight.normal_(0,.02)
+            states=torch.randn(2,b.state_dim)
+            x=b.render_states(states,anchor,steps=2,seed=5)
+            y=b.render_states(states,-anchor,steps=2,seed=5)
+        torch.testing.assert_close(x,y,atol=0,rtol=0)
     def test_windows_do_not_cross_episodes_or_use_future_anchor(self):
         with tempfile.TemporaryDirectory() as tmp:
             p=Path(tmp);raw=p/"data.h5";n=42;actions=np.arange(2*n*2,dtype=np.float32).reshape(2*n,2)

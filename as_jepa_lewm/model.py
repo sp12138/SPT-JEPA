@@ -20,9 +20,11 @@ class ASJepaLeWM(LeWM):
     def __init__(self, mode="L2", beta=4.0, sigma0=.1, window=8, use_anchor=True,
                  renderer_width=192, renderer_depth=6, renderer_heads=3,
                  carry=True, domain="standard", encoder_size=224, encoder_depth=12,
-                 lambda_sigreg=.09, objective="flow", anchor_gap=8, batchnorm_state=False, fp32_pool=False, batchnorm_projector=False, state_slots=4, state_width=16, action_dim=10, flow_logit_shift=0.):
+                 lambda_sigreg=.09, objective="flow", anchor_gap=8, batchnorm_state=False, fp32_pool=False, batchnorm_projector=False, state_slots=4, state_width=16, action_dim=10, flow_logit_shift=0., renderer_anchor_mode="observed"):
         if action_dim < 1 or not math.isfinite(flow_logit_shift):raise ValueError("Invalid action dimension or flow logit shift")
         self.flow_logit_shift=float(flow_logit_shift)
+        if renderer_anchor_mode not in {"observed","zero"}:raise ValueError("Unknown renderer anchor mode")
+        self.renderer_anchor_mode=renderer_anchor_mode
         self.state_slots=state_slots;self.state_width=state_width;self.state_dim=state_slots*state_width
         self.mode=mode; self.beta=beta; self.sigma0=sigma0; self.window=window
         self.carry=carry; self.domain=domain; self.encoder_size=encoder_size
@@ -94,7 +96,11 @@ class ASJepaLeWM(LeWM):
         else:
             render=F.interpolate(pixels.flatten(0,1),size=(64,64),mode="area").round().unflatten(0,pixels.shape[:2])
             small_anchor=F.interpolate(anchor,size=(64,64),mode="area").round()
-        return self.normalize(pixels),render/127.5-1.,small_anchor/127.5-1.
+        return self.normalize(pixels),render/127.5-1.,self.render_anchor(small_anchor/127.5-1.)
+    def render_anchor(self,anchor):
+        # Constant visual input preserves the original parameter/state structure.
+        # Apply the same information restriction during training and generation.
+        return torch.zeros_like(anchor) if self.renderer_anchor_mode=="zero" else anchor
     def add_dot(self,pixels,rows):
         b,w,c,h,side=pixels.shape; key=rows.to(pixels.device).float()
         def frac(k):return torch.frac(torch.sin(key*12.9898+k*78.233)*43758.5453).abs()
@@ -129,6 +135,7 @@ class ASJepaLeWM(LeWM):
         return loss,dict(loss=loss,fm=fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),rate_share=self.beta*rate/fm.detach().clamp_min(1e-8),feature_std=mu.float().std((0,1)).mean(),active_dims=((.5*mu[:,0].float().square()+(mu[:,1:].float()-predicted.float()).square().sum(1)/(2*self.sigma0**2)).mean(0)>.1).sum())
     @torch.no_grad()
     def render_states(self,states,anchor,steps=50,seed=0):
+        anchor=self.render_anchor(anchor)
         states=states.unflatten(-1,(self.state_slots,self.state_width)) if states.shape[-1]==self.state_dim else states
         if self.objective=="mse":
             with self.renderer.anchored(pack(anchor)):
