@@ -151,7 +151,7 @@ def main():
             ax.spines[["top", "right"]].set_visible(False)
             if key != "h7_agent_copy":
                 ax.set_ylim(0, 108)
-    axes[0].legend(fontsize=8, loc="lower left")
+    axes[0].legend(fontsize=8, loc="upper left")
     fig.suptitle("One-epoch diagnostic screen: matched models, data and update budget")
     fig.text(.5, .01, "Selected training seeds1/2;100P0 episodes/model,64generation clips,16counterfactual cases. No automatic long continuation.", ha="center", fontsize=9)
     fig.tight_layout(rect=(0, .05, 1, .94))
