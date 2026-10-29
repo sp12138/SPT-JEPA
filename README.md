@@ -1,6 +1,6 @@
 # SPT-JEPA
 
-最新[第二 epoch 匹配结果](experiments/shortscreen2_20261029/results/DECISION.md)：Temporal-forecast 两种子 P0 为 88%/90%，原版 β=.25 为 73%/43%；新案例为85.33%/87.33%，原版为73.33%/36.67%。原版调参 β=.0625 也显著改善。当前按[新复现协议](experiments/promising20261029/README.md)验证更多种子、第三epoch和单独组件，恢复入口 [RECOVERY_PROMISING_20261029.md](RECOVERY_PROMISING_20261029.md)。这更新了早先“尚无更好算法”的时点判断，但仍未证明最终跨种子稳定性或学术新颖性。
+最新[第三 epoch 结果](experiments/promising20261029/results/epoch3/DECISION.md)：Temporal-forecast 两种子 P0 均为 **94.0%**，附加评测 **93.33%/91.33%**；同预算原版 β=.25 为88.0%/74.67%，调参β=.0625为86.0%/84.0%。[单独组件对照](experiments/promising20261029/results/components/DECISION.md)显示forecast-render第二epoch已达90%/90%，正在检验更简洁的方案。所有模型51.1M参数、sample-level loss；更多种子与学术新颖性仍待确认。恢复见 [RECOVERY_PROMISING_20261029.md](RECOVERY_PROMISING_20261029.md)。
 
 [Anchor 初筛未通过确认](experiments/anchorconfirm20261029/results/DECISION.md)，相应候选已停止。
 
