@@ -1,3 +1,9 @@
+# User redirected to short-budget screening
+
+Read [current recovery](RECOVERY_SHORTSCREEN_20261029.md). The old16run long matrix is gracefully paused; do not restart from historical statements.
+
+---
+
 # Active same-size robustness campaign — 2026-10-29
 
 The requested full-data beta=.25 three-epoch reproduction finished training seeds1-4. Primary P0 means88.0/74.67/86.0/87.33%, mean84.0%,sampleSD6.28pp; fresh cases88.0/74.0/86.0/86.67%,mean83.67%. Seed0 selected reference remains89.33%. The predeclared stable-high-performance criteria fail. Preserve every seed.

@@ -1,0 +1,126 @@
+{
+  "created_at_utc": "2026-10-29T08:47:50.906037+00:00",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029",
+  "user_correction": "Inspect short-budget evidence before deciding whether long training is justified; pause unnecessary methods and seeds.",
+  "old_long_plan_held": true,
+  "all16_old_runs_paused": true,
+  "paused_state_record": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/scheduling/short-screen-pause-complete.json",
+  "screen_training_seeds": [
+    1,
+    2
+  ],
+  "why_seeds": "Seed1 is an original high performer, seed2 is the previously weak seed. This is a diagnostic screen, not an unbiased final replication.",
+  "stage_steps": 12491,
+  "scheduler_total_steps": 124910,
+  "batch_size": 128,
+  "same_model_parameters": 51097134,
+  "remaining_candidate_training_steps": 20316,
+  "candidate_count": 8,
+  "methods": [
+    "lower-beta",
+    "temporal-noise",
+    "forecast-render",
+    "temporal-forecast"
+  ],
+  "reference_checkpoints": {
+    "1": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed1/step0012491",
+    "2": "/efs/prescottsun/SPT-JEPA/runs/stability_20261029/snapshots/trainseed2/step0012491"
+  },
+  "planning_eval_seeds": [
+    42,
+    43
+  ],
+  "episodes_per_seed": 50,
+  "generation_cases": 64,
+  "generation_samples": 1,
+  "generation_steps": 50,
+  "counterfactual_cases": 16,
+  "counterfactual_steps": 50,
+  "generation_selection_seed": 20261029,
+  "counterfactual_selection_seed": 20261029,
+  "runs": [
+    {
+      "id": "lower-beta-seed1-epoch1",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/lower-beta-seed1-epoch1/config.json",
+      "config_sha256": "eb3713e59201a690d4a56885aeaa245daeaa24dbcbdfc616af9d8771adc13389",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/lower-beta-seed1",
+      "initial_step": 10276
+    },
+    {
+      "id": "lower-beta-seed2-epoch1",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/lower-beta-seed2-epoch1/config.json",
+      "config_sha256": "7503ce21561a0be0e8709dc6030021c444e508ba427c3977872d7c519523c31e",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/lower-beta-seed2",
+      "initial_step": 10244
+    },
+    {
+      "id": "temporal-noise-seed1-epoch1",
+      "method": "temporal-noise",
+      "training_seed": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/temporal-noise-seed1-epoch1/config.json",
+      "config_sha256": "92face7374161d81b69368fab97bd462ebc100f05fd351bc35d1e203047cceda",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-noise-seed1",
+      "initial_step": 10248
+    },
+    {
+      "id": "temporal-noise-seed2-epoch1",
+      "method": "temporal-noise",
+      "training_seed": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/temporal-noise-seed2-epoch1/config.json",
+      "config_sha256": "5745e5ac760c2555caf8d4aa11b0af14d1a8b6eedc87a3aaf7db848759f7dcb0",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-noise-seed2",
+      "initial_step": 10065
+    },
+    {
+      "id": "forecast-render-seed1-epoch1",
+      "method": "forecast-render",
+      "training_seed": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/forecast-render-seed1-epoch1/config.json",
+      "config_sha256": "595672d2b406f8ef695509201c5170da8fdc7d5f1b8628b99dffe8c86eb7fde7",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/forecast-render-seed1",
+      "initial_step": 9562
+    },
+    {
+      "id": "forecast-render-seed2-epoch1",
+      "method": "forecast-render",
+      "training_seed": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/forecast-render-seed2-epoch1/config.json",
+      "config_sha256": "b433b6d9be5984debac7525be605e48ec17f10c60b0b97212f1a4a34354f89b8",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/forecast-render-seed2",
+      "initial_step": 9743
+    },
+    {
+      "id": "temporal-forecast-seed1-epoch1",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/temporal-forecast-seed1-epoch1/config.json",
+      "config_sha256": "48a438858907d9fb1255aeadb0deb0b1d0b59183bea4f80cb0a5577144cc0657",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-forecast-seed1",
+      "initial_step": 9744
+    },
+    {
+      "id": "temporal-forecast-seed2-epoch1",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/shortscreen_20261029/temporal-forecast-seed2-epoch1/config.json",
+      "config_sha256": "511a581e707f334e1785511472763c45221aafdee43fcf300539f0ecaff53558",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/temporal-forecast-seed2",
+      "initial_step": 9730
+    }
+  ],
+  "decision_policy": {
+    "freeze_before_results": "No automatic three-epoch continuation; record an evidence-based method decision after the complete screen.",
+    "promising": "Prefer a method if paired P0 improves by>=5pp on both diagnostic seeds, or materially rescues the weak seed without>5pp loss on the stronger seed, and generation/counterfactual evidence does not clearly contradict it. Continue at most one or two interpretable directions to a second stage.",
+    "stop": "Defer a method with>=10pp paired P0 regression on both seeds and no compensating action/generation signal; independently confirmed collapse/numerical failures stop immediately.",
+    "ambiguous": "Report inconclusive; only a limited second-stage run is justified by improving task trajectories or a specific diagnostic. A weak one-epoch result is not universal disproof.",
+    "seeds3_4": "Keep their full state paused until a method earns further testing; no duplicate fresh seed launches."
+  },
+  "evaluation_limits": "Small fixed diagnostic samples are for screening. FVD64 is not a final-quality claim. These seeds and cases are not independent final confirmation.",
+  "publication": "Commit and push informative short-budget results, including negative/inconclusive outcomes, full per-case numbers, runtime costs and scientific figures.",
+  "collapse_cases": 64,
+  "resume_control": "/efs/prescottsun/SPT-JEPA/runs/robustness_20261029/stage-resume-control-v1/PASS.json"
+}

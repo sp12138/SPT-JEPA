@@ -1,3 +1,9 @@
+# User redirected to short-budget screening
+
+Read [current recovery](RECOVERY_SHORTSCREEN_20261029.md). The old16run long matrix is gracefully paused; do not restart from historical statements.
+
+---
+
 复现结果已齐：[五训练种子完整结果](experiments/stability20261029/results/FULL-DATA-STABILITY.md)。38项退出码均为0，五模型权重均有限；三个旧复现调度器已退出。新的同规模方法对照继续运行。
 
 # Same-size robustness followup
