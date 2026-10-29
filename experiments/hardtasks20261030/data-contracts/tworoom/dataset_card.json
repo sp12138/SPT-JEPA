@@ -1,0 +1,152 @@
+{
+  "task": "tworoom",
+  "h5_path": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom/tworoom.h5",
+  "h5_bytes": 12775849984,
+  "acquisition": {
+    "task": "tworoom",
+    "dataset_repo": "quentinll/lewm-tworooms",
+    "dataset_revision": "6903a2de048b13819d812da0b4dd661290bc01e4",
+    "archive_sha256": "494b1a02f0765cd9a0d9daf1786c419ced1009977fc45d01e3158932f8d080ca",
+    "files": [
+      "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom/tworoom.h5"
+    ],
+    "model_revision": "77adaae0bc31deab21c93740d1f8bb947cd0bdec",
+    "weights": "/efs/prescottsun/SPT-JEPA/weights/hardtasks/tworoom",
+    "finished_at": 1793304977.6131363
+  },
+  "frameskip": 5,
+  "split_seed": 20261030,
+  "split_counts": {
+    "test": 500,
+    "validation": 500,
+    "train": 9000
+  },
+  "raw_frames": 920809,
+  "pixel_shape": [
+    224,
+    224,
+    3
+  ],
+  "action_dim": 2,
+  "model_action_dim": 10,
+  "action_mean": [
+    0.003467034940094584,
+    -0.05297856929844467
+  ],
+  "action_std": [
+    0.8676368980233422,
+    0.8685753215839855
+  ],
+  "normalization": "training episodes only, finite raw actions; population standard deviation",
+  "anchor": "first observed frame; no future anchor",
+  "training_inputs": [
+    "pixels",
+    "action"
+  ],
+  "schema": {
+    "action": {
+      "shape": [
+        920809,
+        2
+      ],
+      "dtype": "float32"
+    },
+    "distance_to_target": {
+      "shape": [
+        920809
+      ],
+      "dtype": "float64"
+    },
+    "ep_idx": {
+      "shape": [
+        920809
+      ],
+      "dtype": "int32"
+    },
+    "ep_len": {
+      "shape": [
+        10000
+      ],
+      "dtype": "int32"
+    },
+    "ep_offset": {
+      "shape": [
+        10000
+      ],
+      "dtype": "int64"
+    },
+    "id": {
+      "shape": [
+        920809
+      ],
+      "dtype": "int64"
+    },
+    "observation": {
+      "shape": [
+        920809,
+        10
+      ],
+      "dtype": "float64"
+    },
+    "pixels": {
+      "shape": [
+        920809,
+        224,
+        224,
+        3
+      ],
+      "dtype": "uint8"
+    },
+    "pos_agent": {
+      "shape": [
+        920809,
+        2
+      ],
+      "dtype": "float32"
+    },
+    "pos_target": {
+      "shape": [
+        920809,
+        2
+      ],
+      "dtype": "float32"
+    },
+    "proprio": {
+      "shape": [
+        920809,
+        2
+      ],
+      "dtype": "float32"
+    },
+    "render_time": {
+      "shape": [
+        920809
+      ],
+      "dtype": "float64"
+    },
+    "reward": {
+      "shape": [
+        920809
+      ],
+      "dtype": "float64"
+    },
+    "step_idx": {
+      "shape": [
+        920809
+      ],
+      "dtype": "int64"
+    },
+    "terminated": {
+      "shape": [
+        920809
+      ],
+      "dtype": "bool"
+    },
+    "truncated": {
+      "shape": [
+        920809
+      ],
+      "dtype": "bool"
+    }
+  }
+}

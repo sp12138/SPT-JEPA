@@ -1,0 +1,1369 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030",
+  "deadline": null,
+  "environment": {
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MUJOCO_GL": "egl",
+    "SDL_VIDEODRIVER": "dummy",
+    "PYGLET_HEADLESS": "true",
+    "MPLCONFIGDIR": "/efs/prescottsun/SPT-JEPA/cache/matplotlib",
+    "TMPDIR": "/efs/prescottsun/SPT-JEPA/tmp/hardtasks20261030",
+    "STABLEWM_HOME": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/planning"
+  },
+  "jobs": [
+    {
+      "id": "tworoom-original-seed1-gate600",
+      "host": "dev2",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-seed1-gate600/config.json",
+      "config_sha256": "fc5b68666df9d8bad0bfb74c4fb99bc201db3b4b97f3e2cd9c2b2aa8e6389077",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-seed1-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "tworoom",
+      "method": "original",
+      "training_seed": 1,
+      "requires": []
+    },
+    {
+      "id": "health-tworoom-original-seed1-gate600",
+      "host": "dev2",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-original-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "tworoom-original-seed1-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-seed1-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-original-seed1-gate600"
+      ],
+      "phase": "health",
+      "task": "tworoom",
+      "method": "original",
+      "training_seed": 1
+    },
+    {
+      "id": "tworoom-original-seed2-gate600",
+      "host": "dev2",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-seed2-gate600/config.json",
+      "config_sha256": "36a229518b3d5a07f18df5f321668620dd98a041e09432bc42d6042f06562988",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-seed2-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "tworoom",
+      "method": "original",
+      "training_seed": 2,
+      "requires": []
+    },
+    {
+      "id": "health-tworoom-original-seed2-gate600",
+      "host": "dev2",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-original-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "tworoom-original-seed2-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-seed2-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-original-seed2-gate600"
+      ],
+      "phase": "health",
+      "task": "tworoom",
+      "method": "original",
+      "training_seed": 2
+    },
+    {
+      "id": "tworoom-lower-beta-seed1-gate600",
+      "host": "dev2",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-lower-beta-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-lower-beta-seed1-gate600/config.json",
+      "config_sha256": "4e89f8ed8fc8e6ebccbb76d71481b99ad28b8dbf2cd3c292d799541110fa4b43",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-lower-beta-seed1-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "tworoom",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "requires": []
+    },
+    {
+      "id": "health-tworoom-lower-beta-seed1-gate600",
+      "host": "dev2",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-lower-beta-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "tworoom-lower-beta-seed1-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-lower-beta-seed1-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-lower-beta-seed1-gate600"
+      ],
+      "phase": "health",
+      "task": "tworoom",
+      "method": "lower-beta",
+      "training_seed": 1
+    },
+    {
+      "id": "tworoom-lower-beta-seed2-gate600",
+      "host": "dev2",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-lower-beta-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-lower-beta-seed2-gate600/config.json",
+      "config_sha256": "2b4635004a79a90981352e6a98eab6027dbe30bb29850aafdd7a2c2a73131e74",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-lower-beta-seed2-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "tworoom",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "requires": []
+    },
+    {
+      "id": "health-tworoom-lower-beta-seed2-gate600",
+      "host": "dev2",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-lower-beta-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "tworoom-lower-beta-seed2-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-lower-beta-seed2-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-lower-beta-seed2-gate600"
+      ],
+      "phase": "health",
+      "task": "tworoom",
+      "method": "lower-beta",
+      "training_seed": 2
+    },
+    {
+      "id": "tworoom-temporal-forecast-seed1-gate600",
+      "host": "dev2",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-seed1-gate600/config.json",
+      "config_sha256": "80586ffd5f65ac44eb765c0403755f469aa31f4602c4e01715f065d49b9df3cb",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-seed1-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "tworoom",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "requires": []
+    },
+    {
+      "id": "health-tworoom-temporal-forecast-seed1-gate600",
+      "host": "dev2",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-temporal-forecast-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "tworoom-temporal-forecast-seed1-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-seed1-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-temporal-forecast-seed1-gate600"
+      ],
+      "phase": "health",
+      "task": "tworoom",
+      "method": "temporal-forecast",
+      "training_seed": 1
+    },
+    {
+      "id": "tworoom-temporal-forecast-seed2-gate600",
+      "host": "dev2",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-seed2-gate600/config.json",
+      "config_sha256": "c507df42b3d865c350a728b8601a3977299b5dc8c28a68840890edf185dde51e",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-seed2-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "tworoom",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "requires": []
+    },
+    {
+      "id": "health-tworoom-temporal-forecast-seed2-gate600",
+      "host": "dev2",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-temporal-forecast-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "tworoom-temporal-forecast-seed2-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-seed2-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-temporal-forecast-seed2-gate600"
+      ],
+      "phase": "health",
+      "task": "tworoom",
+      "method": "temporal-forecast",
+      "training_seed": 2
+    },
+    {
+      "id": "tworoom-original-highnoise-seed1-gate600",
+      "host": "dev13",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-highnoise-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-highnoise-seed1-gate600/config.json",
+      "config_sha256": "7cb80616828da526ea49d1c3a7b2bc45f265b4ef8d464ed39da9355d90ad3f22",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-highnoise-seed1-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "tworoom",
+      "method": "original-highnoise",
+      "training_seed": 1,
+      "requires": []
+    },
+    {
+      "id": "health-tworoom-original-highnoise-seed1-gate600",
+      "host": "dev13",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-original-highnoise-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "tworoom-original-highnoise-seed1-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-highnoise-seed1-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-original-highnoise-seed1-gate600"
+      ],
+      "phase": "health",
+      "task": "tworoom",
+      "method": "original-highnoise",
+      "training_seed": 1
+    },
+    {
+      "id": "tworoom-original-highnoise-seed2-gate600",
+      "host": "dev13",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-highnoise-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-highnoise-seed2-gate600/config.json",
+      "config_sha256": "89cd5a18aed6fe59242470d498d550c693a97db889ae52488e7b1e61044b7203",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-highnoise-seed2-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "tworoom",
+      "method": "original-highnoise",
+      "training_seed": 2,
+      "requires": []
+    },
+    {
+      "id": "health-tworoom-original-highnoise-seed2-gate600",
+      "host": "dev13",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-original-highnoise-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "tworoom-original-highnoise-seed2-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-original-highnoise-seed2-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-original-highnoise-seed2-gate600"
+      ],
+      "phase": "health",
+      "task": "tworoom",
+      "method": "original-highnoise",
+      "training_seed": 2
+    },
+    {
+      "id": "tworoom-temporal-forecast-highnoise-seed1-gate600",
+      "host": "dev13",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-highnoise-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-highnoise-seed1-gate600/config.json",
+      "config_sha256": "4d0097dac879b4c13a93424d714ba29e69070b9a9b048c1e40bee8403d0afb86",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-highnoise-seed1-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "tworoom",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 1,
+      "requires": []
+    },
+    {
+      "id": "health-tworoom-temporal-forecast-highnoise-seed1-gate600",
+      "host": "dev13",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-temporal-forecast-highnoise-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "tworoom-temporal-forecast-highnoise-seed1-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-highnoise-seed1-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-temporal-forecast-highnoise-seed1-gate600"
+      ],
+      "phase": "health",
+      "task": "tworoom",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 1
+    },
+    {
+      "id": "tworoom-temporal-forecast-highnoise-seed2-gate600",
+      "host": "dev13",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-highnoise-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-highnoise-seed2-gate600/config.json",
+      "config_sha256": "35ad759023454759f351384145cc2302d81e721e3662abaea6afbecdcaf1b25c",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-highnoise-seed2-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "tworoom",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 2,
+      "requires": []
+    },
+    {
+      "id": "health-tworoom-temporal-forecast-highnoise-seed2-gate600",
+      "host": "dev13",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-temporal-forecast-highnoise-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "tworoom-temporal-forecast-highnoise-seed2-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/tworoom-temporal-forecast-highnoise-seed2-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-tworoom-temporal-forecast-highnoise-seed2-gate600"
+      ],
+      "phase": "health",
+      "task": "tworoom",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 2
+    },
+    {
+      "id": "cube-original-seed1-gate600",
+      "host": "dev2",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-seed1-gate600/config.json",
+      "config_sha256": "aff6832d0cc86dee695a5a3104aaf4e7b3b2fb6d42809c7aa6902091df059c2e",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-seed1-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "cube",
+      "method": "original",
+      "training_seed": 1,
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "id": "health-cube-original-seed1-gate600",
+      "host": "dev2",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-original-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "cube-original-seed1-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-seed1-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-original-seed1-gate600"
+      ],
+      "phase": "health",
+      "task": "cube",
+      "method": "original",
+      "training_seed": 1
+    },
+    {
+      "id": "cube-original-seed2-gate600",
+      "host": "dev2",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-seed2-gate600/config.json",
+      "config_sha256": "3eb6118b7cfbc175daa0863d274e2a6898f552b1251435227b5ee9cedc8bc280",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-seed2-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "cube",
+      "method": "original",
+      "training_seed": 2,
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "id": "health-cube-original-seed2-gate600",
+      "host": "dev2",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-original-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "cube-original-seed2-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-seed2-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-original-seed2-gate600"
+      ],
+      "phase": "health",
+      "task": "cube",
+      "method": "original",
+      "training_seed": 2
+    },
+    {
+      "id": "cube-lower-beta-seed1-gate600",
+      "host": "dev13",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-lower-beta-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-lower-beta-seed1-gate600/config.json",
+      "config_sha256": "fe17e4ce0ae559b2098de9a2af16c9fb3179a078130fa7c3aeade8c6325150c3",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-lower-beta-seed1-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 1,
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "id": "health-cube-lower-beta-seed1-gate600",
+      "host": "dev13",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-lower-beta-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "cube-lower-beta-seed1-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-lower-beta-seed1-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-lower-beta-seed1-gate600"
+      ],
+      "phase": "health",
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 1
+    },
+    {
+      "id": "cube-lower-beta-seed2-gate600",
+      "host": "dev13",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-lower-beta-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-lower-beta-seed2-gate600/config.json",
+      "config_sha256": "cb845a78bf672aa001415163954e76a39024d64a0e89e283410db720cbbf0973",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-lower-beta-seed2-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 2,
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "id": "health-cube-lower-beta-seed2-gate600",
+      "host": "dev13",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-lower-beta-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "cube-lower-beta-seed2-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-lower-beta-seed2-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-lower-beta-seed2-gate600"
+      ],
+      "phase": "health",
+      "task": "cube",
+      "method": "lower-beta",
+      "training_seed": 2
+    },
+    {
+      "id": "cube-temporal-forecast-seed1-gate600",
+      "host": "dev13",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-seed1-gate600/config.json",
+      "config_sha256": "aa5e9fa3ba333d75894a41f13b15c63c0afb0378babcfb058a14907a51a7c205",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-seed1-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 1,
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "id": "health-cube-temporal-forecast-seed1-gate600",
+      "host": "dev13",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-temporal-forecast-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "cube-temporal-forecast-seed1-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-seed1-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-temporal-forecast-seed1-gate600"
+      ],
+      "phase": "health",
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 1
+    },
+    {
+      "id": "cube-temporal-forecast-seed2-gate600",
+      "host": "dev13",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-seed2-gate600/config.json",
+      "config_sha256": "56512f557f0d9e865bb2659cfa37c1f47d82ede15ef18057f8147985460d8229",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-seed2-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 2,
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "id": "health-cube-temporal-forecast-seed2-gate600",
+      "host": "dev13",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-temporal-forecast-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "cube-temporal-forecast-seed2-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-seed2-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-temporal-forecast-seed2-gate600"
+      ],
+      "phase": "health",
+      "task": "cube",
+      "method": "temporal-forecast",
+      "training_seed": 2
+    },
+    {
+      "id": "cube-original-highnoise-seed1-gate600",
+      "host": "dev15",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-highnoise-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-highnoise-seed1-gate600/config.json",
+      "config_sha256": "18301a0701449354b2554eef905ccab1da9dbc9451054581426b87bc4b53ae45",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-highnoise-seed1-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "cube",
+      "method": "original-highnoise",
+      "training_seed": 1,
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "id": "health-cube-original-highnoise-seed1-gate600",
+      "host": "dev15",
+      "gpu": 0,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-original-highnoise-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "cube-original-highnoise-seed1-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-highnoise-seed1-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-original-highnoise-seed1-gate600"
+      ],
+      "phase": "health",
+      "task": "cube",
+      "method": "original-highnoise",
+      "training_seed": 1
+    },
+    {
+      "id": "cube-original-highnoise-seed2-gate600",
+      "host": "dev15",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-highnoise-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-highnoise-seed2-gate600/config.json",
+      "config_sha256": "486739ad6b644a00fa52ed748daa930b4dbe908effbe5c253bea1f1432756363",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-highnoise-seed2-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "cube",
+      "method": "original-highnoise",
+      "training_seed": 2,
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "id": "health-cube-original-highnoise-seed2-gate600",
+      "host": "dev15",
+      "gpu": 1,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-original-highnoise-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "cube-original-highnoise-seed2-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-original-highnoise-seed2-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-original-highnoise-seed2-gate600"
+      ],
+      "phase": "health",
+      "task": "cube",
+      "method": "original-highnoise",
+      "training_seed": 2
+    },
+    {
+      "id": "cube-temporal-forecast-highnoise-seed1-gate600",
+      "host": "dev15",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-highnoise-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-highnoise-seed1-gate600/config.json",
+      "config_sha256": "1c69ac2dc0d37da0f7818121643be3201972efed6aec59d0fd60f240a3a7e414",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-highnoise-seed1-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "cube",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 1,
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "id": "health-cube-temporal-forecast-highnoise-seed1-gate600",
+      "host": "dev15",
+      "gpu": 2,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-temporal-forecast-highnoise-seed1-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "cube-temporal-forecast-highnoise-seed1-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-highnoise-seed1-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-temporal-forecast-highnoise-seed1-gate600"
+      ],
+      "phase": "health",
+      "task": "cube",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 1
+    },
+    {
+      "id": "cube-temporal-forecast-highnoise-seed2-gate600",
+      "host": "dev15",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-highnoise-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "config": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-highnoise-seed2-gate600/config.json",
+      "config_sha256": "e321a6ce8dbc4cc94d494589a406ac26023fdba0bab9b89bec9b9ac925d401c7",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-highnoise-seed2-gate600/config.json",
+        "--stop-step",
+        "600"
+      ],
+      "phase": "gate600",
+      "task": "cube",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 2,
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ]
+    },
+    {
+      "id": "health-cube-temporal-forecast-highnoise-seed2-gate600",
+      "host": "dev15",
+      "gpu": 3,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-temporal-forecast-highnoise-seed2-gate600",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "depends_on": [
+        "cube-temporal-forecast-highnoise-seed2-gate600"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_health",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/cube-temporal-forecast-highnoise-seed2-gate600",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/health-cube-temporal-forecast-highnoise-seed2-gate600"
+      ],
+      "phase": "health",
+      "task": "cube",
+      "method": "temporal-forecast-highnoise",
+      "training_seed": 2
+    },
+    {
+      "id": "reference-tworoom-random-strict-validation",
+      "host": "dev15",
+      "gpu": 4,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-tworoom-random-strict-validation",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ],
+      "phase": "reference",
+      "task": "tworoom",
+      "method": "random",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "random",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-tworoom-random-strict-validation"
+      ]
+    },
+    {
+      "id": "reference-tworoom-released-lewm-strict-validation",
+      "host": "dev15",
+      "gpu": 5,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-tworoom-released-lewm-strict-validation",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ],
+      "phase": "reference",
+      "task": "tworoom",
+      "method": "released-lewm",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/weights/hardtasks/tworoom",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-tworoom-released-lewm-strict-validation"
+      ]
+    },
+    {
+      "id": "reference-cube-random-strict-validation",
+      "host": "dev15",
+      "gpu": 6,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-cube-random-strict-validation",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ],
+      "phase": "reference",
+      "task": "cube",
+      "method": "random",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "random",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-cube-random-strict-validation"
+      ]
+    },
+    {
+      "id": "reference-cube-released-lewm-strict-validation",
+      "host": "dev15",
+      "gpu": 7,
+      "output": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-cube-released-lewm-strict-validation",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1",
+        "source_commit": "9c8abbded858ce495fd2954f3bbb97a0be052afd",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1:/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "requires": [
+        "/efs/prescottsun/SPT-JEPA/reports/harder-task-redirect-20261030/PUSHT-CLOSURE-REVIEWED.json"
+      ],
+      "phase": "reference",
+      "task": "cube",
+      "method": "released-lewm",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/weights/hardtasks/cube",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-cube-released-lewm-strict-validation"
+      ]
+    }
+  ]
+}
