@@ -1,5 +1,9 @@
 # SPT-JEPA
 
+最新：[全数据beta=.25的五训练种子复现](experiments/stability20261029/results/FULL-DATA-STABILITY.md)已完成。新增四种子P0为84.00±6.28%，最差74.67%；新评测83.67±6.50%。89.33%是历史单种子结果，尚未稳定复现。全部五种子都未坍塌。正在验证[同规模改进对照](experiments/robustness20261029/README.md)，恢复见[当前入口](RECOVERY_ROBUSTNESS_20261029.md)。
+
+以下记录保留历史结果，当前状态以上述为准。
+
 当前正在验证全数据 beta=.25、三 epoch 的跨训练种子稳定性；独立训练种子的结果尚未产生；[seed0规划复跑和新案例检查](experiments/stability20261029/results/SEED0-REEVALUATION.md)已完成。见[本轮协议](experiments/stability20261029/README.md)和[恢复入口](RECOVERY_STABILITY_20261029.md)。用户已授权稳定后继续有价值的 Lingjing 实验，不稳定则研究同规模改进，并及时提交新结论。以下主结论是上一轮已完成的历史结果。
 
 本轮主要结论已完成：[主要结论、完整数值与关键图](experiments/completion20261028/results/MAIN-CONCLUSIONS.md)。

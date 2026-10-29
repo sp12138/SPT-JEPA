@@ -1,3 +1,11 @@
+# 全数据 beta=.25 五训练种子复现已完成
+
+[结果、完整数值与关键图](results/FULL-DATA-STABILITY.md)。新增四种子均值84.00±6.28%、最差74.67%；原先89.33%未稳定复现。
+
+后续见[同规模稳健性对照](../robustness20261029/README.md)。以下为执行前冻结协议记录。
+
+---
+
 # Full-data beta=.25 stability campaign
 
 User authorized multi-training-seed reproduction of the 89.33% P0 result, followed by evidence-directed research. This campaign is active; no new replication result is available yet.
