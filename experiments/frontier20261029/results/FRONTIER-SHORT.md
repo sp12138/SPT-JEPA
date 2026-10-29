@@ -32,3 +32,9 @@
 [完整逐例结果、配对episodebootstrap、检查点身份与成本](frontier-short-results.json)、[生成逐例数值](frontier-short-per-case.npz)。
 
 所有新运行均已停在600更新上限。根据两种子的规划/生成/动作结果及成本作继续决定，不自动延长整组。
+
+## 配对差值与继续决定
+
+![Paired effects](frontier-short-paired-effects.png)
+
+所有条件95%区间均包含0，没有同时改善两个种子的规划赢家。[机制证据与停止决定](DECISION.md)。本批已停止在600新增更新。
