@@ -1,5 +1,7 @@
 # SPT-JEPA current execution policy
 
+Current confirmation: anchor_20261029 completed120exits0; drop25primaryP0effects+4/+3/+5/0pp warrant confirmation, not a performanceclaim. anchorconfirm_20261029 uses12same-state600updaterepeats+8fresh-evaluation/probeGPUslots, with4unchangedshortscreen2slots. No automatic longertraining; context-mask is a secondarycontrast. Preserve source799a66c and allolderheldplans.
+
 Current stage: anchor_20261029 schedules20matched600updateadaptations (original,anchor dropout0.1/0.25/0.5,observed-context-mask)x4existingseeds, preserving original full gradients/model size. Three prior short screens completedall120endpoints0 each and remainheld. Fourselectedshortscreen2runs remainunchanged. Past-anchor shortcut is a hypothesis; judge actual task evidence before more budget.
 
 Latest current stage: frontier and routing short screens completed120exits0 each. Preserve their held grids. New actionrank_20261029 runs20same-size600updateadaptations (original+4within-video action-ranking settings)x4existingtrainingseeds, retaining original flow/rate gradients and no extra head. Four shortscreen2GPUjobs remain unchanged. Review tasks/health before any further budget. Avoid novelty/stability claims from adaptation.

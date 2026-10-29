@@ -1,3 +1,9 @@
+# Current: confirm the anchor lead before longer training
+
+Read [RECOVERY_ANCHOR_CONFIRM_20261029.md](RECOVERY_ANCHOR_CONFIRM_20261029.md), actual EFS protocol/plan/source and workers. Parent anchor120endpoints complete0; drop25primarychanges+4/+3/+5/0pp. Current confirmation stays600updates:12same-state/RNGrepeats+8freshcase/probeslots, beside4selectedshortscreen2jobs. Do not treat numerical repeats as new training seeds or restart oldheldgrids.
+
+---
+
 # Current: bounded past-anchor information test
 
 Read [RECOVERY_ANCHOR_20261029.md](RECOVERY_ANCHOR_20261029.md), EFS plan/source manifest and actual workers. Twenty paired600updateadaptations test own-past-anchor dropout/masking, same51.1Mparameters and original FM/rate gradients. Prior objective/routing/actionranking shortgrids completedallendpoints0 and remainheld. Four separate shortscreen2runs retain their selected budgets.

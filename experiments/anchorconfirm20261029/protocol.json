@@ -1,0 +1,142 @@
+{
+  "created_at_utc": "2026-10-29T12:36:23.109595+00:00",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029",
+  "model_parameters": 51097134,
+  "batch_size": 128,
+  "beta": 0.25,
+  "sigma0": 0.1,
+  "initial_step": 24982,
+  "first_stop_step": 25582,
+  "additional_training_updates": 600,
+  "scheduler_total_steps": 124910,
+  "training_seeds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "methods": {
+    "original": "Matched original numerical-repeat control",
+    "drop25": "Selected25%own-anchor dropout lead",
+    "context-mask": "Secondary observed-context masking mechanism contrast; primary seed2 change is negative"
+  },
+  "runs": [
+    {
+      "id": "original-seed1-adapt600",
+      "host": "dev2",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/original-seed1-adapt600/config.json",
+      "config_sha256": "0fc94a2b59caedb01a8222d6e5c84555c9dca8a91891e9e9d4c5cdb44f6e62a8",
+      "method": "original",
+      "training_seed": 1
+    },
+    {
+      "id": "original-seed2-adapt600",
+      "host": "dev2",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/original-seed2-adapt600/config.json",
+      "config_sha256": "9c7abae362c314ced60792c8df64b9d2d06f9b779fa0eef3d14adcdaf6b2a9ea",
+      "method": "original",
+      "training_seed": 2
+    },
+    {
+      "id": "original-seed3-adapt600",
+      "host": "dev2",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/original-seed3-adapt600/config.json",
+      "config_sha256": "8db34615d176b4ddac2952bb59844420d684e72a39da87e5f21aaf874c3e18e5",
+      "method": "original",
+      "training_seed": 3
+    },
+    {
+      "id": "original-seed4-adapt600",
+      "host": "dev2",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/original-seed4-adapt600/config.json",
+      "config_sha256": "74dbc44cfbc01d1ea6c65c69d7f8959612d513cb63d6b19866cf1393f6a0f167",
+      "method": "original",
+      "training_seed": 4
+    },
+    {
+      "id": "drop25-seed1-adapt600",
+      "host": "dev2",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/drop25-seed1-adapt600/config.json",
+      "config_sha256": "443eda6a6f60ccef899e7228ca7853ba2c5f076834d4092c7eaacca9c1dae13a",
+      "method": "drop25",
+      "training_seed": 1
+    },
+    {
+      "id": "drop25-seed2-adapt600",
+      "host": "dev2",
+      "gpu": 7,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/drop25-seed2-adapt600/config.json",
+      "config_sha256": "73149e9e54402dbe4886763d7304e588643c7b0ff5d0257090bdd4aff650dbf7",
+      "method": "drop25",
+      "training_seed": 2
+    },
+    {
+      "id": "drop25-seed3-adapt600",
+      "host": "dev13",
+      "gpu": 1,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/drop25-seed3-adapt600/config.json",
+      "config_sha256": "305867e5f670531da3fe08ae298061136cf1c27eb54a1a224936fb861d2e132c",
+      "method": "drop25",
+      "training_seed": 3
+    },
+    {
+      "id": "drop25-seed4-adapt600",
+      "host": "dev13",
+      "gpu": 2,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/drop25-seed4-adapt600/config.json",
+      "config_sha256": "cde796562d1d231e2f43b734f3fbd58436e6058110e7cb7335c97542820b24bf",
+      "method": "drop25",
+      "training_seed": 4
+    },
+    {
+      "id": "context-mask-seed1-adapt600",
+      "host": "dev13",
+      "gpu": 3,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/context-mask-seed1-adapt600/config.json",
+      "config_sha256": "ee313e2249da3fb4e05b5566beb3e633ff48973208c7266cc4ac4be99dce1472",
+      "method": "context-mask",
+      "training_seed": 1
+    },
+    {
+      "id": "context-mask-seed2-adapt600",
+      "host": "dev13",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/context-mask-seed2-adapt600/config.json",
+      "config_sha256": "fc39aee017be8fe235408305f33a6f4ff945da515f81f8e08144c3db14e35a98",
+      "method": "context-mask",
+      "training_seed": 2
+    },
+    {
+      "id": "context-mask-seed3-adapt600",
+      "host": "dev13",
+      "gpu": 5,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/context-mask-seed3-adapt600/config.json",
+      "config_sha256": "1ff932e62a07f7cbb2b72a52cef5a7fd89f4ad6462ea216e49d8cb993670ec93",
+      "method": "context-mask",
+      "training_seed": 3
+    },
+    {
+      "id": "context-mask-seed4-adapt600",
+      "host": "dev13",
+      "gpu": 6,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/anchorconfirm_20261029/context-mask-seed4-adapt600/config.json",
+      "config_sha256": "c552d4866f76fdc698e699589835692a4978c597f0aa3725b5cbd2556570192a",
+      "method": "context-mask",
+      "training_seed": 4
+    }
+  ],
+  "purpose": "Check selected anchor leads on fresh evaluation seeds and repeat training from exactly the same initial full state/RNG. No longer training yet.",
+  "limitations": [
+    "This is mature-checkpoint adaptation, not from-scratch training.",
+    "Same-RNGrepeat measures numerical/runtime trajectory variation, not new independent training seeds.",
+    "Leads selected using eval42/43; fresh1042/1043/1044 are confirmation for these fixed weights.",
+    "Probes use privileged state only for evaluation, fit only on train episodes; no state labels enter training losses."
+  ],
+  "concurrency": "12repeatGPUslots+8fresh/probeGPUslots+4independentselectedshortscreen2slots",
+  "automatic_long_continuation": false
+}

@@ -29,6 +29,8 @@ def main():
         identity=(v["episodes"],v["start_steps"]);key=(kind,es)
         if key not in identities:identities[key]=identity
         assert identities[key]==identity
+        expected_checkpoint=(old if kind=="fresh" else r)/f"{m}-seed{s}-adapt600/model-step0025582"
+        assert execution["checkpoint"]==str(expected_checkpoint)
         rows[m][s][kind][es]=dict(metrics=v,execution=execution)
         arrays[f"{kind}/{m}/seed{s}/eval{es}/successes"]=np.asarray(v["metrics"]["episode_successes"],np.int8)
     summaries={};effects={}
@@ -36,25 +38,36 @@ def main():
         summaries[m]={};effects[m]={}
         for s,row in values.items():
             assert len(row["fresh"])==3 and len(row["repeat"])==2
-            first=[]
-            for es in [42,43]:first.append(read(old/f"p0-{m}-seed{s}-adapt600-eval{es}/metrics.json")["metrics"]["success_rate"])
+            first=[];primary_cases=set()
+            for es in [42,43]:
+                first_result=read(old/f"p0-{m}-seed{s}-adapt600-eval{es}/metrics.json")
+                first.append(first_result["metrics"]["success_rate"])
+                primary_cases.update(zip(first_result["episodes"],first_result["start_steps"]))
             fresh=[v["metrics"]["metrics"]["success_rate"] for v in row["fresh"].values()]
             repeat=[v["metrics"]["metrics"]["success_rate"] for v in row["repeat"].values()]
             origin=read(r/f"{m}-seed{s}-adapt600/resume-origin.json")
             assert origin["parent"]==str(Path("/efs/prescottsun/SPT-JEPA")/f"runs/stability_20261029/snapshots/trainseed{s}/step0024982") and origin["step"]==24982
-            summaries[m][s]=dict(first_primary=statistics.mean(first),fresh=statistics.mean(fresh),fresh_values=fresh,
+            unseen=[];overlap=0
+            for value in row["fresh"].values():
+                mv=value["metrics"]
+                for ep,start,success in zip(mv["episodes"],mv["start_steps"],mv["metrics"]["episode_successes"]):
+                    if (ep,start) in primary_cases:overlap+=1
+                    else:unseen.append(success)
+            summaries[m][s]=dict(fresh_primary_exact_case_overlap=overlap,fresh_without_primary_cases=100*float(np.mean(unseen)),fresh_without_primary_count=len(unseen),first_primary=statistics.mean(first),fresh=statistics.mean(fresh),fresh_values=fresh,
                 repeat_primary=statistics.mean(repeat),repeat_values=repeat,numerical_repeat_shift=statistics.mean(repeat)-statistics.mean(first),
                 probe_agent_r2=probes[m][s]["agent_r2"],probe_block_r2=probes[m][s]["block_position_r2"],probe_block_angle_r2=probes[m][s]["block_angle_r2"])
             if m=="original":continue
-            for kind in ["fresh","repeat"]:
+            for kind in ["fresh","repeat","fresh-excluding-primary"]:
                 differences=[];episodes=[]
-                for es,left in row[kind].items():
-                    lv=left["metrics"];rv=rows["original"][s][kind][es]["metrics"]
-                    differences.extend((np.asarray(lv["metrics"]["episode_successes"],float)-np.asarray(rv["metrics"]["episode_successes"],float))*100)
-                    episodes.extend(lv["episodes"])
+                source_kind="fresh" if kind=="fresh-excluding-primary" else kind
+                for es,left in row[source_kind].items():
+                    lv=left["metrics"];rv=rows["original"][s][source_kind][es]["metrics"]
+                    keep=np.asarray([(ep,start) not in primary_cases if kind=="fresh-excluding-primary" else True for ep,start in zip(lv["episodes"],lv["start_steps"])])
+                    differences.extend(((np.asarray(lv["metrics"]["episode_successes"],float)-np.asarray(rv["metrics"]["episode_successes"],float))*100)[keep])
+                    episodes.extend(np.asarray(lv["episodes"])[keep])
                 effects[m].setdefault(s,{})[kind]=cluster_ci(differences,episodes)
     result=dict(all_confirmation_endpoints_complete=True,source_scope=protocol,summary=summaries,paired_effects=effects,complete_planning_endpoints=rows,complete_probes=probes,
-        reporter_sha256=sha(__file__),limitations=["Twelve600update numerical repeats reuse existing training seeds and identical initial full states/RNG.","Fresh planning evaluates the original selected short-screenweights; repeats use primary42/43cases.","Seeds1-4 are existing trained models, not new from-scratch samples.","Drop25/context-mask were selected from a larger exploratory screen; no novelty or stable89%claim.","Bootstrap conditions on fixed trained weights/episode clusters and is not training-seed uncertainty."])
+        reporter_sha256=sha(__file__),limitations=["Twelve600update numerical repeats reuse existing training seeds and identical initial full states/RNG.","Fresh planning evaluates the original selected short-screenweights; repeats use primary42/43cases.","Seeds1-4 are existing trained models, not new from-scratch samples.","Drop25/context-mask were selected from a larger exploratory screen; no novelty or stable89%claim.","Bootstrap conditions on fixed trained weights/episode clusters and is not training-seed uncertainty. Exact primary/fresh case overlaps are counted and also excluded in a separate paired effect."])
     assert not out.exists();out.mkdir(parents=True)
     (out/"anchor-confirmation-results.json").write_text(json.dumps(result,indent=2)+"\n");np.savez_compressed(out/"anchor-confirmation-per-case.npz",**arrays)
     import matplotlib

@@ -1,6 +1,6 @@
 # SPT-JEPA
 
-当前执行 [sample-level 旧图像侧信息短测](experiments/anchor20261029/README.md)：原算法加 4 个 anchor 增强设置 ×4 个已有训练种子，各适应 600 更新；另有 4 个先前选出的第二阶段训练。恢复入口见 [RECOVERY_ANCHOR_20261029.md](RECOVERY_ANCHOR_20261029.md)。先看短线任务结果，不自动续跑。
+当前确认 [anchor 探索的正面信号](experiments/anchorconfirm20261029/README.md)：25% anchor dropout 的四种子初筛规划变化为 +4/+3/+5/0 个百分点。12 张卡做相同初始完整状态的短训练复跑，8 张卡做新评测案例与线性 probes，另外 4 张卡继续先前筛选出的第二阶段训练。恢复见 [RECOVERY_ANCHOR_CONFIRM_20261029.md](RECOVERY_ANCHOR_CONFIRM_20261029.md)。这些仍是已有模型的短适应，未证明从头稳定达到89.3%。
 
 [四种子动作排序](experiments/actionrank20261029/results/ACTIONRANK-SHORT.md)已完成全部 120 项端点，未发现跨种子稳定规划收益，已停止。
 
