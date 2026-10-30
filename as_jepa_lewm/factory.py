@@ -9,6 +9,7 @@ MODEL_TARGETS = {
     "frontier": "as_jepa_lewm.frontier.FrontierLeWM",
     "carrier": "as_jepa_lewm.carrier.CarrierLeWM",
     "pathquery": "as_jepa_lewm.pathquery.PathQueryLeWM",
+    "native_lewm": "as_jepa_lewm.native_lewm.NativeLeWM",
 }
 
 

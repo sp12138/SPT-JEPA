@@ -1,0 +1,86 @@
+{
+  "passed": true,
+  "rows": [
+    {
+      "task": "tworoom",
+      "parameters": 18035246,
+      "identical_initial_native_state": true,
+      "loss_gradient_comparisons": [
+        {
+          "training": true,
+          "loss": 0.3501070737838745,
+          "gradient_tensors": 297,
+          "max_gradient_abs_error": 0.0
+        },
+        {
+          "training": false,
+          "loss": 0.15063682198524475,
+          "gradient_tensors": 297,
+          "max_gradient_abs_error": 0.0
+        }
+      ],
+      "normalization_exact": true,
+      "export_load_exact": true,
+      "optimizer_scheduler_roundtrip_exact": true,
+      "resumed_next_update_exact": true,
+      "official_optimizer_factory_defaults_equal": true,
+      "populated_optimizer_parameter_states": 297,
+      "expectations": {
+        "encoder": "active",
+        "predictor": "active",
+        "action_encoder": "active",
+        "projector": "active",
+        "pred_proj": "active"
+      }
+    },
+    {
+      "task": "cube",
+      "parameters": 18035396,
+      "identical_initial_native_state": true,
+      "loss_gradient_comparisons": [
+        {
+          "training": true,
+          "loss": 0.3409028947353363,
+          "gradient_tensors": 297,
+          "max_gradient_abs_error": 0.0
+        },
+        {
+          "training": false,
+          "loss": 0.14980465173721313,
+          "gradient_tensors": 297,
+          "max_gradient_abs_error": 0.0
+        }
+      ],
+      "normalization_exact": true,
+      "export_load_exact": true,
+      "optimizer_scheduler_roundtrip_exact": true,
+      "resumed_next_update_exact": true,
+      "official_optimizer_factory_defaults_equal": true,
+      "populated_optimizer_parameter_states": 297,
+      "expectations": {
+        "encoder": "active",
+        "predictor": "active",
+        "action_encoder": "active",
+        "projector": "active",
+        "pred_proj": "active"
+      }
+    }
+  ],
+  "scheduler_rates_after_updates": {
+    "0": 0.0,
+    "1": 4.0032025620496396e-08,
+    "2": 8.006405124099279e-08,
+    "600": 2.401921537229784e-05,
+    "1248": 4.9959967974379505e-05,
+    "1249": 5e-05,
+    "1250": 4.99999999919324e-05,
+    "2000": 4.9995450004678755e-05
+  },
+  "native_training_source": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/scripts/train/lewm.py",
+  "native_training_sha256": "6d7608097956c7c0d08cd175b57a8744a8f5ceda4688540e876781a4771be724",
+  "source_sha256": "7dcf6893bb28f0e87c00295d932d3a9b62ce80c6552e120bb497c241775c16a3",
+  "native_adapter_sha256": "511311ccc9421e2856f8f7724cf60b6d7a2dc95fa97e04e54e0eefaa047e5b45",
+  "factory_sha256": "782e230f8ee3c9b8fd3650a03c2dfc2f75986c63338f71a12c548c63e8a5cbc3",
+  "trainer_sha256": "04c89b8d3912174018678f2ca1e362304a5b4d2e8af1c08d83fb405fa2762735",
+  "scope": "CPU only. Same native full-size parameters/window8;28px spatial grid for bounded algebra checks,224px preprocessing separately. Native function, train/eval BatchNorm states, RNG, exact losses and gradients; no world-model training or GPU launch. Actual two-step production-batch GPU check remains required."
+}

@@ -1,0 +1,1416 @@
+{
+  "inputs": {
+    "fresh_plan": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/plan.json",
+      "sha256": "9e3f28394213a61952b7c865ba9c52785b1d3ea40eb3d9be15e17f0eef1856a9",
+      "bytes": 36601
+    },
+    "fresh_protocol": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/protocol.json",
+      "sha256": "34d6db20d3c1ae67f85d23e1ce2cc9d90149c7cf59e54bc14ac6dc08208021f9",
+      "bytes": 1027
+    },
+    "diagnostics600": {
+      "path": "/efs/prescottsun/SPT-JEPA/reports/carrier-diagnostics-20261031/results.json",
+      "sha256": "6c73fe132317d42a79431e59bad2bebfb55291711d2962c6af1ce7a49d168577",
+      "bytes": 485414
+    },
+    "learn2000": {
+      "path": "/efs/prescottsun/SPT-JEPA/reports/carrier-learn2000-20261031/results.json",
+      "sha256": "a9bd6c9ac94b5e0fcb393ecca98ff355fc9e3c4a573d4690a1dc048994bb2b53",
+      "bytes": 5267383
+    }
+  },
+  "exits": {
+    "fresh2000": 16,
+    "spatial600": 4,
+    "all_returncodes_zero": true
+  },
+  "fresh2000": [
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 1,
+      "success_rate": 66.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/tworoom-carrier-identity-seed1/metrics.json",
+        "sha256": "23723b668052520d11f51ccbe1cea5a21c391a7139f9cb1c23826447c415586c",
+        "bytes": 204640
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/tworoom-carrier-identity-seed1/model-step0002000",
+      "checkpoint_weights_sha256": "ecb533f5ef663077bb514f057bf79f6ba6c27f4c09eb94f368e6b4622298d9b8",
+      "checkpoint_config_sha256": "421c2e14d257a2d0d730008e5fd43503b0118e5c0364e6291a5962dad1118acd",
+      "manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "unconstrained",
+      "seed": 1,
+      "success_rate": 70.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/tworoom-carrier-unconstrained-seed1/metrics.json",
+        "sha256": "01d2c0dc00cf6ae2f01f23ce3ee42eb2b0837839cc6a0b3fc5e06e21c31d28e1",
+        "bytes": 207481
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/tworoom-carrier-unconstrained-seed1/model-step0002000",
+      "checkpoint_weights_sha256": "43163cd21c47ca625c1a4843ce1342af8bd5fa5b2df92bc95754903982c54b11",
+      "checkpoint_config_sha256": "0967301c9c0ef37b0df6c11b22155666f3dc3999618982ad6cbfcf7c49a1f1e5",
+      "manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 1,
+      "success_rate": 64.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/tworoom-carrier-bounded-seed1/metrics.json",
+        "sha256": "7a8f3d7f62c97c9f6e54a4c4d835a249d9082c9dce9e2b181859303eb15c3be4",
+        "bytes": 205004
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/tworoom-carrier-bounded-seed1/model-step0002000",
+      "checkpoint_weights_sha256": "a25924713e1a3b9dc07bf97184841f0ae1e3d48eb36d34696f55bddebd8f9ce7",
+      "checkpoint_config_sha256": "7aabe6f581cf43f51c8f8e1aeab184b7a148778bd982f8284a79d759643f8fea",
+      "manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 2,
+      "success_rate": 56.00000000000001,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/tworoom-carrier-identity-seed2/metrics.json",
+        "sha256": "a304ec6110d6175e5aaf846900f4bd45f01681da09da5e469a8c0ed41dbc2ed1",
+        "bytes": 214553
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/tworoom-carrier-identity-seed2/model-step0002000",
+      "checkpoint_weights_sha256": "3ca7ad1ebabfe679d246bd7c439f1876620848733cbadafd899501717a9852a6",
+      "checkpoint_config_sha256": "48767e9b2a67ae4e725cc4135314aba1d15aebccc869f699390fbbd5a9267507",
+      "manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "unconstrained",
+      "seed": 2,
+      "success_rate": 78.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/tworoom-carrier-unconstrained-seed2/metrics.json",
+        "sha256": "865a2718b463f669d85ea8e2717115d13990ae96833119aedcd11efdeaa4eee5",
+        "bytes": 197621
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/tworoom-carrier-unconstrained-seed2/model-step0002000",
+      "checkpoint_weights_sha256": "c671db76277163d4421cf360fa54d8d09d7a133324afede2f7174f0d7630121a",
+      "checkpoint_config_sha256": "cae20ec25fa1e175060337a934117acef8745347af7213829fe55161de546a44",
+      "manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 2,
+      "success_rate": 90.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/tworoom-carrier-bounded-seed2/metrics.json",
+        "sha256": "cbd391387e278e1a5f8fecbf9454a09fa4535b0b420e56cde0b4797fb4a3db79",
+        "bytes": 197969
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/tworoom-carrier-bounded-seed2/model-step0002000",
+      "checkpoint_weights_sha256": "ad0cdc6a32883cadde26a471334c08a254d9d067ca9fce2ae6fd36c46ef1550e",
+      "checkpoint_config_sha256": "48c354e0992c6fd90439a804afdeb859fb83bba12b6889630d03d5ffa94fbfa3",
+      "manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 1,
+      "success_rate": 8.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/cube-carrier-identity-seed1/metrics.json",
+        "sha256": "ae9f48b23ce451a66727691d33f12282ccedc082af31140b80b56631f59aa212",
+        "bytes": 25196
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/cube-carrier-identity-seed1/model-step0002000",
+      "checkpoint_weights_sha256": "f81b775443b56602bf39c6d9e29354f5fbc99429f7b6884ba1c95b504a4efb59",
+      "checkpoint_config_sha256": "e0d71a66f6600b009e316a57f5ffb90fffaacfcde66f1de719773611a846c8ed",
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "unconstrained",
+      "seed": 1,
+      "success_rate": 12.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/cube-carrier-unconstrained-seed1/metrics.json",
+        "sha256": "142fab75e81efa6910b0fa0d4a861d7ceba5241952b272021c3477f1cbd47ab3",
+        "bytes": 25200
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/cube-carrier-unconstrained-seed1/model-step0002000",
+      "checkpoint_weights_sha256": "9317f285c6e628703fdfcffbe9cb71c1c36322249b81d44451a64aab4305fbe1",
+      "checkpoint_config_sha256": "ed1c344ea192d05f33a579d4b54c15ace90bf05c15c17382d80048ab41403ddc",
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 1,
+      "success_rate": 10.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/cube-carrier-bounded-seed1/metrics.json",
+        "sha256": "990394875db087483b00d671d9cbe178d0b96a9912ce516d370688e5d5794f45",
+        "bytes": 25194
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/cube-carrier-bounded-seed1/model-step0002000",
+      "checkpoint_weights_sha256": "d3fa85c987024e2e4cf0504fae3f56cc82b78751724c56fec3d45db35f484d92",
+      "checkpoint_config_sha256": "aa1550762814ec5e4c84bec73bc36dba0d55f5b006defa2f19e646fb4782127c",
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 2,
+      "success_rate": 6.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/cube-carrier-identity-seed2/metrics.json",
+        "sha256": "88aed8d3b72e507dc38fae05bf3bbac26512dbd7ae5082e9abf30db88aaf558c",
+        "bytes": 25197
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/cube-carrier-identity-seed2/model-step0002000",
+      "checkpoint_weights_sha256": "dfa2b29f61fbcae7b5afcc457fa42d3d021b52a075d9ce450b40d527f1d7bbba",
+      "checkpoint_config_sha256": "ffcf49a115aaa45c3456e864c07d8ac94d6a34375b9f900aa85ff5399a4e896d",
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "unconstrained",
+      "seed": 2,
+      "success_rate": 6.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/cube-carrier-unconstrained-seed2/metrics.json",
+        "sha256": "ae40a09fdd3224bb96cd003aa6399f7a1662d29680b4860745860773c4ff2fba",
+        "bytes": 25202
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/cube-carrier-unconstrained-seed2/model-step0002000",
+      "checkpoint_weights_sha256": "51e769658e809fb6e9d4688e5d423af7df9b9ea79bc8b671bd8cea93edb6865b",
+      "checkpoint_config_sha256": "fe7c87e20ec133e2e2700d63c5facff67a266c86f4c2ee2a869183c11e004c32",
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 2,
+      "success_rate": 6.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/cube-carrier-bounded-seed2/metrics.json",
+        "sha256": "c7c07eb153a56ee3fc7d75d4211c5cae9036943a19a3479120ae2fd8f6dc29e8",
+        "bytes": 25196
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/cube-carrier-bounded-seed2/model-step0002000",
+      "checkpoint_weights_sha256": "2ae97bb92771ffdcf557cbea0ef51c05c87bab5f12131a36dc08df1d92f5728d",
+      "checkpoint_config_sha256": "897998815d3b46ecdc895e30f94b117ec6e6000ae6ee2736ab31819d974925e9",
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 1,
+      "success_rate": 4.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/tworoom-temporal-forecast-seed1-learn2000/metrics.json",
+        "sha256": "07981d10d03bd4188cd8938670dda1b1f63a02aa6551d97240a668f439bf6937",
+        "bytes": 258116
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed1-learn2000/model-step0002000",
+      "checkpoint_weights_sha256": "affbbb2878c1c337a6beffbc76553b7c495b9e4c36d765412ad427b959805586",
+      "checkpoint_config_sha256": "beeb35ecc413c8e47cbcf208a066093cabeb36e2e4fbac1dec32e672001efdd7",
+      "manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 2,
+      "success_rate": 8.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/tworoom-temporal-forecast-seed2-learn2000/metrics.json",
+        "sha256": "5b1ebadf4e07bee4ff499635477e24b3bb5e4b554ecd386133b9a8513aca3101",
+        "bytes": 251386
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/tworoom-temporal-forecast-seed2-learn2000/model-step0002000",
+      "checkpoint_weights_sha256": "61ac10ff651ec4cf83dc23fadb596ddd8008477476034167b71036e6005d6251",
+      "checkpoint_config_sha256": "82df8dc99cafcd8a030c446a99dc817f699a8dced752d8b4db53ce378b970cb0",
+      "manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "cube",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 1,
+      "success_rate": 6.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/cube-temporal-forecast-seed1-learn2000/metrics.json",
+        "sha256": "2c17f602588f02801952866b9afc0bfeae1c3950597987589d1b692aef514e98",
+        "bytes": 25210
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed1-learn2000/model-step0002000",
+      "checkpoint_weights_sha256": "5cc04bd3ce6da7544fc281d5c0e54630d34e2606d7c78104ecc8d68a3559c37b",
+      "checkpoint_config_sha256": "e63f8cd765b67a5f5676c5ba441edc28a512eca175c5b99d7d57f81323e2528a",
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    },
+    {
+      "task": "cube",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 2,
+      "success_rate": 6.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/cube-temporal-forecast-seed2-learn2000/metrics.json",
+        "sha256": "0b158d221f3a6a50854ef45e52c9b540195d8f2712189b48a6a1ab1f65e28f29",
+        "bytes": 25210
+      },
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/cube-temporal-forecast-seed2-learn2000/model-step0002000",
+      "checkpoint_weights_sha256": "28c0f56054e6fd55a570953f7096e0344323f83975ca7f24be6bd27fa53787c6",
+      "checkpoint_config_sha256": "c6306c81aa9507bd8fedc60a3c4c668675b02694f550d951f07c3b9eb4c429da",
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "policy_seed": 42,
+      "compatibility": {
+        "same_cases_solver_manifest_as_all_previous_fresh_references": true,
+        "exact_checkpoint_as_primary2000": true,
+        "strict_checkpoint_load": true,
+        "weights_and_config_match_predeclared_hashes": true
+      }
+    }
+  ],
+  "fresh600": [
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 1,
+      "success_rate": 42.0
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 2,
+      "success_rate": 28.000000000000004
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 1,
+      "success_rate": 48.0
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 2,
+      "success_rate": 26.0
+    },
+    {
+      "task": "tworoom",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 1,
+      "success_rate": 4.0
+    },
+    {
+      "task": "tworoom",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 2,
+      "success_rate": 8.0
+    },
+    {
+      "task": "tworoom",
+      "family": "released-lewm",
+      "arm": null,
+      "seed": null,
+      "success_rate": 68.0
+    },
+    {
+      "task": "cube",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 1,
+      "success_rate": 8.0
+    },
+    {
+      "task": "cube",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 2,
+      "success_rate": 12.0
+    },
+    {
+      "task": "cube",
+      "family": "released-lewm",
+      "arm": null,
+      "seed": null,
+      "success_rate": 24.0
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 1,
+      "success_rate": 2.0
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 1,
+      "success_rate": 2.0
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 2,
+      "success_rate": 6.0
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 2,
+      "success_rate": 2.0
+    }
+  ],
+  "fresh_scope": "Same previously declared50 validation pairs and policy seed2026103101; zero exact-pair overlap with primary, but same validation pool (episode overlap TwoRoom34/Cube1). Released LeWM budget/exposure/capacity/normalization unmatched.",
+  "spatial600": [
+    {
+      "seed": 1,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/reports/carrier-spatial600-20261031/seed1-readouts/results.json",
+        "sha256": "27cfbb55bb9db08431503796e0e0197cdeb5cfe00b89ecfc0f13e8f2f5133c84",
+        "bytes": 993001
+      },
+      "extraction": {
+        "path": "/efs/prescottsun/SPT-JEPA/reports/carrier-spatial600-20261031/seed1-features/extraction.json",
+        "sha256": "5f5dd1c6ca541b8d118de90bf02dc1f20902d1e7d39a6ea1633218c6613861f2",
+        "bytes": 71920
+      },
+      "cohort": {
+        "training_clips": 128,
+        "training_frames": 1024,
+        "validation_clips": 64,
+        "validation_future_frames": 448,
+        "disjoint_episodes": true
+      },
+      "rows": [
+        {
+          "space": "pooled4x4",
+          "feature": "rp64",
+          "dimensions": 64,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 8.522570899764037,
+              "median_cm": 7.8512563953071375,
+              "p90_cm": 14.095665163832546,
+              "rmse_cm": 9.443964817307261,
+              "fraction_within3cm": 0.05078125
+            },
+            "orientation": {
+              "mean_deg": 17.1106073166008,
+              "median_deg": 14.58011048828171,
+              "p90_deg": 35.04535012947387,
+              "fraction_within15deg": 0.509765625
+            },
+            "xyz_r2": 0.7968062582492598,
+            "orientation_r2": 0.09844268839168746,
+            "joint_fraction": 0.0224609375
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 9.264369024167436,
+              "median_cm": 8.74146787506753,
+              "p90_cm": 15.304855450061902,
+              "rmse_cm": 10.242310474578218,
+              "fraction_within3cm": 0.046875
+            },
+            "orientation": {
+              "mean_deg": 21.723497092603207,
+              "median_deg": 20.618508537733625,
+              "p90_deg": 39.800993387253754,
+              "fraction_within15deg": 0.33705357142857145
+            },
+            "xyz_r2": 0.7383204876401257,
+            "orientation_r2": -0.07076489647415118,
+            "joint_fraction": 0.017857142857142856
+          }
+        },
+        {
+          "space": "pooled4x4",
+          "feature": "rp64",
+          "dimensions": 64,
+          "readout": "rbf",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "bandwidth": 10.760671124247184,
+            "kernel_centered": true,
+            "bandwidth_selection": "All off-diagonal training distances; fixed median, no validation tuning"
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 6.9517662981453645,
+              "median_cm": 6.293369072820202,
+              "p90_cm": 12.782810246447557,
+              "rmse_cm": 8.086950934554787,
+              "fraction_within3cm": 0.1533203125
+            },
+            "orientation": {
+              "mean_deg": 14.087675932792235,
+              "median_deg": 10.857576012137013,
+              "p90_deg": 31.887599837826688,
+              "fraction_within15deg": 0.638671875
+            },
+            "xyz_r2": 0.8510051617212826,
+            "orientation_r2": 0.17959089980047405,
+            "joint_fraction": 0.09765625
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 7.842582544197477,
+              "median_cm": 6.697053727106816,
+              "p90_cm": 14.328392958463409,
+              "rmse_cm": 9.073409776997817,
+              "fraction_within3cm": 0.11830357142857142
+            },
+            "orientation": {
+              "mean_deg": 21.51581278615222,
+              "median_deg": 20.01030568066717,
+              "p90_deg": 39.62876075322395,
+              "fraction_within15deg": 0.37723214285714285
+            },
+            "xyz_r2": 0.7946404523041298,
+            "orientation_r2": -0.019342445724774393,
+            "joint_fraction": 0.046875
+          }
+        },
+        {
+          "space": "pooled4x4",
+          "feature": "rp192",
+          "dimensions": 192,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 5.78161460621338,
+              "median_cm": 5.185254635250021,
+              "p90_cm": 9.70140916169889,
+              "rmse_cm": 6.471478397278633,
+              "fraction_within3cm": 0.140625
+            },
+            "orientation": {
+              "mean_deg": 13.4693637708475,
+              "median_deg": 10.42058358658874,
+              "p90_deg": 30.631124326129065,
+              "fraction_within15deg": 0.646484375
+            },
+            "xyz_r2": 0.9045867655565187,
+            "orientation_r2": 0.26385058026596586,
+            "joint_fraction": 0.0869140625
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 7.741348073383067,
+              "median_cm": 6.983466527994624,
+              "p90_cm": 13.24965151090664,
+              "rmse_cm": 8.850290161818798,
+              "fraction_within3cm": 0.10044642857142858
+            },
+            "orientation": {
+              "mean_deg": 22.48336367492877,
+              "median_deg": 21.68171385462542,
+              "p90_deg": 41.214141857316,
+              "fraction_within15deg": 0.34598214285714285
+            },
+            "xyz_r2": 0.8046160578021337,
+            "orientation_r2": -0.2821589975444019,
+            "joint_fraction": 0.024553571428571428
+          }
+        },
+        {
+          "space": "pooled4x4",
+          "feature": "full",
+          "dimensions": 3072,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 0.09030390213705192,
+              "median_cm": 0.07128158594035022,
+              "p90_cm": 0.17367070483978087,
+              "rmse_cm": 0.11332934633935887,
+              "fraction_within3cm": 1.0
+            },
+            "orientation": {
+              "mean_deg": 0.02553358853069313,
+              "median_deg": 0.0,
+              "p90_deg": 0.06100033299933258,
+              "fraction_within15deg": 1.0
+            },
+            "xyz_r2": 0.999970739187951,
+            "orientation_r2": 0.9996316853928825,
+            "joint_fraction": 1.0
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 7.9473344711323195,
+              "median_cm": 7.118473349400828,
+              "p90_cm": 14.210708742639463,
+              "rmse_cm": 9.052095846855547,
+              "fraction_within3cm": 0.08035714285714286
+            },
+            "orientation": {
+              "mean_deg": 21.73586038717127,
+              "median_deg": 20.962365352437118,
+              "p90_deg": 40.183024672517064,
+              "fraction_within15deg": 0.3638392857142857
+            },
+            "xyz_r2": 0.7956041204804565,
+            "orientation_r2": -1.6807485974412555,
+            "joint_fraction": 0.026785714285714284
+          }
+        },
+        {
+          "space": "pooled4x4",
+          "feature": "full",
+          "dimensions": 3072,
+          "readout": "rbf",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "bandwidth": 73.69193207146662,
+            "kernel_centered": true,
+            "bandwidth_selection": "All off-diagonal training distances; fixed median, no validation tuning"
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 4.380309569076615,
+              "median_cm": 3.6391145942413683,
+              "p90_cm": 8.552752002634657,
+              "rmse_cm": 5.290643045500192,
+              "fraction_within3cm": 0.390625
+            },
+            "orientation": {
+              "mean_deg": 9.379060578487929,
+              "median_deg": 6.513637360769231,
+              "p90_deg": 21.344218048562563,
+              "fraction_within15deg": 0.7978515625
+            },
+            "xyz_r2": 0.9362296898755886,
+            "orientation_r2": 0.3375475644222946,
+            "joint_fraction": 0.3251953125
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 5.6381101104917395,
+              "median_cm": 4.580713466170944,
+              "p90_cm": 11.078436898801952,
+              "rmse_cm": 6.824718085087492,
+              "fraction_within3cm": 0.27232142857142855
+            },
+            "orientation": {
+              "mean_deg": 22.08513448772081,
+              "median_deg": 21.310602020064017,
+              "p90_deg": 40.68244086641025,
+              "fraction_within15deg": 0.39285714285714285
+            },
+            "xyz_r2": 0.8838168140350325,
+            "orientation_r2": -0.04768419500512344,
+            "joint_fraction": 0.11607142857142858
+          }
+        },
+        {
+          "space": "fullpatch",
+          "feature": "rp64",
+          "dimensions": 64,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 10.37596893263845,
+              "median_cm": 9.84720890275836,
+              "p90_cm": 16.654041156834484,
+              "rmse_cm": 11.415111817192573,
+              "fraction_within3cm": 0.033203125
+            },
+            "orientation": {
+              "mean_deg": 17.21085711333967,
+              "median_deg": 15.054866902122384,
+              "p90_deg": 36.85651954757518,
+              "fraction_within15deg": 0.5
+            },
+            "xyz_r2": 0.7031329842027167,
+            "orientation_r2": 0.09805484921591268,
+            "joint_fraction": 0.015625
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 11.68018948394092,
+              "median_cm": 11.348176503309382,
+              "p90_cm": 18.871162156469612,
+              "rmse_cm": 12.809248484066599,
+              "fraction_within3cm": 0.026785714285714284
+            },
+            "orientation": {
+              "mean_deg": 21.028790114847318,
+              "median_deg": 19.50561173493114,
+              "p90_deg": 40.32356286880291,
+              "fraction_within15deg": 0.38839285714285715
+            },
+            "xyz_r2": 0.5907194089458387,
+            "orientation_r2": -0.06187939770097195,
+            "joint_fraction": 0.011160714285714286
+          }
+        },
+        {
+          "space": "fullpatch",
+          "feature": "rp192",
+          "dimensions": 192,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 7.643242770350992,
+              "median_cm": 6.853547530712935,
+              "p90_cm": 13.05967703268189,
+              "rmse_cm": 8.564546255979108,
+              "fraction_within3cm": 0.072265625
+            },
+            "orientation": {
+              "mean_deg": 12.97533221012754,
+              "median_deg": 9.818509007856143,
+              "p90_deg": 29.163993892263395,
+              "fraction_within15deg": 0.6640625
+            },
+            "xyz_r2": 0.8328869654904046,
+            "orientation_r2": 0.27898038342346976,
+            "joint_fraction": 0.0537109375
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 10.13422115923865,
+              "median_cm": 9.481398366937162,
+              "p90_cm": 17.175751059773134,
+              "rmse_cm": 11.339746471034811,
+              "fraction_within3cm": 0.044642857142857144
+            },
+            "orientation": {
+              "mean_deg": 22.466699093858853,
+              "median_deg": 21.708690726761283,
+              "p90_deg": 40.18926319535519,
+              "fraction_within15deg": 0.35267857142857145
+            },
+            "xyz_r2": 0.6792397533671146,
+            "orientation_r2": -0.3550288176853169,
+            "joint_fraction": 0.015625
+          }
+        },
+        {
+          "space": "fullpatch",
+          "feature": "full",
+          "dimensions": 49152,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 0.00039670666030223724,
+              "median_cm": 0.0002647217652699479,
+              "p90_cm": 0.0008082375543538214,
+              "rmse_cm": 0.0005837186255300432,
+              "fraction_within3cm": 1.0
+            },
+            "orientation": {
+              "mean_deg": 2.7129219952557206e-07,
+              "median_deg": 0.0,
+              "p90_deg": 1.2074182697257333e-06,
+              "fraction_within15deg": 1.0
+            },
+            "xyz_r2": 0.9999999992237373,
+            "orientation_r2": 0.9999999901339648,
+            "joint_fraction": 1.0
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 6.720376303572412,
+              "median_cm": 5.428763456141953,
+              "p90_cm": 14.013302186272083,
+              "rmse_cm": 8.261996702211437,
+              "fraction_within3cm": 0.22991071428571427
+            },
+            "orientation": {
+              "mean_deg": 21.01278280221597,
+              "median_deg": 20.63609132963702,
+              "p90_deg": 39.924878113168845,
+              "fraction_within15deg": 0.38839285714285715
+            },
+            "xyz_r2": 0.8297277466220837,
+            "orientation_r2": -0.3720082862650198,
+            "joint_fraction": 0.10267857142857142
+          }
+        }
+      ],
+      "constant": {
+        "xyz": {
+          "mean_cm": 18.621068180354353,
+          "median_cm": 18.000793950507997,
+          "p90_cm": 28.30468157766787,
+          "rmse_cm": 20.022259027726655,
+          "fraction_within3cm": 0.0
+        },
+        "orientation": {
+          "mean_deg": 23.126293699317525,
+          "median_deg": 24.148277527735466,
+          "p90_deg": 41.0244019073157,
+          "fraction_within15deg": 0.328125
+        },
+        "xyz_r2": 0.0,
+        "orientation_r2": 0.0,
+        "joint_fraction": 0.0
+      },
+      "true_label_decoder": {
+        "xyz": {
+          "mean_cm": 0.0,
+          "median_cm": 0.0,
+          "p90_cm": 0.0,
+          "rmse_cm": 0.0,
+          "fraction_within3cm": 1.0
+        },
+        "orientation": {
+          "mean_deg": 0.5520228575968211,
+          "median_deg": 0.48039913720377003,
+          "p90_deg": 1.0600649791683867,
+          "fraction_within15deg": 1.0
+        },
+        "xyz_r2": 1.0,
+        "orientation_r2": 1.0,
+        "joint_fraction": 1.0
+      },
+      "config_checks": {
+        "training_run_config": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/cube-carrier-identity-seed1/config.json",
+          "sha256": "3cbb7ac7fe6770983fb39e47beeff8e376a1a79cc5c5e207d10059ddb274c625",
+          "bytes": 4558
+        },
+        "exported_model_config": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/cube-carrier-identity-seed1/model-step0000600/config.json",
+          "sha256": "e0d71a66f6600b009e316a57f5ffb90fffaacfcde66f1de719773611a846c8ed",
+          "bytes": 3480
+        },
+        "model_parameters_equal": true
+      },
+      "rp64_existing_probe_differences": {
+        "linear": {
+          "invariant_r2_difference": 1.5775385442395873e-09,
+          "mean_angle_difference_deg": 0.0
+        },
+        "rbf": {
+          "invariant_r2_difference": -7.240490429438751e-10,
+          "mean_angle_difference_deg": 0.0
+        }
+      },
+      "scope": "Fixed readout diagnostic, not a training algorithm. Full features use primal-equivalent dual ridge; RBF only two predeclared4x4 controls.1024 correlated frames are128 episodes; high-dimensional failure does not prove missing information. Joint3cm/15deg readout accuracy is neither planning success nor three-step hold."
+    },
+    {
+      "seed": 2,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/reports/carrier-spatial600-20261031/seed2-readouts/results.json",
+        "sha256": "57051122a1185e7de97e1eb9545281fb5811dd27ef9742431465a6e86bc91f00",
+        "bytes": 993087
+      },
+      "extraction": {
+        "path": "/efs/prescottsun/SPT-JEPA/reports/carrier-spatial600-20261031/seed2-features/extraction.json",
+        "sha256": "5ed2b0860774834a96705189860226ea08d8faf4236d06d2d949b3aa557fe72d",
+        "bytes": 71919
+      },
+      "cohort": {
+        "training_clips": 128,
+        "training_frames": 1024,
+        "validation_clips": 64,
+        "validation_future_frames": 448,
+        "disjoint_episodes": true
+      },
+      "rows": [
+        {
+          "space": "pooled4x4",
+          "feature": "rp64",
+          "dimensions": 64,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 8.408627157469823,
+              "median_cm": 7.876470815545303,
+              "p90_cm": 13.653423211863267,
+              "rmse_cm": 9.295343761145022,
+              "fraction_within3cm": 0.048828125
+            },
+            "orientation": {
+              "mean_deg": 17.57601141661447,
+              "median_deg": 14.839598513261652,
+              "p90_deg": 37.46546622683494,
+              "fraction_within15deg": 0.50390625
+            },
+            "xyz_r2": 0.8031513150295394,
+            "orientation_r2": 0.09028303376539648,
+            "joint_fraction": 0.0244140625
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 9.514151764815766,
+              "median_cm": 9.07674261144615,
+              "p90_cm": 14.405266850269793,
+              "rmse_cm": 10.444909541813978,
+              "fraction_within3cm": 0.03794642857142857
+            },
+            "orientation": {
+              "mean_deg": 22.200035055958974,
+              "median_deg": 23.510044820737463,
+              "p90_deg": 39.905816367464034,
+              "fraction_within15deg": 0.36160714285714285
+            },
+            "xyz_r2": 0.7278657431372293,
+            "orientation_r2": -0.08089157483867515,
+            "joint_fraction": 0.008928571428571428
+          }
+        },
+        {
+          "space": "pooled4x4",
+          "feature": "rp64",
+          "dimensions": 64,
+          "readout": "rbf",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "bandwidth": 10.578396036253153,
+            "kernel_centered": true,
+            "bandwidth_selection": "All off-diagonal training distances; fixed median, no validation tuning"
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 6.88993207555698,
+              "median_cm": 6.055231472348897,
+              "p90_cm": 12.539759111617393,
+              "rmse_cm": 8.045796131530143,
+              "fraction_within3cm": 0.17578125
+            },
+            "orientation": {
+              "mean_deg": 14.28775563626154,
+              "median_deg": 11.093539660725712,
+              "p90_deg": 32.0089214430328,
+              "fraction_within15deg": 0.62109375
+            },
+            "xyz_r2": 0.852517783883233,
+            "orientation_r2": 0.17280041449758898,
+            "joint_fraction": 0.1162109375
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 7.88003709984891,
+              "median_cm": 7.015484441558249,
+              "p90_cm": 13.989364095013238,
+              "rmse_cm": 9.170381991729217,
+              "fraction_within3cm": 0.12946428571428573
+            },
+            "orientation": {
+              "mean_deg": 21.747461435529917,
+              "median_deg": 21.495273358149227,
+              "p90_deg": 39.315224775896674,
+              "fraction_within15deg": 0.3638392857142857
+            },
+            "xyz_r2": 0.7902274285000108,
+            "orientation_r2": -0.025916429061284774,
+            "joint_fraction": 0.049107142857142856
+          }
+        },
+        {
+          "space": "pooled4x4",
+          "feature": "rp192",
+          "dimensions": 192,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 5.776148873540721,
+              "median_cm": 5.355216682365507,
+              "p90_cm": 9.714230890228444,
+              "rmse_cm": 6.488315860567784,
+              "fraction_within3cm": 0.1689453125
+            },
+            "orientation": {
+              "mean_deg": 13.044777322156651,
+              "median_deg": 10.38412621373374,
+              "p90_deg": 29.065061669335744,
+              "fraction_within15deg": 0.654296875
+            },
+            "xyz_r2": 0.9040896282263409,
+            "orientation_r2": 0.28760038018388845,
+            "joint_fraction": 0.109375
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 7.515630452237641,
+              "median_cm": 6.677272861421146,
+              "p90_cm": 13.35155834282549,
+              "rmse_cm": 8.487593557618018,
+              "fraction_within3cm": 0.08928571428571429
+            },
+            "orientation": {
+              "mean_deg": 22.76159017728336,
+              "median_deg": 22.734630801242538,
+              "p90_deg": 41.61696043326214,
+              "fraction_within15deg": 0.33035714285714285
+            },
+            "xyz_r2": 0.8203021016366523,
+            "orientation_r2": -0.335160736828237,
+            "joint_fraction": 0.020089285714285716
+          }
+        },
+        {
+          "space": "pooled4x4",
+          "feature": "full",
+          "dimensions": 3072,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 0.08582419208677847,
+              "median_cm": 0.06677927811157423,
+              "p90_cm": 0.16922528927998082,
+              "rmse_cm": 0.1075698593205947,
+              "fraction_within3cm": 1.0
+            },
+            "orientation": {
+              "mean_deg": 0.02837106775608393,
+              "median_deg": 0.0,
+              "p90_deg": 0.0732642497529677,
+              "fraction_within15deg": 1.0
+            },
+            "xyz_r2": 0.9999736377297312,
+            "orientation_r2": 0.9996252165645235,
+            "joint_fraction": 1.0
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 7.879302676805929,
+              "median_cm": 7.025760410870083,
+              "p90_cm": 13.903860169514717,
+              "rmse_cm": 9.00848518895869,
+              "fraction_within3cm": 0.11830357142857142
+            },
+            "orientation": {
+              "mean_deg": 21.132360030729746,
+              "median_deg": 19.452367796241766,
+              "p90_deg": 39.55147266711507,
+              "fraction_within15deg": 0.37723214285714285
+            },
+            "xyz_r2": 0.7975688293483605,
+            "orientation_r2": -1.439160867822085,
+            "joint_fraction": 0.03794642857142857
+          }
+        },
+        {
+          "space": "pooled4x4",
+          "feature": "full",
+          "dimensions": 3072,
+          "readout": "rbf",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "bandwidth": 73.02470817968288,
+            "kernel_centered": true,
+            "bandwidth_selection": "All off-diagonal training distances; fixed median, no validation tuning"
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 4.3998367457371055,
+              "median_cm": 3.7061115363949506,
+              "p90_cm": 8.370218033157723,
+              "rmse_cm": 5.301022764186399,
+              "fraction_within3cm": 0.3740234375
+            },
+            "orientation": {
+              "mean_deg": 9.174183574385092,
+              "median_deg": 6.702225636787212,
+              "p90_deg": 20.237571914575565,
+              "fraction_within15deg": 0.8095703125
+            },
+            "xyz_r2": 0.9359792223302824,
+            "orientation_r2": 0.3485741631470689,
+            "joint_fraction": 0.322265625
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 5.651439377813627,
+              "median_cm": 4.645723945673873,
+              "p90_cm": 11.190934538224678,
+              "rmse_cm": 6.834280225052712,
+              "fraction_within3cm": 0.2857142857142857
+            },
+            "orientation": {
+              "mean_deg": 21.87130437019535,
+              "median_deg": 20.592087753697957,
+              "p90_deg": 40.684450487941675,
+              "fraction_within15deg": 0.38392857142857145
+            },
+            "xyz_r2": 0.8834910164981602,
+            "orientation_r2": -0.03608376554896431,
+            "joint_fraction": 0.10714285714285714
+          }
+        },
+        {
+          "space": "fullpatch",
+          "feature": "rp64",
+          "dimensions": 64,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 10.49670720776081,
+              "median_cm": 9.847001195374888,
+              "p90_cm": 16.85754503836468,
+              "rmse_cm": 11.439325583744814,
+              "fraction_within3cm": 0.017578125
+            },
+            "orientation": {
+              "mean_deg": 17.131610016581053,
+              "median_deg": 14.473495079875459,
+              "p90_deg": 36.04827749404862,
+              "fraction_within15deg": 0.5205078125
+            },
+            "xyz_r2": 0.7018722181900164,
+            "orientation_r2": 0.0955812941002736,
+            "joint_fraction": 0.0087890625
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 11.272749719434813,
+              "median_cm": 10.644672909479693,
+              "p90_cm": 18.54824456381669,
+              "rmse_cm": 12.317993718992035,
+              "fraction_within3cm": 0.020089285714285716
+            },
+            "orientation": {
+              "mean_deg": 21.370982286520196,
+              "median_deg": 19.672533213638182,
+              "p90_deg": 39.96053626585167,
+              "fraction_within15deg": 0.38392857142857145
+            },
+            "xyz_r2": 0.6215105264358823,
+            "orientation_r2": -0.045860289672239984,
+            "joint_fraction": 0.011160714285714286
+          }
+        },
+        {
+          "space": "fullpatch",
+          "feature": "rp192",
+          "dimensions": 192,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 7.83803295019864,
+              "median_cm": 7.269473732897944,
+              "p90_cm": 13.149072520876556,
+              "rmse_cm": 8.782029837059998,
+              "fraction_within3cm": 0.0888671875
+            },
+            "orientation": {
+              "mean_deg": 14.050070610123468,
+              "median_deg": 11.172472423450037,
+              "p90_deg": 31.97395274798605,
+              "fraction_within15deg": 0.62109375
+            },
+            "xyz_r2": 0.8242920453093381,
+            "orientation_r2": 0.24256360208698757,
+            "joint_fraction": 0.0595703125
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 10.30133983824678,
+              "median_cm": 9.669257216921642,
+              "p90_cm": 16.763114514051374,
+              "rmse_cm": 11.396535874983245,
+              "fraction_within3cm": 0.026785714285714284
+            },
+            "orientation": {
+              "mean_deg": 21.924194249991007,
+              "median_deg": 21.329292404378222,
+              "p90_deg": 40.94099230478319,
+              "fraction_within15deg": 0.35044642857142855
+            },
+            "xyz_r2": 0.6760189766862245,
+            "orientation_r2": -0.21587936402694763,
+            "joint_fraction": 0.008928571428571428
+          }
+        },
+        {
+          "space": "fullpatch",
+          "feature": "full",
+          "dimensions": 49152,
+          "readout": "linear",
+          "configuration": {
+            "ridge_mean_loss_units": 0.001,
+            "dual": true
+          },
+          "train": {
+            "xyz": {
+              "mean_cm": 0.00041253454293775833,
+              "median_cm": 0.00026443052200623063,
+              "p90_cm": 0.0008583054125374593,
+              "rmse_cm": 0.0006076370709964621,
+              "fraction_within3cm": 1.0
+            },
+            "orientation": {
+              "mean_deg": 4.0503741639760497e-07,
+              "median_deg": 0.0,
+              "p90_deg": 1.2074182697257333e-06,
+              "fraction_within15deg": 1.0
+            },
+            "xyz_r2": 0.9999999991588177,
+            "orientation_r2": 0.9999999889776252,
+            "joint_fraction": 1.0
+          },
+          "validation": {
+            "xyz": {
+              "mean_cm": 6.739347748504508,
+              "median_cm": 5.105120100140891,
+              "p90_cm": 14.341942642482888,
+              "rmse_cm": 8.390942300891128,
+              "fraction_within3cm": 0.22544642857142858
+            },
+            "orientation": {
+              "mean_deg": 20.86744014822181,
+              "median_deg": 19.797134141429368,
+              "p90_deg": 40.18680619884151,
+              "fraction_within15deg": 0.390625
+            },
+            "xyz_r2": 0.8243713680608822,
+            "orientation_r2": -0.4072686120765012,
+            "joint_fraction": 0.08035714285714286
+          }
+        }
+      ],
+      "constant": {
+        "xyz": {
+          "mean_cm": 18.621068180354353,
+          "median_cm": 18.000793950507997,
+          "p90_cm": 28.30468157766787,
+          "rmse_cm": 20.022259027726655,
+          "fraction_within3cm": 0.0
+        },
+        "orientation": {
+          "mean_deg": 23.126293699317525,
+          "median_deg": 24.148277527735466,
+          "p90_deg": 41.0244019073157,
+          "fraction_within15deg": 0.328125
+        },
+        "xyz_r2": 0.0,
+        "orientation_r2": 0.0,
+        "joint_fraction": 0.0
+      },
+      "true_label_decoder": {
+        "xyz": {
+          "mean_cm": 0.0,
+          "median_cm": 0.0,
+          "p90_cm": 0.0,
+          "rmse_cm": 0.0,
+          "fraction_within3cm": 1.0
+        },
+        "orientation": {
+          "mean_deg": 0.5520228575968211,
+          "median_deg": 0.48039913720377003,
+          "p90_deg": 1.0600649791683867,
+          "fraction_within15deg": 1.0
+        },
+        "xyz_r2": 1.0,
+        "orientation_r2": 1.0,
+        "joint_fraction": 1.0
+      },
+      "config_checks": {
+        "training_run_config": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/cube-carrier-identity-seed2/config.json",
+          "sha256": "ba142262d742fdbe8d272047592944e249ec78d2399109960b64ba1512578ecb",
+          "bytes": 4577
+        },
+        "exported_model_config": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/cube-carrier-identity-seed2/model-step0000600/config.json",
+          "sha256": "ffcf49a115aaa45c3456e864c07d8ac94d6a34375b9f900aa85ff5399a4e896d",
+          "bytes": 3499
+        },
+        "model_parameters_equal": true
+      },
+      "rp64_existing_probe_differences": {
+        "linear": {
+          "invariant_r2_difference": 3.231570566697428e-11,
+          "mean_angle_difference_deg": 0.0
+        },
+        "rbf": {
+          "invariant_r2_difference": 9.532734601691573e-10,
+          "mean_angle_difference_deg": 0.0
+        }
+      },
+      "scope": "Fixed readout diagnostic, not a training algorithm. Full features use primal-equivalent dual ridge; RBF only two predeclared4x4 controls.1024 correlated frames are128 episodes; high-dimensional failure does not prove missing information. Joint3cm/15deg readout accuracy is neither planning success nor three-step hold."
+    }
+  ],
+  "next_action": "Parent reports8F+4TF6000 launched2026-10-31 19:53 (as reported by parent); this summary does not inspect their active results.",
+  "report_script": {
+    "path": "/efs/prescottsun/SPT-JEPA/code/experiments/carrier_progress_20261031/report_followup.py",
+    "sha256": "2b1916a6aab18cd5102c194ed153548d7af3ea103d09c3a0ed7d04ea3ddde9e3",
+    "bytes": 14563
+  }
+}

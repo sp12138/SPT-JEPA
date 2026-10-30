@@ -1,0 +1,635 @@
+{
+  "report": "/efs/prescottsun/SPT-JEPA/reports/carrier-local1024-20261031",
+  "report_sha256": "794c75faa24e778fad5007fc177202656d34662fd39d68e8bc68ebe42a6e22b7",
+  "protocol": {
+    "projection_seed": 20261030,
+    "representations": [
+      "patch16_shared4",
+      "cell8_shared16",
+      "dense1024"
+    ],
+    "output_dimensions": 1024,
+    "channel_matrix_rule": "N(0,1), SeedSequence([20261030,192,16]); first4/sqrt4 or all16/sqrt16, shared at every address.",
+    "dense_rule": "Independent128-column blocks: SeedSequence([20261030,input_dim,1024,block]); N(0,1/1024).",
+    "dense_projection_block_columns": 128,
+    "training_clips": 128,
+    "training_frames": 1024,
+    "validation_clips": 64,
+    "validation_future_frames": 448,
+    "readouts": [
+      "linear",
+      "rbf"
+    ],
+    "coordinate_standardization": "Training mean/std only, floor1e-12.",
+    "ridge_mean_loss_units": 0.001,
+    "rbf_bandwidth": "Median off-diagonal standardized training distance.",
+    "label_use": "Existing diagnostic readouts only; neither projection nor feature extraction sees labels.",
+    "original_feature_root": "/efs/prescottsun/SPT-JEPA/reports/carrier-spatial600-20261031",
+    "source_sha256": "8097a82d5af2c739e5be106684ede3debb87bf9a716a6ccdd06045e649fb00b6",
+    "spatial_helper_sha256": "b01d6ded47aa91e67048f3b6a8acdb37a454c4300f125d787b53a42e97ad64c6",
+    "orientation_helper_sha256": "3dbe1fd09eabfc85073a264bff384624dafbc6996d3302c26baf8335699598b6"
+  },
+  "contracts": {
+    "passed": true,
+    "spatial_address_preserved": true,
+    "pooling_is_mean2x2": true,
+    "shared_channel_prefix": true,
+    "dense_deterministic": true,
+    "output_dimensions": 1024
+  },
+  "seconds": 6.097169876098633,
+  "peak_rss_gib": 0.5548782348632812,
+  "no_gpu_or_encoder_calls": true,
+  "no_validation_tuning": true,
+  "interpretation": "Exactly three fixed1024-D measurements, two predeclared readouts and both seeds. Physical labels train only diagnostic readouts.1024 correlated training frames are128 episodes. High-dimensional ridge/RBF failure does not prove absent information; readout scores are not planning success. Local-vs-dense differences mix retained information, covariance and finite-sample readout bias. A new world-model algorithm and broad novelty are not established.",
+  "rows": [
+    {
+      "seed": 1,
+      "representation": "patch16_shared4",
+      "dimensions": 1024,
+      "readout": "linear",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "dual": true
+      },
+      "standardization": {
+        "std_min": 0.04152373710989268,
+        "std_max": 7.7996263665094645,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1024.0000000000002
+      },
+      "train": {
+        "orientation_r2": 0.8967253226396817,
+        "mean_angle_deg": 2.6476207804024594,
+        "within15deg": 0.9970703125,
+        "xyz_r2": [
+          0.9894491447087053,
+          0.9973276575190716,
+          0.9654084283795734
+        ],
+        "xyz_mean_cm": 1.6860889594440491,
+        "xyz_median_cm": 1.429464446459757,
+        "within3cm": 0.884765625,
+        "joint": 0.8828125
+      },
+      "validation": {
+        "orientation_r2": -8.629631240710147,
+        "mean_angle_deg": 21.886539191847884,
+        "within15deg": 0.38169642857142855,
+        "xyz_r2": [
+          -0.27181113369141174,
+          0.5362711624893666,
+          -3.1595539904122596
+        ],
+        "xyz_mean_cm": 17.19913618755997,
+        "xyz_median_cm": 12.492917639921899,
+        "within3cm": 0.029017857142857144,
+        "joint": 0.011160714285714286
+      }
+    },
+    {
+      "seed": 1,
+      "representation": "patch16_shared4",
+      "dimensions": 1024,
+      "readout": "rbf",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "bandwidth": 42.615083759017004,
+        "kernel_centered": true,
+        "bandwidth_selection": "All off-diagonal training distances; fixed median, no validation tuning"
+      },
+      "standardization": {
+        "std_min": 0.04152373710989268,
+        "std_max": 7.7996263665094645,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1024.0000000000002
+      },
+      "train": {
+        "orientation_r2": 0.42403595354642554,
+        "mean_angle_deg": 7.91146855595411,
+        "within15deg": 0.8583984375,
+        "xyz_r2": [
+          0.879192965333779,
+          0.9661186391328819,
+          0.6654558660469865
+        ],
+        "xyz_mean_cm": 5.487975725001356,
+        "xyz_median_cm": 4.520741691847327,
+        "within3cm": 0.294921875,
+        "joint": 0.2666015625
+      },
+      "validation": {
+        "orientation_r2": -0.033565225379228014,
+        "mean_angle_deg": 20.82218423032116,
+        "within15deg": 0.40625,
+        "xyz_r2": [
+          0.7687865336427525,
+          0.8959429140406372,
+          0.3903989681610841
+        ],
+        "xyz_mean_cm": 7.625016789186547,
+        "xyz_median_cm": 6.357352111028714,
+        "within3cm": 0.14508928571428573,
+        "joint": 0.060267857142857144
+      }
+    },
+    {
+      "seed": 1,
+      "representation": "cell8_shared16",
+      "dimensions": 1024,
+      "readout": "linear",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "dual": true
+      },
+      "standardization": {
+        "std_min": 0.020893203368436822,
+        "std_max": 2.6996162048325596,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1023.9999999999999
+      },
+      "train": {
+        "orientation_r2": 0.9036283389052279,
+        "mean_angle_deg": 2.58583318280572,
+        "within15deg": 0.998046875,
+        "xyz_r2": [
+          0.9915036520347698,
+          0.9970528216652014,
+          0.9768490228719453
+        ],
+        "xyz_mean_cm": 1.5095420685106826,
+        "xyz_median_cm": 1.3198108588937596,
+        "within3cm": 0.931640625,
+        "joint": 0.9296875
+      },
+      "validation": {
+        "orientation_r2": -4.862837619045839,
+        "mean_angle_deg": 22.323958401096288,
+        "within15deg": 0.35044642857142855,
+        "xyz_r2": [
+          0.10123440030476738,
+          0.7801645770828525,
+          -0.7465303908867789
+        ],
+        "xyz_mean_cm": 12.106231463095586,
+        "xyz_median_cm": 9.413931863844077,
+        "within3cm": 0.07589285714285714,
+        "joint": 0.026785714285714284
+      }
+    },
+    {
+      "seed": 1,
+      "representation": "cell8_shared16",
+      "dimensions": 1024,
+      "readout": "rbf",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "bandwidth": 42.969641756765185,
+        "kernel_centered": true,
+        "bandwidth_selection": "All off-diagonal training distances; fixed median, no validation tuning"
+      },
+      "standardization": {
+        "std_min": 0.020893203368436822,
+        "std_max": 2.6996162048325596,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1023.9999999999999
+      },
+      "train": {
+        "orientation_r2": 0.3829761098488308,
+        "mean_angle_deg": 8.868678599774169,
+        "within15deg": 0.8349609375,
+        "xyz_r2": [
+          0.9042359952159523,
+          0.9713899625379412,
+          0.7388986466458084
+        ],
+        "xyz_mean_cm": 4.829019781161522,
+        "xyz_median_cm": 3.9418016673060525,
+        "within3cm": 0.3583984375,
+        "joint": 0.3125
+      },
+      "validation": {
+        "orientation_r2": -0.07492145013304774,
+        "mean_angle_deg": 22.14946325952108,
+        "within15deg": 0.35044642857142855,
+        "xyz_r2": [
+          0.811770762034139,
+          0.9307136551564132,
+          0.5126996516856599
+        ],
+        "xyz_mean_cm": 6.6461637420437825,
+        "xyz_median_cm": 5.390170496374662,
+        "within3cm": 0.21205357142857142,
+        "joint": 0.07366071428571429
+      }
+    },
+    {
+      "seed": 1,
+      "representation": "dense1024",
+      "dimensions": 1024,
+      "readout": "linear",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "dual": true
+      },
+      "standardization": {
+        "std_min": 1.6303393106295145,
+        "std_max": 3.4552024246653676,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1024.0
+      },
+      "train": {
+        "orientation_r2": 0.9788229332932646,
+        "mean_angle_deg": 1.0983029852763786,
+        "within15deg": 1.0,
+        "xyz_r2": [
+          0.9960616981137834,
+          0.9987684881327743,
+          0.9898929869985954
+        ],
+        "xyz_mean_cm": 1.0416564797966792,
+        "xyz_median_cm": 0.9564029598566917,
+        "within3cm": 0.9970703125,
+        "joint": 0.9970703125
+      },
+      "validation": {
+        "orientation_r2": -5.685830926796843,
+        "mean_angle_deg": 23.51166213566956,
+        "within15deg": 0.3125,
+        "xyz_r2": [
+          -0.05068950194389088,
+          0.686447248989702,
+          -2.6541895380640574
+        ],
+        "xyz_mean_cm": 17.71532163131679,
+        "xyz_median_cm": 15.788297963324968,
+        "within3cm": 0.006696428571428571,
+        "joint": 0.002232142857142857
+      }
+    },
+    {
+      "seed": 1,
+      "representation": "dense1024",
+      "dimensions": 1024,
+      "readout": "rbf",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "bandwidth": 45.05840194761092,
+        "kernel_centered": true,
+        "bandwidth_selection": "All off-diagonal training distances; fixed median, no validation tuning"
+      },
+      "standardization": {
+        "std_min": 1.6303393106295145,
+        "std_max": 3.4552024246653676,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1024.0
+      },
+      "train": {
+        "orientation_r2": 0.3645349362893118,
+        "mean_angle_deg": 8.833675622666458,
+        "within15deg": 0.8310546875,
+        "xyz_r2": [
+          0.8466179426520215,
+          0.9609210086594404,
+          0.5867277149944252
+        ],
+        "xyz_mean_cm": 6.097129736886518,
+        "xyz_median_cm": 5.103669962649638,
+        "within3cm": 0.2392578125,
+        "joint": 0.201171875
+      },
+      "validation": {
+        "orientation_r2": -0.064776457919268,
+        "mean_angle_deg": 22.532883766947776,
+        "within15deg": 0.36160714285714285,
+        "xyz_r2": [
+          0.7050165523299669,
+          0.9259609901983217,
+          0.31494872823842357
+        ],
+        "xyz_mean_cm": 7.875457298871233,
+        "xyz_median_cm": 6.507919819231921,
+        "within3cm": 0.12723214285714285,
+        "joint": 0.046875
+      }
+    },
+    {
+      "seed": 2,
+      "representation": "patch16_shared4",
+      "dimensions": 1024,
+      "readout": "linear",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "dual": true
+      },
+      "standardization": {
+        "std_min": 0.02519421956604733,
+        "std_max": 8.762048445105558,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1023.9999999999997
+      },
+      "train": {
+        "orientation_r2": 0.9093872909101983,
+        "mean_angle_deg": 2.3992977530369055,
+        "within15deg": 0.99609375,
+        "xyz_r2": [
+          0.9900041495278138,
+          0.9962829072233815,
+          0.9593056408497955
+        ],
+        "xyz_mean_cm": 1.8017974148858635,
+        "xyz_median_cm": 1.5347887097332364,
+        "within3cm": 0.8388671875,
+        "joint": 0.837890625
+      },
+      "validation": {
+        "orientation_r2": -10.972521700149075,
+        "mean_angle_deg": 23.617907189977732,
+        "within15deg": 0.2857142857142857,
+        "xyz_r2": [
+          0.06605632735342737,
+          0.6023522844650415,
+          -4.970512468503997
+        ],
+        "xyz_mean_cm": 17.51438874309523,
+        "xyz_median_cm": 12.609966774932035,
+        "within3cm": 0.033482142857142856,
+        "joint": 0.004464285714285714
+      }
+    },
+    {
+      "seed": 2,
+      "representation": "patch16_shared4",
+      "dimensions": 1024,
+      "readout": "rbf",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "bandwidth": 42.048377728998815,
+        "kernel_centered": true,
+        "bandwidth_selection": "All off-diagonal training distances; fixed median, no validation tuning"
+      },
+      "standardization": {
+        "std_min": 0.02519421956604733,
+        "std_max": 8.762048445105558,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1023.9999999999997
+      },
+      "train": {
+        "orientation_r2": 0.4256556445193058,
+        "mean_angle_deg": 7.815541717134334,
+        "within15deg": 0.84375,
+        "xyz_r2": [
+          0.8932081898973577,
+          0.9661590099496161,
+          0.6529472960807853
+        ],
+        "xyz_mean_cm": 5.464991365436573,
+        "xyz_median_cm": 4.6157532133398,
+        "within3cm": 0.3154296875,
+        "joint": 0.28125
+      },
+      "validation": {
+        "orientation_r2": -0.051698988907203924,
+        "mean_angle_deg": 21.896399688622473,
+        "within15deg": 0.36830357142857145,
+        "xyz_r2": [
+          0.8065726272391607,
+          0.9231393595280254,
+          0.32155814159235196
+        ],
+        "xyz_mean_cm": 7.598065967008096,
+        "xyz_median_cm": 6.485070363113832,
+        "within3cm": 0.14508928571428573,
+        "joint": 0.05133928571428571
+      }
+    },
+    {
+      "seed": 2,
+      "representation": "cell8_shared16",
+      "dimensions": 1024,
+      "readout": "linear",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "dual": true
+      },
+      "standardization": {
+        "std_min": 0.012311117593871773,
+        "std_max": 2.594063416052276,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1023.9999999999997
+      },
+      "train": {
+        "orientation_r2": 0.9186414886711598,
+        "mean_angle_deg": 2.3479246006337577,
+        "within15deg": 0.998046875,
+        "xyz_r2": [
+          0.992883684892118,
+          0.9977809153045198,
+          0.9789025530250047
+        ],
+        "xyz_mean_cm": 1.3945626856957591,
+        "xyz_median_cm": 1.2028107205848448,
+        "within3cm": 0.9501953125,
+        "joint": 0.9501953125
+      },
+      "validation": {
+        "orientation_r2": -5.729559077135176,
+        "mean_angle_deg": 22.619076046301302,
+        "within15deg": 0.3325892857142857,
+        "xyz_r2": [
+          0.44209871554809843,
+          -0.07625421005830013,
+          -0.7454147707449568
+        ],
+        "xyz_mean_cm": 13.360459591054234,
+        "xyz_median_cm": 10.012252205092759,
+        "within3cm": 0.03571428571428571,
+        "joint": 0.011160714285714286
+      }
+    },
+    {
+      "seed": 2,
+      "representation": "cell8_shared16",
+      "dimensions": 1024,
+      "readout": "rbf",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "bandwidth": 42.71055497677298,
+        "kernel_centered": true,
+        "bandwidth_selection": "All off-diagonal training distances; fixed median, no validation tuning"
+      },
+      "standardization": {
+        "std_min": 0.012311117593871773,
+        "std_max": 2.594063416052276,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1023.9999999999997
+      },
+      "train": {
+        "orientation_r2": 0.3765895894741371,
+        "mean_angle_deg": 9.16674232637791,
+        "within15deg": 0.8125,
+        "xyz_r2": [
+          0.9111589642309742,
+          0.9724863815625083,
+          0.7064582988626171
+        ],
+        "xyz_mean_cm": 4.966177069537478,
+        "xyz_median_cm": 4.044315563337832,
+        "within3cm": 0.353515625,
+        "joint": 0.30078125
+      },
+      "validation": {
+        "orientation_r2": -0.06065190607363391,
+        "mean_angle_deg": 21.594979439535376,
+        "within15deg": 0.39285714285714285,
+        "xyz_r2": [
+          0.838747124162238,
+          0.9296338489868342,
+          0.4596530782486248
+        ],
+        "xyz_mean_cm": 6.739194647048517,
+        "xyz_median_cm": 5.524108555776254,
+        "within3cm": 0.22544642857142858,
+        "joint": 0.08035714285714286
+      }
+    },
+    {
+      "seed": 2,
+      "representation": "dense1024",
+      "dimensions": 1024,
+      "readout": "linear",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "dual": true
+      },
+      "standardization": {
+        "std_min": 1.585854230110364,
+        "std_max": 2.9125849244571627,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1023.9999999999999
+      },
+      "train": {
+        "orientation_r2": 0.9778037380626543,
+        "mean_angle_deg": 1.0997122695070056,
+        "within15deg": 1.0,
+        "xyz_r2": [
+          0.9966843753018795,
+          0.9985385747663706,
+          0.9900905146022103
+        ],
+        "xyz_mean_cm": 1.0441924215187692,
+        "xyz_median_cm": 0.9455428755132498,
+        "within3cm": 0.9921875,
+        "joint": 0.9921875
+      },
+      "validation": {
+        "orientation_r2": -6.310531777179161,
+        "mean_angle_deg": 22.520045143562164,
+        "within15deg": 0.32589285714285715,
+        "xyz_r2": [
+          -0.14596895435736834,
+          0.6698340443622838,
+          -3.404152245183754
+        ],
+        "xyz_mean_cm": 18.78409050033793,
+        "xyz_median_cm": 16.478421697836115,
+        "within3cm": 0.008928571428571428,
+        "joint": 0.002232142857142857
+      }
+    },
+    {
+      "seed": 2,
+      "representation": "dense1024",
+      "dimensions": 1024,
+      "readout": "rbf",
+      "configuration": {
+        "ridge_mean_loss_units": 0.001,
+        "bandwidth": 45.00869839556614,
+        "kernel_centered": true,
+        "bandwidth_selection": "All off-diagonal training distances; fixed median, no validation tuning"
+      },
+      "standardization": {
+        "std_min": 1.585854230110364,
+        "std_max": 2.9125849244571627,
+        "floored_coordinates": 0,
+        "standardized_gram_mean_diagonal": 1023.9999999999999
+      },
+      "train": {
+        "orientation_r2": 0.3498102529956143,
+        "mean_angle_deg": 9.192683365627566,
+        "within15deg": 0.8232421875,
+        "xyz_r2": [
+          0.8378309485718711,
+          0.9592777988770128,
+          0.5698964718986136
+        ],
+        "xyz_mean_cm": 6.223521431857367,
+        "xyz_median_cm": 5.254673565780651,
+        "within3cm": 0.2294921875,
+        "joint": 0.19140625
+      },
+      "validation": {
+        "orientation_r2": -0.06253352137812107,
+        "mean_angle_deg": 22.33679163975145,
+        "within15deg": 0.34598214285714285,
+        "xyz_r2": [
+          0.6794650462518909,
+          0.9219236628755924,
+          0.31393143471167806
+        ],
+        "xyz_mean_cm": 8.054632318793708,
+        "xyz_median_cm": 6.759234680187406,
+        "within3cm": 0.08928571428571429,
+        "joint": 0.03125
+      }
+    }
+  ],
+  "paired_location_readouts": [
+    {
+      "candidate": "patch16_shared4",
+      "reference": "dense1024",
+      "readout": "rbf",
+      "seeds": [
+        {
+          "seed": 1,
+          "mean_improvement_cm": 0.2504405096846864,
+          "fraction_windows_improved": 0.578125
+        },
+        {
+          "seed": 2,
+          "mean_improvement_cm": 0.45656635178561256,
+          "fraction_windows_improved": 0.671875
+        }
+      ],
+      "mean_improvement_cm": 0.3535034307351495,
+      "shared_window_bootstrap_ci95_cm": [
+        0.0494714117249341,
+        0.6593691856365568
+      ],
+      "scope": "Exploratory paired64-window resampling shared across two fixed encoder seeds; not training-seed uncertainty, not a planning-performance interval."
+    },
+    {
+      "candidate": "cell8_shared16",
+      "reference": "dense1024",
+      "readout": "rbf",
+      "seeds": [
+        {
+          "seed": 1,
+          "mean_improvement_cm": 1.2292935568274501,
+          "fraction_windows_improved": 0.84375
+        },
+        {
+          "seed": 2,
+          "mean_improvement_cm": 1.315437671745191,
+          "fraction_windows_improved": 0.84375
+        }
+      ],
+      "mean_improvement_cm": 1.2723656142863207,
+      "shared_window_bootstrap_ci95_cm": [
+        0.9987448704918475,
+        1.5540117479721887
+      ],
+      "scope": "Exploratory paired64-window resampling shared across two fixed encoder seeds; not training-seed uncertainty, not a planning-performance interval."
+    }
+  ]
+}

@@ -78,6 +78,9 @@ class TrainModule(pl.LightningModule):
         for name,param in self.model.named_parameters():
             if name.startswith(("encoder.","pool.")):param.grad=None
     def configure_optimizers(self):
+        native_config=getattr(self.model,"training_optimizer_config",None)
+        if native_config is not None:
+            return native_config(self.cfg["max_steps"])
         renderer=[];other=[]
         for name,param in self.model.named_parameters():
             if param.requires_grad:(renderer if name.startswith("renderer.") else other).append(param)
