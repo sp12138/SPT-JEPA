@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader,Subset
 from as_jepa_tools.benchmark_data import BenchmarkWindows
 from as_jepa_lewm.model import ASJepaLeWM
 from as_jepa_lewm.robust import RobustLeWM
+from as_jepa_lewm.factory import build_model, gradient_expectations
 from vforge.models.as_jepa.pixels import pack
 from vforge.ops import initialize_ops,OpsConfig
 
@@ -24,10 +25,19 @@ def main():
     audit=dict(step=step,model_finite=finite(state["state_dict"]),optimizer_finite=finite(state["optimizer_states"]),scheduler_finite=finite(state["lr_schedulers"]),cursor=state["campaign_samples"]==step*cfg["batch_size"],rng_present=bool(state.get("campaign_rng")),optimizer_present=bool(state["optimizer_states"]),scheduler_present=bool(state["lr_schedulers"]),portable_equal=all(torch.equal(v,state["state_dict"]["model."+k]) for k,v in weights.items()))
     assert all(v for k,v in audit.items() if k!="step"),audit
     trace=[json.loads(x) for x in (root/"metrics.jsonl").read_text().splitlines()];assert all(finite(x) for x in trace)
-    audit["gradient_max"]={k:max(x.get("grad_norm_"+k,0.) for x in trace) for k in ["encoder","predictor","renderer"]};assert all(v>0 for v in audit["gradient_max"].values())
     del state
     initialize_ops(OpsConfig(backend="sdpa",allow_fallback=False),device=torch.device("cuda"),parallel_state=None)
-    model=(RobustLeWM if cfg.get("robust_variant") else ASJepaLeWM)(**cfg["model"]).cuda().eval();model.load_state_dict(weights,strict=True);del weights
+    model=build_model(cfg).cuda().eval();model.load_state_dict(weights,strict=True);del weights
+    expectations=gradient_expectations(model,cfg)
+    audit["gradient_max"]={k:max(x.get("grad_norm_"+k,0.) for x in trace) for k in expectations}
+    audit["gradient_expectations"]=expectations
+    for prefix,expectation in expectations.items():
+        parameters=[p for name,p in model.named_parameters() if name.startswith(prefix+".")]
+        assert parameters,prefix
+        if expectation=="active":assert audit["gradient_max"][prefix]>0,prefix
+        if expectation=="frozen":
+            assert all(not p.requires_grad for p in parameters),prefix
+            assert audit["gradient_max"][prefix]==0,prefix
     ds=BenchmarkWindows(cfg["data"],window=cfg["model"]["window"],split="validation")
     ids=np.random.default_rng(1042).choice(len(ds),a.cases,replace=False);loader=DataLoader(Subset(ds,ids.tolist()),batch_size=2,num_workers=0)
     rows=[];embeddings=[]

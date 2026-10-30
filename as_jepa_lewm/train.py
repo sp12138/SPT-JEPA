@@ -8,6 +8,7 @@ import lightning as pl
 from lightning.pytorch.callbacks import Callback
 from as_jepa_tools.data import PushTWindows,FullPushTWindows,seed_worker
 from as_jepa_lewm.model import ASJepaLeWM
+from as_jepa_lewm.factory import build_model, model_target, gradient_expectations
 from as_jepa_tools.benchmark_data import make_training_dataset
 from vforge.ops import OpsConfig,initialize_ops
 
@@ -30,7 +31,7 @@ class WindowSampler(Sampler):
 
 class TrainModule(pl.LightningModule):
     def __init__(self,cfg):
-        super().__init__();self.cfg=cfg;self.model=(__import__("as_jepa_lewm.frontier",fromlist=["FrontierLeWM"]).FrontierLeWM if cfg.get("frontier_variant",False) else (__import__("as_jepa_lewm.robust",fromlist=["RobustLeWM"]).RobustLeWM if cfg.get("robust_variant",False) else (__import__("as_jepa_lewm.research",fromlist=["ResearchLeWM"]).ResearchLeWM if cfg.get("research_variant",False) else ASJepaLeWM)))(**cfg["model"]);self.last_metrics={};self.initial_step=0;self.samples_consumed=0
+        super().__init__();self.cfg=cfg;self.model=build_model(cfg);self.last_metrics={};self.initial_step=0;self.samples_consumed=0
         self.save_hyperparameters(cfg)
     def training_step(self,batch,batch_idx):
         if self.cfg.get("fork_data"):
@@ -68,7 +69,7 @@ class TrainModule(pl.LightningModule):
             for p,g in self._constrained:p.grad=g
             del self._constrained
         if (self.global_step+1)%100==0:
-            for prefix in ["encoder","predictor","renderer"]:
+            for prefix in gradient_expectations(self.model,self.cfg):
                 total=sum(p.grad.float().square().sum() for name,p in self.model.named_parameters() if name.startswith(prefix+".") and p.grad is not None)
                 self.last_metrics["grad_norm_"+prefix]=float(torch.as_tensor(total).sqrt())
         if self.global_step>=self.cfg.get("freeze_encoder_steps",0):return
@@ -107,7 +108,7 @@ class TrainModule(pl.LightningModule):
         if self.cfg.get("export_initial",False):
             initial=Path(self.cfg["output"])/"initial-model";initial.mkdir(exist_ok=True)
             torch.save(self.model.state_dict(),initial/"weights.pt")
-            (initial/"config.json").write_text(json.dumps(dict(_target_="as_jepa_lewm.frontier.FrontierLeWM" if self.cfg.get("frontier_variant") else ("as_jepa_lewm.robust.RobustLeWM" if self.cfg.get("robust_variant") else ("as_jepa_lewm.research.ResearchLeWM" if self.cfg.get("research_variant") else "as_jepa_lewm.model.ASJepaLeWM")),**self.cfg["model"]),indent=2))
+            (initial/"config.json").write_text(json.dumps(dict(_target_=model_target(self.cfg),**self.cfg["model"]),indent=2))
         (Path(self.cfg["output"])/"initial_scale.json").write_text(json.dumps(dict(target_std=self.cfg["calibrate_state_std"],original_std=float(current),scale=scale,mean_before=values.mean(0).cpu().tolist(),note="One fixed affine head initialization from 128 train windows; no target labels, batch normalization, stop-gradient or objective change."),indent=2))
     def on_save_checkpoint(self,checkpoint):
         checkpoint["campaign_rng"]=dict(python=random.getstate(),numpy=np.random.get_state(),torch=torch.get_rng_state(),cuda=torch.cuda.get_rng_state_all())
@@ -136,7 +137,7 @@ class PersistentProgress(Callback):
         trainer.save_checkpoint(tmp);tmp.replace(path)
         checkpoint=self.root/f"model-step{trainer.global_step:07d}";checkpoint.mkdir(exist_ok=True)
         torch.save(module.model.state_dict(),checkpoint/"weights.pt")
-        (checkpoint/"config.json").write_text(json.dumps(dict(_target_="as_jepa_lewm.frontier.FrontierLeWM" if self.cfg.get("frontier_variant") else ("as_jepa_lewm.robust.RobustLeWM" if self.cfg.get("robust_variant") else ("as_jepa_lewm.research.ResearchLeWM" if self.cfg.get("research_variant") else "as_jepa_lewm.model.ASJepaLeWM")),**self.cfg["model"]),indent=2))
+        (checkpoint/"config.json").write_text(json.dumps(dict(_target_=model_target(self.cfg),**self.cfg["model"]),indent=2))
         # Keep just the last two portable model exports, plus the resumable checkpoint.
         exports=sorted(self.root.glob("model-step*"))
         import shutil
@@ -175,11 +176,11 @@ def main():
             for block in iter(lambda:handle.read(1024*1024),b""):digest.update(block)
         (root/"initial_encoder.json").write_text(json.dumps(dict(source=str(source),sha256=digest.hexdigest(),scope="Encoder-only warm initialization from our L0; pool, prior, renderer and optimizer are fresh"),indent=2))
         del weights,encoder
-    (root/"model_size.json").write_text(json.dumps(dict(total=sum(p.numel() for p in module.model.parameters()),encoder=sum(p.numel() for p in module.model.encoder.parameters()),prior=sum(p.numel() for p in module.model.predictor.parameters()),renderer=sum(p.numel() for p in module.model.renderer.parameters()) if module.model.renderer else 0),indent=2))
+    (root/"model_size.json").write_text(json.dumps(dict(total=sum(p.numel() for p in module.model.parameters()),trainable=sum(p.numel() for p in module.model.parameters() if p.requires_grad),frozen=sum(p.numel() for p in module.model.parameters() if not p.requires_grad),encoder=sum(p.numel() for p in module.model.encoder.parameters()),prior=sum(p.numel() for p in module.model.predictor.parameters()),renderer=sum(p.numel() for p in module.model.renderer.parameters()) if module.model.renderer else 0),indent=2))
     if cfg.get("record_initial_weights",False) and not args.resume:
         initial=root/"initial-model";initial.mkdir(exist_ok=True)
         torch.save(module.model.state_dict(),initial/"weights.pt")
-        target="as_jepa_lewm.frontier.FrontierLeWM" if cfg.get("frontier_variant") else ("as_jepa_lewm.robust.RobustLeWM" if cfg.get("robust_variant") else ("as_jepa_lewm.research.ResearchLeWM" if cfg.get("research_variant") else "as_jepa_lewm.model.ASJepaLeWM"))
+        target=model_target(cfg)
         (initial/"config.json").write_text(json.dumps(dict(_target_=target,**cfg["model"]),indent=2))
     checkpoint=root/"last.ckpt";resume=str(checkpoint) if args.resume and checkpoint.exists() else None
     start=int(torch.load(checkpoint,map_location="cpu",weights_only=False).get("campaign_samples",0)) if resume else 0

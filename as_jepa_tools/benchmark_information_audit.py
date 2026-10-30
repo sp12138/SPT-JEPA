@@ -15,6 +15,7 @@ from torch.utils.data import DataLoader, Subset
 
 from as_jepa_lewm.model import ASJepaLeWM
 from as_jepa_lewm.robust import RobustLeWM
+from as_jepa_lewm.factory import build_model
 from as_jepa_tools.benchmark_data import BenchmarkWindows
 from vforge.models.as_jepa.pixels import pack, unpack
 from vforge.ops import OpsConfig, initialize_ops
@@ -80,6 +81,10 @@ def objective_gradients(model, batch, step, ramp_steps, seed):
 
     def capture(info):
         result = original(info)
+        if not result["emb"].requires_grad:
+            # A frozen carrier has no encoder gradient. This read-only assay
+            # differentiates the objective with respect to its state value.
+            result["emb"] = result["emb"].detach().requires_grad_(True)
         captured.append(result["emb"])
         return result
 
@@ -244,7 +249,7 @@ def main():
     del checkpoint
     weights_path = root / f"model-step{step:07d}" / "weights.pt"
     initialize_ops(OpsConfig(backend="sdpa", allow_fallback=False), device=torch.device("cuda"), parallel_state=None)
-    model = (RobustLeWM if cfg.get("robust_variant") else ASJepaLeWM)(**cfg["model"]).cuda().eval()
+    model = build_model(cfg).cuda().eval()
     model.load_state_dict(torch.load(weights_path, map_location="cpu", weights_only=True), strict=True)
     if model.mode != "L2":
         raise ValueError("This audit currently requires the AS-JEPA rate/flow model")

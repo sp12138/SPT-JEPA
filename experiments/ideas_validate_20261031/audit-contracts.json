@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-31",
+  "kind": "CPU contracts and real metadata validation; not a model/GPU preflight",
+  "cpu_tests": {
+    "count": 8,
+    "passed": 8,
+    "elapsed_seconds": 0.301,
+    "exit_code": 0,
+    "CUDA_VISIBLE_DEVICES": "",
+    "host": "dev13",
+    "command": "python -m unittest experiments.ideas_validate_20261031.test_audit -v"
+  },
+  "dataset_manifests": {
+    "cube": {
+      "windows": 64,
+      "unique_validation_episodes": 64,
+      "authoritative_rows_and_disjoint_splits_verified": true
+    },
+    "tworoom": {
+      "windows": 64,
+      "unique_validation_episodes": 64,
+      "authoritative_rows_and_disjoint_splits_verified": true
+    }
+  },
+  "files": {
+    "audit.py": {
+      "sha256": "93c460b1982664d1bf3c49e4cc24e5abeb48574aa2025ca294eb780e66848da7",
+      "bytes": 22683
+    },
+    "preflight.py": {
+      "sha256": "c32fc5ece32ab84468a8b6dc9712d9b8967aa53e84e2107c0d18a48d032201cc",
+      "bytes": 10889
+    },
+    "test_audit.py": {
+      "sha256": "6f8ed8ca2d4c2dc9b501af0b212cd1a700d4f73074c54d86e0a39bdd7c655039",
+      "bytes": 7816
+    },
+    "AUDIT.md": {
+      "sha256": "730ba14feb25ad32225505c934d9cfc1c460fbb871388a0fceb36d451b43b7c8",
+      "bytes": 8504
+    },
+    "audit-windows-cube.json": {
+      "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+      "bytes": 9464
+    },
+    "audit-windows-tworoom.json": {
+      "sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+      "bytes": 9105
+    }
+  }
+}
