@@ -1,0 +1,323 @@
+{
+  "created_at": 1793396163.6100276,
+  "helper_source_commit": "0934d3c445e6c754a6ab547d801890c34740b330",
+  "rows": [
+    {
+      "host": "dev2",
+      "root": "/efs/prescottsun/SPT-JEPA/runs/native_lewm2000_20261031",
+      "launch": {
+        "host": "dev2",
+        "pid": 33723,
+        "launched_at": 1793395624.362225,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.workflow",
+          "--plan",
+          "/efs/prescottsun/SPT-JEPA/runs/native_lewm2000_20261031/plan.json",
+          "--host",
+          "dev2"
+        ],
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "slots": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "jobs": 28
+      },
+      "monitor": {
+        "host": "dev2",
+        "pid": 33915,
+        "launched_at": 1793395857.1529052,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/runs/reviewed_followup_20261031/source-v1/experiments/carrier_progress_20261031/monitor.py",
+          "--roots",
+          "/efs/prescottsun/SPT-JEPA/runs/native_lewm2000_20261031",
+          "--host",
+          "dev2",
+          "--output",
+          "/efs/prescottsun/SPT-JEPA/runs/native_lewm2000_20261031/monitor/dev2",
+          "--interval",
+          "1800"
+        ],
+        "read_only": true
+      },
+      "actual_active_training": 4,
+      "active_progress": [
+        {
+          "id": "learn2000-tworoom-native-lewm-seed1",
+          "state": "running",
+          "step": 1800,
+          "loss": 0.3772298991680145,
+          "fm": null,
+          "rate": null,
+          "updated_at": 1793396084.052847,
+          "seconds_per_step": 0.32002108573913574
+        },
+        {
+          "id": "learn2000-tworoom-native-lewm-seed2",
+          "state": "running",
+          "step": 1500,
+          "loss": 0.44131147861480713,
+          "fm": null,
+          "rate": null,
+          "updated_at": 1793396068.8309836,
+          "seconds_per_step": 0.43401589632034304
+        },
+        {
+          "id": "learn2000-cube-native-lewm-seed1",
+          "state": "running",
+          "step": 1200,
+          "loss": 0.3682776689529419,
+          "fm": null,
+          "rate": null,
+          "updated_at": 1793396051.894615,
+          "seconds_per_step": 0.5023015427589417
+        },
+        {
+          "id": "learn2000-cube-native-lewm-seed2",
+          "state": "running",
+          "step": 1200,
+          "loss": 0.35425055027008057,
+          "fm": null,
+          "rate": null,
+          "updated_at": 1793396040.0623238,
+          "seconds_per_step": 0.5023045301437378
+        }
+      ],
+      "stop_step": 2000,
+      "review_timestamp": 1793396088.8964288
+    },
+    {
+      "host": "dev13",
+      "root": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031",
+      "launch": {
+        "host": "dev13",
+        "pid": 906434,
+        "launched_at": 1793395624.8848581,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.workflow",
+          "--plan",
+          "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/plan.json",
+          "--host",
+          "dev13"
+        ],
+        "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+        "slots": [
+          0,
+          1
+        ],
+        "jobs": 10
+      },
+      "monitor": {
+        "host": "dev13",
+        "pid": 906538,
+        "launched_at": 1793395857.0451767,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/runs/reviewed_followup_20261031/source-v1/experiments/carrier_progress_20261031/monitor.py",
+          "--roots",
+          "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031",
+          "--host",
+          "dev13",
+          "--output",
+          "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/monitor/dev13",
+          "--interval",
+          "1800"
+        ],
+        "read_only": true
+      },
+      "actual_active_training": 2,
+      "active_progress": [
+        {
+          "id": "learn12000-cube-temporal-forecast-seed1",
+          "state": "running",
+          "step": 6300,
+          "loss": 0.00969820935279131,
+          "fm": 0.00891523715108633,
+          "rate": 0.00313188717700541,
+          "updated_at": 1793395992.255697,
+          "seconds_per_step": 0.9584511089324951
+        },
+        {
+          "id": "learn12000-cube-temporal-forecast-seed2",
+          "state": "running",
+          "step": 6300,
+          "loss": 0.009381410665810108,
+          "fm": 0.00862402468919754,
+          "rate": 0.003029543673619628,
+          "updated_at": 1793395992.8741667,
+          "seconds_per_step": 0.9576846122741699
+        }
+      ],
+      "stop_step": 12000,
+      "review_timestamp": 1793396086.8493497
+    },
+    {
+      "host": "dev15",
+      "root": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031",
+      "launch": {
+        "host": "dev15",
+        "pid": 1038377,
+        "launched_at": 1793395797.522433,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.workflow",
+          "--plan",
+          "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/plan.json",
+          "--host",
+          "dev15"
+        ],
+        "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+        "job_source_commits": [
+          "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+          "0934d3c445e6c754a6ab547d801890c34740b330"
+        ],
+        "slots": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "jobs": 64,
+        "scope": "Unchanged source32 workflow supports per-job source; CPU archive helper separately frozen and verifies original training imports."
+      },
+      "monitor": {
+        "host": "dev15",
+        "pid": 1038726,
+        "launched_at": 1793395854.8879507,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/runs/reviewed_followup_20261031/source-v1/experiments/carrier_progress_20261031/monitor.py",
+          "--roots",
+          "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031",
+          "--host",
+          "dev15",
+          "--output",
+          "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/monitor/dev15",
+          "--interval",
+          "1800"
+        ],
+        "read_only": true
+      },
+      "actual_active_training": 8,
+      "active_progress": [
+        {
+          "id": "learn1200-tworoom-spatial-local-seed1",
+          "state": "running",
+          "step": 800,
+          "loss": 0.6606112122535706,
+          "fm": 0.028541844338178635,
+          "rate": 2.5282773971557617,
+          "updated_at": 1793396045.2124772,
+          "seconds_per_step": 0.9517996525764465
+        },
+        {
+          "id": "learn1200-tworoom-spatial-dense-seed1",
+          "state": "running",
+          "step": 800,
+          "loss": 1.023439884185791,
+          "fm": 0.026533082127571106,
+          "rate": 3.9876272678375244,
+          "updated_at": 1793396045.4360268,
+          "seconds_per_step": 0.9545883154869079
+        },
+        {
+          "id": "learn1200-tworoom-spatial-local-seed2",
+          "state": "running",
+          "step": 800,
+          "loss": 0.6736258268356323,
+          "fm": 0.02419322542846203,
+          "rate": 2.5977303981781006,
+          "updated_at": 1793396047.2205706,
+          "seconds_per_step": 0.9629411935806275
+        },
+        {
+          "id": "learn1200-tworoom-spatial-dense-seed2",
+          "state": "running",
+          "step": 800,
+          "loss": 1.0383996963500977,
+          "fm": 0.02503923326730728,
+          "rate": 4.053442001342773,
+          "updated_at": 1793396045.7862616,
+          "seconds_per_step": 0.9544555854797363
+        },
+        {
+          "id": "learn1200-cube-spatial-local-seed1",
+          "state": "running",
+          "step": 800,
+          "loss": 0.7059764862060547,
+          "fm": 0.05120300129055977,
+          "rate": 2.619093894958496,
+          "updated_at": 1793396068.3253815,
+          "seconds_per_step": 0.9542782831192017
+        },
+        {
+          "id": "learn1200-cube-spatial-dense-seed1",
+          "state": "running",
+          "step": 800,
+          "loss": 0.9240501523017883,
+          "fm": 0.050338014960289,
+          "rate": 3.4948484897613525,
+          "updated_at": 1793396068.6868253,
+          "seconds_per_step": 0.9547912836074829
+        },
+        {
+          "id": "learn1200-cube-spatial-local-seed2",
+          "state": "running",
+          "step": 800,
+          "loss": 0.7327563762664795,
+          "fm": 0.04915826767683029,
+          "rate": 2.7343924045562744,
+          "updated_at": 1793396068.2887282,
+          "seconds_per_step": 0.954161274433136
+        },
+        {
+          "id": "learn1200-cube-spatial-dense-seed2",
+          "state": "running",
+          "step": 800,
+          "loss": 0.9400061964988708,
+          "fm": 0.05052734538912773,
+          "rate": 3.557915449142456,
+          "updated_at": 1793396068.1561656,
+          "seconds_per_step": 0.953962185382843
+        }
+      ],
+      "stop_step": 2000,
+      "review_timestamp": 1793396088.4331558
+    }
+  ],
+  "next_review": {
+    "last_review_utc": "2026-10-30 21:34 UTC",
+    "next_review_utc": "2026-10-30 22:04:00 UTC",
+    "next_review_beijing": "2026-10-31 06:04:00 +08:00",
+    "next_review_epoch": 1793397840,
+    "interval_seconds": 1800,
+    "reason": "All14 real processes alive withfinite loss: native1200-1800, CubeTF6300, isotropic800. No failures. All three read-only monitors1800s.",
+    "early_checks": "Actual failure or necessary short completion only; do not repeatedly poll unchanged training.",
+    "monitor_note": "Isotropic1200/2000 share output status; count unique IDs from worker.running, not duplicated progress entries."
+  },
+  "goal": "Active and unachieved; no two-task high-performance claim."
+}

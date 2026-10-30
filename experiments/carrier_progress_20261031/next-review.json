@@ -1,9 +1,10 @@
 {
-  "last_review_utc": "2026-10-30 21:04:00 UTC",
-  "next_review_utc": "2026-10-30 21:34:00 UTC",
-  "next_review_beijing": "2026-10-31 05:34:00 +08:00",
-  "next_review_epoch": 1793396040,
+  "last_review_utc": "2026-10-30 21:34 UTC",
+  "next_review_utc": "2026-10-30 22:04:00 UTC",
+  "next_review_beijing": "2026-10-31 06:04:00 +08:00",
+  "next_review_epoch": 1793397840,
   "interval_seconds": 1800,
-  "reason": "All12 long training and8 shorttraining stages complete; remainingtaskendpoints run normally. Corrected4 nativeBNplanning processesverifiedCUDA.",
-  "early_checks": "Task chains nearcompletion21:12-21:20; inspectoncecomplete oractualfailure, no idlebusy polling."
+  "reason": "All14 real processes alive withfinite loss: native1200-1800, CubeTF6300, isotropic800. No failures. All three read-only monitors1800s.",
+  "early_checks": "Actual failure or necessary short completion only; do not repeatedly poll unchanged training.",
+  "monitor_note": "Isotropic1200/2000 share output status; count unique IDs from worker.running, not duplicated progress entries."
 }
