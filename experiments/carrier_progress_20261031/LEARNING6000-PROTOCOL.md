@@ -1,0 +1,11 @@
+# Reviewed2000→6000 stage
+
+Prepare only8 Carrier runs (TwoRoom identity/free/bounded × seeds1/2; Cube identity × seeds1/2) and4 temporal-forecast controls (both tasks × seeds1/2). Carrier uses dev2 GPUs0–7; TF uses dev13 GPUs0–3. The remaining12 GPUs are outside this preparation. No worker is launched by `prepare_next.py`.
+
+The next cap is6000, not an automatic full-epoch or indefinite continuation. Identity coordinates show strong600→2000 factual prediction improvement in both tasks, and late losses still decrease. Bound necessity remains unproven: TwoRoom free/bounded both average78% despite only bounded retaining the global certificate. Cube learned charts have no consistent planning gain, so their2000 checkpoints remain held.
+
+Call `prepare_next.py --source-record NEW_SHARED_RECORD [--dry-run]` after committing and freezing the helpers. All existing model/training/data/evaluator source bytes must remain equal to a499. Old TF checkpoints are resumed, never replaced with fresh models: before copying, the current native TrainModule strictly loads each full state and its native optimizer/scheduler roundtrip must be exact. TF has no frozen-encoder requirement. Carrier retains its original frozen-tensor contract and128-frame calibration.
+
+All parent full2000 checkpoints, holds and source snapshots remain unchanged. New directories receive byte-identical copies. The native trainer saves periodically every1000 updates and stops6000; retain portable4000/6000 and archive the complete6000 state after CPU audit. The sampler audit concatenates native loader epochs so the TwoRoom6000 sample cursor is checked beyond one dataset pass. This validates serialized resume state and sampler sequence, not bitwise GPU equivalence to uninterrupted training.
+
+Each Carrier chain is train→full-state archive→health→same64-window transition audit→primary50-case planning→existing fresh50-case planning. TF omits the Carrier-specific transition audit. Total68 endpoints. Any failed dependency blocks downstream evaluation. Fresh manifests reuse the completed diagnostic cases; they are a second validation case set, not a newly independent test split. No calibration, loss, scheduler horizon, dataset or planner budget is changed. No automatic step follows6000.

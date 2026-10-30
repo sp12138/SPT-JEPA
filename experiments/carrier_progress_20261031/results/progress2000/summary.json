@@ -1,0 +1,795 @@
+{
+  "source_commit": "a499fc2b543214173ea3866b76df6636a859faa0",
+  "inputs": {
+    "learn2000": {
+      "path": "/efs/prescottsun/SPT-JEPA/reports/carrier-learn2000-20261031/results.json",
+      "sha256": "a9bd6c9ac94b5e0fcb393ecca98ff355fc9e3c4a573d4690a1dc048994bb2b53",
+      "bytes": 5267383
+    },
+    "diagnostics600": {
+      "path": "/efs/prescottsun/SPT-JEPA/reports/carrier-diagnostics-20261031/results.json",
+      "sha256": "6c73fe132317d42a79431e59bad2bebfb55291711d2962c6af1ce7a49d168577",
+      "bytes": 485414
+    },
+    "initial600": {
+      "path": "/efs/prescottsun/SPT-JEPA/reports/ideas-validate600-20261031/results.json",
+      "sha256": "692ef379d4a64f9c338139a749cef16e409d3f8023f308fb8430af8ad6408b0b",
+      "bytes": 7668398
+    }
+  },
+  "full_arrays_location": "Original results.json files remain on EFS; omitted here.",
+  "completed_endpoints": {
+    "learn2000": 96,
+    "diagnostics600": 34
+  },
+  "primary_manifest_sha256": {
+    "tworoom": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94",
+    "cube": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+  },
+  "trajectories": [
+    {
+      "task": "tworoom",
+      "arm": "identity",
+      "seed": 1,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        44.0,
+        72.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 1.1190395938532902,
+        "raw_output_operator_norm": 0.0,
+        "input_operator_norm": 0.9999990938027573,
+        "output_operator_norm": 0.0,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.0,
+        "guaranteed_lower": 1.0,
+        "guaranteed_upper": 1.0,
+        "mode": "identity",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "arm": "unconstrained",
+      "seed": 1,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        34.0,
+        74.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 2.1370538538855426,
+        "raw_output_operator_norm": 1.1896073852772355,
+        "input_operator_norm": 2.1370538538855426,
+        "output_operator_norm": 1.1896073852772355,
+        "input_normalization_active": false,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 1.2711275236587098,
+        "guaranteed_lower": 0.0,
+        "guaranteed_upper": 2.27112752365871,
+        "mode": "unconstrained",
+        "global_invertibility_certified": false
+      }
+    },
+    {
+      "task": "tworoom",
+      "arm": "bounded",
+      "seed": 1,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        46.0,
+        76.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 1.0000125952827097,
+        "raw_output_operator_norm": 1.0000007758188336,
+        "input_operator_norm": 0.9999990071898459,
+        "output_operator_norm": 0.9999989886587407,
+        "input_normalization_active": true,
+        "output_normalization_active": true,
+        "residual_lipschitz_upper": 0.49999899792479535,
+        "guaranteed_lower": 0.5000010020752046,
+        "guaranteed_upper": 1.4999989979247954,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "arm": "identity",
+      "seed": 2,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        30.0,
+        70.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 1.1190395938532902,
+        "raw_output_operator_norm": 0.0,
+        "input_operator_norm": 0.9999990938027573,
+        "output_operator_norm": 0.0,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.0,
+        "guaranteed_lower": 1.0,
+        "guaranteed_upper": 1.0,
+        "mode": "identity",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "arm": "unconstrained",
+      "seed": 2,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        30.0,
+        82.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 2.177517794382083,
+        "raw_output_operator_norm": 1.21583460946141,
+        "input_operator_norm": 2.177517794382083,
+        "output_operator_norm": 1.21583460946141,
+        "input_normalization_active": false,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 1.3237507485639055,
+        "guaranteed_lower": 0.0,
+        "guaranteed_upper": 2.3237507485639055,
+        "mode": "unconstrained",
+        "global_invertibility_certified": false
+      }
+    },
+    {
+      "task": "tworoom",
+      "arm": "bounded",
+      "seed": 2,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        42.0,
+        80.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 1.000268737275054,
+        "raw_output_operator_norm": 0.999767367278297,
+        "input_operator_norm": 0.9999990886527894,
+        "output_operator_norm": 0.999767367278297,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.4998832280715478,
+        "guaranteed_lower": 0.5001167719284523,
+        "guaranteed_upper": 1.4998832280715477,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "cube",
+      "arm": "identity",
+      "seed": 1,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        4.0,
+        8.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 1.1190395938532902,
+        "raw_output_operator_norm": 0.0,
+        "input_operator_norm": 0.9999990938027573,
+        "output_operator_norm": 0.0,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.0,
+        "guaranteed_lower": 1.0,
+        "guaranteed_upper": 1.0,
+        "mode": "identity",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "cube",
+      "arm": "unconstrained",
+      "seed": 1,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        4.0,
+        10.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 1.7874264811919085,
+        "raw_output_operator_norm": 1.0583586895294919,
+        "input_operator_norm": 1.7874264811919085,
+        "output_operator_norm": 1.0583586895294919,
+        "input_normalization_active": false,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.9458691741322897,
+        "guaranteed_lower": 0.05413082586771034,
+        "guaranteed_upper": 1.9458691741322895,
+        "mode": "unconstrained",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "cube",
+      "arm": "bounded",
+      "seed": 1,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        10.0,
+        8.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 1.0001405726927952,
+        "raw_output_operator_norm": 0.9931164142890404,
+        "input_operator_norm": 0.9999990704281381,
+        "output_operator_norm": 0.9931164142890404,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.49655774555798304,
+        "guaranteed_lower": 0.503442254442017,
+        "guaranteed_upper": 1.496557745557983,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "cube",
+      "arm": "identity",
+      "seed": 2,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        6.0,
+        16.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 1.1190395938532902,
+        "raw_output_operator_norm": 0.0,
+        "input_operator_norm": 0.9999990938027573,
+        "output_operator_norm": 0.0,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.0,
+        "guaranteed_lower": 1.0,
+        "guaranteed_upper": 1.0,
+        "mode": "identity",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "cube",
+      "arm": "unconstrained",
+      "seed": 2,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        8.0,
+        10.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 1.8072935462614859,
+        "raw_output_operator_norm": 1.0208630908814644,
+        "input_operator_norm": 1.8072935462614859,
+        "output_operator_norm": 1.0208630908814644,
+        "input_normalization_active": false,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.9224996378833117,
+        "guaranteed_lower": 0.07750036211668831,
+        "guaranteed_upper": 1.9224996378833117,
+        "mode": "unconstrained",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "cube",
+      "arm": "bounded",
+      "seed": 2,
+      "steps": [
+        600,
+        2000
+      ],
+      "success_rates": [
+        6.0,
+        14.0
+      ],
+      "n_cases": 50,
+      "certificate2000": {
+        "raw_input_operator_norm": 0.9998309251549032,
+        "raw_output_operator_norm": 0.9568354178592287,
+        "input_operator_norm": 0.9998309251549032,
+        "output_operator_norm": 0.9568354178592287,
+        "input_normalization_active": false,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.4783368205295855,
+        "guaranteed_lower": 0.5216631794704145,
+        "guaranteed_upper": 1.4783368205295855,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      }
+    }
+  ],
+  "temporal_forecast2000": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "method": "temporal-forecast",
+      "step": 2000,
+      "success_rate": 2.0
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "method": "temporal-forecast",
+      "step": 2000,
+      "success_rate": 6.0
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "method": "temporal-forecast",
+      "step": 2000,
+      "success_rate": 12.0
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "method": "temporal-forecast",
+      "step": 2000,
+      "success_rate": 6.0
+    }
+  ],
+  "released_primary_reference": [
+    {
+      "task": "tworoom",
+      "success_rate": 72.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-tworoom-released-lewm-strict-validation/metrics.json",
+        "sha256": "61fcc7e267a39387f07610188db3daf886cf472e6874efecea085481b4999059",
+        "bytes": 210357
+      },
+      "normalization": "released reference full-data normalization",
+      "same_ordered_cases_and_planner": true,
+      "scope": "Released checkpoint; unmatched training budget, data exposure and capacity."
+    },
+    {
+      "task": "cube",
+      "success_rate": 30.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-cube-released-lewm-strict-validation/metrics.json",
+        "sha256": "bbaa44dc1dd9c6be083bc492d8b54b2960e2a3efe17f55be8ed03589db014eaf",
+        "bytes": 25189
+      },
+      "normalization": "released reference full-data normalization",
+      "same_ordered_cases_and_planner": true,
+      "scope": "Released checkpoint; unmatched training budget, data exposure and capacity."
+    }
+  ],
+  "comparisons2000": [
+    {
+      "task": "tworoom",
+      "candidate": "bounded",
+      "reference": "unconstrained",
+      "kind": "within_carrier",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        2.0,
+        -2.0
+      ],
+      "mean_difference_pp": 0.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -11.0,
+        11.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "candidate": "identity",
+      "reference": "temporal-forecast",
+      "kind": "historical_training_control",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        70.0,
+        64.0
+      ],
+      "mean_difference_pp": 67.0,
+      "shared_case_bootstrap_ci95_pp": [
+        56.00000000000001,
+        77.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "candidate": "unconstrained",
+      "reference": "temporal-forecast",
+      "kind": "historical_training_control",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        72.0,
+        76.0
+      ],
+      "mean_difference_pp": 74.0,
+      "shared_case_bootstrap_ci95_pp": [
+        63.0,
+        84.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "candidate": "bounded",
+      "reference": "temporal-forecast",
+      "kind": "historical_training_control",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        74.0,
+        74.0
+      ],
+      "mean_difference_pp": 74.0,
+      "shared_case_bootstrap_ci95_pp": [
+        63.0,
+        84.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "candidate": "bounded",
+      "reference": "unconstrained",
+      "kind": "within_carrier",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -2.0,
+        4.0
+      ],
+      "mean_difference_pp": 1.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -5.0,
+        7.000000000000001
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "candidate": "identity",
+      "reference": "temporal-forecast",
+      "kind": "historical_training_control",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -4.0,
+        10.0
+      ],
+      "mean_difference_pp": 3.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -3.0,
+        9.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "candidate": "unconstrained",
+      "reference": "temporal-forecast",
+      "kind": "historical_training_control",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -2.0,
+        4.0
+      ],
+      "mean_difference_pp": 1.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -8.0,
+        9.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "candidate": "bounded",
+      "reference": "temporal-forecast",
+      "kind": "historical_training_control",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -4.0,
+        8.0
+      ],
+      "mean_difference_pp": 2.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -6.0,
+        10.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    }
+  ],
+  "fresh600": [
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 1,
+      "success_rate": 42.0
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 2,
+      "success_rate": 28.000000000000004
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 1,
+      "success_rate": 48.0
+    },
+    {
+      "task": "tworoom",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 2,
+      "success_rate": 26.0
+    },
+    {
+      "task": "tworoom",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 1,
+      "success_rate": 4.0
+    },
+    {
+      "task": "tworoom",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 2,
+      "success_rate": 8.0
+    },
+    {
+      "task": "tworoom",
+      "family": "released-lewm",
+      "arm": null,
+      "seed": null,
+      "success_rate": 68.0
+    },
+    {
+      "task": "cube",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 1,
+      "success_rate": 8.0
+    },
+    {
+      "task": "cube",
+      "family": "temporal-forecast",
+      "arm": null,
+      "seed": 2,
+      "success_rate": 12.0
+    },
+    {
+      "task": "cube",
+      "family": "released-lewm",
+      "arm": null,
+      "seed": null,
+      "success_rate": 24.0
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 1,
+      "success_rate": 2.0
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 1,
+      "success_rate": 2.0
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "identity",
+      "seed": 2,
+      "success_rate": 6.0
+    },
+    {
+      "task": "cube",
+      "family": "carrier",
+      "arm": "bounded",
+      "seed": 2,
+      "success_rate": 2.0
+    }
+  ],
+  "cube_metric600": [
+    {
+      "case_set": "primary",
+      "arm": "identity",
+      "seed": 1,
+      "success_rates": {
+        "identity": 4.0,
+        "observation": 2.0,
+        "increment": 4.0
+      }
+    },
+    {
+      "case_set": "primary",
+      "arm": "identity",
+      "seed": 2,
+      "success_rates": {
+        "identity": 6.0,
+        "observation": 2.0,
+        "increment": 8.0
+      }
+    },
+    {
+      "case_set": "primary",
+      "arm": "bounded",
+      "seed": 1,
+      "success_rates": {
+        "identity": 10.0,
+        "observation": 6.0,
+        "increment": 2.0
+      }
+    },
+    {
+      "case_set": "primary",
+      "arm": "bounded",
+      "seed": 2,
+      "success_rates": {
+        "identity": 6.0,
+        "observation": 4.0,
+        "increment": 6.0
+      }
+    },
+    {
+      "case_set": "fresh",
+      "arm": "identity",
+      "seed": 1,
+      "success_rates": {
+        "identity": 2.0,
+        "observation": 0.0,
+        "increment": 2.0
+      }
+    },
+    {
+      "case_set": "fresh",
+      "arm": "identity",
+      "seed": 2,
+      "success_rates": {
+        "identity": 6.0,
+        "observation": 2.0,
+        "increment": 6.0
+      }
+    },
+    {
+      "case_set": "fresh",
+      "arm": "bounded",
+      "seed": 1,
+      "success_rates": {
+        "identity": 2.0,
+        "observation": 0.0,
+        "increment": 2.0
+      }
+    },
+    {
+      "case_set": "fresh",
+      "arm": "bounded",
+      "seed": 2,
+      "success_rates": {
+        "identity": 2.0,
+        "observation": 6.0,
+        "increment": 4.0
+      }
+    }
+  ],
+  "case_sets": {
+    "tworoom-fresh": {
+      "manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "policy_seed": 2026103101,
+      "scope": "New pairs from the existing validation episode pool; not an independent test set. Pinned CLEAR task/planner semantics. Released LeWM has unmatched training exposure and capacity.",
+      "overlap": {
+        "episode_overlap_count": 34,
+        "exact_pair_overlap_count": 0
+      }
+    },
+    "cube-primary": {
+      "manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7",
+      "policy_seed": 42,
+      "scope": "Custom SPT-JEPA manifest using pinned CLEAR v0.8 task semantics; reference weights may have trained on these episodes."
+    },
+    "cube-fresh": {
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "policy_seed": 2026103101,
+      "scope": "New pairs from the existing validation episode pool; not an independent test set. Pinned CLEAR task/planner semantics. Released LeWM has unmatched training exposure and capacity.",
+      "overlap": {
+        "episode_overlap_count": 1,
+        "exact_pair_overlap_count": 0
+      }
+    }
+  },
+  "limitations": [
+    "Both seeds retained; case CIs condition on these seeds and ignore training-seed uncertainty.",
+    "AS-JEPA original/lower/TF controls have matched data, update counts and native evaluator, but Carrier adds8320 total chart parameters, freezes encoder/pool, and uses128 train-only calibration frames. Optimizer-state size/trainable capacity/compute are not equal; no single-component attribution.",
+    "Common1200 resume boundary is additional to the historical2000 controls.",
+    "Native chart-coordinate MSE is not directly comparable across learned charts. Use common-coordinate inversion only when its certificate and numerical residual support it.",
+    "Training uses high/TF32 whereas evaluation uses highest; previously measured shift remains.",
+    "These are AS-JEPA training controls, not matched-budget native LeWM replications; no published-score transfer.",
+    "Exploratory50-case intervals can be degenerate and are not multiple-comparison adjusted."
+  ],
+  "next_action": "Eight F and four TF continuations to6000 are authorized; this report does not assert launch or completion.",
+  "report_script": {
+    "path": "/efs/prescottsun/SPT-JEPA/code/experiments/carrier_progress_20261031/report_progress2000.py",
+    "sha256": "70cc6a60df4d5d05369b3e5d27e0f4b9154f4cd07d32834c68c8ec24bdafb02a",
+    "bytes": 13843
+  }
+}
