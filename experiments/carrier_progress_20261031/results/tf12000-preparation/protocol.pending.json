@@ -1,0 +1,44 @@
+{
+  "created_at": 1793395218.6781266,
+  "parent": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031",
+  "initial_step": 6000,
+  "stop_step": 12000,
+  "runs": 2,
+  "jobs": 10,
+  "allocations": [
+    {
+      "id": "cube-temporal-forecast-seed1",
+      "seed": 1,
+      "host": "dev13",
+      "gpu": 0
+    },
+    {
+      "id": "cube-temporal-forecast-seed2",
+      "seed": 2,
+      "host": "dev13",
+      "gpu": 1
+    }
+  ],
+  "original_training_source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+  "training_semantics_unchanged": true,
+  "scheduler_horizon": 124910,
+  "warmup_steps": 1249,
+  "checkpoint_every": 2000,
+  "retained_steps": [
+    8000,
+    10000,
+    12000
+  ],
+  "native_fullstate_archive": 12000,
+  "helper_sha256": "dffb701241275e9d8e9f2a2d14f849448c6d1de473dfdf4ba8471337bce467e7",
+  "predecessor_closed": {
+    "host": "dev13",
+    "old_pid": 872477,
+    "pid_absent": true,
+    "checked_at": 1793395177.0063207,
+    "all20_endpoints_exit0": true,
+    "worker_record_scope": "Historical heartbeat can remain stale; PID absence and completed exits are checked."
+  },
+  "scope": "Candidate only. Native full-state6000 byte-copies; optimizer/scheduler/model/sampler/RNG audits passed. No update or GPU launch. No automatic continuation beyond12000. All eight Carrier6000 runs remain held.",
+  "required_before_launch": "Root freezes this helper, validates old8e model/trainer/evaluator bytes, replaces pending helper and source records, and writes the executable plan. No plan.json exists yet."
+}

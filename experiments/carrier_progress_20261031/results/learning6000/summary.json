@@ -1,0 +1,2615 @@
+{
+  "full_results": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/carrier6000-20261031/results.json",
+    "sha256": "0d4843a7c809062aea682ee3f506cd767eb866b032ed848a46822cdcd38c5928",
+    "bytes": 2749269
+  },
+  "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+  "completed_endpoint_count": 68,
+  "rows": [
+    {
+      "id": "tworoom-carrier-identity-seed1",
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "identity",
+      "family": "carrier",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45443294,
+        "frozen": 5662160,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": {
+        "step": 6000,
+        "clean_mse": 0.18676839504268772,
+        "initial_carry_mse": 1.2743640767233055,
+        "clean_over_initial_carry": 0.14655811353605783,
+        "teacher_mse": 0.041920113705886865,
+        "shifted_observed_carry_mse": 0.47784528406442195,
+        "teacher_over_shifted_carry": 0.0877273776761503,
+        "other_initial_mse": 2.09619860756984,
+        "other_actions_mse": 1.5339038920098298,
+        "other_initial_effect": 2.03514140911813,
+        "other_actions_effect": 1.4880506493727785,
+        "initial_temporal_variation": 1.2743640767233053,
+        "state_std": 0.94304732838711,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.1190395938532902,
+          "raw_output_operator_norm": 0.0,
+          "input_operator_norm": 0.9999990938027573,
+          "output_operator_norm": 0.0,
+          "input_normalization_active": true,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 0.0,
+          "guaranteed_lower": 1.0,
+          "guaranteed_upper": 1.0,
+          "mode": "identity",
+          "global_invertibility_certified": true
+        }
+      },
+      "parent2000_state_summary": {
+        "step": 2000,
+        "clean_mse": 0.27538185818173855,
+        "initial_carry_mse": 1.2743640767233055,
+        "clean_over_initial_carry": 0.21609355066709907,
+        "teacher_mse": 0.08165981175352846,
+        "shifted_observed_carry_mse": 0.47784528406442195,
+        "teacher_over_shifted_carry": 0.1708917393909433,
+        "other_initial_mse": 1.9255664588656205,
+        "other_actions_mse": 1.4221696224978904,
+        "other_initial_effect": 1.8481671383366,
+        "other_actions_effect": 1.3361519397566366,
+        "initial_temporal_variation": 1.2743640767233053,
+        "state_std": 0.94304732838711,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.1190395938532902,
+          "raw_output_operator_norm": 0.0,
+          "input_operator_norm": 0.9999990938027573,
+          "output_operator_norm": 0.0,
+          "input_normalization_active": true,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 0.0,
+          "guaranteed_lower": 1.0,
+          "guaranteed_upper": 1.0,
+          "mode": "identity",
+          "global_invertibility_certified": true
+        }
+      },
+      "success6000": {
+        "primary": 80.0,
+        "fresh": 74.0
+      },
+      "success2000": {
+        "primary": 72.0,
+        "fresh": 66.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.009595717769116163,
+          "fm": 0.003774761144692699,
+          "rate": 0.02328382742901643,
+          "entry": 149.44464619954428,
+          "surprise": 264.76243591308594,
+          "feature_std": 0.9500323136647543
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.006591434590518475,
+          "fm": 0.002587476745247841,
+          "rate": 0.016015831225862105,
+          "entry": 148.664182027181,
+          "surprise": 175.5647964477539,
+          "feature_std": 0.9428405265013377
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.00629660370759666,
+          "fm": 0.002356996371721228,
+          "rate": 0.015758429188281298,
+          "entry": 148.5896962483724,
+          "surprise": 172.41248067220053,
+          "feature_std": 0.9474674264589945
+        },
+        "late_vs_early_change_percent": {
+          "loss": -34.381107707624636,
+          "fm": -37.55905919941036,
+          "rate": -32.32028009002052
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -4.472939522845564,
+          "fm": -8.907534104409365,
+          "rate": -1.6071725154368388
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "frozen_unchanged": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.0,
+            "pool": 0.0,
+            "carrier_chart_module": 0.0,
+            "predictor": 0.032386768609285355,
+            "renderer": 0.39109182357788086,
+            "action_encoder": 0.009957616217434406
+          },
+          "gradient_expectations": {
+            "encoder": "frozen",
+            "pool": "frozen",
+            "carrier_chart_module": "frozen",
+            "predictor": "active",
+            "renderer": "active",
+            "action_encoder": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "tworoom-carrier-unconstrained-seed1",
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "unconstrained",
+      "family": "carrier",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45451614,
+        "frozen": 5653840,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": {
+        "step": 6000,
+        "clean_mse": 0.06269074441283783,
+        "initial_carry_mse": 0.4879462243525909,
+        "clean_over_initial_carry": 0.12847879803971465,
+        "teacher_mse": 0.021511523279755872,
+        "shifted_observed_carry_mse": 0.18389241029896417,
+        "teacher_over_shifted_carry": 0.11697885325872551,
+        "other_initial_mse": 0.9768813079563962,
+        "other_actions_mse": 0.6996392762951756,
+        "other_initial_effect": 0.9581687041235871,
+        "other_actions_effect": 0.6769225560195952,
+        "initial_temporal_variation": 0.4879462243525909,
+        "state_std": 0.5725554925476923,
+        "chart_certificate": {
+          "raw_input_operator_norm": 2.2997489817161108,
+          "raw_output_operator_norm": 1.6668499539850885,
+          "input_operator_norm": 2.2997489817161108,
+          "output_operator_norm": 1.6668499539850885,
+          "input_normalization_active": false,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 1.9166682421753767,
+          "guaranteed_lower": 0.0,
+          "guaranteed_upper": 2.9166682421753767,
+          "mode": "unconstrained",
+          "global_invertibility_certified": false
+        }
+      },
+      "parent2000_state_summary": {
+        "step": 2000,
+        "clean_mse": 0.15078858747400228,
+        "initial_carry_mse": 0.7306121010258442,
+        "clean_over_initial_carry": 0.2063866547820406,
+        "teacher_mse": 0.05549140542246047,
+        "shifted_observed_carry_mse": 0.2817677629000984,
+        "teacher_over_shifted_carry": 0.19694022073822232,
+        "other_initial_mse": 1.2476789927863137,
+        "other_actions_mse": 0.8950379043867297,
+        "other_initial_effect": 1.222879794117497,
+        "other_actions_effect": 0.8459011471092269,
+        "initial_temporal_variation": 0.730612101025844,
+        "state_std": 0.7047625761621763,
+        "chart_certificate": {
+          "raw_input_operator_norm": 2.1370538538855426,
+          "raw_output_operator_norm": 1.1896073852772355,
+          "input_operator_norm": 2.1370538538855426,
+          "output_operator_norm": 1.1896073852772355,
+          "input_normalization_active": false,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 1.2711275236587098,
+          "guaranteed_lower": 0.0,
+          "guaranteed_upper": 2.27112752365871,
+          "mode": "unconstrained",
+          "global_invertibility_certified": false
+        }
+      },
+      "success6000": {
+        "primary": 90.0,
+        "fresh": 82.0
+      },
+      "success2000": {
+        "primary": 74.0,
+        "fresh": 70.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.007510072784498334,
+          "fm": 0.0036510265975569687,
+          "rate": 0.015436184437324604,
+          "entry": 135.0234146118164,
+          "surprise": 170.39078521728516,
+          "feature_std": 0.6693071325620016
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.005137530465920766,
+          "fm": 0.00258982441543291,
+          "rate": 0.010190824357171854,
+          "entry": 131.328249613444,
+          "surprise": 106.4636739095052,
+          "feature_std": 0.59239595135053
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.0046491678804159164,
+          "fm": 0.002277837988610069,
+          "rate": 0.009485319101562103,
+          "entry": 130.21470642089844,
+          "surprise": 97.95350138346355,
+          "feature_std": 0.5747787654399872
+        },
+        "late_vs_early_change_percent": {
+          "loss": -38.09423671615618,
+          "fm": -37.61102726191447,
+          "rate": -38.55140083305394
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -9.505784710073218,
+          "fm": -12.046624665506144,
+          "rate": -6.9229458862495985
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "frozen_unchanged": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.0,
+            "pool": 0.0,
+            "carrier_chart_module": 0.003923233598470688,
+            "predictor": 0.027124963700771332,
+            "renderer": 0.5032700300216675,
+            "action_encoder": 0.006405080668628216
+          },
+          "gradient_expectations": {
+            "encoder": "frozen",
+            "pool": "frozen",
+            "carrier_chart_module": "active",
+            "predictor": "active",
+            "renderer": "active",
+            "action_encoder": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "tworoom-carrier-bounded-seed1",
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "bounded",
+      "family": "carrier",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45451614,
+        "frozen": 5653840,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": {
+        "step": 6000,
+        "clean_mse": 0.09428365660219705,
+        "initial_carry_mse": 0.6840635524387885,
+        "clean_over_initial_carry": 0.1378287971432797,
+        "teacher_mse": 0.02684967414260083,
+        "shifted_observed_carry_mse": 0.2578340535971631,
+        "teacher_over_shifted_carry": 0.10413548469648795,
+        "other_initial_mse": 1.2243927572218722,
+        "other_actions_mse": 0.8866444553154196,
+        "other_initial_effect": 1.1906260762687664,
+        "other_actions_effect": 0.8502119736317976,
+        "initial_temporal_variation": 0.6840635524387885,
+        "state_std": 0.6901538727688128,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.0000381967950929,
+          "raw_output_operator_norm": 1.0000133535075724,
+          "input_operator_norm": 0.9999990960538169,
+          "output_operator_norm": 0.9999990477679778,
+          "input_normalization_active": true,
+          "output_normalization_active": true,
+          "residual_lipschitz_upper": 0.4999990719113277,
+          "guaranteed_lower": 0.5000009280886724,
+          "guaranteed_upper": 1.4999990719113276,
+          "mode": "bounded",
+          "global_invertibility_certified": true
+        }
+      },
+      "parent2000_state_summary": {
+        "step": 2000,
+        "clean_mse": 0.17305390507595625,
+        "initial_carry_mse": 0.8330938768795306,
+        "clean_over_initial_carry": 0.2077243752218583,
+        "teacher_mse": 0.060330434343807325,
+        "shifted_observed_carry_mse": 0.3175460138053337,
+        "teacher_over_shifted_carry": 0.18998958173284422,
+        "other_initial_mse": 1.360514146396577,
+        "other_actions_mse": 0.9868063063757795,
+        "other_initial_effect": 1.324858544400743,
+        "other_actions_effect": 0.9236719339988517,
+        "initial_temporal_variation": 0.8330938768795306,
+        "state_std": 0.7562410250626904,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.0000125952827097,
+          "raw_output_operator_norm": 1.0000007758188336,
+          "input_operator_norm": 0.9999990071898459,
+          "output_operator_norm": 0.9999989886587407,
+          "input_normalization_active": true,
+          "output_normalization_active": true,
+          "residual_lipschitz_upper": 0.49999899792479535,
+          "guaranteed_lower": 0.5000010020752046,
+          "guaranteed_upper": 1.4999989979247954,
+          "mode": "bounded",
+          "global_invertibility_certified": true
+        }
+      },
+      "success6000": {
+        "primary": 92.0,
+        "fresh": 80.0
+      },
+      "success2000": {
+        "primary": 76.0,
+        "fresh": 64.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.008210526236022512,
+          "fm": 0.003951556088092427,
+          "rate": 0.017035880746940773,
+          "entry": 137.76680755615234,
+          "surprise": 189.65593465169272,
+          "feature_std": 0.7377983232339224
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.005396571786453326,
+          "fm": 0.002486117805043856,
+          "rate": 0.011641816546519598,
+          "entry": 135.14241536458334,
+          "surprise": 123.7485834757487,
+          "feature_std": 0.6972593466440836
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.00507447177854677,
+          "fm": 0.0022836464534824095,
+          "rate": 0.011163301300257444,
+          "entry": 134.55960083007812,
+          "surprise": 117.951841990153,
+          "feature_std": 0.6927370627721151
+        },
+        "late_vs_early_change_percent": {
+          "loss": -38.195535430076944,
+          "fm": -42.20893231494492,
+          "rate": -34.471827632028365
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -5.968604155606783,
+          "fm": -8.144077129035121,
+          "rate": -4.110314265390214
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "frozen_unchanged": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.0,
+            "pool": 0.0,
+            "carrier_chart_module": 0.00418490543961525,
+            "predictor": 0.02609878219664097,
+            "renderer": 0.4260164797306061,
+            "action_encoder": 0.007429223973304033
+          },
+          "gradient_expectations": {
+            "encoder": "frozen",
+            "pool": "frozen",
+            "carrier_chart_module": "active",
+            "predictor": "active",
+            "renderer": "active",
+            "action_encoder": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "tworoom-carrier-identity-seed2",
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "identity",
+      "family": "carrier",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45443294,
+        "frozen": 5662160,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": {
+        "step": 6000,
+        "clean_mse": 0.17188932584970673,
+        "initial_carry_mse": 1.3377315912208132,
+        "clean_over_initial_carry": 0.12849313492913822,
+        "teacher_mse": 0.04033075164817168,
+        "shifted_observed_carry_mse": 0.49864984768344156,
+        "teacher_over_shifted_carry": 0.08087990367496291,
+        "other_initial_mse": 2.03988559600938,
+        "other_actions_mse": 1.473902173378654,
+        "other_initial_effect": 2.004555655204278,
+        "other_actions_effect": 1.434621047343948,
+        "initial_temporal_variation": 1.337731591220813,
+        "state_std": 0.9599684986467076,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.1190395938532902,
+          "raw_output_operator_norm": 0.0,
+          "input_operator_norm": 0.9999990938027573,
+          "output_operator_norm": 0.0,
+          "input_normalization_active": true,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 0.0,
+          "guaranteed_lower": 1.0,
+          "guaranteed_upper": 1.0,
+          "mode": "identity",
+          "global_invertibility_certified": true
+        }
+      },
+      "parent2000_state_summary": {
+        "step": 2000,
+        "clean_mse": 0.262033468829009,
+        "initial_carry_mse": 1.3377315912208132,
+        "clean_over_initial_carry": 0.19587895699605734,
+        "teacher_mse": 0.08506945886331928,
+        "shifted_observed_carry_mse": 0.49864984768344156,
+        "teacher_over_shifted_carry": 0.17059958858610544,
+        "other_initial_mse": 1.936847878769384,
+        "other_actions_mse": 1.374732036798342,
+        "other_initial_effect": 1.8948363879759984,
+        "other_actions_effect": 1.3267277782707707,
+        "initial_temporal_variation": 1.337731591220813,
+        "state_std": 0.9599684986467076,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.1190395938532902,
+          "raw_output_operator_norm": 0.0,
+          "input_operator_norm": 0.9999990938027573,
+          "output_operator_norm": 0.0,
+          "input_normalization_active": true,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 0.0,
+          "guaranteed_lower": 1.0,
+          "guaranteed_upper": 1.0,
+          "mode": "identity",
+          "global_invertibility_certified": true
+        }
+      },
+      "success6000": {
+        "primary": 86.0,
+        "fresh": 80.0
+      },
+      "success2000": {
+        "primary": 70.0,
+        "fresh": 56.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.009921287496884664,
+          "fm": 0.00389927097906669,
+          "rate": 0.024088064829508465,
+          "entry": 148.8423309326172,
+          "surprise": 274.73094177246094,
+          "feature_std": 0.9652796188990275
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.007341085622708003,
+          "fm": 0.0027180429315194488,
+          "rate": 0.01849217029909293,
+          "entry": 148.52105458577475,
+          "surprise": 206.01450856526694,
+          "feature_std": 0.9615829487641653
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.006792237128441532,
+          "fm": 0.0023709892217690745,
+          "rate": 0.01768499178191026,
+          "entry": 149.1150868733724,
+          "surprise": 196.01101938883463,
+          "feature_std": 0.967410127321879
+        },
+        "late_vs_early_change_percent": {
+          "loss": -31.538753104631535,
+          "fm": -39.19403820617303,
+          "rate": -26.581932143234212
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -7.4763941258051965,
+          "fm": -12.768514644335038,
+          "rate": -4.364974495299034
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "frozen_unchanged": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.0,
+            "pool": 0.0,
+            "carrier_chart_module": 0.0,
+            "predictor": 0.03132575750350952,
+            "renderer": 0.5314041972160339,
+            "action_encoder": 0.014057150110602379
+          },
+          "gradient_expectations": {
+            "encoder": "frozen",
+            "pool": "frozen",
+            "carrier_chart_module": "frozen",
+            "predictor": "active",
+            "renderer": "active",
+            "action_encoder": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "tworoom-carrier-unconstrained-seed2",
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "unconstrained",
+      "family": "carrier",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45451614,
+        "frozen": 5653840,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": {
+        "step": 6000,
+        "clean_mse": 0.06288824340486188,
+        "initial_carry_mse": 0.4455026562730682,
+        "clean_over_initial_carry": 0.14116244318488397,
+        "teacher_mse": 0.02206767769073074,
+        "shifted_observed_carry_mse": 0.17282607736315692,
+        "teacher_over_shifted_carry": 0.1276871987573973,
+        "other_initial_mse": 0.8388150239491725,
+        "other_actions_mse": 0.5924285020633666,
+        "other_initial_effect": 0.8226141012818032,
+        "other_actions_effect": 0.5723444081686786,
+        "initial_temporal_variation": 0.445502656273068,
+        "state_std": 0.56354867049878,
+        "chart_certificate": {
+          "raw_input_operator_norm": 2.2714232321457573,
+          "raw_output_operator_norm": 1.755770512405957,
+          "input_operator_norm": 2.2714232321457573,
+          "output_operator_norm": 1.755770512405957,
+          "input_normalization_active": false,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 1.9940489660976757,
+          "guaranteed_lower": 0.0,
+          "guaranteed_upper": 2.994048966097676,
+          "mode": "unconstrained",
+          "global_invertibility_certified": false
+        }
+      },
+      "parent2000_state_summary": {
+        "step": 2000,
+        "clean_mse": 0.14658570589775266,
+        "initial_carry_mse": 0.7090073722063263,
+        "clean_over_initial_carry": 0.20674778802595464,
+        "teacher_mse": 0.05662064584540189,
+        "shifted_observed_carry_mse": 0.2790847889599398,
+        "teacher_over_shifted_carry": 0.20287972718401823,
+        "other_initial_mse": 1.1568793119727805,
+        "other_actions_mse": 0.8184254125549061,
+        "other_initial_effect": 1.1407878703421817,
+        "other_actions_effect": 0.7814520514702856,
+        "initial_temporal_variation": 0.7090073722063263,
+        "state_std": 0.7057619221816502,
+        "chart_certificate": {
+          "raw_input_operator_norm": 2.177517794382083,
+          "raw_output_operator_norm": 1.21583460946141,
+          "input_operator_norm": 2.177517794382083,
+          "output_operator_norm": 1.21583460946141,
+          "input_normalization_active": false,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 1.3237507485639055,
+          "guaranteed_lower": 0.0,
+          "guaranteed_upper": 2.3237507485639055,
+          "mode": "unconstrained",
+          "global_invertibility_certified": false
+        }
+      },
+      "success6000": {
+        "primary": 94.0,
+        "fresh": 86.0
+      },
+      "success2000": {
+        "primary": 82.0,
+        "fresh": 78.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.007740956575920184,
+          "fm": 0.0037862535876532397,
+          "rate": 0.01581881210828821,
+          "entry": 133.84657033284506,
+          "surprise": 175.26062774658203,
+          "feature_std": 0.6685377359390259
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.005442688552041848,
+          "fm": 0.002699662077551087,
+          "rate": 0.010972105587522188,
+          "entry": 130.93380482991537,
+          "surprise": 116.1204096476237,
+          "feature_std": 0.5972534418106079
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.004772329547752936,
+          "fm": 0.002347338517817358,
+          "rate": 0.009699964740624031,
+          "entry": 130.2415631612142,
+          "surprise": 100.58723322550456,
+          "feature_std": 0.5752619902292887
+        },
+        "late_vs_early_change_percent": {
+          "loss": -38.34961479310922,
+          "fm": -38.00366342413257,
+          "rate": -38.68082714288155
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -12.316688671032328,
+          "fm": -13.050654104580673,
+          "rate": -11.594318307917806
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "frozen_unchanged": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.0,
+            "pool": 0.0,
+            "carrier_chart_module": 0.003948209807276726,
+            "predictor": 0.02761291153728962,
+            "renderer": 0.4691801369190216,
+            "action_encoder": 0.00980211142450571
+          },
+          "gradient_expectations": {
+            "encoder": "frozen",
+            "pool": "frozen",
+            "carrier_chart_module": "active",
+            "predictor": "active",
+            "renderer": "active",
+            "action_encoder": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "tworoom-carrier-bounded-seed2",
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "bounded",
+      "family": "carrier",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45451614,
+        "frozen": 5653840,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": {
+        "step": 6000,
+        "clean_mse": 0.09647075506606442,
+        "initial_carry_mse": 0.6905129602719009,
+        "clean_over_initial_carry": 0.13970882607051643,
+        "teacher_mse": 0.02687218741734258,
+        "shifted_observed_carry_mse": 0.2616379701696336,
+        "teacher_over_shifted_carry": 0.10270752138888685,
+        "other_initial_mse": 1.1386241101882741,
+        "other_actions_mse": 0.813146559588789,
+        "other_initial_effect": 1.1145410287010067,
+        "other_actions_effect": 0.7859574964121749,
+        "initial_temporal_variation": 0.6905129602719008,
+        "state_std": 0.6952379238042723,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.000109040946759,
+          "raw_output_operator_norm": 1.0000825780433662,
+          "input_operator_norm": 0.9999990099527437,
+          "output_operator_norm": 0.9999990149378057,
+          "input_normalization_active": true,
+          "output_normalization_active": true,
+          "residual_lipschitz_upper": 0.49999901244576234,
+          "guaranteed_lower": 0.5000009875542377,
+          "guaranteed_upper": 1.4999990124457623,
+          "mode": "bounded",
+          "global_invertibility_certified": true
+        }
+      },
+      "parent2000_state_summary": {
+        "step": 2000,
+        "clean_mse": 0.16440582797671308,
+        "initial_carry_mse": 0.8299382707139419,
+        "clean_over_initial_carry": 0.1980940435910799,
+        "teacher_mse": 0.061501514353125834,
+        "shifted_observed_carry_mse": 0.32177748003528567,
+        "teacher_over_shifted_carry": 0.1911305736696728,
+        "other_initial_mse": 1.2954231074778721,
+        "other_actions_mse": 0.9137581800027572,
+        "other_initial_effect": 1.2729151356478041,
+        "other_actions_effect": 0.8735147723071868,
+        "initial_temporal_variation": 0.8299382707139419,
+        "state_std": 0.7600509413450991,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.000268737275054,
+          "raw_output_operator_norm": 0.999767367278297,
+          "input_operator_norm": 0.9999990886527894,
+          "output_operator_norm": 0.999767367278297,
+          "input_normalization_active": true,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 0.4998832280715478,
+          "guaranteed_lower": 0.5001167719284523,
+          "guaranteed_upper": 1.4998832280715477,
+          "mode": "bounded",
+          "global_invertibility_certified": true
+        }
+      },
+      "success6000": {
+        "primary": 88.0,
+        "fresh": 94.0
+      },
+      "success2000": {
+        "primary": 80.0,
+        "fresh": 90.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.008297950650254885,
+          "fm": 0.0039024921134114265,
+          "rate": 0.017581834147373836,
+          "entry": 136.64026641845703,
+          "surprise": 196.52555084228516,
+          "feature_std": 0.741276760896047
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.005891777419795592,
+          "fm": 0.00268387608230114,
+          "rate": 0.012831605660418669,
+          "entry": 134.95470428466797,
+          "surprise": 138.39552307128906,
+          "feature_std": 0.709001382191976
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.005253252495701115,
+          "fm": 0.0022802785582219562,
+          "rate": 0.011891895749916634,
+          "entry": 134.86347198486328,
+          "surprise": 126.86140696207683,
+          "feature_std": 0.7046818236509959
+        },
+        "late_vs_early_change_percent": {
+          "loss": -36.6921699451207,
+          "fm": -41.56865684915852,
+          "rate": -32.362598519376306
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -10.837560189377127,
+          "fm": -15.037859860248892,
+          "rate": -7.323400791537216
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "frozen_unchanged": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.0,
+            "pool": 0.0,
+            "carrier_chart_module": 0.0038904231041669846,
+            "predictor": 0.026024525985121727,
+            "renderer": 0.542210578918457,
+            "action_encoder": 0.011242488399147987
+          },
+          "gradient_expectations": {
+            "encoder": "frozen",
+            "pool": "frozen",
+            "carrier_chart_module": "active",
+            "predictor": "active",
+            "renderer": "active",
+            "action_encoder": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "cube-carrier-identity-seed1",
+      "task": "cube",
+      "seed": 1,
+      "arm": "identity",
+      "family": "carrier",
+      "model_size": {
+        "total": 51109834,
+        "trainable": 45447674,
+        "frozen": 5662160,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": {
+        "step": 6000,
+        "clean_mse": 0.21476532349133667,
+        "initial_carry_mse": 1.4651140092770643,
+        "clean_over_initial_carry": 0.14658608281092678,
+        "teacher_mse": 0.1809729593138521,
+        "shifted_observed_carry_mse": 0.7509233328526622,
+        "teacher_over_shifted_carry": 0.2410005807468505,
+        "other_initial_mse": 1.5989072394595834,
+        "other_actions_mse": 1.3939877883717198,
+        "other_initial_effect": 1.504597116029835,
+        "other_actions_effect": 1.2986596472184597,
+        "initial_temporal_variation": 1.4651140092770645,
+        "state_std": 0.977176673019434,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.1190395938532902,
+          "raw_output_operator_norm": 0.0,
+          "input_operator_norm": 0.9999990938027573,
+          "output_operator_norm": 0.0,
+          "input_normalization_active": true,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 0.0,
+          "guaranteed_lower": 1.0,
+          "guaranteed_upper": 1.0,
+          "mode": "identity",
+          "global_invertibility_certified": true
+        }
+      },
+      "parent2000_state_summary": {
+        "step": 2000,
+        "clean_mse": 0.28488677684652275,
+        "initial_carry_mse": 1.4651140092770643,
+        "clean_over_initial_carry": 0.19444683147019753,
+        "teacher_mse": 0.2189033820851431,
+        "shifted_observed_carry_mse": 0.7509233328526622,
+        "teacher_over_shifted_carry": 0.29151229227830355,
+        "other_initial_mse": 1.6199568826437658,
+        "other_actions_mse": 1.4519036046420053,
+        "other_initial_effect": 1.5950080259733723,
+        "other_actions_effect": 1.4078349913270392,
+        "initial_temporal_variation": 1.4651140092770645,
+        "state_std": 0.977176673019434,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.1190395938532902,
+          "raw_output_operator_norm": 0.0,
+          "input_operator_norm": 0.9999990938027573,
+          "output_operator_norm": 0.0,
+          "input_normalization_active": true,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 0.0,
+          "guaranteed_lower": 1.0,
+          "guaranteed_upper": 1.0,
+          "mode": "identity",
+          "global_invertibility_certified": true
+        }
+      },
+      "success6000": {
+        "primary": 10.0,
+        "fresh": 12.0
+      },
+      "success2000": {
+        "primary": 8.0,
+        "fresh": 8.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.033161913976073265,
+          "fm": 0.018473315052688122,
+          "rate": 0.05875439321001371,
+          "entry": 147.2370580037435,
+          "surprise": 700.9401448567709,
+          "feature_std": 0.9790471394856771
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.025379188048342865,
+          "fm": 0.0119607113301754,
+          "rate": 0.05367390625178814,
+          "entry": 146.73190307617188,
+          "surprise": 638.5832316080729,
+          "feature_std": 0.9766589899857839
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.02376305963844061,
+          "fm": 0.010643063578754663,
+          "rate": 0.05247998423874378,
+          "entry": 146.77166493733725,
+          "surprise": 623.9066772460938,
+          "feature_std": 0.9747503499190012
+        },
+        "late_vs_early_change_percent": {
+          "loss": -28.342315658903306,
+          "fm": -42.38682365130805,
+          "rate": -10.679046499284684
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -6.367927952713925,
+          "fm": -11.016466454603524,
+          "rate": -2.2243993337164314
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "frozen_unchanged": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.0,
+            "pool": 0.0,
+            "carrier_chart_module": 0.0,
+            "predictor": 0.027672193944454193,
+            "renderer": 0.6124837398529053,
+            "action_encoder": 0.014322319999337196
+          },
+          "gradient_expectations": {
+            "encoder": "frozen",
+            "pool": "frozen",
+            "carrier_chart_module": "frozen",
+            "predictor": "active",
+            "renderer": "active",
+            "action_encoder": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "cube-carrier-identity-seed2",
+      "task": "cube",
+      "seed": 2,
+      "arm": "identity",
+      "family": "carrier",
+      "model_size": {
+        "total": 51109834,
+        "trainable": 45447674,
+        "frozen": 5662160,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": {
+        "step": 6000,
+        "clean_mse": 0.20136379650644656,
+        "initial_carry_mse": 1.3570199869483737,
+        "clean_over_initial_carry": 0.14838675807514634,
+        "teacher_mse": 0.16254491679635777,
+        "shifted_observed_carry_mse": 0.6585854578205383,
+        "teacher_over_shifted_carry": 0.2468091496193506,
+        "other_initial_mse": 1.6166054161805863,
+        "other_actions_mse": 1.3700907309954726,
+        "other_initial_effect": 1.5911162995314228,
+        "other_actions_effect": 1.3346847441215417,
+        "initial_temporal_variation": 1.3570199869483734,
+        "state_std": 0.9516700378562255,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.1190395938532902,
+          "raw_output_operator_norm": 0.0,
+          "input_operator_norm": 0.9999990938027573,
+          "output_operator_norm": 0.0,
+          "input_normalization_active": true,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 0.0,
+          "guaranteed_lower": 1.0,
+          "guaranteed_upper": 1.0,
+          "mode": "identity",
+          "global_invertibility_certified": true
+        }
+      },
+      "parent2000_state_summary": {
+        "step": 2000,
+        "clean_mse": 0.25149670929546303,
+        "initial_carry_mse": 1.3570199869483737,
+        "clean_over_initial_carry": 0.1853301437814644,
+        "teacher_mse": 0.19330422781185513,
+        "shifted_observed_carry_mse": 0.6585854578205383,
+        "teacher_over_shifted_carry": 0.29351426685241155,
+        "other_initial_mse": 1.6166159102054212,
+        "other_actions_mse": 1.408173125952302,
+        "other_initial_effect": 1.6104672556628528,
+        "other_actions_effect": 1.407820410539742,
+        "initial_temporal_variation": 1.3570199869483734,
+        "state_std": 0.9516700378562255,
+        "chart_certificate": {
+          "raw_input_operator_norm": 1.1190395938532902,
+          "raw_output_operator_norm": 0.0,
+          "input_operator_norm": 0.9999990938027573,
+          "output_operator_norm": 0.0,
+          "input_normalization_active": true,
+          "output_normalization_active": false,
+          "residual_lipschitz_upper": 0.0,
+          "guaranteed_lower": 1.0,
+          "guaranteed_upper": 1.0,
+          "mode": "identity",
+          "global_invertibility_certified": true
+        }
+      },
+      "success6000": {
+        "primary": 12.0,
+        "fresh": 10.0
+      },
+      "success2000": {
+        "primary": 16.0,
+        "fresh": 6.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.031447864758471646,
+          "fm": 0.01808665848026673,
+          "rate": 0.05344482697546482,
+          "entry": 145.73470815022787,
+          "surprise": 635.9108479817709,
+          "feature_std": 0.9727617005507151
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.023953787051141262,
+          "fm": 0.011592667705068985,
+          "rate": 0.04944447676340739,
+          "entry": 145.6155242919922,
+          "surprise": 586.771484375,
+          "feature_std": 0.9660294850667318
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.02219664181272189,
+          "fm": 0.010129424277693033,
+          "rate": 0.04826886889835199,
+          "entry": 146.9676717122396,
+          "surprise": 572.1325276692709,
+          "feature_std": 0.9717665314674377
+        },
+        "late_vs_early_change_percent": {
+          "loss": -29.41765050441969,
+          "fm": -43.995048677760785,
+          "rate": -9.684675524329013
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -7.335563410778734,
+          "fm": -12.62214586497754,
+          "rate": -2.377632330261481
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "frozen_unchanged": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.0,
+            "pool": 0.0,
+            "carrier_chart_module": 0.0,
+            "predictor": 0.02547517418861389,
+            "renderer": 0.6836662292480469,
+            "action_encoder": 0.014082557521760464
+          },
+          "gradient_expectations": {
+            "encoder": "frozen",
+            "pool": "frozen",
+            "carrier_chart_module": "frozen",
+            "predictor": "active",
+            "renderer": "active",
+            "action_encoder": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "tworoom-temporal-forecast-seed1",
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "temporal-forecast",
+      "family": "temporal-forecast",
+      "model_size": {
+        "total": 51097134,
+        "trainable": 51097134,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": null,
+      "parent2000_state_summary": null,
+      "success6000": {
+        "primary": 2.0,
+        "fresh": 4.0
+      },
+      "success2000": {
+        "primary": 2.0,
+        "fresh": 4.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.006349593323344986,
+          "fm": 0.00566487309212486,
+          "rate": 0.002738881118906041,
+          "entry": 115.75232315063477,
+          "surprise": 17.119325319925945,
+          "feature_std": 0.0005762315898512801
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.004600410582497716,
+          "fm": 0.003928209460961322,
+          "rate": 0.0026888044473404684,
+          "entry": 115.78745778401692,
+          "surprise": 16.498964309692383,
+          "feature_std": 0.0005492894949081043
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.004551256696383159,
+          "fm": 0.0038837248381848135,
+          "rate": 0.0026701269671320915,
+          "entry": 115.7820307413737,
+          "surprise": 16.270229657491047,
+          "feature_std": 0.0005184431017066041
+        },
+        "late_vs_early_change_percent": {
+          "loss": -28.32207568869084,
+          "fm": -31.441979810918387,
+          "rate": -2.510300695395329
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -1.0684673733593164,
+          "fm": -1.1324401923725969,
+          "rate": -0.6946388468990761
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "reviewed_tf_loss_path": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.0046491739340126514,
+            "predictor": 0.050547387450933456,
+            "renderer": 0.6575023531913757
+          },
+          "gradient_expectations": {
+            "encoder": "active",
+            "predictor": "active",
+            "renderer": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "tworoom-temporal-forecast-seed2",
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "temporal-forecast",
+      "family": "temporal-forecast",
+      "model_size": {
+        "total": 51097134,
+        "trainable": 51097134,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": null,
+      "parent2000_state_summary": null,
+      "success6000": {
+        "primary": 4.0,
+        "fresh": 2.0
+      },
+      "success2000": {
+        "primary": 6.0,
+        "fresh": 8.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.006588554475456476,
+          "fm": 0.005933922016993165,
+          "rate": 0.00261852975624303,
+          "entry": 115.71692657470703,
+          "surprise": 15.645503520965576,
+          "feature_std": 0.0006503148276048402
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.004715867883836229,
+          "fm": 0.004041498138879736,
+          "rate": 0.002697478669385115,
+          "entry": 115.77522532145183,
+          "surprise": 16.607300122578938,
+          "feature_std": 0.0005326131358742714
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.004435166638965408,
+          "fm": 0.003766742069274187,
+          "rate": 0.0026736983563750982,
+          "entry": 115.77736028035481,
+          "surprise": 16.31478277842204,
+          "feature_std": 0.0005364003591239452
+        },
+        "late_vs_early_change_percent": {
+          "loss": -32.68376765363049,
+          "fm": -36.521881169195595,
+          "rate": 2.106854046647233
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -5.952271178608126,
+          "fm": -6.798371795903102,
+          "rate": -0.8815755720299245
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "reviewed_tf_loss_path": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.006053501274436712,
+            "predictor": 0.08460932970046997,
+            "renderer": 0.3934803605079651
+          },
+          "gradient_expectations": {
+            "encoder": "active",
+            "predictor": "active",
+            "renderer": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "cube-temporal-forecast-seed1",
+      "task": "cube",
+      "seed": 1,
+      "arm": "temporal-forecast",
+      "family": "temporal-forecast",
+      "model_size": {
+        "total": 51101514,
+        "trainable": 51101514,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": null,
+      "parent2000_state_summary": null,
+      "success6000": {
+        "primary": 24.0,
+        "fresh": 14.0
+      },
+      "success2000": {
+        "primary": 12.0,
+        "fresh": 6.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.018083976892133553,
+          "fm": 0.017300333206852276,
+          "rate": 0.003134575362006823,
+          "entry": 120.1845703125,
+          "surprise": 21.34843921661377,
+          "feature_std": 0.319809357325236
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.011247040703892708,
+          "fm": 0.010481274841974178,
+          "rate": 0.0030630636028945446,
+          "entry": 125.61668904622395,
+          "surprise": 19.6936829884847,
+          "feature_std": 0.5132091244061788
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.009945312980562449,
+          "fm": 0.009183500738193592,
+          "rate": 0.003047249357526501,
+          "entry": 127.46564356486003,
+          "surprise": 19.235222498575848,
+          "feature_std": 0.5609900951385498
+        },
+        "late_vs_early_change_percent": {
+          "loss": -45.00483472256253,
+          "fm": -46.917203105913515,
+          "rate": -2.785895835805141
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -11.573957608953256,
+          "fm": -12.381834493867228,
+          "rate": -0.5162885077900192
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "reviewed_tf_loss_path": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.2533433735370636,
+            "predictor": 0.06540755927562714,
+            "renderer": 0.6389930248260498
+          },
+          "gradient_expectations": {
+            "encoder": "active",
+            "predictor": "active",
+            "renderer": "active"
+          }
+        }
+      }
+    },
+    {
+      "id": "cube-temporal-forecast-seed2",
+      "task": "cube",
+      "seed": 2,
+      "arm": "temporal-forecast",
+      "family": "temporal-forecast",
+      "model_size": {
+        "total": 51101514,
+        "trainable": 51101514,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "state_summary": null,
+      "parent2000_state_summary": null,
+      "success6000": {
+        "primary": 14.0,
+        "fresh": 18.0
+      },
+      "success2000": {
+        "primary": 6.0,
+        "fresh": 6.0
+      },
+      "training": {
+        "first_step": 2100,
+        "last_step": 6000,
+        "recorded_unique_steps": 40,
+        "early": {
+          "step_range": [
+            2500,
+            3000
+          ],
+          "records": 6,
+          "loss": 0.01929330825805664,
+          "fm": 0.018510989844799042,
+          "rate": 0.0031292719456056752,
+          "entry": 119.62719345092773,
+          "surprise": 21.36289342244466,
+          "feature_std": 0.29252055287361145
+        },
+        "recent": {
+          "step_range": [
+            4500,
+            5000
+          ],
+          "records": 6,
+          "loss": 0.011645611686011156,
+          "fm": 0.01087920181453228,
+          "rate": 0.0030656392918899655,
+          "entry": 125.46234893798828,
+          "surprise": 19.74738311767578,
+          "feature_std": 0.4959683169921239
+        },
+        "late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.010206117605169615,
+          "fm": 0.009438602409015099,
+          "rate": 0.0030700600861261287,
+          "entry": 128.00241343180338,
+          "surprise": 19.438838005065918,
+          "feature_std": 0.5593431194623312
+        },
+        "late_vs_early_change_percent": {
+          "loss": -47.100220093629254,
+          "fm": -49.0108174217003,
+          "rate": -1.8921928329909354
+        },
+        "late_vs_recent_change_percent": {
+          "loss": -12.360828436093897,
+          "fm": -13.24177481102382,
+          "rate": 0.14420464429256707
+        }
+      },
+      "checks": {
+        "pre_resume": true,
+        "fullstate": true,
+        "fullstate_checks": {
+          "exact_step": true,
+          "model_finite": true,
+          "portable_finite": true,
+          "optimizer_present": true,
+          "optimizer_finite": true,
+          "scheduler_present": true,
+          "scheduler_finite": true,
+          "rng_present": true,
+          "sample_cursor": true,
+          "portable_equal": true,
+          "complete_model_keys": true,
+          "saved_training_semantics": true,
+          "scheduler_step": true,
+          "optimizer_scheduler_lr_equal": true,
+          "reviewed_tf_loss_path": true,
+          "optimizer_parameter_order": true,
+          "native_optimizer_roundtrip": true,
+          "native_scheduler_roundtrip": true,
+          "native_model_strict_load": true,
+          "sampler_cursor_sequence": true
+        },
+        "health": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.20613287389278412,
+            "predictor": 0.0713324174284935,
+            "renderer": 0.6438254714012146
+          },
+          "gradient_expectations": {
+            "encoder": "active",
+            "predictor": "active",
+            "renderer": "active"
+          }
+        }
+      }
+    }
+  ],
+  "comparison_summaries": [
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "identity",
+      "reference": "temporal-forecast",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        78.0,
+        82.0
+      ],
+      "mean_difference_pp": 80.0,
+      "shared_case_bootstrap_ci95_pp": [
+        71.0,
+        88.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "unconstrained",
+      "reference": "temporal-forecast",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        88.0,
+        90.0
+      ],
+      "mean_difference_pp": 89.0,
+      "shared_case_bootstrap_ci95_pp": [
+        81.0,
+        95.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "bounded",
+      "reference": "temporal-forecast",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        90.0,
+        84.0
+      ],
+      "mean_difference_pp": 87.0,
+      "shared_case_bootstrap_ci95_pp": [
+        78.0,
+        94.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "unconstrained",
+      "reference": "identity",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        10.0,
+        8.0
+      ],
+      "mean_difference_pp": 9.0,
+      "shared_case_bootstrap_ci95_pp": [
+        1.0,
+        18.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "bounded",
+      "reference": "identity",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        12.0,
+        2.0
+      ],
+      "mean_difference_pp": 7.000000000000001,
+      "shared_case_bootstrap_ci95_pp": [
+        -1.0,
+        16.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "bounded",
+      "reference": "unconstrained",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        2.0,
+        -6.0
+      ],
+      "mean_difference_pp": -2.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -5.0,
+        0.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "identity",
+      "reference": "identity",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        8.0,
+        16.0
+      ],
+      "mean_difference_pp": 12.0,
+      "shared_case_bootstrap_ci95_pp": [
+        2.0,
+        23.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "unconstrained",
+      "reference": "unconstrained",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        16.0,
+        12.0
+      ],
+      "mean_difference_pp": 14.000000000000002,
+      "shared_case_bootstrap_ci95_pp": [
+        5.0,
+        24.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "bounded",
+      "reference": "bounded",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        16.0,
+        8.0
+      ],
+      "mean_difference_pp": 12.0,
+      "shared_case_bootstrap_ci95_pp": [
+        2.0,
+        22.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "temporal-forecast",
+      "reference": "temporal-forecast",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        0.0,
+        -2.0
+      ],
+      "mean_difference_pp": -1.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -5.0,
+        2.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "identity",
+      "reference": "temporal-forecast",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        70.0,
+        78.0
+      ],
+      "mean_difference_pp": 74.0,
+      "shared_case_bootstrap_ci95_pp": [
+        63.0,
+        84.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "unconstrained",
+      "reference": "temporal-forecast",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        78.0,
+        84.0
+      ],
+      "mean_difference_pp": 81.0,
+      "shared_case_bootstrap_ci95_pp": [
+        71.0,
+        90.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "bounded",
+      "reference": "temporal-forecast",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        76.0,
+        92.0
+      ],
+      "mean_difference_pp": 84.0,
+      "shared_case_bootstrap_ci95_pp": [
+        75.0,
+        92.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "unconstrained",
+      "reference": "identity",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        8.0,
+        6.0
+      ],
+      "mean_difference_pp": 7.000000000000001,
+      "shared_case_bootstrap_ci95_pp": [
+        -3.0,
+        18.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "bounded",
+      "reference": "identity",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        6.0,
+        14.000000000000002
+      ],
+      "mean_difference_pp": 10.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -1.0,
+        21.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "bounded",
+      "reference": "unconstrained",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -2.0,
+        8.0
+      ],
+      "mean_difference_pp": 3.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -2.0,
+        8.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "identity",
+      "reference": "identity",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        8.0,
+        24.0
+      ],
+      "mean_difference_pp": 16.0,
+      "shared_case_bootstrap_ci95_pp": [
+        4.0,
+        28.000000000000004
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "unconstrained",
+      "reference": "unconstrained",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        12.0,
+        8.0
+      ],
+      "mean_difference_pp": 10.0,
+      "shared_case_bootstrap_ci95_pp": [
+        0.0,
+        19.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "bounded",
+      "reference": "bounded",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        16.0,
+        4.0
+      ],
+      "mean_difference_pp": 10.0,
+      "shared_case_bootstrap_ci95_pp": [
+        1.0,
+        19.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "temporal-forecast",
+      "reference": "temporal-forecast",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        0.0,
+        -6.0
+      ],
+      "mean_difference_pp": -3.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -7.000000000000001,
+        0.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "candidate": "identity",
+      "reference": "temporal-forecast",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -14.000000000000002,
+        -2.0
+      ],
+      "mean_difference_pp": -8.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -17.0,
+        0.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "candidate": "identity",
+      "reference": "identity",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        2.0,
+        -4.0
+      ],
+      "mean_difference_pp": -1.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -10.0,
+        8.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "candidate": "temporal-forecast",
+      "reference": "temporal-forecast",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        12.0,
+        8.0
+      ],
+      "mean_difference_pp": 10.0,
+      "shared_case_bootstrap_ci95_pp": [
+        1.0,
+        19.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "candidate": "identity",
+      "reference": "temporal-forecast",
+      "kind": "same6000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -2.0,
+        -8.0
+      ],
+      "mean_difference_pp": -5.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -14.000000000000002,
+        3.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "candidate": "identity",
+      "reference": "identity",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        4.0,
+        4.0
+      ],
+      "mean_difference_pp": 4.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -2.0,
+        11.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "candidate": "temporal-forecast",
+      "reference": "temporal-forecast",
+      "kind": "6000_minus2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        8.0,
+        12.0
+      ],
+      "mean_difference_pp": 10.0,
+      "shared_case_bootstrap_ci95_pp": [
+        3.0,
+        18.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    }
+  ],
+  "released_reference": [
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "success_rate": 72.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-tworoom-released-lewm-strict-validation/metrics.json",
+        "sha256": "61fcc7e267a39387f07610188db3daf886cf472e6874efecea085481b4999059",
+        "bytes": 210357
+      },
+      "scope": "Unmatched released checkpoint: training exposure/capacity/normalization differ; not a matched-budget replication."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "success_rate": 68.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_freshcases_20261031/fresh-tworoom-released-lewm/metrics.json",
+        "sha256": "3a9bdb9263850708d27289135664d1277da80f0bdf76747b087702422d7d9470",
+        "bytes": 216210
+      },
+      "scope": "Unmatched released checkpoint: training exposure/capacity/normalization differ; not a matched-budget replication."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "success_rate": 30.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_gate600_20261030/reference-cube-released-lewm-strict-validation/metrics.json",
+        "sha256": "bbaa44dc1dd9c6be083bc492d8b54b2960e2a3efe17f55be8ed03589db014eaf",
+        "bytes": 25189
+      },
+      "scope": "Unmatched released checkpoint: training exposure/capacity/normalization differ; not a matched-budget replication."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "success_rate": 24.0,
+      "source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-cube-released-lewm/metrics.json",
+        "sha256": "8bbcf8276b54564488a4a8eee9d01fcd4ea56336bc89cd19f2844e25dd834e11",
+        "bytes": 25161
+      },
+      "scope": "Unmatched released checkpoint: training exposure/capacity/normalization differ; not a matched-budget replication."
+    }
+  ],
+  "sources": {
+    "parent2000": {
+      "path": "/efs/prescottsun/SPT-JEPA/reports/carrier-learn2000-20261031/results.json",
+      "sha256": "a9bd6c9ac94b5e0fcb393ecca98ff355fc9e3c4a573d4690a1dc048994bb2b53",
+      "bytes": 5267383
+    },
+    "parent_fresh2000_plan": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/plan.json",
+      "sha256": "9e3f28394213a61952b7c865ba9c52785b1d3ea40eb3d9be15e17f0eef1856a9",
+      "bytes": 36601
+    },
+    "diagnostics600": {
+      "path": "/efs/prescottsun/SPT-JEPA/reports/carrier-diagnostics-20261031/results.json",
+      "sha256": "6c73fe132317d42a79431e59bad2bebfb55291711d2962c6af1ce7a49d168577",
+      "bytes": 485414
+    }
+  },
+  "scope": "Both seeds retained. Fixed50 primary and50 fresh validation cases; reused validation is not independent test. Paired case intervals condition on two fixed training seeds, without seed-level uncertainty or multiplicity correction. F/TF share6000updates/data/planner; capacity, frozen parameters, calibration and training compute differ. No new physical-label training. No TF transition audit was scheduled."
+}
