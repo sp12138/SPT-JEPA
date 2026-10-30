@@ -1,0 +1,84 @@
+{
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/local_carrier_source_20261031/source-v1",
+    "source_commit": "96aca13f99b25dcf880346a1e699318150139ae5",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_carrier_source_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_carrier_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "jobs": [
+    {
+      "pid": 1020727,
+      "gpu": 0,
+      "task": "tworoom",
+      "seed": 1,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/reports/local-calibration-diagnosis-20261031/source.py",
+        "--task",
+        "tworoom",
+        "--seed",
+        "1",
+        "--root",
+        "/efs/prescottsun/SPT-JEPA/reports/local-calibration-diagnosis-20261031/tworoom-seed1"
+      ]
+    },
+    {
+      "pid": 1020728,
+      "gpu": 1,
+      "task": "tworoom",
+      "seed": 2,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/reports/local-calibration-diagnosis-20261031/source.py",
+        "--task",
+        "tworoom",
+        "--seed",
+        "2",
+        "--root",
+        "/efs/prescottsun/SPT-JEPA/reports/local-calibration-diagnosis-20261031/tworoom-seed2"
+      ]
+    },
+    {
+      "pid": 1020729,
+      "gpu": 2,
+      "task": "cube",
+      "seed": 1,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/reports/local-calibration-diagnosis-20261031/source.py",
+        "--task",
+        "cube",
+        "--seed",
+        "1",
+        "--root",
+        "/efs/prescottsun/SPT-JEPA/reports/local-calibration-diagnosis-20261031/cube-seed1"
+      ]
+    },
+    {
+      "pid": 1020730,
+      "gpu": 3,
+      "task": "cube",
+      "seed": 2,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/reports/local-calibration-diagnosis-20261031/source.py",
+        "--task",
+        "cube",
+        "--seed",
+        "2",
+        "--root",
+        "/efs/prescottsun/SPT-JEPA/reports/local-calibration-diagnosis-20261031/cube-seed2"
+      ]
+    }
+  ]
+}
