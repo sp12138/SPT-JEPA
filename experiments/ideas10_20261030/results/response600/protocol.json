@@ -1,0 +1,83 @@
+{
+  "created_at": 1793375958.178681,
+  "source_commit": "80fb8bdced97904482aa4533e28f70ffe17ece7d",
+  "runs": [
+    {
+      "id": "tworoom-direct-seed1",
+      "original_control": "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/tworoom-fresh-rate-on-seed1",
+      "config_sha256": "6b1a21b4193140cfb8503b546ab2feffa4655e8ad04324c0b5cb7895c850ba19",
+      "task": "tworoom",
+      "seed": 1,
+      "method": "direct"
+    },
+    {
+      "id": "tworoom-annihilator-seed1",
+      "original_control": "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/tworoom-fresh-rate-on-seed1",
+      "config_sha256": "9da2576ca9cc6905ef35c79f25e527cae9c5c748f5fb2b69bd028f91fc84b41f",
+      "task": "tworoom",
+      "seed": 1,
+      "method": "annihilator"
+    },
+    {
+      "id": "tworoom-direct-seed2",
+      "original_control": "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/tworoom-fresh-rate-on-seed2",
+      "config_sha256": "83cea036f1a5d7a5063937feae0052724ba8129c0b9cbef5cffe3e42316d5357",
+      "task": "tworoom",
+      "seed": 2,
+      "method": "direct"
+    },
+    {
+      "id": "tworoom-annihilator-seed2",
+      "original_control": "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/tworoom-fresh-rate-on-seed2",
+      "config_sha256": "cf05f083fd4e2f6091dc89bba776010ed44478d380bb22a9a654f26bc535a15e",
+      "task": "tworoom",
+      "seed": 2,
+      "method": "annihilator"
+    },
+    {
+      "id": "cube-direct-seed1",
+      "original_control": "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/cube-fresh-rate-on-seed1",
+      "config_sha256": "5255c53d285e89f2d46d9cfdf3e37e4b1040ec95ad7b1bebc0ea756ae743d6be",
+      "task": "cube",
+      "seed": 1,
+      "method": "direct"
+    },
+    {
+      "id": "cube-annihilator-seed1",
+      "original_control": "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/cube-fresh-rate-on-seed1",
+      "config_sha256": "4f642be17b7fa3c456abebf2f0287f23cb11a01e10f4153cc3e9d1b6503e9a4b",
+      "task": "cube",
+      "seed": 1,
+      "method": "annihilator"
+    },
+    {
+      "id": "cube-direct-seed2",
+      "original_control": "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/cube-fresh-rate-on-seed2",
+      "config_sha256": "6edeacdadb25e277c908842b4d4718de1806fd1953cdb4bde734b7d06b4403eb",
+      "task": "cube",
+      "seed": 2,
+      "method": "direct"
+    },
+    {
+      "id": "cube-annihilator-seed2",
+      "original_control": "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/cube-fresh-rate-on-seed2",
+      "config_sha256": "b36402159005978483cc930806ac54dbbd0c8676230cddc537fbdd1e0781005c",
+      "task": "cube",
+      "seed": 2,
+      "method": "annihilator"
+    }
+  ],
+  "additional_updates": 600,
+  "preflight": "/efs/prescottsun/SPT-JEPA/runs/ideas10_response_preflight_20261030",
+  "comparison": "Fresh same550 baseline tensors and identical12480-parameter auxiliary heads. Same data, seed, optimizer, scheduler and original TF objective. Only P differs: I vs orthogonal complement of [1,time,cumulative standardized actions].",
+  "mechanism": "Aux=initial grounding+||P(query(clean latent forecast)-8x8RGB)||^2/(rank(P)*192). Baseline direct P=I includes initial1/8 in query and shared grounding1. No privileged training labels, learned teacher, optimal action or validation tuning.",
+  "motivation": "Per-clip projection exactly cancels affine cumulative-action response. Independent data diagnostic separates free vs obstructed TwoRoom motion; transfer to Cube unproven.",
+  "limitations": [
+    "Both arms add12480 parameters and7 clean predictor calls per training sample relative to oldTF; old600 checkpoints are historical references, direct is the matched mechanism control.",
+    "8frames and5Cube action dimensions plus time/intercept can leave only1 residual dimension; rank and target energy are audited.",
+    "Projected image residual may contain smooth rendering or policy effects, not only contact. Shared initial grounding remains essential.",
+    "600 steps remain in1249-step warmup. Numerical finiteness does not prove noncollapse or planning quality.",
+    "Same strict50-case manifest and unchanged CEM/goalMSE. Released LeWM training budget differs."
+  ],
+  "next_review": "No automatic continuation beyond600. Review full-state, gradients, query use, physical diagnostic probes and paired actual task scores. All old holds preserved."
+}

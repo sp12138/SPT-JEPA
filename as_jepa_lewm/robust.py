@@ -1,5 +1,6 @@
 """Matched-size posterior and forecast ablations of the original full-data AS-JEPA."""
 import math
+from functools import lru_cache
 import torch
 from torch import nn
 from torch.nn import functional as F
@@ -13,7 +14,8 @@ from vforge.models.as_jepa.pixels import pack
 
 class RobustLeWM(ASJepaLeWM):
     def __init__(self, rho=0., forecast_fraction=0., forecast_seed=20261029, rate_prior="one-step",
-                 posterior_noise_scale=1., flow_force_t_one=False, response_query_mode="none", **kwargs):
+                 posterior_noise_scale=1., flow_force_t_one=False, response_query_mode="none",
+                 response_query_encoded_fraction=0., **kwargs):
         super().__init__(**kwargs)
         if self.mode != "L2" or self.objective != "flow":
             raise ValueError("This controlled extension applies only to AS-JEPA L2 flow loss")
@@ -33,11 +35,17 @@ class RobustLeWM(ASJepaLeWM):
         # Evaluation and checkpoint parameter structure remain unchanged.
         self.posterior_noise_scale = float(posterior_noise_scale)
         self.flow_force_t_one = flow_force_t_one
-        if response_query_mode not in {"none", "direct", "annihilator"}:
+        if response_query_mode not in {"none", "direct", "annihilator", "direct_relative",
+                                       "annihilator_relative", "random_relative"}:
             raise ValueError("Unknown response_query_mode")
         if response_query_mode != "none" and kwargs.get("action_dim", 10) % 5:
             raise ValueError("Response queries require five raw actions per observation block")
+        if not math.isfinite(response_query_encoded_fraction) or not 0 <= response_query_encoded_fraction <= 1:
+            raise ValueError("response_query_encoded_fraction must be finite and in [0,1]")
+        if response_query_mode == "none" and response_query_encoded_fraction != 0:
+            raise ValueError("Encoded response queries require an active response_query_mode")
         self.response_query_mode = response_query_mode
+        self.response_query_encoded_fraction = float(response_query_encoded_fraction)
         if response_query_mode != "none":
             # The shared 550 baseline tensors and caller RNG stay unchanged.
             # Direct and annihilator draw exactly the same auxiliary head.
@@ -75,6 +83,41 @@ class RobustLeWM(ASJepaLeWM):
             projector = torch.eye(w, device=actions.device, dtype=torch.float64)[None] - (u * keep[:, None]) @ u.transpose(1, 2)
         return projector.float(), rank
 
+    @staticmethod
+    @lru_cache(maxsize=None)
+    def _response_random_basis(window):
+        """One fixed CPU-QR basis in span{constant, time}'s complement.
+
+        This derived constant is not a learned tensor or checkpoint buffer.
+        A private generator leaves every training/evaluation RNG untouched.
+        """
+        time = torch.arange(window, device="cpu", dtype=torch.float64)
+        design = torch.stack([torch.ones_like(time), time], 1)
+        complement = torch.linalg.qr(design, mode="complete").Q[:, min(2, window):]
+        width = complement.shape[1]
+        if width == 0:
+            return complement
+        generator = torch.Generator(device="cpu").manual_seed(20261031)
+        gaussian = torch.randn(width, width, generator=generator, device="cpu", dtype=torch.float64)
+        rotation = torch.linalg.qr(gaussian).Q
+        return (complement @ rotation).contiguous()
+
+    def response_query_operator(self, actions):
+        """Exact current query operator; `none` exposes identity for audits."""
+        if actions.ndim != 3:
+            raise ValueError("Expected [batch, window, action_width] controls")
+        b, w = actions.shape[:2]
+        if self.response_query_mode in {"none", "direct", "direct_relative"}:
+            return (torch.eye(w, device=actions.device, dtype=torch.float32)[None].expand(b, -1, -1),
+                    torch.full((b,), w, device=actions.device, dtype=torch.long))
+        projector, rank = self.response_projector(actions)
+        if self.response_query_mode == "random_relative":
+            basis = self._response_random_basis(w).to(actions.device)
+            keep = torch.arange(basis.shape[1], device=actions.device)[None] < rank[:, None]
+            with torch.autocast(device_type=actions.device.type, enabled=False):
+                projector = ((basis[None] * keep[:, None]) @ basis.T).float()
+        return projector, rank
+
     def response_query_loss(self, flat, act_emb, actions, render, step):
         """Grounded clean-latent prediction; original DiT/rate paths unchanged."""
         b, w = flat.shape[:2]
@@ -91,8 +134,8 @@ class RobustLeWM(ASJepaLeWM):
         target = F.adaptive_avg_pool2d(render.detach().float().flatten(0, 1), (8, 8)).reshape(b, w, -1)
         error = prediction - target
         anchor = error[:, 0].square().mean(-1)
-        if self.response_query_mode == "annihilator":
-            projector, rank = self.response_projector(actions)
+        if self.response_query_mode in {"annihilator", "annihilator_relative", "random_relative"}:
+            projector, rank = self.response_query_operator(actions)
             with torch.autocast(device_type=flat.device.type, enabled=False):
                 residual = torch.bmm(projector, error.float())
                 query = residual.square().sum((1, 2)) / (rank.clamp_min(1) * error.shape[-1])
@@ -100,12 +143,51 @@ class RobustLeWM(ASJepaLeWM):
         else:
             query = error.square().mean((1, 2))
             rank = torch.full((b,), w, device=flat.device, dtype=torch.long)
+        if self.response_query_encoded_fraction:
+            # Ground the same target on the already-observed per-frame codes.
+            # This branch never supplies future codes to the causal rollout,
+            # which is still computed above in full in every experimental arm.
+            encoded_error = self.response_query_head(flat).float() - target
+            if self.response_query_mode in {"direct", "direct_relative"}:
+                encoded_query = encoded_error.square().mean((1, 2))
+            else:
+                with torch.autocast(device_type=flat.device.type, enabled=False):
+                    encoded_residual = torch.bmm(projector, encoded_error)
+                    encoded_query = encoded_residual.square().sum((1, 2)) / (rank.clamp_min(1) * error.shape[-1])
+                    encoded_query = torch.where(rank > 0, encoded_query, torch.zeros_like(encoded_query))
+            forecast_query = query
+            query = ((1 - self.response_query_encoded_fraction) * forecast_query
+                     + self.response_query_encoded_fraction * encoded_query)
+        relative_metrics = {}
+        if self.response_query_mode.endswith("_relative"):
+            with torch.autocast(device_type=flat.device.type, enabled=False):
+                if self.response_query_mode == "direct_relative":
+                    energy = target.square().mean((1, 2))
+                else:
+                    projected_target = torch.bmm(projector, target)
+                    energy = projected_target.square().sum((1, 2)) / (rank.clamp_min(1) * target.shape[-1])
+                    energy = torch.where(rank > 0, energy, torch.zeros_like(energy))
+                # Render RGB uses [-1,1]. This is one original 8-bit intensity
+                # step squared, not an estimated noise variance after pooling.
+                resolution_floor = (1. / 127.5) ** 2
+                raw_query = query
+                query = query / (energy.detach() + resolution_floor)
+                positive_rank = rank > 0
+                relative_metrics = dict(response_query_raw_outcome=raw_query.mean(),
+                    response_query_target_energy=energy.mean(),
+                    response_query_floor_dominated_fraction=((energy <= resolution_floor) & positive_rank).float().sum()
+                        / positive_rank.sum().clamp_min(1))
+        if self.response_query_encoded_fraction:
+            denominator = energy.detach() + resolution_floor if self.response_query_mode.endswith("_relative") else 1.
+            relative_metrics.update(response_query_forecast_outcome=(forecast_query / denominator).mean(),
+                response_query_encoded_outcome=(encoded_query / denominator).mean(),
+                response_query_encoded_fraction=query.new_tensor(self.response_query_encoded_fraction))
         auxiliary = (anchor + query).mean()
         return auxiliary, dict(response_query_aux=auxiliary, response_query_anchor=anchor.mean(),
             response_query_outcome=query.mean(), response_query_residual_rank=rank.float().mean(),
             response_query_zero_rank_fraction=(rank == 0).float().mean(),
             response_native_state_std=flat.float().std((0, 1), unbiased=False).mean(),
-            response_clean_forecast_std=forecast.float().std((0, 1), unbiased=False).mean())
+            response_clean_forecast_std=forecast.float().std((0, 1), unbiased=False).mean(), **relative_metrics)
 
     def context_samples(self, mu, samples, generator):
         noise = torch.randn((samples, *mu.shape[1:]), device=mu.device, generator=generator)

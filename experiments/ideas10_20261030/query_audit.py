@@ -41,6 +41,10 @@ def main():
         b, w, _ = mu.shape
         target = F.adaptive_avg_pool2d(render.float().flatten(0, 1), (8, 8)).reshape(b, w, -1)
         projector, rank = model.response_projector(actions)
+        training_projector, training_rank = model.response_query_operator(actions)
+        training_target = torch.bmm(training_projector, target)
+        training_energy = training_target.square().sum((1, 2)) / (training_rank.clamp_min(1) * target.shape[-1])
+        floor = (1 / 127.5) ** 2
 
         def forecast(initial, control):
             embedded = model.action_encoder(control)
@@ -55,7 +59,8 @@ def main():
             other_initial=forecast(mu.roll(1, 0)[:, 0], actions),
             zero_initial=forecast(torch.zeros_like(mu[:, 0]), actions),
             wrong_actions=forecast(mu[:, 0], wrong_actions),
-            encoded=mu, carry=mu[:, :1].expand_as(mu), zero=torch.zeros_like(mu))
+            encoded=mu, encoded_other_episode=mu.roll(1, 0),
+            carry=mu[:, :1].expand_as(mu), zero=torch.zeros_like(mu))
         values = {}
         for name, state in states.items():
             error = model.response_query_head(state).float() - target
@@ -63,15 +68,29 @@ def main():
             values[name+'_direct_mse'] = error.square().mean((1, 2))
             residual = torch.bmm(projector, error)
             values[name+'_annihilator_mse'] = residual.square().sum((1, 2)) / (rank.clamp_min(1) * error.shape[-1])
+            raw = torch.bmm(training_projector, error).square().sum((1, 2)) / (training_rank.clamp_min(1) * error.shape[-1])
+            raw = torch.where(training_rank > 0, raw, torch.zeros_like(raw))
+            values[name+'_training_raw_query_mse'] = raw
+            values[name+'_training_relative_query'] = raw / (training_energy + floor)
         projected_target = torch.bmm(projector, target)
         values['target_direct_variation'] = (target - target[:, :1]).square().mean((1, 2))
         values['target_projected_energy'] = projected_target.square().sum((1, 2)) / (rank.clamp_min(1) * target.shape[-1])
+        values['training_target_energy'] = training_energy
+        values['training_zero_forecast_relative'] = training_energy / (training_energy + floor)
+        values['training_floor_dominated'] = ((training_energy <= floor) & (training_rank > 0)).float()
+        values['training_positive_rank'] = (training_rank > 0).float()
+        fraction = getattr(model, 'response_query_encoded_fraction', 0.)
+        values['trained_mixed_relative_query'] = ((1-fraction)*values['forecast_training_relative_query']
+            +fraction*values['encoded_training_relative_query'])
         for i in range(b):
             rows.append(dict(episode=int(batch['episode'][i]), start=int(batch['start'][i]),
                 residual_rank=int(rank[i]), **{k: float(v[i]) for k, v in values.items()}))
     report = dict(run=str(root), mode=model.response_query_mode, cases=rows,
         summary={k: float(np.mean([r[k] for r in rows])) for k in rows[0] if k not in {'episode','start'}},
         scope='Frozen600 checkpoint; clean planner-path readout. Fixed targets/projector under all interventions. No update, no oracle labels, no task-performance claim.')
+    positive = sum(r['training_positive_rank'] for r in rows)
+    report['summary']['training_floor_dominated_fraction_given_positive_rank'] = (
+        sum(r['training_floor_dominated'] for r in rows) / max(1., positive))
     assert finite(report)
     (out/'query-audit.json').write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
     print(json.dumps(report['summary']), flush=True)

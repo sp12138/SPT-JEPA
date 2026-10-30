@@ -49,6 +49,31 @@ def main():
         assert norms[prefix] > 0, (prefix, norms)
     report = dict(run=str(root), step=step, checks=checks, loss=float(loss.detach()), gradient_norms=norms,
                   scope="No optimizer step. Explicit real-model backward because the existing trainer records gradient norms only every100 updates. Execution check, not a noncollapse result.")
+    if getattr(model, "response_query_mode", "none") != "none":
+        # Isolate the query term: shared image grounding can otherwise conceal
+        # the carry-initialization cancellation in nullspace query gradients.
+        report["query_only_gradients"] = []
+        for checkpoint_step in [0, step]:
+            current = weights if checkpoint_step else torch.load(
+                root / "initial-model/weights.pt", map_location="cpu", weights_only=True)
+            model.load_state_dict(current, strict=True)
+            model.eval(); model.zero_grad(set_to_none=True)
+            pixels, render, _ = model.prepare(batch)
+            info = model.encode(dict(pixels=pixels, action=batch["action"]))
+            _, query_metrics = model.response_query_loss(info["emb"], info["act_emb"], batch["action"], render, checkpoint_step)
+            query = query_metrics["response_query_outcome"]
+            relevant = [(n,p) for n,p in model.named_parameters()
+                        if n.split(".",1)[0] in {"encoder","pool","predictor","action_encoder","response_query_head"}]
+            grads = torch.autograd.grad(query, [p for _,p in relevant], allow_unused=True)
+            assert finite(query) and all(g is None or finite(g) for g in grads)
+            groups = {}
+            for (name,_), grad in zip(relevant, grads):
+                group = name.split(".",1)[0]
+                groups[group] = groups.get(group, 0.) + (float(grad.float().square().sum()) if grad is not None else 0.)
+            report["query_only_gradients"].append(dict(step=checkpoint_step,
+                query_loss=float(query.detach()), anchor_loss=float(query_metrics["response_query_anchor"].detach()),
+                gradient_norms={k:v**.5 for k,v in groups.items()},
+                scope="Eval mode, query term only; zero is a measured mechanism outcome, not an execution failure."))
     (out / "gradient-audit.json").write_text(json.dumps(report, indent=2, allow_nan=False)+"\n")
     print(json.dumps(report), flush=True)
 

@@ -1,0 +1,187 @@
+{
+  "constructions": {
+    "exhaustive_words": 3280,
+    "max_length": 7,
+    "oracle_error": 0.0,
+    "composition_error": 0.0,
+    "hard_symbol_stutter_error": 0.0,
+    "same_endpoint_histogram": {
+      "left_word": "OABO",
+      "right_word": "OBAO",
+      "left_hit": 1.0,
+      "right_hit": 0.0
+    },
+    "scalar_nonclosure": {
+      "B_scalar": 0.0,
+      "O_scalar": 0.0,
+      "AB_scalar": 1.0,
+      "AO_scalar": 0.0,
+      "B_transfer": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "O_transfer": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "correlated_future": {
+      "true_joint_hit": 0.0,
+      "false_independent_hit": 0.25
+    },
+    "brier_risk": {
+      "conditional_mean": 0.04666666666666666,
+      "always_left": 0.15555555555555553,
+      "always_right": 0.06666666666666667
+    }
+  },
+  "monoid_multiplication": {
+    "I": {
+      "I": "I",
+      "A": "A",
+      "B": "B",
+      "AB": "AB",
+      "BA": "BA"
+    },
+    "A": {
+      "I": "A",
+      "A": "A",
+      "B": "AB",
+      "AB": "AB",
+      "BA": "AB"
+    },
+    "B": {
+      "I": "B",
+      "A": "BA",
+      "B": "B",
+      "AB": "AB",
+      "BA": "BA"
+    },
+    "AB": {
+      "I": "AB",
+      "A": "AB",
+      "B": "AB",
+      "AB": "AB",
+      "BA": "AB"
+    },
+    "BA": {
+      "I": "BA",
+      "A": "BA",
+      "B": "AB",
+      "AB": "AB",
+      "BA": "AB"
+    }
+  },
+  "real_data": {
+    "tworoom": {
+      "windows": 128,
+      "queries": 1024,
+      "degenerate_prototype_fraction": 0.0,
+      "ordered_hit_fraction": 0.662109375,
+      "endpoint_preserving_shuffle_transfer_change_fraction": 0.220703125,
+      "endpoint_preserving_shuffle_hit_change_fraction": 0.220703125,
+      "endpoint_preserving_reverse_transfer_change_fraction": 0.2919921875,
+      "scope": "Observation-only target support. Shuffled words are diagnostic queries, never factual training outcomes or new actions.",
+      "monoid_counts": {
+        "whole": {
+          "I": 0,
+          "A": 0,
+          "B": 0,
+          "AB": 678,
+          "BA": 346
+        },
+        "first_half": {
+          "I": 66,
+          "A": 280,
+          "B": 258,
+          "AB": 250,
+          "BA": 170
+        },
+        "second_half": {
+          "I": 65,
+          "A": 260,
+          "B": 256,
+          "AB": 258,
+          "BA": 185
+        }
+      },
+      "half_monoid_counts": {
+        "I": 131,
+        "A": 540,
+        "B": 514,
+        "AB": 508,
+        "BA": 355
+      },
+      "half_incomplete_but_contains_B_fraction": 0.42431640625,
+      "half_incomplete_without_B_fraction": 0.32763671875
+    },
+    "cube": {
+      "windows": 128,
+      "queries": 1024,
+      "degenerate_prototype_fraction": 0.0,
+      "ordered_hit_fraction": 0.7529296875,
+      "endpoint_preserving_shuffle_transfer_change_fraction": 0.18359375,
+      "endpoint_preserving_shuffle_hit_change_fraction": 0.18359375,
+      "endpoint_preserving_reverse_transfer_change_fraction": 0.2568359375,
+      "scope": "Observation-only target support. Shuffled words are diagnostic queries, never factual training outcomes or new actions.",
+      "monoid_counts": {
+        "whole": {
+          "I": 0,
+          "A": 0,
+          "B": 0,
+          "AB": 771,
+          "BA": 253
+        },
+        "first_half": {
+          "I": 51,
+          "A": 214,
+          "B": 224,
+          "AB": 293,
+          "BA": 242
+        },
+        "second_half": {
+          "I": 51,
+          "A": 213,
+          "B": 201,
+          "AB": 313,
+          "BA": 246
+        }
+      },
+      "half_monoid_counts": {
+        "I": 102,
+        "A": 427,
+        "B": 425,
+        "AB": 606,
+        "BA": 488
+      },
+      "half_incomplete_but_contains_B_fraction": 0.44580078125,
+      "half_incomplete_without_B_fraction": 0.25830078125
+    }
+  }
+}

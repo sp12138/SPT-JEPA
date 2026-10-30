@@ -1,4 +1,4 @@
-# Idea admission and response-query short gate
+# Idea admission and response-query short gates
 
 Authoritative work remains `/efs/prescottsun/SPT-JEPA`; current user asks for ten mechanism-distinct ideas with serious evidence, mostly independently designed. This file is a recovery record, not a claim that ten have passed. See `experiments/ideas10_20261030/README.md` and candidate-specific rejection records.
 
@@ -13,3 +13,13 @@ The old TF600 controls are references. Direct is the equal-capacity/compute cont
 All eight runs stop600 for review. There is no automatic longer run. Preserve all prior holds, checkpoints, logs, manifests and source snapshots. Full finiteness alone is not a functional noncollapse result. Record common550-tensor equality, query-state/action sensitivity, physical readout diagnostics, and paired actual task outcomes before any new decision.
 
 The independent design audit has already rejected several tempting mechanisms due to exact objective equivalence, direct published predecessors, or failed real-data assumptions. These are useful negative results, not entries in the ten-idea quota. Academic priority and substantial performance gains remain unproven.
+
+## Latest review and focused correction, 2026-10-31
+
+First response gate is complete:40/40 exits0, all8full-state audits and original550-tensor identity pass. P0 action-null2/10%TwoRoom,6/6%Cube; direct4/10,2/4. HistoricalTF6006/8,14/10. Allthree idle workers closed, first gate held. No task winner or functional response-query success. Read results/response600/RESULTS.md.
+
+A separate source/config snapshot prepares `runs/ideas10_relative600_20261031` with24fresh600runs: identity/action-null/fixed-random-null x forecast-only/half-observed-half-forecast Q x2tasks x2seeds. Everyarm uses the same newhead, same seven clean forecast calls, same relative per-clip outcome loss and unchanged initial grounding. Exact carry-gradient cancellation motivates the source-route factor; low target energy motivates the relative scaling factor. These are diagnostic controls within one candidate, not extra ideas. Observed future states never enter the forecast.
+
+Preflight `runs/ideas10_relative_preflight_20261031`:12two-step runs plus12full-gradient audits, on dev2/dev15 GPUs0-5. Only after all24pass may main jobs use all24GPUs across dev2/dev13/dev15. Each slot trains to600then runs health,information,query-use and strict50-case planning. Noautomatic longer run. The fixed oneRGBLSB-squared floor is not claimed to equal true observation-noise variance; audit low-energy clips and weighted-target bias.
+
+Eight frozen posterior-transport audits also complete0 and closed. They measure scalar noise/dynamics mismatch but do not prove planning causality. SRNN/VCDT already cover the broad residual-posterior idea; do not claim that cancellation as new. Independent design dossiers retain rejected ideas and conditional candidates; the user-requested ten strictly qualified mechanisms remain an open objective.

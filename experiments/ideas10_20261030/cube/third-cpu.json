@@ -1,0 +1,260 @@
+{
+  "kind": "synthetic exact checks only",
+  "D7": {
+    "system": {
+      "A": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "B": [
+        1,
+        0,
+        0
+      ],
+      "observables": [
+        "actuator",
+        "mediated",
+        "background"
+      ]
+    },
+    "primitive_relative_orders": [
+      1,
+      2,
+      null
+    ],
+    "learnable_linear_head_contrast": [
+      {
+        "head": [
+          1,
+          0,
+          0
+        ],
+        "early_energy": 1,
+        "delayed_energy": 0,
+        "admissible_depth2": false
+      },
+      {
+        "head": [
+          0,
+          1,
+          0
+        ],
+        "early_energy": 0,
+        "delayed_energy": 1,
+        "admissible_depth2": true
+      },
+      {
+        "head": [
+          0,
+          0,
+          1
+        ],
+        "early_energy": 0,
+        "delayed_energy": 0,
+        "admissible_depth2": false
+      }
+    ],
+    "navigation_order": 1,
+    "goal": [
+      0,
+      1,
+      0
+    ],
+    "bounded_control_sequences": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "endpoints": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        2,
+        1,
+        0
+      ]
+    ],
+    "euclidean_costs": [
+      1,
+      4
+    ],
+    "horizon2_gramian": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "inverse_gramian_costs": [
+      1,
+      4
+    ],
+    "deep_output_costs": [
+      1,
+      0
+    ],
+    "choice_euclidean_or_gramian": 0,
+    "choice_deep": 1,
+    "object_task_errors_of_choices": {
+      "euclidean": 1,
+      "deep": 0
+    },
+    "actuator_task_errors_of_choices": {
+      "euclidean": 0,
+      "deep": 4
+    },
+    "same_observations_different_goal_semantics": "object-only and actuator-only tasks require opposite choices",
+    "weak_coupling": [
+      {
+        "coupling": 1.0,
+        "order": 2,
+        "delayed_squared_response": 1.0
+      },
+      {
+        "coupling": 0.1,
+        "order": 2,
+        "delayed_squared_response": 0.010000000000000002
+      },
+      {
+        "coupling": 0.01,
+        "order": 2,
+        "delayed_squared_response": 0.0001
+      },
+      {
+        "coupling": 0.001,
+        "order": 2,
+        "delayed_squared_response": 1e-06
+      }
+    ],
+    "two_primitive_steps_per_observation": {
+      "held_input_B": [
+        1,
+        1,
+        0
+      ],
+      "old_mediated_coordinate_order": 1,
+      "new_early_invariant_head": [
+        -1,
+        1,
+        0
+      ],
+      "warning": "sampling/action aggregation changes the preferred output, despite identical underlying mechanics"
+    },
+    "fixed_head_response_energy_bound": {
+      "n_independent_validation_pairs": 128,
+      "norm_delta_phi_bound": 1,
+      "alpha": 0.05,
+      "hoeffding_radius": 0.12004034891499009
+    }
+  },
+  "D8": {
+    "sigma": 0.1,
+    "uniform_per_state_tv_tolerance": 0.02,
+    "adaptive_pair_constraints": [
+      {
+        "pair": "large_future_difference",
+        "future_bernoulli_gap": 0.8,
+        "target_channel_tv": 0.76,
+        "minimum_mean_distance": 0.234997358413218,
+        "mean_dependent_kl_min_nats": 0.006902969807648806,
+        "achieved_channel_tv": 0.76,
+        "exact_best_worst_future_tv_error": 0.020000000000000018
+      },
+      {
+        "pair": "small_future_difference",
+        "future_bernoulli_gap": 0.1,
+        "target_channel_tv": 0.060000000000000005,
+        "minimum_mean_distance": 0.015053972419965981,
+        "mean_dependent_kl_min_nats": 2.8327760702637053e-05,
+        "achieved_channel_tv": 0.06000000000000005,
+        "exact_best_worst_future_tv_error": 0.019999999999999976
+      },
+      {
+        "pair": "recurrent_identical_state",
+        "future_bernoulli_gap": 0.0,
+        "target_channel_tv": 0.0,
+        "minimum_mean_distance": 0.0,
+        "mean_dependent_kl_min_nats": 0.0,
+        "achieved_channel_tv": 0.0,
+        "exact_best_worst_future_tv_error": 0.0
+      }
+    ],
+    "two_distinct_pairs_fixed_strongest_margin_mean_kl_sum": 0.013805939615297611,
+    "two_distinct_pairs_controlled_future_margin_mean_kl_sum": 0.006931297568351443,
+    "capacity_ratio_adaptive_over_fixed": 0.5020518531510343,
+    "low_clean_scale_example_only": {
+      "assumed_coordinate_std": 0.00015,
+      "dimension": 64,
+      "representative_distance_sqrt_2D_std": 0.001697056274847714,
+      "channel_tv": 0.0067701937601505335,
+      "optimal_equal_prior_accuracy": 0.5033850968800753,
+      "future_gap_assumed": 0.8,
+      "necessary_worst_future_error_lower_bound": 0.39661490311992476
+    },
+    "tdwm_exact_recurrence_counterexample": {
+      "time_gap": 4,
+      "temporal_scale": 2,
+      "self_target": 1,
+      "distant_same_image_target": 0.1353352832366127,
+      "best_shared_cosine": 0.5676676416183064,
+      "unavoidable_mean_two_term_squared_error": 0.1869112681038772,
+      "d8_gap_for_same_state_same_action": 0
+    },
+    "side_information_counterexample": {
+      "latent_channel_tv": 0.0,
+      "side_information_identifies_state": true,
+      "achievable_future_tv": 1.0,
+      "future_prediction_error": 0.0
+    },
+    "finite_sample_lcb": {
+      "n_per_state": 2048,
+      "alpha": 0.05,
+      "per_probability_hoeffding_radius": 0.03270826686567064,
+      "rows": [
+        {
+          "observed_gap": 0.8,
+          "gap_lcb": 0.7345834662686588,
+          "target_tv": 0.6945834662686587,
+          "distance": 0.2049773896396948
+        },
+        {
+          "observed_gap": 0.1,
+          "gap_lcb": 0.03458346626865873,
+          "target_tv": 0.0,
+          "distance": 0.0
+        }
+      ],
+      "warning": "large repeat cost; replace by justified pooled estimator or admit infeasibility"
+    },
+    "tightness_grid": {
+      "delta_count": 101,
+      "distance_count": 81,
+      "max_bound_vs_achievable_error_difference": 5.551115123125783e-17
+    },
+    "novelty_degenerate_case": "deterministic distinct futures with uniform tolerance reduce to a fixed contrastive distance margin"
+  }
+}
