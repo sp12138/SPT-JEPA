@@ -10,6 +10,7 @@ MODEL_TARGETS = {
     "carrier": "as_jepa_lewm.carrier.CarrierLeWM",
     "pathquery": "as_jepa_lewm.pathquery.PathQueryLeWM",
     "native_lewm": "as_jepa_lewm.native_lewm.NativeLeWM",
+    "spatial_carrier": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
 }
 
 
