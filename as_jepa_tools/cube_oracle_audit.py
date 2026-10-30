@@ -42,7 +42,9 @@ def setup(a):
     pairs = [(i, p) for i, p in enumerate(pairs) if i % a.shards == a.shard]
     assert 0 <= a.shard < a.shards
     Path(a.output).mkdir(parents=True, exist_ok=True)
-    return card, manifest, protocol_from_dict(manifest["protocol"]), pairs, h5py.File(card["h5_path"], "r")
+    # Match SWM's HDF5 reader so released-model action statistics can open the
+    # same dataset concurrently in this process. This changes no read values.
+    return card, manifest, protocol_from_dict(manifest["protocol"]), pairs, h5py.File(card["h5_path"], "r", swmr=True)
 
 
 def candidate_actions(recorded, mean, std, count, seed):

@@ -11,6 +11,8 @@ import numpy as np
 GROUPS = ("nonoracle", "oracle_neighborhood", "all")
 STAGES = ("physical_oracle", "encoded_oracle", "model")
 RANKS = ("physical_encoded_rank", "encoded_predicted_rank", "physical_predicted_rank")
+FACTOR_RANKS = ("position_encoded_rank", "orientation_encoded_rank", "effector_encoded_rank",
+                "effector_encoded_partial_rank", "position_encoded_partial_rank")
 
 
 def mean_ci(values, indices):
@@ -33,7 +35,7 @@ def sample_metrics(record):
         value[stage + "_cost"] = selected["normalized_pose_cost"]
         value[stage + "_position_m"] = selected["position_error_m"]
         value[stage + "_orientation_deg"] = selected["orientation_error_deg"]
-    for key in (*RANKS, "metric_regret", "signed_dynamics_regret", "action_effect_cosine", "centered_action_effect_mse"):
+    for key in (*RANKS, *FACTOR_RANKS, "metric_regret", "signed_dynamics_regret", "action_effect_cosine", "centered_action_effect_mse"):
         value[key] = record.get(key)
     value["rollout_endpoint_mse"] = record["rollout_mse_by_block"][-1]
     value["candidate_endpoint_latent_variance"] = record["candidate_latent_variance_by_block"][-1]
@@ -59,6 +61,42 @@ def load_scores(directory):
             assert key not in records, f"Duplicate case/group in {directory}: {key}"
             records[key] = record
     return records, metadata
+
+
+def add_effector_diagnostic(records, metadata, directory, data_dir):
+    """Association audit only; privileged state never changes model selection."""
+    import hdf5plugin  # noqa: F401
+    import h5py
+    from scipy.stats import rankdata
+
+    def rank_corr(x, y, controls=()):
+        x, y = rankdata(x), rankdata(y)
+        if controls:
+            design = np.stack([np.ones(len(x)), *(rankdata(c) for c in controls)], axis=1)
+            x = x - design @ np.linalg.lstsq(design, x, rcond=None)[0]
+            y = y - design @ np.linalg.lstsq(design, y, rcond=None)[0]
+        if np.std(x) < 1e-10 or np.std(y) < 1e-10:
+            return None
+        return float(np.corrcoef(x, y)[0, 1])
+
+    card = json.loads((Path(data_dir)/"dataset_card.json").read_text())
+    with h5py.File(card["h5_path"], "r") as h5:
+        for case in sorted({k[0] for k in records}):
+            with np.load(Path(metadata["pool"])/f"case{case:04d}.npz") as pool, np.load(Path(directory)/f"scores-case{case:04d}.npz") as score:
+                pair = json.loads(str(pool["pair_json"].item()))
+                goal_effector = h5["proprio_effector_pos"][int(pair["goal_row"])]
+                effector = np.linalg.norm(pool["effector_positions"][:, -1]-goal_effector, axis=-1)
+                position, angle = pool["position_error_m"][:, -1], pool["orientation_error_deg"][:, -1]
+                latent = score["encoded_cost"][:, -1]
+                family = pool["family"]
+                groups = {"all": np.arange(len(family)),
+                          "nonoracle": np.flatnonzero(np.isin(family, ["zero", "gaussian"]) | np.char.startswith(family, "cem_")),
+                          "oracle_neighborhood": np.flatnonzero(np.char.startswith(family, "recorded"))}
+                for group, ids in groups.items():
+                    row = records[(case, group)]
+                    row["effector_encoded_rank"] = rank_corr(effector[ids], latent[ids])
+                    row["effector_encoded_partial_rank"] = rank_corr(effector[ids], latent[ids], [position[ids], angle[ids]])
+                    row["position_encoded_partial_rank"] = rank_corr(position[ids], latent[ids], [effector[ids], angle[ids]])
 
 
 def readable(stat, scale=1, digits=2):
@@ -128,6 +166,7 @@ def main():
     parser.add_argument("--scores", action="append", required=True, help="LABEL=DIRECTORY; repeat for each checkpoint")
     parser.add_argument("--reference", required=True, help="Label used for paired differences")
     parser.add_argument("--output", required=True)
+    parser.add_argument("--data", help="Optional cube-metadata directory for effector/goal-metric association audit")
     parser.add_argument("--bootstrap", type=int, default=5000)
     parser.add_argument("--seed", type=int, default=20261030)
     a = parser.parse_args()
@@ -138,6 +177,8 @@ def main():
         label, directory = item.split("=", 1)
         assert label not in data, label
         data[label], meta[label] = load_scores(directory)
+        if a.data:
+            add_effector_diagnostic(data[label], meta[label], directory, a.data)
     assert a.reference in data
     labels = list(data)
     keys = set(data[a.reference])
@@ -182,6 +223,11 @@ def main():
             cells.append(readable(paired[label][group]["model_success"], 100, 1))
             lines.append("| "+label+" | "+" | ".join(cells)+" |")
         lines += [""]
+        if a.data:
+            lines += ["| Model | Position / encoded rank | Orientation / encoded rank | Effector / encoded rank | Effector partial rank (controlling cube pose) | Position partial rank (controlling effector and orientation) |", "|---|---:|---:|---:|---:|---:|"]
+            for label in labels:
+                lines.append("| "+label+" | "+" | ".join(readable(summary[label][group][k]) for k in FACTOR_RANKS)+" |")
+            lines += ["", "Partial correlations residualize per-case ranks on the stated controls. These diagnose association, not causal nuisance dependence; robot pose may legitimately matter for dynamics even when it is absent from the cube success criterion.", ""]
     lines += ["![Selection decomposition](oracle-selection.png)", "", "![Action ranking](oracle-ranks.png)", "",
               "Interpretation requires the collection report's duplicate-state and recorded-action replay audits. Inspect all per-case failures before assigning a mechanism. Candidate coverage, metric alignment and rollout fidelity are separate requirements; this analysis does not establish a new algorithm or its novelty.", ""]
     (out/"RESULTS.md").write_text("\n".join(lines))
