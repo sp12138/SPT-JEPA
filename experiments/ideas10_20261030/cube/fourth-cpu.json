@@ -1,0 +1,334 @@
+{
+  "synthetic": {
+    "circular_navigation": {
+      "n_states": 64,
+      "initial_offset": 7,
+      "marginal_endpoint_histogram_l1": 0.0,
+      "synchronous_chord_squared": 0.4539790932745262,
+      "independent_chord_squared": 2.0,
+      "synchronous_self_distance": 0,
+      "independent_self_expected_squared": 2.0,
+      "reduced_independent_distance": 0.0
+    },
+    "direct_control_linear_examples": [
+      {
+        "alpha": 0,
+        "horizon": 1,
+        "costs": [
+          1,
+          0
+        ],
+        "unique_choice": 1
+      },
+      {
+        "alpha": 0,
+        "horizon": 2,
+        "costs": [
+          1,
+          0
+        ],
+        "unique_choice": 1
+      },
+      {
+        "alpha": 0,
+        "horizon": 4,
+        "costs": [
+          1,
+          0
+        ],
+        "unique_choice": 1
+      },
+      {
+        "alpha": 0,
+        "horizon": 8,
+        "costs": [
+          1,
+          0
+        ],
+        "unique_choice": 1
+      },
+      {
+        "alpha": 0.5,
+        "horizon": 1,
+        "costs": [
+          1,
+          1.0
+        ],
+        "unique_choice": null
+      },
+      {
+        "alpha": 0.5,
+        "horizon": 2,
+        "costs": [
+          1,
+          0.25
+        ],
+        "unique_choice": 1
+      },
+      {
+        "alpha": 0.5,
+        "horizon": 4,
+        "costs": [
+          1,
+          0.015625
+        ],
+        "unique_choice": 1
+      },
+      {
+        "alpha": 0.5,
+        "horizon": 8,
+        "costs": [
+          1,
+          6.103515625e-05
+        ],
+        "unique_choice": 1
+      },
+      {
+        "alpha": 0.9,
+        "horizon": 1,
+        "costs": [
+          1,
+          3.24
+        ],
+        "unique_choice": 0
+      },
+      {
+        "alpha": 0.9,
+        "horizon": 2,
+        "costs": [
+          1,
+          2.6244
+        ],
+        "unique_choice": 0
+      },
+      {
+        "alpha": 0.9,
+        "horizon": 4,
+        "costs": [
+          1,
+          1.7218688400000004
+        ],
+        "unique_choice": 0
+      },
+      {
+        "alpha": 0.9,
+        "horizon": 8,
+        "costs": [
+          1,
+          0.7412080755407366
+        ],
+        "unique_choice": 1
+      },
+      {
+        "alpha": 1,
+        "horizon": 1,
+        "costs": [
+          1,
+          4
+        ],
+        "unique_choice": 0
+      },
+      {
+        "alpha": 1,
+        "horizon": 2,
+        "costs": [
+          1,
+          4
+        ],
+        "unique_choice": 0
+      },
+      {
+        "alpha": 1,
+        "horizon": 4,
+        "costs": [
+          1,
+          4
+        ],
+        "unique_choice": 0
+      },
+      {
+        "alpha": 1,
+        "horizon": 8,
+        "costs": [
+          1,
+          4
+        ],
+        "unique_choice": 0
+      }
+    ],
+    "mediated_initial_condition_leakage": [
+      {
+        "coupling": 0,
+        "horizon": 4,
+        "final_difference": [
+          0.125,
+          0.0
+        ],
+        "costs": [
+          1,
+          0.015625
+        ],
+        "choice": 1
+      },
+      {
+        "coupling": 0.1,
+        "horizon": 4,
+        "final_difference": [
+          0.125,
+          0.37500000000000006
+        ],
+        "costs": [
+          1,
+          0.15625000000000003
+        ],
+        "choice": 1
+      },
+      {
+        "coupling": 0.2,
+        "horizon": 4,
+        "final_difference": [
+          0.125,
+          0.7500000000000001
+        ],
+        "costs": [
+          1,
+          0.5781250000000001
+        ],
+        "choice": 1
+      },
+      {
+        "coupling": 0.4,
+        "horizon": 4,
+        "final_difference": [
+          0.125,
+          1.5000000000000002
+        ],
+        "costs": [
+          1,
+          2.2656250000000004
+        ],
+        "choice": 0
+      },
+      {
+        "coupling": 1,
+        "horizon": 4,
+        "final_difference": [
+          0.125,
+          3.75
+        ],
+        "costs": [
+          1,
+          14.078125
+        ],
+        "choice": 0
+      }
+    ],
+    "wall_erases_navigation": {
+      "initial_squared_difference": 0.15999999999999998,
+      "final_squared_difference": 0
+    },
+    "independent_noise_debiasing": {
+      "true_mean_squared_difference": 0.09,
+      "naive_expected_squared_difference": 2.09,
+      "paired_repeat_inner_product_expectation": 0.08999999999999998,
+      "minimum_single_target": -3.9099999999999997
+    },
+    "partial_observation_non_markov": {
+      "initial_states": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "observable": "first coordinate",
+      "dynamics": "swap coordinates",
+      "H1_distance_squared": 0,
+      "H2_distance_squared": 1
+    },
+    "psd_property": "s -> (A -> psi(F_A(s))) is an explicit L2 feature map; d_H is its Hilbert distance",
+    "different_future_policies_warning": "conditional policies depending on each initial state are not common actions"
+  },
+  "frozen_cube_zero_action": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool",
+    "n_cases": 50,
+    "candidates_per_case": 39,
+    "raw_action": "all five controls exactly zero at every one of 25 steps",
+    "n_cross_case_pairs": 1225,
+    "diagnostic_coordinates_only": true,
+    "caveat": "read-only old validation bank; supports no training/evaluation gain claim; only zero action tested",
+    "results": {
+      "effector": [
+        {
+          "raw_steps": 1,
+          "rms_pair_distance_ratio": 0.9988420237752001,
+          "median_pair_distance_ratio": 0.9986525686043346,
+          "initial_final_pair_distance_correlation": 0.9998945764741742,
+          "mean_individual_displacement_m": 0.002845596920671253,
+          "max_individual_displacement_m": 0.005468382944968511
+        },
+        {
+          "raw_steps": 5,
+          "rms_pair_distance_ratio": 0.9927019744609469,
+          "median_pair_distance_ratio": 0.9930468065577713,
+          "initial_final_pair_distance_correlation": 0.9997788709420583,
+          "mean_individual_displacement_m": 0.008065608673157715,
+          "max_individual_displacement_m": 0.013692099922476135
+        },
+        {
+          "raw_steps": 10,
+          "rms_pair_distance_ratio": 0.9838461731362863,
+          "median_pair_distance_ratio": 0.984371864635492,
+          "initial_final_pair_distance_correlation": 0.9995382663016823,
+          "mean_individual_displacement_m": 0.015342894459369379,
+          "max_individual_displacement_m": 0.025727165306449605
+        },
+        {
+          "raw_steps": 25,
+          "rms_pair_distance_ratio": 0.9565475943948409,
+          "median_pair_distance_ratio": 0.9604974147645577,
+          "initial_final_pair_distance_correlation": 0.9975460224580872,
+          "mean_individual_displacement_m": 0.037224250535066894,
+          "max_individual_displacement_m": 0.061646128125801794
+        }
+      ],
+      "block": [
+        {
+          "raw_steps": 1,
+          "rms_pair_distance_ratio": 0.9995750194202089,
+          "median_pair_distance_ratio": 0.9999999999998989,
+          "initial_final_pair_distance_correlation": 0.9999325791292012,
+          "mean_individual_displacement_m": 0.0013696713672001802,
+          "max_individual_displacement_m": 0.005247117841946287
+        },
+        {
+          "raw_steps": 5,
+          "rms_pair_distance_ratio": 0.9929588462632498,
+          "median_pair_distance_ratio": 0.9941298848873329,
+          "initial_final_pair_distance_correlation": 0.9997374680987597,
+          "mean_individual_displacement_m": 0.0038714599817839083,
+          "max_individual_displacement_m": 0.013442335440651019
+        },
+        {
+          "raw_steps": 10,
+          "rms_pair_distance_ratio": 0.9842194586059576,
+          "median_pair_distance_ratio": 0.9861736739731041,
+          "initial_final_pair_distance_correlation": 0.9991445930121983,
+          "mean_individual_displacement_m": 0.008171537476130225,
+          "max_individual_displacement_m": 0.024020104465328464
+        },
+        {
+          "raw_steps": 25,
+          "rms_pair_distance_ratio": 0.9596989830546018,
+          "median_pair_distance_ratio": 0.962521843595885,
+          "initial_final_pair_distance_correlation": 0.9948783015594054,
+          "mean_individual_displacement_m": 0.02157387808905973,
+          "max_individual_displacement_m": 0.05532845578316237
+        }
+      ]
+    }
+  }
+}

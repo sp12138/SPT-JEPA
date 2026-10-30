@@ -1,5 +1,7 @@
 # Ten mechanism-distinct proposals: evidence screening
 
+Latest review, 2026-10-31: two response-query gates are complete and held (8 + 24 fresh600 runs;40 +120 successful endpoints). The second gate used all24H200s and passed all state/initialization audits, but did not establish a cross-task winner. Observed-code grounding learns some extra information; the causal forecast query still nearly predicts zero and Cube action-null P0 is2/2 for both routes. No automatic extension. See [results](results/relative600/RESULTS.md), [mechanism synthesis](SYNTHESIS.md), [admission ledger](ADMISSION.md), and [data-identifiability boundary](IDENTIFIABILITY.md). Ten ideas meeting every requested standard have not yet been established.
+
 New user request, 2026-10-30: produce ten substantively different ideas aimed at large gains on TwoRoom and Cube under the same evaluation conditions. Most must arise from our own mechanism design and pass deep theoretical or short experimental validation, rather than restating published methods. Absolute global novelty and future benchmark gains cannot be certified in advance; distinguish supported mechanisms, unresolved novelty, and unmeasured task performance.
 
 This campaign first records independent designs, then audits their mathematics and nearest primary literature. A proposed title or analogy does not count as a mechanism. Previously proposed I01–I10, temporal-forecast, ordinary spatial pooling, noise shifts and known metric fixes cannot be recounted as new ideas. Preserve all historical run sources, checkpoints and holds.

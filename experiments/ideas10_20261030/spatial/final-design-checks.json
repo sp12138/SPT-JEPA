@@ -1,0 +1,52 @@
+{
+  "transition_constraint": {
+    "co_lipschitz_m": 0.5,
+    "uniform_variance": 0.08333333332499998,
+    "best_centered_linear_contact_mse": 0.020833333331250002,
+    "discrete_variance_lower_bound": 0.020833333331249995,
+    "continuous_lower_bound": 0.020833333333333332,
+    "norm_bounded_residual_min_distance_margin": 0.02291597868963996,
+    "two_equal_goals_min_pair_average_mse": 0.0625,
+    "interpretation": "A non-erasing transition conflicts with a many-to-one observed contact map under the same fully-read state/goal contract."
+  },
+  "path_area": {
+    "chen_identity_max_error": 1.7763568394002505e-15,
+    "same_endpoint": [
+      1.0,
+      1.0
+    ],
+    "opposite_path_area": [
+      0.5,
+      -0.5
+    ],
+    "closed_loop_area": 1.0,
+    "carry_signature_loss": 1.0,
+    "carry_signature_gradient_norm": 0.0,
+    "carry_pointwise_loss": 0.4,
+    "carry_pointwise_gradient_norm": 0.4,
+    "small_perturbations": [
+      {
+        "epsilon": 0.01,
+        "loss": 1.0000091626984007,
+        "gradient_norm": 0.021677004358935086
+      },
+      {
+        "epsilon": 0.001,
+        "loss": 1.0000000916267762,
+        "gradient_norm": 0.00216769060427834
+      },
+      {
+        "epsilon": 0.0001,
+        "loss": 1.000000000916268,
+        "gradient_norm": 0.00021676905059621885
+      },
+      {
+        "epsilon": 1e-05,
+        "loss": 1.000000000009163,
+        "gradient_norm": 2.1676905049790266e-05
+      }
+    ],
+    "interpretation": "A genuine path distinction does not guarantee a learning gradient at carry initialization; quadratic area supervision is exactly stationary for this closed-loop example."
+  },
+  "scope": "Constructive CPU checks only; no training, task success, novelty or universal impossibility claim."
+}
