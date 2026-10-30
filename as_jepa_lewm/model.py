@@ -16,15 +16,59 @@ from vforge.models.as_jepa.flow import flow_loss,sample,timestep_shift
 from vforge.models.as_jepa.codes import entry_nats,surprise_nats
 
 
+class PartitionedQueryPool(QueryPool):
+    """Same-parameter diagnostic of pooling addresses, not a new architecture.
+
+    Four queries retain one balanced subset of patches each and share the CLS
+    token. The encoder itself still has global attention. No mask is checkpointed.
+    """
+    def __init__(self, width, heads, K, d, partition):
+        if K != 4 or partition not in {"quadrants", "shuffled"}:
+            raise ValueError("Partitioned pooling requires four slots and a known partition")
+        super().__init__(width, heads, K, d)
+        self.partition = partition
+
+    def attention_mask(self, token_count, device):
+        patches = token_count - 1
+        side = math.isqrt(patches)
+        if side < 2 or side * side != patches or side % 2:
+            raise ValueError("Partitioned pooling expects CLS plus an even square patch grid")
+        if self.partition == "quadrants":
+            index = torch.arange(patches, device=device)
+            labels = 2 * (index // side >= side // 2).long() + (index % side >= side // 2).long()
+        else:
+            # Isolated generator: same balanced random partition for all models,
+            # batches and devices, without changing training RNG consumption.
+            generator = torch.Generator(device="cpu").manual_seed(20261030)
+            order = torch.randperm(patches, generator=generator, device="cpu")
+            labels = torch.empty(patches, dtype=torch.long, device="cpu")
+            labels[order] = torch.arange(4, device="cpu").repeat_interleave(patches // 4)
+            labels = labels.to(device)
+        mask = torch.zeros((4, token_count), dtype=torch.bool, device=device)
+        mask[:, 1:] = labels.unsqueeze(0) != torch.arange(4, device=device).unsqueeze(1)
+        return mask
+
+    def forward(self, tokens):
+        q = self.queries.expand(tokens.shape[0], -1, -1)
+        mask = self.attention_mask(tokens.shape[1], tokens.device)
+        pooled, _ = self.attn(q, tokens, tokens, attn_mask=mask, need_weights=False)
+        return self.head(self.norm(pooled))
+
+
 class ASJepaLeWM(LeWM):
     def __init__(self, mode="L2", beta=4.0, sigma0=.1, window=8, use_anchor=True,
                  renderer_width=192, renderer_depth=6, renderer_heads=3,
                  carry=True, domain="standard", encoder_size=224, encoder_depth=12,
-                 lambda_sigreg=.09, objective="flow", anchor_gap=8, batchnorm_state=False, fp32_pool=False, batchnorm_projector=False, state_slots=4, state_width=16, action_dim=10, flow_logit_shift=0., renderer_anchor_mode="observed"):
+                 lambda_sigreg=.09, objective="flow", anchor_gap=8, batchnorm_state=False, fp32_pool=False, batchnorm_projector=False, state_slots=4, state_width=16, action_dim=10, flow_logit_shift=0., renderer_anchor_mode="observed", pool_partition="full"):
         if action_dim < 1 or not math.isfinite(flow_logit_shift):raise ValueError("Invalid action dimension or flow logit shift")
         self.flow_logit_shift=float(flow_logit_shift)
         if renderer_anchor_mode not in {"observed","zero"}:raise ValueError("Unknown renderer anchor mode")
         self.renderer_anchor_mode=renderer_anchor_mode
+        if pool_partition not in {"full", "quadrants", "shuffled"}:
+            raise ValueError("Unknown pool_partition")
+        if pool_partition != "full" and (mode == "L0" or state_slots != 4):
+            raise ValueError("Partitioned pooling requires a four-slot AS-JEPA model")
+        self.pool_partition=pool_partition
         self.state_slots=state_slots;self.state_width=state_width;self.state_dim=state_slots*state_width
         self.mode=mode; self.beta=beta; self.sigma0=sigma0; self.window=window
         self.carry=carry; self.domain=domain; self.encoder_size=encoder_size
@@ -39,7 +83,10 @@ class ASJepaLeWM(LeWM):
         projector=MLP(192,2048,192,norm_fn=nn.BatchNorm1d) if baseline else None
         pred_proj=MLP(192,2048,192,norm_fn=nn.BatchNorm1d) if baseline else None
         super().__init__(encoder,predictor,action_encoder,projector,pred_proj)
-        self.pool=None if baseline else QueryPool(192,3,self.state_slots,self.state_width)
+        if baseline:self.pool=None
+        elif pool_partition == "full":self.pool=QueryPool(192,3,self.state_slots,self.state_width)
+        else:
+            self.pool=PartitionedQueryPool(192,3,self.state_slots,self.state_width,pool_partition)
         if self.pool is not None:self.pool.initialize()
         if batchnorm_projector and (batchnorm_state or mode!="L1"):
             raise ValueError("MLP BatchNorm projector is an explicit L1-only control")

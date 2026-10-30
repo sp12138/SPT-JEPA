@@ -1,0 +1,74 @@
+{
+  "source_sha256": "87e5bb6961b55c48f8981f5e2cf639e6a9ab227df00165572141c21b2ee973a4",
+  "source_commit": "b5227ca",
+  "models": {
+    "temporal-forecast-s1": {
+      "train_rows": 1024,
+      "validation_rows": 1024,
+      "train_episodes": 128,
+      "validation_episodes": 128,
+      "train_validation_disjoint": true,
+      "rows_identical_across_models": true,
+      "row_episode_ids_verified": true,
+      "effector_readout_null_max": 2.949029909160572e-17,
+      "max_original_cost_relative_error": 1.2591488859835558e-07,
+      "changed_original_selected_indices": 0,
+      "records": 1000
+    },
+    "temporal-forecast-s2": {
+      "train_rows": 1024,
+      "validation_rows": 1024,
+      "train_episodes": 128,
+      "validation_episodes": 128,
+      "train_validation_disjoint": true,
+      "rows_identical_across_models": true,
+      "row_episode_ids_verified": true,
+      "effector_readout_null_max": 2.42861286636753e-17,
+      "max_original_cost_relative_error": 1.2445025284666408e-07,
+      "changed_original_selected_indices": 0,
+      "records": 1000
+    },
+    "lewm": {
+      "train_rows": 1024,
+      "validation_rows": 1024,
+      "train_episodes": 128,
+      "validation_episodes": 128,
+      "train_validation_disjoint": true,
+      "rows_identical_across_models": true,
+      "row_episode_ids_verified": true,
+      "effector_readout_null_max": 2.7755575615628914e-17,
+      "max_original_cost_relative_error": 1.1046678798133048e-07,
+      "changed_original_selected_indices": 0,
+      "records": 1000
+    }
+  },
+  "exits": {
+    "temporal-forecast-s2.json": {
+      "id": "temporal-forecast-s2",
+      "returncode": 0,
+      "started_at": 1793369831.0599535,
+      "finished_at": 1793369931.693762,
+      "pid": 820267,
+      "host": "prescottsun-dev15-2d-1027-worker-0",
+      "gpu": 6
+    },
+    "temporal-forecast-s1.json": {
+      "id": "temporal-forecast-s1",
+      "returncode": 0,
+      "started_at": 1793369830.7779624,
+      "finished_at": 1793369931.6699095,
+      "pid": 820262,
+      "host": "prescottsun-dev15-2d-1027-worker-0",
+      "gpu": 5
+    },
+    "lewm.json": {
+      "id": "lewm",
+      "returncode": 0,
+      "started_at": 1793369831.3054974,
+      "finished_at": 1793369931.7127047,
+      "pid": 820272,
+      "host": "prescottsun-dev15-2d-1027-worker-0",
+      "gpu": 7
+    }
+  }
+}
