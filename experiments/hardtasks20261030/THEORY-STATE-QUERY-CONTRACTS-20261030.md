@@ -1,6 +1,6 @@
 # State sufficiency is relative to the questions asked of it
 
-Research synthesis, 2026-10-30. This note incorporates the completed information, rate, channel, spatial-readout and Cube metric audits. The pooling intervention at frozen source `b3f27e6` is pending; no pooling outcome is assumed. This is a mechanism interpretation and research specification, not a new algorithm, theorem or training authorization.
+Research synthesis, 2026-10-30. This note incorporates the completed information, rate, channel, spatial-readout, Cube metric and pooling audits. Pooling uses frozen source `b3f27e6`. This is a mechanism interpretation and research specification, not a new algorithm, theorem or training authorization.
 
 ## What the interventions now support
 
@@ -41,13 +41,17 @@ A global learned query initially averages many token contributions. Similar loca
 
 This is an approximate aggregation mechanism, **not exact translation invariance of the ViT**. Positional embeddings, global attention and the CLS token can all carry location. The probe evidence localizes weak accessible spatial coding after pooling; it does not establish a mathematical symmetry of the complete network.
 
-The pending experiment preserves parameters, initial tensors, four 16-dimensional slots and the training objective. Quadrant masks give each query one contiguous quarter of patches; shuffled masks give the same number of fixed, dispersed patches. Both retain CLS, and the encoder itself still mixes globally. Consequently:
+There is also a precise limiting case in the actual QueryPool: set all four queries to zero with the initial zero query-projection bias. All attention logits become zero, so every slot reads the same uniform token average. Because normalization and the 16-dimensional head are shared, the nominal64-dimensional state repeats one16-dimensional vector four times. Actual queries initialize at standard deviation.02 and need not have exact rank16; the full feature spectrum has not been audited. Nevertheless, address masks break this equality even at zero queries, whereas global queries must learn to distinguish their reads. This is an analytic localization of the intervention, not proof of the optimizer's full trajectory or a new result about attention.
+
+The experiment preserves parameters, initial tensors, four 16-dimensional slots and the training objective. Quadrant masks give each query one contiguous quarter of patches; shuffled masks give the same number of fixed, dispersed patches. Both retain CLS, and the encoder itself still mixes globally. Its predeclared interpretation was:
 
 - Quadrants outperforming shuffled partitions would support a benefit from spatial organization under these budgets.
 - Both outperforming full pooling similarly would support partitioning, reduced averaging or signal strength, without isolating locality.
 - Better probes without better action-conditioned answers or planning would improve only the observation contract.
 
 The masks also change attention competition and gradient routing; they do not isolate “pure locality” from every other mechanism. A successful result would establish a useful fixed imaging prior, not algorithmic novelty. Cube's mature pooling probes nearly tie, so a universal pooling explanation is already unsupported.
+
+The completed600 gate supplies a narrow positive result: TwoRoom full-pool success6/8%, quadrants12/16%, shuffled6/6%, on the same50 cases. Quadrant paired gains/losses are6/3 and8/4; Cube shows no quadrant gain (full14/10%, quadrants12/8%, shuffled16/10%). The strong clean position readout is already present before training (~.87 versusfull~.21), and survives600. Noisy readout and DiT condition-use remain weak. DiT is bypassed by the clean latent CEM planner, so those renderer interventions cannot establish that the planner ignores state/actions. Improved clean geometry or action ranking could mediate the modest task gain; this is unresolved. All runs remain held at600. Pooling/noise interactions were not tested.
 
 ## Prior art and the limit of an image goal
 
