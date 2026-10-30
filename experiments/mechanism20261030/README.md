@@ -1,0 +1,15 @@
+# Why denoising knowledge fails to become planning knowledge
+
+User authorization, 2026-10-30: use dev2, dev13 and dev15 productively in parallel for deep theoretical, literature and experimental investigation of the TwoRoom and Cube failures. This is a new diagnostic campaign, not a restart of old held grids.
+
+Evidence entering this campaign: temporal-forecast improves PushT against matched internal controls, but Cube first-epoch success is 24/26% versus lower-beta 22/26% and released LeWM 30% on the same cases. TwoRoom has very small state variation and almost no denoising dependence on state substitutions; action sensitivity can survive when an observed anchor supplies initial information. Small feature variance alone is not proof that information is absent.
+
+Three independent lines of work:
+
+1. **Information demand and optimization history.** Two tasks, two training seeds, fresh versus exact update-2000 full-state initialization, rate on versus rate off. Sixteen 600-update diagnostics use the unchanged trainer and objective implementation; beta is the only paired change. Save updates 200/400/600 or 2200/2400/2600. Removing the complete rate also removes direct latent prediction supervision, so this is an intervention on information pressure, not a proposed production algorithm. Fresh/resume contrasts additionally differ in optimizer, data cursor and learning rate, so cannot prove an irreversible absorbing state. No automatic extension follows.
+2. **What the renderer actually uses.** Frozen state/action/anchor interventions, dynamic versus static image regions, gradients, state scaling, and episode-disjoint scale-normalized probes distinguish weak signal, ignored signal and useful information. Physical labels/masks are diagnostic only.
+3. **Where planning loses good actions.** Reuse a fixed Cube candidate library across six internal checkpoints and released LeWM. Compare physical goal success/error, encoded real endpoint distance and predicted endpoint distance. Separate random proposals from recorded-action oracle proposals. Check exact state restore and replay, report rotation and hold requirements, and keep privileged state out of training and deployment.
+
+The proposed abstraction is a hypothesis: information valuable for conditional pixel denoising need not be information valuable for comparing action outcomes. Existing rate-distortion, posterior-collapse, controllability and task-relevant representation work must be distinguished from any eventual novel contribution. Results must separate information preservation, metric suitability, predictive ranking and search coverage.
+
+All primary method proposals remain sample-level. LeWM/PLDM baselines retain their native objectives. Preserve dataset splits, checkpoint identities and frozen source/configs; use validation only for research. Freeze a committed revision before running. Review approximately 600 updates before any additional training. No failure can be hidden by selecting one favorable seed.
