@@ -47,6 +47,11 @@ def main():
                    base / "sources/stable-worldmodel", base / "sources/clear-lewm-20261030"])))
     jobs, prejobs, records = [], [], []
     env = json.loads((control / "plan.json").read_text())["environment"]
+    # Rendering dependencies must be explicit, not inherited from the shell that
+    # launches the dispatcher. Training-only parent queues did not need these.
+    env.update(PYOPENGL_PLATFORM="egl", MUJOCO_GL="egl",
+               LD_LIBRARY_PATH=str(base / "environments/egl-lib/usr/lib/x86_64-linux-gnu") + ":/usr/lib64",
+               __EGL_VENDOR_LIBRARY_FILENAMES=str(base / "environments/egl-lib/10_nvidia.json"))
     for task_index, task in enumerate(["tworoom", "cube"]):
         for seed in [1, 2]:
             reference = control / f"{task}-fresh-rate-on-seed{seed}"
