@@ -1,0 +1,138 @@
+{
+  "cases": 50,
+  "candidates_per_case": 39,
+  "source_sha256": "a34078ae8783998e619afbd4660c13e9be05eeda8f9adb7a6e21c087ec2e570f",
+  "duplicate_restore_max_qpos_error": 0,
+  "initial_rgb_mse_max": 16.580921821853742,
+  "recorded_endpoint_pos_error_m_max": 0.003068258694649422,
+  "cem_first_plan": {
+    "original-s1": {
+      "success_percent": 8,
+      "mean_endpoint_pos_m": 0.1450466562359724,
+      "mean_endpoint_angle_deg": 11.719105411097946,
+      "mean_endpoint_cost": 4.983614119614431,
+      "action_outside_fraction": 0.028160000000000004
+    },
+    "original-s2": {
+      "success_percent": 10,
+      "mean_endpoint_pos_m": 0.15017893158705517,
+      "mean_endpoint_angle_deg": 13.995822078777541,
+      "mean_endpoint_cost": 5.147393264034369,
+      "action_outside_fraction": 0.01792
+    },
+    "lower-beta-s1": {
+      "success_percent": 10,
+      "mean_endpoint_pos_m": 0.1241240004907512,
+      "mean_endpoint_angle_deg": 13.00701831904099,
+      "mean_endpoint_cost": 4.344390103644977,
+      "action_outside_fraction": 0.0248
+    },
+    "lower-beta-s2": {
+      "success_percent": 16,
+      "mean_endpoint_pos_m": 0.13248517492600237,
+      "mean_endpoint_angle_deg": 13.001219402794812,
+      "mean_endpoint_cost": 4.5528912900106,
+      "action_outside_fraction": 0.0216
+    },
+    "temporal-forecast-s1": {
+      "success_percent": 20,
+      "mean_endpoint_pos_m": 0.09225645491777325,
+      "mean_endpoint_angle_deg": 12.24620580891901,
+      "mean_endpoint_cost": 3.2911754884662234,
+      "action_outside_fraction": 0.016
+    },
+    "temporal-forecast-s2": {
+      "success_percent": 10,
+      "mean_endpoint_pos_m": 0.09399776087962822,
+      "mean_endpoint_angle_deg": 11.843074943898541,
+      "mean_endpoint_cost": 3.338784997685914,
+      "action_outside_fraction": 0.017280000000000004
+    },
+    "lewm": {
+      "success_percent": 22,
+      "mean_endpoint_pos_m": 0.11392950692770301,
+      "mean_endpoint_angle_deg": 12.268749881903386,
+      "mean_endpoint_cost": 4.004136829405653,
+      "action_outside_fraction": 0.036640000000000006
+    }
+  },
+  "selection": {
+    "original-s1": {
+      "chosen_families": {
+        "recorded_perturb_0.25": 5,
+        "recorded_oracle": 2,
+        "cem_original-s1": 42,
+        "cem_lower-beta-s2": 1
+      },
+      "mean_actual_encoded_rank": 11.0,
+      "own_cem_beats_recorded_predicted_count": 44,
+      "mean_selected_optimism_ratio": 0.698182949816237
+    },
+    "original-s2": {
+      "chosen_families": {
+        "recorded_perturb_0.25": 5,
+        "cem_original-s2": 42,
+        "recorded_oracle": 3
+      },
+      "mean_actual_encoded_rank": 9.7,
+      "own_cem_beats_recorded_predicted_count": 42,
+      "mean_selected_optimism_ratio": 0.6474884407908331
+    },
+    "lower-beta-s1": {
+      "chosen_families": {
+        "recorded_perturb_0.25": 5,
+        "cem_lower-beta-s1": 38,
+        "recorded_oracle": 5,
+        "cem_original-s1": 1,
+        "cem_temporal-forecast-s1": 1
+      },
+      "mean_actual_encoded_rank": 8.34,
+      "own_cem_beats_recorded_predicted_count": 40,
+      "mean_selected_optimism_ratio": 0.3173892187765577
+    },
+    "lower-beta-s2": {
+      "chosen_families": {
+        "recorded_perturb_0.25": 6,
+        "cem_lower-beta-s2": 38,
+        "recorded_oracle": 5,
+        "cem_original-s1": 1
+      },
+      "mean_actual_encoded_rank": 8.54,
+      "own_cem_beats_recorded_predicted_count": 40,
+      "mean_selected_optimism_ratio": 0.4053830880668544
+    },
+    "temporal-forecast-s1": {
+      "chosen_families": {
+        "cem_temporal-forecast-s1": 44,
+        "recorded_oracle": 4,
+        "recorded_perturb_0.25": 1,
+        "cem_temporal-forecast-s2": 1
+      },
+      "mean_actual_encoded_rank": 7.4,
+      "own_cem_beats_recorded_predicted_count": 44,
+      "mean_selected_optimism_ratio": 0.33327298238765013
+    },
+    "temporal-forecast-s2": {
+      "chosen_families": {
+        "cem_temporal-forecast-s2": 29,
+        "recorded_perturb_0.25": 10,
+        "cem_temporal-forecast-s1": 1,
+        "recorded_oracle": 9,
+        "cem_lower-beta-s2": 1
+      },
+      "mean_actual_encoded_rank": 5.64,
+      "own_cem_beats_recorded_predicted_count": 37,
+      "mean_selected_optimism_ratio": 0.053560448560143914
+    },
+    "lewm": {
+      "chosen_families": {
+        "recorded_oracle": 11,
+        "cem_lewm": 32,
+        "recorded_perturb_0.25": 7
+      },
+      "mean_actual_encoded_rank": 11.36,
+      "own_cem_beats_recorded_predicted_count": 34,
+      "mean_selected_optimism_ratio": 0.38663064106189937
+    }
+  }
+}
