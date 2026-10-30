@@ -1,3 +1,20 @@
+# Research setting clarified: JEPA world-model comparisons
+
+User clarification, 2026-10-30: align the main comparison with JEPA work, especially papers coauthored by Yann LeCun. This updates research priorities; the completed Cube runs below remain held.
+
+- **LeWM:** primary direct baseline for end-to-end learning from pixels and action-conditioned latent prediction. Compare controlled planning performance; report its published checkpoint separately when capacity, data exposure or training budget differs. [Paper](https://arxiv.org/abs/2603.19312).
+- **PLDM:** reference for learning from reward-free offline trajectories of varying quality, generalization and trajectory composition. Its reported navigation results motivate tests rather than establish manipulation performance. [Paper](https://arxiv.org/abs/2502.14819).
+- **DINO-WM:** useful pretrained-feature world-model reference; explicitly account for encoder pretraining. [Paper](https://proceedings.mlr.press/v267/zhou25t.html).
+- **V-JEPA 2-AC:** reference for video pretraining followed by action-conditioned prediction and image-goal planning; its large-scale pretraining is a different resource setting. [Paper](https://arxiv.org/abs/2506.09985).
+
+Primary comparison contract: learn from the same recorded observation/action trajectories, predict outcomes, and evaluate control through a matched planner and goal objective. Do not attribute an added expert goal-conditioned imitation head's gains to stronger world modeling. Recorded actions remain valid model inputs; predicting an observed action as an auxiliary task is a distinct, separately attributable extension, not evidence that the action is optimal. Datasets may contain expert trajectories: disclose their source and quality rather than describe them as autonomous exploration. Mixed/suboptimal interaction and novel goal-composition tests address the user's broader aim, but have not been run here.
+
+Our proposed methods retain sample-level objectives. Baselines retain their published objectives; in particular, their batch-coupled regularizers are not grounds for exclusion. Match train/evaluation splits, observation/proprioception access, model and training resources, planning/search budget, and success criteria where practical, and report remaining differences. INTACT remains useful for mechanism analysis and secondary system comparisons rather than defining the primary world-model setting. No exclusion establishes algorithmic novelty or superiority.
+
+Current evidence is unchanged: Cube temporal-forecast averages 25% versus lower-beta 24% on the fixed 50-case validation set, with two training seeds. This does not establish a substantial improvement. No new training, second epoch, or old-grid restart is authorized by this note alone; preserve the existing review gates and immutable runs.
+
+---
+
 # Current status: Cube first-window-epoch comparison complete and held
 
 Reviewed 2026-10-30 at approximately 13:43 Beijing time. All 19 workflow endpoints (six training, six health, six planning, one aggregate) exit 0. Every run stopped exactly at 11,671 total updates. All six model/optimizer/scheduler/RNG/cursor/portable-equality and gradient audits pass.
