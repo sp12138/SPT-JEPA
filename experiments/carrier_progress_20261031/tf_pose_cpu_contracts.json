@@ -1,0 +1,81 @@
+{
+  "contracts": {
+    "passed": true,
+    "future_observations_cannot_change_clean_forecast": true,
+    "padded_final_action_ignored": true,
+    "valid_action_changes_forecast": true,
+    "unchanged_primal_linear_and_fixed_RBF": true,
+    "test_rows_do_not_change_fitting_or_other_predictions": true,
+    "real_model_calls": 0,
+    "GPU_calls": 0,
+    "source_sha256": "3bd340037d8391dc8e82cae3c664b36c8de99cda0940e6fa1d3b5e3bad3cfb0e"
+  },
+  "source": {
+    "source_record": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/source-record.json",
+      "sha256": "929342ddda04367b714216d063be3e7cd29ceaf5af858b5df82b63699ddb0c62",
+      "bytes": 817
+    },
+    "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+    "verified_files": {
+      "experiments/carrier_progress_20261031/orientation_probe.py": "3dbe1fd09eabfc85073a264bff384624dafbc6996d3302c26baf8335699598b6",
+      "experiments/carrier_progress_20261031/carrier_spatial_probe.py": "b01d6ded47aa91e67048f3b6a8acdb37a454c4300f125d787b53a42e97ad64c6",
+      "as_jepa_lewm/model.py": {
+        "sha256": "c7dc10afeaceb398151d67dfb687d69e71e867c006ba8c627176d2e4b17bbf2a",
+        "loaded_path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/model.py"
+      },
+      "as_jepa_lewm/robust.py": {
+        "sha256": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc",
+        "loaded_path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/robust.py"
+      },
+      "as_jepa_lewm/factory.py": {
+        "sha256": "f38bf5fd874d7c82a45bd3f182fe230d550e8f10567cbd9f6e54bf564a4d12b7",
+        "loaded_path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/factory.py"
+      },
+      "as_jepa_tools/benchmark_data.py": {
+        "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d",
+        "loaded_path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_tools/benchmark_data.py"
+      },
+      "experiments/ideas_validate_20261031/audit.py": {
+        "sha256": "93c460b1982664d1bf3c49e4cc24e5abeb48574aa2025ca294eb780e66848da7",
+        "loaded_path": "/efs/prescottsun/SPT-JEPA/code/experiments/ideas_validate_20261031/audit.py"
+      }
+    }
+  },
+  "references": [
+    {
+      "seed": 1,
+      "observed600_equals6000": true,
+      "train_shape": [
+        128,
+        8,
+        64
+      ],
+      "validation_shape": [
+        64,
+        8,
+        64
+      ]
+    },
+    {
+      "seed": 2,
+      "observed600_equals6000": true,
+      "train_shape": [
+        128,
+        8,
+        64
+      ],
+      "validation_shape": [
+        64,
+        8,
+        64
+      ]
+    }
+  ],
+  "pinned_cube24_source": {
+    "path": "/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030/clear_lewm/tasks.py",
+    "sha256": "2a153006aa3510df2c26695f805ec28a89fca2ce98d9dc2c5ec08eb937c6911a",
+    "bytes": 9846
+  },
+  "execution_scope": "CPU contracts and saved arrays only; no real model forward, labels fitted or GPU launch"
+}
