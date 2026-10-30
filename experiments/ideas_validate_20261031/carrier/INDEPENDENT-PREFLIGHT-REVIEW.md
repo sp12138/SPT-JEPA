@@ -57,3 +57,61 @@ This shared numerical difference does not show one arm has an advantage, nor est
 | Only one seed/task wins or all arms remain near copy baselines | No robust promotion or automatic longer continuation is justified. |
 
 The review found no source/config/statistical-leakage blocker. Numerical precision remains an explicitly measured limitation under the retained protocol. No mature superiority, academic novelty, or completed ten-idea result follows from this preflight review.
+
+## Independent600-step endpoint review
+
+Read-only snapshot at `2026-10-30T18:24:40Z` (October31 locally). All12 Carrier health, information, transition and planning reports were available. Every seed is retained. Sources and file hashes are in [the endpoint snapshot](endpoint-review-snapshot.json). No training, simulator evaluation or new GPU work was performed for this review.
+
+**The strongest supported effect is the fixed carrier making useful TwoRoom state accessible. The distinctive information-preservation benefit of the bounded chart is not established.** Cube provides no cross-task promotion signal.
+
+| Task / arm | Strict50-case success, seeds1/2 |
+|---|---:|
+| TwoRoom historical TF600 reference | 6 / 8% |
+| TwoRoom identity | 44 / 30% |
+| TwoRoom unconstrained | 34 / 30% |
+| TwoRoom bounded | 46 / 42% |
+| Cube historical TF600 reference | 14 / 10% |
+| Cube identity | 4 / 6% |
+| Cube unconstrained | 4 / 8% |
+| Cube bounded | 10 / 6% |
+
+The historical TF reference does not include the frozen carrier/calibration/chart and is not an equal trainable-capacity comparison. The three Carrier arms are the direct mechanism controls. Bounded versus identity wins/loses4/3 and8/2 matched TwoRoom cases; against unconstrained it wins/loses7/1 and8/2. Cube bounded versus identity is3/0 and1/1; versus unconstrained it is3/0 and1/2. These small case counts support a bounded-chart *performance hypothesis* in TwoRoom, not a broad stable superiority claim. Pooling both training seeds into100 independent examples would overstate replication: the same50 evaluation cases are reused.
+
+### The free maps are already safely invertible
+
+At600 the unconstrained residual Lipschitz upper bounds are .11558/.11209 on TwoRoom and .15022/.12933 on Cube. Thus every free endpoint has a global lower distance factor at least.8498. The bounded counterparts have residual bounds .09717/.09856 and .11441/.09942. W1 normalization is active, but the unconstrained function is far from the theoretical contraction limit and already satisfies a stronger preservation bound than the configured worst-case lower factor.5.
+
+CPU analysis of existing observed states finds chart displacement RMS only.031–.041 in normalized carrier units. Median pair-distance ratios relative to identity are .977–.979 across distinct initial frames; the smallest observed free ratio is.9259. Adjacent-frame distance ratios also remain close to one. Therefore there is no endpoint evidence that unconstrained adaptation erased distinctions and the bound saved them. This statement concerns the audited endpoints, not an unmeasured claim about every intervening optimizer step.
+
+### Put prediction errors into the same coordinates
+
+Because all free and bounded endpoints certify a contractive residual, their saved predictions can be inverted into the identity carrier u without additional model rollouts. The CPU-only [analysis script](endpoint_alignment_review.py) loads only saved chart weights and `state-audit.npz`, performs32 fixed-point inverse iterations, and compares against the same stored identity targets. Recovered observed encodings agree within4.8e-7. [Common-coordinate results and provenance](endpoint-common-coordinates.json).
+
+| Task / arm | Common-u rollout MSE / initial carry, seeds1/2 | Common-u teacher-forced MSE / shifted observed carry, seeds1/2 |
+|---|---:|---:|
+| TwoRoom identity | .58106 / .58539 | .81689 / .84411 |
+| TwoRoom unconstrained | .58562 / .58247 | .82382 / .84314 |
+| TwoRoom bounded | .58023 / .58213 | .81830 / .84013 |
+| Cube identity | .52781 / .51760 | .73463 / .73544 |
+| Cube unconstrained | .52520 / .51552 | .73118 / .73326 |
+| Cube bounded | .52559 / .51524 | .73197 / .73304 |
+
+All three arms genuinely predict better than their corresponding copy baselines. Positive learned-chart improvements **over identity** are below.7% relative, however, and bounded versus free has no consistent prediction advantage across tasks/seeds. Raw normalized errors in each learned chart initially made Cube adaptation look slightly worse; mapping into common u reverses that interpretation to tiny improvements. This is why a changed latent metric cannot be silently treated as a common outcome-quality measure. Even common-u error is a visual-carrier proxy, not privileged physical transition error.
+
+In native-coordinate factual prediction, replacing the initial state raises TwoRoom rollout error by72–94%, and Cube by96–127%. Wrong action order raises error by.4–2.2% on TwoRoom and14.8–20.5% on Cube; other-episode actions give larger effects. The combination of beating carry and using initial state/actions is materially stronger than a nonzero gradient. It still does not establish correct counterfactual predictions for unobserved alternative action sequences.
+
+### Preserved observation information is largely the original measurement
+
+TwoRoom identity clean agent-x/y probe R² is .944/.943 and .928/.892; adding sigma=.1 noise retains .911/.901 and .899/.897. Learned-chart probe changes are around1e-4–1e-3. These results confirm a useful noisy observation channel; near-unit feature variance by itself would only confirm the fixed calibration.
+
+Cube identity clean block-x/y/z R² is .584/.878/.345 and .588/.875/.385; the noisy probes remain similar. The block-height and x distinctions are substantially weaker than the mature learned Cube representations audited earlier. Block-x **displacement** linear R² is negative (−.174/−.244), unchanged by either chart. This does not prove nonlinear information is absent, but it limits the claim that the preserved frozen carrier already exposes all contact-relevant factors. A small invertible chart cannot manufacture missing information.
+
+The renderer uses this channel much less than the latent predictor: at t=.95, wrong-initial-state changes global forecast denoising MSE by at most.63% in TwoRoom and.81% in Cube, with similar behavior at t=1. Wrong actions alter renderer error by roughly0% and.4–.6%, respectively. The clear latent transition/state benefit therefore does not imply comparably strong generative use or improved image outcomes. The fixed-state/predictive-prior path can be useful while this renderer remains mostly insensitive; causal attribution of that learning to individual loss terms has not been tested here.
+
+The measured high-training/highest-evaluation carrier shift remains a shared limitation: RMS is1.176%/.295% of observed state standard deviation for TwoRoom/Cube in the initial/step2 precision audit. There is no new endpoint precision measurement, and no reason to call cross-mode carrier evaluation bitwise identical.
+
+### Decision implication
+
+The TwoRoom carrier family warrants a **targeted followup question**, because even identity improves substantially over historical TF600 and has meaningful factual dynamics. Any later controlled continuation must retain identity; testing the bound specifically also requires the unconstrained arm. This screen does not justify a long cross-task promotion of bounded F, removal of the identity control, or blanket continuation of the12 Carrier runs. Cube is below historical TF600 in both bounded seeds, with no substantial common-coordinate transition gain or newly exposed block information. The parent campaign's decision to hold all24 runs is consistent with this evidence.
+
+The current conclusion is useful but narrower than the proposed mechanism: preserving an already informative spatial measurement removes a major TwoRoom obstacle; the particular invertibility bound has not demonstrated that it prevents a failure actually encountered by the matched free map. Small TwoRoom planning gains may instead reflect coordinate/readout or optimization differences. No new algorithm count, mature LeWM superiority, or validated general bound benefit is claimed.

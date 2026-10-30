@@ -1,0 +1,861 @@
+{
+  "scope": "CPU-only inversion/reanalysis of saved outputs; no new image encoding, dynamics rollout, model update or GPU",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031",
+  "source_commit": "dd2aeaa40e8a8050439ef036b402f289d006a257",
+  "script_sha256": "3e86f7aea15325010bb020d8c99d381f21a7ff55d0156a6040ebc37f6ca015e4",
+  "inverse_iterations": 32,
+  "rows": [
+    {
+      "name": "tworoom-carrier-identity-seed1",
+      "task": "tworoom",
+      "seed": 1,
+      "mode": "identity",
+      "recorded_weights_sha256": "dfd24bfbe0f679a7738ad731dc654603fe8dd6d33ed82cd75db12b7c57a941f8",
+      "manifest_sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+      "residual_lipschitz_upper": 0.0,
+      "chart_displacement_rms": 0.0,
+      "chart_displacement_max": 0.0,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 1.0,
+          "median": 1.0,
+          "maximum": 1.0
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 1.0,
+          "median": 1.0,
+          "maximum": 1.0
+        }
+      },
+      "inverse_observation_alignment_max": 0.0,
+      "inverse_observation_defect": 0.0,
+      "common_initial_carry_mse": 1.2743640767233053,
+      "common_shifted_carry_mse": 0.4778452840644218,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.7404821876462232,
+          "over_initial_carry": 0.5810601547637626,
+          "over_shifted_carry": 1.5496274889392723,
+          "inverse_max_defect": 0.0
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.390349126323211,
+          "over_initial_carry": 0.30630895318933654,
+          "over_shifted_carry": 0.8168943784544815,
+          "inverse_max_defect": 0.0
+        },
+        "other_initial": {
+          "mse": 1.4371724164599609,
+          "over_initial_carry": 1.1277565357580344,
+          "over_shifted_carry": 3.0076103382998025,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.6966902288137377
+        },
+        "zero_initial": {
+          "mse": 0.9924747769270132,
+          "over_initial_carry": 0.7788000266602799,
+          "over_shifted_carry": 2.07697932788055,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.25199258928079005
+        },
+        "wrong_action_order": {
+          "mse": 0.7564067772950036,
+          "over_initial_carry": 0.5935562615982602,
+          "over_shifted_carry": 1.5829533167330097,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.015924589648780407
+        },
+        "other_episode_actions": {
+          "mse": 0.8542571893279011,
+          "over_initial_carry": 0.6703399797053292,
+          "over_shifted_carry": 1.787727571698149,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.11377500168167787
+        }
+      }
+    },
+    {
+      "name": "tworoom-carrier-unconstrained-seed1",
+      "task": "tworoom",
+      "seed": 1,
+      "mode": "unconstrained",
+      "recorded_weights_sha256": "c6706038db149657d1152e4f168135f27803a008096ed2a1276cd3174187a2eb",
+      "manifest_sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+      "residual_lipschitz_upper": 0.11558148782258036,
+      "chart_displacement_rms": 0.03746778895704491,
+      "chart_displacement_max": 0.09809744358062744,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 0.9376702191187868,
+          "median": 0.9770423147948355,
+          "maximum": 0.998399317810434
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 0.9419812054753587,
+          "median": 0.9877449837636836,
+          "maximum": 1.0000504790865188
+        }
+      },
+      "inverse_observation_alignment_max": 2.384185791015625e-07,
+      "inverse_observation_defect": 2.384185791015625e-07,
+      "common_initial_carry_mse": 1.2743640767233053,
+      "common_shifted_carry_mse": 0.4778452840644218,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.7462908774656504,
+          "over_initial_carry": 0.585618263333774,
+          "over_shifted_carry": 1.5617834942680684,
+          "inverse_max_defect": 1.1920928955078125e-07
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.393656984933216,
+          "over_initial_carry": 0.30890464673596435,
+          "over_shifted_carry": 0.8238168253642203,
+          "inverse_max_defect": 1.1920928955078125e-07
+        },
+        "other_initial": {
+          "mse": 1.4202619213775811,
+          "over_initial_carry": 1.1144867838941397,
+          "over_shifted_carry": 2.9722212790240814,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.6739710439119307
+        },
+        "zero_initial": {
+          "mse": 0.9657391801529476,
+          "over_initial_carry": 0.7578204673158191,
+          "over_shifted_carry": 2.021029007419793,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.2194483026872972
+        },
+        "wrong_action_order": {
+          "mse": 0.7605198103505109,
+          "over_initial_carry": 0.5967837796448163,
+          "over_shifted_carry": 1.5915607744032474,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.01422893288486049
+        },
+        "other_episode_actions": {
+          "mse": 0.8448446173221134,
+          "over_initial_carry": 0.6629538863763413,
+          "over_shifted_carry": 1.7680296227601018,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.09855373985646299
+        }
+      }
+    },
+    {
+      "name": "tworoom-carrier-bounded-seed1",
+      "task": "tworoom",
+      "seed": 1,
+      "mode": "bounded",
+      "recorded_weights_sha256": "efc2bf8006b18fd2c66c017ca53ea422e03a3636f41f4583a36d5df720a558d9",
+      "manifest_sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+      "residual_lipschitz_upper": 0.09716945889478916,
+      "chart_displacement_rms": 0.03445570516365042,
+      "chart_displacement_max": 0.08909869194030762,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 0.9440333280494964,
+          "median": 0.977870429556162,
+          "maximum": 0.9982483312276061
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 0.9480553259367058,
+          "median": 0.9876109110935396,
+          "maximum": 0.9999943176958994
+        }
+      },
+      "inverse_observation_alignment_max": 2.384185791015625e-07,
+      "inverse_observation_defect": 2.384185791015625e-07,
+      "common_initial_carry_mse": 1.2743640767233053,
+      "common_shifted_carry_mse": 0.4778452840644218,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.7394206230965855,
+          "over_initial_carry": 0.5802271396395704,
+          "over_shifted_carry": 1.5474059235392577,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.391019242890839,
+          "over_initial_carry": 0.30683479708266964,
+          "over_shifted_carry": 0.8182967498704515,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "other_initial": {
+          "mse": 1.4257729646803623,
+          "over_initial_carry": 1.118811327722267,
+          "over_shifted_carry": 2.983754391281475,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.6863523415837768
+        },
+        "zero_initial": {
+          "mse": 0.9809739401193281,
+          "over_initial_carry": 0.7697752612751347,
+          "over_shifted_carry": 2.0529112096187934,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.24155331702274263
+        },
+        "wrong_action_order": {
+          "mse": 0.7543907048258651,
+          "over_initial_carry": 0.5919742392343512,
+          "over_shifted_carry": 1.5787342262943842,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.014970081729279605
+        },
+        "other_episode_actions": {
+          "mse": 0.8474059984796707,
+          "over_initial_carry": 0.6649638152532941,
+          "over_shifted_carry": 1.7733898957249639,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.10798537538308517
+        }
+      }
+    },
+    {
+      "name": "tworoom-carrier-identity-seed2",
+      "task": "tworoom",
+      "seed": 2,
+      "mode": "identity",
+      "recorded_weights_sha256": "95c9201c43c16fedb5ca1a4fdf1f5dde77d671b177e033d8b05ee7b9c6c83d5c",
+      "manifest_sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+      "residual_lipschitz_upper": 0.0,
+      "chart_displacement_rms": 0.0,
+      "chart_displacement_max": 0.0,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 1.0,
+          "median": 1.0,
+          "maximum": 1.0
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 1.0,
+          "median": 1.0,
+          "maximum": 1.0
+        }
+      },
+      "inverse_observation_alignment_max": 0.0,
+      "inverse_observation_defect": 0.0,
+      "common_initial_carry_mse": 1.337731591220813,
+      "common_shifted_carry_mse": 0.49864984768344156,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.7830937347128888,
+          "over_initial_carry": 0.5853892812669826,
+          "over_shifted_carry": 1.5704281037102032,
+          "inverse_max_defect": 0.0
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.42091394267341303,
+          "over_initial_carry": 0.3146475312654366,
+          "over_shifted_carry": 0.8441072320162871,
+          "inverse_max_defect": 0.0
+        },
+        "other_initial": {
+          "mse": 1.3500905834923425,
+          "over_initial_carry": 1.0092387683393578,
+          "over_shifted_carry": 2.707492220772565,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.5669968487794537
+        },
+        "zero_initial": {
+          "mse": 0.9388510346907459,
+          "over_initial_carry": 0.7018231765267284,
+          "over_shifted_carry": 1.8827861655875964,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.15575729997785714
+        },
+        "wrong_action_order": {
+          "mse": 0.786356124742406,
+          "over_initial_carry": 0.5878280291076762,
+          "over_shifted_carry": 1.5769705503682603,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.003262390029517226
+        },
+        "other_episode_actions": {
+          "mse": 0.7923252869023837,
+          "over_initial_carry": 0.5922901814550916,
+          "over_shifted_carry": 1.5889411990864106,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.009231552189494896
+        }
+      }
+    },
+    {
+      "name": "tworoom-carrier-unconstrained-seed2",
+      "task": "tworoom",
+      "seed": 2,
+      "mode": "unconstrained",
+      "recorded_weights_sha256": "746ba792d28d5e692d168985d0c7d5615d801539dbb7c56f7e211caf84c92a6f",
+      "manifest_sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+      "residual_lipschitz_upper": 0.11208890373601853,
+      "chart_displacement_rms": 0.04005489737182547,
+      "chart_displacement_max": 0.10268127918243408,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 0.9363911646575238,
+          "median": 0.9767322201345214,
+          "maximum": 0.9986533956943092
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 0.9367056578044379,
+          "median": 0.9881361651587938,
+          "maximum": 1.0000685844378514
+        }
+      },
+      "inverse_observation_alignment_max": 2.384185791015625e-07,
+      "inverse_observation_defect": 2.384185791015625e-07,
+      "common_initial_carry_mse": 1.337731591220813,
+      "common_shifted_carry_mse": 0.49864984768344156,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.7791859296579793,
+          "over_initial_carry": 0.5824680636770301,
+          "over_shifted_carry": 1.5625913319292353,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.42042948947039765,
+          "over_initial_carry": 0.31428538596947836,
+          "over_shifted_carry": 0.8431357021837483,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "other_initial": {
+          "mse": 1.3492971208210118,
+          "over_initial_carry": 1.0086456279242417,
+          "over_shifted_carry": 2.7059009986454217,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.5701111911630325
+        },
+        "zero_initial": {
+          "mse": 0.9405132334666114,
+          "over_initial_carry": 0.7030657268161692,
+          "over_shifted_carry": 1.8861195643313993,
+          "inverse_max_defect": 5.960464477539063e-08,
+          "mse_change_vs_factual": 0.16132730380863214
+        },
+        "wrong_action_order": {
+          "mse": 0.7825165789713814,
+          "over_initial_carry": 0.5849578376610343,
+          "over_shifted_carry": 1.5692706667949234,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.003330649313402101
+        },
+        "other_episode_actions": {
+          "mse": 0.7885697590776853,
+          "over_initial_carry": 0.5894827962895285,
+          "over_shifted_carry": 1.5814098063824016,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.009383829419706058
+        }
+      }
+    },
+    {
+      "name": "tworoom-carrier-bounded-seed2",
+      "task": "tworoom",
+      "seed": 2,
+      "mode": "bounded",
+      "recorded_weights_sha256": "c91ce42c93705598feef369421dd601a710e2a9aa23e1fef686c120e26e8f801",
+      "manifest_sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+      "residual_lipschitz_upper": 0.09855940740208319,
+      "chart_displacement_rms": 0.03806582162062669,
+      "chart_displacement_max": 0.09706318378448486,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 0.9407193298271633,
+          "median": 0.9771068156739682,
+          "maximum": 0.9985698578806574
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 0.9409514268258676,
+          "median": 0.9877572946652209,
+          "maximum": 0.9999388618772125
+        }
+      },
+      "inverse_observation_alignment_max": 2.384185791015625e-07,
+      "inverse_observation_defect": 2.384185791015625e-07,
+      "common_initial_carry_mse": 1.337731591220813,
+      "common_shifted_carry_mse": 0.49864984768344156,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.7787335049115444,
+          "over_initial_carry": 0.582129860744989,
+          "over_shifted_carry": 1.5616840324513819,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.4189316709242466,
+          "over_initial_carry": 0.3131657155094393,
+          "over_shifted_carry": 0.8401319540564613,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "other_initial": {
+          "mse": 1.3474404657825123,
+          "over_initial_carry": 1.007257714944774,
+          "over_shifted_carry": 2.702177634350566,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.568706960870968
+        },
+        "zero_initial": {
+          "mse": 0.9410034396344781,
+          "over_initial_carry": 0.7034321726496112,
+          "over_shifted_carry": 1.8871026312472803,
+          "inverse_max_defect": 5.960464477539063e-08,
+          "mse_change_vs_factual": 0.16226993472293372
+        },
+        "wrong_action_order": {
+          "mse": 0.7825199112445712,
+          "over_initial_carry": 0.5849603286489213,
+          "over_shifted_carry": 1.5692773493863357,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.0037864063330268483
+        },
+        "other_episode_actions": {
+          "mse": 0.7892423527286496,
+          "over_initial_carry": 0.5899855829885782,
+          "over_shifted_carry": 1.5827586359350203,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.01050884781710526
+        }
+      }
+    },
+    {
+      "name": "cube-carrier-identity-seed1",
+      "task": "cube",
+      "seed": 1,
+      "mode": "identity",
+      "recorded_weights_sha256": "d33223f1dc871ef3b03acf242f7e80eeeedf85815e6d7eef40706c5e2f59e6a6",
+      "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+      "residual_lipschitz_upper": 0.0,
+      "chart_displacement_rms": 0.0,
+      "chart_displacement_max": 0.0,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 1.0,
+          "median": 1.0,
+          "maximum": 1.0
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 1.0,
+          "median": 1.0,
+          "maximum": 1.0
+        }
+      },
+      "inverse_observation_alignment_max": 0.0,
+      "inverse_observation_defect": 0.0,
+      "common_initial_carry_mse": 1.4651140092770643,
+      "common_shifted_carry_mse": 0.7509233328526621,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.7733051626633396,
+          "over_initial_carry": 0.527812277929766,
+          "over_shifted_carry": 1.0298057455821112,
+          "inverse_max_defect": 0.0
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.5516511348903643,
+          "over_initial_carry": 0.3765243738011674,
+          "over_shifted_carry": 0.7346304352998487,
+          "inverse_max_defect": 0.0
+        },
+        "other_initial": {
+          "mse": 1.5204445336774195,
+          "over_initial_carry": 1.0377653370659237,
+          "over_shifted_carry": 2.0247666667933255,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.7471393710140799
+        },
+        "zero_initial": {
+          "mse": 0.9369643024546775,
+          "over_initial_carry": 0.6395163083021824,
+          "over_shifted_carry": 1.2477496189860948,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.16365913979133795
+        },
+        "wrong_action_order": {
+          "mse": 0.8950500513965279,
+          "over_initial_carry": 0.6109081243705909,
+          "over_shifted_carry": 1.1919326677416544,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.12174488873318834
+        },
+        "other_episode_actions": {
+          "mse": 1.1910372775248663,
+          "over_initial_carry": 0.8129314647073531,
+          "over_shifted_carry": 1.5860970426904533,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.4177321148615267
+        }
+      }
+    },
+    {
+      "name": "cube-carrier-unconstrained-seed1",
+      "task": "cube",
+      "seed": 1,
+      "mode": "unconstrained",
+      "recorded_weights_sha256": "1d17aca879eb857491e03f01741ac9c3197250817f57fe1d10782e1500eec852",
+      "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+      "residual_lipschitz_upper": 0.15022425781056162,
+      "chart_displacement_rms": 0.040948363378772536,
+      "chart_displacement_max": 0.12351703643798828,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 0.9258557644492886,
+          "median": 0.9771870288496327,
+          "maximum": 0.9962740160205057
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 0.9301696494009928,
+          "median": 0.9833740624768379,
+          "maximum": 0.9984324053135204
+        }
+      },
+      "inverse_observation_alignment_max": 4.76837158203125e-07,
+      "inverse_observation_defect": 2.384185791015625e-07,
+      "common_initial_carry_mse": 1.4651140092770643,
+      "common_shifted_carry_mse": 0.7509233328526621,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.7694751742908179,
+          "over_initial_carry": 0.5251981548319932,
+          "over_shifted_carry": 1.0247053735401719,
+          "inverse_max_defect": 1.1920928955078125e-07
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.5490626302901179,
+          "over_initial_carry": 0.37475761395595664,
+          "over_shifted_carry": 0.7311833395884756,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "other_initial": {
+          "mse": 1.516513362473269,
+          "over_initial_carry": 1.0350821525633809,
+          "over_shifted_carry": 2.0195315501946487,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.747038188182451
+        },
+        "zero_initial": {
+          "mse": 0.9401040358546516,
+          "over_initial_carry": 0.6416593042602399,
+          "over_shifted_carry": 1.25193078271162,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.17062886156383372
+        },
+        "wrong_action_order": {
+          "mse": 0.8905420839026359,
+          "over_initial_carry": 0.6078312529016489,
+          "over_shifted_carry": 1.1859294350590759,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.12106690961181799
+        },
+        "other_episode_actions": {
+          "mse": 1.1902172250075211,
+          "over_initial_carry": 0.8123717454553682,
+          "over_shifted_carry": 1.5850049837791529,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.42074205071670323
+        }
+      }
+    },
+    {
+      "name": "cube-carrier-bounded-seed1",
+      "task": "cube",
+      "seed": 1,
+      "mode": "bounded",
+      "recorded_weights_sha256": "b1f36c802ca89ff9129e8c38e5d7c62676cc690a93b264ca122195f83406560e",
+      "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+      "residual_lipschitz_upper": 0.11440820216509108,
+      "chart_displacement_rms": 0.03591226222913593,
+      "chart_displacement_max": 0.11342132091522217,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 0.9367901754958537,
+          "median": 0.9782563419944984,
+          "maximum": 0.9959512762591631
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 0.9414680997325282,
+          "median": 0.98431183201668,
+          "maximum": 0.9981550638793123
+        }
+      },
+      "inverse_observation_alignment_max": 2.384185791015625e-07,
+      "inverse_observation_defect": 2.384185791015625e-07,
+      "common_initial_carry_mse": 1.4651140092770643,
+      "common_shifted_carry_mse": 0.7509233328526621,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.7700528372907662,
+          "over_initial_carry": 0.5255924333634184,
+          "over_shifted_carry": 1.0254746438167444,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.5496523857231687,
+          "over_initial_carry": 0.37516014606561937,
+          "over_shifted_carry": 0.7319687132840969,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "other_initial": {
+          "mse": 1.5166955391889196,
+          "over_initial_carry": 1.0352064955936824,
+          "over_shifted_carry": 2.0197741538103315,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.7466427018981534
+        },
+        "zero_initial": {
+          "mse": 0.9398009800141401,
+          "over_initial_carry": 0.6414524563026116,
+          "over_shifted_carry": 1.2515272051062203,
+          "inverse_max_defect": 1.1920928955078125e-07,
+          "mse_change_vs_factual": 0.1697481427233739
+        },
+        "wrong_action_order": {
+          "mse": 0.890737938007861,
+          "over_initial_carry": 0.607964931307551,
+          "over_shifted_carry": 1.1861902527706272,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.12068510071709482
+        },
+        "other_episode_actions": {
+          "mse": 1.1899744538900359,
+          "over_initial_carry": 0.8122060442772018,
+          "over_shifted_carry": 1.584681686969926,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.41992161659926963
+        }
+      }
+    },
+    {
+      "name": "cube-carrier-identity-seed2",
+      "task": "cube",
+      "seed": 2,
+      "mode": "identity",
+      "recorded_weights_sha256": "4be5fdafe67248fc1a472b98e0573e78d551b91221a8aa96fdec17cffb429a2c",
+      "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+      "residual_lipschitz_upper": 0.0,
+      "chart_displacement_rms": 0.0,
+      "chart_displacement_max": 0.0,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 1.0,
+          "median": 1.0,
+          "maximum": 1.0
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 1.0,
+          "median": 1.0,
+          "maximum": 1.0
+        }
+      },
+      "inverse_observation_alignment_max": 0.0,
+      "inverse_observation_defect": 0.0,
+      "common_initial_carry_mse": 1.3570199869483737,
+      "common_shifted_carry_mse": 0.6585854578205382,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.702395263751279,
+          "over_initial_carry": 0.5176012663828222,
+          "over_shifted_carry": 1.0665210648223558,
+          "inverse_max_defect": 0.0
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.484348572309836,
+          "over_initial_carry": 0.3569207358537325,
+          "over_shifted_carry": 0.7354376968976727,
+          "inverse_max_defect": 0.0
+        },
+        "other_initial": {
+          "mse": 1.5953197666779626,
+          "over_initial_carry": 1.1756052099611816,
+          "over_shifted_carry": 2.4223428375679084,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.8929245029266836
+        },
+        "zero_initial": {
+          "mse": 0.9064110915577837,
+          "over_initial_carry": 0.6679423297191769,
+          "over_shifted_carry": 1.376299887576286,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.20401582780650462
+        },
+        "wrong_action_order": {
+          "mse": 0.8461728188241228,
+          "over_initial_carry": 0.6235522151202586,
+          "over_shifted_carry": 1.2848337429501842,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.14377755507284373
+        },
+        "other_episode_actions": {
+          "mse": 1.1733270383058796,
+          "over_initial_carry": 0.8646350456078563,
+          "over_shifted_carry": 1.7815866177622255,
+          "inverse_max_defect": 0.0,
+          "mse_change_vs_factual": 0.47093177455460056
+        }
+      }
+    },
+    {
+      "name": "cube-carrier-unconstrained-seed2",
+      "task": "cube",
+      "seed": 2,
+      "mode": "unconstrained",
+      "recorded_weights_sha256": "342cc06aab6975be82c84fe906ff3dbd97807b37ec759ff57c10a91be25d343a",
+      "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+      "residual_lipschitz_upper": 0.12932806835397792,
+      "chart_displacement_rms": 0.03545170102877217,
+      "chart_displacement_max": 0.1315159797668457,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 0.9379501068373942,
+          "median": 0.9788032915357436,
+          "maximum": 0.9973227603837514
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 0.9376743917150715,
+          "median": 0.9848971584888941,
+          "maximum": 0.9987448219037455
+        }
+      },
+      "inverse_observation_alignment_max": 4.76837158203125e-07,
+      "inverse_observation_defect": 2.384185791015625e-07,
+      "common_initial_carry_mse": 1.3570199869483737,
+      "common_shifted_carry_mse": 0.6585854578205382,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.6995766316020017,
+          "over_initial_carry": 0.515524191486073,
+          "over_shifted_carry": 1.0622412373287375,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.4829139423340134,
+          "over_initial_carry": 0.3558635443682565,
+          "over_shifted_carry": 0.7332593463756764,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "other_initial": {
+          "mse": 1.5907430743761577,
+          "over_initial_carry": 1.1722326050284444,
+          "over_shifted_carry": 2.415393561285753,
+          "inverse_max_defect": 4.76837158203125e-07,
+          "mse_change_vs_factual": 0.891166442774156
+        },
+        "zero_initial": {
+          "mse": 0.9083582148225172,
+          "over_initial_carry": 0.6693771820304624,
+          "over_shifted_carry": 1.3792564108970062,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.20878158322051554
+        },
+        "wrong_action_order": {
+          "mse": 0.8421448757964037,
+          "over_initial_carry": 0.6205839883686564,
+          "over_shifted_carry": 1.2787176907660853,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.14256824419440206
+        },
+        "other_episode_actions": {
+          "mse": 1.1697308366388637,
+          "over_initial_carry": 0.8619849728737745,
+          "over_shifted_carry": 1.7761261241781174,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.470154205036862
+        }
+      }
+    },
+    {
+      "name": "cube-carrier-bounded-seed2",
+      "task": "cube",
+      "seed": 2,
+      "mode": "bounded",
+      "recorded_weights_sha256": "cbd72d82ea5aaf944878a82c49329317ae11ba76c3e6fb772fd7698e88d667ec",
+      "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+      "residual_lipschitz_upper": 0.09942373978751522,
+      "chart_displacement_rms": 0.030963514378385792,
+      "chart_displacement_max": 0.11130523681640625,
+      "chart_distance_ratios": {
+        "initial_frame_pairs": {
+          "count": 2016,
+          "minimum": 0.9488197125339127,
+          "median": 0.9793363155920474,
+          "maximum": 0.996631811659851
+        },
+        "adjacent_frame_pairs": {
+          "count": 448,
+          "minimum": 0.9484983640149087,
+          "median": 0.985287704006194,
+          "maximum": 0.9986896111863619
+        }
+      },
+      "inverse_observation_alignment_max": 2.384185791015625e-07,
+      "inverse_observation_defect": 2.384185791015625e-07,
+      "common_initial_carry_mse": 1.3570199869483737,
+      "common_shifted_carry_mse": 0.6585854578205382,
+      "common_carrier_prediction": {
+        "clean_rollout": {
+          "mse": 0.6991884061363296,
+          "over_initial_carry": 0.5152381047154978,
+          "over_shifted_carry": 1.061651753517545,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "teacher_forced_prefix": {
+          "mse": 0.4827712975393288,
+          "over_initial_carry": 0.35575842816064235,
+          "over_shifted_carry": 0.7330427536875281,
+          "inverse_max_defect": 2.384185791015625e-07
+        },
+        "other_initial": {
+          "mse": 1.591367610743044,
+          "over_initial_carry": 1.172692831386857,
+          "over_shifted_carry": 2.416341860947505,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.8921792046067143
+        },
+        "zero_initial": {
+          "mse": 0.909063821925477,
+          "over_initial_carry": 0.6698971501294928,
+          "over_shifted_carry": 1.380327808837214,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.20987541578914737
+        },
+        "wrong_action_order": {
+          "mse": 0.8431132133360559,
+          "over_initial_carry": 0.6212975648442909,
+          "over_shifted_carry": 1.280188020133601,
+          "inverse_max_defect": 2.384185791015625e-07,
+          "mse_change_vs_factual": 0.14392480719972633
+        },
+        "other_episode_actions": {
+          "mse": 1.1710119211981993,
+          "over_initial_carry": 0.862929015387265,
+          "over_shifted_carry": 1.778071330444249,
+          "inverse_max_defect": 4.76837158203125e-07,
+          "mse_change_vs_factual": 0.4718235150618697
+        }
+      }
+    }
+  ]
+}

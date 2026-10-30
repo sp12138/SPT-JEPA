@@ -81,11 +81,21 @@ def derive_support(cfg, audit, audit_dir):
     totals = dict(symbols=count(symbols, 3), transforms=count(labels, 5), completion=count(labels == 3, 2))
     for name, value in totals.items():
         assert value == queries["label_support"][name]["counts"], (name, value, queries["label_support"][name])
+    def context_prior(target, classes):
+        target = np.asarray(target)
+        counts = np.stack([np.bincount(target[:, j], minlength=classes) for j in range(target.shape[1])])
+        probabilities = counts / counts.sum(1, keepdims=True)
+        entropy = -sum(float(p*math.log(p)) for p in probabilities.flatten() if p > 0) / len(counts)
+        return dict(per_context_counts=counts.tolist(), accuracy=float(probabilities.max(1).mean()),
+                    relative_ce=entropy/math.log(classes),
+                    scope="Descriptive best constant distribution per frame/segment, fitted to these same validation labels. Not a trained or held-out predictive baseline; no query/index-specific conditioning.")
     return dict(source="Independent CPU reconstruction of the exact existing audit RGB windows",
         manifest_sha256=audit["manifest_sha256"], query_indices=queries["query_indices"],
         examples=len(manifest["windows"]), queries_per_clip=len(indices), totals=totals,
         segments={name:dict(transforms=count(labels[:, i], 5), completion=count(labels[:, i] == 3, 2))
                   for i, name in enumerate(("full", "first_half", "second_half"))},
+        empirical_context_priors=dict(symbol=context_prior(symbols, 3), completion=context_prior(labels == 3, 2),
+                                      transform=context_prior(labels, 5)),
         aggregate_counts_match_frozen_audit=True)
 
 
@@ -135,6 +145,13 @@ def collect(root, require_complete=False, derive=False):
             row["trained_query"] = trained
             clean = trained["clean_rollout"]["relative_to_uniform_ce"]
             row["query_delta_vs_forecast"] = {name:value["relative_to_uniform_ce"]-clean for name, value in trained.items()}
+            normalizer = math.log({"symbol":3,"completion":2,"transform":5}[record["arm"]])
+            base = trained["clean_rollout"]["per_window_ce"]
+            row["query_per_window_effect"] = {}
+            for name, value in trained.items():
+                delta = [(b-a)/normalizer for a,b in zip(base,value["per_window_ce"])]
+                row["query_per_window_effect"][name] = dict(mean_abs_delta=sum(abs(x) for x in delta)/len(delta),
+                    max_abs_delta=max(abs(x) for x in delta), signed_mean=sum(delta)/len(delta))
             if derive:
                 if record["task"] not in support_cache:
                     support_cache[record["task"]] = derive_support(cfg, audit, audit_dir)
@@ -171,6 +188,10 @@ def fmt(value, places=3):
     return "pending" if value is None else f"{value:.{places}f}"
 
 
+def scientific(value):
+    return "pending" if value is None else f"{value:.3g}"
+
+
 def write_markdown(result, out):
     lines = ["# S3 three-arm review", "", f"Source `{result['source_commit']}`; complete={result['complete']}. "
         f"Pending endpoints {len(result['pending'])}, failed {len(result['failed'])}.", "",
@@ -183,12 +204,20 @@ def write_markdown(result, out):
         ce = lambda key:q.get(key, {}).get("relative_to_uniform_ce")
         values = [row["task"], row["arm"], str(row["seed"]), fmt(row.get("p0_percent"), 1),
                   *[fmt(ce(k)) for k in ("clean_rollout", "zero_prediction", "observed_future")],
-                  *[fmt(delta.get(k)) for k in ("other_initial", "wrong_action_order", "other_episode_actions")]]
+                  *[scientific(delta.get(k)) for k in ("other_initial", "wrong_action_order", "other_episode_actions")]]
         lines.append("| " + " | ".join(values) + " |")
     lines += ["", "Query-only sets the whole state sequence to zero and retains real query prototypes and context masks. It may move the head off its training support. Observed future is privileged diagnostic access, not a forecast. Intervention deltas subtract the same trained head's clean forecast CE; positive means worse classification after intervention. These fixed-target swaps test conditioning dependence, not accuracy on unobserved counterfactual outcomes.", "",
               "## Same-case planning comparisons", "", "| Task | Seed | First → second | Delta pp | Gained | Lost |", "|---|---:|---|---:|---:|---:|"]
     for pair in result["paired_planning"]:
         lines.append(f"| {pair['task']} | {pair['seed']} | {pair['first']} → {pair['second']} | {pair['delta_pp']:+.1f} | {pair['gained']} | {pair['lost']} |")
+    lines += ["", "## Avoiding cancellation across windows", "", "Absolute per-window changes in the trained head's CE/log(K); each window still averages its queries and contexts.", "",
+              "| Task | Arm | Seed | Wrong-initial mean absolute change | Wrong-initial maximum | Other-actions mean absolute change | Query-only mean absolute change |", "|---|---|---:|---:|---:|---:|---:|"]
+    for row in ordered:
+        e=row.get("query_per_window_effect")
+        if e:
+            values=[e["other_initial"]["mean_abs_delta"],e["other_initial"]["max_abs_delta"],
+                    e["other_episode_actions"]["mean_abs_delta"],e["zero_prediction"]["mean_abs_delta"]]
+            lines.append(f"| {row['task']} | {row['arm']} | {row['seed']} | " + " | ".join(scientific(v) for v in values) + " |")
     lines += ["", "## Full and half support", "", "Map order: I, A, B, AB, BA. Completion order: no, yes.", "",
               "| Task | Segment | Map counts | Completion counts |", "|---|---|---|---|"]
     for task, support in result["segment_support"].items():
@@ -196,6 +225,22 @@ def write_markdown(result, out):
             lines.append(f"| {task} | {segment} | {counts['transforms']} | {counts['completion']} |")
     if not result["segment_support"]:
         lines += ["", "Per-segment support not reconstructed yet. Frozen reports contain only aggregate counts; use --derive-support to recover and independently verify the existing audit targets on CPU."]
+    else:
+        lines += ["", "The following context-only reference is fitted to the same validation label frequencies. It describes class imbalance, not a learned predictor or a held-out baseline. It receives the context type/frame position, but no query index, image, state or action.", "",
+                  "| Task | Target | Empirical context-only accuracy | Empirical context-only CE/logK |", "|---|---|---:|---:|"]
+        for task,support in result["segment_support"].items():
+            for arm,prior in support["empirical_context_priors"].items():
+                lines.append(f"| {task} | {arm} | {prior['accuracy']:.6f} | {prior['relative_ce']:.6f} |")
+    lines += ["", "## Native latent prediction scale", "", "Ratios are model-dependent. Tiny true encoded variation can make normalized error large; raw numerators and denominators are retained. Initial carry has normalized error one by definition.", "",
+              "| Task | Arm | Seed | True initial-to-future variation | Causal MSE | Teacher-prefix MSE | Causal / variation | Other-action effect MSE |", "|---|---|---:|---:|---:|---:|---:|---:|"]
+    for row in ordered:
+        audit=row["transition"]
+        if audit:
+            c=audit["conditions"]
+            values=[audit["actual_temporal_variation"]["initial_mean"],c["clean_rollout"]["mse"],
+                    c["teacher_forced_prefix"]["mse"],c["clean_rollout"]["normalized_by_initial_variation"],
+                    c["other_episode_actions"]["intervention_effect_mse"]]
+            lines.append(f"| {row['task']} | {row['arm']} | {row['seed']} | " + " | ".join(scientific(v) for v in values) + " |")
     lines += ["", "## Native two-step startup", "", "| Task | Arm | Passed | Compared original tensors | Action gradient norm | Head gradient norm |",
               "|---|---|---|---:|---:|---:|"]
     for row in ordered:
@@ -214,13 +259,14 @@ def plot(result, out):
     import matplotlib.pyplot as plt
     lookup = {(r["task"],r["arm"],r["seed"]):r for r in result["runs"]}
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.6), constrained_layout=True)
+    upper = max(10., 2.+max([r.get("p0_percent",0.) for r in result["runs"]]))
     for ax, task in zip(axes, TASKS):
         for seed, shift, color in [(1,-.18,"#2563eb"),(2,.18,"#f97316")]:
             values = [lookup[task,arm,seed].get("p0_percent",float("nan")) for arm in ARMS]
             bars = ax.bar(np.arange(3)+shift, values, .34, color=color, label=f"seed {seed}")
             ax.bar_label(bars, fmt="%.0f", fontsize=9, padding=3)
         ax.set_xticks(np.arange(3), ARMS);ax.set_title(task);ax.set_ylabel("Native success (%) / 50 fixed cases")
-        ax.set_ylim(bottom=0);ax.grid(axis="y",alpha=.2);ax.set_axisbelow(True);ax.legend(fontsize=9)
+        ax.set_ylim(0,upper);ax.grid(axis="y",alpha=.2);ax.set_axisbelow(True);ax.legend(fontsize=9)
     fig.savefig(out/"planning.png",dpi=170);plt.close(fig)
     names = ("zero_prediction","observed_future","other_initial","wrong_action_order","other_episode_actions","teacher_forced_prefix","shifted_observed_carry")
     labels = ("Query\nonly","Observed\nfuture","Wrong\ninitial","Action\norder","Other\nactions","Teacher\nprefix","Observed\ncarry")
@@ -233,8 +279,9 @@ def plot(result, out):
                 ax.plot(range(len(names)),[delta.get(n,float("nan")) for n in names],marker=marker,color=color,label=f"seed {seed}",linewidth=1)
             ax.axhline(0,color="black",linewidth=.7);ax.set_xticks(range(len(names)),labels,fontsize=8)
             ax.set_title(f"{task}: trained {arm}");ax.set_ylabel("CE/logK minus clean forecast")
+            ax.set_yscale("symlog",linthresh=1e-5)
             ax.grid(axis="y",alpha=.2);ax.legend(fontsize=8)
-    fig.suptitle("Within-head interventions; cross-target CE is not a method ranking",fontsize=12)
+    fig.suptitle("Within-head interventions (signed log scale); cross-target CE is not a ranking",fontsize=12)
     fig.savefig(out/"query-dependence.png",dpi=170);plt.close(fig)
 
 

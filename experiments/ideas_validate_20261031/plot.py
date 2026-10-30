@@ -94,7 +94,12 @@ def plot_forecast(result,lookup,out):
                         ax.text(x,.04,"undefined",transform=ax.get_xaxis_transform(),rotation=90,ha="center",fontsize=7)
             ax.axhline(1,color="#777777",ls="--",lw=1,label="Initial carry = 1")
             if values and max(values)>max(.05,min(v for v in values if v>0) if any(v>0 for v in values) else .05)*40:
-                ax.set_yscale("symlog",linthresh=.05)
+                if all(v > 0 for v in values):
+                    ax.set_yscale("log")
+                    ax.set_ylim(bottom=min(values)*.6, top=max(values)*2)
+                else:
+                    ax.set_yscale("symlog",linthresh=.05)
+                    ax.set_ylim(bottom=0)
             else:
                 ax.set_ylim(bottom=0)
             ax.set_title(f"{TITLES[task]} · {title}")
@@ -153,7 +158,8 @@ def plot_capacity(result,lookup,out):
                 ax.scatter(xx,size["total"]/1e6,marker=MARKERS[seed],facecolors="none",edgecolors=COLORS[family],s=50)
                 ax.scatter(xx,size["trainable"]/1e6,marker=MARKERS[seed],color=COLORS[family],s=40)
         ax.set(title=f"{TITLES[task]} · total vs trainable",ylabel="Parameters (millions)")
-        ax.set_ylim(bottom=0);arm_axis(ax)
+        ax.set_ylim(0, max(lookup[task,s,f,a]["model_size"]["total"]
+                           for f,a in ARMS for s in [1,2])/1e6*1.1);arm_axis(ax)
         if row==0:
             ax.legend(handles=[Line2D([0],[0],marker="o",color="#555555",lw=0,label="Trainable"),
                                Line2D([0],[0],marker="o",markerfacecolor="none",color="#555555",lw=0,label="Total")],frameon=False)
@@ -211,7 +217,7 @@ def main():
                          "svg.fonttype":"none","savefig.facecolor":"white"})
     for function in [plot_planning,plot_forecast,plot_queries,plot_capacity,plot_interventions]:
         function(result,lookup,out)
-    files=sorted(p for p in out.iterdir() if p.suffix in {"png","svg"})
+    files=sorted(p for p in out.iterdir() if p.suffix in {".png",".svg"})
     manifest=dict(results_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
                   plot_script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   files={p.name:dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in files})
