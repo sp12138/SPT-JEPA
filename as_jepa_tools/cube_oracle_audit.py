@@ -222,13 +222,26 @@ def propose(a):
             solver.configure(action_space=gym.spaces.Box(-1, 1, (1, 5)), n_envs=1,
                              config=SimpleNamespace(action_block=5, horizon=5))
             with torch.inference_mode():
-                result = solver.solve({"pixels": pixels, "goal": goal})
-            raw = result["actions"][0].numpy().reshape(25, 5) * std + mean
+                # The shared goal encoder removes the current-action key. The
+                # rollout replaces this placeholder with the first candidate.
+                result = solver.solve({"pixels": pixels, "goal": goal,
+                                       "action": torch.zeros(1, 1, 25, device="cuda")})
+            chosen = result["actions"]
+            assert tuple(chosen.shape) == (1, 5, 25), chosen.shape
+            assert bool(torch.isfinite(chosen).all()), "Nonfinite CEM actions"
+            # Mirror StandardScaler.inverse_transform on float32 policy actions:
+            # separate in-place multiply/add preserve its rounding and dtype.
+            raw = chosen.detach().cpu().numpy()[0].reshape(25, 5).copy()
+            raw *= std
+            raw += mean
             target = Path(a.output) / f"{a.label}-case{case:04d}.npz"
             assert not target.exists(), target
             np.savez_compressed(target, actions=raw.astype(np.float32), label=a.label,
                                 manifest_sha256=sha(a.manifest), checkpoint=a.checkpoint,
-                                first_plan_only=True)
+                                first_plan_only=True, solver_seed=a.seed + 1009*case,
+                                solver_samples=300, solver_iterations=30, solver_elites=30,
+                                unclipped_action_fraction=float(np.mean(np.abs(raw)>1)),
+                                script_sha256=sha(__file__))
             print(json.dumps(dict(case=case, proposal=str(target))), flush=True)
     finally:
         h5.close()
