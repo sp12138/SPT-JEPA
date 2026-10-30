@@ -1,0 +1,38 @@
+{
+  "reviewed_at": "2026-10-30T05:42:01.728930+00:00",
+  "all19_exit0": true,
+  "all_six_full_state_audits_pass": true,
+  "paired_comparisons": [
+    {
+      "training_seed": 1,
+      "control": "original",
+      "gained": 3,
+      "lost": 1,
+      "difference_percentage_points": 4.0
+    },
+    {
+      "training_seed": 1,
+      "control": "lower-beta",
+      "gained": 5,
+      "lost": 4,
+      "difference_percentage_points": 2.0
+    },
+    {
+      "training_seed": 2,
+      "control": "original",
+      "gained": 4,
+      "lost": 3,
+      "difference_percentage_points": 2.0
+    },
+    {
+      "training_seed": 2,
+      "control": "lower-beta",
+      "gained": 4,
+      "lost": 4,
+      "difference_percentage_points": 0.0
+    }
+  ],
+  "decision": "Hold all six at11671. Temporal-forecast mean25% versus original22% and lower-beta24% does not establish a substantial gain. No automatic second epoch or additional candidate grid.",
+  "interpretation": "All methods improve with training budget. Two-seed50-case validation cannot establish superiority from1-3 percentage-point mean differences; do not claim equivalence either. Cube does not show the persistent encoder degeneration observed in TwoRoom, but learned denoising state/action dependence is insufficient evidence of effective planning.",
+  "test_untouched": true
+}

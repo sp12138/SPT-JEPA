@@ -1,3 +1,22 @@
+# Current status: Cube first-window-epoch comparison complete and held
+
+Reviewed 2026-10-30 at approximately 13:43 Beijing time. All 19 workflow endpoints (six training, six health, six planning, one aggregate) exit 0. Every run stopped exactly at 11,671 total updates. All six model/optimizer/scheduler/RNG/cursor/portable-equality and gradient audits pass.
+
+Fixed 50-case strict-validation successes, training seeds 1/2:
+- Original beta=.25: 20/24%, mean 22%.
+- Lower-beta=.0625: 22/26%, mean 24%.
+- Temporal-forecast: 24/26%, mean 25%.
+
+The temporal-forecast advantage is +3 percentage points over original and +1 over lower-beta on average. Against the lower-beta control it gains/loses 5/4 cases for seed1 and 4/4 for seed2. This does not establish the user's requested substantial gain, nor prove method equivalence. Training improves all methods; the PushT advantage has not clearly transferred to Cube at this budget.
+
+Cube states retain substantial variation and denoising depends strongly on encoded state and actions in every arm. Therefore the observed limitation is not the near-state-invariance seen in TwoRoom. State/action sensitivity alone does not establish useful goal-planning geometry; the reason for the weak relative planning improvement remains unresolved. Noise shifting, anchor removal and shared-prior short adaptations remain held without a consistent task gain. No novelty claim is supported.
+
+Root /efs/prescottsun/SPT-JEPA/runs/hardtasks_cube_epoch1_20261030 now has HOLD_DISPATCH. All three dispatchers were verified idle and terminated using live command-line checks. All three hosts report no GPU compute processes at closure. Do not reuse stale PIDs or automatically start another epoch. Checkpoints, source84890f6, all prior snapshots and STOP markers are preserved. No new training was launched during this review.
+
+Reviewed report, complete numbers, paired comparisons and visually checked figure: experiments/hardtasks20261030/results/cube-epoch1. Original generated report remains under /efs/prescottsun/SPT-JEPA/reports/hardtasks-cube-epoch1-review-20261030; the Git report adds the scientific review. Test episodes remain unused. Published LeWM's 30% reference differs in model size/training budget/data exposure.
+
+---
+
 # Current active work: six bounded Cube first-epoch runs
 
 The shared-prior short test completed all 12 endpoints with exit 0. TwoRoom shared-prior success was 2/6% versus ordinary temporal-forecast 6/2%; Cube was 10/12% versus 14/10%. It has no consistent control advantage. All shared-prior, noise-shift and anchor-information candidates are held. TwoRoom remains nearly invariant to encoded-state substitutions despite action-sensitive denoising in some arms; do not send this unresolved failure into a blind long grid.
