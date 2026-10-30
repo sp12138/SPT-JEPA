@@ -24,7 +24,7 @@ Nonoracle cases, mean per-case rank statistics:
 
 The original AS-JEPA effector partial correlations are .797/.792; temporal forecasting increases them to .928/.935. Against LeWM, the temporal-minus-reference effector partial-rank differences are .520 [.440,.606] and .527 [.446,.613]. The corresponding cube-position differences are -.208 [-.341,-.077] and -.219 [-.350,-.097]. These intervals resample cases and are conditional on the frozen weights; they are not training-seed confidence intervals.
 
-This is evidence that temporal forecasting predicts its own chosen geometry very consistently, while that geometry tracks the robot effector much more strongly than the object goal. Low normalized latent error is not evidence of better physical dynamics when different encoders represent different factors. Partial correlations alone do not establish causal irrelevance: robot pose is legitimately needed to predict contacts and motion. A separate frozen-metric projection intervention is being prepared to test whether these directions causally affect candidate selection, with a same-rank random deletion and post-projection block-information probes.
+This is evidence that temporal forecasting predicts its own chosen geometry very consistently, while that geometry tracks the robot effector much more strongly than the object goal. Low normalized latent error is not evidence of better physical dynamics when different encoders represent different factors. Partial correlations alone do not establish causal irrelevance: robot pose is legitimately needed to predict contacts and motion. The completed frozen-metric follow-up compares effector-readout span deletion with same-rank random deletion (see the mechanism-metric-20261030 report). It finds no nonoracle selection gain for temporal-forecast, while a refitted probe still recovers effector position; this tests a specific rank-3 subtraction, not semantic erasure or the training objective.
 
 ## Prediction consistency is still insufficient at the selected optimum
 
@@ -52,7 +52,7 @@ A world representation must preserve information needed for future dynamics. A g
 
 For a fixed encoded cost C and predicted cost C_hat, a uniform error bound epsilon implies encoded selection regret at most 2 epsilon. The relevant errors are therefore those compared with the cost gaps between competitive candidates, not only average reconstruction error. Separately, even exact prediction cannot repair an encoded cost that values the wrong goal factors.
 
-The next diagnostic fits fixed train-only linear xyz readouts, removes the raw-latent effector readout subspace, compares a same-rank random removal, and reports retained block information. It uses privileged coordinates only as diagnostic instruments and does not train the encoder or provide expert optimal-action labels. Improvement after effector deletion would establish a contribution of that metric subspace in this candidate set; it would not by itself deliver a self-contained deployable algorithm.
+The completed follow-up fits fixed train-only linear xyz readouts, removes the raw-latent effector readout subspace, compares a same-rank random removal, and reports retained block information. It uses privileged coordinates only as diagnostic instruments and does not train the encoder or provide expert optimal-action labels. The weak deletion effect does not establish the causal role of effector semantics or of the learning objective. No self-contained deployable improvement is established.
 
 ## Artifacts
 
