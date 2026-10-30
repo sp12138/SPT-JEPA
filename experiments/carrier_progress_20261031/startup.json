@@ -1,0 +1,509 @@
+{
+  "created_at": 1793386841.3394723,
+  "source_commit": "a499fc2b543214173ea3866b76df6636a859faa0",
+  "training": {
+    "created_at": 1793386671.9367256,
+    "root": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031",
+    "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031",
+    "source_commit": "a499fc2b543214173ea3866b76df6636a859faa0",
+    "old_source_commit": "dd2aeaa40e8a8050439ef036b402f289d006a257",
+    "initial_step": 600,
+    "intermediate_step": 1200,
+    "stop_step": 2000,
+    "runs": 12,
+    "jobs": 96,
+    "allocations": [
+      {
+        "task": "tworoom",
+        "training_seed": 1,
+        "arm": "identity",
+        "family": "carrier",
+        "host": "dev2",
+        "gpu": 0,
+        "id": "tworoom-carrier-identity-seed1"
+      },
+      {
+        "task": "tworoom",
+        "training_seed": 1,
+        "arm": "unconstrained",
+        "family": "carrier",
+        "host": "dev2",
+        "gpu": 1,
+        "id": "tworoom-carrier-unconstrained-seed1"
+      },
+      {
+        "task": "tworoom",
+        "training_seed": 1,
+        "arm": "bounded",
+        "family": "carrier",
+        "host": "dev2",
+        "gpu": 2,
+        "id": "tworoom-carrier-bounded-seed1"
+      },
+      {
+        "task": "tworoom",
+        "training_seed": 2,
+        "arm": "identity",
+        "family": "carrier",
+        "host": "dev2",
+        "gpu": 3,
+        "id": "tworoom-carrier-identity-seed2"
+      },
+      {
+        "task": "tworoom",
+        "training_seed": 2,
+        "arm": "unconstrained",
+        "family": "carrier",
+        "host": "dev2",
+        "gpu": 4,
+        "id": "tworoom-carrier-unconstrained-seed2"
+      },
+      {
+        "task": "tworoom",
+        "training_seed": 2,
+        "arm": "bounded",
+        "family": "carrier",
+        "host": "dev2",
+        "gpu": 5,
+        "id": "tworoom-carrier-bounded-seed2"
+      },
+      {
+        "task": "cube",
+        "training_seed": 1,
+        "arm": "identity",
+        "family": "carrier",
+        "host": "dev2",
+        "gpu": 6,
+        "id": "cube-carrier-identity-seed1"
+      },
+      {
+        "task": "cube",
+        "training_seed": 1,
+        "arm": "unconstrained",
+        "family": "carrier",
+        "host": "dev2",
+        "gpu": 7,
+        "id": "cube-carrier-unconstrained-seed1"
+      },
+      {
+        "task": "cube",
+        "training_seed": 1,
+        "arm": "bounded",
+        "family": "carrier",
+        "host": "dev13",
+        "gpu": 0,
+        "id": "cube-carrier-bounded-seed1"
+      },
+      {
+        "task": "cube",
+        "training_seed": 2,
+        "arm": "identity",
+        "family": "carrier",
+        "host": "dev13",
+        "gpu": 1,
+        "id": "cube-carrier-identity-seed2"
+      },
+      {
+        "task": "cube",
+        "training_seed": 2,
+        "arm": "unconstrained",
+        "family": "carrier",
+        "host": "dev13",
+        "gpu": 2,
+        "id": "cube-carrier-unconstrained-seed2"
+      },
+      {
+        "task": "cube",
+        "training_seed": 2,
+        "arm": "bounded",
+        "family": "carrier",
+        "host": "dev13",
+        "gpu": 3,
+        "id": "cube-carrier-bounded-seed2"
+      }
+    ],
+    "scheduler_horizon": 124910,
+    "warmup_steps": 1249,
+    "native_fullstate_archives": [
+      1200,
+      2000
+    ],
+    "semantic_config_unchanged": true,
+    "original_calibration_unchanged": true,
+    "validation_cases": 50,
+    "transition_windows": 64,
+    "purpose": "Bounded beyond-warmup test of all reviewed Carrier arms and seeds; factual dynamics at600 motivates the test, not an established two-task improvement or chart-bound mechanism.",
+    "authorization": "New explicit persistent-research instruction; separate named stage preserves all old holds.",
+    "departures": [
+      "Fresh output and newly committed source with identical model/training/data/evaluator bytes.",
+      "Common native resume boundary at1200 permits safe full-state archival without trainer edits.",
+      "Operational checkpoint cadence changes from200 to1200; retain portable1200/2000.",
+      "New host/GPU allocation. Native high-training/highest-evaluation precision remains unchanged."
+    ],
+    "stop_policy": "Stop at2000. A failed audit/archive blocks the next segment. No automatic step beyond2000.",
+    "state_scope": "Stored state and stateless sampler sequence verified; bitwise identity to an uninterrupted GPU trajectory is not asserted. Worker RNG is not serialized, but BenchmarkWindows has deterministic samples and no random augmentation."
+  },
+  "diagnostics": {
+    "created_at": 1793386764.2762353,
+    "source_commit": "a499fc2b543214173ea3866b76df6636a859faa0",
+    "jobs": 34,
+    "fresh_tworoom_jobs": 7,
+    "primary_cube_metric_jobs": 12,
+    "fresh_cube_baselines": 3,
+    "fresh_cube_metric_jobs": 12,
+    "slots": [
+      [
+        "dev13",
+        4
+      ],
+      [
+        "dev13",
+        5
+      ],
+      [
+        "dev13",
+        6
+      ],
+      [
+        "dev13",
+        7
+      ],
+      [
+        "dev15",
+        0
+      ],
+      [
+        "dev15",
+        1
+      ],
+      [
+        "dev15",
+        2
+      ],
+      [
+        "dev15",
+        3
+      ],
+      [
+        "dev15",
+        4
+      ],
+      [
+        "dev15",
+        5
+      ],
+      [
+        "dev15",
+        6
+      ],
+      [
+        "dev15",
+        7
+      ]
+    ],
+    "calibration_review": [
+      {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_metric_calibration_20261031/calibration-cube-carrier-identity-seed1/calibration.json",
+        "sha256": "d6b578e08fff7e151413a1a2e18f2148dad176983c20f890cbf9be3ce7028990",
+        "fit": {
+          "observation": {
+            "samples": 1024,
+            "dimensions": 64,
+            "shrinkage": 0.011719070643966168,
+            "target_scale": 0.9924282912248765,
+            "eigenvalue_min": 0.04185835322659315,
+            "eigenvalue_max": 15.759252325510579,
+            "effective_condition_number": 376.4900219605038,
+            "eigenvalue_floor": 2.2395244521804015e-13,
+            "floored_eigenvalues": 0,
+            "formula": "C=(1-lambda)*centered_empirical_covariance+lambda*trace(S)/d*I; W=C^(-1/2)"
+          },
+          "increment": {
+            "samples": 896,
+            "dimensions": 64,
+            "shrinkage": 0.03093358588212805,
+            "target_scale": 0.7564611656924995,
+            "eigenvalue_min": 0.06551237247945448,
+            "eigenvalue_max": 9.193466546488912,
+            "effective_condition_number": 140.33176022395008,
+            "eigenvalue_floor": 1.3064701742122383e-13,
+            "floored_eigenvalues": 0,
+            "formula": "C=(1-lambda)*centered_empirical_covariance+lambda*trace(S)/d*I; W=C^(-1/2)"
+          }
+        }
+      },
+      {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_metric_calibration_20261031/calibration-cube-carrier-bounded-seed1/calibration.json",
+        "sha256": "1aa69625ca4d2ed7a58614fa24bddf868c5e0d73409bda834af1a054b4cec9b6",
+        "fit": {
+          "observation": {
+            "samples": 1024,
+            "dimensions": 64,
+            "shrinkage": 0.012311367363134219,
+            "target_scale": 0.9478317632698365,
+            "eigenvalue_min": 0.041918198686267866,
+            "eigenvalue_max": 14.714996555634746,
+            "effective_condition_number": 351.040765510167,
+            "eigenvalue_floor": 2.0911267818682328e-13,
+            "floored_eigenvalues": 0,
+            "formula": "C=(1-lambda)*centered_empirical_covariance+lambda*trace(S)/d*I; W=C^(-1/2)"
+          },
+          "increment": {
+            "samples": 896,
+            "dimensions": 64,
+            "shrinkage": 0.03431183209705533,
+            "target_scale": 0.7239684596594382,
+            "eigenvalue_min": 0.06682368483957153,
+            "eigenvalue_max": 8.05069043819793,
+            "effective_condition_number": 120.47660133567622,
+            "eigenvalue_floor": 1.1440719217429675e-13,
+            "floored_eigenvalues": 0,
+            "formula": "C=(1-lambda)*centered_empirical_covariance+lambda*trace(S)/d*I; W=C^(-1/2)"
+          }
+        }
+      },
+      {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_metric_calibration_20261031/calibration-cube-carrier-identity-seed2/calibration.json",
+        "sha256": "5609bd7d5fb950b35bef84384ea536d5b1fbc6a03148f87c10a3f096c6a85728",
+        "fit": {
+          "observation": {
+            "samples": 1024,
+            "dimensions": 64,
+            "shrinkage": 0.012426082670901001,
+            "target_scale": 0.9474177304578426,
+            "eigenvalue_min": 0.04172333771793066,
+            "eigenvalue_max": 13.520257596832506,
+            "effective_condition_number": 324.04544641744127,
+            "eigenvalue_floor": 1.9213441642069293e-13,
+            "floored_eigenvalues": 0,
+            "formula": "C=(1-lambda)*centered_empirical_covariance+lambda*trace(S)/d*I; W=C^(-1/2)"
+          },
+          "increment": {
+            "samples": 896,
+            "dimensions": 64,
+            "shrinkage": 0.03418086739437072,
+            "target_scale": 0.6816695680404324,
+            "eigenvalue_min": 0.07126766512267806,
+            "eigenvalue_max": 7.107035725986378,
+            "effective_condition_number": 99.72314532477719,
+            "eigenvalue_floor": 1.0099705215774262e-13,
+            "floored_eigenvalues": 0,
+            "formula": "C=(1-lambda)*centered_empirical_covariance+lambda*trace(S)/d*I; W=C^(-1/2)"
+          }
+        }
+      },
+      {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_metric_calibration_20261031/calibration-cube-carrier-bounded-seed2/calibration.json",
+        "sha256": "9aadda8a19c26b48da92a42fb16eee04fdddc9f74ab20b2ba034f11978029e1e",
+        "fit": {
+          "observation": {
+            "samples": 1024,
+            "dimensions": 64,
+            "shrinkage": 0.012961290765025927,
+            "target_scale": 0.9059103533328261,
+            "eigenvalue_min": 0.04168824663793155,
+            "eigenvalue_max": 12.706294287713428,
+            "effective_condition_number": 304.7932046187845,
+            "eigenvalue_floor": 1.8056730209129665e-13,
+            "floored_eigenvalues": 0,
+            "formula": "C=(1-lambda)*centered_empirical_covariance+lambda*trace(S)/d*I; W=C^(-1/2)"
+          },
+          "increment": {
+            "samples": 896,
+            "dimensions": 64,
+            "shrinkage": 0.03705506302307626,
+            "target_scale": 0.6555551266721331,
+            "eigenvalue_min": 0.07212549313573292,
+            "eigenvalue_max": 6.295875001360861,
+            "effective_condition_number": 87.29056437108385,
+            "eigenvalue_floor": 8.946976494941142e-14,
+            "floored_eigenvalues": 0,
+            "formula": "C=(1-lambda)*centered_empirical_covariance+lambda*trace(S)/d*I; W=C^(-1/2)"
+          }
+        }
+      }
+    ],
+    "fresh_manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+    "fresh_cube_manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+    "source_inputs": {
+      "/efs/prescottsun/SPT-JEPA/runs/carrier_freshcases_20261031/fresh-jobs.json": "7cb0fae8c6e1901abae964036e3d034644b51e50821f8cb32de4ba755b82ba2d",
+      "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-jobs.json": "aa1078ca7fe84eb6127b63e50c45cd2a897da9444fe6cf35c32463c815783ef9",
+      "/efs/prescottsun/SPT-JEPA/runs/carrier_metric_20261031/plan.json": "d95fb74f1c524d4065b5a2938149e177a8096259eaedbf2aaee1d033db72e785",
+      "/efs/prescottsun/SPT-JEPA/runs/carrier_metric_calibration_20261031/plan.json": "8123909d657b00c8c0edeb0b3197e54b591c84f6385a5a3f27fa3723e79f95ce"
+    },
+    "authoritative_exits": "/efs/prescottsun/SPT-JEPA/runs/carrier_diagnostics_20261031/exits",
+    "scheduling": "One native dispatcher per host for these12slots; never launch the unmerged metric plan.",
+    "scope": "No training. Fresh validation and explicit goal-metric interventions remain distinct comparisons."
+  },
+  "pre_resume_audits": [
+    {
+      "id": "tworoom-carrier-identity-seed1",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/tworoom-carrier-identity-seed1",
+      "checkpoint_sha256": "2ab7accf30230dac26afd74c675013f505742b6be21a72d42408a29585cc4116"
+    },
+    {
+      "id": "tworoom-carrier-unconstrained-seed1",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/tworoom-carrier-unconstrained-seed1",
+      "checkpoint_sha256": "5f74f1b281b4ee5e1d7a082e2eb28909c93ca658da657db943352cd3b4774b0e"
+    },
+    {
+      "id": "tworoom-carrier-bounded-seed1",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/tworoom-carrier-bounded-seed1",
+      "checkpoint_sha256": "8c2d28062c4d4f561884256599f5c5da489ab39258d386b4fbac8007ff9fe144"
+    },
+    {
+      "id": "tworoom-carrier-identity-seed2",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/tworoom-carrier-identity-seed2",
+      "checkpoint_sha256": "56298f5f64c5eabdc6cbaa963125ee40272d46fdb0ad79f20c7b7a630bf8afe1"
+    },
+    {
+      "id": "tworoom-carrier-unconstrained-seed2",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/tworoom-carrier-unconstrained-seed2",
+      "checkpoint_sha256": "a8ba5f699e68722c2d4cfe2a6fcb0d613009301d0d87ebc5c8ce4234d7bfed89"
+    },
+    {
+      "id": "tworoom-carrier-bounded-seed2",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/tworoom-carrier-bounded-seed2",
+      "checkpoint_sha256": "c95d65a80eda5b94e3b87dc9ad6c106a8cc90dbfe1511de33073ac8330e9168a"
+    },
+    {
+      "id": "cube-carrier-identity-seed1",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/cube-carrier-identity-seed1",
+      "checkpoint_sha256": "83d2daed6d9df6d8be63805af0ba7114994a6a45d2023be63f6ae5e9677d15b4"
+    },
+    {
+      "id": "cube-carrier-unconstrained-seed1",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/cube-carrier-unconstrained-seed1",
+      "checkpoint_sha256": "b7c3173fcf9466ad01e829c56111288ad8917ff0761e144b325574c1ff1f8979"
+    },
+    {
+      "id": "cube-carrier-bounded-seed1",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/cube-carrier-bounded-seed1",
+      "checkpoint_sha256": "880fce4b839b8440a8bcf27ac5bd23f9683447fb1f2c336a03b2ba0ae15bb32c"
+    },
+    {
+      "id": "cube-carrier-identity-seed2",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/cube-carrier-identity-seed2",
+      "checkpoint_sha256": "f2101a003694b65ea8d4f67543da690b55e43e11926ac4ef9917615ef01d0a97"
+    },
+    {
+      "id": "cube-carrier-unconstrained-seed2",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/cube-carrier-unconstrained-seed2",
+      "checkpoint_sha256": "4f15ba27a6553baee695cb1053603d10f31f75f1b6e4219369a99ea03e1ccd4a"
+    },
+    {
+      "id": "cube-carrier-bounded-seed2",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/ideas_validate600_20261031/cube-carrier-bounded-seed2",
+      "checkpoint_sha256": "82b8946be348f4ee0776ac8df7dc3c1ae7de1113ab89b42f4af2ec47d6458700"
+    }
+  ],
+  "launch_records": [
+    {
+      "host": "dev2",
+      "pid": 7035,
+      "launched_at": 1793386763.7620273,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.workflow",
+        "--plan",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/plan.json",
+        "--host",
+        "dev2"
+      ],
+      "source_commit": "a499fc2b543214173ea3866b76df6636a859faa0",
+      "slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "jobs": 64
+    },
+    {
+      "host": "dev13",
+      "pid": 815061,
+      "launched_at": 1793386763.019908,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.workflow",
+        "--plan",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_learn2000_20261031/plan.json",
+        "--host",
+        "dev13"
+      ],
+      "source_commit": "a499fc2b543214173ea3866b76df6636a859faa0",
+      "slots": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "jobs": 32
+    },
+    {
+      "host": "dev13",
+      "pid": 815121,
+      "launched_at": 1793386802.561956,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.workflow",
+        "--plan",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_diagnostics_20261031/plan.json",
+        "--host",
+        "dev13"
+      ],
+      "source_commit": "a499fc2b543214173ea3866b76df6636a859faa0",
+      "slots": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "jobs": 12
+    },
+    {
+      "host": "dev15",
+      "pid": 919485,
+      "launched_at": 1793386802.9307084,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.workflow",
+        "--plan",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_diagnostics_20261031/plan.json",
+        "--host",
+        "dev15"
+      ],
+      "source_commit": "a499fc2b543214173ea3866b76df6636a859faa0",
+      "slots": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "jobs": 22
+    }
+  ],
+  "calibration_dispatcher_closed": 814992,
+  "monitor_interval_seconds": 1800,
+  "goal_status": "active"
+}
