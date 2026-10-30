@@ -1,6 +1,8 @@
 """Matched-size posterior and forecast ablations of the original full-data AS-JEPA."""
 import math
 import torch
+from torch import nn
+from torch.nn import functional as F
 from as_jepa_lewm.model import ASJepaLeWM
 from vforge.models.as_jepa.codes import entry_nats, surprise_nats
 from vforge.models.as_jepa.constants import FRAME_ELEMS
@@ -11,7 +13,7 @@ from vforge.models.as_jepa.pixels import pack
 
 class RobustLeWM(ASJepaLeWM):
     def __init__(self, rho=0., forecast_fraction=0., forecast_seed=20261029, rate_prior="one-step",
-                 posterior_noise_scale=1., flow_force_t_one=False, **kwargs):
+                 posterior_noise_scale=1., flow_force_t_one=False, response_query_mode="none", **kwargs):
         super().__init__(**kwargs)
         if self.mode != "L2" or self.objective != "flow":
             raise ValueError("This controlled extension applies only to AS-JEPA L2 flow loss")
@@ -31,8 +33,79 @@ class RobustLeWM(ASJepaLeWM):
         # Evaluation and checkpoint parameter structure remain unchanged.
         self.posterior_noise_scale = float(posterior_noise_scale)
         self.flow_force_t_one = flow_force_t_one
+        if response_query_mode not in {"none", "direct", "annihilator"}:
+            raise ValueError("Unknown response_query_mode")
+        if response_query_mode != "none" and kwargs.get("action_dim", 10) % 5:
+            raise ValueError("Response queries require five raw actions per observation block")
+        self.response_query_mode = response_query_mode
+        if response_query_mode != "none":
+            # The shared 550 baseline tensors and caller RNG stay unchanged.
+            # Direct and annihilator draw exactly the same auxiliary head.
+            with torch.random.fork_rng(devices=[]):
+                self.response_query_head = nn.Linear(self.state_dim, 3 * 8 * 8)
         # Evaluation tools recognize the exact posterior family; no parameter or buffer is added.
         self.method = "correlated_noise" if self.rho else "forecast_render"
+
+    @staticmethod
+    def response_projector(actions):
+        """Per-clip orthogonal complement of [1, time, cumulative controls].
+
+        Input is the existing standardized five-action blocks. The time column
+        makes subtracting any per-step action mean a span-preserving change.
+        No final padding action, physical label, or other clip is consulted.
+        """
+        if actions.ndim != 3 or actions.shape[-1] % 5:
+            raise ValueError("Expected [batch, window, 5*action_dim] controls")
+        b, w, width = actions.shape
+        with torch.autocast(device_type=actions.device.type, enabled=False):
+            blocks = actions.detach().to(torch.float64).reshape(b, w, 5, width // 5)
+            cumulative = torch.cat([blocks.new_zeros(b, 1, width // 5),
+                                    blocks[:, :-1].sum(2).cumsum(1)], 1)
+            time = torch.arange(w, device=actions.device, dtype=torch.float64) / max(1, w-1)
+            design = torch.cat([cumulative.new_ones(b, w, 1),
+                                time[None, :, None].expand(b, -1, -1), cumulative], -1)
+            norms = torch.linalg.vector_norm(design, dim=1, keepdim=True)
+            design = design / torch.where(norms > 0, norms, torch.ones_like(norms))
+            u, singular, _ = torch.linalg.svd(design, full_matrices=False)
+            # Rank tolerance reflects FP32 action data, rather than pretending
+            # standardized/rounded inputs have FP64 measurement precision.
+            tolerance = max(design.shape[-2:]) * torch.finfo(torch.float32).eps * singular[:, :1]
+            keep = singular > tolerance
+            rank = w - keep.sum(1)
+            projector = torch.eye(w, device=actions.device, dtype=torch.float64)[None] - (u * keep[:, None]) @ u.transpose(1, 2)
+        return projector.float(), rank
+
+    def response_query_loss(self, flat, act_emb, actions, render, step):
+        """Grounded clean-latent prediction; original DiT/rate paths unchanged."""
+        b, w = flat.shape[:2]
+        devices = [flat.device.index] if flat.is_cuda else []
+        # Retain the model's train/eval dropout mode, without consuming the
+        # posterior/renderer stream. Clean means no posterior sampling noise.
+        with torch.random.fork_rng(devices=devices):
+            torch.manual_seed(self.forecast_seed + 1000003 + int(step))
+            history = [flat[:, 0]]
+            for t in range(w - 1):
+                history.append(self.predict(torch.stack(history, 1), act_emb[:, :t+1])[:, -1])
+            forecast = torch.stack(history, 1)
+            prediction = self.response_query_head(forecast).float()
+        target = F.adaptive_avg_pool2d(render.detach().float().flatten(0, 1), (8, 8)).reshape(b, w, -1)
+        error = prediction - target
+        anchor = error[:, 0].square().mean(-1)
+        if self.response_query_mode == "annihilator":
+            projector, rank = self.response_projector(actions)
+            with torch.autocast(device_type=flat.device.type, enabled=False):
+                residual = torch.bmm(projector, error.float())
+                query = residual.square().sum((1, 2)) / (rank.clamp_min(1) * error.shape[-1])
+                query = torch.where(rank > 0, query, torch.zeros_like(query))
+        else:
+            query = error.square().mean((1, 2))
+            rank = torch.full((b,), w, device=flat.device, dtype=torch.long)
+        auxiliary = (anchor + query).mean()
+        return auxiliary, dict(response_query_aux=auxiliary, response_query_anchor=anchor.mean(),
+            response_query_outcome=query.mean(), response_query_residual_rank=rank.float().mean(),
+            response_query_zero_rank_fraction=(rank == 0).float().mean(),
+            response_native_state_std=flat.float().std((0, 1), unbiased=False).mean(),
+            response_clean_forecast_std=forecast.float().std((0, 1), unbiased=False).mean())
 
     def context_samples(self, mu, samples, generator):
         noise = torch.randn((samples, *mu.shape[1:]), device=mu.device, generator=generator)
@@ -46,7 +119,8 @@ class RobustLeWM(ASJepaLeWM):
 
     def loss(self, batch, step=0, ramp_steps=0):
         if (not self.rho and not self.forecast_fraction and self.rate_prior == "one-step"
-                and self.posterior_noise_scale == 1. and not self.flow_force_t_one):
+                and self.posterior_noise_scale == 1. and not self.flow_force_t_one
+                and self.response_query_mode == "none"):
             return super().loss(batch, step, ramp_steps)
         pixels, render, anchor = self.prepare(batch)
         info = self.encode(dict(pixels=pixels, action=batch["action"]))
@@ -109,7 +183,13 @@ class RobustLeWM(ASJepaLeWM):
         loss = fm + beta * rate
         variable_rate = (.5 * mu[:, 0].float().square() +
                          (target_mean.float() - predicted.float()).square().sum(1) / (2 * self.sigma0 ** 2)).mean(0)
-        return loss, dict(loss=loss, fm=fm, rate=rate, entry=entry.mean(), surprise=surprise.mean(),
+        metrics = dict(loss=loss, fm=fm, rate=rate, entry=entry.mean(), surprise=surprise.mean(),
                           rate_share=beta * rate / fm.detach().clamp_min(1e-8),
                           feature_std=mu.float().std((0, 1)).mean(), active_dims=(variable_rate > .1).sum(),
                           temporal_noise_rho=loss.new_tensor(self.rho), forecast_fraction=loss.new_tensor(self.forecast_fraction))
+        if self.response_query_mode != "none":
+            auxiliary, response_metrics = self.response_query_loss(flat, info["act_emb"], batch["action"], render, step)
+            loss = loss + auxiliary
+            metrics.update(response_metrics)
+            metrics["loss"] = loss
+        return loss, metrics

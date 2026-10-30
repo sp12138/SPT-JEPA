@@ -39,7 +39,10 @@ def main():
     assert finite(loss)
     loss.backward()
     norms = {}
-    for prefix in ["encoder", "pool", "predictor", "renderer"]:
+    prefixes = ["encoder", "pool", "predictor", "renderer"]
+    if getattr(model, "response_query_mode", "none") != "none":
+        prefixes.append("response_query_head")
+    for prefix in prefixes:
         grads = [p.grad for name, p in model.named_parameters() if name.startswith(prefix+".") and p.grad is not None]
         assert grads and all(finite(g) for g in grads), prefix
         norms[prefix] = float(torch.stack([g.float().square().sum() for g in grads]).sum().sqrt())
