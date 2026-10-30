@@ -1,0 +1,62 @@
+{
+  "default_source32_regression": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "full_native_config": true,
+      "batch": 1,
+      "window": 8,
+      "state_keys": 553,
+      "parameter_tensors": 542,
+      "nonzero_gradient_tensors": 4,
+      "loss_equal": true,
+      "all_gradients_equal": true,
+      "all_metrics_equal": true,
+      "rng_equal": true
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "full_native_config": true,
+      "batch": 1,
+      "window": 8,
+      "state_keys": 553,
+      "parameter_tensors": 542,
+      "nonzero_gradient_tensors": 4,
+      "loss_equal": true,
+      "all_gradients_equal": true,
+      "all_metrics_equal": true,
+      "rng_equal": true
+    }
+  ],
+  "legacy_source_sha256": "d43b646e048f6b1f3ba0b8b74baf7171d1d0bef4cacedcddbbe228ad9cf7a755",
+  "basis": {
+    "shape": [
+      1024,
+      1024
+    ],
+    "fixed_buffer_bytes": 4194304,
+    "orthogonality_max_error_fp64": 0.0,
+    "sha256": "f5b62cef8c9c8893c8dad083b4e24b3c1ec6f40bddc926aff146a1de1796f51a",
+    "all_coordinates_mix_1024_inputs": true,
+    "family": "fixed signed/permuted Hadamard, not Haar"
+  },
+  "native_rate": {
+    "entry_max_relative_error": 1.0195330446549633e-07,
+    "surprise_max_relative_error": 1.5862218560869223e-07,
+    "same_draw_vs_rotated_noise_rms_difference": 0.14040027558803558,
+    "scope": "Native entry/surprise functions with jointly rotated posterior/target/prediction; not same-weight predictor equivariance."
+  },
+  "actual_encoded_metric": {
+    "max_pairwise_squared_distance_relative_error": 4.298410518288804e-09,
+    "max_inverse_abs_error": 2.1008781914133579e-07,
+    "checkpoint_encode_exact": true,
+    "learned_initial_tensors_and_torch_rng_equal": true
+  },
+  "passed": true,
+  "tests": 4,
+  "device": "CPU",
+  "cuda_visible_devices": "",
+  "model_source_sha256": "794f41914bd32f4bdd653f591877cd456b772af2215d6e08719bcb41f7d2b07a",
+  "test_source_sha256": "586ec18733896924a1e6e00f46c563b6ea004a80be498e4820177081640bbf1e"
+}

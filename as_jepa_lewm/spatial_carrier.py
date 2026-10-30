@@ -12,6 +12,23 @@ PATCH_SIDE=16
 CHANNELS=192
 STATE_DIM=1024
 DENSE_BLOCK=128
+BASIS_SEED=20261031
+
+
+def orthogonal_basis():
+    """One full signed/permuted Hadamard basis, not a Haar random rotation.
+
+    All entries are exactly representable +/-1/32. Private RNG leaves model,
+    data and caller initialization streams unchanged. No task or model seed.
+    """
+    matrix=np.ones((1,1),dtype=np.float32)
+    while len(matrix)<STATE_DIM:
+        matrix=np.block([[matrix,matrix],[matrix,-matrix]])
+    rng=np.random.default_rng(np.random.SeedSequence([BASIS_SEED,STATE_DIM]))
+    matrix=matrix[rng.permutation(STATE_DIM)][:,rng.permutation(STATE_DIM)]
+    row_sign=rng.choice(np.array([-1.,1.],dtype=np.float32),STATE_DIM)
+    col_sign=rng.choice(np.array([-1.,1.],dtype=np.float32),STATE_DIM)
+    return matrix*row_sign[:,None]*col_sign[None,:]/np.float32(32.)
 
 
 def projection_matrix(mode):
@@ -41,9 +58,10 @@ class SpatialCarrierLeWM(RobustLeWM):
     Compared with the old64-D carrier, state dimension, parameter count, rate
     scale and compute differ. Only local versus dense is the matched control.
     """
-    def __init__(self,spatial_mode='local',spatial_mean=None,spatial_scale=None,
+    def __init__(self,spatial_mode='local',spatial_mean=None,spatial_scale=None,spatial_basis='identity',
                  state_slots=64,state_width=16,**kwargs):
         if spatial_mode not in {'local','dense'}:raise ValueError('Unknown spatial_mode')
+        if spatial_basis not in {'identity','orthogonal'}:raise ValueError('Unknown spatial_basis')
         if (state_slots,state_width)!=(64,16):raise ValueError('This gate requires64 slots×16 channels')
         if kwargs.get('mode','L2')!='L2' or kwargs.get('domain','standard')!='standard':
             raise ValueError('This fixed gate requires standard benchmark L2')
@@ -65,6 +83,10 @@ class SpatialCarrierLeWM(RobustLeWM):
         if not bool(torch.isfinite(mean).all() and torch.isfinite(scale).all() and (scale>0).all()):
             raise ValueError('Finite mean and strictly positive scale required')
         self.register_buffer('spatial_mean',mean.clone());self.register_buffer('spatial_scale',scale.clone())
+        self.spatial_basis=spatial_basis
+        # No new default buffer/key or tensor operation in legacy checkpoints.
+        if spatial_basis=='orthogonal':
+            self.register_buffer('spatial_orthogonal_basis',torch.from_numpy(orthogonal_basis()))
 
     def train(self,mode=True):
         super().train(mode);self.encoder.eval();self.pool.eval();return self
@@ -94,9 +116,18 @@ class SpatialCarrierLeWM(RobustLeWM):
     @torch.no_grad()
     def raw_carrier(self,pixels):return self.project_patches(self.patch_features(pixels))
 
+    def transform_spatial_basis(self,state):
+        if self.spatial_basis=='identity':return state
+        # Fixed diagnostic basis after the existing normalization. FP64
+        # accumulation avoids adding a TF32-dependent projection discrepancy;
+        # the returned state still has its original dtype (normally FP32).
+        with torch.autocast(device_type=state.device.type,enabled=False):
+            return (state.double()@self.spatial_orthogonal_basis.double()).to(state.dtype)
+
     def encode(self,info):
         if not self._spatial_has_statistics:raise RuntimeError('Prepare train-only statistics before encode or training')
         info['emb']=(self.raw_carrier(info['pixels'])-self.spatial_mean)/self.spatial_scale
+        info['emb']=self.transform_spatial_basis(info['emb'])
         if 'action' in info:info['act_emb']=self.action_encoder(info['action'])
         return info
 
