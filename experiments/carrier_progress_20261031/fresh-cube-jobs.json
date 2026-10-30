@@ -1,0 +1,92 @@
+{
+  "jobs": [
+    {
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/cube-fresh-rate-on-seed1/model-step0000600",
+      "checkpoint_config_sha256": "e63f8cd765b67a5f5676c5ba441edc28a512eca175c5b99d7d57f81323e2528a",
+      "checkpoint_weights_bytes": 204755443,
+      "checkpoint_weights_sha256": "e488362f0b1a10553859824245edcaa22ab24d15e551a02b2305b6730962540e",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/cube-fresh-rate-on-seed1/model-step0000600",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-cube-temporal-forecast-seed1"
+      ],
+      "family": "temporal-forecast",
+      "id": "fresh-cube-temporal-forecast-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-cube-temporal-forecast-seed1",
+      "phase": "fresh-validation-planning",
+      "source_record": "/efs/prescottsun/SPT-JEPA/runs/carrier_progress_20261031/source-record.json",
+      "task": "cube",
+      "training_seed": 1
+    },
+    {
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/cube-fresh-rate-on-seed2/model-step0000600",
+      "checkpoint_config_sha256": "c6306c81aa9507bd8fedc60a3c4c668675b02694f550d951f07c3b9eb4c429da",
+      "checkpoint_weights_bytes": 204755443,
+      "checkpoint_weights_sha256": "e256906c2f0ecdbe40363ebd503d639ba1f306ff97d9b65055ef452598f666c8",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/mechanism_rate600_20261030/cube-fresh-rate-on-seed2/model-step0000600",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-cube-temporal-forecast-seed2"
+      ],
+      "family": "temporal-forecast",
+      "id": "fresh-cube-temporal-forecast-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-cube-temporal-forecast-seed2",
+      "phase": "fresh-validation-planning",
+      "source_record": "/efs/prescottsun/SPT-JEPA/runs/carrier_progress_20261031/source-record.json",
+      "task": "cube",
+      "training_seed": 2
+    },
+    {
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/weights/hardtasks/cube",
+      "checkpoint_config_sha256": "4d446944fe28922cc2c5763f43d4ef9132a457bd89e9a0ce5dbceac183994999",
+      "checkpoint_weights_bytes": 72291425,
+      "checkpoint_weights_sha256": "2839a907362f403f9136383016e91774373a295d958ae75121791f22a9fddf89",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/weights/hardtasks/cube",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-cube-released-lewm"
+      ],
+      "family": "released-lewm",
+      "id": "fresh-cube-released-lewm",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-cube-released-lewm",
+      "phase": "fresh-validation-planning",
+      "source_record": "/efs/prescottsun/SPT-JEPA/runs/carrier_progress_20261031/source-record.json",
+      "task": "cube",
+      "training_seed": null
+    }
+  ],
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+  "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+  "scheduling": "Three native baselines prepared only. Parent adds twelve carrier metric evaluations on this identical manifest and assigns host/gpu/environment/source in the single diagnostic plan.",
+  "source_record": "/efs/prescottsun/SPT-JEPA/runs/carrier_progress_20261031/source-record.json"
+}
