@@ -1,0 +1,371 @@
+{
+  "passed": true,
+  "tests": 6,
+  "time_utc": "2026-10-31T03:43:52.677036+00:00",
+  "source_hashes": {
+    "experiments/dynamic_readout_20261031/health_compat.py": "452677a4d2e5891fa68af1ce75105670271ec811ea66ca06b7d057546ad41a38",
+    "experiments/dynamic_readout_20261031/test_health_compat.py": "757a5a36b41296ac8b316ce6f3e502313d7762669b61ab206c9dde58512b190d",
+    "experiments/dynamic_readout_20261031/HEALTH-COMPAT.md": "92af6d7a7b4cb302d3aa5ac9f779175e3e80a320ea2f1a3e94bc42ee5950eb17"
+  },
+  "scope": "CPU standard-library fixtures only; failure injection for missing/mismatched hashes, bad direct gradients, source/exit/parameter mismatches and unchanged module expectations.",
+  "actual_evidence_validation": {
+    "passed": true,
+    "runs": 8,
+    "at": "2026-10-31T03:44:24.578270+00:00",
+    "rows": [
+      {
+        "id": "cube-readout-state-seed1",
+        "evidence": {
+          "parameters": {
+            "dynamic_readout_module.input.weight": {
+              "shape": [
+                64,
+                18
+              ],
+              "actual_fp32_gradient_max": 0.0043656183406710625
+            },
+            "dynamic_readout_module.input.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.0013364655897021294
+            },
+            "dynamic_readout_module.output.weight": {
+              "shape": [
+                64,
+                64
+              ],
+              "actual_fp32_gradient_max": 0.012805224396288395
+            },
+            "dynamic_readout_module.output.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.012829259969294071
+            }
+          },
+          "hashes": {
+            "config": "638f71717577ee5fe7b763aac3a8f6a24d78b3972dd3cd19308b463f85a7e437",
+            "checkpoint": "9ae756e8146aadf1987c72ff449267217fdfa0806b573238474d7f68a206be92",
+            "weights": "3134f1d6afa0d871e56fbde66977736d4f66a95a42161e1545d36cb3ece27d19",
+            "initial": "75830296dc0bbcf7f32fb46be427b5520588bd44a204dee917090f2bc0578c39"
+          },
+          "fullstate": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-cube-readout-state-seed1",
+          "fullstate_report_sha256": "fe28471171525d9edfa33a6e5984e4fd78c4efb5667f2977763741cc79df35c4",
+          "readout_report_sha256": "112d2ed56f550454f6809841fc8c0859db33e5796d21ba6f5e6f4f7f340e2cf4",
+          "fullstate_dispatch_sha256": "f1222e0ba14283f94cb5fbb656e5cda8b8a9fa27aaab25ce7c5e8be6b007f311",
+          "fullstate_exit_sha256": "0a61c84d15a1dd1c6cb83043a71ad7c8351c4ea207bb1a7064b8715bb5299922"
+        }
+      },
+      {
+        "id": "cube-readout-state-seed2",
+        "evidence": {
+          "parameters": {
+            "dynamic_readout_module.input.weight": {
+              "shape": [
+                64,
+                18
+              ],
+              "actual_fp32_gradient_max": 0.004141284618526697
+            },
+            "dynamic_readout_module.input.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.001301864511333406
+            },
+            "dynamic_readout_module.output.weight": {
+              "shape": [
+                64,
+                64
+              ],
+              "actual_fp32_gradient_max": 0.012014813721179962
+            },
+            "dynamic_readout_module.output.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.017527326941490173
+            }
+          },
+          "hashes": {
+            "config": "eaf675207966dadc2385f71d951a502e6cb6da04bf2408977b24fe93db4858ee",
+            "checkpoint": "d0cc524692c5832d43fcd85f4e8943eeea3c901fcc3f3dd4cdff0e7398d8e92f",
+            "weights": "635e658a47281fd569f75e427185dc9bd0e4c89b9eb6186e5cb9d52162fd18e6",
+            "initial": "6e5eacd626d94f13e12f58967dc25cbc4d65e620058fcf1d3b68833c19dff6f1"
+          },
+          "fullstate": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-cube-readout-state-seed2",
+          "fullstate_report_sha256": "3398eaa85609ecfecd4874d3b5a9abd01fe95aaf3f7f0209a5851c290098833d",
+          "readout_report_sha256": "f4ad6ea0e38ea089c1b7a0edc5ffcf1c1fd6eeb9ae1d85c9ed4c58cfd13d44b8",
+          "fullstate_dispatch_sha256": "acef535607c6ba6217f73493d73720d1c037b0276a90196503d9287411929c21",
+          "fullstate_exit_sha256": "4e4f08e71225b1078ae7979a72d6d9fb68efdb31c526c3c3121fcfd78ced6219"
+        }
+      },
+      {
+        "id": "cube-readout-static-seed1",
+        "evidence": {
+          "parameters": {
+            "dynamic_readout_module.input.weight": {
+              "shape": [
+                64,
+                18
+              ],
+              "actual_fp32_gradient_max": 0.0007004935177974403
+            },
+            "dynamic_readout_module.input.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.0003553893475327641
+            },
+            "dynamic_readout_module.output.weight": {
+              "shape": [
+                64,
+                64
+              ],
+              "actual_fp32_gradient_max": 0.004018841776996851
+            },
+            "dynamic_readout_module.output.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.007054155692458153
+            }
+          },
+          "hashes": {
+            "config": "4617f5adf07b13c052a139eb983dde856564e82626f96665bb91f6a3ce87934e",
+            "checkpoint": "a13c685ca666ed4df0578b9baa2527e96e90bc019ab60d778ab7e08670ccab4a",
+            "weights": "0dc319dc089d071c70722c7f849b5b1267d01cf0d852ec7a57c3f5d0665c6d1a",
+            "initial": "75830296dc0bbcf7f32fb46be427b5520588bd44a204dee917090f2bc0578c39"
+          },
+          "fullstate": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-cube-readout-static-seed1",
+          "fullstate_report_sha256": "d5a91b6ef7d7893fe6e829b94b9c06e015158a84d530c44342f0bbd1a08e5cf1",
+          "readout_report_sha256": "4c4a09904f2608dc6f9265d8c7617e3fb205f2bce480a155a9d57caccb1704aa",
+          "fullstate_dispatch_sha256": "7b85c95f5eb5a723641896a687c24e360e3c6cd56d0760e7ab8513af0b2340cf",
+          "fullstate_exit_sha256": "4c409d2a27fc1640edb4bda658cbc137c30e788e1a5f756300c9af43a772f1a6"
+        }
+      },
+      {
+        "id": "cube-readout-static-seed2",
+        "evidence": {
+          "parameters": {
+            "dynamic_readout_module.input.weight": {
+              "shape": [
+                64,
+                18
+              ],
+              "actual_fp32_gradient_max": 0.0009061276796273887
+            },
+            "dynamic_readout_module.input.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.0005919965915381908
+            },
+            "dynamic_readout_module.output.weight": {
+              "shape": [
+                64,
+                64
+              ],
+              "actual_fp32_gradient_max": 0.0044783432967960835
+            },
+            "dynamic_readout_module.output.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.009821424260735512
+            }
+          },
+          "hashes": {
+            "config": "74622277e557fd7ab91afb91c053cde01192575d10073bb76de48853911177b3",
+            "checkpoint": "2a806f2735285a503bf187157bc5093e5d09bb137fb7060d1f57c992c461833c",
+            "weights": "dbb55977aa378d4e88b060400ba7cea413a4f493e3679f9b14f494ef0ee5cccd",
+            "initial": "6e5eacd626d94f13e12f58967dc25cbc4d65e620058fcf1d3b68833c19dff6f1"
+          },
+          "fullstate": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-cube-readout-static-seed2",
+          "fullstate_report_sha256": "ad2ff4e61e422f7000c7e2cc59d92a5da34a0cd7e34d3017edebd3b19e7028e0",
+          "readout_report_sha256": "7b12050b6b1cc66a0db92a2e6137fe418a46f55f987340e889e8c09b3302b285",
+          "fullstate_dispatch_sha256": "3efb34f5760fba0a168a5c1dbe26e6ba7294d0565ad673368eed4ff9ecdb21d0",
+          "fullstate_exit_sha256": "f054d6f871b4c0a354c2272d6f3850595a40734fda2106f496673f6f1d6aafeb"
+        }
+      },
+      {
+        "id": "tworoom-readout-state-seed1",
+        "evidence": {
+          "parameters": {
+            "dynamic_readout_module.input.weight": {
+              "shape": [
+                64,
+                18
+              ],
+              "actual_fp32_gradient_max": 0.019438548013567924
+            },
+            "dynamic_readout_module.input.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.0030706231482326984
+            },
+            "dynamic_readout_module.output.weight": {
+              "shape": [
+                64,
+                64
+              ],
+              "actual_fp32_gradient_max": 0.03597201406955719
+            },
+            "dynamic_readout_module.output.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.009878916665911674
+            }
+          },
+          "hashes": {
+            "config": "ac8c8882f76c72a5c22c6f64514279953ff87145afbf81cd36049e28a99ecf71",
+            "checkpoint": "ce57c6d762e93d2445634c6f40a343523c3d7a4411dd4316746191eced3ccc83",
+            "weights": "4fcfe1395ff014562a4808c2b9b3554405d18fc1041ee4ccf3d0cfa7226f92aa",
+            "initial": "5b1afc8ef0106ee9cfe5bf1f8773a685bf3a1cf00fcc38e46fcf3b74ced5e0f0"
+          },
+          "fullstate": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-tworoom-readout-state-seed1",
+          "fullstate_report_sha256": "523f6798416b32febcb43aa7bd5005ac8976a1a4eaa7aa18260c278f00f211e3",
+          "readout_report_sha256": "ba33b013c5a001fe607d020031507b36f435f98685799a2b4c828595710113f5",
+          "fullstate_dispatch_sha256": "a499f8d1ce4aa0490ec65722c77207613b28b760b2f7bf19a464f58ecfe7f4ab",
+          "fullstate_exit_sha256": "daedd93d6435c955f23358ae2a70c691f0de5eadf097595ef8cb95ec1bac8ed1"
+        }
+      },
+      {
+        "id": "tworoom-readout-state-seed2",
+        "evidence": {
+          "parameters": {
+            "dynamic_readout_module.input.weight": {
+              "shape": [
+                64,
+                18
+              ],
+              "actual_fp32_gradient_max": 0.014896661974489689
+            },
+            "dynamic_readout_module.input.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.0022072279825806618
+            },
+            "dynamic_readout_module.output.weight": {
+              "shape": [
+                64,
+                64
+              ],
+              "actual_fp32_gradient_max": 0.01998899318277836
+            },
+            "dynamic_readout_module.output.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.006909672170877457
+            }
+          },
+          "hashes": {
+            "config": "1608e2ea07da296b3ecd1819eb5bbbcae6ca9362be754833ce082ebfd4ea825f",
+            "checkpoint": "76e92b721db80d86fba4338c697f21c81fe957940a06c2d76b4ed9e97786327a",
+            "weights": "3daca146020f379d71c814a18ff000525de696c6cc18ae2601329e53cea1a927",
+            "initial": "5eb404220970f05485156587ec61072e42614e597f6707b27d308068e0d206ab"
+          },
+          "fullstate": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-tworoom-readout-state-seed2",
+          "fullstate_report_sha256": "350804b3b47fe45a61a4d2a5450c176042e17b7829cfa8e81b79bcdcbb6942d6",
+          "readout_report_sha256": "959eaeb9e58e3cd40f5e59039c2b8cb7816c03bda577e04546ec9cbda819a4c0",
+          "fullstate_dispatch_sha256": "aa84f338b3a6eaa6042de99f2933d268f56f1f8df5ac7d04e4f7008d459bacfc",
+          "fullstate_exit_sha256": "e63d6f102d1ca2f4ad37f640d845009328cbbb112f2e6c501275fd2b069ca751"
+        }
+      },
+      {
+        "id": "tworoom-readout-static-seed1",
+        "evidence": {
+          "parameters": {
+            "dynamic_readout_module.input.weight": {
+              "shape": [
+                64,
+                18
+              ],
+              "actual_fp32_gradient_max": 5.8214456657879055e-05
+            },
+            "dynamic_readout_module.input.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 8.16593601484783e-05
+            },
+            "dynamic_readout_module.output.weight": {
+              "shape": [
+                64,
+                64
+              ],
+              "actual_fp32_gradient_max": 0.002382025821134448
+            },
+            "dynamic_readout_module.output.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.010011272504925728
+            }
+          },
+          "hashes": {
+            "config": "533eb8f91016d399cbf009e8fb8f2213f9a33849666fb6abc48cada205822671",
+            "checkpoint": "81a12a81278c6927d15756c06e52095c0ec7e3dbb0ddc0ab9ddc77dec13e3680",
+            "weights": "d5ac3452d1f06c92fcdc12cb3b04835b4b807ccbcfeb0e87b5b06cbe52e530e2",
+            "initial": "5b1afc8ef0106ee9cfe5bf1f8773a685bf3a1cf00fcc38e46fcf3b74ced5e0f0"
+          },
+          "fullstate": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-tworoom-readout-static-seed1",
+          "fullstate_report_sha256": "13e56ab31af00c6cf24f4ae6963ded53f692def222a3b56f36c91431922d9f61",
+          "readout_report_sha256": "cf75b2497e7253197eb1f6bdd6bceec9efb5616698c2fbfc6c37a85d28d6b6b2",
+          "fullstate_dispatch_sha256": "abf4f669d9216c00a53ac48d2077be324bc02a1bbc12eea893de88d49d4c0ab0",
+          "fullstate_exit_sha256": "581b5b8148865d7346ccdf783f7b2f294a8799a2a940b9e10b4d68ddc96495cb"
+        }
+      },
+      {
+        "id": "tworoom-readout-static-seed2",
+        "evidence": {
+          "parameters": {
+            "dynamic_readout_module.input.weight": {
+              "shape": [
+                64,
+                18
+              ],
+              "actual_fp32_gradient_max": 8.216648711822927e-05
+            },
+            "dynamic_readout_module.input.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 7.809091039234772e-05
+            },
+            "dynamic_readout_module.output.weight": {
+              "shape": [
+                64,
+                64
+              ],
+              "actual_fp32_gradient_max": 0.0016574743203818798
+            },
+            "dynamic_readout_module.output.bias": {
+              "shape": [
+                64
+              ],
+              "actual_fp32_gradient_max": 0.002819362562149763
+            }
+          },
+          "hashes": {
+            "config": "ae18917dc7234d608e32f7da4cc9107266e6f09032394b38678076abf5850bd2",
+            "checkpoint": "8e0a8a14c7daf3a0645048ebba8db797a2d4ee008a510553d2314f19811188e7",
+            "weights": "687ff4ab8f05a34b44b07ecf4cc866c8495bbb79f77af213462d54350113d0ed",
+            "initial": "5eb404220970f05485156587ec61072e42614e597f6707b27d308068e0d206ab"
+          },
+          "fullstate": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-tworoom-readout-static-seed2",
+          "fullstate_report_sha256": "c78192e43fc97277a35c25a844b08a0407e46b7bab106e2d5aab4849d6105c4a",
+          "readout_report_sha256": "d6a4a0c6428e70d008a18ab52654f0f547e7cae326d513e7f6fadc9a33de0829",
+          "fullstate_dispatch_sha256": "d73c6c9040c0d5c3c01a8380003729da663edd6cfed2e1f701a00be003247baf",
+          "fullstate_exit_sha256": "c1f9b606124f0f248de49e9a5826a3699e96d697f2b7aa2243e3c94a57b29401"
+        }
+      }
+    ],
+    "no_gpu_or_model_calls": true
+  }
+}
