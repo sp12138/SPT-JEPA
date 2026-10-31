@@ -105,13 +105,16 @@ def verify_manifest(dataset, manifest):
 
 class MetricRecorder:
     """All three costs on each identical bank; no extra model or physical rollout."""
-    def __init__(self, output):
+    def __init__(self, output, metric_names=METRICS):
         self.output = Path(output)
+        self.metric_names = tuple(metric_names)
+        if len(self.metric_names) != 3 or len(set(self.metric_names)) != 3:
+            raise ValueError("Recorder requires three distinct metric names")
         self.costs, self.orders, self.rows = [], [], []
         self.manual_identity_max_error = 0.
 
     def record(self, info, scores, difference, native_error):
-        values = torch.stack([scores[name].detach() for name in METRICS]).cpu().numpy()
+        values = torch.stack([scores[name].detach() for name in self.metric_names]).cpu().numpy()
         orders = np.argsort(values, axis=-1, kind="stable").astype(np.int32)
         self.costs.append(values)
         self.orders.append(orders)
@@ -119,7 +122,7 @@ class MetricRecorder:
             action_candidates_sha256=tensor_digest(info["action_candidates"]),
             goal_emb_sha256=tensor_digest(info["goal_emb"]),
             endpoint_difference_sha256=tensor_digest(difference),
-            selected_indices={name:values[i].argmin(-1).tolist() for i,name in enumerate(METRICS)})
+            selected_indices={name:values[i].argmin(-1).tolist() for i,name in enumerate(self.metric_names)})
         for key in ["pixels", "action_history"]:
             if key in info and torch.is_tensor(info[key]):
                 row[key+"_sha256"] = tensor_digest(info[key][:, :1])
@@ -134,7 +137,7 @@ class MetricRecorder:
         np.savez_compressed(self.output/"metric-costs.npz", costs=np.concatenate(self.costs, axis=1),
             stable_orders=np.concatenate(self.orders, axis=1), call_offsets=np.r_[0,np.cumsum(counts)])
         (self.output/"metric-candidate-banks.json").write_text(json.dumps(self.rows,indent=2)+"\n")
-        return dict(calls=len(self.rows), candidate_batches=sum(counts), metric_order=list(METRICS),
+        return dict(calls=len(self.rows), candidate_batches=sum(counts), metric_order=list(self.metric_names),
             manual_identity_max_abs_error=self.manual_identity_max_error,
             costs_sha256=digest(self.output/"metric-costs.npz"),
             candidate_banks_sha256=digest(self.output/"metric-candidate-banks.json"),
