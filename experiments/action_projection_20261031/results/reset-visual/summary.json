@@ -1,0 +1,940 @@
+{
+  "scope": "Predeclared primary cases3,28,35;3freshWorld repeats each;one identical bounded step per case;no model,no P0,no intervention",
+  "helper_commit": "826840174f0638c8990a6c5346ee245e5fb58bfd",
+  "helper_sha256": "252388ea8603a99568851a2b4f4a97fed13c780b708976d47d3e0ee53d7d46ec",
+  "frozen_source": "/efs/prescottsun/SPT-JEPA/runs/cube_reset_visual_audit_20261031/source-v1",
+  "source_record_sha256": "c82bff882855953d43235d11d56f8bbb471617a2ae4b8bb6181cf8285b6a4539",
+  "parent_helper_sha256": "2aac1e7d0ab53f632206809351c1f1ff70b8c5c3f305634576e1410c5ab089f7",
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+    "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "plan_sha256": "17840dfebd25a5028068a98ed26ffc0e6d84b052e7e67c7494b1139eb7268f46",
+  "full_results": "/efs/prescottsun/SPT-JEPA/reports/cube-reset-state-20261031/visual-v2/results.json",
+  "full_results_sha256": "5948cd9bb907f2e2e35349015b7bda27ad70c16e1c187aa1dbdfc84198fc9636",
+  "physics_results_sha256": "149bf9f9a099c79a7964a22063bf5c4742436df424441ea58f1cfd635f632d56",
+  "native_counts": {
+    "reset_calls": 18,
+    "steps_inside_reset": 36,
+    "steps_outside_reset": 9
+  },
+  "exit": {
+    "exit_code": 0,
+    "pid": 145513,
+    "started_at": 1793410072.6849678,
+    "finished_at": 1793410114.7365687,
+    "wall_seconds": 42.05160140991211
+  },
+  "gpu_hours_wall": 0.011681000391642252,
+  "slot_released": {
+    "host": "dev2",
+    "gpu": 5,
+    "memory_mib": 0,
+    "utilization_pct": 0,
+    "pids_absent": [
+      145513,
+      145506
+    ]
+  },
+  "frame_scope": "Actual current RGB:T=1,224x224x3 uint8;initial and goal are evaluator dataset images;poststep is native freshly rendered current frame copied by EnvPool",
+  "visual_arrays_per_env": 286,
+  "all9pairs_initial_goal_exact": true,
+  "all9pairs_poststep_physics_exact": true,
+  "all9pairs_captured_visual_fields_exact": true,
+  "all9pairs_segmentation_exact": true,
+  "all9pairs_expanded_xml_exact": true,
+  "texture_bytes_exact": true,
+  "texture_hashes": [
+    {
+      "id": 0,
+      "name": "grid",
+      "start": 0,
+      "end": 786432,
+      "type": 0,
+      "width": 512,
+      "height": 512,
+      "sha256": "4c7cbd56a5d41fad734cd20fda60a942eca9d70818ffda5a23d13117fb3ee76d"
+    },
+    {
+      "id": 1,
+      "name": "skybox",
+      "start": 786432,
+      "end": 19660800,
+      "type": 2,
+      "width": 1024,
+      "height": 6144,
+      "sha256": "75bb653269af82793886774d742cee00f822728bc9b1ad04df02edb329eec769"
+    }
+  ],
+  "cases": [
+    {
+      "case_index": 3,
+      "poststep_ranges": {
+        "mae": [
+          0.014336203231292517,
+          0.019159226190476192
+        ],
+        "rmse": [
+          0.298695968273067,
+          0.3697370192925969
+        ],
+        "max_abs": [
+          32.0,
+          32.0
+        ],
+        "changed_pixel_fraction": [
+          0.01233657525510204,
+          0.018893494897959183
+        ],
+        "over1_pixel_fraction": [
+          0.0020926339285714285,
+          0.003128985969387755
+        ],
+        "over8_pixel_fraction": [
+          0.0003985969387755102,
+          0.0006377551020408163
+        ]
+      },
+      "robot_error_energy_fraction_range": [
+        0.9584507726698416,
+        0.9758395212235399
+      ],
+      "cube_error_energy_fraction_range": [
+        0.00024297793760326563,
+        0.0007446016381236039
+      ]
+    },
+    {
+      "case_index": 28,
+      "poststep_ranges": {
+        "mae": [
+          0.02017564838435374,
+          0.021643813775510203
+        ],
+        "rmse": [
+          0.46221349601819345,
+          0.5103819577258868
+        ],
+        "max_abs": [
+          39.0,
+          66.0
+        ],
+        "changed_pixel_fraction": [
+          0.008290816326530613,
+          0.013034119897959183
+        ],
+        "over1_pixel_fraction": [
+          0.00253109056122449,
+          0.0030691964285714285
+        ],
+        "over8_pixel_fraction": [
+          0.0007772640306122449,
+          0.0010762117346938774
+        ]
+      },
+      "robot_error_energy_fraction_range": [
+        0.8457663484561088,
+        0.8954120017342072
+      ],
+      "cube_error_energy_fraction_range": [
+        0.00012438197705152523,
+        0.006660627697554217
+      ]
+    },
+    {
+      "case_index": 35,
+      "poststep_ranges": {
+        "mae": [
+          0.015173256802721089,
+          0.019511320153061226
+        ],
+        "rmse": [
+          0.3175715176027551,
+          0.36535389899877274
+        ],
+        "max_abs": [
+          24.0,
+          40.0
+        ],
+        "changed_pixel_fraction": [
+          0.008569834183673469,
+          0.01598373724489796
+        ],
+        "over1_pixel_fraction": [
+          0.00235172193877551,
+          0.003049266581632653
+        ],
+        "over8_pixel_fraction": [
+          0.0006776147959183673,
+          0.0009167729591836735
+        ]
+      },
+      "robot_error_energy_fraction_range": [
+        0.8629207562084185,
+        0.9421959319219593
+      ],
+      "cube_error_energy_fraction_range": [
+        0.00020755500207555002,
+        0.0004479171850893346
+      ]
+    }
+  ],
+  "all9pairs_ranges": {
+    "mae": [
+      0.014336203231292517,
+      0.021643813775510203
+    ],
+    "rmse": [
+      0.298695968273067,
+      0.5103819577258868
+    ],
+    "max_abs": [
+      24.0,
+      66.0
+    ],
+    "changed_pixel_fraction": [
+      0.008290816326530613,
+      0.018893494897959183
+    ],
+    "over1_pixel_fraction": [
+      0.0020926339285714285,
+      0.003128985969387755
+    ],
+    "over8_pixel_fraction": [
+      0.0003985969387755102,
+      0.0010762117346938774
+    ]
+  },
+  "paired_rows": [
+    {
+      "case_index": 3,
+      "repeats": [
+        0,
+        1
+      ],
+      "poststep": {
+        "pixels": 50176,
+        "mae": 0.014336203231292517,
+        "rmse": 0.298695968273067,
+        "max_abs": 32.0,
+        "changed_pixel_fraction": 0.014568718112244899,
+        "changed_coordinate_fraction": 0.007035235969387755,
+        "over1_pixel_fraction": 0.0020926339285714285,
+        "over8_pixel_fraction": 0.0003985969387755102,
+        "squared_error_sum": 13430.0
+      },
+      "regions": {
+        "background": {
+          "pixels": 835,
+          "mae": 0.0003992015968063872,
+          "rmse": 0.019980029950087342,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.0011976047904191617,
+          "changed_coordinate_fraction": 0.0003992015968063872,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 1.0,
+          "squared_error_fraction": 7.44601638123604e-05
+        },
+        "cube": {
+          "pixels": 213,
+          "mae": 0.01564945226917058,
+          "rmse": 0.1250977708401336,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.03286384976525822,
+          "changed_coordinate_fraction": 0.01564945226917058,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 10.0,
+          "squared_error_fraction": 0.0007446016381236039
+        },
+        "robot": {
+          "pixels": 4138,
+          "mae": 0.13847269212179797,
+          "rmse": 1.0229759434573917,
+          "max_abs": 32.0,
+          "changed_pixel_fraction": 0.07322377960367327,
+          "changed_coordinate_fraction": 0.04994361205091026,
+          "over1_pixel_fraction": 0.025374577090381826,
+          "over8_pixel_fraction": 0.004833252779120348,
+          "squared_error_sum": 12991.0,
+          "squared_error_fraction": 0.9673119880863738
+        },
+        "floor": {
+          "pixels": 44990,
+          "mae": 0.0031710750537156406,
+          "rmse": 0.056312299311213,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.009335407868415203,
+          "changed_coordinate_fraction": 0.0031710750537156406,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 428.0,
+          "squared_error_fraction": 0.03186895011169025
+        },
+        "other": {
+          "pixels": 0,
+          "mae": null,
+          "rmse": null,
+          "max_abs": null,
+          "changed_pixel_fraction": null,
+          "changed_coordinate_fraction": null,
+          "over1_pixel_fraction": null,
+          "over8_pixel_fraction": null,
+          "squared_error_sum": 0.0,
+          "squared_error_fraction": 0.0
+        }
+      }
+    },
+    {
+      "case_index": 3,
+      "repeats": [
+        0,
+        2
+      ],
+      "poststep": {
+        "pixels": 50176,
+        "mae": 0.019159226190476192,
+        "rmse": 0.3697370192925969,
+        "max_abs": 32.0,
+        "changed_pixel_fraction": 0.018893494897959183,
+        "changed_coordinate_fraction": 0.0088156356292517,
+        "over1_pixel_fraction": 0.0027104591836734694,
+        "over8_pixel_fraction": 0.0006377551020408163,
+        "squared_error_sum": 20578.0
+      },
+      "regions": {
+        "background": {
+          "pixels": 835,
+          "mae": 0.0,
+          "rmse": 0.0,
+          "max_abs": 0.0,
+          "changed_pixel_fraction": 0.0,
+          "changed_coordinate_fraction": 0.0,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 0.0,
+          "squared_error_fraction": 0.0
+        },
+        "cube": {
+          "pixels": 213,
+          "mae": 0.00782472613458529,
+          "rmse": 0.08845748207237922,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.018779342723004695,
+          "changed_coordinate_fraction": 0.00782472613458529,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 5.0,
+          "squared_error_fraction": 0.00024297793760326563
+        },
+        "robot": {
+          "pixels": 4138,
+          "mae": 0.1745609795392299,
+          "rmse": 1.2604644948231758,
+          "max_abs": 32.0,
+          "changed_pixel_fraction": 0.06959884001933302,
+          "changed_coordinate_fraction": 0.0518769131625584,
+          "over1_pixel_fraction": 0.03141614306428226,
+          "over8_pixel_fraction": 0.007733204446592557,
+          "squared_error_sum": 19723.0,
+          "squared_error_fraction": 0.9584507726698416
+        },
+        "floor": {
+          "pixels": 44990,
+          "mae": 0.005275246351040972,
+          "rmse": 0.07935802280959596,
+          "max_abs": 5.0,
+          "changed_pixel_fraction": 0.01458101800400089,
+          "changed_coordinate_fraction": 0.005023338519671038,
+          "over1_pixel_fraction": 0.00013336296954878863,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 850.0,
+          "squared_error_fraction": 0.04130624939255516
+        },
+        "other": {
+          "pixels": 0,
+          "mae": null,
+          "rmse": null,
+          "max_abs": null,
+          "changed_pixel_fraction": null,
+          "changed_coordinate_fraction": null,
+          "over1_pixel_fraction": null,
+          "over8_pixel_fraction": null,
+          "squared_error_sum": 0.0,
+          "squared_error_fraction": 0.0
+        }
+      }
+    },
+    {
+      "case_index": 3,
+      "repeats": [
+        1,
+        2
+      ],
+      "poststep": {
+        "pixels": 50176,
+        "mae": 0.017365539965986394,
+        "rmse": 0.3462436607636992,
+        "max_abs": 32.0,
+        "changed_pixel_fraction": 0.01233657525510204,
+        "changed_coordinate_fraction": 0.006948873299319728,
+        "over1_pixel_fraction": 0.003128985969387755,
+        "over8_pixel_fraction": 0.0006178252551020409,
+        "squared_error_sum": 18046.0
+      },
+      "regions": {
+        "background": {
+          "pixels": 835,
+          "mae": 0.0003992015968063872,
+          "rmse": 0.019980029950087342,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.0011976047904191617,
+          "changed_coordinate_fraction": 0.0003992015968063872,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 1.0,
+          "squared_error_fraction": 5.54139421478444e-05
+        },
+        "cube": {
+          "pixels": 213,
+          "mae": 0.00782472613458529,
+          "rmse": 0.08845748207237922,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.014084507042253521,
+          "changed_coordinate_fraction": 0.00782472613458529,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 5.0,
+          "squared_error_fraction": 0.000277069710739222
+        },
+        "robot": {
+          "pixels": 4138,
+          "mae": 0.18640244884807475,
+          "rmse": 1.1910330350883733,
+          "max_abs": 32.0,
+          "changed_pixel_fraction": 0.08941517641372644,
+          "changed_coordinate_fraction": 0.06275173191557919,
+          "over1_pixel_fraction": 0.03673272112131464,
+          "over8_pixel_fraction": 0.007491541807636539,
+          "squared_error_sum": 17610.0,
+          "squared_error_fraction": 0.9758395212235399
+        },
+        "floor": {
+          "pixels": 44990,
+          "mae": 0.0021782618359635474,
+          "rmse": 0.05644371675787557,
+          "max_abs": 5.0,
+          "changed_pixel_fraction": 0.005445654589908869,
+          "changed_coordinate_fraction": 0.001933763058457435,
+          "over1_pixel_fraction": 0.00011113580795732385,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 430.0,
+          "squared_error_fraction": 0.02382799512357309
+        },
+        "other": {
+          "pixels": 0,
+          "mae": null,
+          "rmse": null,
+          "max_abs": null,
+          "changed_pixel_fraction": null,
+          "changed_coordinate_fraction": null,
+          "over1_pixel_fraction": null,
+          "over8_pixel_fraction": null,
+          "squared_error_sum": 0.0,
+          "squared_error_fraction": 0.0
+        }
+      }
+    },
+    {
+      "case_index": 28,
+      "repeats": [
+        0,
+        1
+      ],
+      "poststep": {
+        "pixels": 50176,
+        "mae": 0.02017564838435374,
+        "rmse": 0.5103819577258868,
+        "max_abs": 66.0,
+        "changed_pixel_fraction": 0.012595663265306123,
+        "changed_coordinate_fraction": 0.007247821003401361,
+        "over1_pixel_fraction": 0.00253109056122449,
+        "over8_pixel_fraction": 0.0007772640306122449,
+        "squared_error_sum": 39211.0
+      },
+      "regions": {
+        "background": {
+          "pixels": 881,
+          "mae": 0.00037835792659856227,
+          "rmse": 0.01945142479610587,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.0011350737797956867,
+          "changed_coordinate_fraction": 0.00037835792659856227,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 1.0,
+          "squared_error_fraction": 2.5503047614189897e-05
+        },
+        "cube": {
+          "pixels": 155,
+          "mae": 0.06451612903225806,
+          "rmse": 0.7390781820212156,
+          "max_abs": 12.0,
+          "changed_pixel_fraction": 0.03225806451612903,
+          "changed_coordinate_fraction": 0.015053763440860216,
+          "over1_pixel_fraction": 0.0064516129032258064,
+          "over8_pixel_fraction": 0.0064516129032258064,
+          "squared_error_sum": 254.0,
+          "squared_error_fraction": 0.006477774094004234
+        },
+        "robot": {
+          "pixels": 6148,
+          "mae": 0.13294296248102364,
+          "rmse": 1.3797101459180034,
+          "max_abs": 66.0,
+          "changed_pixel_fraction": 0.053513337670787246,
+          "changed_coordinate_fraction": 0.04109737584038169,
+          "over1_pixel_fraction": 0.018542615484710475,
+          "over8_pixel_fraction": 0.005367599219258295,
+          "squared_error_sum": 35110.0,
+          "squared_error_fraction": 0.8954120017342072
+        },
+        "floor": {
+          "pixels": 42992,
+          "mae": 0.0042953727825331845,
+          "rmse": 0.17268323978478028,
+          "max_abs": 22.0,
+          "changed_pixel_fraction": 0.0069082620022329734,
+          "changed_coordinate_fraction": 0.00251984865401315,
+          "over1_pixel_fraction": 0.0002791216970599181,
+          "over8_pixel_fraction": 0.00011630070710829922,
+          "squared_error_sum": 3846.0,
+          "squared_error_fraction": 0.09808472112417434
+        },
+        "other": {
+          "pixels": 0,
+          "mae": null,
+          "rmse": null,
+          "max_abs": null,
+          "changed_pixel_fraction": null,
+          "changed_coordinate_fraction": null,
+          "over1_pixel_fraction": null,
+          "over8_pixel_fraction": null,
+          "squared_error_sum": 0.0,
+          "squared_error_fraction": 0.0
+        }
+      }
+    },
+    {
+      "case_index": 28,
+      "repeats": [
+        0,
+        2
+      ],
+      "poststep": {
+        "pixels": 50176,
+        "mae": 0.021643813775510203,
+        "rmse": 0.49934853392528683,
+        "max_abs": 42.0,
+        "changed_pixel_fraction": 0.008290816326530613,
+        "changed_coordinate_fraction": 0.005852731717687075,
+        "over1_pixel_fraction": 0.0030691964285714285,
+        "over8_pixel_fraction": 0.0010762117346938774,
+        "squared_error_sum": 37534.0
+      },
+      "regions": {
+        "background": {
+          "pixels": 881,
+          "mae": 0.0007567158531971245,
+          "rmse": 0.027508468754133236,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.0022701475595913734,
+          "changed_coordinate_fraction": 0.0007567158531971245,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 2.0,
+          "squared_error_fraction": 5.328502158043374e-05
+        },
+        "cube": {
+          "pixels": 155,
+          "mae": 0.05591397849462366,
+          "rmse": 0.7332355751067664,
+          "max_abs": 12.0,
+          "changed_pixel_fraction": 0.0064516129032258064,
+          "changed_coordinate_fraction": 0.0064516129032258064,
+          "over1_pixel_fraction": 0.0064516129032258064,
+          "over8_pixel_fraction": 0.0064516129032258064,
+          "squared_error_sum": 250.0,
+          "squared_error_fraction": 0.006660627697554217
+        },
+        "robot": {
+          "pixels": 6148,
+          "mae": 0.15815441335935806,
+          "rmse": 1.3381568033862574,
+          "max_abs": 42.0,
+          "changed_pixel_fraction": 0.057254391672088484,
+          "changed_coordinate_fraction": 0.04299501192799827,
+          "over1_pixel_fraction": 0.02342225113858165,
+          "over8_pixel_fraction": 0.007807417046193884,
+          "squared_error_sum": 33027.0,
+          "squared_error_fraction": 0.8799222038684925
+        },
+        "floor": {
+          "pixels": 42992,
+          "mae": 0.0024268080883265105,
+          "rmse": 0.18163324011971912,
+          "max_abs": 25.0,
+          "changed_pixel_fraction": 0.0014188686267212504,
+          "changed_coordinate_fraction": 0.000643530579332589,
+          "over1_pixel_fraction": 0.0002093412727949386,
+          "over8_pixel_fraction": 0.00011630070710829922,
+          "squared_error_sum": 4255.0,
+          "squared_error_fraction": 0.11336388341237279
+        },
+        "other": {
+          "pixels": 0,
+          "mae": null,
+          "rmse": null,
+          "max_abs": null,
+          "changed_pixel_fraction": null,
+          "changed_coordinate_fraction": null,
+          "over1_pixel_fraction": null,
+          "over8_pixel_fraction": null,
+          "squared_error_sum": 0.0,
+          "squared_error_fraction": 0.0
+        }
+      }
+    },
+    {
+      "case_index": 28,
+      "repeats": [
+        1,
+        2
+      ],
+      "poststep": {
+        "pixels": 50176,
+        "mae": 0.0205609587585034,
+        "rmse": 0.46221349601819345,
+        "max_abs": 39.0,
+        "changed_pixel_fraction": 0.013034119897959183,
+        "changed_coordinate_fraction": 0.007334183673469388,
+        "over1_pixel_fraction": 0.0026705994897959183,
+        "over8_pixel_fraction": 0.0007772640306122449,
+        "squared_error_sum": 32159.0
+      },
+      "regions": {
+        "background": {
+          "pixels": 881,
+          "mae": 0.00037835792659856227,
+          "rmse": 0.01945142479610587,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.0011350737797956867,
+          "changed_coordinate_fraction": 0.00037835792659856227,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 1.0,
+          "squared_error_fraction": 3.109549426288131e-05
+        },
+        "cube": {
+          "pixels": 155,
+          "mae": 0.008602150537634409,
+          "rmse": 0.09274777915203365,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.025806451612903226,
+          "changed_coordinate_fraction": 0.008602150537634409,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 4.0,
+          "squared_error_fraction": 0.00012438197705152523
+        },
+        "robot": {
+          "pixels": 6148,
+          "mae": 0.13505747126436782,
+          "rmse": 1.2143640775211535,
+          "max_abs": 39.0,
+          "changed_pixel_fraction": 0.04960962914769031,
+          "changed_coordinate_fraction": 0.03963348514422034,
+          "over1_pixel_fraction": 0.02033181522446324,
+          "over8_pixel_fraction": 0.005692908262849707,
+          "squared_error_sum": 27199.0,
+          "squared_error_fraction": 0.8457663484561088
+        },
+        "floor": {
+          "pixels": 42992,
+          "mae": 0.0046442749038580824,
+          "rmse": 0.19600510260732543,
+          "max_abs": 25.0,
+          "changed_pixel_fraction": 0.008001488649050986,
+          "changed_coordinate_fraction": 0.002853244014390274,
+          "over1_pixel_fraction": 0.0002093412727949386,
+          "over8_pixel_fraction": 9.304056568663938e-05,
+          "squared_error_sum": 4955.0,
+          "squared_error_fraction": 0.15407817407257687
+        },
+        "other": {
+          "pixels": 0,
+          "mae": null,
+          "rmse": null,
+          "max_abs": null,
+          "changed_pixel_fraction": null,
+          "changed_coordinate_fraction": null,
+          "over1_pixel_fraction": null,
+          "over8_pixel_fraction": null,
+          "squared_error_sum": 0.0,
+          "squared_error_fraction": 0.0
+        }
+      }
+    },
+    {
+      "case_index": 35,
+      "repeats": [
+        0,
+        1
+      ],
+      "poststep": {
+        "pixels": 50176,
+        "mae": 0.015990380527210885,
+        "rmse": 0.3175715176027551,
+        "max_abs": 24.0,
+        "changed_pixel_fraction": 0.014329559948979591,
+        "changed_coordinate_fraction": 0.007021949404761905,
+        "over1_pixel_fraction": 0.00235172193877551,
+        "over8_pixel_fraction": 0.0006776147959183673,
+        "squared_error_sum": 15181.0
+      },
+      "regions": {
+        "background": {
+          "pixels": 938,
+          "mae": 0.0021321961620469083,
+          "rmse": 0.04617570965396101,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.006396588486140725,
+          "changed_coordinate_fraction": 0.0021321961620469083,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 6.0,
+          "squared_error_fraction": 0.00039523088070614587
+        },
+        "cube": {
+          "pixels": 359,
+          "mae": 0.004642525533890436,
+          "rmse": 0.06813608099891302,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.013927576601671309,
+          "changed_coordinate_fraction": 0.004642525533890436,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 5.0,
+          "squared_error_fraction": 0.00032935906725512155
+        },
+        "robot": {
+          "pixels": 8186,
+          "mae": 0.07191139343594755,
+          "rmse": 0.7303636499452395,
+          "max_abs": 24.0,
+          "changed_pixel_fraction": 0.033838260444661615,
+          "changed_coordinate_fraction": 0.023495398648098378,
+          "over1_pixel_fraction": 0.013193256779868068,
+          "over8_pixel_fraction": 0.0035426337649645738,
+          "squared_error_sum": 13100.0,
+          "squared_error_fraction": 0.8629207562084185
+        },
+        "floor": {
+          "pixels": 40693,
+          "mae": 0.005160592730936524,
+          "rmse": 0.13021610214866453,
+          "max_abs": 16.0,
+          "changed_pixel_fraction": 0.010591502223969724,
+          "changed_coordinate_fraction": 0.0038417745885860797,
+          "over1_pixel_fraction": 0.0002457425109969774,
+          "over8_pixel_fraction": 0.0001228712554984887,
+          "squared_error_sum": 2070.0,
+          "squared_error_fraction": 0.1363546538436203
+        },
+        "other": {
+          "pixels": 0,
+          "mae": null,
+          "rmse": null,
+          "max_abs": null,
+          "changed_pixel_fraction": null,
+          "changed_coordinate_fraction": null,
+          "over1_pixel_fraction": null,
+          "over8_pixel_fraction": null,
+          "squared_error_sum": 0.0,
+          "squared_error_fraction": 0.0
+        }
+      }
+    },
+    {
+      "case_index": 35,
+      "repeats": [
+        0,
+        2
+      ],
+      "poststep": {
+        "pixels": 50176,
+        "mae": 0.015173256802721089,
+        "rmse": 0.3578118733841764,
+        "max_abs": 32.0,
+        "changed_pixel_fraction": 0.008569834183673469,
+        "changed_coordinate_fraction": 0.005314625850340136,
+        "over1_pixel_fraction": 0.0024513711734693877,
+        "over8_pixel_fraction": 0.0007573341836734694,
+        "squared_error_sum": 19272.0
+      },
+      "regions": {
+        "background": {
+          "pixels": 938,
+          "mae": 0.00035536602700781805,
+          "rmse": 0.01885115452718528,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.0010660980810234541,
+          "changed_coordinate_fraction": 0.00035536602700781805,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 1.0,
+          "squared_error_fraction": 5.1888750518887505e-05
+        },
+        "cube": {
+          "pixels": 359,
+          "mae": 0.003714020427112349,
+          "rmse": 0.060942763533600515,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.011142061281337047,
+          "changed_coordinate_fraction": 0.003714020427112349,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 4.0,
+          "squared_error_fraction": 0.00020755500207555002
+        },
+        "robot": {
+          "pixels": 8186,
+          "mae": 0.08437169150582295,
+          "rmse": 0.8598793279694964,
+          "max_abs": 32.0,
+          "changed_pixel_fraction": 0.043366723674566336,
+          "changed_coordinate_fraction": 0.02834107011971659,
+          "over1_pixel_fraction": 0.01380405570486196,
+          "over8_pixel_fraction": 0.0042755924749572445,
+          "squared_error_sum": 18158.0,
+          "squared_error_fraction": 0.9421959319219593
+        },
+        "floor": {
+          "pixels": 40693,
+          "mae": 0.0016956233258791438,
+          "rmse": 0.09531149715461892,
+          "max_abs": 14.0,
+          "changed_pixel_fraction": 0.0017201975769788416,
+          "changed_coordinate_fraction": 0.0008109502862900253,
+          "over1_pixel_fraction": 0.0002457425109969774,
+          "over8_pixel_fraction": 7.372275329909321e-05,
+          "squared_error_sum": 1109.0,
+          "squared_error_fraction": 0.05754462432544624
+        },
+        "other": {
+          "pixels": 0,
+          "mae": null,
+          "rmse": null,
+          "max_abs": null,
+          "changed_pixel_fraction": null,
+          "changed_coordinate_fraction": null,
+          "over1_pixel_fraction": null,
+          "over8_pixel_fraction": null,
+          "squared_error_sum": 0.0,
+          "squared_error_fraction": 0.0
+        }
+      }
+    },
+    {
+      "case_index": 35,
+      "repeats": [
+        1,
+        2
+      ],
+      "poststep": {
+        "pixels": 50176,
+        "mae": 0.019511320153061226,
+        "rmse": 0.36535389899877274,
+        "max_abs": 40.0,
+        "changed_pixel_fraction": 0.01598373724489796,
+        "changed_coordinate_fraction": 0.008118090986394558,
+        "over1_pixel_fraction": 0.003049266581632653,
+        "over8_pixel_fraction": 0.0009167729591836735,
+        "squared_error_sum": 20093.0
+      },
+      "regions": {
+        "background": {
+          "pixels": 938,
+          "mae": 0.0024875621890547263,
+          "rmse": 0.049875466805381644,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.007462686567164179,
+          "changed_coordinate_fraction": 0.0024875621890547263,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 7.0,
+          "squared_error_fraction": 0.00034838003284726025
+        },
+        "cube": {
+          "pixels": 359,
+          "mae": 0.008356545961002786,
+          "rmse": 0.09141414530040078,
+          "max_abs": 1.0,
+          "changed_pixel_fraction": 0.025069637883008356,
+          "changed_coordinate_fraction": 0.008356545961002786,
+          "over1_pixel_fraction": 0.0,
+          "over8_pixel_fraction": 0.0,
+          "squared_error_sum": 9.0,
+          "squared_error_fraction": 0.0004479171850893346
+        },
+        "robot": {
+          "pixels": 8186,
+          "mae": 0.09300431631240329,
+          "rmse": 0.8455052109909502,
+          "max_abs": 40.0,
+          "changed_pixel_fraction": 0.04764231614952358,
+          "changed_coordinate_fraction": 0.03151722452968483,
+          "over1_pixel_fraction": 0.016980210114830196,
+          "over8_pixel_fraction": 0.004764231614952358,
+          "squared_error_sum": 17556.0,
+          "squared_error_fraction": 0.8737371223809287
+        },
+        "floor": {
+          "pixels": 40693,
+          "mae": 0.005217932650169153,
+          "rmse": 0.1437030352524933,
+          "max_abs": 16.0,
+          "changed_pixel_fraction": 0.009731403435480304,
+          "changed_coordinate_fraction": 0.003538692158356474,
+          "over1_pixel_fraction": 0.0003440395153957683,
+          "over8_pixel_fraction": 0.00017201975769788415,
+          "squared_error_sum": 2521.0,
+          "squared_error_fraction": 0.12546658040113473
+        },
+        "other": {
+          "pixels": 0,
+          "mae": null,
+          "rmse": null,
+          "max_abs": null,
+          "changed_pixel_fraction": null,
+          "changed_coordinate_fraction": null,
+          "over1_pixel_fraction": null,
+          "over8_pixel_fraction": null,
+          "squared_error_sum": 0.0,
+          "squared_error_fraction": 0.0
+        }
+      }
+    }
+  ],
+  "artifacts": {
+    "rgb-and-segmentation.npz": "7a3acc63c2520b43f3456b4fbf5760facd1e898ae7781ffaf95395e6c774749e",
+    "visual-model-state.npz": "ec2703a0c771f788a3596c95d2deb26e2a72c798fe2d2e9d1f120770c90268df"
+  },
+  "interpretation": "Sparse low-average RGB differences persist while all recorded physical and visual state and pixel-level segmentation match. The random skybox XML did not produce different texture bytes here. This rejects the measured scene/camera/material/texture domain-shift account in these samples; it does not identify the rendering mechanism or establish an effect on closed-loop planning. Most changed pixels have <=1LSB difference, but sparse larger differences exist, mostly on robot geometry. Driver/internal render state not exhaustively captured.",
+  "limitations": "3cases,3repeats,one fixed command;not independent estimates of P0 variance. No learned models or feature sensitivity measured. No native protocol fix authorized or tested. Post-completion ignored EGL destructor warnings occur in the log;process exit0 and all bounded artifacts completed."
+}

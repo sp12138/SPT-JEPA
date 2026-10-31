@@ -1,0 +1,128 @@
+{
+  "helper_commit": "d75eb248b353c9baa05f251214876e15b4e3de71",
+  "full_results": "/efs/prescottsun/SPT-JEPA/reports/cube-reset-state-20261031/diagnostic-v1/results.json",
+  "full_results_sha256": "52861d4c4ad558881604bc023c65321ab06bf90c35a992539a3c90f0386a0fdc",
+  "states_npz": "/efs/prescottsun/SPT-JEPA/reports/cube-reset-state-20261031/diagnostic-v1/states.npz",
+  "states_npz_sha256": "6d2ecd82fac7251c6c6a1ae06026662055b4351c90b335d36db4b83a1c7a2e73",
+  "exit": {
+    "returncode": 0,
+    "pid": 144729,
+    "finished_at": 1793409404.9611843,
+    "seconds": 33.67962193489075,
+    "output": "/efs/prescottsun/SPT-JEPA/reports/cube-reset-state-20261031/diagnostic-v1"
+  },
+  "actual_counts": {
+    "reset_calls": 18,
+    "steps_inside_reset": 36,
+    "steps_outside_reset": 9
+  },
+  "explicit_dataset_restorations": 9,
+  "explicit_fixed_action_steps": 9,
+  "action": [
+    0.3,
+    -0.2,
+    0.1,
+    0.2,
+    -0.1
+  ],
+  "rows": [
+    {
+      "case_index": 3,
+      "episode_id": 937,
+      "restored_qpos_qvel_exact": true,
+      "initial_pixel_hashes_exact": true,
+      "goal_pixel_hashes_exact": true,
+      "hidden_post_restore_fields_that_vary": [
+        "_prev_qpos",
+        "cfrc_ext",
+        "ctrl",
+        "ik_data_qpos",
+        "ik_scratch_err",
+        "ik_scratch_err_quat",
+        "ik_scratch_jac",
+        "ik_scratch_site_quat",
+        "ik_scratch_site_quat_inv",
+        "integration",
+        "qacc",
+        "qacc_warmstart",
+        "qfrc_actuator",
+        "qfrc_constraint",
+        "target_effector_matrix"
+      ],
+      "after_one_step_all_recorded_fields_exact": true,
+      "post_step_qpos_max_abs": 0.0,
+      "next_pixel_distinct_hash_count": 3,
+      "next_pixel_hashes": [
+        "119549a693bb05f375d78aa40add888506133bf5ed8e7a504f8da0ae4b75f078",
+        "a277f1b61cbb875ed476dfdd77406f984d273d3c1f1cdfcc034f414f402becfc",
+        "0d9b09aed5cb5d51cffcbbb77452cadde24c26c2d649051d7f395f20633e4e00"
+      ]
+    },
+    {
+      "case_index": 28,
+      "episode_id": 6515,
+      "restored_qpos_qvel_exact": true,
+      "initial_pixel_hashes_exact": true,
+      "goal_pixel_hashes_exact": true,
+      "hidden_post_restore_fields_that_vary": [
+        "_prev_qpos",
+        "cfrc_ext",
+        "ctrl",
+        "ik_data_qpos",
+        "ik_scratch_err",
+        "ik_scratch_err_quat",
+        "ik_scratch_jac",
+        "ik_scratch_site_quat",
+        "ik_scratch_site_quat_inv",
+        "integration",
+        "qacc",
+        "qacc_warmstart",
+        "qfrc_actuator",
+        "qfrc_constraint",
+        "target_effector_matrix"
+      ],
+      "after_one_step_all_recorded_fields_exact": true,
+      "post_step_qpos_max_abs": 0.0,
+      "next_pixel_distinct_hash_count": 3,
+      "next_pixel_hashes": [
+        "1731449dc1e51cb09f9308c253edd1e8065e01412ad267090c44cd7f7734561f",
+        "ec3c70134051444e91ad852216a93d6e590f930d1f9369477142ea7e0858003d",
+        "f62249a2b5fcbc6baf3a8ad90bd027df0b4279971418d35d169f361616d11466"
+      ]
+    },
+    {
+      "case_index": 35,
+      "episode_id": 7381,
+      "restored_qpos_qvel_exact": true,
+      "initial_pixel_hashes_exact": true,
+      "goal_pixel_hashes_exact": true,
+      "hidden_post_restore_fields_that_vary": [
+        "_prev_qpos",
+        "cfrc_ext",
+        "ctrl",
+        "ik_data_qpos",
+        "ik_scratch_err",
+        "ik_scratch_err_quat",
+        "ik_scratch_jac",
+        "ik_scratch_site_quat",
+        "ik_scratch_site_quat_inv",
+        "integration",
+        "qacc",
+        "qacc_warmstart",
+        "qfrc_actuator",
+        "qfrc_constraint",
+        "target_effector_matrix"
+      ],
+      "after_one_step_all_recorded_fields_exact": true,
+      "post_step_qpos_max_abs": 0.0,
+      "next_pixel_distinct_hash_count": 3,
+      "next_pixel_hashes": [
+        "c70c98f1b7f716778c85fb4a3df6bd07fb021f96be1f1d0da82db4dff8a41857",
+        "ccfde613ac55803a8ea10d73ee507b4a0c71bfe5a6fc37f180ca4ed9bb470011",
+        "30198c4ec84160828c433d091d6b4f78fa95e57b92d7e73293bc208520faa727"
+      ]
+    }
+  ],
+  "conclusion": "Native restoration leaves variable hidden fields, but the fixed one-step probe makes every recorded physical/controller field exactly equal in all9paired comparisons. Next-pixel hashes nevertheless differ in all3repeats per case. This does not establish reset-residue dynamics causation or explain P0 flips. Render/observation reproducibility remains a concrete concern, not a demonstrated cause.",
+  "limits": "3predeclared validation cases,3freshWorlds,onefixedboundedcommand. Images were hashed, not saved, so no pixel-error magnitude or visual localization is available. Some staticmodel/render fields were captured, not every renderer internal. No learned model/optimizer/P0 change or further assay."
+}
