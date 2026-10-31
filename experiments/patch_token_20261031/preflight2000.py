@@ -88,7 +88,7 @@ def main():
     status=read(root/'status.json');assert status['state']=='finished' and status['step']==2000
     binding=[root/'config.json',root/'last.ckpt',initial_path,root/'model-step0002000/weights.pt',
              Path(args.reference_initial),Path(args.paired_initial),Path(cal['path']),original,out/'preflight.json']
-    report=dict(passed=True,expected_step=600,run=str(root),nonpredictor_initial_tensors_exact=len(new_common),
+    report=dict(passed=True,expected_step=2000,run=str(root),nonpredictor_initial_tensors_exact=len(new_common),
         original_initial_tensors=len(old),paired_parameter_initial_tensors_exact=len(captured['parameter_names']),
         paired_initial_all_common_buffers_exact=True,predictor_seed=cfg['model']['patch_predictor_seed'],
         native_report_sha256=file_hash(out/'preflight.json'),binding={str(path):file_hash(path) for path in binding},

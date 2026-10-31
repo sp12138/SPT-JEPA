@@ -1,4 +1,5 @@
 """CPU-only config/DAG and strict-auditor step adaptation contracts."""
+import ast
 import copy
 import json
 from pathlib import Path
@@ -43,8 +44,11 @@ def main(output):
     previous=Path(__file__).with_name('preflight600.py').read_text()
     for a,b in [('default=600','default=2000'),('args.expected_step==600','args.expected_step==2000'),('bounded600','bounded2000'),
                 ("'--expected-step','600'","'--expected-step','2000'"),('cursor==600*','cursor==2000*'),
-                ("status['step']==600","status['step']==2000"),('model-step0000600','model-step0002000'),('Bounded600','Bounded2000')]:previous=previous.replace(a,b)
+                ("status['step']==600","status['step']==2000"),('model-step0000600','model-step0002000'),('Bounded600','Bounded2000'),('expected_step=600,run=','expected_step=2000,run=')]:previous=previous.replace(a,b)
     assert Path(__file__).with_name('preflight2000.py').read_text()==previous
+    tree=ast.parse(previous)
+    recorded=[kw.value.value for n in ast.walk(tree) if isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id=='dict' for kw in n.keywords if kw.arg=='expected_step' and isinstance(kw.value,ast.Constant)]
+    assert recorded==[2000], 'Final audit metadata must independently declare2000'
     files=['prepare2000.py','resume_audit.py','preflight2000.py','test_prepare2000.py']
     result=dict(passed=True,endpoints=72,runs=8,only_original_tasks_seeds_bases=True,
         original_reserved_slots=True,all_jobs_model1018=True,archive1200_before2000=True,
