@@ -1,0 +1,1461 @@
+{
+  "pool": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool",
+  "cases": 50,
+  "candidates_per_case": 39,
+  "raw_horizon": 25,
+  "model_horizon": 5,
+  "rgb_samples_per_candidate": 6,
+  "headers": {
+    "pixels": {
+      "shape": [
+        39,
+        6,
+        224,
+        224,
+        3
+      ],
+      "dtype": "uint8"
+    },
+    "start_pixels": {
+      "shape": [
+        224,
+        224,
+        3
+      ],
+      "dtype": "uint8"
+    },
+    "goal_pixels": {
+      "shape": [
+        224,
+        224,
+        3
+      ],
+      "dtype": "uint8"
+    },
+    "actions": {
+      "shape": [
+        39,
+        25,
+        5
+      ],
+      "dtype": "float32"
+    },
+    "positions": {
+      "shape": [
+        39,
+        26,
+        3
+      ],
+      "dtype": "float64"
+    },
+    "quaternions": {
+      "shape": [
+        39,
+        26,
+        4
+      ],
+      "dtype": "float64"
+    },
+    "effector_positions": {
+      "shape": [
+        39,
+        26,
+        3
+      ],
+      "dtype": "float64"
+    },
+    "hold_count": {
+      "shape": [
+        39,
+        26
+      ],
+      "dtype": "int64"
+    },
+    "success": {
+      "shape": [
+        39,
+        26
+      ],
+      "dtype": "bool"
+    },
+    "physical_cost": {
+      "shape": [
+        39,
+        26
+      ],
+      "dtype": "float64"
+    },
+    "qpos": {
+      "shape": [
+        39,
+        26,
+        21
+      ],
+      "dtype": "float64"
+    },
+    "recorded_rgb": {
+      "shape": [
+        6,
+        224,
+        224,
+        3
+      ],
+      "dtype": "uint8"
+    }
+  },
+  "groups": {
+    "cem_lewm": {
+      "candidates_per_case": 1,
+      "coordinates": 6250,
+      "outside_Box": 229,
+      "min": -3.1792356967926025,
+      "max": 4.452862739562988,
+      "outside_fraction": 0.03664
+    },
+    "cem_lower-beta-s1": {
+      "candidates_per_case": 1,
+      "coordinates": 6250,
+      "outside_Box": 155,
+      "min": -5.360592842102051,
+      "max": 3.0105926990509033,
+      "outside_fraction": 0.0248
+    },
+    "cem_lower-beta-s2": {
+      "candidates_per_case": 1,
+      "coordinates": 6250,
+      "outside_Box": 135,
+      "min": -3.584488868713379,
+      "max": 4.792334079742432,
+      "outside_fraction": 0.0216
+    },
+    "cem_original-s1": {
+      "candidates_per_case": 1,
+      "coordinates": 6250,
+      "outside_Box": 176,
+      "min": -5.915801048278809,
+      "max": 3.8665995597839355,
+      "outside_fraction": 0.02816
+    },
+    "cem_original-s2": {
+      "candidates_per_case": 1,
+      "coordinates": 6250,
+      "outside_Box": 112,
+      "min": -3.772902727127075,
+      "max": 2.9029290676116943,
+      "outside_fraction": 0.01792
+    },
+    "cem_temporal-forecast-s1": {
+      "candidates_per_case": 1,
+      "coordinates": 6250,
+      "outside_Box": 100,
+      "min": -2.3791725635528564,
+      "max": 2.3184707164764404,
+      "outside_fraction": 0.016
+    },
+    "cem_temporal-forecast-s2": {
+      "candidates_per_case": 1,
+      "coordinates": 6250,
+      "outside_Box": 108,
+      "min": -1.9710990190505981,
+      "max": 2.9587812423706055,
+      "outside_fraction": 0.01728
+    },
+    "gaussian": {
+      "candidates_per_case": 14,
+      "coordinates": 87500,
+      "outside_Box": 2489,
+      "min": -2.6065731048583984,
+      "max": 2.6210570335388184,
+      "outside_fraction": 0.028445714285714286
+    },
+    "recorded_oracle": {
+      "candidates_per_case": 1,
+      "coordinates": 6250,
+      "outside_Box": 0,
+      "min": -1.0,
+      "max": 1.0,
+      "outside_fraction": 0.0
+    },
+    "recorded_perturb_0.25": {
+      "candidates_per_case": 8,
+      "coordinates": 50000,
+      "outside_Box": 2436,
+      "min": -1.5273863077163696,
+      "max": 1.5412434339523315,
+      "outside_fraction": 0.04872
+    },
+    "recorded_perturb_1.0": {
+      "candidates_per_case": 7,
+      "coordinates": 43750,
+      "outside_Box": 4162,
+      "min": -2.718585968017578,
+      "max": 3.470895767211914,
+      "outside_fraction": 0.09513142857142858
+    },
+    "recorded_repeat": {
+      "candidates_per_case": 1,
+      "coordinates": 6250,
+      "outside_Box": 0,
+      "min": -1.0,
+      "max": 1.0,
+      "outside_fraction": 0.0
+    },
+    "zero": {
+      "candidates_per_case": 1,
+      "coordinates": 6250,
+      "outside_Box": 0,
+      "min": 0.0,
+      "max": 0.0,
+      "outside_fraction": 0.0
+    }
+  },
+  "cases_provenance": [
+    {
+      "case": 0,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0000.npz",
+      "sha256": "87a29fe4883e75807fd8edee1e6200e141d14f051de251e321132e91c240c371",
+      "bytes": 4621867,
+      "pair": {
+        "difficulty": 0.43900997994648894,
+        "episode_id": 778,
+        "goal_row": 156445,
+        "goal_step": 67,
+        "initial_success": false,
+        "orientation_distance_deg": 14.71071092006138,
+        "pair_id": 0,
+        "position_distance_m": 0.43900997994648894,
+        "start_row": 156420,
+        "start_step": 42,
+        "symmetry_orientation_distance_deg": 14.710710920061533,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 1,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0001.npz",
+      "sha256": "4e3e4b8c4af9073e84d606923ae69f897506e32bbcdff4714933f9ccf6b3171d",
+      "bytes": 4823139,
+      "pair": {
+        "difficulty": 0.15902864276109305,
+        "episode_id": 829,
+        "goal_row": 166756,
+        "goal_step": 127,
+        "initial_success": false,
+        "orientation_distance_deg": 2.30874576597201,
+        "pair_id": 1,
+        "position_distance_m": 0.15902864276109305,
+        "start_row": 166731,
+        "start_step": 102,
+        "symmetry_orientation_distance_deg": 2.3087457659719695,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 2,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0002.npz",
+      "sha256": "f087d51b6324f031a5950c5feab8c6fabaf4ceb71cf72c87b224f47269dd194a",
+      "bytes": 4741545,
+      "pair": {
+        "difficulty": 0.4363225381809693,
+        "episode_id": 911,
+        "goal_row": 183167,
+        "goal_step": 56,
+        "initial_success": false,
+        "orientation_distance_deg": 32.404175622154696,
+        "pair_id": 2,
+        "position_distance_m": 0.4363225381809693,
+        "start_row": 183142,
+        "start_step": 31,
+        "symmetry_orientation_distance_deg": 32.40417562215472,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 3,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0003.npz",
+      "sha256": "a04a6fcb605e1adbad19dd85c141eb2b40a0d51d7cfb3f17cffed79eaf59e5d3",
+      "bytes": 4090940,
+      "pair": {
+        "difficulty": 0.2364237537395196,
+        "episode_id": 937,
+        "goal_row": 188492,
+        "goal_step": 155,
+        "initial_success": false,
+        "orientation_distance_deg": 2.8511968462520816,
+        "pair_id": 3,
+        "position_distance_m": 0.2364237537395196,
+        "start_row": 188467,
+        "start_step": 130,
+        "symmetry_orientation_distance_deg": 2.8511968462519848,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 4,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0004.npz",
+      "sha256": "e5eb9a1e21aa0e33921d89ea63f04e88f19226faeca16624f5506519c18bc010",
+      "bytes": 4941670,
+      "pair": {
+        "difficulty": 0.48086403864746885,
+        "episode_id": 993,
+        "goal_row": 199651,
+        "goal_step": 58,
+        "initial_success": false,
+        "orientation_distance_deg": 34.71641563650968,
+        "pair_id": 4,
+        "position_distance_m": 0.48086403864746885,
+        "start_row": 199626,
+        "start_step": 33,
+        "symmetry_orientation_distance_deg": 34.716415636509666,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 5,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0005.npz",
+      "sha256": "6eada5dfed32db544b882653353a3efa735b6fd35d29ae705bf5454302235b89",
+      "bytes": 5142027,
+      "pair": {
+        "difficulty": 0.18823787255702126,
+        "episode_id": 1006,
+        "goal_row": 202247,
+        "goal_step": 41,
+        "initial_success": false,
+        "orientation_distance_deg": 3.2604343098051745,
+        "pair_id": 5,
+        "position_distance_m": 0.18823787255702126,
+        "start_row": 202222,
+        "start_step": 16,
+        "symmetry_orientation_distance_deg": 3.2604343098054764,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 6,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0006.npz",
+      "sha256": "58e9351db23e1d9a0f7023130169cec4eb84a111188ea8a5dc76684d69c18bf7",
+      "bytes": 4642373,
+      "pair": {
+        "difficulty": 0.10623657643070136,
+        "episode_id": 1352,
+        "goal_row": 271789,
+        "goal_step": 37,
+        "initial_success": false,
+        "orientation_distance_deg": 1.7782563024737716,
+        "pair_id": 6,
+        "position_distance_m": 0.10623657643070136,
+        "start_row": 271764,
+        "start_step": 12,
+        "symmetry_orientation_distance_deg": 1.7782563024742264,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 7,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0007.npz",
+      "sha256": "5da5a7610236af682bfd28e8046d64e48ba9ffef2f642a65fd5cf4fe1d774c38",
+      "bytes": 4741284,
+      "pair": {
+        "difficulty": 0.22916966094934102,
+        "episode_id": 1840,
+        "goal_row": 369976,
+        "goal_step": 136,
+        "initial_success": false,
+        "orientation_distance_deg": 2.193861551852618,
+        "pair_id": 7,
+        "position_distance_m": 0.22916966094934102,
+        "start_row": 369951,
+        "start_step": 111,
+        "symmetry_orientation_distance_deg": 2.193861551853278,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 8,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0008.npz",
+      "sha256": "5e342cce104ffb949a53ac7cdbb74a12b9f52b3a3f3451baa6c164918da3722c",
+      "bytes": 4555404,
+      "pair": {
+        "difficulty": 0.032576857367838254,
+        "episode_id": 2010,
+        "goal_row": 404186,
+        "goal_step": 176,
+        "initial_success": false,
+        "orientation_distance_deg": 1.7600333998521305,
+        "pair_id": 8,
+        "position_distance_m": 0.032576857367838254,
+        "start_row": 404161,
+        "start_step": 151,
+        "symmetry_orientation_distance_deg": 1.7600333998523525,
+        "upstream_initial_success": true
+      }
+    },
+    {
+      "case": 9,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0009.npz",
+      "sha256": "8f124d850d8a0c05736f29e72a70db4714c2312c113e1d17dcf01383a2b5d772",
+      "bytes": 5001450,
+      "pair": {
+        "difficulty": 0.3321415005683344,
+        "episode_id": 2192,
+        "goal_row": 440640,
+        "goal_step": 48,
+        "initial_success": false,
+        "orientation_distance_deg": 19.17407642305737,
+        "pair_id": 9,
+        "position_distance_m": 0.3321415005683344,
+        "start_row": 440615,
+        "start_step": 23,
+        "symmetry_orientation_distance_deg": 19.174076423057382,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 10,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0010.npz",
+      "sha256": "bb02ecd3f3e4bd483bd173d5ee316275903f555dacdb5b7931f4fa412b244c08",
+      "bytes": 5147747,
+      "pair": {
+        "difficulty": 0.05995372412531462,
+        "episode_id": 2634,
+        "goal_row": 529610,
+        "goal_step": 176,
+        "initial_success": false,
+        "orientation_distance_deg": 1.9357632946786658,
+        "pair_id": 10,
+        "position_distance_m": 0.05995372412531462,
+        "start_row": 529585,
+        "start_step": 151,
+        "symmetry_orientation_distance_deg": 1.9357632946784042,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 11,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0011.npz",
+      "sha256": "fe33b0b9f4eeeecc4de10360d52fb142607ecf3bdad8a3030cc43b990d77308e",
+      "bytes": 5052011,
+      "pair": {
+        "difficulty": 0.2243542156512025,
+        "episode_id": 3084,
+        "goal_row": 620022,
+        "goal_step": 138,
+        "initial_success": false,
+        "orientation_distance_deg": 1.2302890334308858,
+        "pair_id": 11,
+        "position_distance_m": 0.2243542156512025,
+        "start_row": 619997,
+        "start_step": 113,
+        "symmetry_orientation_distance_deg": 1.2302890334324323,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 12,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0012.npz",
+      "sha256": "4a057a08502dcaa63d4604e32720a87c1fa81430d94d253ba623026c52da402b",
+      "bytes": 4719108,
+      "pair": {
+        "difficulty": 0.24515806320654887,
+        "episode_id": 3784,
+        "goal_row": 760743,
+        "goal_step": 159,
+        "initial_success": false,
+        "orientation_distance_deg": 3.4384758989638486,
+        "pair_id": 12,
+        "position_distance_m": 0.24515806320654887,
+        "start_row": 760718,
+        "start_step": 134,
+        "symmetry_orientation_distance_deg": 3.438475898964643,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 13,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0013.npz",
+      "sha256": "38e80fbb8c8b6c68c5d764216a9fcd12f9847574c703358b4107f8eda62c392f",
+      "bytes": 4502750,
+      "pair": {
+        "difficulty": 0.28775791001038414,
+        "episode_id": 3930,
+        "goal_row": 789978,
+        "goal_step": 48,
+        "initial_success": false,
+        "orientation_distance_deg": 2.0404522730734453,
+        "pair_id": 13,
+        "position_distance_m": 0.28775791001038414,
+        "start_row": 789953,
+        "start_step": 23,
+        "symmetry_orientation_distance_deg": 2.0404522730724906,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 14,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0014.npz",
+      "sha256": "60690af1111c79967fa136209a3fc4ed216c2e64c0d21e36c3bd227dd9238d82",
+      "bytes": 5801355,
+      "pair": {
+        "difficulty": 0.1083426782271988,
+        "episode_id": 4038,
+        "goal_row": 811792,
+        "goal_step": 154,
+        "initial_success": false,
+        "orientation_distance_deg": 3.0356316059562953,
+        "pair_id": 14,
+        "position_distance_m": 0.1083426782271988,
+        "start_row": 811767,
+        "start_step": 129,
+        "symmetry_orientation_distance_deg": 3.035631605956442,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 15,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0015.npz",
+      "sha256": "b9984892fcaa9154e640d01fe84365d3e1e5b0c3d30be99b2001183a0408ce95",
+      "bytes": 5630447,
+      "pair": {
+        "difficulty": 0.16411275870886374,
+        "episode_id": 4087,
+        "goal_row": 821613,
+        "goal_step": 126,
+        "initial_success": false,
+        "orientation_distance_deg": 1.6091087036312515,
+        "pair_id": 15,
+        "position_distance_m": 0.16411275870886374,
+        "start_row": 821588,
+        "start_step": 101,
+        "symmetry_orientation_distance_deg": 1.6091087036319733,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 16,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0016.npz",
+      "sha256": "54669cf3be399abf4d66a46f94f48d96058906ddc02311579e9416b1e05d61cf",
+      "bytes": 5202377,
+      "pair": {
+        "difficulty": 0.37487541594084045,
+        "episode_id": 4353,
+        "goal_row": 875008,
+        "goal_step": 55,
+        "initial_success": false,
+        "orientation_distance_deg": 5.331981751898414,
+        "pair_id": 16,
+        "position_distance_m": 0.37487541594084045,
+        "start_row": 874983,
+        "start_step": 30,
+        "symmetry_orientation_distance_deg": 5.3319817518982715,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 17,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0017.npz",
+      "sha256": "d26f78a465cf87f4ef355fd0a1e1579ac8a1d3dcf152c45ce019f49cc2757146",
+      "bytes": 4748826,
+      "pair": {
+        "difficulty": 0.10118758257980268,
+        "episode_id": 4357,
+        "goal_row": 875793,
+        "goal_step": 36,
+        "initial_success": false,
+        "orientation_distance_deg": 1.6792613941237506,
+        "pair_id": 17,
+        "position_distance_m": 0.10118758257980268,
+        "start_row": 875768,
+        "start_step": 11,
+        "symmetry_orientation_distance_deg": 1.6792613941237273,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 18,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0018.npz",
+      "sha256": "69b645a415d55ff6662829ecc3eadf880afad2249f717f07818d047fb15f25bd",
+      "bytes": 4983123,
+      "pair": {
+        "difficulty": 0.22004106049015384,
+        "episode_id": 4515,
+        "goal_row": 907557,
+        "goal_step": 42,
+        "initial_success": false,
+        "orientation_distance_deg": 11.686925049136999,
+        "pair_id": 18,
+        "position_distance_m": 0.22004106049015384,
+        "start_row": 907532,
+        "start_step": 17,
+        "symmetry_orientation_distance_deg": 11.686925049137063,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 19,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0019.npz",
+      "sha256": "637b745664d20e8d27b319edcbfa0cd2b147ad4c76f1028365ddeea437aef641",
+      "bytes": 4615034,
+      "pair": {
+        "difficulty": 0.11464410396130842,
+        "episode_id": 4608,
+        "goal_row": 926292,
+        "goal_step": 84,
+        "initial_success": false,
+        "orientation_distance_deg": 2.2166796200688488,
+        "pair_id": 19,
+        "position_distance_m": 0.11464410396130842,
+        "start_row": 926267,
+        "start_step": 59,
+        "symmetry_orientation_distance_deg": 2.2166796200692405,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 20,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0020.npz",
+      "sha256": "6543c77916420b21c9a0556e1f10ad6dfba13cb19257212cd9240a77aa8072be",
+      "bytes": 5814835,
+      "pair": {
+        "difficulty": 0.11953112721588177,
+        "episode_id": 4992,
+        "goal_row": 1003518,
+        "goal_step": 126,
+        "initial_success": false,
+        "orientation_distance_deg": 2.071722529626162,
+        "pair_id": 20,
+        "position_distance_m": 0.11953112721588177,
+        "start_row": 1003493,
+        "start_step": 101,
+        "symmetry_orientation_distance_deg": 2.0717225296261628,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 21,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0021.npz",
+      "sha256": "95ba121b030866f9250c163eef4c89e71466592bc84c3013b461ccfaa86edbac",
+      "bytes": 5039583,
+      "pair": {
+        "difficulty": 0.16930495862966344,
+        "episode_id": 5024,
+        "goal_row": 1009981,
+        "goal_step": 157,
+        "initial_success": false,
+        "orientation_distance_deg": 0.7250994323360014,
+        "pair_id": 21,
+        "position_distance_m": 0.16930495862966344,
+        "start_row": 1009956,
+        "start_step": 132,
+        "symmetry_orientation_distance_deg": 0.7250994323352346,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 22,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0022.npz",
+      "sha256": "eaa984d37181306617eb270390b110f70576064a9f67f97ac8182745455bdd9b",
+      "bytes": 5915497,
+      "pair": {
+        "difficulty": 0.05661801644528005,
+        "episode_id": 5053,
+        "goal_row": 1015775,
+        "goal_step": 122,
+        "initial_success": false,
+        "orientation_distance_deg": 2.5217078129320236,
+        "pair_id": 22,
+        "position_distance_m": 0.05661801644528005,
+        "start_row": 1015750,
+        "start_step": 97,
+        "symmetry_orientation_distance_deg": 2.5217078129317128,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 23,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0023.npz",
+      "sha256": "0f9fb1f56d76b47edb70d9efe3b5010a2ae43471e5635615a0a082718a0e0062",
+      "bytes": 5223324,
+      "pair": {
+        "difficulty": 0.11208832780356172,
+        "episode_id": 5319,
+        "goal_row": 1069201,
+        "goal_step": 82,
+        "initial_success": false,
+        "orientation_distance_deg": 3.9719255056101956,
+        "pair_id": 23,
+        "position_distance_m": 0.11208832780356172,
+        "start_row": 1069176,
+        "start_step": 57,
+        "symmetry_orientation_distance_deg": 3.971925505610825,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 24,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0024.npz",
+      "sha256": "99bf4dc0e1da9020911f3f75a04ed8f0421e998d2ccf276b13aee15b4c39498b",
+      "bytes": 4792057,
+      "pair": {
+        "difficulty": 0.18046710622695597,
+        "episode_id": 5498,
+        "goal_row": 1105139,
+        "goal_step": 41,
+        "initial_success": false,
+        "orientation_distance_deg": 77.383774350211,
+        "pair_id": 24,
+        "position_distance_m": 0.18046710622695597,
+        "start_row": 1105114,
+        "start_step": 16,
+        "symmetry_orientation_distance_deg": 12.902384314783287,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 25,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0025.npz",
+      "sha256": "f6bd688818f1eae3cee2bcc0a1148c49b685783e8e9961a9ce609641fa563251",
+      "bytes": 5675839,
+      "pair": {
+        "difficulty": 0.18595722262912406,
+        "episode_id": 6060,
+        "goal_row": 1218188,
+        "goal_step": 128,
+        "initial_success": false,
+        "orientation_distance_deg": 1.8849009667076553,
+        "pair_id": 25,
+        "position_distance_m": 0.18595722262912406,
+        "start_row": 1218163,
+        "start_step": 103,
+        "symmetry_orientation_distance_deg": 1.8849009667074579,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 26,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0026.npz",
+      "sha256": "24d9fa647387860393d67eb74f09a1261d5e22162308358cc2a7d3d07fc0f577",
+      "bytes": 4721462,
+      "pair": {
+        "difficulty": 0.13675968525847693,
+        "episode_id": 6361,
+        "goal_row": 1278713,
+        "goal_step": 152,
+        "initial_success": false,
+        "orientation_distance_deg": 2.409476781745325,
+        "pair_id": 26,
+        "position_distance_m": 0.13675968525847693,
+        "start_row": 1278688,
+        "start_step": 127,
+        "symmetry_orientation_distance_deg": 2.409476781745059,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 27,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0027.npz",
+      "sha256": "c753b5cef5d474adf5fb529b4530e9bbe3aa7cef0bc8c3ec1858d3956bfb93fd",
+      "bytes": 4576922,
+      "pair": {
+        "difficulty": 0.224163971893735,
+        "episode_id": 6380,
+        "goal_row": 1282517,
+        "goal_step": 137,
+        "initial_success": false,
+        "orientation_distance_deg": 59.93622869242959,
+        "pair_id": 27,
+        "position_distance_m": 0.224163971893735,
+        "start_row": 1282492,
+        "start_step": 112,
+        "symmetry_orientation_distance_deg": 30.295037215051586,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 28,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0028.npz",
+      "sha256": "d9a4e104c339fd27196bf359813aadd4edf2c222ac7ae748b403f81277467d4a",
+      "bytes": 4332414,
+      "pair": {
+        "difficulty": 0.25147717329045666,
+        "episode_id": 6515,
+        "goal_row": 1309650,
+        "goal_step": 135,
+        "initial_success": false,
+        "orientation_distance_deg": 1.1121350633053555,
+        "pair_id": 28,
+        "position_distance_m": 0.25147717329045666,
+        "start_row": 1309625,
+        "start_step": 110,
+        "symmetry_orientation_distance_deg": 1.1121350633056004,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 29,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0029.npz",
+      "sha256": "24943b4128784ca9d90a6a06aab875d0dcd63b6f2e9a18ccae755c95377708e8",
+      "bytes": 4916687,
+      "pair": {
+        "difficulty": 0.16489397409359405,
+        "episode_id": 6782,
+        "goal_row": 1363337,
+        "goal_step": 155,
+        "initial_success": false,
+        "orientation_distance_deg": 1.493465863687668,
+        "pair_id": 29,
+        "position_distance_m": 0.16489397409359405,
+        "start_row": 1363312,
+        "start_step": 130,
+        "symmetry_orientation_distance_deg": 1.4934658636881424,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 30,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0030.npz",
+      "sha256": "8c61b2b3f2e8ed6833aefd328348912b265cc3662a27d5d24269ffbc115e185f",
+      "bytes": 5048697,
+      "pair": {
+        "difficulty": 0.41609689395065885,
+        "episode_id": 6909,
+        "goal_row": 1388773,
+        "goal_step": 64,
+        "initial_success": false,
+        "orientation_distance_deg": 2.2736435027870674,
+        "pair_id": 30,
+        "position_distance_m": 0.41609689395065885,
+        "start_row": 1388748,
+        "start_step": 39,
+        "symmetry_orientation_distance_deg": 2.2736435027874986,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 31,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0031.npz",
+      "sha256": "b1809d7a6f1c7a03e168ab9c6c7049a4312cb6bc575c864aa8dd760feef2998e",
+      "bytes": 4723867,
+      "pair": {
+        "difficulty": 0.11849373466703154,
+        "episode_id": 6948,
+        "goal_row": 1396671,
+        "goal_step": 123,
+        "initial_success": false,
+        "orientation_distance_deg": 1.6312372662207044,
+        "pair_id": 31,
+        "position_distance_m": 0.11849373466703154,
+        "start_row": 1396646,
+        "start_step": 98,
+        "symmetry_orientation_distance_deg": 1.6312372662202037,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 32,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0032.npz",
+      "sha256": "ccc18b1dd62854a442aa2b27ccde14f862a9ad1a6ab12b4b36f1b06ed620284d",
+      "bytes": 4802345,
+      "pair": {
+        "difficulty": 0.07872352629125234,
+        "episode_id": 7034,
+        "goal_row": 1413985,
+        "goal_step": 151,
+        "initial_success": false,
+        "orientation_distance_deg": 3.2777341872460877,
+        "pair_id": 32,
+        "position_distance_m": 0.07872352629125234,
+        "start_row": 1413960,
+        "start_step": 126,
+        "symmetry_orientation_distance_deg": 3.2777341872461134,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 33,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0033.npz",
+      "sha256": "f21516788f8823d046403d7ee19687eae6fb25989760f5f9c9442201b050d1e9",
+      "bytes": 4463131,
+      "pair": {
+        "difficulty": 0.28435025331139485,
+        "episode_id": 7090,
+        "goal_row": 1425168,
+        "goal_step": 78,
+        "initial_success": false,
+        "orientation_distance_deg": 15.95905677986673,
+        "pair_id": 33,
+        "position_distance_m": 0.28435025331139485,
+        "start_row": 1425143,
+        "start_step": 53,
+        "symmetry_orientation_distance_deg": 15.95905677986671,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 34,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0034.npz",
+      "sha256": "4af7c17aa7ccf440f3cbb7b80ff10fa27080d955359f512878a1eb6715d0fc4f",
+      "bytes": 4804634,
+      "pair": {
+        "difficulty": 0.19065474381090947,
+        "episode_id": 7130,
+        "goal_row": 1433261,
+        "goal_step": 131,
+        "initial_success": false,
+        "orientation_distance_deg": 1.6242619580582813,
+        "pair_id": 34,
+        "position_distance_m": 0.19065474381090947,
+        "start_row": 1433236,
+        "start_step": 106,
+        "symmetry_orientation_distance_deg": 1.624261958060183,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 35,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0035.npz",
+      "sha256": "e5060dfe0bfd0848e0e69c1646255bf5a688b28b8370f8b08a18cce67d3963df",
+      "bytes": 5059762,
+      "pair": {
+        "difficulty": 0.10363062888447094,
+        "episode_id": 7381,
+        "goal_row": 1483664,
+        "goal_step": 83,
+        "initial_success": false,
+        "orientation_distance_deg": 40.54973397041562,
+        "pair_id": 35,
+        "position_distance_m": 0.10363062888447094,
+        "start_row": 1483639,
+        "start_step": 58,
+        "symmetry_orientation_distance_deg": 40.54973397041558,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 36,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0036.npz",
+      "sha256": "17a70975e8b5b48ee9386408539d556167a436badcb3cec58a78c43e99b1caa6",
+      "bytes": 4598837,
+      "pair": {
+        "difficulty": 0.345997119329067,
+        "episode_id": 7478,
+        "goal_row": 1503142,
+        "goal_step": 64,
+        "initial_success": false,
+        "orientation_distance_deg": 4.670442261711213,
+        "pair_id": 36,
+        "position_distance_m": 0.345997119329067,
+        "start_row": 1503117,
+        "start_step": 39,
+        "symmetry_orientation_distance_deg": 4.670442261711296,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 37,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0037.npz",
+      "sha256": "6d630d728e8b88a792ef2cf6a9ec405e7d2c815c61ca61ec86ec85a5caf98b25",
+      "bytes": 4756329,
+      "pair": {
+        "difficulty": 0.10917213982008311,
+        "episode_id": 7556,
+        "goal_row": 1518792,
+        "goal_step": 36,
+        "initial_success": false,
+        "orientation_distance_deg": 2.124652450478568,
+        "pair_id": 37,
+        "position_distance_m": 0.10917213982008311,
+        "start_row": 1518767,
+        "start_step": 11,
+        "symmetry_orientation_distance_deg": 2.124652450478174,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 38,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0038.npz",
+      "sha256": "38e77743d837b422491652aa8132ea36dcc74b0c5b627ca652b53bbb9ab68212",
+      "bytes": 4233067,
+      "pair": {
+        "difficulty": 0.03698061054053641,
+        "episode_id": 7913,
+        "goal_row": 1590546,
+        "goal_step": 33,
+        "initial_success": false,
+        "orientation_distance_deg": 2.2964344336805698,
+        "pair_id": 38,
+        "position_distance_m": 0.03698061054053641,
+        "start_row": 1590521,
+        "start_step": 8,
+        "symmetry_orientation_distance_deg": 2.2964344336806772,
+        "upstream_initial_success": true
+      }
+    },
+    {
+      "case": 39,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0039.npz",
+      "sha256": "22f169566a87002650d145f5cef17118856d670f1e85e62ed14cee0093f10449",
+      "bytes": 4344978,
+      "pair": {
+        "difficulty": 0.07479467915826593,
+        "episode_id": 7975,
+        "goal_row": 1603123,
+        "goal_step": 148,
+        "initial_success": false,
+        "orientation_distance_deg": 2.9093582875926023,
+        "pair_id": 39,
+        "position_distance_m": 0.07479467915826593,
+        "start_row": 1603098,
+        "start_step": 123,
+        "symmetry_orientation_distance_deg": 2.9093582875923665,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 40,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0040.npz",
+      "sha256": "7639f55c719aa44b65ebcf534c4c201ba9bd52714e4c9a381b622a3862a5961b",
+      "bytes": 4746800,
+      "pair": {
+        "difficulty": 0.2972901693206682,
+        "episode_id": 7986,
+        "goal_row": 1605245,
+        "goal_step": 59,
+        "initial_success": false,
+        "orientation_distance_deg": 4.631579289788814,
+        "pair_id": 40,
+        "position_distance_m": 0.2972901693206682,
+        "start_row": 1605220,
+        "start_step": 34,
+        "symmetry_orientation_distance_deg": 4.6315792897887,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 41,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0041.npz",
+      "sha256": "12305bf097ad544115428cbf31e3033b2964aeb48b06b774fd3a7b8b2c6c0407",
+      "bytes": 4913194,
+      "pair": {
+        "difficulty": 0.19695561604604422,
+        "episode_id": 8183,
+        "goal_row": 1644939,
+        "goal_step": 156,
+        "initial_success": false,
+        "orientation_distance_deg": 2.777640401215288,
+        "pair_id": 41,
+        "position_distance_m": 0.19695561604604422,
+        "start_row": 1644914,
+        "start_step": 131,
+        "symmetry_orientation_distance_deg": 2.7776404012151708,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 42,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0042.npz",
+      "sha256": "7fa9b74a049408f274404507a9b0350b690c74e0ff7c4325ab422ed8bb5a91d8",
+      "bytes": 4732058,
+      "pair": {
+        "difficulty": 0.28672579685224925,
+        "episode_id": 8422,
+        "goal_row": 1692891,
+        "goal_step": 69,
+        "initial_success": false,
+        "orientation_distance_deg": 23.27313838087038,
+        "pair_id": 42,
+        "position_distance_m": 0.28672579685224925,
+        "start_row": 1692866,
+        "start_step": 44,
+        "symmetry_orientation_distance_deg": 23.27313838087047,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 43,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0043.npz",
+      "sha256": "8c6d14a6061e4b36364a9b0fa455cd5fb8a88fd40d18501f3d67f4bab6126551",
+      "bytes": 5126184,
+      "pair": {
+        "difficulty": 0.08868689989733246,
+        "episode_id": 8666,
+        "goal_row": 1741951,
+        "goal_step": 85,
+        "initial_success": false,
+        "orientation_distance_deg": 1.8770805242263617,
+        "pair_id": 43,
+        "position_distance_m": 0.08868689989733246,
+        "start_row": 1741926,
+        "start_step": 60,
+        "symmetry_orientation_distance_deg": 1.8770805242270698,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 44,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0044.npz",
+      "sha256": "8b516a1222e32983c6048402b9eb2e874fe6b0cab0508eb34d02f0da543ac5db",
+      "bytes": 5256204,
+      "pair": {
+        "difficulty": 0.14404907387696847,
+        "episode_id": 8798,
+        "goal_row": 1768526,
+        "goal_step": 128,
+        "initial_success": false,
+        "orientation_distance_deg": 0.8662019880154965,
+        "pair_id": 44,
+        "position_distance_m": 0.14404907387696847,
+        "start_row": 1768501,
+        "start_step": 103,
+        "symmetry_orientation_distance_deg": 0.866201988014408,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 45,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0045.npz",
+      "sha256": "3e6703a929afb49bcb98002d27a7bb4e202f5e8a108cd0cd239eb8a083e5ccbd",
+      "bytes": 4296730,
+      "pair": {
+        "difficulty": 0.29866918218209926,
+        "episode_id": 8865,
+        "goal_row": 1782023,
+        "goal_step": 158,
+        "initial_success": false,
+        "orientation_distance_deg": 1.7136480322069871,
+        "pair_id": 45,
+        "position_distance_m": 0.29866918218209926,
+        "start_row": 1781998,
+        "start_step": 133,
+        "symmetry_orientation_distance_deg": 1.7136480322075065,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 46,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0046.npz",
+      "sha256": "86510225431021320af85c9b559ee12ddbe5e44b23b5b1443e6ab5848fc90ee9",
+      "bytes": 5074546,
+      "pair": {
+        "difficulty": 0.1152033628429509,
+        "episode_id": 8971,
+        "goal_row": 1803298,
+        "goal_step": 127,
+        "initial_success": false,
+        "orientation_distance_deg": 2.0635458401436946,
+        "pair_id": 46,
+        "position_distance_m": 0.1152033628429509,
+        "start_row": 1803273,
+        "start_step": 102,
+        "symmetry_orientation_distance_deg": 2.063545840144392,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 47,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0047.npz",
+      "sha256": "682ae3d36346f07feb52479c1d6b3e9f9db549d04f748c0b7a11cebab2f3e2c3",
+      "bytes": 4533132,
+      "pair": {
+        "difficulty": 0.14299649780279794,
+        "episode_id": 9444,
+        "goal_row": 1898326,
+        "goal_step": 82,
+        "initial_success": false,
+        "orientation_distance_deg": 4.82128196140619,
+        "pair_id": 47,
+        "position_distance_m": 0.14299649780279794,
+        "start_row": 1898301,
+        "start_step": 57,
+        "symmetry_orientation_distance_deg": 4.821281961406249,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 48,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0048.npz",
+      "sha256": "b7788ffd522ed29ea8dbde1cad7cc9f67c317b9cc0c9352c05643a6bbc2b7380",
+      "bytes": 4267146,
+      "pair": {
+        "difficulty": 0.08129922746270508,
+        "episode_id": 9567,
+        "goal_row": 1923117,
+        "goal_step": 150,
+        "initial_success": false,
+        "orientation_distance_deg": 25.09820971748708,
+        "pair_id": 48,
+        "position_distance_m": 0.08129922746270508,
+        "start_row": 1923092,
+        "start_step": 125,
+        "symmetry_orientation_distance_deg": 25.09820971748709,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "case": 49,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_recovery_20261030/pool/case0049.npz",
+      "sha256": "30548fa994f4568ebedb3e4cb4ef435c1737461c5d9e418b0f831ebdf5e65d62",
+      "bytes": 4913091,
+      "pair": {
+        "difficulty": 0.16241879124616246,
+        "episode_id": 9786,
+        "goal_row": 1967127,
+        "goal_step": 141,
+        "initial_success": false,
+        "orientation_distance_deg": 33.01958466645329,
+        "pair_id": 49,
+        "position_distance_m": 0.16241879124616246,
+        "start_row": 1967102,
+        "start_step": 116,
+        "symmetry_orientation_distance_deg": 33.01958466645328,
+        "upstream_initial_success": false
+      }
+    }
+  ],
+  "compressed_bytes": 243407829,
+  "manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7",
+  "models": [
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/cube-spatial-local-seed1",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/cube-spatial-local-seed1/model-step0002000",
+      "seed": 1,
+      "step": 2000,
+      "source": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+      "class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": 64,
+      "state_width": 16,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/cube-spatial-local-seed2",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/cube-spatial-local-seed2/model-step0002000",
+      "seed": 2,
+      "step": 2000,
+      "source": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+      "class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": 64,
+      "state_width": 16,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout2000_20261031/cube-readout-static-seed1",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout2000_20261031/cube-readout-static-seed1/model-step0002000",
+      "seed": 1,
+      "step": 2000,
+      "source": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+      "class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": 64,
+      "state_width": 16,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout2000_20261031/cube-readout-static-seed2",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout2000_20261031/cube-readout-static-seed2/model-step0002000",
+      "seed": 2,
+      "step": 2000,
+      "source": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+      "class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": 64,
+      "state_width": 16,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout2000_20261031/cube-readout-state-seed1",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout2000_20261031/cube-readout-state-seed1/model-step0002000",
+      "seed": 1,
+      "step": 2000,
+      "source": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+      "class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": 64,
+      "state_width": 16,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout2000_20261031/cube-readout-state-seed2",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout2000_20261031/cube-readout-state-seed2/model-step0002000",
+      "seed": 2,
+      "step": 2000,
+      "source": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+      "class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": 64,
+      "state_width": 16,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed1",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed1/model-step0006000",
+      "seed": 1,
+      "step": 6000,
+      "source": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+      "class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": 64,
+      "state_width": 16,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed2",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed2/model-step0006000",
+      "seed": 2,
+      "step": 6000,
+      "source": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+      "class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": 64,
+      "state_width": 16,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/model-step0012000",
+      "seed": 1,
+      "step": 12000,
+      "source": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+      "class": "as_jepa_lewm.native_lewm.NativeLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": null,
+      "state_width": null,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/model-step0012000",
+      "seed": 2,
+      "step": 12000,
+      "source": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+      "class": "as_jepa_lewm.native_lewm.NativeLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": null,
+      "state_width": null,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed1",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed1/model-step0012000",
+      "seed": 1,
+      "step": 12000,
+      "source": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+      "class": "as_jepa_lewm.robust.RobustLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": null,
+      "state_width": null,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    },
+    {
+      "run": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed2",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed2/model-step0012000",
+      "seed": 2,
+      "step": 12000,
+      "source": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+      "class": "as_jepa_lewm.robust.RobustLeWM",
+      "window": 8,
+      "action_dim": 25,
+      "state_slots": null,
+      "state_width": null,
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "smoothed_dim": null,
+      "normalization": "train-card"
+    }
+  ],
+  "all12_current_primary_pairs_identical": true,
+  "actual_new_model_calls": 0,
+  "new_simulator_calls": 0
+}

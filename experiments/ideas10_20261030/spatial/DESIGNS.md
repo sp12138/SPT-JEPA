@@ -144,9 +144,11 @@ Observation queries are training targets, not a policy's optimal-action labels. 
 
 | Source | Overlap and surviving distinction |
 |---|---|
-| [C-Learning: Horizon-Aware Cumulative Accessibility, Naderian et al. 2021](https://arxiv.org/abs/2011.12363) | Already learns horizon-dependent goal reachability and a recurrence from offline interaction. “Reach within H” is not novel. Our tentative distinction is predicting the outcome of the *specified action word*, rather than optimized policy reachability, and using it as reward-free world-model supervision. |
+| [C-Learning: Horizon-Aware Cumulative Accessibility Estimation, Naderian et al. 2021](https://arxiv.org/abs/2011.12363) | Already learns horizon-dependent goal reachability and a recurrence from offline interaction. “Reach within H” is not novel. Our tentative distinction is predicting the outcome of the *specified action word*, rather than optimized policy reachability, and using it as reward-free world-model supervision. |
 | [C-Learning via Recursive Classification, Eysenbach et al. 2021](https://arxiv.org/abs/2011.08909) | Models policy-conditioned future state distributions. Query prediction is established; a specific sequence-conditioned killed-path objective is the narrower candidate. If its implementation reduces to the existing objective plus an absorbing goal, reject the novelty claim. |
 | [Neural Hybrid Automata, Poli et al. 2021](https://arxiv.org/abs/2106.04165) | Learns modes and stochastic event transitions. An event head alone is a rebrand; the candidate must enforce query-specific first-passage/survival composition. |
+
+Citation clarification, 2026-10-31: the two C-Learning entries above are distinct papers. Naderian et al.2011.12363 studies cumulative accessibility within a horizon; Eysenbach et al.2011.08909 studies policy-conditioned future-state densities through recursive classification. These results must not be interchanged.
 
 Additional hard exclusions: [Neural Event ODEs](https://arxiv.org/abs/2011.03902), [VTA](https://arxiv.org/abs/1910.00775), [THICK](https://openreview.net/pdf/3e5df2ed6659f21032c8784d5836ef8147d1413a.pdf), and [H-JEPA](https://arxiv.org/abs/2610.06805) already occupy substantial event/hierarchy territory. Killed kernels and survival likelihood are classical. This is a provisional training/API hypothesis, not a new probability theorem.
 

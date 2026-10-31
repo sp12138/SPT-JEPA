@@ -1,0 +1,201 @@
+{
+  "checked_at": 1793424671.4332194,
+  "utc": "2026-10-31T05:31:11.433224+00:00",
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1",
+    "source_commit": "6e1693345786f2c190d0191685e4b485d24b4ab8",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/manifest-v2.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart2000_helpers_20261031/source-v1",
+    "source_commit": "341644178ca978df09468e7f36237cbef8a4a8ea",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart2000_helpers_20261031/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json"
+  },
+  "passed": true,
+  "all4_actual700": true,
+  "rows": [
+    {
+      "run": "tworoom-raw-chart-bounded-seed1",
+      "parent600": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/tworoom-raw-chart-bounded-seed1",
+      "gpu": 0,
+      "pid": 1052605,
+      "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -v -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/local_raw_chart2000_20261031/tworoom-raw-chart-bounded-seed1/config.json --stop-step 1200 --resume ",
+      "import_restore_lines": [
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/spatial_carrier.py",
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/carrier.py",
+        "Restored all states from the checkpoint at /efs/prescottsun/SPT-JEPA/runs/local_raw_chart2000_20261031/tworoom-raw-chart-bounded-seed1/last.ckpt"
+      ],
+      "status": {
+        "state": "running",
+        "step": 700,
+        "elapsed_seconds": 133.65598678588867,
+        "updated_at": 1793424603.4577134,
+        "pid": 1052605,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.7192736864089966,
+        "fm": 0.03097282163798809,
+        "rate": 2.7532033920288086,
+        "entry": 2349.85791015625,
+        "surprise": 33495.66796875,
+        "rate_share": 22.222736358642578,
+        "feature_std": 0.6062158942222595,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.13675495982170105,
+        "grad_norm_renderer": 1.6735615730285645,
+        "grad_norm_action_encoder": 0.04853383079171181,
+        "grad_norm_carrier_chart_module": 0.025763681158423424,
+        "seconds_per_step": 1.2068012356758118,
+        "peak_gib": 107.57131624221802,
+        "learning_rates": [
+          2.802241793434748e-05,
+          5.604483586869496e-05
+        ]
+      }
+    },
+    {
+      "run": "tworoom-raw-chart-bounded-seed2",
+      "parent600": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/tworoom-raw-chart-bounded-seed2",
+      "gpu": 1,
+      "pid": 1052609,
+      "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -v -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/local_raw_chart2000_20261031/tworoom-raw-chart-bounded-seed2/config.json --stop-step 1200 --resume ",
+      "import_restore_lines": [
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/spatial_carrier.py",
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/carrier.py",
+        "Restored all states from the checkpoint at /efs/prescottsun/SPT-JEPA/runs/local_raw_chart2000_20261031/tworoom-raw-chart-bounded-seed2/last.ckpt"
+      ],
+      "status": {
+        "state": "running",
+        "step": 700,
+        "elapsed_seconds": 132.34465050697327,
+        "updated_at": 1793424602.168611,
+        "pid": 1052609,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.7226226329803467,
+        "fm": 0.03483854606747627,
+        "rate": 2.751136302947998,
+        "entry": 2371.3056640625,
+        "surprise": 33467.20703125,
+        "rate_share": 19.742042541503906,
+        "feature_std": 0.6289637088775635,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.126939058303833,
+        "grad_norm_renderer": 2.07718563079834,
+        "grad_norm_action_encoder": 0.026004331186413765,
+        "grad_norm_carrier_chart_module": 0.02897704392671585,
+        "seconds_per_step": 1.1956322360038758,
+        "peak_gib": 107.57131624221802,
+        "learning_rates": [
+          2.802241793434748e-05,
+          5.604483586869496e-05
+        ]
+      }
+    },
+    {
+      "run": "cube-raw-chart-bounded-seed1",
+      "parent600": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed1",
+      "gpu": 2,
+      "pid": 1052613,
+      "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -v -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/local_raw_chart2000_20261031/cube-raw-chart-bounded-seed1/config.json --stop-step 1200 --resume ",
+      "import_restore_lines": [
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/spatial_carrier.py",
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/carrier.py",
+        "Restored all states from the checkpoint at /efs/prescottsun/SPT-JEPA/runs/local_raw_chart2000_20261031/cube-raw-chart-bounded-seed1/last.ckpt"
+      ],
+      "status": {
+        "state": "running",
+        "step": 700,
+        "elapsed_seconds": 149.5601487159729,
+        "updated_at": 1793424619.3734362,
+        "pid": 1052613,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.7666719555854797,
+        "fm": 0.05445197597146034,
+        "rate": 2.848879814147949,
+        "entry": 2323.4833984375,
+        "surprise": 34675.109375,
+        "rate_share": 13.079781532287598,
+        "feature_std": 0.7226897478103638,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.10822613537311554,
+        "grad_norm_renderer": 0.940709114074707,
+        "grad_norm_action_encoder": 0.008485106751322746,
+        "grad_norm_carrier_chart_module": 0.0336468406021595,
+        "seconds_per_step": 1.3677491974830627,
+        "peak_gib": 107.57246923446655,
+        "learning_rates": [
+          2.802241793434748e-05,
+          5.604483586869496e-05
+        ]
+      }
+    },
+    {
+      "run": "cube-raw-chart-bounded-seed2",
+      "parent600": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed2",
+      "gpu": 3,
+      "pid": 1052618,
+      "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -v -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/local_raw_chart2000_20261031/cube-raw-chart-bounded-seed2/config.json --stop-step 1200 --resume ",
+      "import_restore_lines": [
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/spatial_carrier.py",
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/carrier.py",
+        "Restored all states from the checkpoint at /efs/prescottsun/SPT-JEPA/runs/local_raw_chart2000_20261031/cube-raw-chart-bounded-seed2/last.ckpt"
+      ],
+      "status": {
+        "state": "running",
+        "step": 700,
+        "elapsed_seconds": 149.49820113182068,
+        "updated_at": 1793424619.3202095,
+        "pid": 1052618,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.7358654737472534,
+        "fm": 0.05319211259484291,
+        "rate": 2.7306933403015137,
+        "entry": 2324.38134765625,
+        "surprise": 33222.703125,
+        "rate_share": 12.834108352661133,
+        "feature_std": 0.6993523836135864,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.11130120605230331,
+        "grad_norm_renderer": 1.0820893049240112,
+        "grad_norm_action_encoder": 0.014887170866131783,
+        "grad_norm_carrier_chart_module": 0.031146492809057236,
+        "seconds_per_step": 1.3672603154182434,
+        "peak_gib": 107.57246923446655,
+        "learning_rates": [
+          2.802241793434748e-05,
+          5.604483586869496e-05
+        ]
+      }
+    }
+  ],
+  "exits": [],
+  "gpu_apps": "GPU-170dcf84-3202-5179-c251-e6a13288bc31, 1052605, 111850 MiB\nGPU-8bedce53-4283-cf75-a8ee-53fb2762b518, 1052609, 111850 MiB\nGPU-6f92808d-cf59-fb1a-305d-ebf327b63aab, 1052613, 111850 MiB\nGPU-d236fdaa-fbcb-6dab-5684-38a95e7b045d, 1052618, 111850 MiB\n",
+  "next_regular_review": "2026-10-31T06:00:26Z",
+  "stop_step": 2000,
+  "no_automatic_extension": true
+}

@@ -1,0 +1,168 @@
+{
+  "at": 1793424380.008478,
+  "runs": 4,
+  "endpoints": 36,
+  "model_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1",
+    "source_commit": "6e1693345786f2c190d0191685e4b485d24b4ab8",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/manifest-v2.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart2000_helpers_20261031/source-v1",
+    "source_commit": "341644178ca978df09468e7f36237cbef8a4a8ea",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart2000_helpers_20261031/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json"
+  },
+  "allocations": [
+    {
+      "id": "tworoom-raw-chart-bounded-seed1",
+      "host": "dev13",
+      "gpu": 0,
+      "task": "tworoom",
+      "training_seed": 1,
+      "arm": "local-raw-bounded",
+      "family": "spatial_carrier",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/tworoom-raw-chart-bounded-seed1",
+      "initial": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/tworoom-raw-chart-bounded-seed1/initial-model/weights.pt",
+      "original_initial": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/tworoom-raw-chart-bounded-seed1/initial-model/weights.pt",
+      "identity_initial": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/tworoom-spatial-local-seed1/initial-model/weights.pt",
+      "primary_manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94"
+      },
+      "fresh_manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_freshcases_20261031/fresh-manifest.json",
+        "sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a"
+      },
+      "identity2000_primary": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-tworoom-spatial-local-seed1/metrics.json",
+      "identity2000_fresh": {
+        "evaluation": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-tworoom-spatial-local-seed1/metrics.json",
+        "sha256": "d5ccd09413b138edb142695b63c149f191d2f4f764429a44fd262bdba4f66b96",
+        "success_rate": 60.0,
+        "manifest": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_freshcases_20261031/fresh-manifest.json",
+          "sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a"
+        }
+      },
+      "old_chart2000": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart2000_20261031/tworoom-spatial-chart-bounded-seed1"
+    },
+    {
+      "id": "tworoom-raw-chart-bounded-seed2",
+      "host": "dev13",
+      "gpu": 1,
+      "task": "tworoom",
+      "training_seed": 2,
+      "arm": "local-raw-bounded",
+      "family": "spatial_carrier",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/tworoom-raw-chart-bounded-seed2",
+      "initial": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/tworoom-raw-chart-bounded-seed2/initial-model/weights.pt",
+      "original_initial": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/tworoom-raw-chart-bounded-seed2/initial-model/weights.pt",
+      "identity_initial": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/tworoom-spatial-local-seed2/initial-model/weights.pt",
+      "primary_manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+        "sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94"
+      },
+      "fresh_manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_freshcases_20261031/fresh-manifest.json",
+        "sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a"
+      },
+      "identity2000_primary": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-tworoom-spatial-local-seed2/metrics.json",
+      "identity2000_fresh": {
+        "evaluation": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-tworoom-spatial-local-seed2/metrics.json",
+        "sha256": "de67e8521309cc3edad18177574ef507efe8ac8f8c9b6a931636565862fdbe64",
+        "success_rate": 56.00000000000001,
+        "manifest": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_freshcases_20261031/fresh-manifest.json",
+          "sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a"
+        }
+      },
+      "old_chart2000": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart2000_20261031/tworoom-spatial-chart-bounded-seed2"
+    },
+    {
+      "id": "cube-raw-chart-bounded-seed1",
+      "host": "dev13",
+      "gpu": 2,
+      "task": "cube",
+      "training_seed": 1,
+      "arm": "local-raw-bounded",
+      "family": "spatial_carrier",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed1",
+      "initial": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed1/initial-model/weights.pt",
+      "original_initial": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/cube-raw-chart-bounded-seed1/initial-model/weights.pt",
+      "identity_initial": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/cube-spatial-local-seed1/initial-model/weights.pt",
+      "primary_manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+      },
+      "fresh_manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+        "sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f"
+      },
+      "identity2000_primary": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-cube-spatial-local-seed1/metrics.json",
+      "identity2000_fresh": {
+        "evaluation": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-cube-spatial-local-seed1/metrics.json",
+        "sha256": "3a036d254126475033376c24b278a1868e2fd36542e9aa5e7d820cc55b0eb714",
+        "success_rate": 16.0,
+        "manifest": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+          "sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f"
+        }
+      },
+      "old_chart2000": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart2000_20261031/cube-spatial-chart-bounded-seed1"
+    },
+    {
+      "id": "cube-raw-chart-bounded-seed2",
+      "host": "dev13",
+      "gpu": 3,
+      "task": "cube",
+      "training_seed": 2,
+      "arm": "local-raw-bounded",
+      "family": "spatial_carrier",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed2",
+      "initial": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed2/initial-model/weights.pt",
+      "original_initial": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/cube-raw-chart-bounded-seed2/initial-model/weights.pt",
+      "identity_initial": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/cube-spatial-local-seed2/initial-model/weights.pt",
+      "primary_manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+      },
+      "fresh_manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+        "sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f"
+      },
+      "identity2000_primary": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-cube-spatial-local-seed2/metrics.json",
+      "identity2000_fresh": {
+        "evaluation": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-cube-spatial-local-seed2/metrics.json",
+        "sha256": "1e29641d1ff8e2dd6c9adfe9e614faf231e19c4d1f25a509260657ae0c30ca5d",
+        "success_rate": 10.0,
+        "manifest": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+          "sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f"
+        }
+      },
+      "old_chart2000": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart2000_20261031/cube-spatial-chart-bounded-seed2"
+    }
+  ],
+  "initial_step": 600,
+  "intermediate_step": 1200,
+  "stop_step": 2000,
+  "scheduler_horizon": 124910,
+  "warmup_steps": 1249,
+  "archive_steps": [
+    1200,
+    2000
+  ],
+  "complete600_review": "/efs/prescottsun/SPT-JEPA/reports/local-raw-chart-repaired600-20261031/summary.json",
+  "source_600_accounting": "3 prior real successes plus17 real successes; parent paths mapped per run.",
+  "initial_contract": "All557 original raw and553 identity tensors exact, including3 sigreg buffers; sigreg remains inactive in proposed loss.",
+  "unchanged": "Model6e/metadata-v2,raw public coordinates,2128 chart parameters,data,calibration,batch128,seed,sampler/RNG/optimizer/scheduler and native objectives/CEM unchanged. No extra labels/head/loss/cohort.",
+  "operations": "New outputs; native600->1200->2000 boundaries; checkpoint cadence1200,retain1200/2000. Every job source remains6e; archive scripts explicitly frozen/self-verified. Python-v only records model import.",
+  "coordinates": "Public/cached states already RAW; do not inverse again. Compare both original identity2000 and old chart2000 in common raw coordinates.",
+  "authorization": "One reviewed maturity discrimination beyond1249 warmup. dev13g0-3 only after actual availability. Failed1200 archive blocks2000. No automatic budget>2000; no task/substantial-prediction gain at2000 means stop.",
+  "candidate_only": true
+}
