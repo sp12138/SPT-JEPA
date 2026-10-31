@@ -69,7 +69,11 @@ class AuditContracts(unittest.TestCase):
         self.assertFalse(query_contract(m,c,bad,i)['passed'])
         next(m.pool.parameters()).grad=None
         self.assertFalse(query_contract(m,c,s,i)['passed'])
-        EVIDENCE['adaptive_negatives']=['missing_AdamW_state','nonfinite_AdamW_state','missing_gradient']
+        for p in m.pool.parameters():p.grad=torch.zeros_like(p)
+        zero=query_contract(m,c,s,i)
+        self.assertEqual(zero['gradient_norm'],0.)
+        self.assertFalse(zero['passed'])
+        EVIDENCE['adaptive_negatives']=['missing_AdamW_state','nonfinite_AdamW_state','missing_gradient','entire_Q_gradient_group_zero']
 
     def test_clip_observer_calls_original_once_and_preserves_result_grad_state_rng(self):
         m,_,_,_=trained('adaptive');plain=copy.deepcopy(m)

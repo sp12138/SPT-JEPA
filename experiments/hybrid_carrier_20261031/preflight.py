@@ -6,6 +6,7 @@ Only its requires_grad-based interpretation of a frozen QueryPool is extended.
 """
 import copy
 import json
+import math
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -55,9 +56,13 @@ def query_contract(model, cfg, checkpoint, initial):
             gradient_is_none=p.grad is None, gradient_finite=bool(gradient_finite),
             gradient_norm=None if p.grad is None else float(p.grad.detach().norm()),
             optimizer_state_present=state is not None, passed=bool(ok)))
+    group_norm = math.sqrt(sum(float(p.grad.detach().double().square().sum())
+                              for p in query.values() if p.grad is not None))
+    active_group = model.hybrid_query == 'fixed' or group_norm > 0
     result = dict(arm=model.hybrid_query, tensors=9, mapping='Actual native optimizer group order to saved parameter IDs',
         nominal_requires_grad=True, effective_query_parameters=152464 if model.hybrid_query == 'adaptive' else 0,
-        rows=rows, passed=all(row['passed'] for row in rows))
+        gradient_norm=group_norm, active_group_nonzero=bool(active_group),
+        rows=rows, passed=all(row['passed'] for row in rows) and active_group)
     del optimizer, configured
     return result
 
