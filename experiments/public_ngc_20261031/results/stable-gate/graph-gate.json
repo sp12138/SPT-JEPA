@@ -1,0 +1,348 @@
+{
+  "passed": true,
+  "graphs": [
+    {
+      "id": "tworoom-local1024-seed1",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/tworoom-local1024-seed1/graph.json",
+      "report_sha256": "1a388897cf05e84cf53febf458adde24617a7abbddd80f193d63626ad1049366",
+      "dimension": 1024,
+      "origin_kind": "reuse-exact-graph",
+      "radius_quantiles": [
+        0.7450287342071533,
+        0.9469742178916931,
+        7.2758753299713135,
+        34.43449554443363,
+        44.14537811279297
+      ],
+      "components": 3,
+      "bridges": 2,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 8.44895458129713e-06,
+        "mean_absolute_error": 1.2624490482140338e-06,
+        "max_relative_error": 1.850680218340793e-07,
+        "dimension_relative_bound": 0.000980377197265625,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": null,
+      "total_seconds": 9.222868705168366
+    },
+    {
+      "id": "tworoom-local1024-seed2",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/tworoom-local1024-seed2/graph.json",
+      "report_sha256": "99ae93dc7b78680a7ac168e9228744a13a08e99eb0a2e784a9fe6982d022f10c",
+      "dimension": 1024,
+      "origin_kind": "reuse-exact-graph",
+      "radius_quantiles": [
+        0.7322978973388672,
+        0.9202884721755982,
+        7.055320739746094,
+        34.30820011138925,
+        44.77694320678711
+      ],
+      "components": 2,
+      "bridges": 1,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 8.213870358986242e-06,
+        "mean_absolute_error": 1.29705807551983e-06,
+        "max_relative_error": 1.79127313051027e-07,
+        "dimension_relative_bound": 0.000980377197265625,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": null,
+      "total_seconds": 9.218139795586467
+    },
+    {
+      "id": "tworoom-native-raw-seed1",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/tworoom-native-raw-seed1/graph.json",
+      "report_sha256": "76a35f4647de3d0bfecd9fefd5de139810b850ac25b3f4aa14498ed769c04a4d",
+      "dimension": 192,
+      "origin_kind": "reuse-exact-graph",
+      "radius_quantiles": [
+        0.6335882544517517,
+        0.8828651875257492,
+        3.770105004310608,
+        7.460509939193741,
+        10.311784744262695
+      ],
+      "components": 1,
+      "bridges": 0,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 2.80410378650231e-06,
+        "mean_absolute_error": 4.860124343345416e-07,
+        "max_relative_error": 1.4437996915089732e-07,
+        "dimension_relative_bound": 0.000186920166015625,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": null,
+      "total_seconds": 9.186756622046232
+    },
+    {
+      "id": "tworoom-native-raw-seed2",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/tworoom-native-raw-seed2/graph.json",
+      "report_sha256": "e853efff0c3207edf2dd49d9362708dee9132e92265ff1880b9349ee43badf30",
+      "dimension": 192,
+      "origin_kind": "reuse-exact-graph",
+      "radius_quantiles": [
+        0.6027965545654297,
+        0.9610605311393738,
+        3.9049519300460815,
+        6.53387115001679,
+        10.712957382202148
+      ],
+      "components": 1,
+      "bridges": 0,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 2.8930329456500203e-06,
+        "mean_absolute_error": 5.106159956504239e-07,
+        "max_relative_error": 1.4144991120554425e-07,
+        "dimension_relative_bound": 0.000186920166015625,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": null,
+      "total_seconds": 9.366994176059961
+    },
+    {
+      "id": "tworoom-TF64-seed1",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/tworoom-TF64-seed1/graph.json",
+      "report_sha256": "88413ddffce97dfd84801aa8866aa6c098db000ef59058498a68d26ea56d4ecc",
+      "dimension": 64,
+      "origin_kind": "rebuild-fp64-from-saved-nodes",
+      "radius_quantiles": [
+        2.7207957828068174e-05,
+        3.553956441464834e-05,
+        0.00011104090663138777,
+        0.0005496764305280521,
+        0.0010181042598560452
+      ],
+      "components": 33,
+      "bridges": 32,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 1.0748617308709019e-09,
+        "mean_absolute_error": 4.0422132853057896e-11,
+        "max_relative_error": 1.50293222154534e-07,
+        "dimension_relative_bound": 6.4849853515625e-05,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": {
+        "zero_radius_count": 3410,
+        "radius_quantiles": [
+          0.0,
+          0.0,
+          0.0,
+          0.0005320921773090959,
+          0.001035800902172923
+        ],
+        "positive_distance_pairs_rounded_zero": 963888,
+        "attach_assertion_chunks": 157
+      },
+      "total_seconds": 26.358300616964698
+    },
+    {
+      "id": "tworoom-TF64-seed2",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/tworoom-TF64-seed2/graph.json",
+      "report_sha256": "409864c40ad324dee953d29c6e7254e286ea3adcf0fee71050e3a66916292baa",
+      "dimension": 64,
+      "origin_kind": "rebuild-fp64-from-saved-nodes",
+      "radius_quantiles": [
+        3.4215561754535884e-05,
+        4.519728183367988e-05,
+        0.00012355450598988682,
+        0.0005974725354462862,
+        0.0012444225139915943
+      ],
+      "components": 31,
+      "bridges": 30,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 6.551314317426726e-10,
+        "mean_absolute_error": 3.8646104540251313e-11,
+        "max_relative_error": 1.4635281505391484e-07,
+        "dimension_relative_bound": 6.4849853515625e-05,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": {
+        "zero_radius_count": 3230,
+        "radius_quantiles": [
+          0.0,
+          0.0,
+          0.0,
+          0.0005854286719113588,
+          0.0012567908270284534
+        ],
+        "positive_distance_pairs_rounded_zero": 563270,
+        "attach_assertion_chunks": 157
+      },
+      "total_seconds": 25.770445625297725
+    },
+    {
+      "id": "cube-local1024-seed1",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/cube-local1024-seed1/graph.json",
+      "report_sha256": "1e269e3b6cd74643770d10b3e3efd321229175ea2c7bf8df32f8a8f1d7776f84",
+      "dimension": 1024,
+      "origin_kind": "reuse-exact-graph",
+      "radius_quantiles": [
+        12.6845703125,
+        14.016353988647461,
+        21.238179206848145,
+        29.253704376220703,
+        33.73427963256836
+      ],
+      "components": 22,
+      "bridges": 21,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 9.011962887939262e-06,
+        "mean_absolute_error": 1.157450327122068e-06,
+        "max_relative_error": 1.5195235921688005e-07,
+        "dimension_relative_bound": 0.000980377197265625,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": null,
+      "total_seconds": 10.05777336936444
+    },
+    {
+      "id": "cube-local1024-seed2",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/cube-local1024-seed2/graph.json",
+      "report_sha256": "79228ff85fcbdfd7d4cfa3df13773e3600ca301b461f4951b448a2d00f6aafa3",
+      "dimension": 1024,
+      "origin_kind": "reuse-exact-graph",
+      "radius_quantiles": [
+        12.333879470825195,
+        13.373091316223144,
+        20.90237331390381,
+        28.90119247436525,
+        35.08681869506836
+      ],
+      "components": 28,
+      "bridges": 27,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 1.0068538472296495e-05,
+        "mean_absolute_error": 1.1502319399536794e-06,
+        "max_relative_error": 1.5620129739868115e-07,
+        "dimension_relative_bound": 0.000980377197265625,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": null,
+      "total_seconds": 10.046013187617064
+    },
+    {
+      "id": "cube-native-raw-seed1",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/cube-native-raw-seed1/graph.json",
+      "report_sha256": "36f2e1fe0fabed772c1f259fbfab74db327d18bb213c8492ca842e43cc67c507",
+      "dimension": 192,
+      "origin_kind": "reuse-exact-graph",
+      "radius_quantiles": [
+        5.206441879272461,
+        6.288870615959167,
+        8.318479537963867,
+        11.001228723526001,
+        13.75289535522461
+      ],
+      "components": 1,
+      "bridges": 0,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 3.16275444234293e-06,
+        "mean_absolute_error": 5.510535655658016e-07,
+        "max_relative_error": 1.3444682778506028e-07,
+        "dimension_relative_bound": 0.000186920166015625,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": null,
+      "total_seconds": 10.02611985988915
+    },
+    {
+      "id": "cube-native-raw-seed2",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/cube-native-raw-seed2/graph.json",
+      "report_sha256": "d3a59d3b537bfcd6ed1de5aaecd062eb4020cf1f456a3eb64096c9bb2b8ee230",
+      "dimension": 192,
+      "origin_kind": "reuse-exact-graph",
+      "radius_quantiles": [
+        4.692368984222412,
+        5.820204892158508,
+        7.889514207839966,
+        10.539722251892096,
+        13.525221824645996
+      ],
+      "components": 1,
+      "bridges": 0,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 2.871108879531903e-06,
+        "mean_absolute_error": 5.434576343232729e-07,
+        "max_relative_error": 1.4630682681708672e-07,
+        "dimension_relative_bound": 0.000186920166015625,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": null,
+      "total_seconds": 10.013184308074415
+    },
+    {
+      "id": "cube-TF64-seed1",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/cube-TF64-seed1/graph.json",
+      "report_sha256": "37ab9fdac2fb908d8cd8bbfbd8062c8df9f42fad7a52f46c12ed3d90471c1784",
+      "dimension": 64,
+      "origin_kind": "reuse-exact-graph",
+      "radius_quantiles": [
+        0.564187228679657,
+        0.6828576678037643,
+        0.9996155798435211,
+        1.7264297854900363,
+        2.41723370552063
+      ],
+      "components": 1,
+      "bridges": 0,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 2.351217851526144e-06,
+        "mean_absolute_error": 2.207063663285445e-07,
+        "max_relative_error": 1.449095177487305e-07,
+        "dimension_relative_bound": 6.4849853515625e-05,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": null,
+      "total_seconds": 7.109412805992179
+    },
+    {
+      "id": "cube-TF64-seed2",
+      "report": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_stable_nodes_v2_20261031/cube-TF64-seed2/graph.json",
+      "report_sha256": "09910b8b51fbe6e438cdb77846c6bedd703b37efaba46c17b50998e243accf9f",
+      "dimension": 64,
+      "origin_kind": "reuse-exact-graph",
+      "radius_quantiles": [
+        0.6264376044273376,
+        0.7283668112754822,
+        1.040581464767456,
+        1.7588030683994296,
+        2.5178451538085938
+      ],
+      "components": 2,
+      "bridges": 1,
+      "distance_reference": {
+        "ordered_pairs": 25000000,
+        "max_absolute_error": 2.326738187008459e-06,
+        "mean_absolute_error": 2.200101008937276e-07,
+        "max_relative_error": 1.4353029602836248e-07,
+        "dimension_relative_bound": 6.4849853515625e-05,
+        "reference": "CUDA FP64 direct on promoted identical saved float32 nodes; no new encoding."
+      },
+      "original_cuda_mm": null,
+      "total_seconds": 7.111688328033779
+    }
+  ],
+  "cohorts": {
+    "tworoom": "fcc1124651508fe920dd8acefc8ce4935ae75b58955a9d16a4519544d5045598",
+    "cube": "d862de0b5b99bb37afb7ac85e7c4c18f8495569a1e0bf6eae02f62e7e9bc2549"
+  },
+  "new_rgb": 0,
+  "new_encoder_calls": 0,
+  "new_model_calls": 0,
+  "numeric_variant": "uniform-fp32-direct-attachment",
+  "scope": "All12 node-only gates complete. Report to root before any48eval activation."
+}
