@@ -1,0 +1,186 @@
+{
+  "host": "dev15",
+  "created_at": 1793432363.1141808,
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1",
+    "source_commit": "f2ae93d4f0da2fb32021bfade7426b11ea06602b",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/manifest.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "rows": [
+    {
+      "id": "train600-cube-hybrid-fixed-seed2",
+      "gpu": 0,
+      "actual_child": {
+        "pid": 1295023,
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_20261031/cube-hybrid-fixed-seed2/config.json --stop-step 600 ",
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1",
+        "environment": {
+          "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+          "CUDA_VISIBLE_DEVICES": "0"
+        }
+      },
+      "status": {
+        "state": "running",
+        "step": 100,
+        "elapsed_seconds": 155.1033284664154,
+        "updated_at": 1793432319.1288426,
+        "pid": 1295023,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 1.3354464769363403,
+        "fm": 1.2192243337631226,
+        "rate": 0.4648887515068054,
+        "entry": 296.09307861328125,
+        "surprise": 5670.2548828125,
+        "rate_share": 0.09532469511032104,
+        "feature_std": 0.9739073514938354,
+        "active_dims": 128.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.02995188906788826,
+        "grad_norm_renderer": 2.590806245803833,
+        "grad_norm_action_encoder": 3.601285243348684e-07,
+        "seconds_per_step": 1.459022376537323,
+        "peak_gib": 106.05117177963257,
+        "learning_rates": [
+          4.00320256204964e-06,
+          8.00640512409928e-06
+        ]
+      },
+      "latest_metrics": {
+        "state": "running",
+        "step": 100,
+        "elapsed_seconds": 155.1033284664154,
+        "updated_at": 1793432319.1288426,
+        "pid": 1295023,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 1.3354464769363403,
+        "fm": 1.2192243337631226,
+        "rate": 0.4648887515068054,
+        "entry": 296.09307861328125,
+        "surprise": 5670.2548828125,
+        "rate_share": 0.09532469511032104,
+        "feature_std": 0.9739073514938354,
+        "active_dims": 128.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.02995188906788826,
+        "grad_norm_renderer": 2.590806245803833,
+        "grad_norm_action_encoder": 3.601285243348684e-07,
+        "seconds_per_step": 1.459022376537323,
+        "peak_gib": 106.05117177963257,
+        "learning_rates": [
+          4.00320256204964e-06,
+          8.00640512409928e-06
+        ]
+      },
+      "finite": true,
+      "actual_logged_step": 100,
+      "gradient_norms": {
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.02995188906788826,
+        "grad_norm_renderer": 2.590806245803833,
+        "grad_norm_action_encoder": 3.601285243348684e-07
+      },
+      "exit": null,
+      "initial_target": "as_jepa_lewm.hybrid_carrier.HybridCarrierLeWM",
+      "actual_100_updates": true
+    },
+    {
+      "id": "train600-cube-hybrid-adaptive-seed2",
+      "gpu": 1,
+      "actual_child": {
+        "pid": 1295027,
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_20261031/cube-hybrid-adaptive-seed2/config.json --stop-step 600 ",
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1",
+        "environment": {
+          "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+          "CUDA_VISIBLE_DEVICES": "1"
+        }
+      },
+      "status": {
+        "state": "running",
+        "step": 100,
+        "elapsed_seconds": 155.2071578502655,
+        "updated_at": 1793432319.1401334,
+        "pid": 1295027,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 1.3063944578170776,
+        "fm": 1.2032644748687744,
+        "rate": 0.4125197231769562,
+        "entry": 573.9174194335938,
+        "surprise": 4987.0537109375,
+        "rate_share": 0.08570844680070877,
+        "feature_std": 0.9198691248893738,
+        "active_dims": 128.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.6793915629386902,
+        "grad_norm_predictor": 0.014241355471313,
+        "grad_norm_renderer": 2.5294108390808105,
+        "grad_norm_action_encoder": 1.0460244226351278e-07,
+        "seconds_per_step": 1.4590078926086425,
+        "peak_gib": 106.63555192947388,
+        "learning_rates": [
+          4.00320256204964e-06,
+          8.00640512409928e-06
+        ]
+      },
+      "latest_metrics": {
+        "state": "running",
+        "step": 100,
+        "elapsed_seconds": 155.2071578502655,
+        "updated_at": 1793432319.1401334,
+        "pid": 1295027,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 1.3063944578170776,
+        "fm": 1.2032644748687744,
+        "rate": 0.4125197231769562,
+        "entry": 573.9174194335938,
+        "surprise": 4987.0537109375,
+        "rate_share": 0.08570844680070877,
+        "feature_std": 0.9198691248893738,
+        "active_dims": 128.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.6793915629386902,
+        "grad_norm_predictor": 0.014241355471313,
+        "grad_norm_renderer": 2.5294108390808105,
+        "grad_norm_action_encoder": 1.0460244226351278e-07,
+        "seconds_per_step": 1.4590078926086425,
+        "peak_gib": 106.63555192947388,
+        "learning_rates": [
+          4.00320256204964e-06,
+          8.00640512409928e-06
+        ]
+      },
+      "finite": true,
+      "actual_logged_step": 100,
+      "gradient_norms": {
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.6793915629386902,
+        "grad_norm_predictor": 0.014241355471313,
+        "grad_norm_renderer": 2.5294108390808105,
+        "grad_norm_action_encoder": 1.0460244226351278e-07
+      },
+      "exit": null,
+      "initial_target": "as_jepa_lewm.hybrid_carrier.HybridCarrierLeWM",
+      "actual_100_updates": true
+    }
+  ],
+  "all100": true,
+  "gpu_snapshot": "0, 100 %, 110195 MiB\n1, 100 %, 111157 MiB\n2, 0 %, 0 MiB\n3, 0 %, 0 MiB\n4, 0 %, 0 MiB\n5, 0 %, 0 MiB\n6, 0 %, 0 MiB\n7, 0 %, 0 MiB\n"
+}

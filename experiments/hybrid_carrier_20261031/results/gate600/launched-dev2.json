@@ -1,0 +1,66 @@
+{
+  "host": "dev2",
+  "started_at": 1793432119.8386688,
+  "dispatcher_pid": 182693,
+  "monitor_pid": 182694,
+  "command": [
+    "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+    "-B",
+    "-u",
+    "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_recovery_source_20261031/source-v1/experiments/dynamic_readout_20261031/recovery_launcher.py",
+    "--plan",
+    "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_20261031/plan.json",
+    "--host",
+    "dev2",
+    "--source-record",
+    "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_20261031/model-source-record.json"
+  ],
+  "monitor_command": [
+    "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+    "-B",
+    "-u",
+    "/efs/prescottsun/SPT-JEPA/runs/carrier_progress_20261031/source-v1/experiments/carrier_progress_20261031/monitor.py",
+    "--roots",
+    "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_20261031",
+    "--host",
+    "dev2",
+    "--output",
+    "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_20261031/monitor/dev2",
+    "--interval",
+    "1800"
+  ],
+  "model_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1",
+    "source_commit": "f2ae93d4f0da2fb32021bfade7426b11ea06602b",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/manifest.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_helpers_20261031/source-v1",
+    "source_commit": "109e69a62715b46416b459c08be0b5bb7ecbd661",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_helpers_20261031/manifest.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_helpers_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "controller_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/action_covariance_source_20261031/source-v1",
+    "source_commit": "f4fd69a5e80abc68d9ecf156175ea1fd54f1af37",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/action_covariance_source_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/action_covariance_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "target_gpus": [
+    0,
+    1,
+    2
+  ],
+  "gpu_snapshot": "0, GPU-6ed84194-c712-388f-2730-9a9d94eccf11, 0\n1, GPU-77277811-7523-3a04-78e5-1d8e15dc1800, 0\n2, GPU-bff74550-eee8-5c88-2fb1-b131200c106c, 0\n3, GPU-60f98c04-fafb-6d1c-98bf-bb6b14b0068a, 0\n4, GPU-bb619007-7bc0-bfca-8917-e43a02bc2f58, 0\n5, GPU-4a6e0e8d-3d7b-5f96-89b9-65fe4baa68fc, 0\n6, GPU-06241fba-d12f-3e1d-47c9-cc9726909519, 0\n7, GPU-db53e14f-fc80-fb20-e70c-6eaac002f635, 0\n",
+  "compute_snapshot": "",
+  "wrapper_sha256": "c9bb7aa545950caed40febabead63d3b6d195abf84f5b9c391a17e1cd39a7036",
+  "monitor_sha256": "bdafdd8a8b38e0cf51fc604ebbf12c6cd0211f35dbae77462f1121fc519d369d",
+  "actual_training_not_yet_claimed": true
+}

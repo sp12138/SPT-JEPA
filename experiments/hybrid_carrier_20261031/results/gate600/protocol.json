@@ -1,0 +1,103 @@
+{
+  "runs": 8,
+  "endpoints": 48,
+  "stop_step": 600,
+  "allocations": [
+    {
+      "task": "tworoom",
+      "training_seed": 1,
+      "arm": "fixed",
+      "host": "dev2",
+      "gpu": 0,
+      "id": "tworoom-hybrid-fixed-seed1"
+    },
+    {
+      "task": "tworoom",
+      "training_seed": 1,
+      "arm": "adaptive",
+      "host": "dev2",
+      "gpu": 1,
+      "id": "tworoom-hybrid-adaptive-seed1"
+    },
+    {
+      "task": "tworoom",
+      "training_seed": 2,
+      "arm": "fixed",
+      "host": "dev2",
+      "gpu": 2,
+      "id": "tworoom-hybrid-fixed-seed2"
+    },
+    {
+      "task": "tworoom",
+      "training_seed": 2,
+      "arm": "adaptive",
+      "host": "dev13",
+      "gpu": 0,
+      "id": "tworoom-hybrid-adaptive-seed2"
+    },
+    {
+      "task": "cube",
+      "training_seed": 1,
+      "arm": "fixed",
+      "host": "dev13",
+      "gpu": 1,
+      "id": "cube-hybrid-fixed-seed1"
+    },
+    {
+      "task": "cube",
+      "training_seed": 1,
+      "arm": "adaptive",
+      "host": "dev13",
+      "gpu": 2,
+      "id": "cube-hybrid-adaptive-seed1"
+    },
+    {
+      "task": "cube",
+      "training_seed": 2,
+      "arm": "fixed",
+      "host": "dev15",
+      "gpu": 0,
+      "id": "cube-hybrid-fixed-seed2"
+    },
+    {
+      "task": "cube",
+      "training_seed": 2,
+      "arm": "adaptive",
+      "host": "dev15",
+      "gpu": 1,
+      "id": "cube-hybrid-adaptive-seed2"
+    }
+  ],
+  "model_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1",
+    "source_commit": "f2ae93d4f0da2fb32021bfade7426b11ea06602b",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/manifest.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_helpers_20261031/source-v1",
+    "source_commit": "109e69a62715b46416b459c08be0b5bb7ecbd661",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_helpers_20261031/manifest.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_helpers_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "controller_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/action_covariance_source_20261031/source-v1",
+    "source_commit": "f4fd69a5e80abc68d9ecf156175ea1fd54f1af37",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/action_covariance_source_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/action_covariance_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "review_sha256": "53d6dbea3311b8b1b713dcecf1908390d508ec8c66ea1d85c42607e8af42cfd6",
+  "unchanged": "Native train_stage, batch128, max_steps124910 scheduler, original TF beta/sigma/rho/forecast, exact initial calibration and all555 initial tensors. No two-step observer wrapper.",
+  "checkpoints": "Portable200/400/600; final native fullstate600. Do not call intermediate portable exports resumable fullstates.",
+  "audits": "Original fullstate/objective backward +3986 Q9 semantics, all555 paired/reviewed initial equality, original health16 with hash-bound Q compatibility; original transition64.",
+  "controllers": "Original CEM primary50 followed by existing frozen f4 correlated CEM on exactly same50 and checkpoint. Report both, allseeds; no controller selection.",
+  "CPU_collection": "F/Q branch mean, centered and totalRMS plus clean/copy/zero errors only from existing transition cache. No extra representation calls.",
+  "stopping": "Root authorized this one600 short gate after completed16 preflights. No freshcases or automatic continuation above600. All oldHOLDs unchanged.",
+  "interpretation": "Fixed64+fixedQ64 versus fixed64+adaptiveQ64; different effective trainable capacity and joint clipping. Neither originality nor mature-baseline superiority follows from short results."
+}

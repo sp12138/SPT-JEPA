@@ -1,0 +1,271 @@
+{
+  "host": "dev2",
+  "created_at": 1793432363.0170937,
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1",
+    "source_commit": "f2ae93d4f0da2fb32021bfade7426b11ea06602b",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/manifest.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "rows": [
+    {
+      "id": "train600-tworoom-hybrid-fixed-seed1",
+      "gpu": 0,
+      "actual_child": {
+        "pid": 182699,
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_20261031/tworoom-hybrid-fixed-seed1/config.json --stop-step 600 ",
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1",
+        "environment": {
+          "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+          "CUDA_VISIBLE_DEVICES": "0"
+        }
+      },
+      "status": {
+        "state": "running",
+        "step": 200,
+        "elapsed_seconds": 203.26942777633667,
+        "updated_at": 1793432357.6010969,
+        "pid": 182699,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 1.4783592224121094,
+        "fm": 1.3466863632202148,
+        "rate": 0.526691198348999,
+        "entry": 299.4616394042969,
+        "surprise": 6429.20166015625,
+        "rate_share": 0.097775399684906,
+        "feature_std": 0.9842607378959656,
+        "active_dims": 128.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.03459109738469124,
+        "grad_norm_renderer": 0.1579190045595169,
+        "grad_norm_action_encoder": 7.70269070926588e-06,
+        "seconds_per_step": 0.9225405693054199,
+        "peak_gib": 106.05092000961304,
+        "learning_rates": [
+          8.00640512409928e-06,
+          1.601281024819856e-05
+        ]
+      },
+      "latest_metrics": {
+        "state": "running",
+        "step": 200,
+        "elapsed_seconds": 203.26942777633667,
+        "updated_at": 1793432357.6010969,
+        "pid": 182699,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 1.4783592224121094,
+        "fm": 1.3466863632202148,
+        "rate": 0.526691198348999,
+        "entry": 299.4616394042969,
+        "surprise": 6429.20166015625,
+        "rate_share": 0.097775399684906,
+        "feature_std": 0.9842607378959656,
+        "active_dims": 128.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.03459109738469124,
+        "grad_norm_renderer": 0.1579190045595169,
+        "grad_norm_action_encoder": 7.70269070926588e-06,
+        "seconds_per_step": 0.9225405693054199,
+        "peak_gib": 106.05092000961304,
+        "learning_rates": [
+          8.00640512409928e-06,
+          1.601281024819856e-05
+        ]
+      },
+      "finite": true,
+      "actual_logged_step": 200,
+      "gradient_norms": {
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.03459109738469124,
+        "grad_norm_renderer": 0.1579190045595169,
+        "grad_norm_action_encoder": 7.70269070926588e-06
+      },
+      "exit": null,
+      "initial_target": "as_jepa_lewm.hybrid_carrier.HybridCarrierLeWM",
+      "actual_100_updates": true
+    },
+    {
+      "id": "train600-tworoom-hybrid-adaptive-seed1",
+      "gpu": 1,
+      "actual_child": {
+        "pid": 182703,
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_20261031/tworoom-hybrid-adaptive-seed1/config.json --stop-step 600 ",
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1",
+        "environment": {
+          "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+          "CUDA_VISIBLE_DEVICES": "1"
+        }
+      },
+      "status": {
+        "state": "running",
+        "step": 200,
+        "elapsed_seconds": 203.52534294128418,
+        "updated_at": 1793432357.9226646,
+        "pid": 182703,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 1.4597761631011963,
+        "fm": 1.3496524095535278,
+        "rate": 0.4404950439929962,
+        "entry": 762.3397216796875,
+        "surprise": 5303.8974609375,
+        "rate_share": 0.08159416168928146,
+        "feature_std": 0.9169541001319885,
+        "active_dims": 128.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 12.513080596923828,
+        "grad_norm_predictor": 0.014847742393612862,
+        "grad_norm_renderer": 0.3140604496002197,
+        "grad_norm_action_encoder": 4.941836095895269e-08,
+        "seconds_per_step": 0.9198309969902039,
+        "peak_gib": 106.63530015945435,
+        "learning_rates": [
+          8.00640512409928e-06,
+          1.601281024819856e-05
+        ]
+      },
+      "latest_metrics": {
+        "state": "running",
+        "step": 200,
+        "elapsed_seconds": 203.52534294128418,
+        "updated_at": 1793432357.9226646,
+        "pid": 182703,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 1.4597761631011963,
+        "fm": 1.3496524095535278,
+        "rate": 0.4404950439929962,
+        "entry": 762.3397216796875,
+        "surprise": 5303.8974609375,
+        "rate_share": 0.08159416168928146,
+        "feature_std": 0.9169541001319885,
+        "active_dims": 128.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 12.513080596923828,
+        "grad_norm_predictor": 0.014847742393612862,
+        "grad_norm_renderer": 0.3140604496002197,
+        "grad_norm_action_encoder": 4.941836095895269e-08,
+        "seconds_per_step": 0.9198309969902039,
+        "peak_gib": 106.63530015945435,
+        "learning_rates": [
+          8.00640512409928e-06,
+          1.601281024819856e-05
+        ]
+      },
+      "finite": true,
+      "actual_logged_step": 200,
+      "gradient_norms": {
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 12.513080596923828,
+        "grad_norm_predictor": 0.014847742393612862,
+        "grad_norm_renderer": 0.3140604496002197,
+        "grad_norm_action_encoder": 4.941836095895269e-08
+      },
+      "exit": null,
+      "initial_target": "as_jepa_lewm.hybrid_carrier.HybridCarrierLeWM",
+      "actual_100_updates": true
+    },
+    {
+      "id": "train600-tworoom-hybrid-fixed-seed2",
+      "gpu": 2,
+      "actual_child": {
+        "pid": 182707,
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/hybrid_carrier600_20261031/tworoom-hybrid-fixed-seed2/config.json --stop-step 600 ",
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1",
+        "environment": {
+          "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/hybrid_carrier_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+          "CUDA_VISIBLE_DEVICES": "2"
+        }
+      },
+      "status": {
+        "state": "running",
+        "step": 200,
+        "elapsed_seconds": 202.71650743484497,
+        "updated_at": 1793432357.1360657,
+        "pid": 182707,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 1.469151258468628,
+        "fm": 1.348104476928711,
+        "rate": 0.4841870963573456,
+        "entry": 292.7301025390625,
+        "surprise": 5907.8720703125,
+        "rate_share": 0.08979035168886185,
+        "feature_std": 0.9820789694786072,
+        "active_dims": 128.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.03179824352264404,
+        "grad_norm_renderer": 0.15665145218372345,
+        "grad_norm_action_encoder": 1.0691525858419482e-05,
+        "seconds_per_step": 0.9210184836387634,
+        "peak_gib": 106.05092000961304,
+        "learning_rates": [
+          8.00640512409928e-06,
+          1.601281024819856e-05
+        ]
+      },
+      "latest_metrics": {
+        "state": "running",
+        "step": 200,
+        "elapsed_seconds": 202.71650743484497,
+        "updated_at": 1793432357.1360657,
+        "pid": 182707,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 1.469151258468628,
+        "fm": 1.348104476928711,
+        "rate": 0.4841870963573456,
+        "entry": 292.7301025390625,
+        "surprise": 5907.8720703125,
+        "rate_share": 0.08979035168886185,
+        "feature_std": 0.9820789694786072,
+        "active_dims": 128.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.03179824352264404,
+        "grad_norm_renderer": 0.15665145218372345,
+        "grad_norm_action_encoder": 1.0691525858419482e-05,
+        "seconds_per_step": 0.9210184836387634,
+        "peak_gib": 106.05092000961304,
+        "learning_rates": [
+          8.00640512409928e-06,
+          1.601281024819856e-05
+        ]
+      },
+      "finite": true,
+      "actual_logged_step": 200,
+      "gradient_norms": {
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.03179824352264404,
+        "grad_norm_renderer": 0.15665145218372345,
+        "grad_norm_action_encoder": 1.0691525858419482e-05
+      },
+      "exit": null,
+      "initial_target": "as_jepa_lewm.hybrid_carrier.HybridCarrierLeWM",
+      "actual_100_updates": true
+    }
+  ],
+  "all100": true,
+  "gpu_snapshot": "0, 78 %, 110199 MiB\n1, 90 %, 111159 MiB\n2, 100 %, 110199 MiB\n3, 0 %, 0 MiB\n4, 0 %, 0 MiB\n5, 0 %, 0 MiB\n6, 0 %, 0 MiB\n7, 0 %, 0 MiB\n"
+}
