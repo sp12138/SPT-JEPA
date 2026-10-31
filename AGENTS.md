@@ -1,3 +1,11 @@
+# Cached measurement control rejected before GPU, 2026-10-31
+
+Completed one prespecified DC-coupled Gaussian measurement on existingCube fullpatch caches,0newRGB/model forwards/GPU/simulation,26sCPU. Original128 calibration rows/projection/probe reproduce; cache andcurrentlocal6k encoder tensors match. Both16D maps have rank16/nullity752. Old2×2mean structurally annihilates576zero-sum directions; fixedA_i=P/4+G_i−Gbar preservesconstant-patch response exactly and admits contrast. Independentconcat draft was unexecuted; no matrix/seed/outcome selection.
+
+Actual cachedpatch frame differences place~67.3% energy inthatcontrast subspace, but RBFxyz error worsens6.65/6.74→7.64/7.84cm (64clip pairedCI deltas+.99[.74,1.27]/+1.10[.83,1.39]); linearposition also worse, poseangle has inconsistent seed directions. Offlinejoint readout isnotP0. This establishes deleted feature energy, not deleted task information or Cube causality; it neither proves contrast useless nor motivates more variants. Reject thissingle measurement beforeGPU, retainfullnegative evidence in local_measurement_20261031. NoTwoRoom encoding or newprojection family authorized.
+
+Only6 Cube maturity continuations remain active undercad9840, unchanged23342cap andoriginalmodels. Lastactual113026 checks allhealthy; next12:00:26 UTC /20:00:26 Beijing. NoidleGPU polling or extraalgorithm selected. High-performance andten-original-idea goals remain open.
+
 # Actual six-run startup review, 2026-10-31 11:30:26 UTC
 
 All6 actual children have originalmodel source/cwd/PYTHONPATH/CUDA/config/command and native “Restored all states” logs verified. Native seeds1/2 are12700, TF12400, local6300; loggedloss and required active module gradients finite/positive, local frozenencoder/pool zero asexpected.0/68 endpoints complete,0 failures. Onlyowned6GPUs checked; reportedmemorynative26.47GB/TF134.54GB/local111.29GB. Native instantaneousutil0 is notstagnation:700updates advanced. Current pure-training estimates1.35h native/2.91h TF/4.48h local, plusarchives/evaluation; wholebatch roughETA16:00–16:30UTC. No partialplanning outcomes read. Next regular12:00:26 UTC /20:00:26 Beijing, no extra polling.
