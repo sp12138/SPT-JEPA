@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "initial_tensors_exact": 557,
+  "fullstate": {
+    "step": 100,
+    "expected_step": 100,
+    "checks": {
+      "exact_step": true,
+      "model_finite": true,
+      "portable_finite": true,
+      "optimizer_present": true,
+      "optimizer_finite": true,
+      "scheduler_present": true,
+      "scheduler_finite": true,
+      "rng_present": true,
+      "sample_cursor": true,
+      "portable_equal": true
+    },
+    "portable_missing": [],
+    "portable_different": [],
+    "campaign_samples": 12800
+  },
+  "frozen": {
+    "prefixes": [
+      "encoder",
+      "pool",
+      "spatial_projection",
+      "spatial_mean",
+      "spatial_scale"
+    ],
+    "compared_tensors": 210,
+    "missing": [],
+    "different": [],
+    "equal": true
+  },
+  "portable_steps": [
+    "model-step0000025",
+    "model-step0000050",
+    "model-step0000075",
+    "model-step0000100"
+  ],
+  "same_failure_step_and_metrics": {
+    "step": 112,
+    "loss": 2.546271324157715,
+    "fm": 1.6382968425750732,
+    "rate": 3.6318976879119873,
+    "entry": 2360.200927734375,
+    "surprise": 44291.58984375,
+    "feature_std": 0.6395410299301147,
+    "learning_rates": [
+      4.483586869495597e-06,
+      8.967173738991193e-06
+    ]
+  },
+  "checkpoint_sha256": "2a7b62463012a5df6c779d372360568098edcb0f359bfff12ba9a8c1c2b7bce7",
+  "scope": "CPU audit only. Exact557 initialmatch; valid native100 state and frozen210 preserved.25-step cadence left observed failure112 metrics unchanged."
+}

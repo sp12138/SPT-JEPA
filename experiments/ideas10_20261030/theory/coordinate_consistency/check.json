@@ -1,0 +1,45 @@
+{
+  "sigma": 0.1,
+  "rho": 0.8,
+  "posterior_conditional_variance": 0.0035999999999999995,
+  "transition_covariance_kl_per_dimension": 0.19082562376599077,
+  "checks": [
+    {
+      "mode": "identity",
+      "max_rate_rollout_goal_error": 0.0,
+      "max_log_density_ratio_error": 0.0,
+      "max_forecast_mixture_decoder_error": 0.0
+    },
+    {
+      "mode": "linear",
+      "max_rate_rollout_goal_error": 0.0,
+      "max_log_density_ratio_error": 3.552713678800501e-15,
+      "max_forecast_mixture_decoder_error": 0.0
+    },
+    {
+      "mode": "nonlinear",
+      "max_rate_rollout_goal_error": 7.105427357601002e-15,
+      "max_log_density_ratio_error": 1.7763568394002505e-15,
+      "max_forecast_mixture_decoder_error": 2.220446049250313e-16
+    }
+  ],
+  "scalar_shrink_counterexample": [
+    {
+      "a": 1.0,
+      "old_total_rate": 52.51841071676003,
+      "consistent_total_rate": 52.51841071676003,
+      "clean_raw_forecast_squared_error": 1.0
+    },
+    {
+      "a": 0.5,
+      "old_total_rate": 14.643410716760034,
+      "consistent_total_rate": 52.51841071676003,
+      "clean_raw_forecast_squared_error": 1.0
+    }
+  ],
+  "inverse_gradient": {
+    "correct_total_derivative": 0.0,
+    "omitting_inverse_parameter_derivative": 0.9176225775493344
+  },
+  "scope": "Scalar algebra and deterministic numerical checks only. No native model/gradient/RNG contract or benchmark claim."
+}

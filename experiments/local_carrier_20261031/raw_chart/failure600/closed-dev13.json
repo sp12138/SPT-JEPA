@@ -1,0 +1,28 @@
+{
+  "time": 1793414830.1938555,
+  "closed": [
+    {
+      "pid": 1040736,
+      "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.workflow --plan /efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/plan.json --host dev13 "
+    },
+    {
+      "pid": 1040737,
+      "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u /efs/prescottsun/SPT-JEPA/runs/local_raw_chart_source_20261031/source-v1/experiments/carrier_progress_20261031/monitor.py --roots /efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031 --host dev13 --output /efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/monitor --interval 1800 "
+    }
+  ],
+  "gpus": {
+    "0": "",
+    "1": "",
+    "2": "",
+    "3": ""
+  },
+  "old_holds_unchanged": true,
+  "reason": "All4 actual training failures: Chart inverse adjoint failed contraction residual certificate after64iterations",
+  "failed_steps": [
+    112,
+    124,
+    163,
+    116
+  ],
+  "checkpoint_limit": "Failures preceded first scheduled200 checkpoint; initial weights and completed2step preflight states survive, no failed-run fullstate checkpoint exists."
+}

@@ -1,0 +1,231 @@
+{
+  "passed": true,
+  "helper_commit": "93a36bf4dd0d27b01ac18a5e8e7fb071f7b06f58",
+  "helper_sha256": "fb1626de67f6be150f9e7baa49092908b9f599e2387f364e018c9cad176c9d79",
+  "plan_sha256": "107a9ca257c6506a1bd1b7e10988dcb45610ce59c8e5612981e1c0f5248bc841",
+  "protocol_sha256": "9cf05f6ec69eef1088a565c62efc4a5ddcc847942d4cfc427180b8fc550b7a60",
+  "full_results": "/efs/prescottsun/SPT-JEPA/reports/predictor-span-pca-20261031/results.json",
+  "full_results_sha256": "24475c9df80337811c64aacba4b26a4944d302c4127c65c8088020fd60fddf9f",
+  "pca_fit_count": 2,
+  "rank": 191,
+  "training_deltas_per_seed": 896,
+  "validation_deltas_per_seed": 448,
+  "model_calls": 0,
+  "cuda_initialized": false,
+  "exit": {
+    "exit_code": 0,
+    "finished_at": 1793414067.7742302,
+    "wall_seconds": 4.18003249168396
+  },
+  "pca_artifact": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/predictor-span-pca-20261031/pca-fit.npz",
+    "sha256": "be746ef14504d4651876063f7c91f97c8451790d51a67eae4e00b7430f018b73",
+    "bytes": 3030933
+  },
+  "rows": [
+    {
+      "seed": 1,
+      "training_pca_rank": 191,
+      "current_rank": 191,
+      "loose_rank": 193,
+      "unchanged_cache_vs_original_fp32": {
+        "max_abs": 9.059551032475355e-06,
+        "mse": 1.7788324740517964e-12,
+        "reason": "DirectRGB reused cached fullpatch projection+FP64 normalization; native cached observations used FP32 arithmetic. No renormalization performed."
+      },
+      "training_centroid_norm": 0.5927086823994245,
+      "train_tail_energy_identity": 0.06694980489126107,
+      "validation_pca_over_current": 1.1881444877479916,
+      "validation_pca_over_loose": 1.1933418087127876,
+      "singular_values_explained_fraction": 0.9217442604172864,
+      "current_offset_distance_from_train_mean_outside_current_subspace": 0.17409399908766868,
+      "pca": {
+        "train": {
+          "mse": 0.06694980489126105,
+          "fraction_of_true_change": 0.07822437123906241,
+          "per_horizon_mse": [
+            0.07461890008843489,
+            0.06582518376677188,
+            0.06553217240141056,
+            0.0633705194259467,
+            0.06470324321359733,
+            0.06445897674658393,
+            0.07013963859608219
+          ]
+        },
+        "validation": {
+          "mse": 0.15775996311465804,
+          "fraction_of_true_change": 0.18591728172227942,
+          "per_horizon_mse": [
+            0.15302266514049098,
+            0.16333521713050211,
+            0.14982160360021546,
+            0.15365596534010792,
+            0.15643791605283472,
+            0.17122014944523992,
+            0.1568262250932152
+          ]
+        }
+      },
+      "current": {
+        "train": {
+          "mse": 0.13488360458434104,
+          "fraction_of_true_change": 0.15759844522632263,
+          "per_horizon_mse": [
+            0.14131286287187497,
+            0.14605234165500358,
+            0.1343991676625367,
+            0.12526769886747088,
+            0.1335776320168826,
+            0.13283857875128596,
+            0.13073695026533239
+          ]
+        },
+        "validation": {
+          "mse": 0.13277843287702842,
+          "fraction_of_true_change": 0.15647699723344835,
+          "per_horizon_mse": [
+            0.13210420222378305,
+            0.1359540778728303,
+            0.12474936887278833,
+            0.13123289890637976,
+            0.13174331250355567,
+            0.1414266524952306,
+            0.13223851726463112
+          ]
+        }
+      },
+      "loose": {
+        "train": {
+          "mse": 0.13434088739408287,
+          "fraction_of_true_change": 0.1569643326842842,
+          "per_horizon_mse": [
+            0.14074283148328373,
+            0.14545601990062854,
+            0.1338703590222685,
+            0.1247245824782104,
+            0.1330468076359805,
+            0.13236125791639922,
+            0.13018435332180914
+          ]
+        },
+        "validation": {
+          "mse": 0.13220014748735545,
+          "fraction_of_true_change": 0.15579549829300066,
+          "per_horizon_mse": [
+            0.13149848705178055,
+            0.13530599945402103,
+            0.12415379305647073,
+            0.13069488111770208,
+            0.13129237416240974,
+            0.14087030982652476,
+            0.1315851877425793
+          ]
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "training_pca_rank": 191,
+      "current_rank": 191,
+      "loose_rank": 193,
+      "unchanged_cache_vs_original_fp32": {
+        "max_abs": 9.779780874047406e-06,
+        "mse": 1.718212022845499e-12,
+        "reason": "DirectRGB reused cached fullpatch projection+FP64 normalization; native cached observations used FP32 arithmetic. No renormalization performed."
+      },
+      "training_centroid_norm": 0.6036354907836471,
+      "train_tail_energy_identity": 0.06317580938016873,
+      "validation_pca_over_current": 1.16458123402181,
+      "validation_pca_over_loose": 1.169415461360833,
+      "singular_values_explained_fraction": 0.9275309458216928,
+      "current_offset_distance_from_train_mean_outside_current_subspace": 0.17363078311144908,
+      "pca": {
+        "train": {
+          "mse": 0.06317580938016873,
+          "fraction_of_true_change": 0.07243948585395399,
+          "per_horizon_mse": [
+            0.07102567324789597,
+            0.06276170114383195,
+            0.06166617754540898,
+            0.05901800882903609,
+            0.060359262756168396,
+            0.06087800924903854,
+            0.06652183288980112
+          ]
+        },
+        "validation": {
+          "mse": 0.14792298784513522,
+          "fraction_of_true_change": 0.17366685474596108,
+          "per_horizon_mse": [
+            0.14780781078247418,
+            0.15675876159674665,
+            0.13681970209193597,
+            0.14278418217233096,
+            0.1453704137660751,
+            0.15930170295331636,
+            0.14661834155306747
+          ]
+        }
+      },
+      "current": {
+        "train": {
+          "mse": 0.12970095590995215,
+          "fraction_of_true_change": 0.14871943316697078,
+          "per_horizon_mse": [
+            0.13736500185077388,
+            0.14018362497474085,
+            0.12963617094110352,
+            0.12132570956605378,
+            0.12656291110317372,
+            0.12834962023117866,
+            0.12448365270264038
+          ]
+        },
+        "validation": {
+          "mse": 0.12701817917354913,
+          "fraction_of_true_change": 0.14912386501902766,
+          "per_horizon_mse": [
+            0.12825042871402564,
+            0.13270665274362423,
+            0.11648022642450188,
+            0.12358151673381723,
+            0.12407444297018659,
+            0.1348688105503676,
+            0.12916517607832084
+          ]
+        }
+      },
+      "loose": {
+        "train": {
+          "mse": 0.12920095365187337,
+          "fraction_of_true_change": 0.14814611393518878,
+          "per_horizon_mse": [
+            0.1367396972941973,
+            0.13964890819584605,
+            0.12914510526495984,
+            0.12086914405753653,
+            0.12603645500706642,
+            0.12787986420986705,
+            0.12408750153364041
+          ]
+        },
+        "validation": {
+          "mse": 0.12649310081209225,
+          "fraction_of_true_change": 0.14850740432648912,
+          "per_horizon_mse": [
+            0.1277708234457111,
+            0.1321941262543473,
+            0.11596550254699556,
+            0.12305480226622793,
+            0.12343055093960928,
+            0.13440937050469848,
+            0.12862652972705615
+          ]
+        }
+      }
+    }
+  ],
+  "conclusion": "The fixed train-only191D PCA yardstick generalizes worse than the learned current affine span on both held-out seeds, despite lower training reconstruction error. No evidence from this reference that currentW is obviously suboptimal on heldout data; no proof of a fundamental191D population ceiling. No further fits.",
+  "limitations": "PCA is optimal on the training sample for affine reconstruction, not guaranteed optimal on the population or validation. It uses no actions and is not a world model, objective proposal or attainable planning guarantee. Current versus PCA may differ in subspace and affine offset; fixed low-rank alone does not determine task performance.128 independent training clips with correlated within-clip deltas; no new repeats.The trained world model had broader training-data exposure than this128clip diagnostic PCA; this is not a matched-learning algorithm comparison."
+}

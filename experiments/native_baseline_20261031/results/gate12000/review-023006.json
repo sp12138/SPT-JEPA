@@ -1,0 +1,124 @@
+{
+  "utc": "2026-10-31T02:30:26.216130+00:00",
+  "planned": 26,
+  "completed": 4,
+  "all_complete_exit0": false,
+  "failed": {},
+  "worker": {
+    "state": "running",
+    "updated_at": 1793413819.014535,
+    "host": "prescottsun-dev2-2d-1030-worker-0",
+    "pid": 146383,
+    "running": {
+      "1": {
+        "id": "learn10000-cube-native-lewm-seed2",
+        "pid": 146569,
+        "started_at": 1793413346.7854724
+      },
+      "0": {
+        "id": "learn10000-cube-native-lewm-seed1",
+        "pid": 146629,
+        "started_at": 1793413648.6047304
+      }
+    },
+    "queued": 26
+  },
+  "actual_active": [
+    {
+      "gpu": 1,
+      "id": "learn10000-cube-native-lewm-seed2",
+      "pid": 146569,
+      "started_at": 1793413346.7854724,
+      "process_exists": true,
+      "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/config.json --stop-step 10000 --resume "
+    },
+    {
+      "gpu": 0,
+      "id": "learn10000-cube-native-lewm-seed1",
+      "pid": 146629,
+      "started_at": 1793413648.6047304,
+      "process_exists": true,
+      "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/config.json --stop-step 10000 --resume "
+    }
+  ],
+  "runs": [
+    {
+      "id": "cube-native-lewm-seed1",
+      "status": {
+        "state": "running",
+        "step": 8100,
+        "elapsed_seconds": 124.56406593322754,
+        "updated_at": 1793413790.703589,
+        "pid": 146629,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 0.16377437114715576,
+        "pred": 0.021196244284510612,
+        "sigreg": 1.5859375,
+        "feature_std": 0.9849705696105957,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.3751353621482849,
+        "grad_norm_predictor": 0.03996510058641434,
+        "grad_norm_action_encoder": 0.038270026445388794,
+        "grad_norm_projector": 0.3535318374633789,
+        "grad_norm_pred_proj": 0.062209952622652054,
+        "seconds_per_step": 1.232373628616333,
+        "peak_gib": 24.613683223724365,
+        "learning_rates": [
+          4.962229253500579e-05
+        ]
+      },
+      "archived": [
+        {
+          "step": 8000,
+          "passed": true,
+          "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/checkpoint-step0008000.ckpt",
+          "checkpoint_sha256": "a828af42105f932ac92417f8255144c343f2216d3075318fc9fb73cb78eed9e9",
+          "campaign_samples": 1024000
+        }
+      ],
+      "numerically_finite": true,
+      "native_gradients_positive": true
+    },
+    {
+      "id": "cube-native-lewm-seed2",
+      "status": {
+        "state": "running",
+        "step": 8700,
+        "elapsed_seconds": 449.87441062927246,
+        "updated_at": 1793413812.917848,
+        "pid": 146569,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 0.16331195831298828,
+        "pred": 0.021710393950343132,
+        "sigreg": 1.578125,
+        "feature_std": 0.990067720413208,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.31691640615463257,
+        "grad_norm_predictor": 0.04268074035644531,
+        "grad_norm_action_encoder": 0.03696791082620621,
+        "grad_norm_projector": 0.3481842577457428,
+        "grad_norm_pred_proj": 0.06252222508192062,
+        "seconds_per_step": 0.5575294709205627,
+        "peak_gib": 24.613683223724365,
+        "learning_rates": [
+          4.955344371200718e-05
+        ]
+      },
+      "archived": [
+        {
+          "step": 8000,
+          "passed": true,
+          "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/checkpoint-step0008000.ckpt",
+          "checkpoint_sha256": "5dfc5e9f1dd5269e345c034c7c3f5ceb759ad739ee0dd5df4bdf62192422a4f3",
+          "campaign_samples": 1024000
+        }
+      ],
+      "numerically_finite": true,
+      "native_gradients_positive": true
+    }
+  ],
+  "gpu_state": "0, 26473 MiB, 91 %\n1, 26473 MiB, 95 %\n",
+  "gpu_applications": "GPU-6ed84194-c712-388f-2730-9a9d94eccf11, 146629, 26462 MiB\nGPU-77277811-7523-3a04-78e5-1d8e15dc1800, 146569, 26462 MiB\n",
+  "next_review_if_healthy": "2026-10-31 03:00:00 UTC",
+  "scope": "Single scheduled read-only review; no continuation beyond declared12000 and no additional jobs."
+}

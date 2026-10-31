@@ -1,0 +1,205 @@
+{
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_source_20261031/source-v1",
+    "source_commit": "0c9ae74840cf28247ae74341d2656e2d9ddd457c",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_source_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_sha256": "ed499a9157f5297d2eb1eb86944a7684accfad0e8d2a5929e782dd8c83c7ea23",
+  "capture_sha256": "a204b9fbacb6a70adc8526f8e7e52c9ccb50ef81afeabafbaf9edf3188f774cd",
+  "modes": [
+    {
+      "mode": "captured",
+      "passed": false,
+      "error": "Chart inverse adjoint failed contraction residual certificate after 64 iterations",
+      "float32_matmul_precision": "high",
+      "allow_tf32": true,
+      "dtype": "torch.float32",
+      "target_shape": [
+        128,
+        4,
+        64,
+        16
+      ],
+      "target_stride": [
+        4096,
+        1024,
+        16,
+        1
+      ],
+      "norm_underflow_rows": 0,
+      "nonzero_target_rows": 7680,
+      "oracle_relative_error_max": 4.7087094052119483e-07,
+      "oracle_relative_error_mean": 4.4370403654513594e-08,
+      "fp64_relative_residual_max": 4.708500747461598e-07,
+      "trajectory": [
+        {
+          "iteration": 4,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 8,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 12,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 16,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 20,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 24,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 28,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 32,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 36,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 40,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 44,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 48,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 52,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 56,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 60,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        },
+        {
+          "iteration": 64,
+          "violations": 1,
+          "measured_error_bound_max": 8.461101556802436e-14,
+          "tolerance_min": 0.0
+        }
+      ]
+    },
+    {
+      "mode": "ieee_fp32",
+      "passed": true,
+      "error": null,
+      "float32_matmul_precision": "highest",
+      "allow_tf32": false,
+      "dtype": "torch.float32",
+      "target_shape": [
+        128,
+        4,
+        64,
+        16
+      ],
+      "target_stride": [
+        4096,
+        1024,
+        16,
+        1
+      ],
+      "norm_underflow_rows": 0,
+      "nonzero_target_rows": 7680,
+      "oracle_relative_error_max": 4.750704645822653e-08,
+      "oracle_relative_error_mean": 5.805211915959811e-09,
+      "fp64_relative_residual_max": 4.750971403004264e-08,
+      "trajectory": [
+        {
+          "iteration": 4,
+          "violations": 0,
+          "measured_error_bound_max": 7.105427357601002e-15,
+          "tolerance_min": 0.0
+        }
+      ]
+    },
+    {
+      "mode": "fp64",
+      "passed": true,
+      "error": null,
+      "float32_matmul_precision": "highest",
+      "allow_tf32": false,
+      "dtype": "torch.float64",
+      "target_shape": [
+        128,
+        4,
+        64,
+        16
+      ],
+      "target_stride": [
+        4096,
+        1024,
+        16,
+        1
+      ],
+      "norm_underflow_rows": 0,
+      "nonzero_target_rows": 7680,
+      "oracle_relative_error_max": 7.029985983661993e-16,
+      "oracle_relative_error_mean": 5.648821729240093e-17,
+      "fp64_relative_residual_max": 1.3676200307452798e-16,
+      "trajectory": [
+        {
+          "iteration": 4,
+          "violations": 0,
+          "measured_error_bound_max": 1.0609861074807636e-22,
+          "tolerance_min": 0.0
+        }
+      ]
+    }
+  ],
+  "oracle": "Batched FP64 direct solve of the16x16 adjoint Jacobian for every original batch/slot; no sampling.",
+  "scope": "Frozen full operands only; no model/trainer or optimizer. Same64-iteration cap and captured tolerance. No production precision/tolerance change."
+}

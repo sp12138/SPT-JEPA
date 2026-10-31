@@ -1,0 +1,74 @@
+{
+  "completed_at": 1793415783.9047048,
+  "rows": [
+    {
+      "mode": "captured",
+      "passed": false,
+      "norm_underflow_rows": 0,
+      "nonzero_target_rows": 7680,
+      "oracle_relative_error_max": 4.7087094052119483e-07,
+      "fp64_relative_residual_max": 4.708500747461598e-07,
+      "first_certificate": {
+        "iteration": 4,
+        "violations": 1,
+        "measured_error_bound_max": 8.461101556802436e-14,
+        "tolerance_min": 0.0
+      },
+      "last_certificate": {
+        "iteration": 64,
+        "violations": 1,
+        "measured_error_bound_max": 8.461101556802436e-14,
+        "tolerance_min": 0.0
+      }
+    },
+    {
+      "mode": "ieee_fp32",
+      "passed": true,
+      "norm_underflow_rows": 0,
+      "nonzero_target_rows": 7680,
+      "oracle_relative_error_max": 4.750704645822653e-08,
+      "fp64_relative_residual_max": 4.750971403004264e-08,
+      "first_certificate": {
+        "iteration": 4,
+        "violations": 0,
+        "measured_error_bound_max": 7.105427357601002e-15,
+        "tolerance_min": 0.0
+      },
+      "last_certificate": {
+        "iteration": 4,
+        "violations": 0,
+        "measured_error_bound_max": 7.105427357601002e-15,
+        "tolerance_min": 0.0
+      }
+    },
+    {
+      "mode": "fp64",
+      "passed": true,
+      "norm_underflow_rows": 0,
+      "nonzero_target_rows": 7680,
+      "oracle_relative_error_max": 7.029985983661993e-16,
+      "fp64_relative_residual_max": 1.3676200307452798e-16,
+      "first_certificate": {
+        "iteration": 4,
+        "violations": 0,
+        "measured_error_bound_max": 1.0609861074807636e-22,
+        "tolerance_min": 0.0
+      },
+      "last_certificate": {
+        "iteration": 4,
+        "violations": 0,
+        "measured_error_bound_max": 1.0609861074807636e-22,
+        "tolerance_min": 0.0
+      }
+    }
+  ],
+  "effective_first_norm": 0.9999990359887373,
+  "effective_second_norm": 0.007420829448469326,
+  "exact_real_residual_lipschitz_upper": 0.0037104111473530797,
+  "guaranteed_lower": 0.996289588852647,
+  "denominator": "All reported relative solution/residual errors divide by theFP64 Euclidean norm of the captured right-hand-side target per slot; zero rows use tiny denominator and zero error.",
+  "interpretation": "Captured precision policy changes pass/fail with identical tensor shape/strides,tolerance,and64-iteration limit. IEEE FP32 andFP64 pass; capturedhigh fails. This isolates a precision-sensitive residual certificate for this actual failure, not mathematical noninvertibility or demonstrated algorithm-performance failure.",
+  "gpu0_returned_empty": true,
+  "source_unchanged": true,
+  "no_production_fix": true
+}

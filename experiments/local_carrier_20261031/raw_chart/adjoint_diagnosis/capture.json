@@ -1,0 +1,125 @@
+{
+  "label": "Chart inverse adjoint",
+  "bound": 0.5,
+  "iterations": 64,
+  "atol": 0.0,
+  "rtol": 1e-06,
+  "float32_matmul_precision": "high",
+  "allow_tf32": true,
+  "cudnn_allow_tf32": true,
+  "autocast_enabled": false,
+  "torch_version": "2.9.1+cu130",
+  "device_name": "NVIDIA H200",
+  "cuda_visible_devices": "0",
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_source_20261031/source-v1",
+    "source_commit": "0c9ae74840cf28247ae74341d2656e2d9ddd457c",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_source_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_sha256": "ed499a9157f5297d2eb1eb86944a7684accfad0e8d2a5929e782dd8c83c7ea23",
+  "config_path": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_adjoint_capture_20261031/tworoom-seed1/config.json",
+  "config_sha256": "05bfff9db2d647a280218806bc54846b3554facbc5952cbe1b4b63fc270ddc40",
+  "caught_at": 1793415554.076,
+  "pid": 1041089,
+  "traceback": "Traceback (most recent call last):\n  File \"/efs/prescottsun/SPT-JEPA/runs/raw_chart_adjoint_capture_20261031/helper-source-v1/experiments/local_carrier_20261031/raw_chart/adjoint_diagnostic.py\", line 50, in observing_solver\n    return original(target, residual, bound, iterations, atol, rtol, label)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_source_20261031/source-v1/as_jepa_lewm/carrier.py\", line 37, in _contractive_solve\n    raise RuntimeError(f\"{label} failed contraction residual certificate after {iterations} iterations\")\nRuntimeError: Chart inverse adjoint failed contraction residual certificate after 64 iterations\n",
+  "capture_sha256": "a204b9fbacb6a70adc8526f8e7e52c9ccb50ef81afeabafbaf9edf3188f774cd",
+  "tensor_metadata": {
+    "target": {
+      "shape": [
+        128,
+        4,
+        64,
+        16
+      ],
+      "stride": [
+        4096,
+        1024,
+        16,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float32",
+      "device": "cuda:0"
+    },
+    "first": {
+      "shape": [
+        64,
+        16
+      ],
+      "stride": [
+        16,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float32",
+      "device": "cuda:0"
+    },
+    "second": {
+      "shape": [
+        16,
+        64
+      ],
+      "stride": [
+        64,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float32",
+      "device": "cuda:0"
+    },
+    "derivative": {
+      "shape": [
+        128,
+        4,
+        64,
+        64
+      ],
+      "stride": [
+        16384,
+        4096,
+        64,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float32",
+      "device": "cuda:0"
+    },
+    "caller_hidden": {
+      "shape": [
+        128,
+        4,
+        64,
+        64
+      ],
+      "stride": [
+        16384,
+        4096,
+        64,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float32",
+      "device": "cuda:0"
+    },
+    "caller_value": {
+      "shape": [
+        128,
+        4,
+        64,
+        16
+      ],
+      "stride": [
+        4096,
+        1024,
+        16,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float32",
+      "device": "cuda:0"
+    }
+  }
+}
