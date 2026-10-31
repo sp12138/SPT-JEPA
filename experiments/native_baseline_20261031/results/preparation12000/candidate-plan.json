@@ -1,0 +1,1028 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031",
+  "deadline": null,
+  "environment": {
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MUJOCO_GL": "egl",
+    "SDL_VIDEODRIVER": "dummy",
+    "PYGLET_HEADLESS": "true",
+    "MPLCONFIGDIR": "/efs/prescottsun/SPT-JEPA/cache/matplotlib",
+    "TMPDIR": "/efs/prescottsun/SPT-JEPA/tmp/hardtasks20261030",
+    "STABLEWM_HOME": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/planning",
+    "PYOPENGL_PLATFORM": "egl",
+    "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+    "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+  },
+  "jobs": [
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "learn8000-cube-native-lewm-seed1",
+      "phase": "learn8000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1",
+      "depends_on": [],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/config.json",
+        "--stop-step",
+        "8000",
+        "--resume"
+      ],
+      "config": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/config.json",
+      "config_sha256": "9ad4a5bae4cd3285960b20b5806a34bce65de54bb8c9e64d6c3ce8c0056c5323"
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "archive8000-cube-native-lewm-seed1",
+      "phase": "archive8000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive8000-cube-native-lewm-seed1",
+      "depends_on": [
+        "learn8000-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/code/experiments/native_baseline_20261031/prepare12000.py",
+        "archive",
+        "--step",
+        "8000",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1",
+        "--parent-run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/cube-native-lewm-seed1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive8000-cube-native-lewm-seed1"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "learn10000-cube-native-lewm-seed1",
+      "phase": "learn10000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1",
+      "depends_on": [
+        "archive8000-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/config.json",
+        "--stop-step",
+        "10000",
+        "--resume"
+      ],
+      "config": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/config.json",
+      "config_sha256": "9ad4a5bae4cd3285960b20b5806a34bce65de54bb8c9e64d6c3ce8c0056c5323"
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "archive10000-cube-native-lewm-seed1",
+      "phase": "archive10000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive10000-cube-native-lewm-seed1",
+      "depends_on": [
+        "learn10000-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/code/experiments/native_baseline_20261031/prepare12000.py",
+        "archive",
+        "--step",
+        "10000",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1",
+        "--parent-run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/cube-native-lewm-seed1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive10000-cube-native-lewm-seed1"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "learn12000-cube-native-lewm-seed1",
+      "phase": "learn12000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1",
+      "depends_on": [
+        "archive10000-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/config.json",
+        "--stop-step",
+        "12000",
+        "--resume"
+      ],
+      "config": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/config.json",
+      "config_sha256": "9ad4a5bae4cd3285960b20b5806a34bce65de54bb8c9e64d6c3ce8c0056c5323"
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "archive12000-cube-native-lewm-seed1",
+      "phase": "archive12000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive12000-cube-native-lewm-seed1",
+      "depends_on": [
+        "learn12000-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/code/experiments/native_baseline_20261031/prepare12000.py",
+        "archive",
+        "--step",
+        "12000",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1",
+        "--parent-run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/cube-native-lewm-seed1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive12000-cube-native-lewm-seed1"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "fullstate-cube-native-lewm-seed1",
+      "phase": "fullstate",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fullstate-cube-native-lewm-seed1",
+      "depends_on": [
+        "archive12000-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/experiments/ideas_validate_20261031/preflight.py",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fullstate-cube-native-lewm-seed1",
+        "--expected-step",
+        "12000",
+        "--initial-weights",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm600_20261031/cube-native-lewm-seed1/initial-model/weights.pt"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "transition-cube-native-lewm-seed1",
+      "phase": "transition",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/transition-cube-native-lewm-seed1",
+      "depends_on": [
+        "fullstate-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/experiments/ideas_validate_20261031/audit.py",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/transition-cube-native-lewm-seed1",
+        "--cases",
+        "64",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/experiments/ideas_validate_20261031/audit-windows-cube.json"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "planning-cube-native-lewm-seed1",
+      "phase": "planning",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-cube-native-lewm-seed1",
+      "depends_on": [
+        "transition-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/model-step0012000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-cube-native-lewm-seed1"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "0"
+      },
+      "manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "fresh-planning-cube-native-lewm-seed1",
+      "phase": "fresh-planning",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-cube-native-lewm-seed1",
+      "depends_on": [
+        "planning-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/model-step0012000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-cube-native-lewm-seed1"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "0"
+      },
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f"
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "calibration-cube-native-lewm-seed1",
+      "phase": "calibration",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/calibration-job-cube-native-lewm-seed1",
+      "depends_on": [
+        "fresh-planning-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_helpers_20261031/source-v1/experiments/native_baseline_20261031/bn_calibrate.py",
+        "calibrate",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1",
+        "--step",
+        "12000",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/reports/native-lewm600-20261031/source-bncal-v1/train128-cube.json",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/calibrated-cube-native-lewm-seed1"
+      ],
+      "artifact_output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/calibrated-cube-native-lewm-seed1"
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "planning-calibrated-cube-native-lewm-seed1",
+      "phase": "planning-calibrated",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-calibrated-cube-native-lewm-seed1",
+      "depends_on": [
+        "calibration-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/calibrated-cube-native-lewm-seed1/model",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-calibrated-cube-native-lewm-seed1"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "0"
+      },
+      "manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+    },
+    {
+      "host": "dev2",
+      "gpu": 0,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 1,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "fresh-planning-calibrated-cube-native-lewm-seed1",
+      "phase": "fresh-planning-calibrated",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-calibrated-cube-native-lewm-seed1",
+      "depends_on": [
+        "planning-calibrated-cube-native-lewm-seed1"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/calibrated-cube-native-lewm-seed1/model",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-calibrated-cube-native-lewm-seed1"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "0"
+      },
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f"
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "learn8000-cube-native-lewm-seed2",
+      "phase": "learn8000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2",
+      "depends_on": [],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/config.json",
+        "--stop-step",
+        "8000",
+        "--resume"
+      ],
+      "config": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/config.json",
+      "config_sha256": "9da0f4492811f9494f8563ac751bb5fd8c0c0c6a92b5430fd77e4bc869509966"
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "archive8000-cube-native-lewm-seed2",
+      "phase": "archive8000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive8000-cube-native-lewm-seed2",
+      "depends_on": [
+        "learn8000-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/code/experiments/native_baseline_20261031/prepare12000.py",
+        "archive",
+        "--step",
+        "8000",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2",
+        "--parent-run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/cube-native-lewm-seed2",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive8000-cube-native-lewm-seed2"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "learn10000-cube-native-lewm-seed2",
+      "phase": "learn10000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2",
+      "depends_on": [
+        "archive8000-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/config.json",
+        "--stop-step",
+        "10000",
+        "--resume"
+      ],
+      "config": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/config.json",
+      "config_sha256": "9da0f4492811f9494f8563ac751bb5fd8c0c0c6a92b5430fd77e4bc869509966"
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "archive10000-cube-native-lewm-seed2",
+      "phase": "archive10000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive10000-cube-native-lewm-seed2",
+      "depends_on": [
+        "learn10000-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/code/experiments/native_baseline_20261031/prepare12000.py",
+        "archive",
+        "--step",
+        "10000",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2",
+        "--parent-run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/cube-native-lewm-seed2",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive10000-cube-native-lewm-seed2"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "learn12000-cube-native-lewm-seed2",
+      "phase": "learn12000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2",
+      "depends_on": [
+        "archive10000-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.train_stage",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/config.json",
+        "--stop-step",
+        "12000",
+        "--resume"
+      ],
+      "config": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/config.json",
+      "config_sha256": "9da0f4492811f9494f8563ac751bb5fd8c0c0c6a92b5430fd77e4bc869509966"
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "archive12000-cube-native-lewm-seed2",
+      "phase": "archive12000",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive12000-cube-native-lewm-seed2",
+      "depends_on": [
+        "learn12000-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/code/experiments/native_baseline_20261031/prepare12000.py",
+        "archive",
+        "--step",
+        "12000",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2",
+        "--parent-run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/cube-native-lewm-seed2",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/archive12000-cube-native-lewm-seed2"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "fullstate-cube-native-lewm-seed2",
+      "phase": "fullstate",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fullstate-cube-native-lewm-seed2",
+      "depends_on": [
+        "archive12000-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/experiments/ideas_validate_20261031/preflight.py",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fullstate-cube-native-lewm-seed2",
+        "--expected-step",
+        "12000",
+        "--initial-weights",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm600_20261031/cube-native-lewm-seed2/initial-model/weights.pt"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "transition-cube-native-lewm-seed2",
+      "phase": "transition",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/transition-cube-native-lewm-seed2",
+      "depends_on": [
+        "fullstate-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/experiments/ideas_validate_20261031/audit.py",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/transition-cube-native-lewm-seed2",
+        "--cases",
+        "64",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/experiments/ideas_validate_20261031/audit-windows-cube.json"
+      ]
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "planning-cube-native-lewm-seed2",
+      "phase": "planning",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-cube-native-lewm-seed2",
+      "depends_on": [
+        "transition-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/model-step0012000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-cube-native-lewm-seed2"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "1"
+      },
+      "manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "fresh-planning-cube-native-lewm-seed2",
+      "phase": "fresh-planning",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-cube-native-lewm-seed2",
+      "depends_on": [
+        "planning-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/model-step0012000",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-cube-native-lewm-seed2"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "1"
+      },
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f"
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "calibration-cube-native-lewm-seed2",
+      "phase": "calibration",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/calibration-job-cube-native-lewm-seed2",
+      "depends_on": [
+        "fresh-planning-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_helpers_20261031/source-v1/experiments/native_baseline_20261031/bn_calibrate.py",
+        "calibrate",
+        "--run",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2",
+        "--step",
+        "12000",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/reports/native-lewm600-20261031/source-bncal-v1/train128-cube.json",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/calibrated-cube-native-lewm-seed2"
+      ],
+      "artifact_output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/calibrated-cube-native-lewm-seed2"
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "planning-calibrated-cube-native-lewm-seed2",
+      "phase": "planning-calibrated",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-calibrated-cube-native-lewm-seed2",
+      "depends_on": [
+        "calibration-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/calibrated-cube-native-lewm-seed2/model",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-calibrated-cube-native-lewm-seed2"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "1"
+      },
+      "manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+    },
+    {
+      "host": "dev2",
+      "gpu": 1,
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "task": "cube",
+      "training_seed": 2,
+      "family": "native-lewm",
+      "arm": "history7-matched",
+      "hold": true,
+      "id": "fresh-planning-calibrated-cube-native-lewm-seed2",
+      "phase": "fresh-planning-calibrated",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-calibrated-cube-native-lewm-seed2",
+      "depends_on": [
+        "planning-calibrated-cube-native-lewm-seed2"
+      ],
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.benchmark_evaluate",
+        "--manifest",
+        "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+        "--checkpoint",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/calibrated-cube-native-lewm-seed2/model",
+        "--data",
+        "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-calibrated-cube-native-lewm-seed2"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "1"
+      },
+      "manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f"
+    }
+  ]
+}
