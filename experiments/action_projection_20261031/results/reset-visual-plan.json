@@ -1,0 +1,93 @@
+{
+  "helper_sha256": "252388ea8603a99568851a2b4f4a97fed13c780b708976d47d3e0ee53d7d46ec",
+  "parent_helper": "/efs/prescottsun/SPT-JEPA/runs/cube_reset_state_audit_20261031/source-v1/experiments/action_projection_20261031/reset_audit.py",
+  "parent_helper_sha256": "2aac1e7d0ab53f632206809351c1f1ff70b8c5c3f305634576e1410c5ab089f7",
+  "base_plan": "/efs/prescottsun/SPT-JEPA/runs/cube_reset_state_audit_20261031/plan.json",
+  "base_plan_sha256": "4942d92ee284cbcf177c923f584bc3feb2e755fad218a54ce3302d6c5fed0588",
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+    "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "cases": [
+    {
+      "index": 3,
+      "pair": {
+        "difficulty": 0.2364237537395196,
+        "episode_id": 937,
+        "goal_row": 188492,
+        "goal_step": 155,
+        "initial_success": false,
+        "orientation_distance_deg": 2.8511968462520816,
+        "pair_id": 3,
+        "position_distance_m": 0.2364237537395196,
+        "start_row": 188467,
+        "start_step": 130,
+        "symmetry_orientation_distance_deg": 2.8511968462519848,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "index": 28,
+      "pair": {
+        "difficulty": 0.25147717329045666,
+        "episode_id": 6515,
+        "goal_row": 1309650,
+        "goal_step": 135,
+        "initial_success": false,
+        "orientation_distance_deg": 1.1121350633053555,
+        "pair_id": 28,
+        "position_distance_m": 0.25147717329045666,
+        "start_row": 1309625,
+        "start_step": 110,
+        "symmetry_orientation_distance_deg": 1.1121350633056004,
+        "upstream_initial_success": false
+      }
+    },
+    {
+      "index": 35,
+      "pair": {
+        "difficulty": 0.10363062888447094,
+        "episode_id": 7381,
+        "goal_row": 1483664,
+        "goal_step": 83,
+        "initial_success": false,
+        "orientation_distance_deg": 40.54973397041562,
+        "pair_id": 35,
+        "position_distance_m": 0.10363062888447094,
+        "start_row": 1483639,
+        "start_step": 58,
+        "symmetry_orientation_distance_deg": 40.54973397041558,
+        "upstream_initial_success": false
+      }
+    }
+  ],
+  "repeats": 3,
+  "action": [
+    0.3,
+    -0.2,
+    0.1,
+    0.2,
+    -0.1
+  ],
+  "output": "/efs/prescottsun/SPT-JEPA/reports/cube-reset-state-20261031/visual-v2",
+  "source_files": {
+    "/efs/prescottsun/SPT-JEPA/runs/cube_reset_state_audit_20261031/source-v1/experiments/action_projection_20261031/reset_audit.py": "2aac1e7d0ab53f632206809351c1f1ff70b8c5c3f305634576e1410c5ab089f7",
+    "/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/ogbench/manipspace/descriptions/floor_wall.xml": "07130a20409c9629e187b303662ae26eb614ae5ec9e8ba9f78bad8e5e079603b",
+    "/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/mujoco/rendering/classic/renderer.py": "032dcf867d804af816dea672fd7db422a0a4114c2aa578a2c6542fd48cc5faf0",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wrapper/default.py": "9df8b9bfbdf6f1081d17769ff30cba9b45424b946d418a73e6b213a3b0e9499f",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/world/env_pool.py": "b6e73253199e1a39f0fcadfad7dbea09270cbd559e366d1bc9bf09c9e7da0606"
+  },
+  "cpu_contracts": {
+    "pixel_metric_oracle": true,
+    "frame_capture_mapping_unique27": true,
+    "no_real_environment": true,
+    "no_models": true
+  },
+  "scope": "One same3cases\u00d73freshWorld native reset audit. Exactly9fixed one-step probes, native constructor/random settling retained/counts recorded. Save actual T1 initial/goal/post-step RGB arrays and full camera/light/material/texture/geom visual state plus9post-step segmentation renders for localization only. No learned model, P0, reset correction, texture intervention, new action condition or extension. v1 remains unchanged.",
+  "frame_scope": "AddPixelsWrapper.step renders each step then replaces pixels; EnvPool stores(buf[env,0]) with T=1. Capture asserts shape(1,224,224,3),uint8; no history stack or stale buffer.",
+  "concrete_visual_source": "Native floor_wall.xml skybox uses mark=random,random=.005. V1 omitted texture bytes/material and some visual fields; the new audit measures them without changing them."
+}
