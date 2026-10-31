@@ -1,0 +1,289 @@
+{
+  "passed": true,
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1",
+    "source_commit": "6e1693345786f2c190d0191685e4b485d24b4ab8",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/manifest-v2.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "source_files_all_sha_valid": 345,
+  "fullstate": {
+    "step": 600,
+    "expected_step": 600,
+    "checks": {
+      "exact_step": true,
+      "model_finite": true,
+      "portable_finite": true,
+      "optimizer_present": true,
+      "optimizer_finite": true,
+      "scheduler_present": true,
+      "scheduler_finite": true,
+      "rng_present": true,
+      "sample_cursor": true,
+      "portable_equal": true
+    },
+    "portable_missing": [],
+    "portable_different": [],
+    "campaign_samples": 76800
+  },
+  "optimizer": {
+    "saved_tensors": 339,
+    "model_trainable_tensors": 339,
+    "unique_saved_ids": 339,
+    "passed": true
+  },
+  "frozen210": {
+    "prefixes": [
+      "encoder",
+      "pool",
+      "spatial_projection",
+      "spatial_mean",
+      "spatial_scale"
+    ],
+    "compared_tensors": 210,
+    "missing": [],
+    "different": [],
+    "equal": true
+  },
+  "native_prefix_initial_comparison": {
+    "prefixes": [
+      "encoder",
+      "pool",
+      "predictor",
+      "action_encoder",
+      "renderer",
+      "spatial_projection",
+      "spatial_mean",
+      "spatial_scale",
+      "carrier_chart_module"
+    ],
+    "compared_tensors": 554,
+    "missing": [],
+    "different": [],
+    "equal": true,
+    "reference_sha256": "d2082f2817f9c85675cbd5bd8c1bab338ab6af5e29cb4d3cc1328be380aa2c5a"
+  },
+  "direct_all_initial557_equal": true,
+  "additional_three_uncovered_buffers": [
+    "sigreg.t",
+    "sigreg.phi",
+    "sigreg.weights"
+  ],
+  "additional_three_buffers_unchanged": true,
+  "gradients": {
+    "encoder": {
+      "expectation": "frozen",
+      "parameters": 5501376,
+      "parameter_tensors": 198,
+      "trainable_parameters": 0,
+      "gradient_tensors": 0,
+      "gradient_norm": 0.0,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "pool": {
+      "expectation": "frozen",
+      "parameters": 163984,
+      "parameter_tensors": 9,
+      "trainable_parameters": 0,
+      "gradient_tensors": 0,
+      "gradient_norm": 0.0,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "predictor": {
+      "expectation": "active",
+      "parameters": 11389184,
+      "parameter_tensors": 87,
+      "trainable_parameters": 11389184,
+      "gradient_tensors": 87,
+      "gradient_norm": 0.3489448605098132,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "renderer": {
+      "expectation": "active",
+      "parameters": 34618416,
+      "parameter_tensors": 242,
+      "trainable_parameters": 34618416,
+      "gradient_tensors": 241,
+      "gradient_norm": 3.2896716715337955,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "action_encoder": {
+      "expectation": "active",
+      "parameters": 4240494,
+      "parameter_tensors": 6,
+      "trainable_parameters": 4240494,
+      "gradient_tensors": 6,
+      "gradient_norm": 0.12687786286681985,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "carrier_chart_module": {
+      "expectation": "active",
+      "parameters": 2128,
+      "parameter_tensors": 4,
+      "trainable_parameters": 2128,
+      "gradient_tensors": 4,
+      "gradient_norm": 0.028807264585638304,
+      "gradients_finite": true,
+      "passed": true
+    }
+  },
+  "chart_certificate": {
+    "raw_input_operator_norm": 1.6073530144710677,
+    "raw_output_operator_norm": 0.19409547412874684,
+    "input_operator_norm": 0.9999990580761636,
+    "output_operator_norm": 0.19409547412874684,
+    "input_normalization_active": true,
+    "output_normalization_active": false,
+    "residual_lipschitz_upper": 0.09704764565279661,
+    "guaranteed_lower": 0.9029523543472033,
+    "guaranteed_upper": 1.0970476456527967,
+    "mode": "bounded",
+    "global_invertibility_certified": true
+  },
+  "native_metrics": [
+    {
+      "state": "running",
+      "step": 500,
+      "elapsed_seconds": 122.34254860877991,
+      "updated_at": 1793421437.9487038,
+      "pid": 1043945,
+      "host": "prescottsun-dev13-2d-1027-worker-0",
+      "loss": 0.8673192262649536,
+      "fm": 0.09585551917552948,
+      "rate": 3.0858547687530518,
+      "entry": 2361.318359375,
+      "surprise": 37581.65234375,
+      "rate_share": 8.048192977905273,
+      "feature_std": 0.6235135793685913,
+      "active_dims": 1024.0,
+      "temporal_noise_rho": 0.800000011920929,
+      "forecast_fraction": 0.5,
+      "encoder_frozen": 0.0,
+      "grad_norm_encoder": 0.0,
+      "grad_norm_pool": 0.0,
+      "grad_norm_predictor": 0.1311894804239273,
+      "grad_norm_renderer": 9.647858619689941,
+      "grad_norm_action_encoder": 0.021273845806717873,
+      "grad_norm_carrier_chart_module": 0.05927802994847298,
+      "seconds_per_step": 1.1419587683677674,
+      "peak_gib": 107.57131624221802,
+      "learning_rates": [
+        2.00160128102482e-05,
+        4.00320256204964e-05
+      ]
+    },
+    {
+      "state": "running",
+      "step": 600,
+      "elapsed_seconds": 225.0512933731079,
+      "updated_at": 1793421540.6574485,
+      "pid": 1043945,
+      "host": "prescottsun-dev13-2d-1027-worker-0",
+      "loss": 0.7801527976989746,
+      "fm": 0.04639076068997383,
+      "rate": 2.9350481033325195,
+      "entry": 2372.51806640625,
+      "surprise": 35726.9375,
+      "rate_share": 15.816986083984375,
+      "feature_std": 0.6436606645584106,
+      "active_dims": 1024.0,
+      "temporal_noise_rho": 0.800000011920929,
+      "forecast_fraction": 0.5,
+      "encoder_frozen": 0.0,
+      "grad_norm_encoder": 0.0,
+      "grad_norm_pool": 0.0,
+      "grad_norm_predictor": 0.12629614770412445,
+      "grad_norm_renderer": 2.7669382095336914,
+      "grad_norm_action_encoder": 0.03911532461643219,
+      "grad_norm_carrier_chart_module": 0.020893307402729988,
+      "seconds_per_step": 1.02708744764328,
+      "peak_gib": 107.57131624221802,
+      "learning_rates": [
+        2.401921537229784e-05,
+        4.803843074459568e-05
+      ]
+    },
+    {
+      "state": "finished",
+      "step": 600,
+      "elapsed_seconds": 232.13445734977722,
+      "updated_at": 1793421547.7406125,
+      "pid": 1043945,
+      "host": "prescottsun-dev13-2d-1027-worker-0",
+      "loss": 0.7801527976989746,
+      "fm": 0.04639076068997383,
+      "rate": 2.9350481033325195,
+      "entry": 2372.51806640625,
+      "surprise": 35726.9375,
+      "rate_share": 15.816986083984375,
+      "feature_std": 0.6436606645584106,
+      "active_dims": 1024.0,
+      "temporal_noise_rho": 0.800000011920929,
+      "forecast_fraction": 0.5,
+      "encoder_frozen": 0.0,
+      "grad_norm_encoder": 0.0,
+      "grad_norm_pool": 0.0,
+      "grad_norm_predictor": 0.12629614770412445,
+      "grad_norm_renderer": 2.7669382095336914,
+      "grad_norm_action_encoder": 0.03911532461643219,
+      "grad_norm_carrier_chart_module": 0.020893307402729988,
+      "seconds_per_step": 7.0831639766693115,
+      "peak_gib": 107.57131624221802,
+      "learning_rates": [
+        2.401921537229784e-05,
+        4.803843074459568e-05
+      ]
+    }
+  ],
+  "stage": {
+    "stage_complete": true,
+    "initial_step": 400,
+    "stop_step": 600,
+    "scheduler_total_steps": 124910,
+    "config_sha256": "ead0e8fdfc80fcadd1249d9313c2624a97198753398f4d39a3d2808cd35c02ea",
+    "scope": "Existing Lightning Trainer and checkpoint code; only an operational exact-step stop callback is added."
+  },
+  "health_audit": {
+    "step": 600,
+    "model_finite": true,
+    "optimizer_finite": true,
+    "scheduler_finite": true,
+    "cursor": true,
+    "rng_present": true,
+    "optimizer_present": true,
+    "scheduler_present": true,
+    "portable_equal": true,
+    "gradient_max": {
+      "encoder": 0.0,
+      "pool": 0.0,
+      "predictor": 0.1311894804239273,
+      "renderer": 9.647858619689941,
+      "action_encoder": 0.03911532461643219,
+      "carrier_chart_module": 0.05927802994847298
+    },
+    "gradient_expectations": {
+      "encoder": "frozen",
+      "pool": "frozen",
+      "predictor": "active",
+      "renderer": "active",
+      "action_encoder": "active",
+      "carrier_chart_module": "active"
+    }
+  },
+  "health_feature_std": 0.46268147230148315,
+  "health_feature_signal_to_noise": 4.6268147230148315,
+  "health_t95_relative_condition_effects": {
+    "wrong_state": -0.0014536958248505347,
+    "wrong_actions": -0.00019518765077943123,
+    "carry": -0.0009061141040538746,
+    "zero": 0.17458969392335238
+  },
+  "scope": "One numerical400->600 gate only; no task planning, other seeds or universal reliability claim. Native prefix audit counts554; direct complete-state initial comparison above checks557."
+}

@@ -1,0 +1,1956 @@
+{
+  "passed": true,
+  "rows": [
+    {
+      "id": "native6000-seed1",
+      "family": "native",
+      "step": 6000,
+      "seed": 1,
+      "dimension": 192,
+      "readouts": {
+        "linear": {
+          "configuration": {
+            "ridge_mean_loss_units": 0.001
+          },
+          "training": {
+            "xyz_cm": 3.8923745994040173,
+            "xyz3cm": 0.529296875,
+            "xyz_r2": 0.9422646632821292,
+            "pose_deg": 11.026115549476497,
+            "pose15": 0.7529296875,
+            "pose_r2": 0.4088917741705902,
+            "joint": 0.4111328125
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 5.112900302977946,
+              "xyz3cm": 0.39955357142857145,
+              "xyz_r2": 0.8860798237033886,
+              "pose_deg": 20.63735762894105,
+              "pose15": 0.41294642857142855,
+              "pose_r2": -0.19421535803528633,
+              "joint": 0.14955357142857142
+            },
+            "clean_rollout": {
+              "xyz_cm": 9.827090161223682,
+              "xyz3cm": 0.024553571428571428,
+              "xyz_r2": 0.7079287176088364,
+              "pose_deg": 22.318725341058784,
+              "pose15": 0.33705357142857145,
+              "pose_r2": -0.5667163808145126,
+              "joint": 0.013392857142857142
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 9.15088342583096,
+              "xyz3cm": 0.05803571428571429,
+              "xyz_r2": 0.735219818920162,
+              "pose_deg": 22.170157710313486,
+              "pose15": 0.33705357142857145,
+              "pose_r2": -0.5059386106334296,
+              "joint": 0.026785714285714284
+            },
+            "initial_carry": {
+              "xyz_cm": 10.809211219386976,
+              "xyz3cm": 0.14285714285714285,
+              "xyz_r2": 0.5339395353592488,
+              "pose_deg": 19.655437549858714,
+              "pose15": 0.4174107142857143,
+              "pose_r2": -0.19021084154989598,
+              "joint": 0.07589285714285714
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 6.60993384846181,
+              "xyz3cm": 0.2611607142857143,
+              "xyz_r2": 0.8282338953639843,
+              "pose_deg": 20.63975291927276,
+              "pose15": 0.39732142857142855,
+              "pose_r2": -0.19748117407022026,
+              "joint": 0.10044642857142858
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.001522318568551305,
+                "decoded_forecast_discrepancy_mse": 0.0026584774266768035,
+                "cross_term": -0.00027783910928545514,
+                "forecast_mse": 0.003902956885942653,
+                "identity_abs_error": 4.336808689942018e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.007482022779008775,
+                "decoded_forecast_discrepancy_mse": 0.0036065709399038175,
+                "cross_term": -0.0012727698219685236,
+                "forecast_mse": 0.009815823896944067,
+                "identity_abs_error": 1.734723475976807e-18
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.001522318568551305,
+                "decoded_forecast_discrepancy_mse": 0.0022684080964085604,
+                "cross_term": -0.0002524615450681554,
+                "forecast_mse": 0.00353826511989171,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.007482022779008775,
+                "decoded_forecast_discrepancy_mse": 0.0030835196450849566,
+                "cross_term": -0.0011305046708652892,
+                "forecast_mse": 0.009435037753228442,
+                "identity_abs_error": 0.0
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.001522318568551305,
+                "decoded_forecast_discrepancy_mse": 0.006360943821848132,
+                "cross_term": -0.0016552830942388054,
+                "forecast_mse": 0.006227979296160631,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.007482022779008775,
+                "decoded_forecast_discrepancy_mse": 0.003003083280229983,
+                "cross_term": -0.0030281724597996484,
+                "forecast_mse": 0.00745693359943911,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.001522318568551305,
+                "decoded_forecast_discrepancy_mse": 0.001959591638546431,
+                "cross_term": -0.001186594846504223,
+                "forecast_mse": 0.0022953153605935134,
+                "identity_abs_error": 4.336808689942018e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.007482022779008775,
+                "decoded_forecast_discrepancy_mse": 0.0014256051811270948,
+                "cross_term": -0.001405144122909231,
+                "forecast_mse": 0.007502483837226638,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            }
+          }
+        },
+        "rbf": {
+          "configuration": {
+            "bandwidth": 19.528999716064646,
+            "median_distance_pairs": 523776,
+            "ridge_mean_loss_units": 0.001,
+            "gram_regularizer": 1.024,
+            "kernel": "exp(-squared_distance/(2*bandwidth**2))",
+            "kernel_centered": true,
+            "bandwidth_selection": "All off-diagonal training pair distances; no validation access"
+          },
+          "training": {
+            "xyz_cm": 5.117507541143331,
+            "xyz3cm": 0.3828125,
+            "xyz_r2": 0.903214025650507,
+            "pose_deg": 12.896605390723899,
+            "pose15": 0.6884765625,
+            "pose_r2": 0.2694213027198874,
+            "joint": 0.2822265625
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 5.861298525718462,
+              "xyz3cm": 0.33035714285714285,
+              "xyz_r2": 0.8562672769114488,
+              "pose_deg": 21.68899285606604,
+              "pose15": 0.34151785714285715,
+              "pose_r2": -0.06841927767869915,
+              "joint": 0.11160714285714286
+            },
+            "clean_rollout": {
+              "xyz_cm": 7.814529962643422,
+              "xyz3cm": 0.07366071428571429,
+              "xyz_r2": 0.7968616502019327,
+              "pose_deg": 22.133074272707415,
+              "pose15": 0.36160714285714285,
+              "pose_r2": -0.06609411945174415,
+              "joint": 0.022321428571428572
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 7.389546284870316,
+              "xyz3cm": 0.11160714285714286,
+              "xyz_r2": 0.8119409721084552,
+              "pose_deg": 21.877710130238956,
+              "pose15": 0.36830357142857145,
+              "pose_r2": -0.0586792256938955,
+              "joint": 0.03571428571428571
+            },
+            "initial_carry": {
+              "xyz_cm": 11.104404155318411,
+              "xyz3cm": 0.15178571428571427,
+              "xyz_r2": 0.5238324677763175,
+              "pose_deg": 20.506372441838113,
+              "pose15": 0.40848214285714285,
+              "pose_r2": -0.05355426658642637,
+              "joint": 0.03571428571428571
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 7.25057202408005,
+              "xyz3cm": 0.22321428571428573,
+              "xyz_r2": 0.7995243664827357,
+              "pose_deg": 21.545668885942398,
+              "pose15": 0.359375,
+              "pose_r2": -0.06598556511309872,
+              "joint": 0.08035714285714286
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.0019207044825531303,
+                "decoded_forecast_discrepancy_mse": 0.0006677808933229049,
+                "cross_term": 0.00012605819257231047,
+                "forecast_mse": 0.002714543568448346,
+                "identity_abs_error": 4.336808689942018e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006693882572633876,
+                "decoded_forecast_discrepancy_mse": 0.0001524566170477302,
+                "cross_term": -0.00016702424649732845,
+                "forecast_mse": 0.006679314943184278,
+                "identity_abs_error": 0.0
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.0019207044825531303,
+                "decoded_forecast_discrepancy_mse": 0.0004411017187239887,
+                "cross_term": 0.00015123195798284126,
+                "forecast_mse": 0.0025130381592599602,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006693882572633876,
+                "decoded_forecast_discrepancy_mse": 7.644779612358509e-05,
+                "cross_term": -0.00013747137141818317,
+                "forecast_mse": 0.006632858997339278,
+                "identity_abs_error": 0.0
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.0019207044825531303,
+                "decoded_forecast_discrepancy_mse": 0.005087031719331014,
+                "cross_term": -0.0006446958730312955,
+                "forecast_mse": 0.006363040328852848,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006693882572633876,
+                "decoded_forecast_discrepancy_mse": 0.0007713534071911882,
+                "cross_term": -0.0008644859823622011,
+                "forecast_mse": 0.006600749997462863,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.0019207044825531303,
+                "decoded_forecast_discrepancy_mse": 0.0013913630125742746,
+                "cross_term": -0.0006331058803664952,
+                "forecast_mse": 0.00267896161476091,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006693882572633876,
+                "decoded_forecast_discrepancy_mse": 0.0002873261785360114,
+                "cross_term": -0.0003025739248749461,
+                "forecast_mse": 0.0066786348262949415,
+                "identity_abs_error": 0.0
+              }
+            }
+          }
+        }
+      },
+      "provenance": {
+        "extraction": "/efs/prescottsun/SPT-JEPA/runs/native_cube_readability_20261031/native6000-seed1/extraction.json",
+        "extraction_sha256": "248ade0776c9fff97dfb432e8bdfca53ff7e3749753c3ea1f7471da65056a6a5",
+        "weights_sha256": "5d75daa26b1954c4af111baaf446b758b4d3202358b72d0bcef77f983e69b846",
+        "state_hash": "3e00c2db2807de0b901bd9b1f4acd1c762f012baf5bab859c4fff5a8c1ed5f39",
+        "model_source": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "actual_imported_modules": {
+          "as_jepa_lewm.factory": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/factory.py",
+            "sha256": "782e230f8ee3c9b8fd3650a03c2dfc2f75986c63338f71a12c548c63e8a5cbc3"
+          },
+          "as_jepa_tools.benchmark_data": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_tools/benchmark_data.py",
+            "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+          },
+          "experiments.ideas_validate_20261031.audit": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/experiments/ideas_validate_20261031/audit.py",
+            "sha256": "93c460b1982664d1bf3c49e4cc24e5abeb48574aa2025ca294eb780e66848da7"
+          },
+          "vforge.ops": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime/vforge/ops/__init__.py",
+            "sha256": "dfe486d4581264cda323fc1ec18e676f2344b2a9965f86a55e4e0241d2ff6702"
+          },
+          "as_jepa_lewm.native_lewm": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/native_lewm.py",
+            "sha256": "511311ccc9421e2856f8f7724cf60b6d7a2dc95fa97e04e54e0eefaa047e5b45"
+          },
+          "stable_worldmodel.wm.lewm.lewm": {
+            "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/lewm.py",
+            "sha256": "10ad1c2365b569ad3f9cbda17c8154d799c3b0c4fc5d707a44dca600b5ca8315"
+          },
+          "stable_worldmodel.wm.lewm.module": {
+            "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/module.py",
+            "sha256": "d276fb896712bed23f70f25ae9774e5ce7b3ab44fbb6bf4dea61065ba1388ef9"
+          },
+          "stable_pretraining.backbone.utils": {
+            "path": "/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/stable_pretraining/backbone/utils.py",
+            "sha256": "4254967db78d759b6238c6b9a5ef8219e643b1a5d165d63d5da69d740c4ec6de"
+          }
+        },
+        "actual_calls": {
+          "rgb_frames": 1024,
+          "predict_calls": 0,
+          "action_encoder_calls": 0,
+          "renderer_calls": 0
+        },
+        "seconds": 10.671426057815552,
+        "peak_gib": 0.20049047470092773
+      }
+    },
+    {
+      "id": "native6000-seed2",
+      "family": "native",
+      "step": 6000,
+      "seed": 2,
+      "dimension": 192,
+      "readouts": {
+        "linear": {
+          "configuration": {
+            "ridge_mean_loss_units": 0.001
+          },
+          "training": {
+            "xyz_cm": 3.781550218338889,
+            "xyz3cm": 0.5576171875,
+            "xyz_r2": 0.9433603096006696,
+            "pose_deg": 11.216240465187823,
+            "pose15": 0.736328125,
+            "pose_r2": 0.40425133320153295,
+            "joint": 0.4208984375
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 5.07120120355128,
+              "xyz3cm": 0.39285714285714285,
+              "xyz_r2": 0.8912245959166659,
+              "pose_deg": 21.035964956926584,
+              "pose15": 0.38169642857142855,
+              "pose_r2": -0.22010422680024266,
+              "joint": 0.14285714285714285
+            },
+            "clean_rollout": {
+              "xyz_cm": 11.556111494058023,
+              "xyz3cm": 0.017857142857142856,
+              "xyz_r2": 0.6021201989068039,
+              "pose_deg": 21.261237976204786,
+              "pose15": 0.35714285714285715,
+              "pose_r2": -1.0115617698655712,
+              "joint": 0.004464285714285714
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 10.96560840993342,
+              "xyz3cm": 0.020089285714285716,
+              "xyz_r2": 0.6432131496483007,
+              "pose_deg": 21.26120211371107,
+              "pose15": 0.3794642857142857,
+              "pose_r2": -0.8460995659280084,
+              "joint": 0.002232142857142857
+            },
+            "initial_carry": {
+              "xyz_cm": 11.021932123399916,
+              "xyz3cm": 0.20982142857142858,
+              "xyz_r2": 0.5146799209548237,
+              "pose_deg": 21.194257602420407,
+              "pose15": 0.34375,
+              "pose_r2": -0.2483303365660443,
+              "joint": 0.06919642857142858
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 6.688857828854632,
+              "xyz3cm": 0.2767857142857143,
+              "xyz_r2": 0.828288765032001,
+              "pose_deg": 21.053903385177083,
+              "pose15": 0.3705357142857143,
+              "pose_r2": -0.22623638562037574,
+              "joint": 0.10267857142857142
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.001453568830569451,
+                "decoded_forecast_discrepancy_mse": 0.004028303475610914,
+                "cross_term": -0.0001649931637304332,
+                "forecast_mse": 0.005316879142449932,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.00764422225544228,
+                "decoded_forecast_discrepancy_mse": 0.005983967768950004,
+                "cross_term": -0.0010253115885643783,
+                "forecast_mse": 0.012602878435827906,
+                "identity_abs_error": 0.0
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.001453568830569451,
+                "decoded_forecast_discrepancy_mse": 0.00346612164841977,
+                "cross_term": -0.00015193761060216558,
+                "forecast_mse": 0.004767752868387056,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.00764422225544228,
+                "decoded_forecast_discrepancy_mse": 0.005209498949316659,
+                "cross_term": -0.001287499993774111,
+                "forecast_mse": 0.011566221210984827,
+                "identity_abs_error": 1.734723475976807e-18
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.001453568830569451,
+                "decoded_forecast_discrepancy_mse": 0.006457615257888273,
+                "cross_term": -0.0014258380151016606,
+                "forecast_mse": 0.006485346073356064,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.00764422225544228,
+                "decoded_forecast_discrepancy_mse": 0.002711039428708173,
+                "cross_term": -0.002534196621580005,
+                "forecast_mse": 0.007821065062570449,
+                "identity_abs_error": 1.734723475976807e-18
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.001453568830569451,
+                "decoded_forecast_discrepancy_mse": 0.0018582415573452896,
+                "cross_term": -0.001017228252261597,
+                "forecast_mse": 0.0022945821356531435,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.00764422225544228,
+                "decoded_forecast_discrepancy_mse": 0.0014543218169185985,
+                "cross_term": -0.001415902488555405,
+                "forecast_mse": 0.007682641583805473,
+                "identity_abs_error": 0.0
+              }
+            }
+          }
+        },
+        "rbf": {
+          "configuration": {
+            "bandwidth": 19.5617137374498,
+            "median_distance_pairs": 523776,
+            "ridge_mean_loss_units": 0.001,
+            "gram_regularizer": 1.024,
+            "kernel": "exp(-squared_distance/(2*bandwidth**2))",
+            "kernel_centered": true,
+            "bandwidth_selection": "All off-diagonal training pair distances; no validation access"
+          },
+          "training": {
+            "xyz_cm": 4.977060354638247,
+            "xyz3cm": 0.4150390625,
+            "xyz_r2": 0.9058874163367604,
+            "pose_deg": 13.287640134440661,
+            "pose15": 0.662109375,
+            "pose_r2": 0.26516098744818195,
+            "joint": 0.291015625
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 5.922845505726002,
+              "xyz3cm": 0.32142857142857145,
+              "xyz_r2": 0.8532459740456998,
+              "pose_deg": 21.500187088588728,
+              "pose15": 0.36160714285714285,
+              "pose_r2": -0.07159164031731335,
+              "joint": 0.12053571428571429
+            },
+            "clean_rollout": {
+              "xyz_cm": 9.105248388338406,
+              "xyz3cm": 0.08258928571428571,
+              "xyz_r2": 0.7360087933179162,
+              "pose_deg": 22.15213679006592,
+              "pose15": 0.31026785714285715,
+              "pose_r2": -0.09282321220471679,
+              "joint": 0.03571428571428571
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 8.15170095242613,
+              "xyz3cm": 0.09151785714285714,
+              "xyz_r2": 0.7796484038450925,
+              "pose_deg": 22.442871667476137,
+              "pose15": 0.3236607142857143,
+              "pose_r2": -0.08822174199779087,
+              "joint": 0.04017857142857143
+            },
+            "initial_carry": {
+              "xyz_cm": 11.191059623861983,
+              "xyz3cm": 0.16964285714285715,
+              "xyz_r2": 0.5129621752728601,
+              "pose_deg": 20.77432532929631,
+              "pose15": 0.3638392857142857,
+              "pose_r2": -0.05045882167201454,
+              "joint": 0.046875
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 7.273467626373076,
+              "xyz3cm": 0.24776785714285715,
+              "xyz_r2": 0.7957621850292271,
+              "pose_deg": 21.251224042978205,
+              "pose15": 0.37276785714285715,
+              "pose_r2": -0.06765055616581805,
+              "joint": 0.08928571428571429
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.001961078239013721,
+                "decoded_forecast_discrepancy_mse": 0.001251952872608068,
+                "cross_term": 0.00031469092086558383,
+                "forecast_mse": 0.0035277220324873722,
+                "identity_abs_error": 4.336808689942018e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006713758124698823,
+                "decoded_forecast_discrepancy_mse": 0.00019594693725828873,
+                "cross_term": -6.292645361867358e-05,
+                "forecast_mse": 0.006846778608338439,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.001961078239013721,
+                "decoded_forecast_discrepancy_mse": 0.0007434303232233209,
+                "cross_term": 0.0002400561087580479,
+                "forecast_mse": 0.0029445646709950896,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006713758124698823,
+                "decoded_forecast_discrepancy_mse": 0.00011858405129339615,
+                "cross_term": -1.4392794035349879e-05,
+                "forecast_mse": 0.006817949381956871,
+                "identity_abs_error": 1.734723475976807e-18
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.001961078239013721,
+                "decoded_forecast_discrepancy_mse": 0.00537830859006135,
+                "cross_term": -0.0008310864711250832,
+                "forecast_mse": 0.006508300357949988,
+                "identity_abs_error": 8.673617379884035e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006713758124698823,
+                "decoded_forecast_discrepancy_mse": 0.0008198531060177876,
+                "cross_term": -0.0009522548788009781,
+                "forecast_mse": 0.006581356351915633,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.001961078239013721,
+                "decoded_forecast_discrepancy_mse": 0.0014875320861621533,
+                "cross_term": -0.0007193745722322423,
+                "forecast_mse": 0.002729235752943632,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006713758124698823,
+                "decoded_forecast_discrepancy_mse": 0.00028740299527023686,
+                "cross_term": -0.00031209475726866884,
+                "forecast_mse": 0.006689066362700391,
+                "identity_abs_error": 0.0
+              }
+            }
+          }
+        }
+      },
+      "provenance": {
+        "extraction": "/efs/prescottsun/SPT-JEPA/runs/native_cube_readability_20261031/native6000-seed2/extraction.json",
+        "extraction_sha256": "3b6ff4b96fe33175c523aee6559179ffa45a1e327a3fdef2616e5be1b207a019",
+        "weights_sha256": "a226e5d9c8abbb8290448a64819fa849581e6a06c33feff39248c4ba79750127",
+        "state_hash": "4aed10a46938d097ac92cde5f6dd91cf5c9433ccc42316f82b7c30c34cbdb97b",
+        "model_source": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "actual_imported_modules": {
+          "as_jepa_lewm.factory": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/factory.py",
+            "sha256": "782e230f8ee3c9b8fd3650a03c2dfc2f75986c63338f71a12c548c63e8a5cbc3"
+          },
+          "as_jepa_tools.benchmark_data": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_tools/benchmark_data.py",
+            "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+          },
+          "experiments.ideas_validate_20261031.audit": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/experiments/ideas_validate_20261031/audit.py",
+            "sha256": "93c460b1982664d1bf3c49e4cc24e5abeb48574aa2025ca294eb780e66848da7"
+          },
+          "vforge.ops": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime/vforge/ops/__init__.py",
+            "sha256": "dfe486d4581264cda323fc1ec18e676f2344b2a9965f86a55e4e0241d2ff6702"
+          },
+          "as_jepa_lewm.native_lewm": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/native_lewm.py",
+            "sha256": "511311ccc9421e2856f8f7724cf60b6d7a2dc95fa97e04e54e0eefaa047e5b45"
+          },
+          "stable_worldmodel.wm.lewm.lewm": {
+            "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/lewm.py",
+            "sha256": "10ad1c2365b569ad3f9cbda17c8154d799c3b0c4fc5d707a44dca600b5ca8315"
+          },
+          "stable_worldmodel.wm.lewm.module": {
+            "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/module.py",
+            "sha256": "d276fb896712bed23f70f25ae9774e5ce7b3ab44fbb6bf4dea61065ba1388ef9"
+          },
+          "stable_pretraining.backbone.utils": {
+            "path": "/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/stable_pretraining/backbone/utils.py",
+            "sha256": "4254967db78d759b6238c6b9a5ef8219e643b1a5d165d63d5da69d740c4ec6de"
+          }
+        },
+        "actual_calls": {
+          "rgb_frames": 1024,
+          "predict_calls": 0,
+          "action_encoder_calls": 0,
+          "renderer_calls": 0
+        },
+        "seconds": 10.408404111862183,
+        "peak_gib": 0.20049047470092773
+      }
+    },
+    {
+      "id": "native12000-seed1",
+      "family": "native",
+      "step": 12000,
+      "seed": 1,
+      "dimension": 192,
+      "readouts": {
+        "linear": {
+          "configuration": {
+            "ridge_mean_loss_units": 0.001
+          },
+          "training": {
+            "xyz_cm": 2.6293226693407186,
+            "xyz3cm": 0.771484375,
+            "xyz_r2": 0.9703943875663054,
+            "pose_deg": 11.428189931428351,
+            "pose15": 0.744140625,
+            "pose_r2": 0.3865348461782451,
+            "joint": 0.58984375
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 3.901259897944169,
+              "xyz3cm": 0.5446428571428571,
+              "xyz_r2": 0.9290228922785887,
+              "pose_deg": 21.996828846313857,
+              "pose15": 0.3549107142857143,
+              "pose_r2": -0.30790565494582145,
+              "joint": 0.21205357142857142
+            },
+            "clean_rollout": {
+              "xyz_cm": 4.927626336069067,
+              "xyz3cm": 0.34598214285714285,
+              "xyz_r2": 0.9029606390473874,
+              "pose_deg": 22.253510286466767,
+              "pose15": 0.32589285714285715,
+              "pose_r2": -0.31640584743408784,
+              "joint": 0.12723214285714285
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 4.617329933239916,
+              "xyz3cm": 0.421875,
+              "xyz_r2": 0.9090835999820418,
+              "pose_deg": 21.73906598821376,
+              "pose15": 0.34598214285714285,
+              "pose_r2": -0.31918131797652416,
+              "joint": 0.16294642857142858
+            },
+            "initial_carry": {
+              "xyz_cm": 10.987358216384356,
+              "xyz3cm": 0.22098214285714285,
+              "xyz_r2": 0.5057376731952847,
+              "pose_deg": 21.129600169642817,
+              "pose15": 0.37276785714285715,
+              "pose_r2": -0.25237945597054523,
+              "joint": 0.06696428571428571
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 5.9242983426273,
+              "xyz3cm": 0.32589285714285715,
+              "xyz_r2": 0.864433267306587,
+              "pose_deg": 22.014082620204153,
+              "pose15": 0.3638392857142857,
+              "pose_r2": -0.3107735695744518,
+              "joint": 0.13839285714285715
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.0009484691170512582,
+                "decoded_forecast_discrepancy_mse": 0.0004464244295192863,
+                "cross_term": -9.815379544966487e-05,
+                "forecast_mse": 0.0012967397511208796,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.008194317580372198,
+                "decoded_forecast_discrepancy_mse": 0.0011184709395052905,
+                "cross_term": -0.0010652153575909844,
+                "forecast_mse": 0.008247573162286505,
+                "identity_abs_error": 0.0
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.0009484691170512582,
+                "decoded_forecast_discrepancy_mse": 0.0002988871211398213,
+                "cross_term": -3.243778886549741e-05,
+                "forecast_mse": 0.0012149184493255821,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.008194317580372198,
+                "decoded_forecast_discrepancy_mse": 0.0009715713415184064,
+                "cross_term": -0.0009009268241149946,
+                "forecast_mse": 0.008264962097775611,
+                "identity_abs_error": 1.734723475976807e-18
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.0009484691170512582,
+                "decoded_forecast_discrepancy_mse": 0.007109885173313265,
+                "cross_term": -0.0014535127048746909,
+                "forecast_mse": 0.006604841585489833,
+                "identity_abs_error": 8.673617379884035e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.008194317580372198,
+                "decoded_forecast_discrepancy_mse": 0.0031559956695535168,
+                "cross_term": -0.0035038795606536018,
+                "forecast_mse": 0.007846433689272115,
+                "identity_abs_error": 1.734723475976807e-18
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.0009484691170512582,
+                "decoded_forecast_discrepancy_mse": 0.0017153691450364475,
+                "cross_term": -0.0008522561423438064,
+                "forecast_mse": 0.0018115821197438994,
+                "identity_abs_error": 2.168404344971009e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.008194317580372198,
+                "decoded_forecast_discrepancy_mse": 0.0013991139710818204,
+                "cross_term": -0.0013811458529904813,
+                "forecast_mse": 0.008212285698463538,
+                "identity_abs_error": 1.734723475976807e-18
+              }
+            }
+          }
+        },
+        "rbf": {
+          "configuration": {
+            "bandwidth": 19.67275351684591,
+            "median_distance_pairs": 523776,
+            "ridge_mean_loss_units": 0.001,
+            "gram_regularizer": 1.024,
+            "kernel": "exp(-squared_distance/(2*bandwidth**2))",
+            "kernel_centered": true,
+            "bandwidth_selection": "All off-diagonal training pair distances; no validation access"
+          },
+          "training": {
+            "xyz_cm": 4.178481354922041,
+            "xyz3cm": 0.4189453125,
+            "xyz_r2": 0.9397805422748835,
+            "pose_deg": 12.579620701146888,
+            "pose15": 0.6904296875,
+            "pose_r2": 0.2981162652864321,
+            "joint": 0.306640625
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 5.408998916981793,
+              "xyz3cm": 0.28125,
+              "xyz_r2": 0.8901071387275897,
+              "pose_deg": 22.207739231238254,
+              "pose15": 0.3549107142857143,
+              "pose_r2": -0.11664418269033394,
+              "joint": 0.125
+            },
+            "clean_rollout": {
+              "xyz_cm": 5.996983390297005,
+              "xyz3cm": 0.18080357142857142,
+              "xyz_r2": 0.8746209143566944,
+              "pose_deg": 21.782004598786653,
+              "pose15": 0.35044642857142855,
+              "pose_r2": -0.10335956740023122,
+              "joint": 0.060267857142857144
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 5.815381158830721,
+              "xyz3cm": 0.21428571428571427,
+              "xyz_r2": 0.8784920813126466,
+              "pose_deg": 21.78488594287205,
+              "pose15": 0.3549107142857143,
+              "pose_r2": -0.10900912263468787,
+              "joint": 0.08482142857142858
+            },
+            "initial_carry": {
+              "xyz_cm": 11.557642510325225,
+              "xyz3cm": 0.10044642857142858,
+              "xyz_r2": 0.5114142618112563,
+              "pose_deg": 21.59321414760691,
+              "pose15": 0.3950892857142857,
+              "pose_r2": -0.1074754555322801,
+              "joint": 0.011160714285714286
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 7.0077060421307555,
+              "xyz3cm": 0.17857142857142858,
+              "xyz_r2": 0.8302569174694252,
+              "pose_deg": 22.17820296612305,
+              "pose15": 0.36607142857142855,
+              "pose_r2": -0.11669767099755735,
+              "joint": 0.08258928571428571
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.001468501442893211,
+                "decoded_forecast_discrepancy_mse": 0.00020120289358391069,
+                "cross_term": 5.739964853949574e-06,
+                "forecast_mse": 0.0016754443013310713,
+                "identity_abs_error": 2.168404344971009e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006996022245670912,
+                "decoded_forecast_discrepancy_mse": 8.533115108932948e-05,
+                "cross_term": -0.00016856219776958874,
+                "forecast_mse": 0.006912791198990653,
+                "identity_abs_error": 0.0
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.001468501442893211,
+                "decoded_forecast_discrepancy_mse": 9.356712816890441e-05,
+                "cross_term": 6.164521570528216e-05,
+                "forecast_mse": 0.0016237137867673975,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006996022245670912,
+                "decoded_forecast_discrepancy_mse": 2.5879161494589488e-05,
+                "cross_term": -7.371449778554741e-05,
+                "forecast_mse": 0.0069481869093799544,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.001468501442893211,
+                "decoded_forecast_discrepancy_mse": 0.005323585384091393,
+                "cross_term": -0.0002631016572504892,
+                "forecast_mse": 0.006528985169734115,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006996022245670912,
+                "decoded_forecast_discrepancy_mse": 0.001213392311051398,
+                "cross_term": -0.0012708364102161744,
+                "forecast_mse": 0.006938578146506135,
+                "identity_abs_error": 0.0
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.001468501442893211,
+                "decoded_forecast_discrepancy_mse": 0.0013329346364192884,
+                "cross_term": -0.0005331544208762232,
+                "forecast_mse": 0.002268281658436276,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006996022245670912,
+                "decoded_forecast_discrepancy_mse": 0.00046024727122973263,
+                "cross_term": -0.0004599121551802191,
+                "forecast_mse": 0.006996357361720425,
+                "identity_abs_error": 0.0
+              }
+            }
+          }
+        }
+      },
+      "provenance": {
+        "extraction": "/efs/prescottsun/SPT-JEPA/runs/native_cube_readability_20261031/native12000-seed1/extraction.json",
+        "extraction_sha256": "5ea8201e12ff0d5e92ffaaf7e1f6696748b83bd9d82b59e44271c26f07addd4b",
+        "weights_sha256": "459033a8ff033116a369542b18270709f84f630bd5d1b08856d245b62803a7a4",
+        "state_hash": "69de1af43adbb2b6a48453b7f4908c3d461c7d33b05c0953421179dcf91ecd64",
+        "model_source": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "actual_imported_modules": {
+          "as_jepa_lewm.factory": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/factory.py",
+            "sha256": "782e230f8ee3c9b8fd3650a03c2dfc2f75986c63338f71a12c548c63e8a5cbc3"
+          },
+          "as_jepa_tools.benchmark_data": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_tools/benchmark_data.py",
+            "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+          },
+          "experiments.ideas_validate_20261031.audit": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/experiments/ideas_validate_20261031/audit.py",
+            "sha256": "93c460b1982664d1bf3c49e4cc24e5abeb48574aa2025ca294eb780e66848da7"
+          },
+          "vforge.ops": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime/vforge/ops/__init__.py",
+            "sha256": "dfe486d4581264cda323fc1ec18e676f2344b2a9965f86a55e4e0241d2ff6702"
+          },
+          "as_jepa_lewm.native_lewm": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/native_lewm.py",
+            "sha256": "511311ccc9421e2856f8f7724cf60b6d7a2dc95fa97e04e54e0eefaa047e5b45"
+          },
+          "stable_worldmodel.wm.lewm.lewm": {
+            "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/lewm.py",
+            "sha256": "10ad1c2365b569ad3f9cbda17c8154d799c3b0c4fc5d707a44dca600b5ca8315"
+          },
+          "stable_worldmodel.wm.lewm.module": {
+            "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/module.py",
+            "sha256": "d276fb896712bed23f70f25ae9774e5ce7b3ab44fbb6bf4dea61065ba1388ef9"
+          },
+          "stable_pretraining.backbone.utils": {
+            "path": "/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/stable_pretraining/backbone/utils.py",
+            "sha256": "4254967db78d759b6238c6b9a5ef8219e643b1a5d165d63d5da69d740c4ec6de"
+          }
+        },
+        "actual_calls": {
+          "rgb_frames": 1024,
+          "predict_calls": 0,
+          "action_encoder_calls": 0,
+          "renderer_calls": 0
+        },
+        "seconds": 10.589405536651611,
+        "peak_gib": 0.20049047470092773
+      }
+    },
+    {
+      "id": "native12000-seed2",
+      "family": "native",
+      "step": 12000,
+      "seed": 2,
+      "dimension": 192,
+      "readouts": {
+        "linear": {
+          "configuration": {
+            "ridge_mean_loss_units": 0.001
+          },
+          "training": {
+            "xyz_cm": 2.4921382231349813,
+            "xyz3cm": 0.7900390625,
+            "xyz_r2": 0.9729953802005256,
+            "pose_deg": 11.492152821883955,
+            "pose15": 0.732421875,
+            "pose_r2": 0.3752363047000986,
+            "joint": 0.587890625
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 3.6529500755400144,
+              "xyz3cm": 0.6026785714285714,
+              "xyz_r2": 0.935452404740952,
+              "pose_deg": 21.45166096031581,
+              "pose15": 0.36160714285714285,
+              "pose_r2": -0.3282685493450159,
+              "joint": 0.21651785714285715
+            },
+            "clean_rollout": {
+              "xyz_cm": 4.172322489769524,
+              "xyz3cm": 0.4799107142857143,
+              "xyz_r2": 0.9249319818760255,
+              "pose_deg": 23.524511256316025,
+              "pose15": 0.28348214285714285,
+              "pose_r2": -0.4552323604984032,
+              "joint": 0.14955357142857142
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 4.062854034747655,
+              "xyz3cm": 0.5133928571428571,
+              "xyz_r2": 0.9258391331129613,
+              "pose_deg": 23.21845037214396,
+              "pose15": 0.2924107142857143,
+              "pose_r2": -0.4254481172578741,
+              "joint": 0.16294642857142858
+            },
+            "initial_carry": {
+              "xyz_cm": 10.903717154546317,
+              "xyz3cm": 0.24553571428571427,
+              "xyz_r2": 0.5068993451751439,
+              "pose_deg": 21.55571420781011,
+              "pose15": 0.34598214285714285,
+              "pose_r2": -0.3140533811169519,
+              "joint": 0.06473214285714286
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 5.808643725824301,
+              "xyz3cm": 0.34375,
+              "xyz_r2": 0.8692774001537189,
+              "pose_deg": 21.468155206879533,
+              "pose15": 0.36830357142857145,
+              "pose_r2": -0.3221912890787144,
+              "joint": 0.12053571428571429
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.0008625513584383888,
+                "decoded_forecast_discrepancy_mse": 0.00034355622961173323,
+                "cross_term": -0.00020297151848391423,
+                "forecast_mse": 0.001003136069566208,
+                "identity_abs_error": 2.168404344971009e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.008321895607832822,
+                "decoded_forecast_discrepancy_mse": 0.0007699506282523539,
+                "cross_term": 2.5505669280325087e-05,
+                "forecast_mse": 0.0091173519053655,
+                "identity_abs_error": 0.0
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.0008625513584383888,
+                "decoded_forecast_discrepancy_mse": 0.000262606469377905,
+                "cross_term": -0.0001341440461306443,
+                "forecast_mse": 0.0009910137816856496,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.008321895607832822,
+                "decoded_forecast_discrepancy_mse": 0.000715755598805548,
+                "cross_term": -0.00010690415849711712,
+                "forecast_mse": 0.00893074704814125,
+                "identity_abs_error": 1.734723475976807e-18
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.0008625513584383888,
+                "decoded_forecast_discrepancy_mse": 0.007051443336711914,
+                "cross_term": -0.0013246765654959145,
+                "forecast_mse": 0.006589318129654388,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.008321895607832822,
+                "decoded_forecast_discrepancy_mse": 0.002984829379149529,
+                "cross_term": -0.003073890545357263,
+                "forecast_mse": 0.008232834441625085,
+                "identity_abs_error": 3.469446951953614e-18
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.0008625513584383888,
+                "decoded_forecast_discrepancy_mse": 0.001619299940158484,
+                "cross_term": -0.0007350014644010404,
+                "forecast_mse": 0.0017468498341958328,
+                "identity_abs_error": 2.168404344971009e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.008321895607832822,
+                "decoded_forecast_discrepancy_mse": 0.0013883063487754967,
+                "cross_term": -0.00142638172558294,
+                "forecast_mse": 0.008283820231025377,
+                "identity_abs_error": 1.734723475976807e-18
+              }
+            }
+          }
+        },
+        "rbf": {
+          "configuration": {
+            "bandwidth": 19.627474691395346,
+            "median_distance_pairs": 523776,
+            "ridge_mean_loss_units": 0.001,
+            "gram_regularizer": 1.024,
+            "kernel": "exp(-squared_distance/(2*bandwidth**2))",
+            "kernel_centered": true,
+            "bandwidth_selection": "All off-diagonal training pair distances; no validation access"
+          },
+          "training": {
+            "xyz_cm": 3.8528704279628427,
+            "xyz3cm": 0.4677734375,
+            "xyz_r2": 0.9478507007012857,
+            "pose_deg": 12.82688226119757,
+            "pose15": 0.6796875,
+            "pose_r2": 0.28954618009363586,
+            "joint": 0.3251953125
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 5.106656826625659,
+              "xyz3cm": 0.34151785714285715,
+              "xyz_r2": 0.8999750520007666,
+              "pose_deg": 22.447138756586785,
+              "pose15": 0.328125,
+              "pose_r2": -0.11728014614560611,
+              "joint": 0.12053571428571429
+            },
+            "clean_rollout": {
+              "xyz_cm": 5.117593578846957,
+              "xyz3cm": 0.3125,
+              "xyz_r2": 0.8992745081908129,
+              "pose_deg": 22.884477535810642,
+              "pose15": 0.32142857142857145,
+              "pose_r2": -0.13828263006163444,
+              "joint": 0.109375
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 5.093683789021646,
+              "xyz3cm": 0.34375,
+              "xyz_r2": 0.8980116261304488,
+              "pose_deg": 22.657921383642613,
+              "pose15": 0.3236607142857143,
+              "pose_r2": -0.12366699699290118,
+              "joint": 0.11830357142857142
+            },
+            "initial_carry": {
+              "xyz_cm": 11.361718900332052,
+              "xyz3cm": 0.11830357142857142,
+              "xyz_r2": 0.5234386041418809,
+              "pose_deg": 21.450648181010624,
+              "pose15": 0.37276785714285715,
+              "pose_r2": -0.1136250484728254,
+              "joint": 0.03125
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 6.815101439218236,
+              "xyz3cm": 0.18973214285714285,
+              "xyz_r2": 0.8401434441974289,
+              "pose_deg": 22.402891631565208,
+              "pose15": 0.3482142857142857,
+              "pose_r2": -0.1178380331951836,
+              "joint": 0.078125
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.0013366362360706877,
+                "decoded_forecast_discrepancy_mse": 0.000144606286066728,
+                "cross_term": -0.0001352448991320777,
+                "forecast_mse": 0.0013459976230053381,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.007000006697074043,
+                "decoded_forecast_discrepancy_mse": 7.575264358372397e-05,
+                "cross_term": 5.583255335597599e-05,
+                "forecast_mse": 0.007131591894013744,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.0013366362360706877,
+                "decoded_forecast_discrepancy_mse": 7.253439982053492e-05,
+                "cross_term": -4.629708385486733e-05,
+                "forecast_mse": 0.0013628735520363553,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.007000006697074043,
+                "decoded_forecast_discrepancy_mse": 2.1839575645468632e-05,
+                "cross_term": 1.8175454477916216e-05,
+                "forecast_mse": 0.007040021727197428,
+                "identity_abs_error": 0.0
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.0013366362360706877,
+                "decoded_forecast_discrepancy_mse": 0.005312924790616725,
+                "cross_term": -0.000281257486841827,
+                "forecast_mse": 0.006368303539845586,
+                "identity_abs_error": 8.673617379884035e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.007000006697074043,
+                "decoded_forecast_discrepancy_mse": 0.001197615649578685,
+                "cross_term": -0.0012205156431713314,
+                "forecast_mse": 0.0069771067034813975,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.0013366362360706877,
+                "decoded_forecast_discrepancy_mse": 0.0013133420257045152,
+                "cross_term": -0.0005138105422897622,
+                "forecast_mse": 0.002136167719485441,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.007000006697074043,
+                "decoded_forecast_discrepancy_mse": 0.0004337013603531077,
+                "cross_term": -0.000430206074862962,
+                "forecast_mse": 0.0070035019825641885,
+                "identity_abs_error": 0.0
+              }
+            }
+          }
+        }
+      },
+      "provenance": {
+        "extraction": "/efs/prescottsun/SPT-JEPA/runs/native_cube_readability_20261031/native12000-seed2/extraction.json",
+        "extraction_sha256": "38b070fa15459b41ce41adb143ec2a8a55b0c7461d922f55a5a516ba005d3eeb",
+        "weights_sha256": "10f9bf564f100577f230d93baa0cd95308fa6c17f32441426fd2905e2b3005a4",
+        "state_hash": "596120cf0c1522a0d81a2a6ff178e577f679fd751298c67feccfbe2b04fa7850",
+        "model_source": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "actual_imported_modules": {
+          "as_jepa_lewm.factory": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/factory.py",
+            "sha256": "782e230f8ee3c9b8fd3650a03c2dfc2f75986c63338f71a12c548c63e8a5cbc3"
+          },
+          "as_jepa_tools.benchmark_data": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_tools/benchmark_data.py",
+            "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+          },
+          "experiments.ideas_validate_20261031.audit": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/experiments/ideas_validate_20261031/audit.py",
+            "sha256": "93c460b1982664d1bf3c49e4cc24e5abeb48574aa2025ca294eb780e66848da7"
+          },
+          "vforge.ops": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime/vforge/ops/__init__.py",
+            "sha256": "dfe486d4581264cda323fc1ec18e676f2344b2a9965f86a55e4e0241d2ff6702"
+          },
+          "as_jepa_lewm.native_lewm": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/native_lewm.py",
+            "sha256": "511311ccc9421e2856f8f7724cf60b6d7a2dc95fa97e04e54e0eefaa047e5b45"
+          },
+          "stable_worldmodel.wm.lewm.lewm": {
+            "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/lewm.py",
+            "sha256": "10ad1c2365b569ad3f9cbda17c8154d799c3b0c4fc5d707a44dca600b5ca8315"
+          },
+          "stable_worldmodel.wm.lewm.module": {
+            "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/module.py",
+            "sha256": "d276fb896712bed23f70f25ae9774e5ce7b3ab44fbb6bf4dea61065ba1388ef9"
+          },
+          "stable_pretraining.backbone.utils": {
+            "path": "/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/stable_pretraining/backbone/utils.py",
+            "sha256": "4254967db78d759b6238c6b9a5ef8219e643b1a5d165d63d5da69d740c4ec6de"
+          }
+        },
+        "actual_calls": {
+          "rgb_frames": 1024,
+          "predict_calls": 0,
+          "action_encoder_calls": 0,
+          "renderer_calls": 0
+        },
+        "seconds": 10.643502473831177,
+        "peak_gib": 0.20049047470092773
+      }
+    },
+    {
+      "id": "tf12000-seed1",
+      "family": "tf",
+      "step": 12000,
+      "seed": 1,
+      "dimension": 64,
+      "readouts": {
+        "linear": {
+          "configuration": {
+            "ridge_mean_loss_units": 0.001
+          },
+          "training": {
+            "xyz_cm": 5.116056777855385,
+            "xyz3cm": 0.3955078125,
+            "xyz_r2": 0.8993386982925382,
+            "pose_deg": 18.7006460667369,
+            "pose15": 0.4521484375,
+            "pose_r2": 0.0477167036812971,
+            "joint": 0.173828125
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 5.05963978469957,
+              "xyz3cm": 0.4375,
+              "xyz_r2": 0.8807586269250067,
+              "pose_deg": 21.710065079139977,
+              "pose15": 0.3549107142857143,
+              "pose_r2": -0.015715209259530516,
+              "joint": 0.15625
+            },
+            "clean_rollout": {
+              "xyz_cm": 6.701291379256388,
+              "xyz3cm": 0.2544642857142857,
+              "xyz_r2": 0.8381097241495321,
+              "pose_deg": 24.10920778698819,
+              "pose15": 0.27901785714285715,
+              "pose_r2": -0.14830580573640106,
+              "joint": 0.06696428571428571
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 4.763267162495429,
+              "xyz3cm": 0.4486607142857143,
+              "xyz_r2": 0.896037500660049,
+              "pose_deg": 23.124501318224645,
+              "pose15": 0.328125,
+              "pose_r2": -0.05102729416172003,
+              "joint": 0.14955357142857142
+            },
+            "initial_carry": {
+              "xyz_cm": 10.706474226799049,
+              "xyz3cm": 0.25892857142857145,
+              "xyz_r2": 0.5210920935744361,
+              "pose_deg": 20.497034398338034,
+              "pose15": 0.39732142857142855,
+              "pose_r2": 0.023947838223488116,
+              "joint": 0.08482142857142858
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 6.574236013010968,
+              "xyz3cm": 0.28348214285714285,
+              "xyz_r2": 0.8227401207739462,
+              "pose_deg": 21.337368901197188,
+              "pose15": 0.3638392857142857,
+              "pose_r2": -0.006685598432512929,
+              "joint": 0.11607142857142858
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.0015934258730340048,
+                "decoded_forecast_discrepancy_mse": 0.0026799379931403936,
+                "cross_term": -0.0021100194876212293,
+                "forecast_mse": 0.0021633443785531686,
+                "identity_abs_error": 4.336808689942018e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006363679952306325,
+                "decoded_forecast_discrepancy_mse": 0.0004907036410530769,
+                "cross_term": 0.000340005708351384,
+                "forecast_mse": 0.007194389301710787,
+                "identity_abs_error": 1.734723475976807e-18
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.0015934258730340048,
+                "decoded_forecast_discrepancy_mse": 0.00047815680644445975,
+                "cross_term": -0.0006823288324150458,
+                "forecast_mse": 0.0013892538470634186,
+                "identity_abs_error": 2.168404344971009e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006363679952306325,
+                "decoded_forecast_discrepancy_mse": 0.0001635184288138128,
+                "cross_term": 5.771957640422848e-05,
+                "forecast_mse": 0.006584917957524366,
+                "identity_abs_error": 0.0
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.0015934258730340048,
+                "decoded_forecast_discrepancy_mse": 0.006289255280749086,
+                "cross_term": -0.0014830211262261289,
+                "forecast_mse": 0.006399660027556961,
+                "identity_abs_error": 8.673617379884035e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006363679952306325,
+                "decoded_forecast_discrepancy_mse": 0.0003272664461646226,
+                "cross_term": -0.0005757641922002153,
+                "forecast_mse": 0.0061151822062707325,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.0015934258730340048,
+                "decoded_forecast_discrepancy_mse": 0.0015831347135823177,
+                "cross_term": -0.0008078317593154294,
+                "forecast_mse": 0.0023687288273008932,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006363679952306325,
+                "decoded_forecast_discrepancy_mse": 0.0001561880781228262,
+                "cross_term": -0.00021276058277096597,
+                "forecast_mse": 0.006307107447658185,
+                "identity_abs_error": 0.0
+              }
+            }
+          }
+        },
+        "rbf": {
+          "configuration": {
+            "bandwidth": 10.300143603897899,
+            "median_distance_pairs": 523776,
+            "ridge_mean_loss_units": 0.001,
+            "gram_regularizer": 1.024,
+            "kernel": "exp(-squared_distance/(2*bandwidth**2))",
+            "kernel_centered": true,
+            "bandwidth_selection": "All off-diagonal training pair distances; no validation access"
+          },
+          "training": {
+            "xyz_cm": 5.232735532851867,
+            "xyz3cm": 0.3896484375,
+            "xyz_r2": 0.8911933901239875,
+            "pose_deg": 18.191021080209886,
+            "pose15": 0.45703125,
+            "pose_r2": 0.06642117702644623,
+            "joint": 0.1826171875
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 5.532308069083037,
+              "xyz3cm": 0.40848214285714285,
+              "xyz_r2": 0.8593717277250097,
+              "pose_deg": 22.268996898679283,
+              "pose15": 0.3392857142857143,
+              "pose_r2": -0.030288192986397844,
+              "joint": 0.12723214285714285
+            },
+            "clean_rollout": {
+              "xyz_cm": 4.98268982557312,
+              "xyz3cm": 0.4575892857142857,
+              "xyz_r2": 0.8777974096804286,
+              "pose_deg": 22.204744213347016,
+              "pose15": 0.35044642857142855,
+              "pose_r2": -0.032733483213117864,
+              "joint": 0.15848214285714285
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 5.341656504852866,
+              "xyz3cm": 0.4017857142857143,
+              "xyz_r2": 0.8660346663367313,
+              "pose_deg": 22.14483708809063,
+              "pose15": 0.3392857142857143,
+              "pose_r2": -0.030416881059049494,
+              "joint": 0.12723214285714285
+            },
+            "initial_carry": {
+              "xyz_cm": 10.545601723839857,
+              "xyz3cm": 0.29464285714285715,
+              "xyz_r2": 0.5152990959454135,
+              "pose_deg": 21.833479168344304,
+              "pose15": 0.33035714285714285,
+              "pose_r2": -0.01763889845952682,
+              "joint": 0.10714285714285714
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 6.771217611640587,
+              "xyz3cm": 0.4107142857142857,
+              "xyz_r2": 0.7918372407736433,
+              "pose_deg": 21.93381800353263,
+              "pose15": 0.34151785714285715,
+              "pose_r2": -0.024160633922047703,
+              "joint": 0.11830357142857142
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.0018792196176918522,
+                "decoded_forecast_discrepancy_mse": 9.674905983970606e-05,
+                "cross_term": -0.00034297197390825853,
+                "forecast_mse": 0.0016329967036232994,
+                "identity_abs_error": 2.168404344971009e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.0064549829115832244,
+                "decoded_forecast_discrepancy_mse": 2.2922531556017086e-05,
+                "cross_term": -7.60224861499992e-06,
+                "forecast_mse": 0.0064703031945242415,
+                "identity_abs_error": 0.0
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.0018792196176918522,
+                "decoded_forecast_discrepancy_mse": 3.681976968624681e-05,
+                "cross_term": -0.0001258568085978792,
+                "forecast_mse": 0.0017901825787802195,
+                "identity_abs_error": 4.336808689942018e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.0064549829115832244,
+                "decoded_forecast_discrepancy_mse": 8.469070624570777e-06,
+                "cross_term": -7.66281144821162e-06,
+                "forecast_mse": 0.0064557891707595835,
+                "identity_abs_error": 0.0
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.0018792196176918522,
+                "decoded_forecast_discrepancy_mse": 0.005901103522009467,
+                "cross_term": -0.0013032511194234614,
+                "forecast_mse": 0.006477072020277858,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.0064549829115832244,
+                "decoded_forecast_discrepancy_mse": 0.0002454872780006486,
+                "cross_term": -0.00032473789988524127,
+                "forecast_mse": 0.006375732289698632,
+                "identity_abs_error": 0.0
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.0018792196176918522,
+                "decoded_forecast_discrepancy_mse": 0.0015066125401391026,
+                "cross_term": -0.0006041472627331991,
+                "forecast_mse": 0.0027816848950977554,
+                "identity_abs_error": 4.336808689942018e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.0064549829115832244,
+                "decoded_forecast_discrepancy_mse": 6.75745726121268e-05,
+                "cross_term": -0.00010596508249019053,
+                "forecast_mse": 0.006416592401705161,
+                "identity_abs_error": 0.0
+              }
+            }
+          }
+        }
+      },
+      "provenance": {
+        "extraction": "/efs/prescottsun/SPT-JEPA/runs/native_cube_readability_20261031/tf12000-seed1/extraction.json",
+        "extraction_sha256": "998033c203e751550515bdbf6acb2c22e4f73d277a5d10d009787654398ed357",
+        "weights_sha256": "d631228eb3ff86106f6895886caca1f6b5478132930f124881d5717d6505a9be",
+        "state_hash": "4949734aa3765e89e267da5bafc1c3874622dfa83d1ac86d9eb8206b0f444487",
+        "model_source": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+        "actual_imported_modules": {
+          "as_jepa_lewm.factory": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/factory.py",
+            "sha256": "f38bf5fd874d7c82a45bd3f182fe230d550e8f10567cbd9f6e54bf564a4d12b7"
+          },
+          "as_jepa_tools.benchmark_data": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_tools/benchmark_data.py",
+            "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+          },
+          "experiments.ideas_validate_20261031.audit": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/experiments/ideas_validate_20261031/audit.py",
+            "sha256": "93c460b1982664d1bf3c49e4cc24e5abeb48574aa2025ca294eb780e66848da7"
+          },
+          "vforge.ops": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime/vforge/ops/__init__.py",
+            "sha256": "dfe486d4581264cda323fc1ec18e676f2344b2a9965f86a55e4e0241d2ff6702"
+          },
+          "as_jepa_lewm.robust": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/robust.py",
+            "sha256": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc"
+          },
+          "as_jepa_lewm.model": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/model.py",
+            "sha256": "c7dc10afeaceb398151d67dfb687d69e71e867c006ba8c627176d2e4b17bbf2a"
+          },
+          "stable_worldmodel.wm.lewm.lewm": {
+            "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/lewm.py",
+            "sha256": "10ad1c2365b569ad3f9cbda17c8154d799c3b0c4fc5d707a44dca600b5ca8315"
+          }
+        },
+        "actual_calls": {
+          "rgb_frames": 1536,
+          "predict_calls": 112,
+          "action_encoder_calls": 8,
+          "renderer_calls": 0
+        },
+        "seconds": 22.66512393951416,
+        "peak_gib": 0.325986385345459
+      }
+    },
+    {
+      "id": "tf12000-seed2",
+      "family": "tf",
+      "step": 12000,
+      "seed": 2,
+      "dimension": 64,
+      "readouts": {
+        "linear": {
+          "configuration": {
+            "ridge_mean_loss_units": 0.001
+          },
+          "training": {
+            "xyz_cm": 4.122106228040893,
+            "xyz3cm": 0.5146484375,
+            "xyz_r2": 0.9296074534018731,
+            "pose_deg": 17.443520489329977,
+            "pose15": 0.4853515625,
+            "pose_r2": 0.07956354079315131,
+            "joint": 0.2587890625
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 4.694854014362836,
+              "xyz3cm": 0.453125,
+              "xyz_r2": 0.900941833360795,
+              "pose_deg": 21.05466150052988,
+              "pose15": 0.38169642857142855,
+              "pose_r2": -0.003042290824977867,
+              "joint": 0.17633928571428573
+            },
+            "clean_rollout": {
+              "xyz_cm": 4.478869387431726,
+              "xyz3cm": 0.43526785714285715,
+              "xyz_r2": 0.9137444480576254,
+              "pose_deg": 22.987012181057985,
+              "pose15": 0.34151785714285715,
+              "pose_r2": -0.14910448827050615,
+              "joint": 0.14285714285714285
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 4.44632164815472,
+              "xyz3cm": 0.47544642857142855,
+              "xyz_r2": 0.9084154677620777,
+              "pose_deg": 21.76577558011683,
+              "pose15": 0.3794642857142857,
+              "pose_r2": -0.050221778891476054,
+              "joint": 0.1875
+            },
+            "initial_carry": {
+              "xyz_cm": 11.339949795513895,
+              "xyz3cm": 0.22098214285714285,
+              "xyz_r2": 0.4828137014702123,
+              "pose_deg": 20.313499761300054,
+              "pose15": 0.38169642857142855,
+              "pose_r2": 0.022343971046478228,
+              "joint": 0.06696428571428571
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 6.514579614424345,
+              "xyz3cm": 0.296875,
+              "xyz_r2": 0.8308301267844086,
+              "pose_deg": 20.765011302181247,
+              "pose15": 0.3861607142857143,
+              "pose_r2": 0.004087528806203999,
+              "joint": 0.12276785714285714
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.0013237171091526553,
+                "decoded_forecast_discrepancy_mse": 0.0007256874560465756,
+                "cross_term": -0.000896769161786287,
+                "forecast_mse": 0.0011526354034129436,
+                "identity_abs_error": 4.336808689942018e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006284281321426349,
+                "decoded_forecast_discrepancy_mse": 0.000712874924521508,
+                "cross_term": 0.0002022369781067154,
+                "forecast_mse": 0.007199393224054573,
+                "identity_abs_error": 0.0
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.0013237171091526553,
+                "decoded_forecast_discrepancy_mse": 0.00037830278476543814,
+                "cross_term": -0.0004781731746603238,
+                "forecast_mse": 0.0012238467192577697,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006284281321426349,
+                "decoded_forecast_discrepancy_mse": 0.00023746137374651947,
+                "cross_term": 5.8128531407825e-05,
+                "forecast_mse": 0.006579871226580694,
+                "identity_abs_error": 0.0
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.0013237171091526553,
+                "decoded_forecast_discrepancy_mse": 0.006802681557467592,
+                "cross_term": -0.0012152233924328122,
+                "forecast_mse": 0.006911175274187434,
+                "identity_abs_error": 8.673617379884035e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006284281321426349,
+                "decoded_forecast_discrepancy_mse": 0.0006155709396645797,
+                "cross_term": -0.0007746214729859777,
+                "forecast_mse": 0.006125230788104951,
+                "identity_abs_error": 0.0
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.0013237171091526553,
+                "decoded_forecast_discrepancy_mse": 0.0017368882705496586,
+                "cross_term": -0.0007999835337086871,
+                "forecast_mse": 0.0022606218459936276,
+                "identity_abs_error": 8.673617379884035e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006284281321426349,
+                "decoded_forecast_discrepancy_mse": 0.00021965915716555672,
+                "cross_term": -0.0002643290506917052,
+                "forecast_mse": 0.0062396114279002005,
+                "identity_abs_error": 0.0
+              }
+            }
+          }
+        },
+        "rbf": {
+          "configuration": {
+            "bandwidth": 10.370205837633142,
+            "median_distance_pairs": 523776,
+            "ridge_mean_loss_units": 0.001,
+            "gram_regularizer": 1.024,
+            "kernel": "exp(-squared_distance/(2*bandwidth**2))",
+            "kernel_centered": true,
+            "bandwidth_selection": "All off-diagonal training pair distances; no validation access"
+          },
+          "training": {
+            "xyz_cm": 4.717837852076182,
+            "xyz3cm": 0.4140625,
+            "xyz_r2": 0.9107862470293816,
+            "pose_deg": 17.389228681598674,
+            "pose15": 0.4951171875,
+            "pose_r2": 0.08477002950182477,
+            "joint": 0.20703125
+          },
+          "validation": {
+            "observed_future": {
+              "xyz_cm": 5.1184999228057535,
+              "xyz3cm": 0.4107142857142857,
+              "xyz_r2": 0.8778993698434502,
+              "pose_deg": 22.1377977417902,
+              "pose15": 0.3392857142857143,
+              "pose_r2": -0.02906420698176526,
+              "joint": 0.13392857142857142
+            },
+            "clean_rollout": {
+              "xyz_cm": 4.766377167978426,
+              "xyz3cm": 0.47098214285714285,
+              "xyz_r2": 0.8916257297595922,
+              "pose_deg": 22.52460291881426,
+              "pose15": 0.32589285714285715,
+              "pose_r2": -0.03854135608754716,
+              "joint": 0.14955357142857142
+            },
+            "teacher_forced_prefix": {
+              "xyz_cm": 4.9532040164268425,
+              "xyz3cm": 0.44419642857142855,
+              "xyz_r2": 0.8830503682226354,
+              "pose_deg": 22.4255825010197,
+              "pose15": 0.33705357142857145,
+              "pose_r2": -0.032577352664802994,
+              "joint": 0.15848214285714285
+            },
+            "initial_carry": {
+              "xyz_cm": 10.685861494193594,
+              "xyz3cm": 0.27455357142857145,
+              "xyz_r2": 0.5143193460210507,
+              "pose_deg": 22.07660138938371,
+              "pose15": 0.3638392857142857,
+              "pose_r2": -0.020507074047706908,
+              "joint": 0.12276785714285714
+            },
+            "shifted_observed_carry": {
+              "xyz_cm": 6.539588226127084,
+              "xyz3cm": 0.41517857142857145,
+              "xyz_r2": 0.8075099313143408,
+              "pose_deg": 21.965038638959193,
+              "pose15": 0.34151785714285715,
+              "pose_r2": -0.025359976027687026,
+              "joint": 0.13169642857142858
+            }
+          },
+          "decomposition": {
+            "clean_rollout": {
+              "xyz": {
+                "observation_mse": 0.001631634207053631,
+                "decoded_forecast_discrepancy_mse": 9.002789935294769e-05,
+                "cross_term": -0.00027345363883350557,
+                "forecast_mse": 0.001448208467573073,
+                "identity_abs_error": 2.168404344971009e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006447314369132961,
+                "decoded_forecast_discrepancy_mse": 2.3840109560239128e-05,
+                "cross_term": 3.553632117516034e-05,
+                "forecast_mse": 0.00650669079986836,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            },
+            "teacher_forced_prefix": {
+              "xyz": {
+                "observation_mse": 0.001631634207053631,
+                "decoded_forecast_discrepancy_mse": 5.365811836845135e-05,
+                "cross_term": -0.00012249105678310666,
+                "forecast_mse": 0.0015628012686389754,
+                "identity_abs_error": 4.336808689942018e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006447314369132961,
+                "decoded_forecast_discrepancy_mse": 1.3388086871928862e-05,
+                "cross_term": 8.622546176459057e-06,
+                "forecast_mse": 0.006469325002181349,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            },
+            "initial_carry": {
+              "xyz": {
+                "observation_mse": 0.001631634207053631,
+                "decoded_forecast_discrepancy_mse": 0.005935046302887871,
+                "cross_term": -0.0010765160634501297,
+                "forecast_mse": 0.006490164446491372,
+                "identity_abs_error": 8.673617379884035e-19
+              },
+              "tensor81": {
+                "observation_mse": 0.006447314369132961,
+                "decoded_forecast_discrepancy_mse": 0.00028771391630304504,
+                "cross_term": -0.000341326242676871,
+                "forecast_mse": 0.006393702042759135,
+                "identity_abs_error": 0.0
+              }
+            },
+            "shifted_observed_carry": {
+              "xyz": {
+                "observation_mse": 0.001631634207053631,
+                "decoded_forecast_discrepancy_mse": 0.0015314052726912604,
+                "cross_term": -0.0005907891958361282,
+                "forecast_mse": 0.002572250283908763,
+                "identity_abs_error": 0.0
+              },
+              "tensor81": {
+                "observation_mse": 0.006447314369132961,
+                "decoded_forecast_discrepancy_mse": 7.066481434972908e-05,
+                "cross_term": -9.387263879331543e-05,
+                "forecast_mse": 0.006424106544689376,
+                "identity_abs_error": 8.673617379884035e-19
+              }
+            }
+          }
+        }
+      },
+      "provenance": {
+        "extraction": "/efs/prescottsun/SPT-JEPA/runs/native_cube_readability_20261031/tf12000-seed2/extraction.json",
+        "extraction_sha256": "39b0134ad4c307d6f9d09b4a5ff4b2422e7d87e7ac1f9c25231cb12cce133dee",
+        "weights_sha256": "42beba9395ae8632e06aafe38af2447b7b8ee2bf3281155963dcd4541df42702",
+        "state_hash": "743868f3e83279e07eb2ed2bbfd495ae8457bbee2f78e31ce3dd62aa09763db5",
+        "model_source": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+        "actual_imported_modules": {
+          "as_jepa_lewm.factory": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/factory.py",
+            "sha256": "f38bf5fd874d7c82a45bd3f182fe230d550e8f10567cbd9f6e54bf564a4d12b7"
+          },
+          "as_jepa_tools.benchmark_data": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_tools/benchmark_data.py",
+            "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+          },
+          "experiments.ideas_validate_20261031.audit": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/experiments/ideas_validate_20261031/audit.py",
+            "sha256": "93c460b1982664d1bf3c49e4cc24e5abeb48574aa2025ca294eb780e66848da7"
+          },
+          "vforge.ops": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime/vforge/ops/__init__.py",
+            "sha256": "dfe486d4581264cda323fc1ec18e676f2344b2a9965f86a55e4e0241d2ff6702"
+          },
+          "as_jepa_lewm.robust": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/robust.py",
+            "sha256": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc"
+          },
+          "as_jepa_lewm.model": {
+            "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/model.py",
+            "sha256": "c7dc10afeaceb398151d67dfb687d69e71e867c006ba8c627176d2e4b17bbf2a"
+          },
+          "stable_worldmodel.wm.lewm.lewm": {
+            "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/lewm.py",
+            "sha256": "10ad1c2365b569ad3f9cbda17c8154d799c3b0c4fc5d707a44dca600b5ca8315"
+          }
+        },
+        "actual_calls": {
+          "rgb_frames": 1536,
+          "predict_calls": 112,
+          "action_encoder_calls": 8,
+          "renderer_calls": 0
+        },
+        "seconds": 22.650527954101562,
+        "peak_gib": 0.325986385345459
+      }
+    }
+  ],
+  "references": {
+    "constant_train_mean": {
+      "xyz_cm": 18.621068180354353,
+      "xyz3cm": 0.0,
+      "xyz_r2": 0.0,
+      "pose_deg": 23.126293699317525,
+      "pose15": 0.328125,
+      "pose_r2": 0.0,
+      "joint": 0.0
+    },
+    "true_target_with_training_codebook": {
+      "xyz_cm": 0.0,
+      "xyz3cm": 1.0,
+      "xyz_r2": 1.0,
+      "pose_deg": 0.5520228575968211,
+      "pose15": 1.0,
+      "pose_r2": 1.0,
+      "joint": 1.0
+    }
+  },
+  "criterion": {
+    "task_source": {
+      "task_source": "/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030/clear_lewm/tasks.py",
+      "sha256": "2a153006aa3510df2c26695f805ec28a89fca2ce98d9dc2c5ec08eb937c6911a"
+    },
+    "runner": {
+      "path": "/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030/clear_lewm/runner.py",
+      "sha256": "b8b48ad308e6a1c62cae78c9f8d0b4d9e4e9d27b0dd6ef4121f87dd176b45774",
+      "lines": "250\u2013285"
+    },
+    "identical_angle_function": "cube_symmetry_angle_deg: min SO(3) geodesic angle over24 proper cube symmetries; normalized wxyz quaternion matrices",
+    "identical_threshold": "angle<=15degrees; position<=.03m",
+    "task_hold_physical_steps": 3,
+    "different_operands": "Probe compares predicted/read-out future pose to actual future pose; task compares current actual pose to desired goal.",
+    "limitation": "Constant readout accuracy is not a theoretical task upper bound. Probe failure is not missing information or unlearnability."
+  },
+  "timing": {
+    "encoder_and_forecast_region_seconds": 87.62839007377625,
+    "summed_job_wall_seconds": 365.8472933769226,
+    "campaign_wall_seconds": 61.76723837852478
+  },
+  "full_results": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/native-cube-readability-20261031/results.json",
+    "sha256": "cae736542b04dd6f238aa87f0fc04b329d360ac0351ce12bfdd4deec821f819b"
+  },
+  "helper_source": "8fabed3f13691bd35edc9bebb3a1f04b121bbb80",
+  "rgb_frames": 7168,
+  "predict_calls": 224,
+  "renderer_calls": 0,
+  "scope": "Same128 training clips and448 held-out future frames; fixed linear/RBF probes, no validation tuning. Native192 versus TF64 differs in representation/probe/model capacity. Physical-unit accessibility, not latent-MSE comparison or planning causality. Joint3cm/15deg readout is not task success or hold. Teacher/shifted carry receive additional real observations.",
+  "report_script_sha256": "19bf7ac69637b10160d55b8b6e1e9aac47afb52c9a828719ce64f0b02433e143"
+}

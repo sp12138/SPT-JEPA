@@ -1,0 +1,171 @@
+{
+  "model_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1",
+    "source_commit": "6e1693345786f2c190d0191685e4b485d24b4ab8",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/manifest-v2.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_repaired600_helpers_20261031/source-v1",
+    "source_commit": "284eac7a5babbe2b9ccf7e18d5d4b5a51c88a8b7",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_repaired600_helpers_20261031/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json"
+  },
+  "legacy_pure_job_builder": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision600_helpers_20261031/source-v1",
+    "source_commit": "814793e3684071bb6d245e723e852a4af115ddb4",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision600_helpers_20261031/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json"
+  },
+  "runs": [
+    {
+      "id": "tworoom-raw-chart-bounded-seed1",
+      "task": "tworoom",
+      "training_seed": 1,
+      "host": "dev13",
+      "gpu": 0,
+      "family": "spatial_carrier",
+      "arm": "local-raw-bounded",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/tworoom-raw-chart-bounded-seed1",
+      "original_raw": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/tworoom-raw-chart-bounded-seed1",
+      "identity_reference": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/tworoom-spatial-local-seed1",
+      "original557_equal": true,
+      "identity553_equal": true,
+      "primary_manifest_sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94",
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-tworoom-seed1/calibration.json",
+        "sha256": "c89b514e352db5c19cc982eb0a59c895f68ca71e1f16973ce9a7d155c808bad5"
+      },
+      "initial_step": 600,
+      "training_reused": true,
+      "prior_three_actual_exits": [
+        {
+          "id": "train600-tworoom-raw-chart-bounded-seed1",
+          "path": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/exits/train600-tworoom-raw-chart-bounded-seed1.json",
+          "sha256": "3f3f14010384f32314f2701fbe6e11152c6129c068398c08351f18b4b5ea9181",
+          "returncode": 0
+        },
+        {
+          "id": "fullstate-tworoom-raw-chart-bounded-seed1",
+          "path": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/exits/fullstate-tworoom-raw-chart-bounded-seed1.json",
+          "sha256": "6df2d9e4ba38c5f90805056af74d896c0b19852a5b8e53a37e2f0a8345d3fca2",
+          "returncode": 0
+        },
+        {
+          "id": "health-tworoom-raw-chart-bounded-seed1",
+          "path": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/exits/health-tworoom-raw-chart-bounded-seed1.json",
+          "sha256": "f9de89c48233ea0530f9ae860e35eb0ac84f0897c80517e08ee8add6f91c46c8",
+          "returncode": 0
+        }
+      ]
+    },
+    {
+      "id": "tworoom-raw-chart-bounded-seed2",
+      "task": "tworoom",
+      "training_seed": 2,
+      "host": "dev13",
+      "gpu": 1,
+      "family": "spatial_carrier",
+      "arm": "local-raw-bounded",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_precision600_20261031/tworoom-raw-chart-bounded-seed2",
+      "original_raw": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/tworoom-raw-chart-bounded-seed2",
+      "identity_reference": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/tworoom-spatial-local-seed2",
+      "original557_equal": true,
+      "identity553_equal": true,
+      "primary_manifest_sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94",
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-tworoom-seed2/calibration.json",
+        "sha256": "ae0fdfe0b2284d923f71195082fd4d69cc7fddf1f4b0dc7562a30c4fbb6ba78c"
+      },
+      "initial_step": 400,
+      "training_reused": false,
+      "complete400_byte_equal": true,
+      "post_copy_native_restore_passed": true,
+      "fullstate_sha256": "5af26859c1dca810769b7c04dde8b9bfa1794a0d4eac00d6700b6bd35ad28b00"
+    },
+    {
+      "id": "cube-raw-chart-bounded-seed1",
+      "task": "cube",
+      "training_seed": 1,
+      "host": "dev13",
+      "gpu": 2,
+      "family": "spatial_carrier",
+      "arm": "local-raw-bounded",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_precision600_20261031/cube-raw-chart-bounded-seed1",
+      "original_raw": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/cube-raw-chart-bounded-seed1",
+      "identity_reference": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/cube-spatial-local-seed1",
+      "original557_equal": true,
+      "identity553_equal": true,
+      "primary_manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7",
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-cube-seed1/calibration.json",
+        "sha256": "40b2c5859922f7c928044a79c33a2109fb759f3bc008322215cbd4ed835580e5"
+      },
+      "initial_step": 400,
+      "training_reused": false,
+      "complete400_byte_equal": true,
+      "post_copy_native_restore_passed": true,
+      "fullstate_sha256": "ba9587ced0a615b643759e065f6c52b538338574e05fa519b2a322c4cf4ac18f"
+    },
+    {
+      "id": "cube-raw-chart-bounded-seed2",
+      "task": "cube",
+      "training_seed": 2,
+      "host": "dev13",
+      "gpu": 3,
+      "family": "spatial_carrier",
+      "arm": "local-raw-bounded",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart_precision600_20261031/cube-raw-chart-bounded-seed2",
+      "original_raw": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/cube-raw-chart-bounded-seed2",
+      "identity_reference": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/cube-spatial-local-seed2",
+      "original557_equal": true,
+      "identity553_equal": true,
+      "primary_manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7",
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-cube-seed2/calibration.json",
+        "sha256": "957baca5fb7488ebf6a60aa1c5ef468db3b01598cc34a731c20ae81d7b7dd33b"
+      },
+      "initial_step": 400,
+      "training_reused": false,
+      "complete400_byte_equal": true,
+      "post_copy_native_restore_passed": true,
+      "fullstate_sha256": "b30b961221a231284bc602af44baac21a37b800bee759cc58307c53556829cca"
+    }
+  ],
+  "new_endpoints": 17,
+  "prior_successful_endpoints": [
+    {
+      "id": "train600-tworoom-raw-chart-bounded-seed1",
+      "path": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/exits/train600-tworoom-raw-chart-bounded-seed1.json",
+      "sha256": "3f3f14010384f32314f2701fbe6e11152c6129c068398c08351f18b4b5ea9181",
+      "returncode": 0
+    },
+    {
+      "id": "fullstate-tworoom-raw-chart-bounded-seed1",
+      "path": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/exits/fullstate-tworoom-raw-chart-bounded-seed1.json",
+      "sha256": "6df2d9e4ba38c5f90805056af74d896c0b19852a5b8e53a37e2f0a8345d3fca2",
+      "returncode": 0
+    },
+    {
+      "id": "health-tworoom-raw-chart-bounded-seed1",
+      "path": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/exits/health-tworoom-raw-chart-bounded-seed1.json",
+      "sha256": "f9de89c48233ea0530f9ae860e35eb0ac84f0897c80517e08ee8add6f91c46c8",
+      "returncode": 0
+    }
+  ],
+  "total_evidence_endpoints": 20,
+  "scope": "Exactly3 prior real successes plus17 new real endpoints across roots, not20 successes in one root.",
+  "authorization": "After repairedTRseed1 full600/fullstate/health review: resume only other3 genuine400 states to600 and their original evaluations; TRseed1 adds only transition64 and primary50. No freshcases or budget>600.",
+  "schedule": "dev13gpu0 existingTRseed1 evaluations;gpu1 TRseed2,gpu2 Cubeseed1,gpu3 Cubeseed2. All capped600.",
+  "unchanged": "Model6e,validatedmetadata-v2,original observeddata/calibration/seed/batch128/nativeoptimizer/scheduler/RNG/sampler/sample-levelobjective/planner/cases.2128 chart parameters unchanged. CPU postcopy strictly restores the new source; original400states and holds remain immutable.",
+  "initial_scope": "Direct557 raw and553 identity equality for every run; native paired-prefix audit now additionally includes sigreg for557, without activating SIGReg in the loss.",
+  "coordinates": "Public/cachedstates areRAW; never apply another inverse in collection.",
+  "operations": "Python-v records actual native imports only. Use existing22e control-plane wrapper, actual child/update startup checks and readonly1800smonitor. Do not equate dispatcher creation with training startup.",
+  "failures": "All original numerical failures, unknown/unstarted metadata-attempt outcomes, captures and holds remain unchanged. Failed discarded suffix computations are historical overhead, not extra retained optimizer updates."
+}

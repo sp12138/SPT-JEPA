@@ -1,0 +1,152 @@
+{
+  "checked_at": 1793422566.379509,
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1",
+    "source_commit": "6e1693345786f2c190d0191685e4b485d24b4ab8",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/manifest-v2.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "all_actual_children_import_and_restore_verified": true,
+  "runs": [
+    {
+      "name": "tworoom-raw-chart-bounded-seed2",
+      "pid": 1044139,
+      "gpu": 1,
+      "cmd": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -v -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/tworoom-raw-chart-bounded-seed2/config.json --stop-step 600 --resume ",
+      "cwd": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+      "import_restore_lines": [
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/spatial_carrier.py",
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/carrier.py",
+        "Restoring states from the checkpoint path at /efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/tworoom-raw-chart-bounded-seed2/last.ckpt",
+        "Restored all states from the checkpoint at /efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/tworoom-raw-chart-bounded-seed2/last.ckpt"
+      ],
+      "status": {
+        "state": "running",
+        "step": 500,
+        "elapsed_seconds": 119.86477494239807,
+        "updated_at": 1793422537.409901,
+        "pid": 1044139,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.854437530040741,
+        "fm": 0.07522495836019516,
+        "rate": 3.1168503761291504,
+        "entry": 2373.142578125,
+        "surprise": 37960.8359375,
+        "rate_share": 10.358431816101074,
+        "feature_std": 0.5932763814926147,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.12406665086746216,
+        "grad_norm_renderer": 4.738829135894775,
+        "grad_norm_action_encoder": 0.020295241847634315,
+        "grad_norm_carrier_chart_module": 0.03253473341464996,
+        "seconds_per_step": 1.1033692836761475,
+        "peak_gib": 107.57131624221802,
+        "learning_rates": [
+          2.00160128102482e-05,
+          4.00320256204964e-05
+        ]
+      }
+    },
+    {
+      "name": "cube-raw-chart-bounded-seed1",
+      "pid": 1044143,
+      "gpu": 2,
+      "cmd": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -v -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed1/config.json --stop-step 600 --resume ",
+      "cwd": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+      "import_restore_lines": [
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/spatial_carrier.py",
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/carrier.py",
+        "Restoring states from the checkpoint path at /efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed1/last.ckpt",
+        "Restored all states from the checkpoint at /efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed1/last.ckpt"
+      ],
+      "status": {
+        "state": "running",
+        "step": 500,
+        "elapsed_seconds": 144.94202208518982,
+        "updated_at": 1793422562.5357113,
+        "pid": 1044143,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.842538595199585,
+        "fm": 0.06854569166898727,
+        "rate": 3.0959715843200684,
+        "entry": 2321.2734375,
+        "surprise": 37711.6875,
+        "rate_share": 11.291634559631348,
+        "feature_std": 0.7144465446472168,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.09817539155483246,
+        "grad_norm_renderer": 1.2121695280075073,
+        "grad_norm_action_encoder": 0.003996506333351135,
+        "grad_norm_carrier_chart_module": 0.018658574670553207,
+        "seconds_per_step": 1.3528886151313781,
+        "peak_gib": 107.57246923446655,
+        "learning_rates": [
+          2.00160128102482e-05,
+          4.00320256204964e-05
+        ]
+      }
+    },
+    {
+      "name": "cube-raw-chart-bounded-seed2",
+      "pid": 1044148,
+      "gpu": 3,
+      "cmd": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u -v -m as_jepa_tools.train_stage --config /efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed2/config.json --stop-step 600 --resume ",
+      "cwd": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+      "import_restore_lines": [
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/spatial_carrier.py",
+        "# code object from /efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_source_20261031/source-v1/as_jepa_lewm/carrier.py",
+        "Restoring states from the checkpoint path at /efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed2/last.ckpt",
+        "Restored all states from the checkpoint at /efs/prescottsun/SPT-JEPA/runs/local_raw_chart_repaired600_20261031/cube-raw-chart-bounded-seed2/last.ckpt"
+      ],
+      "status": {
+        "state": "running",
+        "step": 500,
+        "elapsed_seconds": 144.20241117477417,
+        "updated_at": 1793422561.7558448,
+        "pid": 1044148,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.8745784163475037,
+        "fm": 0.07023295015096664,
+        "rate": 3.2173819541931152,
+        "entry": 2311.751953125,
+        "surprise": 39204.9375,
+        "rate_share": 11.452537536621094,
+        "feature_std": 0.71405029296875,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.11039911955595016,
+        "grad_norm_renderer": 1.2776380777359009,
+        "grad_norm_action_encoder": 0.005012849811464548,
+        "grad_norm_carrier_chart_module": 0.016236046329140663,
+        "seconds_per_step": 1.3454127979278565,
+        "peak_gib": 107.57246923446655,
+        "learning_rates": [
+          2.00160128102482e-05,
+          4.00320256204964e-05
+        ]
+      }
+    }
+  ],
+  "claim": "Actual child/import/environment/native400restore verified; update500 status separately retained when available. No partial planning read.",
+  "all_three_actual500_finite_active_grads_frozen_zero": true,
+  "next_check": "Parent regular review or near endpoint completion; no frequent polling and no budget beyond600."
+}

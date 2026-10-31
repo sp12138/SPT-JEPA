@@ -1,0 +1,491 @@
+{
+  "read_only": true,
+  "model_calls": 0,
+  "gpu_calls": 0,
+  "rows": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "identity",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/planning-tworoom-spatial-local-seed1/metrics.json",
+        "sha256": "12a08738b718f714e505994bfdd6961b2e4a6547d9db4af106b2dbb338d5c258"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": null
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "static",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/planning-tworoom-readout-static-seed1/metrics.json",
+        "sha256": "f6861719f4027f75a7c6e4d682cd9ac33179da9f534906b09745403d07ab6f75"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": "static"
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "state",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/planning-tworoom-readout-state-seed1/metrics.json",
+        "sha256": "8656a45e4d3aa4d33ea3be16c17d173c74b907885291137baf84390f6f4fcd77"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": "state"
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "identity",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/planning-tworoom-spatial-local-seed2/metrics.json",
+        "sha256": "856b5316270a3a256452d16cb98a8056323fdeb872f79a459537ec62f07a8286"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": null
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "static",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/planning-tworoom-readout-static-seed2/metrics.json",
+        "sha256": "ada961f8fb41b3a75fc4dd8796e422bcedcb7ce9b6c425a079e801df908c1232"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": "static"
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "state",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/planning-tworoom-readout-state-seed2/metrics.json",
+        "sha256": "a318eb61f7aa4baec0d843b5e489152b866dea764c85f07843341b82a000eca7"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": "state"
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "identity",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/planning-cube-spatial-local-seed1/metrics.json",
+        "sha256": "a5fd750410973200fe8c03bbcbe41bad0f90d274bda187c31f88238c55e7398a"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": null
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "static",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/planning-cube-readout-static-seed1/metrics.json",
+        "sha256": "6809cd89c1af38a673038652588dcc288a175c7fafb837ba7345ad5eac818d79"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": "static"
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "state",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/planning-cube-readout-state-seed1/metrics.json",
+        "sha256": "90143a26fd1234bf8d1e0dfaf13ddfb883356b98245c17c0a52a0bc3dba04573"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": "state"
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "identity",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/planning-cube-spatial-local-seed2/metrics.json",
+        "sha256": "fac436f097e88409604d99ffd55501ddf7c45c1505689d92b7e749685520d289"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": null
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "static",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/planning-cube-readout-static-seed2/metrics.json",
+        "sha256": "e4947b9031ff5778fd18358d91ea8d4424b3ad192e55e13b9035a19141145331"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": "static"
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "state",
+      "planning": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/planning-cube-readout-state-seed2/metrics.json",
+        "sha256": "d690e22179aa8b963393c75c10aae709b4f13c26df7ba85719ef37f65c2cd439"
+      },
+      "plan": {
+        "horizon": 5,
+        "receding_horizon": 5,
+        "action_block": 5,
+        "history_len": 3
+      },
+      "solver": {
+        "_target_": "stable_worldmodel.planning.solver.CEMSolver",
+        "cost": "???",
+        "batch_size": 1,
+        "num_samples": 300,
+        "var_scale": 1.0,
+        "n_steps": 30,
+        "topk": 30,
+        "device": "cuda",
+        "seed": 42
+      },
+      "budget": {
+        "goal_offset": 25,
+        "eval_budget": 50
+      },
+      "train_window": 8,
+      "model_flags": {
+        "forecast_fraction": 0.5,
+        "rate_prior": null,
+        "posterior_noise_scale": null,
+        "spatial_readout_mode": "state"
+      }
+    }
+  ],
+  "source_hashes": {
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/policy.py": "a32f763026a57d5bf8ef5a3298d003c9a4d85c218865463cc4ca43c03b9a1f59",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/buffer.py": "0fc0c4e7ae216c8ba31596f19779d10e74b765a1e9ca0523ca7e7b1ddbb2aa51",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/lewm.py": "10ad1c2365b569ad3f9cbda17c8154d799c3b0c4fc5d707a44dca600b5ca8315",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/module.py": "d276fb896712bed23f70f25ae9774e5ce7b3ab44fbb6bf4dea61065ba1388ef9",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/planning/evaluator.py": "054838d85850510de6f9ccdce531bfb2cc7d8ca1a4dc2a7ee319c7801080c69c",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/planning/objective.py": "b959f83c94a7543df113e474b3fec77882a7ef259c6cc42fe6a16a124877fdcf",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/planning/solver/cem.py": "c66625d42cf02f912fc4c99d5874c57aba686d899e510d91630df210ece2ee89",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/world/world.py": "3392bd31159daab859f2d73e5a52e59ac898259f829c9d1363e64eef151b91b3",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/scripts/plan/config/tworoom.yaml": "f3872fa78c981b01ef0f905cd6845da9a261439e255202d67af8a5fb168f3a7e",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/scripts/plan/config/cube.yaml": "356c4d337224253a4d6a40a29ea6dbb455e117803cb5266164c1af6ac8d0a760",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/scripts/plan/config/objective/goal_mse.yaml": "06e5407b74967843ff49fdf767fbee3d8921bf9aaf2bbbbb7dcfe3fbce62a2f9",
+    "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1/as_jepa_tools/benchmark_evaluate.py": "a205a1f1cd62cf22e3a4b9625a63842a9632c1d2e8a91bb294c963c6dbea8236",
+    "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1/as_jepa_tools/benchmark_data.py": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d",
+    "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1/as_jepa_lewm/model.py": "fc31af3a1ab29e9e1ce8b64d97127a6ff078ce510e9bcb2afbaf7c665df6c8b6",
+    "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1/as_jepa_lewm/robust.py": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc",
+    "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1/as_jepa_lewm/spatial_carrier.py": "010c0800ba3161dceaa18ce091d94166756bac5f9f03db7ffab4b7434692f586",
+    "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1/experiments/ideas_validate_20261031/audit.py": "93c460b1982664d1bf3c49e4cc24e5abeb48574aa2025ca294eb780e66848da7"
+  },
+  "function_lines": {
+    "as_jepa_tools/benchmark_evaluate.py": {},
+    "as_jepa_tools/benchmark_data.py": {
+      "__getitem__": 37
+    },
+    "as_jepa_lewm/model.py": {
+      "predict": 122,
+      "loss": 160
+    },
+    "as_jepa_lewm/robust.py": {
+      "loss": 202
+    },
+    "as_jepa_lewm/spatial_carrier.py": {
+      "predict": 165
+    },
+    "experiments/ideas_validate_20261031/audit.py": {
+      "prefix_prediction": 114,
+      "clean_rollout": 126
+    }
+  },
+  "notes": "Actual completed original-command protocols; no new settings or experiments. Shared dependency source paths/hash recorded separately from frozen model snapshots."
+}

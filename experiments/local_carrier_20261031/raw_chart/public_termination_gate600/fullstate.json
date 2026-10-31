@@ -1,0 +1,205 @@
+{
+  "run": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/tworoom-raw-chart-bounded-seed1",
+  "config_sha256": "ead0e8fdfc80fcadd1249d9313c2624a97198753398f4d39a3d2808cd35c02ea",
+  "checkpoint_sha256": "283efee22baaf9c8959bce73b519842f9390b9cdc3c82b16ef00a85129620682",
+  "weights_sha256": "a29f5a87f2d7c797904c51778fbed663695fd8f04be0fbe35db24ad69830406c",
+  "checkpoint": {
+    "step": 600,
+    "expected_step": 600,
+    "checks": {
+      "exact_step": true,
+      "model_finite": true,
+      "portable_finite": true,
+      "optimizer_present": true,
+      "optimizer_finite": true,
+      "scheduler_present": true,
+      "scheduler_finite": true,
+      "rng_present": true,
+      "sample_cursor": true,
+      "portable_equal": true
+    },
+    "portable_missing": [],
+    "portable_different": [],
+    "campaign_samples": 76800
+  },
+  "gradient_expectations": {
+    "encoder": "frozen",
+    "pool": "frozen",
+    "predictor": "active",
+    "renderer": "active",
+    "action_encoder": "active",
+    "carrier_chart_module": "active"
+  },
+  "optimizer_parameter_count": {
+    "saved_tensors": 339,
+    "model_trainable_tensors": 339,
+    "unique_saved_ids": 339,
+    "passed": true
+  },
+  "initial_weights": {
+    "path": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_termination_gate600_retry_20261031/tworoom-raw-chart-bounded-seed1/initial-model/weights.pt",
+    "sha256": "d2082f2817f9c85675cbd5bd8c1bab338ab6af5e29cb4d3cc1328be380aa2c5a"
+  },
+  "frozen_tensors_unchanged": {
+    "prefixes": [
+      "encoder",
+      "pool",
+      "spatial_projection",
+      "spatial_mean",
+      "spatial_scale"
+    ],
+    "compared_tensors": 210,
+    "missing": [],
+    "different": [],
+    "equal": true
+  },
+  "paired_initial_equal": {
+    "prefixes": [
+      "encoder",
+      "pool",
+      "predictor",
+      "action_encoder",
+      "renderer",
+      "spatial_projection",
+      "spatial_mean",
+      "spatial_scale",
+      "carrier_chart_module"
+    ],
+    "compared_tensors": 554,
+    "missing": [],
+    "different": [],
+    "equal": true,
+    "reference_sha256": "d2082f2817f9c85675cbd5bd8c1bab338ab6af5e29cb4d3cc1328be380aa2c5a"
+  },
+  "loss": 0.8380358219146729,
+  "loss_finite": true,
+  "metrics": {
+    "loss": 0.8380358219146729,
+    "fm": 0.0496201254427433,
+    "rate": 3.15366268157959,
+    "entry": 2357.9189453125,
+    "surprise": 38415.36328125,
+    "rate_share": 15.889030456542969,
+    "feature_std": 0.35669025778770447,
+    "active_dims": 912.0,
+    "temporal_noise_rho": 0.800000011920929,
+    "forecast_fraction": 0.5
+  },
+  "metrics_finite": true,
+  "gradients": {
+    "encoder": {
+      "expectation": "frozen",
+      "parameters": 5501376,
+      "parameter_tensors": 198,
+      "trainable_parameters": 0,
+      "gradient_tensors": 0,
+      "gradient_norm": 0.0,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "pool": {
+      "expectation": "frozen",
+      "parameters": 163984,
+      "parameter_tensors": 9,
+      "trainable_parameters": 0,
+      "gradient_tensors": 0,
+      "gradient_norm": 0.0,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "predictor": {
+      "expectation": "active",
+      "parameters": 11389184,
+      "parameter_tensors": 87,
+      "trainable_parameters": 11389184,
+      "gradient_tensors": 87,
+      "gradient_norm": 0.3489448605098132,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "renderer": {
+      "expectation": "active",
+      "parameters": 34618416,
+      "parameter_tensors": 242,
+      "trainable_parameters": 34618416,
+      "gradient_tensors": 241,
+      "gradient_norm": 3.2896716715337955,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "action_encoder": {
+      "expectation": "active",
+      "parameters": 4240494,
+      "parameter_tensors": 6,
+      "trainable_parameters": 4240494,
+      "gradient_tensors": 6,
+      "gradient_norm": 0.12687786286681985,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "carrier_chart_module": {
+      "expectation": "active",
+      "parameters": 2128,
+      "parameter_tensors": 4,
+      "trainable_parameters": 2128,
+      "gradient_tensors": 4,
+      "gradient_norm": 0.028807264585638304,
+      "gradients_finite": true,
+      "passed": true
+    }
+  },
+  "eval_buffers_unchanged": true,
+  "all_parameter_gradients_finite": true,
+  "gradient_windows": {
+    "version": 1,
+    "split": "validation",
+    "seed": 1042,
+    "count": 2,
+    "window": 8,
+    "frameskip": 5,
+    "dataset_card_sha256": "c9f7070662dbe3d51f732a233c9673ceb1fbea24c84ec2c8184987c64aed25fd",
+    "metadata_sha256": {
+      "offsets.npy": "7591604f140c6bf8536c6d3708859950dd7c7dbf0b5df3ab1fdf8e0c9f395111",
+      "lengths.npy": "1611edd431813ce3b409f8cb3f7deccf3ad54b8e403332f13592f78f672b0b29",
+      "episode_ids.npy": "b6128e5bfc4a1aa2c3e504425bd4be083a4cff98b413f66b36b49d65745173c0",
+      "validation_episodes.npy": "b4eef874e40001c1f43932e0cbeae1d366bbb354259fe0b52081799d76f9d7a0",
+      "train_episodes.npy": "215739685c610f5ac3fa57270c391b3e2cd7b5d6f67203ad7fca015b1bd6d2ea"
+    },
+    "windows": [
+      {
+        "index": 10296,
+        "episode": 3821,
+        "episode_array_index": 3821,
+        "start": 24,
+        "rows": [
+          351072,
+          351077,
+          351082,
+          351087,
+          351092,
+          351097,
+          351102,
+          351107
+        ]
+      },
+      {
+        "index": 21742,
+        "episode": 7620,
+        "episode_array_index": 7620,
+        "start": 8,
+        "rows": [
+          700528,
+          700533,
+          700538,
+          700543,
+          700548,
+          700553,
+          700558,
+          700563
+        ]
+      }
+    ]
+  },
+  "scope": "Reads an existing native short-stage checkpoint; eval-mode FP32 actual objective backward only. No optimizer or update, no new trainer, no probe labels. Positive group norm means some trainable parameters in that declared group participate; it does not require every tensor to have a nonzero gradient.",
+  "passed": true
+}
