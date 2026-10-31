@@ -43,7 +43,7 @@ def main():
     old=NGCCost(nodes,dist,NEIGHBORS,ANCHORS).cuda()if s['origin_kind']=='rebuild-fp64-from-saved-nodes'else None
     before=rng_hash();radii=[];refs=[];oldradii=[];maxabs=maxrel=sumabs=0.;pairs=0;old_fail_chunks=0;mm_false_zero=0
     # Dimension-dependent floating arithmetic bound, not a metric/radius floor.
-    relative_bound=8*(s['dimension']+4)*np.finfo(np.float32).eps
+    relative_bound=float(8*(s['dimension']+4)*np.finfo(np.float32).eps)
     write(out/'startup.json',dict(id=s['id'],origin_kind=s['origin_kind'],nodes_sha256=sha(s['origin_array']),
         model_calls=0,new_rgb=0,device=torch.cuda.get_device_name(),visible_devices=os.environ.get('CUDA_VISIBLE_DEVICES'),finite=True))
     with torch.inference_mode():
