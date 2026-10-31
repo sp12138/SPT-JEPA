@@ -1,0 +1,11 @@
+# Dispatcher recovery scope
+
+The original dispatcher exited when renaming its fixed temporary worker-status file raised ENOENT. Its eight independently running training processes subsequently wrote native stage-complete records at600 and disappeared. Their operating-system exit codes were not collected and remain unknown; never synthesize exit0. The original source, plan, empty exit directory, logs, completed artifacts and operational HOLD are preserved.
+
+No second active writer for that root was found in launch records or the three hosts' process snapshots. The historical reason the temporary file disappeared is unresolved. The independent launcher is a robustness repair for the demonstrated control-plane failure, not proof of a filesystem or concurrency root cause.
+
+The wrapper imports the checksum-verified original frozen workflow and replaces only `atomic`. Writes use a unique same-directory temporary filename and `os.replace`. ENOENT alone permits at most three total attempts, each recreating the file. After three failures, only the exact non-authoritative `root/workers/<host>.json` snapshot can log to stderr and return so the next original loop can continue collecting real child exits. Dispatch and exit writes remain fail-closed; other error types are neither retried nor suppressed. There is still exactly one original host-locked dispatcher. It does not change model source, commands, environment, training, evaluation, objective or budget.
+
+The separate recovery root contains only the original32 audit/health/transition/planning endpoints. All eight full-state audits must succeed before any health or downstream endpoint starts. If the first recovery dispatcher has already launched audits, temporarily hold new dispatch, collect their real exits, close that exact idle process, preserve the operational hold, then resume only unfinished endpoints with the frozen wrapper. Do not overlap writers, duplicate audits, alter historical holds, or relabel old unknown training exits.
+
+CPU contracts inject a disappearing temporary file and verify a successful second write, permanent authoritative failures, narrowly nonfatal worker-status failures, non-ENOENT failure behavior, and64 concurrent writes of the same input through unique temporary paths. All tests use local temporary directories and no GPUs or models.

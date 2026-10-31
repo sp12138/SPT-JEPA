@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "tests": 5,
+  "environment": "Local Python3 unittest; CPU filesystem temporary directories only",
+  "time_utc": "2026-10-31T03:36:07.602896+00:00",
+  "source_hashes": {
+    "experiments/dynamic_readout_20261031/recovery_launcher.py": "c9bb7aa545950caed40febabead63d3b6d195abf84f5b9c391a17e1cd39a7036",
+    "experiments/dynamic_readout_20261031/test_recovery_launcher.py": "0c616e19ca86d2a09bb79e23e0437ff486331ee49ad1813f2c037233d6d31ea4",
+    "experiments/dynamic_readout_20261031/RECOVERY.md": "7a3e5e114af7012b3f22814568c1219ab483d11a8bb3876db61602dede456b92"
+  },
+  "checks": [
+    "Temporary disappearance retries with new unique path and validJSON",
+    "Permanentexit/dispatch/nonexactworker failure raises after3 attempts; no false successfulfile",
+    "Exactworker status permanentENOENT logs and nextloop can write",
+    "NonENOENT error fails immediately",
+    "64 sameinput writes through8CPUthreads producecompleteJSON/no leftovers"
+  ],
+  "efs_test": {
+    "passed": true,
+    "tests": 5,
+    "returncode": 0,
+    "temporary_directory": "/efs/prescottsun/SPT-JEPA/tmp/dynamic-recovery-contracts",
+    "at": "2026-10-31T03:36:39.796633+00:00",
+    "output": "test_authoritative_permanent_failure_is_not_success (experiments.dynamic_readout_20261031.test_recovery_launcher.AtomicContracts.test_authoritative_permanent_failure_is_not_success) ... ok\ntest_one_disappearance_recreates_and_writes_valid_json (experiments.dynamic_readout_20261031.test_recovery_launcher.AtomicContracts.test_one_disappearance_recreates_and_writes_valid_json) ... ok\ntest_only_exact_worker_snapshot_failure_is_nonfatal (experiments.dynamic_readout_20261031.test_recovery_launcher.AtomicContracts.test_only_exact_worker_snapshot_failure_is_nonfatal) ... ok\ntest_other_errors_are_not_retried_or_silenced (experiments.dynamic_readout_20261031.test_recovery_launcher.AtomicContracts.test_other_errors_are_not_retried_or_silenced) ... ok\ntest_same_input_concurrent_writes_are_complete_json (experiments.dynamic_readout_20261031.test_recovery_launcher.AtomicContracts.test_same_input_concurrent_writes_are_complete_json) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 1.693s\n\nOK\n"
+  }
+}
