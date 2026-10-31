@@ -1,0 +1,14 @@
+Cube fixed direct-RGB information audit
+======================================
+
+One CPU-only audit; no encoder/model construction or forward, GPU, world-model training, projection tuning, new cohort, or automatic600 gate. Root approved Cube-only execution after checking that the existing TwoRoom information audit used128/128 and did not save matched local features. Do not invent TwoRoom samples or extrapolate Cube results.
+
+Use exactly the shared existing Cube128 training clips×8 frames and64 validation clips×7 future frames from `reports/carrier-spatial600-20261031/seed{1,2}-features/extraction.json`. Verify metadata hashes, episode separation, indices and HDF5 rows. Both seeds share the same manifests. RawRGB is seed-independent and reported once; compare with both frozen-random-ViT local1024 cached feature sets.
+
+Reuse the exact existing192×16 shared Gaussian projection, including its private seed/rule and saved original buffer equality. Convert original224-byte RGB through the native ImageNet normalization and its inverse/round; require exact recovered224 bytes. Area-pool to64, round, and require exact equality with native `BenchmarkWindows.render` on all1536 cohort frames. Flatten each8×8 block in HWC order, RGB fastest, with row-major block addresses; one synthetic impulse verifies the order and single-block support. Input scale is native render[-1,1].
+
+Normalize using the original128 calibration initial HDF5 rows only:1024 coordinate means and one scalar population RMS standard deviation. No floors or validation fitting. The saved seed1/2 calibration row selections must match. This audit produces statistics only; it changes no existing model calibration. OldViT measurements retain their original isotropic calibration. Independent single-frame Gaussian noiseσ=.1 uses one private seed1042 and identical draws across representations, separately for training/validation. This is not a temporal AR-noise experiment.
+
+Reuse the original diagnostic train-only coordinate standardization, ridge mean-lossλ=.001 and centered RBF with training median bandwidth. Reuse the Cube24-invariant81 orientation features, training-only quaternion codebook, xyz and3cm/15° metrics. Physical labels train diagnostic readouts only. Report train and validation errors for all three measurements, clean/noisy, linear/RBF; require clean oldViT readout reproduction. Report calibrated energy, temporal differences and analytical initial-carry rate, explicitly not measured model training. Preserve arrays, hashes and all results on EFS.
+
+Freeze this helper and protocol before the one execution. Expected CPU memory is below a fewGiB: stream RGB clips; at most one~302MB fullpatch cache and one checkpoint are loaded at a time. Any missing cache/cohort or numerical-contract failure stops the audit; do not substitute samples, silently relax contracts or launch an encoder.
