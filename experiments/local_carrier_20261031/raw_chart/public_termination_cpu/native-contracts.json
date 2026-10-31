@@ -1,0 +1,223 @@
+{
+  "conjugacy": [
+    {
+      "rate_prior": "one-step",
+      "loss_error": 0.0,
+      "rho": 0.8,
+      "forecast_fraction": 0.5
+    },
+    {
+      "rate_prior": "forecast",
+      "loss_error": 0.0,
+      "rho": 0.8,
+      "forecast_fraction": 0.5
+    }
+  ],
+  "renderer_all_paths": {
+    "calls": 6,
+    "flat_and_slots": true,
+    "none": true,
+    "direct_health": true,
+    "flow_loss": true,
+    "native_generation": true,
+    "condition_drop_forwarded": true
+  },
+  "native_identity": [
+    {
+      "task": "tworoom",
+      "mode": "none",
+      "interface": "chart",
+      "native_config": true,
+      "original_initial_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "counts": {
+        "total": 55913454,
+        "trainable": 50248094,
+        "frozen": 5665360,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024
+      }
+    },
+    {
+      "task": "tworoom",
+      "mode": "identity",
+      "interface": "raw",
+      "native_config": true,
+      "original_initial_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "counts": {
+        "total": 55915582,
+        "trainable": 50248094,
+        "frozen": 5667488,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024,
+        "chart": 2128,
+        "chart_trainable": 0
+      }
+    },
+    {
+      "task": "tworoom",
+      "mode": "bounded",
+      "interface": "raw",
+      "native_config": true,
+      "original_initial_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "counts": {
+        "total": 55915582,
+        "trainable": 50250222,
+        "frozen": 5665360,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024,
+        "chart": 2128,
+        "chart_trainable": 2128
+      }
+    },
+    {
+      "task": "cube",
+      "mode": "none",
+      "interface": "chart",
+      "native_config": true,
+      "original_initial_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "counts": {
+        "total": 55975434,
+        "trainable": 50310074,
+        "frozen": 5665360,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024
+      }
+    },
+    {
+      "task": "cube",
+      "mode": "identity",
+      "interface": "raw",
+      "native_config": true,
+      "original_initial_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "counts": {
+        "total": 55977562,
+        "trainable": 50310074,
+        "frozen": 5667488,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024,
+        "chart": 2128,
+        "chart_trainable": 0
+      }
+    },
+    {
+      "task": "cube",
+      "mode": "bounded",
+      "interface": "raw",
+      "native_config": true,
+      "original_initial_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "counts": {
+        "total": 55977562,
+        "trainable": 50312202,
+        "frozen": 5665360,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024,
+        "chart": 2128,
+        "chart_trainable": 2128
+      }
+    }
+  ],
+  "legacy_spatial_sha256": "949b5e012a63a400be787df02e3f74ee38e04b8d729fc922b709611f2dd80978",
+  "inverse": {
+    "output_max_error": 1.1525427157099699e-07,
+    "all_gradient_max_error": 1.7347651537491515e-07,
+    "finite_differences": [
+      {
+        "group": 0,
+        "finite_difference": -1.1846435930485184,
+        "implicit": -1.1846435273378249,
+        "absolute_error": 6.571069355310044e-08
+      },
+      {
+        "group": 1,
+        "finite_difference": 0.5422139547978561,
+        "implicit": 0.5422139837002893,
+        "absolute_error": 2.890243322450914e-08
+      },
+      {
+        "group": 2,
+        "finite_difference": 0.04279099832358551,
+        "implicit": 0.042790977669455735,
+        "absolute_error": 2.0654129774533292e-08
+      },
+      {
+        "group": 3,
+        "finite_difference": 0.4008363896252783,
+        "implicit": 0.40083641209354226,
+        "absolute_error": 2.246826397156454e-08
+      },
+      {
+        "group": 4,
+        "finite_difference": 1.1206997304571618,
+        "implicit": 1.1206997910743233,
+        "absolute_error": 6.061716151251062e-08
+      }
+    ],
+    "measured_solution_error_bound_max": 2.528810796320613e-07,
+    "certificate": {
+      "raw_input_operator_norm": 1.7935139529844342,
+      "raw_output_operator_norm": 1.0431655743032597,
+      "input_operator_norm": 0.999999047003044,
+      "output_operator_norm": 0.9999990997071029,
+      "input_normalization_active": true,
+      "output_normalization_active": true,
+      "residual_lipschitz_upper": 0.4999990733555024,
+      "guaranteed_lower": 0.5000009266444976,
+      "guaranteed_upper": 1.4999990733555024,
+      "mode": "bounded",
+      "global_invertibility_certified": true
+    },
+    "composition_chart_gradient_max": 2.384185791015625e-07
+  },
+  "legacy_nonidentity_path_exact": true,
+  "native_chart_gradient_entry": {
+    "first_norm": 0.0,
+    "second_norm": 0.002546179469809415,
+    "scope": "Two small CPU semantic updates, not a benchmark or GPU preflight. Exact carry/zero-renderer initialization can cancel the first chart gradient."
+  },
+  "passed": true,
+  "tests": 6,
+  "device": "CPU",
+  "cuda_visible_devices": "",
+  "source_sha256": {
+    "carrier": "7ce0a7d0cbe9313c4c269870716a8ca951baf14efc3cc50976c18e266aba1a19",
+    "spatial_carrier": "010c0800ba3161dceaa18ce091d94166756bac5f9f03db7ffab4b7434692f586",
+    "model": "fc31af3a1ab29e9e1ce8b64d97127a6ff078ce510e9bcb2afbaf7c665df6c8b6"
+  },
+  "test_sha256": "8587de937227beb0a7cf1ac9afab6a7891d91144b212f4fbc58ee4e0a9d37337"
+}

@@ -75,12 +75,36 @@ class _ImplicitChartInverse(torch.autograd.Function):
                     -flat_hg.sum(0), -flat_adjoint.sum(0), None, None, None, None)
 
 
-def _certify_rounded_solution(result, target, residual, bound, atol, rtol, label):
-    """Certify the public dtype value, not only its hidden FP64 solution."""
+def _rounded_solution_certified(result, target, residual, bound, atol, rtol):
     error_bound = torch.linalg.vector_norm(result.double()+residual(result.double())-target.double(), dim=-1)/(1-bound)
     tolerance = atol+rtol*torch.linalg.vector_norm(target.double(), dim=-1)
-    if not bool(torch.isfinite(error_bound).all() and (error_bound <= tolerance).all()):
+    return bool(torch.isfinite(error_bound).all() and (error_bound <= tolerance).all())
+
+
+def _certify_rounded_solution(result, target, residual, bound, atol, rtol, label):
+    """Certify the public dtype value, not only its hidden FP64 solution."""
+    if not _rounded_solution_certified(result, target, residual, bound, atol, rtol):
         raise RuntimeError(f"{label} failed public-dtype residual certificate")
+
+
+def _public_contractive_solve(target, residual, bound, iterations, atol, rtol, label, public_dtype):
+    """Raw-only termination: both internal and actual public values must pass.
+
+    Retain the same updates, four-update check points, cap and tolerances. An
+    internally passing iterate can still fail after rounding, so continue
+    instead of returning it prematurely. Return the unrounded solution for
+    the existing implicit backward; impossible public precision fails closed.
+    """
+    result = target.clone()
+    tolerance = atol+rtol*torch.linalg.vector_norm(target, dim=-1)
+    for step in range(iterations):
+        result = target-residual(result)
+        if (step+1)%4 == 0 or step+1 == iterations:
+            error_bound = torch.linalg.vector_norm(result+residual(result)-target, dim=-1)/(1-bound)
+            if bool(torch.isfinite(error_bound).all() and (error_bound <= tolerance).all()):
+                if _rounded_solution_certified(result.to(public_dtype), target, residual, bound, atol, rtol):
+                    return result
+    raise RuntimeError(f"{label} failed internal/public-dtype residual certificate after {iterations} iterations")
 
 
 def _precise_adjoint(target, first, second, derivative, bound, iterations, rtol):
@@ -93,7 +117,8 @@ def _precise_adjoint(target, first, second, derivative, bound, iterations, rtol)
     first, second, derivative = first.double(), second.double(), derivative.double()
     def residual(vector):
         return bound*F.linear(F.linear(vector, second.T)*derivative, first.T)
-    solved = _contractive_solve(target.double(), residual, bound, iterations, 0., rtol, "Precise chart inverse adjoint")
+    solved = _public_contractive_solve(target.double(), residual, bound, iterations, 0., rtol,
+        "Precise chart inverse adjoint", target.dtype)
     public = solved.to(target.dtype)
     _certify_rounded_solution(public, target, residual, bound, 0., rtol, "Precise chart inverse adjoint")
     return public, solved
@@ -114,7 +139,8 @@ class _PreciseImplicitChartInverse(torch.autograd.Function):
         with torch.autocast(device_type=value.device.type, enabled=False):
             target, a, b, c, d = (x.double() for x in (value, first, second, bias_one, bias_two))
             def residual(x): return F.linear(torch.tanh(F.linear(x, a, c)), bound*b, d)
-            solved = _contractive_solve(target, residual, bound, iterations, atol, rtol, "Precise chart inverse")
+            solved = _public_contractive_solve(target, residual, bound, iterations, atol, rtol,
+                "Precise chart inverse", value.dtype)
             public = solved.to(value.dtype)
             _certify_rounded_solution(public, target, residual, bound, atol, rtol, "Precise chart inverse")
         ctx.save_for_backward(solved, a, b, c)
