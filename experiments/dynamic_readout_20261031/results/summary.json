@@ -1,0 +1,323 @@
+{
+  "passed": true,
+  "status": "Prototype CPU contracts passed;await root review,no commit or GPU launch",
+  "source_hashes": {
+    "as_jepa_lewm/dynamic_readout.py": "7b53c4f1d42fb4ad121d60551f06e618abb2b39d2a7541b4ab5b2f34485e816c",
+    "as_jepa_lewm/spatial_carrier.py": "010c0800ba3161dceaa18ce091d94166756bac5f9f03db7ffab4b7434692f586",
+    "experiments/dynamic_readout_20261031/test_dynamic_readout.py": "f64b6ad01331aa65a56cf59bac4b229fec383f14bd0c0d7b6f689aeba9ef16b8",
+    "experiments/dynamic_readout_20261031/rank_witness.py": "f17eaa380e8ba9743f9766b19e087bfe738ff4c4fa3162c85644ea99263cdf26",
+    "experiments/dynamic_readout_20261031/DESIGN.md": "91985f45db70f2c4399cbe48fe5a381d52f6a76c45cf0f3a24ab28fa51eef81e"
+  },
+  "legacy_commit": "0c9ae74840cf28247ae74341d2656e2d9ddd457c",
+  "contracts": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/dynamic-readout-contracts-20261031/v2/contracts.json",
+    "sha256": "69c03672bbcd621e929c8329b9914dfff736760b0c09f0525c4af801c77a1d1d"
+  },
+  "rank_witness": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/dynamic-readout-contracts-20261031/v2/rank-witness.json",
+    "sha256": "6a4ba60b20769422da96987797ae5274c012e882c405d482c2ccf45e194144b9"
+  },
+  "exit": {
+    "exit_code": 0,
+    "finished_at": 1793415247.464826,
+    "wall_seconds": 76.71196722984314
+  },
+  "native_regression": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "mode": "none",
+      "original_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "initialization_rng_exact": true,
+      "counts": {
+        "total": 55913454,
+        "trainable": 50248094,
+        "frozen": 5665360,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "mode": "static",
+      "original_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "initialization_rng_exact": true,
+      "counts": {
+        "total": 55918830,
+        "trainable": 50253470,
+        "frozen": 5665360,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024,
+        "readout": 5376,
+        "readout_trainable": 5376,
+        "readout_inactive_state_columns": 1024
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "mode": "state",
+      "original_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "initialization_rng_exact": true,
+      "counts": {
+        "total": 55918830,
+        "trainable": 50253470,
+        "frozen": 5665360,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024,
+        "readout": 5376,
+        "readout_trainable": 5376,
+        "readout_inactive_state_columns": 0
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "mode": "none",
+      "original_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "initialization_rng_exact": true,
+      "counts": {
+        "total": 55975434,
+        "trainable": 50310074,
+        "frozen": 5665360,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "mode": "static",
+      "original_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "initialization_rng_exact": true,
+      "counts": {
+        "total": 55980810,
+        "trainable": 50315450,
+        "frozen": 5665360,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024,
+        "readout": 5376,
+        "readout_trainable": 5376,
+        "readout_inactive_state_columns": 1024
+      },
+      "startup": [
+        {
+          "updates": 1,
+          "loss": 13.55129337310791,
+          "gradient_max": {
+            "input.weight": 0.0,
+            "input.bias": 0.0,
+            "output.weight": 7.362396900134627e-06,
+            "output.bias": 2.0807139662792906e-05
+          }
+        },
+        {
+          "updates": 2,
+          "loss": 13.550863265991211,
+          "gradient_max": {
+            "input.weight": 1.3497373791554468e-12,
+            "input.bias": 2.5159184631473597e-12,
+            "output.weight": 1.4722614650963806e-05,
+            "output.bias": 4.154709313297644e-05
+          }
+        }
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "mode": "state",
+      "original_tensors_exact": 553,
+      "loss_metrics_rng_exact": true,
+      "all_original_gradients_exact": true,
+      "initialization_rng_exact": true,
+      "counts": {
+        "total": 55980810,
+        "trainable": 50315450,
+        "frozen": 5665360,
+        "fixed_projection_elements": 3072,
+        "fixed_projection_bytes": 12288,
+        "fixed_statistics_elements": 2048,
+        "state_slots": 64,
+        "state_width": 16,
+        "state_dim": 1024,
+        "readout": 5376,
+        "readout_trainable": 5376,
+        "readout_inactive_state_columns": 0
+      },
+      "startup": [
+        {
+          "updates": 1,
+          "loss": 13.55129337310791,
+          "gradient_max": {
+            "input.weight": 0.0,
+            "input.bias": 0.0,
+            "output.weight": 0.00011830451694549993,
+            "output.bias": 2.0807139662792906e-05
+          }
+        },
+        {
+          "updates": 2,
+          "loss": 13.550863265991211,
+          "gradient_max": {
+            "input.weight": 5.992917273545117e-10,
+            "input.bias": 6.580810896217315e-11,
+            "output.weight": 0.00023655069526284933,
+            "output.bias": 4.154709313297644e-05
+          }
+        }
+      ]
+    }
+  ],
+  "second_seed_initial": [
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "mode": "static",
+      "original_tensors_exact": 553,
+      "rng_exact": true
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "mode": "state",
+      "original_tensors_exact": 553,
+      "rng_exact": true
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "mode": "static",
+      "original_tensors_exact": 553,
+      "rng_exact": true
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "mode": "state",
+      "original_tensors_exact": 553,
+      "rng_exact": true
+    }
+  ],
+  "raw_chart_default_regression": true,
+  "interface": {
+    "sample_local": true,
+    "no_cross_time_head_input": true,
+    "strict_head_checkpoint": true,
+    "existing_factory_strict_model_load": true,
+    "finite_32step_constructive_rollout": true,
+    "parameters": 5376,
+    "static_inactive_input_weights": 1024,
+    "macs_per_state": 401408
+  },
+  "constructive": {
+    "first_old_span_exact": true,
+    "second_outside_initial_span_norm": 0.637377917766571,
+    "static_fixed_span_exact_to_fp32": true,
+    "instantaneous_action_rank_not_claimed_increased": true
+  },
+  "global_span": {
+    "old": 16,
+    "dynamic": 1024,
+    "static": 16
+  },
+  "subtraction": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "mode": "one_step",
+      "delta_rms": 0.9000171187120009,
+      "fp32_subtraction_relative_error": 1.6633973548675538e-08,
+      "max_abs_error": 4.76837158203125e-07
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "mode": "rollout_steps",
+      "delta_rms": 0.8939321283164213,
+      "fp32_subtraction_relative_error": 1.597004936826216e-08,
+      "max_abs_error": 4.76837158203125e-07
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "mode": "one_step",
+      "delta_rms": 0.9037503600088977,
+      "fp32_subtraction_relative_error": 1.642028713342116e-08,
+      "max_abs_error": 7.152557373046875e-07
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "mode": "rollout_steps",
+      "delta_rms": 0.9005608426100371,
+      "fp32_subtraction_relative_error": 1.5904051803572958e-08,
+      "max_abs_error": 9.5367431640625e-07
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "mode": "one_step",
+      "delta_rms": 0.7596317129533238,
+      "fp32_subtraction_relative_error": 1.4626655193779804e-08,
+      "max_abs_error": 4.76837158203125e-07
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "mode": "rollout_steps",
+      "delta_rms": 0.7905935102102264,
+      "fp32_subtraction_relative_error": 1.4481928277751709e-08,
+      "max_abs_error": 4.76837158203125e-07
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "mode": "one_step",
+      "delta_rms": 0.7696546568145131,
+      "fp32_subtraction_relative_error": 1.4844691623240724e-08,
+      "max_abs_error": 4.76837158203125e-07
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "mode": "rollout_steps",
+      "delta_rms": 0.7981662218993275,
+      "fp32_subtraction_relative_error": 1.441249645764477e-08,
+      "max_abs_error": 4.76837158203125e-07
+    }
+  ],
+  "initial_failure": "v1 preserved: synthetic double-head test exposed position-buffer dtype mismatch;explicit positions.float() fixed it before complete v2 rerun",
+  "limitations": "CPU equivalence/gradient startup and synthetic expressivity are not GPU stability, sample efficiency or planning evidence. Dynamic filters/hypernetworks are prior art. Fixed-current-state instantaneous rank remains limited. Globalrank witness uses arbitrary synthetic states, not real encoder-manifold reachability."
+}

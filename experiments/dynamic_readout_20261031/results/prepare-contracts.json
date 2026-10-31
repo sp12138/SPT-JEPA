@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "tests": 2,
+  "test_command": "python3 -m unittest experiments.dynamic_readout_20261031.test_prepare -v",
+  "checks": [
+    "8 unique dev15 GPUs;full static/state\u00d7task\u00d7seed Cartesian product",
+    "original batch128/maxsteps124910/model/loss config preserved except declaredmode",
+    "exact3 and600 stop/retention policies",
+    "fail-closed sequential dependencies;no resume/fresh/cohort/activation"
+  ],
+  "helper_hashes": {
+    "prepare.py": "2eb71251086fe00f315a3ea3ece4fcbb513a2290eee4d1e2b21fdcf48aabd3c2",
+    "preflight.py": "a025137573300ef2d0ed1bd94bbfe6cbfdf68bf1e9962687bb9c26e73b1e5760",
+    "test_prepare.py": "643f3b793adc7cdf06411ea8d2244c4267feef2f341cea34b91fd3a42d812f60"
+  },
+  "gpu_calls": 0,
+  "trainer_calls": 0
+}

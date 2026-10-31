@@ -1,0 +1,110 @@
+{
+  "passed": true,
+  "device": "CPU",
+  "cuda_initialized": false,
+  "helper_sha256": "f17eaa380e8ba9743f9766b19e087bfe738ff4c4fa3162c85644ea99263cdf26",
+  "model_sha256": "7b53c4f1d42fb4ad121d60551f06e618abb2b39d2a7541b4ab5b2f34485e816c",
+  "old_increment_subspace_rank": 16,
+  "state_conditioned_global_increment_span_rank": 1024,
+  "static_global_increment_span_rank": 16,
+  "rows": [
+    {
+      "channel": 0,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432711482048035
+    },
+    {
+      "channel": 1,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 2,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 3,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 4,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 5,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 6,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 7,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 8,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 9,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 10,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 11,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 12,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 13,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 14,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    },
+    {
+      "channel": 15,
+      "dynamic_rank": 64,
+      "static_rank": 1,
+      "minimum_singular_value": 0.16432707011699677
+    }
+  ],
+  "construction": "M_i0=tanh(u_i0);all other columns0.64 states have only slot i/channel0=1. Olddelta is e_(slot0,channelc). Eachchannel produces e0+t*ei; determinant=(1+t)*t**63 nonzero. Disjointchannel blocks yield rank1024.",
+  "limitation": "Counterexample across arbitrary current states, not evidence these states occur or are reachable from one physical initial state. Fixed-state instantaneous action rank remains at most oldrank. Configured witness weights are not initialization/training results. No world-model/encoder/physics call or optimizer."
+}

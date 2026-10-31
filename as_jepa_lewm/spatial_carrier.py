@@ -60,11 +60,14 @@ class SpatialCarrierLeWM(RobustLeWM):
     scale and compute differ. Only local versus dense is the matched control.
     """
     def __init__(self,spatial_mode='local',spatial_mean=None,spatial_scale=None,spatial_basis='identity',
-                 spatial_chart='none',spatial_state_interface='chart',state_slots=64,state_width=16,**kwargs):
+                 spatial_chart='none',spatial_state_interface='chart',spatial_readout_mode='none',state_slots=64,state_width=16,**kwargs):
         if spatial_mode not in {'local','dense'}:raise ValueError('Unknown spatial_mode')
         if spatial_basis not in {'identity','orthogonal'}:raise ValueError('Unknown spatial_basis')
         if spatial_chart not in {'none','identity','bounded'}:raise ValueError('Unknown spatial_chart')
         if spatial_state_interface not in {'chart','raw'}:raise ValueError('Unknown spatial_state_interface')
+        if spatial_readout_mode not in {'none','static','state'}:raise ValueError('Unknown spatial_readout_mode')
+        if spatial_readout_mode!='none' and (spatial_chart!='none' or spatial_mode!='local' or spatial_basis!='identity'):
+            raise ValueError('Output readout requires unchanged local carrier, identity basis, and no chart')
         if spatial_state_interface=='raw' and spatial_chart=='none':
             raise ValueError('The raw chart interface requires an explicit identity or bounded chart')
         if spatial_chart!='none' and (spatial_mode!='local' or spatial_basis!='identity'):
@@ -99,12 +102,16 @@ class SpatialCarrierLeWM(RobustLeWM):
             self.register_buffer('spatial_orthogonal_basis',torch.from_numpy(orthogonal_basis()))
         self.spatial_chart=spatial_chart
         self.spatial_state_interface=spatial_state_interface
+        self.spatial_readout_mode=spatial_readout_mode
         if spatial_chart!='none':
             # Reuse the certified residual map. One2128-parameter16→64→16 map
             # acts on every slot; initialization uses its isolated CPU RNG.
             from as_jepa_lewm.carrier import ResidualCarrierChart
             self.carrier_chart_module=ResidualCarrierChart(16,64,spatial_chart,.5)
             if spatial_state_interface=='raw':self.renderer.bind_condition_chart(self.carrier_chart_module)
+        if spatial_readout_mode!='none':
+            from as_jepa_lewm.dynamic_readout import DynamicReadout
+            self.dynamic_readout_module=DynamicReadout(spatial_readout_mode)
 
     def train(self,mode=True):
         super().train(mode);self.encoder.eval();self.pool.eval();return self
@@ -156,6 +163,8 @@ class SpatialCarrierLeWM(RobustLeWM):
         return info
 
     def predict(self,emb,act_emb):
+        if self.spatial_readout_mode!='none':
+            return self.dynamic_readout_module(emb,super().predict(emb,act_emb))
         if self.spatial_state_interface=='chart':return super().predict(emb,act_emb)
         chart_prediction=super().predict(self.transform_spatial_chart(emb),act_emb)
         slots=chart_prediction.reshape(*chart_prediction.shape[:-1],self.state_slots,self.state_width)
@@ -165,6 +174,7 @@ class SpatialCarrierLeWM(RobustLeWM):
         result=dict(encoder='frozen',pool='frozen',predictor='active',renderer='active',action_encoder='optional')
         if self.spatial_chart!='none':
             result['carrier_chart_module']='frozen' if self.spatial_chart=='identity' else 'active'
+        if self.spatial_readout_mode!='none':result['dynamic_readout_module']='active'
         return result
 
     def spatial_parameter_counts(self):
@@ -178,4 +188,7 @@ class SpatialCarrierLeWM(RobustLeWM):
         if self.spatial_chart!='none':
             result.update(chart=sum(p.numel() for p in self.carrier_chart_module.parameters()),
                 chart_trainable=sum(p.numel() for p in self.carrier_chart_module.parameters() if p.requires_grad))
+        if self.spatial_readout_mode!='none':
+            result.update(readout=5376,readout_trainable=5376,
+                readout_inactive_state_columns=1024 if self.spatial_readout_mode=='static' else 0)
         return result
