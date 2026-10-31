@@ -2,7 +2,7 @@
 
 只读已完成配置、原始 `metrics.jsonl` 和已有评测；没有模型调用、新拟合、GPU任务或续训。完整数值与输入SHA见 `reports/training-maturity-20261031/summary.json`；本目录 `collect.py` 可复现。历史“maturity reference”应理解为较长预算对照，不是收敛认证。
 
-9000个训练episode共1,809,000行，window8、frameskip5有1,494,000个合法窗口起点。batch128的原sampler每轮取1,493,888个窗口，**一个loader epoch=11,671更新**，尾部112个窗口被drop_last。窗口高度重叠；窗口曝光量不是独立物理轨迹数，也不意味着半epoch只见过半数图像。
+9000个训练episode共1,809,000行，window8、frameskip5有1,494,000个合法窗口起点。batch128的原sampler每轮取1,493,888个窗口，**一个loader epoch=11,671更新**。全局cursor继续推进，permutation cycle按natural_length划分；112个尾部起点会接到下一loader，不能称为每轮永久丢弃。23342更新是两个loader长度，比两次完整natural排列cycle少224个窗口。窗口高度重叠；窗口曝光量不是独立物理轨迹数，也不意味着半epoch只见过半数图像。
 
 | 截止步数 | loader epoch | 完整124910日程进度 | 当前LR/峰值 |
 |---:|---:|---:|---:|
