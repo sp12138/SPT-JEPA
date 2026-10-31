@@ -1,0 +1,131 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_evaluation_20261031",
+  "held": true,
+  "active_plan_absent": true,
+  "source_commit": "e4649cb7cd408891ce162e85a0fd972f3231e4b3",
+  "protocol_sha256": "f08548389dc4fe9a41efa57c88239714bd684057b06a12ec3999dad087b438ed",
+  "candidate_sha256": "89e58f085f98f20ec119bff99b513212e6eb54f5aae1fb611076e284fce380de",
+  "jobs": 48,
+  "models": [
+    {
+      "id": "tworoom-local1024-seed1",
+      "dimension": 1024,
+      "step": 6000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed1/model-step0006000",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "id": "tworoom-local1024-seed2",
+      "dimension": 1024,
+      "step": 6000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed2/model-step0006000",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "id": "tworoom-native-raw-seed1",
+      "dimension": 192,
+      "step": 6000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/tworoom-native-lewm-seed1/model-step0006000",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "id": "tworoom-native-raw-seed2",
+      "dimension": 192,
+      "step": 6000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/tworoom-native-lewm-seed2/model-step0006000",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "id": "tworoom-TF64-seed1",
+      "dimension": 64,
+      "step": 6000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/tworoom-temporal-forecast-seed1/model-step0006000",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "id": "tworoom-TF64-seed2",
+      "dimension": 64,
+      "step": 6000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/tworoom-temporal-forecast-seed2/model-step0006000",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "id": "cube-local1024-seed1",
+      "dimension": 1024,
+      "step": 6000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed1/model-step0006000",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "id": "cube-local1024-seed2",
+      "dimension": 1024,
+      "step": 6000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed2/model-step0006000",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "id": "cube-native-raw-seed1",
+      "dimension": 192,
+      "step": 12000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/model-step0012000",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "id": "cube-native-raw-seed2",
+      "dimension": 192,
+      "step": 12000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/model-step0012000",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "id": "cube-TF64-seed1",
+      "dimension": 64,
+      "step": 12000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed1/model-step0012000",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "id": "cube-TF64-seed2",
+      "dimension": 64,
+      "step": 12000,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed2/model-step0012000",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    }
+  ],
+  "slot_queues": {
+    "('dev2', 3)": 3,
+    "('dev2', 4)": 3,
+    "('dev2', 5)": 3,
+    "('dev2', 6)": 3,
+    "('dev2', 7)": 3,
+    "('dev13', 3)": 3,
+    "('dev13', 4)": 3,
+    "('dev13', 5)": 3,
+    "('dev13', 6)": 3,
+    "('dev13', 7)": 3,
+    "('dev15', 2)": 3,
+    "('dev15', 3)": 3,
+    "('dev15', 4)": 3,
+    "('dev15', 5)": 3,
+    "('dev15', 6)": 3,
+    "('dev15', 7)": 3
+  },
+  "calibrations": {
+    "tworoom": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/action_covariance_evaluation_20261031/calibration/tworoom/calibration.json",
+      "calibration_sha256": "22c868c22620b59f97fe813c70599ba5e8a27f23bcae689f34ace81c44f245fb",
+      "matrix_sha256": "1d7d9ab93ac3f8f7328c7f6bf41cb576992513d9bdd19abff9b58bd41e64f84e",
+      "dimension": 50,
+      "cohort_sha256": "1d474d25a7b275d6b19444b376c17d546acf6ce715275078c9ba0f1975f3311b"
+    },
+    "cube": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/action_covariance_evaluation_20261031/calibration/cube/calibration.json",
+      "calibration_sha256": "a478566d01d2e1fea2e19d1470136dceb6489f6853c4884561c06683360db0fa",
+      "matrix_sha256": "44ee834999e81d01974119326efa4c9b722ea0b8b18cf715d7b797f056b7de57",
+      "dimension": 125,
+      "cohort_sha256": "16070202b03fe85f44e997be574a65edaec308006891e9b498a11528eb1d6cac"
+    }
+  },
+  "graph_gate_sha256": "2425c61ed060ed1a246dd40abc7416e27ee344ddbf8788a1538cb62c98496ae3",
+  "cpu_contracts": 11
+}

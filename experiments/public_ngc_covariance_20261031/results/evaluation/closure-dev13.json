@@ -1,0 +1,70 @@
+{
+  "host": "dev13",
+  "time": 1793441583.654291,
+  "all48exit0": true,
+  "owned_slots": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "owned_gpus_idle": true,
+  "other_gpu_processes_preserved": [
+    {
+      "gpu": 0,
+      "pid": 1181268,
+      "memory": "117004 MiB"
+    },
+    {
+      "gpu": 1,
+      "pid": 1186519,
+      "memory": "116884 MiB"
+    },
+    {
+      "gpu": 2,
+      "pid": 1186523,
+      "memory": "117004 MiB"
+    }
+  ],
+  "closed": [
+    {
+      "name": "launched",
+      "pid": 1158214,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "as_jepa_tools.workflow",
+        "--plan",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_evaluation_20261031/plan.json",
+        "--host",
+        "dev13",
+        ""
+      ],
+      "after_state": "absent"
+    },
+    {
+      "name": "monitor",
+      "pid": 1158215,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_source_20261031/source-v2/experiments/carrier_progress_20261031/monitor.py",
+        "--roots",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_evaluation_20261031",
+        "--host",
+        "dev13",
+        "--output",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_evaluation_20261031/monitor/dev13",
+        "--interval",
+        "1800",
+        ""
+      ],
+      "after_state": "absent"
+    }
+  ],
+  "hold": "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_evaluation_20261031/HOLD_DISPATCH"
+}

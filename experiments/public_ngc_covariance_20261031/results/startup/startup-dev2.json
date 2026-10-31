@@ -1,0 +1,236 @@
+{
+  "host": "dev2",
+  "time": 1793440986.3367922,
+  "planned": 15,
+  "completed": 5,
+  "failed": {},
+  "worker_pid": 206730,
+  "running": {
+    "3": {
+      "id": "corr-l2-primary-tworoom-TF64-seed1",
+      "pid": 206804,
+      "started_at": 1793440919.1988618
+    },
+    "4": {
+      "id": "corr-ngc-primary-tworoom-TF64-seed1",
+      "pid": 206807,
+      "started_at": 1793440919.3814955
+    },
+    "5": {
+      "id": "corr-l2-fresh-tworoom-TF64-seed1",
+      "pid": 206810,
+      "started_at": 1793440919.5767152
+    },
+    "6": {
+      "id": "corr-ngc-fresh-tworoom-TF64-seed1",
+      "pid": 206813,
+      "started_at": 1793440919.756546
+    },
+    "7": {
+      "id": "corr-l2-primary-tworoom-TF64-seed2",
+      "pid": 206816,
+      "started_at": 1793440919.9358342
+    }
+  },
+  "actual_inner_processes": [
+    {
+      "id": "corr-l2-primary-tworoom-TF64-seed1",
+      "pid": 206804,
+      "gpu": 3,
+      "inner": true,
+      "original_pythonpath_exact": true,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_source_20261031/source-v2/experiments/public_ngc_covariance_20261031/run.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_evaluation_20261031/specs/corr-l2-primary-tworoom-TF64-seed1.json",
+        "--inner",
+        ""
+      ]
+    },
+    {
+      "id": "corr-ngc-primary-tworoom-TF64-seed1",
+      "pid": 206807,
+      "gpu": 4,
+      "inner": true,
+      "original_pythonpath_exact": true,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_source_20261031/source-v2/experiments/public_ngc_covariance_20261031/run.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_evaluation_20261031/specs/corr-ngc-primary-tworoom-TF64-seed1.json",
+        "--inner",
+        ""
+      ]
+    },
+    {
+      "id": "corr-l2-fresh-tworoom-TF64-seed1",
+      "pid": 206810,
+      "gpu": 5,
+      "inner": true,
+      "original_pythonpath_exact": true,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_source_20261031/source-v2/experiments/public_ngc_covariance_20261031/run.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_evaluation_20261031/specs/corr-l2-fresh-tworoom-TF64-seed1.json",
+        "--inner",
+        ""
+      ]
+    },
+    {
+      "id": "corr-ngc-fresh-tworoom-TF64-seed1",
+      "pid": 206813,
+      "gpu": 6,
+      "inner": true,
+      "original_pythonpath_exact": true,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_source_20261031/source-v2/experiments/public_ngc_covariance_20261031/run.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_evaluation_20261031/specs/corr-ngc-fresh-tworoom-TF64-seed1.json",
+        "--inner",
+        ""
+      ]
+    },
+    {
+      "id": "corr-l2-primary-tworoom-TF64-seed2",
+      "pid": 206816,
+      "gpu": 7,
+      "inner": true,
+      "original_pythonpath_exact": true,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_source_20261031/source-v2/experiments/public_ngc_covariance_20261031/run.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/public_ngc_covariance_evaluation_20261031/specs/corr-l2-primary-tworoom-TF64-seed2.json",
+        "--inner",
+        ""
+      ]
+    }
+  ],
+  "first_plan_proofs": [
+    {
+      "id": "corr-l2-primary-tworoom-local1024-seed1",
+      "sha256": "a9d3bf60053a3a20b129c7ddb613bb2c019e717f76d16b0198065e7f9c626beb",
+      "model_class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "model_imports": {
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/spatial_carrier.py": "d43b646e048f6b1f3ba0b8b74baf7171d1d0bef4cacedcddbbe228ad9cf7a755",
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/robust.py": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc",
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/model.py": "c7dc10afeaceb398151d67dfb687d69e71e867c006ba8c627176d2e4b17bbf2a"
+      },
+      "first_bank": {
+        "shape": [
+          1,
+          300,
+          5,
+          10
+        ],
+        "white_sha256": "023bdddca873ec24e0082b36e2d45fc05e28907641e5bb2fa20fe50046a9ecd1",
+        "normalized_action_sha256": "cad9387bb9df9c1a0b7e6b4ea2e6a1f42fddf82932436eec9f82c64efb9005b0"
+      },
+      "first_plan_finite": true,
+      "return_map_error": 0.0
+    },
+    {
+      "id": "corr-ngc-primary-tworoom-local1024-seed1",
+      "sha256": "fd74befd968b6b748c3a80ac5e630dfa3addd5a6bf4df1a181f82d267dbcaead",
+      "model_class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "model_imports": {
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/spatial_carrier.py": "d43b646e048f6b1f3ba0b8b74baf7171d1d0bef4cacedcddbbe228ad9cf7a755",
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/robust.py": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc",
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/model.py": "c7dc10afeaceb398151d67dfb687d69e71e867c006ba8c627176d2e4b17bbf2a"
+      },
+      "first_bank": {
+        "shape": [
+          1,
+          300,
+          5,
+          10
+        ],
+        "white_sha256": "023bdddca873ec24e0082b36e2d45fc05e28907641e5bb2fa20fe50046a9ecd1",
+        "normalized_action_sha256": "cad9387bb9df9c1a0b7e6b4ea2e6a1f42fddf82932436eec9f82c64efb9005b0"
+      },
+      "first_plan_finite": true,
+      "return_map_error": 0.0
+    },
+    {
+      "id": "corr-l2-fresh-tworoom-local1024-seed1",
+      "sha256": "8dbbfde68571706857c76cce603fccb5779011b3e9a6e2b94725fcfe604a9ca1",
+      "model_class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "model_imports": {
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/spatial_carrier.py": "d43b646e048f6b1f3ba0b8b74baf7171d1d0bef4cacedcddbbe228ad9cf7a755",
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/robust.py": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc",
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/model.py": "c7dc10afeaceb398151d67dfb687d69e71e867c006ba8c627176d2e4b17bbf2a"
+      },
+      "first_bank": {
+        "shape": [
+          1,
+          300,
+          5,
+          10
+        ],
+        "white_sha256": "023bdddca873ec24e0082b36e2d45fc05e28907641e5bb2fa20fe50046a9ecd1",
+        "normalized_action_sha256": "cad9387bb9df9c1a0b7e6b4ea2e6a1f42fddf82932436eec9f82c64efb9005b0"
+      },
+      "first_plan_finite": true,
+      "return_map_error": 0.0
+    },
+    {
+      "id": "corr-ngc-fresh-tworoom-local1024-seed1",
+      "sha256": "6b0ce716c8fd36717a6597d03427d723db421ff7407db5e3899bd129f2d330bd",
+      "model_class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "model_imports": {
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/spatial_carrier.py": "d43b646e048f6b1f3ba0b8b74baf7171d1d0bef4cacedcddbbe228ad9cf7a755",
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/robust.py": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc",
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/model.py": "c7dc10afeaceb398151d67dfb687d69e71e867c006ba8c627176d2e4b17bbf2a"
+      },
+      "first_bank": {
+        "shape": [
+          1,
+          300,
+          5,
+          10
+        ],
+        "white_sha256": "023bdddca873ec24e0082b36e2d45fc05e28907641e5bb2fa20fe50046a9ecd1",
+        "normalized_action_sha256": "cad9387bb9df9c1a0b7e6b4ea2e6a1f42fddf82932436eec9f82c64efb9005b0"
+      },
+      "first_plan_finite": true,
+      "return_map_error": 0.0
+    },
+    {
+      "id": "corr-l2-primary-tworoom-local1024-seed2",
+      "sha256": "cf201d696451a8d9bd3a1161bd782a705f0da260f4ffa674a472722c8058868e",
+      "model_class": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
+      "model_imports": {
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/spatial_carrier.py": "d43b646e048f6b1f3ba0b8b74baf7171d1d0bef4cacedcddbbe228ad9cf7a755",
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/robust.py": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc",
+        "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/model.py": "c7dc10afeaceb398151d67dfb687d69e71e867c006ba8c627176d2e4b17bbf2a"
+      },
+      "first_bank": {
+        "shape": [
+          1,
+          300,
+          5,
+          10
+        ],
+        "white_sha256": "023bdddca873ec24e0082b36e2d45fc05e28907641e5bb2fa20fe50046a9ecd1",
+        "normalized_action_sha256": "cad9387bb9df9c1a0b7e6b4ea2e6a1f42fddf82932436eec9f82c64efb9005b0"
+      },
+      "first_plan_finite": true,
+      "return_map_error": 0.0
+    }
+  ],
+  "gpu_processes": "GPU-6ed84194-c712-388f-2730-9a9d94eccf11, 206388, 116884 MiB\nGPU-77277811-7523-3a04-78e5-1d8e15dc1800, 206392, 117004 MiB\nGPU-bff74550-eee8-5c88-2fb1-b131200c106c, 206396, 116884 MiB\nGPU-60f98c04-fafb-6d1c-98bf-bb6b14b0068a, 206804, 1084 MiB\nGPU-bb619007-7bc0-bfca-8917-e43a02bc2f58, 206807, 1084 MiB\nGPU-4a6e0e8d-3d7b-5f96-89b9-65fe4baa68fc, 206810, 1084 MiB\nGPU-06241fba-d12f-3e1d-47c9-cc9726909519, 206813, 1084 MiB\nGPU-db53e14f-fc80-fb20-e70c-6eaac002f635, 206816, 1084 MiB",
+  "scope": "Scheduled first actual startup check; no task outcomes read."
+}
