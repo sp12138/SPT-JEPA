@@ -1,0 +1,450 @@
+{
+  "phase": "Cube controller improvement confirmed;matched third-epoch training active",
+  "created_utc": "2026-10-31T19:34:06.337549+00:00",
+  "completed_full_task_endpoints": 84,
+  "all_task_exits_zero": true,
+  "cube_table": [
+    {
+      "cases": "primary",
+      "tf_original": [
+        22.0,
+        26.0
+      ],
+      "tf_retrieval": [
+        40.0,
+        42.0
+      ],
+      "native_retrieval": [
+        42.0,
+        42.0
+      ]
+    },
+    {
+      "cases": "fresh",
+      "tf_original": [
+        32.0,
+        30.0
+      ],
+      "tf_retrieval": [
+        48.0,
+        44.0
+      ],
+      "native_retrieval": [
+        28.000000000000004,
+        34.0
+      ]
+    },
+    {
+      "cases": "newcases",
+      "tf_original": [
+        26.0,
+        36.0
+      ],
+      "tf_retrieval": [
+        52.0,
+        54.0
+      ],
+      "native_retrieval": [
+        40.0,
+        40.0
+      ]
+    }
+  ],
+  "cube_three_set_means": {
+    "tf_original_percent": 28.666666666666668,
+    "tf_retrieval_percent": 46.666666666666664,
+    "native_retrieval_percent": 37.666666666666664
+  },
+  "overall_contrasts": {
+    "tf_retrieval_minus_original": {
+      "mean_pp": 18.0,
+      "ci95_pp": [
+        12.333333333333334,
+        23.666666666666668
+      ],
+      "cases": 150,
+      "limitation": "Case bootstrap conditional on2fixedmodelseeds;excludes simulator repeats and seed-population uncertainty."
+    },
+    "tf_retrieval_minus_random": {
+      "mean_pp": 8.666666666666666,
+      "ci95_pp": [
+        3.6666666666666665,
+        14.0
+      ],
+      "cases": 150,
+      "limitation": "Case bootstrap conditional on2fixedmodelseeds;excludes simulator repeats and seed-population uncertainty."
+    },
+    "tf_minus_native_same_retrieval": {
+      "mean_pp": 9.0,
+      "ci95_pp": [
+        2.3333333333333335,
+        16.0
+      ],
+      "cases": 150,
+      "limitation": "Case bootstrap conditional on2fixedmodelseeds;excludes simulator repeats and seed-population uncertainty."
+    }
+  },
+  "tworoom_status": "TF remains2-6%;retrieval is not a cross-task solution. Local1024 retrieval77/75%two-seed means,versus Native retrieval75/76%;no clear advantage. Existing publicNGC local98/94 remainsseparate.",
+  "local_status": "Cube local1024 retrieval26/20%means;does not improve on TF retrieval41/46%. No local continuation selected.",
+  "denoising_status": "Fixedt.95 extra-renderer energy does not improve primary success;stop,nosweep,no deployment.",
+  "denoising": [
+    {
+      "seed": 1,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/denoise_goal_cost_20261101/seed1/results.json",
+      "sha256": "a53c75721c9b8d2c2362c0cb4e1a3c6b19dc59de60d7341a8e89bc7a591312b1",
+      "summary": {
+        "nonoracle": {
+          "latent_pred": {
+            "hold": 0.2,
+            "joint": 0.26,
+            "pose": 3.1244852032034602,
+            "position_cm": 8.79420951327668,
+            "angle_deg": 12.004599484883022
+          },
+          "latent_true": {
+            "hold": 0.18,
+            "joint": 0.24,
+            "pose": 2.939766735706911,
+            "position_cm": 8.22266337202729,
+            "angle_deg": 11.673623273190696
+          },
+          "pixel_true": {
+            "hold": 0.2,
+            "joint": 0.28,
+            "pose": 2.741592392811742,
+            "position_cm": 7.6227369433525585,
+            "angle_deg": 11.305539364640062
+          },
+          "denoise_pred": {
+            "hold": 0.16,
+            "joint": 0.18,
+            "pose": 3.4475231536185866,
+            "position_cm": 9.760751387787499,
+            "angle_deg": 12.75025415653698
+          },
+          "denoise_true": {
+            "hold": 0.16,
+            "joint": 0.24,
+            "pose": 2.6700871148486724,
+            "position_cm": 7.394191839842206,
+            "angle_deg": 11.452615453513843
+          }
+        },
+        "all": {
+          "latent_pred": {
+            "hold": 0.48,
+            "joint": 0.86,
+            "pose": 0.6362103118813895,
+            "position_cm": 1.5282088345800795,
+            "angle_deg": 4.407100612231294
+          },
+          "latent_true": {
+            "hold": 0.56,
+            "joint": 1.0,
+            "pose": 0.013470367672468331,
+            "position_cm": 0.02678400832765,
+            "angle_deg": 0.16261832856595335
+          },
+          "pixel_true": {
+            "hold": 0.56,
+            "joint": 1.0,
+            "pose": 0.013470367672468331,
+            "position_cm": 0.02678400832765,
+            "angle_deg": 0.16261832856595335
+          },
+          "denoise_pred": {
+            "hold": 0.44,
+            "joint": 0.84,
+            "pose": 0.5250630555618787,
+            "position_cm": 1.2465239883221926,
+            "angle_deg": 4.265350735217927
+          },
+          "denoise_true": {
+            "hold": 0.54,
+            "joint": 0.94,
+            "pose": 0.2423868805367485,
+            "position_cm": 0.569656534456947,
+            "angle_deg": 2.2237355546938273
+          }
+        }
+      },
+      "counts": {
+        "encoder": 0,
+        "predictor": 0,
+        "renderer": 300,
+        "rendered_images": 3900
+      }
+    },
+    {
+      "seed": 2,
+      "path": "/efs/prescottsun/SPT-JEPA/runs/denoise_goal_cost_20261101/seed2/results.json",
+      "sha256": "8d89aa61c0aaec3db708aa41d75c89c54b13c9adfa59a0423d720c1681df60de",
+      "summary": {
+        "nonoracle": {
+          "latent_pred": {
+            "hold": 0.16,
+            "joint": 0.22,
+            "pose": 3.448201781523481,
+            "position_cm": 9.851855815991035,
+            "angle_deg": 11.256441983552222
+          },
+          "latent_true": {
+            "hold": 0.18,
+            "joint": 0.24,
+            "pose": 2.9484865122535187,
+            "position_cm": 8.388812078311059,
+            "angle_deg": 10.310661999325905
+          },
+          "pixel_true": {
+            "hold": 0.2,
+            "joint": 0.28,
+            "pose": 2.741592392811742,
+            "position_cm": 7.6227369433525585,
+            "angle_deg": 11.305539364640062
+          },
+          "denoise_pred": {
+            "hold": 0.18,
+            "joint": 0.26,
+            "pose": 3.187683332315879,
+            "position_cm": 9.02641396827902,
+            "angle_deg": 12.443699720682476
+          },
+          "denoise_true": {
+            "hold": 0.2,
+            "joint": 0.26,
+            "pose": 2.858447296600298,
+            "position_cm": 7.996834403386829,
+            "angle_deg": 10.425382496292844
+          }
+        },
+        "all": {
+          "latent_pred": {
+            "hold": 0.5,
+            "joint": 0.92,
+            "pose": 0.22348914280919602,
+            "position_cm": 0.43553177105015173,
+            "angle_deg": 2.2431417571053633
+          },
+          "latent_true": {
+            "hold": 0.56,
+            "joint": 1.0,
+            "pose": 0.013470367672468331,
+            "position_cm": 0.02678400832765,
+            "angle_deg": 0.16261832856595335
+          },
+          "pixel_true": {
+            "hold": 0.56,
+            "joint": 1.0,
+            "pose": 0.013470367672468331,
+            "position_cm": 0.02678400832765,
+            "angle_deg": 0.16261832856595335
+          },
+          "denoise_pred": {
+            "hold": 0.54,
+            "joint": 0.94,
+            "pose": 0.34376586200832393,
+            "position_cm": 0.8770033300780695,
+            "angle_deg": 2.6613697564856262
+          },
+          "denoise_true": {
+            "hold": 0.64,
+            "joint": 0.98,
+            "pose": 0.14372815682634957,
+            "position_cm": 0.35695293345552875,
+            "angle_deg": 1.0686659162278784
+          }
+        }
+      },
+      "counts": {
+        "encoder": 0,
+        "predictor": 0,
+        "renderer": 300,
+        "rendered_images": 3900
+      }
+    }
+  ],
+  "denoising_paired": [
+    {
+      "group": "nonoracle",
+      "treatment": "denoise_pred",
+      "control": "latent_pred",
+      "metric": "hold",
+      "mean": -0.01,
+      "ci95": [
+        -0.05,
+        0.03
+      ]
+    },
+    {
+      "group": "nonoracle",
+      "treatment": "denoise_pred",
+      "control": "latent_pred",
+      "metric": "joint",
+      "mean": -0.02,
+      "ci95": [
+        -0.07,
+        0.03
+      ]
+    },
+    {
+      "group": "nonoracle",
+      "treatment": "denoise_pred",
+      "control": "latent_pred",
+      "metric": "pose",
+      "mean": 0.03125975060376267,
+      "ci95": [
+        -0.26018586862061344,
+        0.3222622065137114
+      ]
+    },
+    {
+      "group": "nonoracle",
+      "treatment": "denoise_true",
+      "control": "latent_true",
+      "metric": "hold",
+      "mean": 0.0,
+      "ci95": [
+        -0.04,
+        0.04
+      ]
+    },
+    {
+      "group": "nonoracle",
+      "treatment": "denoise_true",
+      "control": "latent_true",
+      "metric": "joint",
+      "mean": 0.01,
+      "ci95": [
+        -0.03,
+        0.05
+      ]
+    },
+    {
+      "group": "nonoracle",
+      "treatment": "denoise_true",
+      "control": "latent_true",
+      "metric": "pose",
+      "mean": -0.17985941825572918,
+      "ci95": [
+        -0.40088532225149875,
+        -0.006296681229559219
+      ]
+    },
+    {
+      "group": "all",
+      "treatment": "denoise_pred",
+      "control": "latent_pred",
+      "metric": "hold",
+      "mean": 0.0,
+      "ci95": [
+        -0.07,
+        0.08
+      ]
+    },
+    {
+      "group": "all",
+      "treatment": "denoise_pred",
+      "control": "latent_pred",
+      "metric": "joint",
+      "mean": 0.0,
+      "ci95": [
+        -0.08,
+        0.08
+      ]
+    },
+    {
+      "group": "all",
+      "treatment": "denoise_pred",
+      "control": "latent_pred",
+      "metric": "pose",
+      "mean": 0.004564731439808543,
+      "ci95": [
+        -0.30881300649605686,
+        0.29394322349330504
+      ]
+    },
+    {
+      "group": "all",
+      "treatment": "denoise_true",
+      "control": "latent_true",
+      "metric": "hold",
+      "mean": 0.03,
+      "ci95": [
+        -0.03,
+        0.1
+      ]
+    },
+    {
+      "group": "all",
+      "treatment": "denoise_true",
+      "control": "latent_true",
+      "metric": "joint",
+      "mean": -0.04,
+      "ci95": [
+        -0.08,
+        -0.01
+      ]
+    },
+    {
+      "group": "all",
+      "treatment": "denoise_true",
+      "control": "latent_true",
+      "metric": "pose",
+      "mean": 0.17958715100908068,
+      "ci95": [
+        0.11373039548678009,
+        0.25520781280865845
+      ]
+    }
+  ],
+  "long_root": "/efs/prescottsun/SPT-JEPA/runs/trajectory_search_epoch3_20261101",
+  "long_stop_step": 35013,
+  "long_runs": [
+    {
+      "id": "cube-native-lewm-seed1",
+      "step": 26000,
+      "state": "running",
+      "loss": 0.12880824506282806,
+      "updated_at": 1793475244.3490608,
+      "worker_terminal": null
+    },
+    {
+      "id": "cube-native-lewm-seed2",
+      "step": 26100,
+      "state": "running",
+      "loss": 0.12032634019851685,
+      "updated_at": 1793475210.7103438,
+      "worker_terminal": null
+    },
+    {
+      "id": "cube-temporal-forecast-seed1",
+      "step": 25100,
+      "state": "running",
+      "loss": 0.005595629569143057,
+      "updated_at": 1793475219.930895,
+      "worker_terminal": null
+    },
+    {
+      "id": "cube-temporal-forecast-seed2",
+      "step": 25100,
+      "state": "running",
+      "loss": 0.005164147820323706,
+      "updated_at": 1793475191.774205,
+      "worker_terminal": null
+    }
+  ],
+  "long_scope": "Four matched unchanged TF/native learners;auto final health plus3controllers x3case sets;no continuous monitor/fourth epoch.",
+  "limitations": [
+    "Custom SPT/CLEAR-semantic evaluation,not canonical CLEAR.",
+    "TF51M/Native18M/Local56M differ in capacity;within-model controller gains are the clean comparison.",
+    "Two training seeds do not establish broad stability/novelty.",
+    "At23942 TF performance regressed vs23342;longer training does not yet establish a gain.",
+    "No new optimal-action labels,model fitting or parameter changes incontroller screens."
+  ],
+  "sources": {
+    "/efs/prescottsun/SPT-JEPA/reports/trajectory-search-20261101/results/results.json": "11c7d3303188fb738631beeb5e1d7aadc30effa9edb7d621b01ed8d0548c10a2",
+    "/efs/prescottsun/SPT-JEPA/reports/trajectory-search-20261101/confirmation/results.json": "efae2f56dac5522b397f324c8fcf8ab4f6a07e773e043094ca7bd04f40e9a339",
+    "/efs/prescottsun/SPT-JEPA/reports/trajectory-search-20261101/tworoom/results.json": "b69070aace06c7ba0e8f47f294488915743ee663c04234a8bcb9c33527f1b399",
+    "/efs/prescottsun/SPT-JEPA/reports/trajectory-search-20261101/local/results.json": "9255054f459da08bb32460594221a34758586a29ec1d9aabf5bc754d8a5bfc53"
+  }
+}
