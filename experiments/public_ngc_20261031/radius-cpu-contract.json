@@ -1,0 +1,133 @@
+{
+  "passed": true,
+  "tests": 2,
+  "helper_sha256": "710f9985372f7c9691198d3d3e771f053d7333b9c3c5dbf528963f91834c75f6",
+  "synthetic_cancellation": {
+    "nodes": 40,
+    "dimension": 3,
+    "unique_float32_rows": 40,
+    "max_exact_multiplicity": 1,
+    "rows_with_at_least15_exact_copies": 0,
+    "mean_squared_norm": 3000039.001978392,
+    "total_centered_variance": 0.00013326946645975113,
+    "feature_variance_quantiles": [
+      0.0,
+      0.0,
+      0.00013326946645975113
+    ],
+    "radii": {
+      "fp32_mm": {
+        "zero_count": 40,
+        "quantiles": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "fp32_direct": {
+        "zero_count": 0,
+        "quantiles": [
+          0.00701904296875,
+          0.00701904296875,
+          0.00701904296875,
+          0.01397705078125,
+          0.01397705078125
+        ]
+      },
+      "fp64_direct": {
+        "zero_count": 0,
+        "quantiles": [
+          0.00701904296875,
+          0.00701904296875,
+          0.00701904296875,
+          0.01397705078125,
+          0.01397705078125
+        ]
+      }
+    },
+    "fp32_mm_radius_zero_but_fp64_positive": 40,
+    "pair_counts": {
+      "mm_zero_but_direct_positive": 1560,
+      "direct32_zero_but_direct64_positive": 0
+    },
+    "all_pair_absolute_error": {
+      "fp32_mm": {
+        "max": 0.03900146484375,
+        "mean": 0.013325958251953126
+      },
+      "fp32_direct": {
+        "max": 0.0,
+        "mean": 0.0
+      }
+    },
+    "precision": "All distance comparisons run on CPU on the same saved float32 rows. CPU FP32-mm is the official formula but not a bitwise replay of its CUDA kernel.",
+    "scope": "No fit, labels, graph change or production repair. Centered variance is descriptive only; no centered metric is evaluated."
+  },
+  "synthetic_duplicates": {
+    "nodes": 40,
+    "dimension": 3,
+    "unique_float32_rows": 25,
+    "max_exact_multiplicity": 16,
+    "rows_with_at_least15_exact_copies": 16,
+    "mean_squared_norm": 3000033.002191533,
+    "total_centered_variance": 0.00021027020178735254,
+    "feature_variance_quantiles": [
+      0.0,
+      0.0,
+      0.00021027020178735257
+    ],
+    "radii": {
+      "fp32_mm": {
+        "zero_count": 40,
+        "quantiles": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "fp32_direct": {
+        "zero_count": 16,
+        "quantiles": [
+          0.0,
+          0.0,
+          0.00701904296875,
+          0.0140142822265625,
+          0.0140380859375
+        ]
+      },
+      "fp64_direct": {
+        "zero_count": 16,
+        "quantiles": [
+          0.0,
+          0.0,
+          0.00701904296875,
+          0.0140142822265625,
+          0.0140380859375
+        ]
+      }
+    },
+    "fp32_mm_radius_zero_but_fp64_positive": 24,
+    "pair_counts": {
+      "mm_zero_but_direct_positive": 1320,
+      "direct32_zero_but_direct64_positive": 0
+    },
+    "all_pair_absolute_error": {
+      "fp32_mm": {
+        "max": 0.03900146484375,
+        "mean": 0.01607574462890625
+      },
+      "fp32_direct": {
+        "max": 0.0,
+        "mean": 0.0
+      }
+    },
+    "precision": "All distance comparisons run on CPU on the same saved float32 rows. CPU FP32-mm is the official formula but not a bitwise replay of its CUDA kernel.",
+    "scope": "No fit, labels, graph change or production repair. Centered variance is descriptive only; no centered metric is evaluated."
+  },
+  "trained_model_calls": 0,
+  "gpu_calls": 0
+}
