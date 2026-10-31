@@ -1,0 +1,79 @@
+{
+  "task": "tworoom",
+  "training_episodes": 9000,
+  "eligible_window8_stride5_episodes": 8992,
+  "all_training_rows": {
+    "rows": 828712,
+    "finite_rows": 819712,
+    "nonfinite_rows": 9000,
+    "finite_coordinates": 1639424,
+    "minimum": [
+      -1.0,
+      -1.0
+    ],
+    "maximum": [
+      1.0,
+      1.0
+    ],
+    "outside_action_rows": 0,
+    "outside_coordinates": 0,
+    "outside_coordinate_fraction": 0.0,
+    "outside_coordinates_tolerance1e6": 0,
+    "exact_boundary_coordinates": 1046098
+  },
+  "actual_training_transition_support": {
+    "rows": 819454,
+    "finite_rows": 819454,
+    "nonfinite_rows": 0,
+    "finite_coordinates": 1638908,
+    "minimum": [
+      -1.0,
+      -1.0
+    ],
+    "maximum": [
+      1.0,
+      1.0
+    ],
+    "outside_action_rows": 0,
+    "outside_coordinates": 0,
+    "outside_coordinate_fraction": 0.0,
+    "outside_coordinates_tolerance1e6": 0,
+    "exact_boundary_coordinates": 1045742
+  },
+  "terminal_rows": {
+    "rows": 9000,
+    "finite_rows": 0,
+    "nonfinite_rows": 9000,
+    "finite_coordinates": 0,
+    "minimum": [
+      null,
+      null
+    ],
+    "maximum": [
+      null,
+      null
+    ],
+    "outside_action_rows": 0,
+    "outside_coordinates": 0,
+    "outside_coordinate_fraction": null,
+    "outside_coordinates_tolerance1e6": 0,
+    "exact_boundary_coordinates": 0
+  },
+  "ordered_training_action_bytes_sha256": "f73c4ca4bbd02f702e4dec9feece4504413b6aba5124432750ff231f7b579d9c",
+  "dataset_card_sha256": "c9f7070662dbe3d51f732a233c9673ceb1fbea24c84ec2c8184987c64aed25fd",
+  "train_episodes_sha256": "215739685c610f5ac3fa57270c391b3e2cd7b5d6f67203ad7fca015b1bd6d2ea",
+  "h5_path": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom/tworoom.h5",
+  "acquisition": {
+    "task": "tworoom",
+    "dataset_repo": "quentinll/lewm-tworooms",
+    "dataset_revision": "6903a2de048b13819d812da0b4dd661290bc01e4",
+    "archive_sha256": "494b1a02f0765cd9a0d9daf1786c419ced1009977fc45d01e3158932f8d080ca",
+    "files": [
+      "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom/tworoom.h5"
+    ],
+    "model_revision": "77adaae0bc31deab21c93740d1f8bb947cd0bdec",
+    "weights": "/efs/prescottsun/SPT-JEPA/weights/hardtasks/tworoom",
+    "finished_at": 1793304977.6131363
+  },
+  "scope": "All and only training episode actions read, episode by episode; no images/model/heldout action rows. Actual support is the union of every valid BenchmarkWindows(window8,stride5) outgoing action block, excluding episode terminal rows and episodes too short for a window. This is possible training support, not sample multiplicity at2000 steps."
+}

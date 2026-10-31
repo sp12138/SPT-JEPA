@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/local_reviewed6000_20261031/source-v1",
+    "source_commit": "da26748c866137ad1ea06cf7250cabd64431e9ac",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_reviewed6000_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_reviewed6000_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "projection_contracts": {
+    "exact_sklearn_vs_scalar_rounding_oracle": true,
+    "sklearn_version": "1.8.0",
+    "scaler_method_source_sha256": "dc885cd39b81769f6b2c81695b0b000635d4edd4173d12d5cf56a50aa0e1acf7",
+    "max_projection_idempotence_error": 5.960464477539063e-08,
+    "max_executed_action_difference": 5.960464477539063e-08,
+    "float32_roundoff_tolerance": 1.1561444352992112e-06,
+    "zero_mean_candidate_unchanged": true,
+    "clipped_coordinate_fraction": 0.243125,
+    "requested_effective_action_rmse": 0.31534838676452637
+  },
+  "input_contract": {
+    "exact_original_raw_initial_goal_hashes": true,
+    "first_context_frames": 1,
+    "goal_frames": 1,
+    "future_observation_to_predictor": false,
+    "environment_constructed": false,
+    "dataset_card_sha256": "c9f7070662dbe3d51f732a233c9673ceb1fbea24c84ec2c8184987c64aed25fd"
+  },
+  "original_results": {
+    "path": "/efs/prescottsun/SPT-JEPA/runs/basis_counterfactual_pilot_20261031/results.json",
+    "sha256": "ba2e878d76542067f7f7c493d2964b9395bb5be9d50a95474f74271579cb3769"
+  },
+  "original_bank_hash": "962703164fc7ec9ba6b7e405e58c03b833d77b0ec2e374e34200c854b9ce8861",
+  "projected_bank_hash": "3c4b3a888578a26283b1a71053d04cc2d497c78dfd6720f27e13248097628bf0",
+  "projection": "P(z)=StandardScaler.transform(clip(StandardScaler.inverse_transform(z),-1,1))",
+  "script_sha256": "10a7aeec5ed9c28a34e00a46a5faa69f061bc08f5821b165651f1cfb878ad6a4",
+  "cpu_contracts": true,
+  "new_environment_rollouts": 0,
+  "scope": "Single original case/64-bank/true endpoints unchanged. A common planner-input treatment for both models, not a new algorithm or proved bug fix. True costs reused under unchanged checkpoint hashes. GPU branch first reproduces8 original scores, then scores64 projected candidates per model; no expansion or training.",
+  "models_loaded": 0,
+  "model_forward_candidates": 0
+}
