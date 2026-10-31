@@ -1,0 +1,626 @@
+{
+  "full_results": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/local-spatial-chart600-20261031/results.json",
+    "sha256": "23418d5b52dcb02b651e008c0612580e541b0ef3147e35cdd68eec7657bcc7ed",
+    "bytes": 1060158
+  },
+  "completed_endpoint_count": 20,
+  "rows": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "identity",
+      "success": 16.0,
+      "rollout": 0.8062356421778069,
+      "one_step": 0.8409542941358027,
+      "common_rollout": 0.8062356421778069,
+      "common_one_step": 0.8409542941358027,
+      "wrongstate_ratio": 1.2956925614941062,
+      "otheractions_ratio": 1.0414070165539298,
+      "wrongorder_ratio": 1.0172709319094766,
+      "renderer": {
+        "wrong_state": 0.9987539855713057,
+        "wrong_actions": 0.9999273970495293,
+        "carry": 0.9984593242125966
+      },
+      "model_size": {
+        "total": 55913454,
+        "trainable": 50248094,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning_seconds": 51.35326075553894
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "shared-chart",
+      "success": 20.0,
+      "rollout": 0.8032064946651637,
+      "one_step": 0.8373586356750609,
+      "common_rollout": 0.804511173849816,
+      "common_one_step": 0.8360072236758033,
+      "wrongstate_ratio": 1.296069477545862,
+      "otheractions_ratio": 1.0422537892936732,
+      "wrongorder_ratio": 1.0177241865306514,
+      "renderer": {
+        "wrong_state": 0.9975231344981088,
+        "wrong_actions": 0.9998589399712962,
+        "carry": 0.9996599400398548
+      },
+      "model_size": {
+        "total": 55915582,
+        "trainable": 50250222,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning_seconds": 51.28709268569946,
+      "chart_analysis": {
+        "identity_deviation": {
+          "rms": 0.019477160750322877,
+          "relative_rms": 0.020002583240336446,
+          "max_abs": 0.1624927520751953,
+          "centered_relative_rms": 0.01841382123049613,
+          "chart_reapplication_max_abs": 9.5367431640625e-07,
+          "inverse_observed_vs_original_max_abs": 9.5367431640625e-07
+        },
+        "common_coordinates": {
+          "clean_rollout": {
+            "mse": 1.296122055532566,
+            "over_initial_copy": 0.804511173849816,
+            "over_shifted_copy": 1.48448034429163,
+            "inverse_residual_max_abs": 9.5367431640625e-07
+          },
+          "teacher_forced_prefix": {
+            "mse": 0.7299304469456056,
+            "over_initial_copy": 0.453072454244781,
+            "over_shifted_copy": 0.8360072236758033,
+            "inverse_residual_max_abs": 9.5367431640625e-07
+          }
+        },
+        "inverse_iterations": 32,
+        "scope": "Only saved observed/prediction arrays and2128 chart parameters on CPU. No encoder/dynamics/renderer forward or new cases; contraction inverse checked by reapplication."
+      },
+      "certificate": {
+        "raw_input_operator_norm": 1.6473842318547451,
+        "raw_output_operator_norm": 0.13499476755485798,
+        "input_operator_norm": 0.9999990267415034,
+        "output_operator_norm": 0.13499476755485798,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.06749731808502674,
+        "guaranteed_lower": 0.9325026819149733,
+        "guaranteed_upper": 1.0674973180850267,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "identity",
+      "success": 24.0,
+      "rollout": 0.82758332845564,
+      "one_step": 0.8371351371140434,
+      "common_rollout": 0.82758332845564,
+      "common_one_step": 0.8371351371140434,
+      "wrongstate_ratio": 1.277828715362829,
+      "otheractions_ratio": 1.0447271258625344,
+      "wrongorder_ratio": 1.019484671525971,
+      "renderer": {
+        "wrong_state": 1.0000258883278887,
+        "wrong_actions": 1.000747705775054,
+        "carry": 0.9979249859887017
+      },
+      "model_size": {
+        "total": 55913454,
+        "trainable": 50248094,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning_seconds": 49.88993501663208
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "shared-chart",
+      "success": 24.0,
+      "rollout": 0.8297084568038657,
+      "one_step": 0.8414150700539063,
+      "common_rollout": 0.830763516524332,
+      "common_one_step": 0.8401367067020615,
+      "wrongstate_ratio": 1.2739810724923402,
+      "otheractions_ratio": 1.042349166514464,
+      "wrongorder_ratio": 1.0187673129549883,
+      "renderer": {
+        "wrong_state": 0.9985801605739991,
+        "wrong_actions": 1.0004925426007614,
+        "carry": 0.9958640814592581
+      },
+      "model_size": {
+        "total": 55915582,
+        "trainable": 50250222,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning_seconds": 48.906280755996704,
+      "chart_analysis": {
+        "identity_deviation": {
+          "rms": 0.020493563051681745,
+          "relative_rms": 0.020845320701631385,
+          "max_abs": 0.16521644592285156,
+          "centered_relative_rms": 0.017849826759181307,
+          "chart_reapplication_max_abs": 9.5367431640625e-07,
+          "inverse_observed_vs_original_max_abs": 9.5367431640625e-07
+        },
+        "common_coordinates": {
+          "clean_rollout": {
+            "mse": 1.3468269537325692,
+            "over_initial_copy": 0.830763516524332,
+            "over_shifted_copy": 1.5438245490219502,
+            "inverse_residual_max_abs": 9.5367431640625e-07
+          },
+          "teacher_forced_prefix": {
+            "mse": 0.7329322247941288,
+            "over_initial_copy": 0.45209471844656646,
+            "over_shifted_copy": 0.8401367067020615,
+            "inverse_residual_max_abs": 9.5367431640625e-07
+          }
+        },
+        "inverse_iterations": 32,
+        "scope": "Only saved observed/prediction arrays and2128 chart parameters on CPU. No encoder/dynamics/renderer forward or new cases; contraction inverse checked by reapplication."
+      },
+      "certificate": {
+        "raw_input_operator_norm": 1.6310486379305875,
+        "raw_output_operator_norm": 0.14096415382111055,
+        "input_operator_norm": 0.9999990215112292,
+        "output_operator_norm": 0.14096415382111055,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.07048200794463448,
+        "guaranteed_lower": 0.9295179920553656,
+        "guaranteed_upper": 1.0704820079446344,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "identity",
+      "success": 0.0,
+      "rollout": 0.773797180223117,
+      "one_step": 0.8314412105360964,
+      "common_rollout": 0.773797180223117,
+      "common_one_step": 0.8314412105360964,
+      "wrongstate_ratio": 1.6264236199695188,
+      "otheractions_ratio": 1.1562992495863273,
+      "wrongorder_ratio": 1.067260703695749,
+      "renderer": {
+        "wrong_state": 1.0089618076682385,
+        "wrong_actions": 1.0054947423086633,
+        "carry": 1.02259900806177
+      },
+      "model_size": {
+        "total": 55975434,
+        "trainable": 50310074,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning_seconds": 95.66990542411804
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "shared-chart",
+      "success": 4.0,
+      "rollout": 0.7753928497646867,
+      "one_step": 0.8330913965034519,
+      "common_rollout": 0.7725829149806797,
+      "common_one_step": 0.8296236964707427,
+      "wrongstate_ratio": 1.621343256342662,
+      "otheractions_ratio": 1.1558224454217978,
+      "wrongorder_ratio": 1.0671829804588877,
+      "renderer": {
+        "wrong_state": 1.0061981339604869,
+        "wrong_actions": 1.0037086408913487,
+        "carry": 1.0237860956543394
+      },
+      "model_size": {
+        "total": 55977562,
+        "trainable": 50312202,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning_seconds": 90.76502060890198,
+      "chart_analysis": {
+        "identity_deviation": {
+          "rms": 0.03004351833100075,
+          "relative_rms": 0.03139629872986864,
+          "max_abs": 0.19783973693847656,
+          "centered_relative_rms": 0.030039152749285817,
+          "chart_reapplication_max_abs": 4.76837158203125e-07,
+          "inverse_observed_vs_original_max_abs": 9.5367431640625e-07
+        },
+        "common_coordinates": {
+          "clean_rollout": {
+            "mse": 1.0021591026831258,
+            "over_initial_copy": 0.7725829149806797,
+            "over_shifted_copy": 1.181026412294973,
+            "inverse_residual_max_abs": 9.5367431640625e-07
+          },
+          "teacher_forced_prefix": {
+            "mse": 0.7039765838971969,
+            "over_initial_copy": 0.5427085178483957,
+            "over_shifted_copy": 0.8296236964707427,
+            "inverse_residual_max_abs": 9.5367431640625e-07
+          }
+        },
+        "inverse_iterations": 32,
+        "scope": "Only saved observed/prediction arrays and2128 chart parameters on CPU. No encoder/dynamics/renderer forward or new cases; contraction inverse checked by reapplication."
+      },
+      "certificate": {
+        "raw_input_operator_norm": 1.633813576867967,
+        "raw_output_operator_norm": 0.1518470402073419,
+        "input_operator_norm": 0.9999990279114874,
+        "output_operator_norm": 0.1518470402073419,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.07592344629928922,
+        "guaranteed_lower": 0.9240765537007107,
+        "guaranteed_upper": 1.0759234462992893,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "identity",
+      "success": 4.0,
+      "rollout": 0.7652175091112241,
+      "one_step": 0.8279611307445234,
+      "common_rollout": 0.7652175091112241,
+      "common_one_step": 0.8279611307445234,
+      "wrongstate_ratio": 1.6022109837429734,
+      "otheractions_ratio": 1.1508969433024732,
+      "wrongorder_ratio": 1.0703361388157295,
+      "renderer": {
+        "wrong_state": 1.0045377591321807,
+        "wrong_actions": 1.0046813063865072,
+        "carry": 1.020224178567055
+      },
+      "model_size": {
+        "total": 55975434,
+        "trainable": 50310074,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning_seconds": 94.36462211608887
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "shared-chart",
+      "success": 10.0,
+      "rollout": 0.7666780702446875,
+      "one_step": 0.8301250324418007,
+      "common_rollout": 0.7636040937928117,
+      "common_one_step": 0.8266939142223743,
+      "wrongstate_ratio": 1.5982273538355765,
+      "otheractions_ratio": 1.151202875132926,
+      "wrongorder_ratio": 1.0702023518854888,
+      "renderer": {
+        "wrong_state": 1.0055149222745225,
+        "wrong_actions": 1.0055075744291946,
+        "carry": 1.0180998482103163
+      },
+      "model_size": {
+        "total": 55977562,
+        "trainable": 50312202,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning_seconds": 88.75560402870178,
+      "chart_analysis": {
+        "identity_deviation": {
+          "rms": 0.03148501559829186,
+          "relative_rms": 0.03317942576482337,
+          "max_abs": 0.19519996643066406,
+          "centered_relative_rms": 0.030832442336849394,
+          "chart_reapplication_max_abs": 4.76837158203125e-07,
+          "inverse_observed_vs_original_max_abs": 9.5367431640625e-07
+        },
+        "common_coordinates": {
+          "clean_rollout": {
+            "mse": 0.9831341498159777,
+            "over_initial_copy": 0.7636040937928117,
+            "over_shifted_copy": 1.1542345761257886,
+            "inverse_residual_max_abs": 9.5367431640625e-07
+          },
+          "teacher_forced_prefix": {
+            "mse": 0.7041471771232773,
+            "over_initial_copy": 0.5469138338696006,
+            "over_shifted_copy": 0.8266939142223743,
+            "inverse_residual_max_abs": 9.5367431640625e-07
+          }
+        },
+        "inverse_iterations": 32,
+        "scope": "Only saved observed/prediction arrays and2128 chart parameters on CPU. No encoder/dynamics/renderer forward or new cases; contraction inverse checked by reapplication."
+      },
+      "certificate": {
+        "raw_input_operator_norm": 1.592904932940694,
+        "raw_output_operator_norm": 0.16381483569265934,
+        "input_operator_norm": 0.9999990352732753,
+        "output_operator_norm": 0.16381483569265934,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.08190733882805472,
+        "guaranteed_lower": 0.9180926611719453,
+        "guaranteed_upper": 1.0819073388280547,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      }
+    }
+  ],
+  "checks": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "original_initial_tensors_exact": 553,
+      "frozen_tensors600": 210,
+      "changed_chart_tensors": [
+        "carrier_chart_module.output.weight",
+        "carrier_chart_module.input.bias",
+        "carrier_chart_module.output.bias",
+        "carrier_chart_module.input.weight"
+      ],
+      "chart_gradient_norm": 0.146022653846286,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart600_20261031/fullstate-tworoom-spatial-chart-bounded-seed1/preflight.json",
+        "sha256": "07d89513c8b70b71ef01169b2ea3f280d2bacc2efe5599b158dbb92c24252d9c",
+        "bytes": 5900
+      },
+      "initial": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart600_20261031/tworoom-spatial-chart-bounded-seed1/initial-model/weights.pt",
+        "sha256": "d2082f2817f9c85675cbd5bd8c1bab338ab6af5e29cb4d3cc1328be380aa2c5a",
+        "bytes": 224026725
+      },
+      "original_initial": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/tworoom-spatial-local-seed1/initial-model/weights.pt",
+        "sha256": "bd2308e60536b2d1bc4ffa71fc682db63471379832544868229a5bac00467ea1",
+        "bytes": 224016877
+      },
+      "certificate": {
+        "raw_input_operator_norm": 1.6473842318547451,
+        "raw_output_operator_norm": 0.13499476755485798,
+        "input_operator_norm": 0.9999990267415034,
+        "output_operator_norm": 0.13499476755485798,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.06749731808502674,
+        "guaranteed_lower": 0.9325026819149733,
+        "guaranteed_upper": 1.0674973180850267,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      },
+      "passed": true
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "original_initial_tensors_exact": 553,
+      "frozen_tensors600": 210,
+      "changed_chart_tensors": [
+        "carrier_chart_module.output.weight",
+        "carrier_chart_module.input.bias",
+        "carrier_chart_module.output.bias",
+        "carrier_chart_module.input.weight"
+      ],
+      "chart_gradient_norm": 0.15643860153410347,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart600_20261031/fullstate-tworoom-spatial-chart-bounded-seed2/preflight.json",
+        "sha256": "19a1deca27f562fe52dca9e87b54d8a08e5c40f2519c77d3de671b471c03e80b",
+        "bytes": 5908
+      },
+      "initial": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart600_20261031/tworoom-spatial-chart-bounded-seed2/initial-model/weights.pt",
+        "sha256": "0d3f55932c13448d14f47226772cc987fc987482ef2ff851263b8238c480e5ef",
+        "bytes": 224026725
+      },
+      "original_initial": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/tworoom-spatial-local-seed2/initial-model/weights.pt",
+        "sha256": "df3f1a80b5c38f1f2cdbb231694e3f6741a4cf8bc9edc7cf4b997df65e6e1ecf",
+        "bytes": 224016877
+      },
+      "certificate": {
+        "raw_input_operator_norm": 1.6310486379305875,
+        "raw_output_operator_norm": 0.14096415382111055,
+        "input_operator_norm": 0.9999990215112292,
+        "output_operator_norm": 0.14096415382111055,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.07048200794463448,
+        "guaranteed_lower": 0.9295179920553656,
+        "guaranteed_upper": 1.0704820079446344,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      },
+      "passed": true
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "original_initial_tensors_exact": 553,
+      "frozen_tensors600": 210,
+      "changed_chart_tensors": [
+        "carrier_chart_module.output.weight",
+        "carrier_chart_module.input.bias",
+        "carrier_chart_module.output.bias",
+        "carrier_chart_module.input.weight"
+      ],
+      "chart_gradient_norm": 0.12825235704120141,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart600_20261031/fullstate-cube-spatial-chart-bounded-seed1/preflight.json",
+        "sha256": "666231114120a9b0fc6e41909a36a9884ff46a62682ac058327d5cc2785c68ec",
+        "bytes": 5905
+      },
+      "initial": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart600_20261031/cube-spatial-chart-bounded-seed1/initial-model/weights.pt",
+        "sha256": "e9624ccc2befd7ad495c8093d26270b0d7430af6bd1fcc0fb68b0dca974b932c",
+        "bytes": 224274725
+      },
+      "original_initial": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/cube-spatial-local-seed1/initial-model/weights.pt",
+        "sha256": "c51ee227deda914ec4bbf5d6c14c9638c356e010a52995f219bf3ca53f6f2ccd",
+        "bytes": 224264813
+      },
+      "certificate": {
+        "raw_input_operator_norm": 1.633813576867967,
+        "raw_output_operator_norm": 0.1518470402073419,
+        "input_operator_norm": 0.9999990279114874,
+        "output_operator_norm": 0.1518470402073419,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.07592344629928922,
+        "guaranteed_lower": 0.9240765537007107,
+        "guaranteed_upper": 1.0759234462992893,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      },
+      "passed": true
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "original_initial_tensors_exact": 553,
+      "frozen_tensors600": 210,
+      "changed_chart_tensors": [
+        "carrier_chart_module.output.weight",
+        "carrier_chart_module.input.bias",
+        "carrier_chart_module.output.bias",
+        "carrier_chart_module.input.weight"
+      ],
+      "chart_gradient_norm": 0.1323967582870483,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart600_20261031/fullstate-cube-spatial-chart-bounded-seed2/preflight.json",
+        "sha256": "a7e0a66917dd2321811aca6da553f9bd9b4cbe540b236dfcbc89acb8b7ffbfb2",
+        "bytes": 5906
+      },
+      "initial": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_spatial_chart600_20261031/cube-spatial-chart-bounded-seed2/initial-model/weights.pt",
+        "sha256": "cde50306c517cafbe16605ea55fe79cc8f285027588cff28b0e35488057a9636",
+        "bytes": 224274725
+      },
+      "original_initial": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic600_20261031/cube-spatial-local-seed2/initial-model/weights.pt",
+        "sha256": "e20276d1fef578237cbeb077bf15e84658f6433df6d4cd2756ba74d8311e6d30",
+        "bytes": 224264813
+      },
+      "certificate": {
+        "raw_input_operator_norm": 1.592904932940694,
+        "raw_output_operator_norm": 0.16381483569265934,
+        "input_operator_norm": 0.9999990352732753,
+        "output_operator_norm": 0.16381483569265934,
+        "input_normalization_active": true,
+        "output_normalization_active": false,
+        "residual_lipschitz_upper": 0.08190733882805472,
+        "guaranteed_lower": 0.9180926611719453,
+        "guaranteed_upper": 1.0819073388280547,
+        "mode": "bounded",
+        "global_invertibility_certified": true
+      },
+      "passed": true
+    }
+  ],
+  "comparison_summaries": [
+    {
+      "task": "tworoom",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        4.0,
+        0.0
+      ],
+      "mean_difference_pp": 2.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -3.0,
+        7.000000000000001
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        4.0,
+        6.0
+      ],
+      "mean_difference_pp": 5.0,
+      "shared_case_bootstrap_ci95_pp": [
+        0.0,
+        10.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    }
+  ],
+  "sources": [
+    {
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1",
+        "source_commit": "9c3b9fdadf81116242ef9e9c5bf48603aa3c3a1c",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1.json",
+        "sha256": "1ee06f29404650155b423c29ea46c17a0dc52ba4244a8988fc46dcf65ceca496",
+        "bytes": 40206
+      }
+    },
+    {
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+        "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+        "sha256": "cb11c97cd162d6593585d9006850e10ad3841c3890741d9ac5a9f386ab2ba7c9",
+        "bytes": 30862
+      }
+    }
+  ],
+  "collector": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/local-spatial-chart600-20261031.collect.py",
+    "sha256": "e9b602ceb80255ed0e84f2d94de09a320a545320710c179a32cef929a902ac59",
+    "bytes": 13369
+  },
+  "scope": "CPU completed files/tensors/cached-code analysis only. Native stage held; no new encoder/dynamics/probe/GPU or training."
+}

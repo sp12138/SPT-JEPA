@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "reviewed_at": "2026-10-31T00:40:38.994749+00:00",
+  "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_pilot_20261031",
+  "results_sha256": "153f2ea247a4beb329dabd61bbfc5a9a0cb1b7457faa47ff33ddeb41e760f2d3",
+  "exit": {
+    "exit_code": 0,
+    "pid": 1105946,
+    "finished_at": "2026-10-31T00:40:24.059653+00:00",
+    "wall_seconds": 40.43359422683716,
+    "output_exists": true
+  },
+  "models": {
+    "identity": {
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/tworoom-spatial-local-seed1/model-step0002000",
+      "weights_sha256": "e7109dd06c08022cac2b16b16a93e9a7b0866d766320392dfaa704b8cffc0257",
+      "original8_cost_reproduction_max_abs": 0.0,
+      "original_ranking": {
+        "spearman": -0.14244505494505494,
+        "selected_index": 6,
+        "oracle_index": 59,
+        "selected_true_cost": 2897.2724609375,
+        "oracle_cost": 2203.681884765625,
+        "regret": 693.590576171875,
+        "span_normalized_regret": 0.9680605613084089,
+        "selected_true_percentile": 0.9841269841269841,
+        "true_cost_span": 716.474365234375
+      },
+      "projected_ranking": {
+        "spearman": 0.3923076923076923,
+        "selected_index": 49,
+        "oracle_index": 59,
+        "selected_true_cost": 2223.642822265625,
+        "oracle_cost": 2203.681884765625,
+        "regret": 19.9609375,
+        "span_normalized_regret": 0.027859946522260187,
+        "selected_true_percentile": 0.031746031746031744,
+        "true_cost_span": 716.474365234375
+      }
+    },
+    "basis": {
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_basis2000_20261031/tworoom-basis-orthogonal-seed1/model-step0002000",
+      "weights_sha256": "132a12b751d023529af5f76b8473ad3666ba164b92e69c3c1605ae39f95e97b4",
+      "original8_cost_reproduction_max_abs": 0.0,
+      "original_ranking": {
+        "spearman": 0.051007326007326,
+        "selected_index": 29,
+        "oracle_index": 59,
+        "selected_true_cost": 2920.15625,
+        "oracle_cost": 2203.681884765625,
+        "regret": 716.474365234375,
+        "span_normalized_regret": 1.0,
+        "selected_true_percentile": 1.0,
+        "true_cost_span": 716.474365234375
+      },
+      "projected_ranking": {
+        "spearman": 0.6736721611721611,
+        "selected_index": 23,
+        "oracle_index": 59,
+        "selected_true_cost": 2211.991943359375,
+        "oracle_cost": 2203.681884765625,
+        "regret": 8.31005859375,
+        "span_normalized_regret": 0.01159854280485191,
+        "selected_true_percentile": 0.015873015873015872,
+        "true_cost_span": 716.474365234375
+      }
+    }
+  },
+  "original_true_cost_arrays_unchanged": true,
+  "new_environment_rollouts": 0,
+  "model_forward_candidates": 144,
+  "actual_gpu_process_seconds_proxy": 40.43359422683716,
+  "gpu_hours_reserved_wall": 0.01123155395189921,
+  "gpu_status_after": "0, 0, 0\n1, 0, 0\n2, 0, 0\n3, 0, 0\n4, 0, 0\n5, 0, 0\n6, 0, 0\n7, 0, 0\n",
+  "compute_apps_after": "",
+  "pid_alive": [],
+  "limitation": "One original case and fixed first-round64 bank; ranking diagnostic only, not full CEM/P0 or a task performance claim. Identical action projection applied to both checkpoints."
+}
