@@ -49,7 +49,8 @@ def main():
               report_sha256=sha(out / 'metrics.json'), audit_sha256=sha(out / 'trajectory-search.json'),
               actual_exit_sha256=sha(exit_path), historical_original_success_vector_equal=audit['historical_original_success_vector_equal']))
     contrasts = []
-    for family in ('native', 'tf'):
+    families = sorted({r['family'] for r in rows})
+    for family in families:
         for case in sorted({r['cases'] for r in rows}):
             for treatment, control in [('random', 'original'), ('retrieval', 'original'), ('retrieval', 'random')]:
                 diffs = []
@@ -72,13 +73,13 @@ def main():
     first_bank_proof = []
     for case in sorted({r['cases'] for r in rows}):
         entries = [reports[f'{f}-seed{s}-{case}-{mode}'][2]['injections'][0]
-                   for f in ('native', 'tf') for s in (1, 2) for mode in ('original', 'random', 'retrieval')]
+                   for f in families for s in (1, 2) for mode in ('original', 'random', 'retrieval')]
         assert len({x['before_sha256'] for x in entries}) == 1
         retrieved = [reports[f'{f}-seed{s}-{case}-retrieval'][2]['injections'][0]
-                     for f in ('native', 'tf') for s in (1, 2)]
+                     for f in families for s in (1, 2)]
         assert all(x['ids'] == retrieved[0]['ids'] and x['query_sha256'] == retrieved[0]['query_sha256'] for x in retrieved)
         first_bank_proof.append(dict(cases=case, original_bank_sha256=entries[0]['before_sha256'],
-                                     same_retrieved_ids_all4_models=True, query_sha256=retrieved[0]['query_sha256']))
+                                     same_retrieved_ids_all_models=True, models=len(retrieved), query_sha256=retrieved[0]['query_sha256']))
     result = dict(passed=True, endpoints=len(plan['jobs']), rows=rows, contrasts=contrasts, first_case_bank_proof=first_bank_proof,
           immutable_inputs_checked=len(immutable), collector_sha256=sha(__file__),
           limitation='Fixed two models/seeds,50 cases/set; case bootstrap excludes simulator repeats and seed-population uncertainty. Controller control, no learned-method novelty claim. All modes/controllers retained.')

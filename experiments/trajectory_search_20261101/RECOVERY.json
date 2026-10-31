@@ -1,0 +1,36 @@
+{
+  "authoritative_root": "/efs/prescottsun/SPT-JEPA",
+  "source_commit": "620a3c0ebef610bcbec878d32100f90c0b83080c",
+  "long_root": "/efs/prescottsun/SPT-JEPA/runs/trajectory_search_epoch3_20261101",
+  "long_start_step": 23942,
+  "long_stop_step": 35013,
+  "last_observed_utc": "2026-10-31 19:15:39 UTC",
+  "last_observed_all4_step": 24000,
+  "long_worker_phase": "running",
+  "old_goal": "paused;not resumed",
+  "continuous_monitor": false,
+  "long_slots": [
+    [
+      "dev2",
+      0
+    ],
+    [
+      "dev2",
+      1
+    ],
+    [
+      "dev13",
+      0
+    ],
+    [
+      "dev13",
+      1
+    ]
+  ],
+  "long_endpoints": "Each worker auto archives35013,checks native backward/full checkpoint,then evaluates original/random/retrieval on primary/fresh/newcases and exits.",
+  "confirmation": "results/confirmation/results.json",
+  "tworoom": "results/tworoom/results.json",
+  "gate_regression": "At23942 TF primary32/42,fresh40/40 vs23342retrieval40/42,48/44. More updates are not established to improve planning. Long comparison retains both budgets.",
+  "cube_claim": "Three23342case sets TF retrieval46.7% vs same-controller Native37.7%,conditional on two training seeds. No broad stability,novelty or ten-idea claim.",
+  "remaining_trials": "Local1024 same-controller24ep test;one fixed high-noise goal-energy cached test,if launched. Crossed scripts remain untrained/unselected."
+}
