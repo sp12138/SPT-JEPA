@@ -1,0 +1,283 @@
+{
+  "passed": true,
+  "tests": 4,
+  "evidence": {
+    "scalar_calibration": {
+      "raw_small_rms": 9.839162885327823e-06,
+      "no_floor": true,
+      "constant_nonfinite_wrong_count_fail": true
+    },
+    "factory": {
+      "legacy_dispatch_preserved": true,
+      "new_route": "hybrid_carrier"
+    },
+    "native_loss_and_protection": [
+      {
+        "task": "tworoom",
+        "batch": 1,
+        "window": 8,
+        "synthetic_query_scale": 0.001,
+        "loss": 929.4131469726562,
+        "metrics": {
+          "loss": 929.4131469726562,
+          "fm": 1.3371549844741821,
+          "rate": 3712.303955078125,
+          "entry": 1128049.75,
+          "surprise": 45455640.0,
+          "rate_share": 694.067626953125,
+          "feature_std": 42.24811935424805,
+          "active_dims": 128.0,
+          "temporal_noise_rho": 0.800000011920929,
+          "forecast_fraction": 0.5
+        },
+        "initial_loss_metrics_rng_exact": true,
+        "shared_gradient_tensors_exact": 335,
+        "pool_gradient_norms": {
+          "pool.queries": 46.57918930053711,
+          "pool.attn.in_proj_weight": 5417.98291015625,
+          "pool.attn.in_proj_bias": 1098.23095703125,
+          "pool.attn.out_proj.weight": 5773.81103515625,
+          "pool.attn.out_proj.bias": 1381.564208984375,
+          "pool.norm.weight": 228.006591796875,
+          "pool.norm.bias": 2.3370532989501953,
+          "pool.head.weight": 9780.5546875,
+          "pool.head.bias": 8.722865104675293
+        },
+        "all_pool_gradients_finite": true,
+        "native_optimizer_contract": [
+          {
+            "arm": "fixed",
+            "native_AdamW_steps": 2,
+            "optimizer_pool_states": 0,
+            "learning_rates": [
+              [
+                4.0032025620496396e-08,
+                8.006405124099279e-08
+              ],
+              [
+                4.0032025620496396e-08,
+                8.006405124099279e-08
+              ]
+            ],
+            "fixed_pool_tensors_exact": true
+          },
+          {
+            "arm": "adaptive",
+            "native_AdamW_steps": 2,
+            "optimizer_pool_states": 9,
+            "learning_rates": [
+              [
+                4.0032025620496396e-08,
+                8.006405124099279e-08
+              ],
+              [
+                4.0032025620496396e-08,
+                8.006405124099279e-08
+              ]
+            ],
+            "fixed_pool_tensors_exact": false
+          }
+        ],
+        "fixed_channel_after_query_update_exact": true,
+        "original_F64_raw_exact": true,
+        "frame_local_no_future_or_action_leak": true,
+        "checkpoint_roundtrip_exact": true,
+        "semantics": "Synthetic CPU numerical contract; actual calibrated batch128 GPU health remains unvalidated."
+      },
+      {
+        "task": "cube",
+        "batch": 1,
+        "window": 8,
+        "synthetic_query_scale": 0.001,
+        "loss": 587.6076049804688,
+        "metrics": {
+          "loss": 587.6076049804688,
+          "fm": 1.3371549844741821,
+          "rate": 2345.081787109375,
+          "entry": 1490209.625,
+          "surprise": 28603478.0,
+          "rate_share": 438.4461364746094,
+          "feature_std": 36.42234802246094,
+          "active_dims": 128.0,
+          "temporal_noise_rho": 0.800000011920929,
+          "forecast_fraction": 0.5
+        },
+        "initial_loss_metrics_rng_exact": true,
+        "shared_gradient_tensors_exact": 335,
+        "pool_gradient_norms": {
+          "pool.queries": 35.51699447631836,
+          "pool.attn.in_proj_weight": 3821.44287109375,
+          "pool.attn.in_proj_bias": 707.078369140625,
+          "pool.attn.out_proj.weight": 3959.079833984375,
+          "pool.attn.out_proj.bias": 902.64794921875,
+          "pool.norm.weight": 173.77691650390625,
+          "pool.norm.bias": 2.7617814540863037,
+          "pool.head.weight": 6820.5087890625,
+          "pool.head.bias": 10.028026580810547
+        },
+        "all_pool_gradients_finite": true,
+        "native_optimizer_contract": [
+          {
+            "arm": "fixed",
+            "native_AdamW_steps": 2,
+            "optimizer_pool_states": 0,
+            "learning_rates": [
+              [
+                4.0032025620496396e-08,
+                8.006405124099279e-08
+              ],
+              [
+                4.0032025620496396e-08,
+                8.006405124099279e-08
+              ]
+            ],
+            "fixed_pool_tensors_exact": true
+          },
+          {
+            "arm": "adaptive",
+            "native_AdamW_steps": 2,
+            "optimizer_pool_states": 9,
+            "learning_rates": [
+              [
+                4.0032025620496396e-08,
+                8.006405124099279e-08
+              ],
+              [
+                4.0032025620496396e-08,
+                8.006405124099279e-08
+              ]
+            ],
+            "fixed_pool_tensors_exact": false
+          }
+        ],
+        "fixed_channel_after_query_update_exact": true,
+        "original_F64_raw_exact": true,
+        "frame_local_no_future_or_action_leak": true,
+        "checkpoint_roundtrip_exact": true,
+        "semantics": "Synthetic CPU numerical contract; actual calibrated batch128 GPU health remains unvalidated."
+      }
+    ],
+    "initialization": [
+      {
+        "task": "tworoom",
+        "seed": 1,
+        "tensors": 555,
+        "original128_nonpool_tensors": 541,
+        "all_initial_tensors_rng_equal": true,
+        "original64_encoder_pool_exact": true,
+        "counts": {
+          "fixed": {
+            "total": 51188078,
+            "trainable": 45686702,
+            "frozen_by_requires_grad": 5501376,
+            "effective_trainable": 45534238,
+            "query_pool": 152464,
+            "query_pool_effective_trainable": 0,
+            "fixed_projection_elements": 196608
+          },
+          "adaptive": {
+            "total": 51188078,
+            "trainable": 45686702,
+            "frozen_by_requires_grad": 5501376,
+            "effective_trainable": 45686702,
+            "query_pool": 152464,
+            "query_pool_effective_trainable": 152464,
+            "fixed_projection_elements": 196608
+          }
+        }
+      },
+      {
+        "task": "tworoom",
+        "seed": 2,
+        "tensors": 555,
+        "original128_nonpool_tensors": 541,
+        "all_initial_tensors_rng_equal": true,
+        "original64_encoder_pool_exact": true,
+        "counts": {
+          "fixed": {
+            "total": 51188078,
+            "trainable": 45686702,
+            "frozen_by_requires_grad": 5501376,
+            "effective_trainable": 45534238,
+            "query_pool": 152464,
+            "query_pool_effective_trainable": 0,
+            "fixed_projection_elements": 196608
+          },
+          "adaptive": {
+            "total": 51188078,
+            "trainable": 45686702,
+            "frozen_by_requires_grad": 5501376,
+            "effective_trainable": 45686702,
+            "query_pool": 152464,
+            "query_pool_effective_trainable": 152464,
+            "fixed_projection_elements": 196608
+          }
+        }
+      },
+      {
+        "task": "cube",
+        "seed": 1,
+        "tensors": 555,
+        "original128_nonpool_tensors": 541,
+        "all_initial_tensors_rng_equal": true,
+        "original64_encoder_pool_exact": true,
+        "counts": {
+          "fixed": {
+            "total": 51196298,
+            "trainable": 45694922,
+            "frozen_by_requires_grad": 5501376,
+            "effective_trainable": 45542458,
+            "query_pool": 152464,
+            "query_pool_effective_trainable": 0,
+            "fixed_projection_elements": 196608
+          },
+          "adaptive": {
+            "total": 51196298,
+            "trainable": 45694922,
+            "frozen_by_requires_grad": 5501376,
+            "effective_trainable": 45694922,
+            "query_pool": 152464,
+            "query_pool_effective_trainable": 152464,
+            "fixed_projection_elements": 196608
+          }
+        }
+      },
+      {
+        "task": "cube",
+        "seed": 2,
+        "tensors": 555,
+        "original128_nonpool_tensors": 541,
+        "all_initial_tensors_rng_equal": true,
+        "original64_encoder_pool_exact": true,
+        "counts": {
+          "fixed": {
+            "total": 51196298,
+            "trainable": 45694922,
+            "frozen_by_requires_grad": 5501376,
+            "effective_trainable": 45542458,
+            "query_pool": 152464,
+            "query_pool_effective_trainable": 0,
+            "fixed_projection_elements": 196608
+          },
+          "adaptive": {
+            "total": 51196298,
+            "trainable": 45694922,
+            "frozen_by_requires_grad": 5501376,
+            "effective_trainable": 45694922,
+            "query_pool": 152464,
+            "query_pool_effective_trainable": 152464,
+            "fixed_projection_elements": 196608
+          }
+        }
+      }
+    ]
+  },
+  "torch": "2.9.1+cu130",
+  "device": "cpu",
+  "source_hashes": {
+    "as_jepa_lewm/hybrid_carrier.py": "9b46930d6dcbe0e7851ee55eba7ac6535346cb5c17d32a0c5114cbc2d0c4e4a1",
+    "as_jepa_lewm/factory.py": "427c2584cca54959977e16cfa8337935ee8dc5a2813a7d5b5b2cf66e2af9b1bf",
+    "experiments/hybrid_carrier_20261031/calibrate.py": "d22d290785219078e8ee35cd5ea70c829815dba5053551f5dd3c8fb015472c73",
+    "/efs/prescottsun/SPT-JEPA/code/experiments/hybrid_carrier_20261031/test_hybrid.py": "979de5b99776ded45379cae0f77874c8ed6323ea0d55c19a45c08d455c66a027"
+  }
+}

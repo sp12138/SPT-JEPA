@@ -1,0 +1,129 @@
+{
+  "passed": false,
+  "tests": 4,
+  "evidence": {
+    "scalar_calibration": {
+      "raw_small_rms": 9.839162885327823e-06,
+      "no_floor": true,
+      "constant_nonfinite_wrong_count_fail": true
+    },
+    "factory": {
+      "legacy_dispatch_preserved": true,
+      "new_route": "hybrid_carrier"
+    },
+    "initialization": [
+      {
+        "task": "tworoom",
+        "seed": 1,
+        "tensors": 555,
+        "original128_nonpool_tensors": 541,
+        "all_initial_tensors_rng_equal": true,
+        "original64_encoder_pool_exact": true,
+        "counts": {
+          "fixed": {
+            "total": 51188078,
+            "trainable": 45534238,
+            "frozen": 5653840,
+            "query_pool": 152464,
+            "query_pool_trainable": 0,
+            "fixed_projection_elements": 196608
+          },
+          "adaptive": {
+            "total": 51188078,
+            "trainable": 45686702,
+            "frozen": 5501376,
+            "query_pool": 152464,
+            "query_pool_trainable": 152464,
+            "fixed_projection_elements": 196608
+          }
+        }
+      },
+      {
+        "task": "tworoom",
+        "seed": 2,
+        "tensors": 555,
+        "original128_nonpool_tensors": 541,
+        "all_initial_tensors_rng_equal": true,
+        "original64_encoder_pool_exact": true,
+        "counts": {
+          "fixed": {
+            "total": 51188078,
+            "trainable": 45534238,
+            "frozen": 5653840,
+            "query_pool": 152464,
+            "query_pool_trainable": 0,
+            "fixed_projection_elements": 196608
+          },
+          "adaptive": {
+            "total": 51188078,
+            "trainable": 45686702,
+            "frozen": 5501376,
+            "query_pool": 152464,
+            "query_pool_trainable": 152464,
+            "fixed_projection_elements": 196608
+          }
+        }
+      },
+      {
+        "task": "cube",
+        "seed": 1,
+        "tensors": 555,
+        "original128_nonpool_tensors": 541,
+        "all_initial_tensors_rng_equal": true,
+        "original64_encoder_pool_exact": true,
+        "counts": {
+          "fixed": {
+            "total": 51196298,
+            "trainable": 45542458,
+            "frozen": 5653840,
+            "query_pool": 152464,
+            "query_pool_trainable": 0,
+            "fixed_projection_elements": 196608
+          },
+          "adaptive": {
+            "total": 51196298,
+            "trainable": 45694922,
+            "frozen": 5501376,
+            "query_pool": 152464,
+            "query_pool_trainable": 152464,
+            "fixed_projection_elements": 196608
+          }
+        }
+      },
+      {
+        "task": "cube",
+        "seed": 2,
+        "tensors": 555,
+        "original128_nonpool_tensors": 541,
+        "all_initial_tensors_rng_equal": true,
+        "original64_encoder_pool_exact": true,
+        "counts": {
+          "fixed": {
+            "total": 51196298,
+            "trainable": 45542458,
+            "frozen": 5653840,
+            "query_pool": 152464,
+            "query_pool_trainable": 0,
+            "fixed_projection_elements": 196608
+          },
+          "adaptive": {
+            "total": 51196298,
+            "trainable": 45694922,
+            "frozen": 5501376,
+            "query_pool": 152464,
+            "query_pool_trainable": 152464,
+            "fixed_projection_elements": 196608
+          }
+        }
+      }
+    ]
+  },
+  "torch": "2.9.1+cu130",
+  "device": "cpu",
+  "source_hashes": {
+    "as_jepa_lewm/hybrid_carrier.py": "f8f6e0f4e8d6eaa9098d3214d7e3fd8315f26941ca9cec9d3c6db2e0d88aab81",
+    "as_jepa_lewm/factory.py": "427c2584cca54959977e16cfa8337935ee8dc5a2813a7d5b5b2cf66e2af9b1bf",
+    "experiments/hybrid_carrier_20261031/calibrate.py": "d22d290785219078e8ee35cd5ea70c829815dba5053551f5dd3c8fb015472c73",
+    "/efs/prescottsun/SPT-JEPA/code/experiments/hybrid_carrier_20261031/test_hybrid.py": "d42dc580f0d468874babbd3a868313dbda80e4e532d1b4a68f373c7d6ef7e834"
+  }
+}
