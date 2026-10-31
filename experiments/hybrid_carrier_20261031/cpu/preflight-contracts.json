@@ -1,0 +1,92 @@
+{
+  "passed": true,
+  "tests": 5,
+  "device": "cpu",
+  "evidence": {
+    "adaptive_negatives": [
+      "missing_AdamW_state",
+      "nonfinite_AdamW_state",
+      "missing_gradient"
+    ],
+    "branch_statistics": {
+      "constant_bias_not_counted_as_centered_signal": true,
+      "no_state_or_rng_change": true
+    },
+    "cached_token_numerics": {
+      "cpu_tokens": [
+        8,
+        5,
+        192
+      ],
+      "cases": [
+        {
+          "frames": 8,
+          "grad_enabled": false,
+          "raw_max_abs": 0.0,
+          "raw_rms": 0.0,
+          "normalized_max_abs": 0.0,
+          "normalized_rms": 0.0,
+          "rms_over_sigma": 0.0,
+          "max_abs_over_sigma": 0.0
+        },
+        {
+          "frames": 8,
+          "grad_enabled": true,
+          "raw_max_abs": 0.0,
+          "raw_rms": 0.0,
+          "normalized_max_abs": 0.0,
+          "normalized_rms": 0.0,
+          "rms_over_sigma": 0.0,
+          "max_abs_over_sigma": 0.0
+        },
+        {
+          "frames": 1024,
+          "grad_enabled": false,
+          "raw_max_abs": 0.0,
+          "raw_rms": 0.0,
+          "normalized_max_abs": 0.0,
+          "normalized_rms": 0.0,
+          "rms_over_sigma": 0.0,
+          "max_abs_over_sigma": 0.0
+        },
+        {
+          "frames": 1024,
+          "grad_enabled": true,
+          "raw_max_abs": 0.0,
+          "raw_rms": 0.0,
+          "normalized_max_abs": 0.0,
+          "normalized_rms": 0.0,
+          "rms_over_sigma": 0.0,
+          "max_abs_over_sigma": 0.0
+        }
+      ],
+      "no_extra_encoder_or_update": true,
+      "live_pool_grad_rng_flags_unchanged": true,
+      "scope": "CPU helper contract, not the production256-patch GPU measurement."
+    },
+    "clip_observer": {
+      "original_calls": 1,
+      "return_identity": true,
+      "all_gradients_exact": true,
+      "state_rng_unchanged": true,
+      "before": {
+        "norm": 46.836667544989794,
+        "finite": true
+      },
+      "after": {
+        "norm": 1.0000000093384245,
+        "finite": true
+      }
+    },
+    "fixed_negatives": [
+      "unexpected_AdamW_state",
+      "even_zero_gradient_tensor",
+      "changed_initial_tensor"
+    ]
+  },
+  "source_sha256": {
+    "preflight.py": "e45b07725a31ea96a34cee15448a06954211006df076d144b3656c126c641286",
+    "train_preflight.py": "72f795b646c5620ccd2bd199ebc097b7ac81836ae2dd303b04410a9668890dbc",
+    "test_preflight.py": "7d0cff8a601996106cbe395f559849f437647c3a26c85b6f314783e142cbcdf8"
+  }
+}
