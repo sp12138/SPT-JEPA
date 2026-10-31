@@ -1,3 +1,5 @@
+> 2026-11-01: campaign complete; the user stopped monitoring and paused the goal. No next review is scheduled. Commands below are historical recovery documentation, not authorization to resume.
+
 # One scheduled read, six fixed slots
 
 Use the local `check.py --all` entry once at each authorized half-hour review. It starts three independent SSH reads, restricted to this campaign and GPU0/1 on dev2/dev13/dev15, then aggregates saved EFS JSON. It has no polling loop, model call, training, fix/restart/stop action or planning-success read. Do not rerun a label: output creation is exclusive. If a network/process-boundary race occurs, retain the evidence and review it before a narrowly scoped follow-up.
