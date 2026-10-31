@@ -80,5 +80,16 @@ class EvidenceContracts(unittest.TestCase):
             model=SimpleNamespace(named_parameters=lambda:iter(names))
             with self.assertRaises(AssertionError):h.verified_module_expectations(model,full,evidence)
 
+    def test_explicit2000_requires_matching_step_path_and_dispatch(self):
+        with self.assertRaises(AssertionError):h.verify_evidence(self.run,self.audit,self.source,2000)
+        self.native['checkpoint']['step']=2000;self.detail['step']=2000
+        old=self.run/'model-step0000600/weights.pt';new=self.run/'model-step0002000/weights.pt'
+        new.parent.mkdir();new.write_bytes(old.read_bytes())
+        self.write(self.audit/'preflight.json',self.native);self.write(self.audit/'readout-audit.json',self.detail)
+        d=json.loads((self.audit/'dispatch.json').read_text());d['command'][d['command'].index('--expected-step')+1]='2000'
+        self.write(self.audit/'dispatch.json',d)
+        self.assertEqual(len(h.verify_evidence(self.run,self.audit,self.source,2000)['parameters']),4)
+        with self.assertRaises(AssertionError):self.verify()
+
 
 if __name__=='__main__':unittest.main()

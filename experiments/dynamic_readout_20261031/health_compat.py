@@ -26,7 +26,8 @@ def sha(path):
     return digest.hexdigest()
 
 
-def verify_evidence(run, fullstate, source):
+def verify_evidence(run, fullstate, source, expected_step=600):
+    assert expected_step in {600, 1200, 2000}
     run, fullstate = Path(run), Path(fullstate)
     native = read(fullstate / 'preflight.json')
     detail = read(fullstate / 'readout-audit.json')
@@ -35,9 +36,9 @@ def verify_evidence(run, fullstate, source):
     assert source['source_commit'] == MODEL_COMMIT and dispatch['source'] == source
     assert exit_record['returncode'] == 0 and exit_record['id'] == dispatch['id'] == fullstate.name
     assert native['run'] == str(run) and native['passed'] and detail['passed']
-    assert native['checkpoint']['step'] == 600 and native['checkpoint']['checks']
+    assert native['checkpoint']['step'] == expected_step and native['checkpoint']['checks']
     assert all(native['checkpoint']['checks'].values())
-    assert detail['step'] == 600 and detail['original_initial_tensors_exact'] == 553
+    assert detail['step'] == expected_step and detail['original_initial_tensors_exact'] == 553
     assert detail['frozen_tensors_unchanged'] == 210 and detail['new_tensors'] == 4
     assert detail['new_parameters'] == 5376 and detail['head_gradient']['passed']
     assert native['all_parameter_gradients_finite'] and native['loss_finite']
@@ -46,7 +47,7 @@ def verify_evidence(run, fullstate, source):
     assert detail['mode'] in {'static', 'state'}
     assert cfg['model'].get('spatial_chart', 'none') == 'none'
     hashes = dict(config=sha(run / 'config.json'), checkpoint=sha(run / 'last.ckpt'),
-                  weights=sha(run / 'model-step0000600/weights.pt'),
+                  weights=sha(run / f'model-step{expected_step:07d}/weights.pt'),
                   initial=sha(run / 'initial-model/weights.pt'))
     assert hashes['config'] == native['config_sha256']
     assert hashes['checkpoint'] == native['checkpoint_sha256'] == detail['checkpoint_sha256']
@@ -54,7 +55,7 @@ def verify_evidence(run, fullstate, source):
     assert hashes['initial'] == native['initial_weights']['sha256'] == detail['initial_sha256']
     command = dispatch['command']
     assert command[command.index('--run') + 1] == str(run)
-    assert command[command.index('--expected-step') + 1] == '600'
+    assert command[command.index('--expected-step') + 1] == str(expected_step)
     reference = command[command.index('--reference-initial') + 1]
     assert sha(reference) == detail['reference_initial_sha256']
     parameters = {}
@@ -92,6 +93,7 @@ def main():
     parser.add_argument('--fullstate', required=True)
     parser.add_argument('--source-record', required=True)
     parser.add_argument('--helper-manifest', required=True)
+    parser.add_argument('--expected-step', type=int, choices=[600,1200,2000], required=True)
     args = parser.parse_args()
     assert args.cases == 16
     helper_manifest = read(args.helper_manifest)
@@ -102,7 +104,7 @@ def main():
     original = Path(source['source']) / relative
     assert manifest['source_commit'] == source['source_commit'] == MODEL_COMMIT
     assert sha(original) == manifest['files'][relative]
-    evidence = verify_evidence(args.run, args.fullstate, source)
+    evidence = verify_evidence(args.run, args.fullstate, source, args.expected_step)
     spec = importlib.util.spec_from_file_location('immutable_native_benchmark_health', original)
     native = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(native)
@@ -120,10 +122,10 @@ def main():
     finally:
         native.gradient_expectations = original_expectations
     assert len(called) == 1
-    sidecar = dict(passed=True, evidence=evidence, expectations=called[0], source=source,
+    sidecar = dict(passed=True, expected_step=args.expected_step, evidence=evidence, expectations=called[0], source=source,
         helper_source_commit=helper_manifest['source_commit'], helper_sha256=sha(__file__),
         original_health_sha256=sha(original),
-        scope='Four exact-name checks use checksum-matched successful native600 FP32 p.grad evidence. All module training-trace checks and the original16-case health body/noise/renderer remain unchanged. Training trace artificial zeros are preserved and are not represented as passing positive gradients. No additional backward, model training, cases or budget.')
+        scope='Four exact-name checks use checksum-matched successful native FP32 p.grad evidence at the explicitly required step. All module training-trace checks and the original16-case health body/noise/renderer remain unchanged. Training trace artificial zeros are preserved and are not represented as passing positive gradients. No additional backward, model training, cases or budget.')
     with (Path(args.output) / 'exact-parameter-evidence.json').open('x') as stream:
         json.dump(sidecar, stream, indent=2, allow_nan=False)
         stream.write('\n')
