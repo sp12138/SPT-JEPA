@@ -10,7 +10,7 @@ and generation only ever has past frames. When an episode has no frame far enoug
 the earliest phase-aligned frame before the window is used (or window frame 0 itself when the
 window starts the episode), and `anchor_fallback` is True.
 
-`staleness_table` is the CPU check that chooses the gap (spec Section 5.6). For each anchor rule
+`staleness_table` is the CPU check that chooses the gap (spec Section 5.5). For each anchor rule
 it reports the share of windows that fall back, and, for each labelled quantity (agent position,
 cube position and yaw, effector position), the share of rendered frames in which the anchor shows
 that quantity more than a tolerance away from its value in the frame. Physical labels are read

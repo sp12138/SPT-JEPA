@@ -1,4 +1,4 @@
-"""Contracts for past-only distant anchors on benchmark windows (round-2 spec, Sections 3.4 and 11).
+"""Contracts for past-only distant anchors on benchmark windows (round-2 spec, Sections 3.4 and 10).
 
 5 tests. CPU only. Run from the repository root:
     PYTHONPATH=.:runtime:<stable-worldmodel checkout> python -B -m unittest tests/as_jepa/test_benchmark_gap.py -v

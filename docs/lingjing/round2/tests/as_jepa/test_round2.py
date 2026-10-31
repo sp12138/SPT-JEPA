@@ -1,6 +1,6 @@
 """Round-2 contracts: forecast-scored renderer (lambda), learned variances, reconstruction-free variant.
 
-11 tests.
+15 tests.
 
 CPU only, tiny models. Run from the repository root:
     PYTHONPATH=.:runtime:<stable-worldmodel checkout> python -B -m unittest tests/as_jepa/test_round2.py -v
@@ -73,18 +73,71 @@ class ForecastScoredTest(unittest.TestCase):
         return m
 
     def test_lambda_zero_reproduces_l2_loss(self):
-        for kw in (dict(lam=0.), dict(lam=0., horizon="rollout"), dict(lam=0., forecast_grad="encoder_only")):
+        for kw in (dict(lam=0.), dict(lam=0., horizon="rollout"), dict(lam=0., forecast_grad="encoder_only"),
+                   dict(lam=0., forecast_noise="mean")):
             m = self.paired(**kw)
             torch.manual_seed(5); l0, _ = self.base.loss(self.batch, step=3)
             torch.manual_seed(5); l1, _ = m.loss(self.batch, step=3)
             self.assertTrue(torch.equal(l0, l1), kw)
 
     def test_main_random_stream_is_paired_across_lambda(self):
-        for kw in (dict(lam=1.), dict(lam=.5), dict(lam=1., horizon="rollout"), dict(lam=1., forecast_grad="encoder_only")):
+        for kw in (dict(lam=1.), dict(lam=.5), dict(lam=1., horizon="rollout"), dict(lam=1., forecast_grad="encoder_only"),
+                   dict(lam=.5, forecast_noise="mean"), dict(lam=.5, horizon="rollout", forecast_noise="mean")):
             m = self.paired(**kw)
             torch.manual_seed(5); self.base.loss(self.batch, step=3); a = torch.rand(4)
             torch.manual_seed(5); m.loss(self.batch, step=3); b = torch.rand(4)
             self.assertTrue(torch.equal(a, b), kw)
+        ref = self.paired(lam=0., rho=.8)                           # the same holds with correlated posterior noise
+        for kw in (dict(lam=1., rho=.8), dict(lam=.5, horizon="rollout", rho=.8)):
+            m = self.paired(**kw)
+            torch.manual_seed(5); ref.loss(self.batch, step=3); a = torch.rand(4)
+            torch.manual_seed(5); m.loss(self.batch, step=3); b = torch.rand(4)
+            self.assertTrue(torch.equal(a, b), kw)
+
+    def test_rho_reproduces_the_collaborators_correlated_posterior(self):
+        from as_jepa_lewm.robust import RobustLeWM
+        robust = build(RobustLeWM, rho=.8); robust.load_state_dict(self.base.state_dict())
+        m = self.paired(lam=0., rho=.8)
+        torch.manual_seed(5); l0, met0 = robust.loss(self.batch, step=3)
+        torch.manual_seed(5); l1, met1 = m.loss(self.batch, step=3)
+        self.assertTrue(torch.equal(l0, l1))
+        self.assertTrue(torch.equal(met0["surprise"], met1["surprise"]))
+        torch.manual_seed(5); l2, _ = self.paired(lam=0.).loss(self.batch, step=3)
+        self.assertFalse(torch.equal(l1, l2))                       # rho changes the objective
+
+    def test_noiseless_forecasts_read_the_prior_mean_with_the_same_coins(self):
+        import as_jepa_lewm.forecast_scored as fs
+        seen, original = [], fs.flow_loss
+        def spy(renderer, y, condition, anchors, shift):
+            seen.append(condition.detach().clone())
+            return original(renderer, y, condition, anchors, shift)
+        fs.flow_loss = spy
+        try:
+            for lam in (1., .5):
+                sample, mean = self.paired(lam=lam, forecast_seed=3), self.paired(lam=lam, forecast_seed=3, forecast_noise="mean")
+                torch.manual_seed(5); sample.loss(self.batch, step=4)
+                torch.manual_seed(5); mean.loss(self.batch, step=4)
+                with torch.random.fork_rng(devices=[]):              # rebuild the forecast stream's coins and noise
+                    torch.manual_seed(fs.FORECAST_STREAM + 1000003 * 3 + 4)
+                    use = (torch.rand(B, W - 1, 1, 1) < lam).flatten(0, 1)
+                    xi = torch.randn(B, W - 1, 4, 16).flatten(0, 1)
+                c_sample, c_mean = seen[-2], seen[-1]
+                expected = torch.where(use, sample.sigma0 * xi, torch.zeros_like(xi))
+                self.assertTrue(torch.allclose(c_sample - c_mean, expected, atol=1e-6), lam)
+        finally:
+            fs.flow_loss = original
+
+    def test_noiseless_rollout_matches_the_collaborators_loop(self):
+        m = build(self.Lam, lam=1., horizon="rollout", forecast_noise="mean").eval()
+        with torch.no_grad():
+            act_emb = m.encode(dict(pixels=self.batch["pixels"], action=self.batch["action"]))["act_emb"]
+            s = torch.randn(B, W, 4, 16)
+            ours = m._forecast(s, act_emb, torch.randn(B, W - 1, 4, 16), 0.)
+            history = [s[:, 0].flatten(1)]                             # RobustLeWM's forecast loop, verbatim
+            for t in range(W - 1):
+                history.append(m.predict(torch.stack(history, 1), act_emb[:, :t + 1])[:, -1])
+            ref = torch.stack(history[1:], 1).reshape_as(ours)
+        self.assertTrue(torch.equal(ours, ref))
 
     def test_forecast_share(self):
         m = build(self.Lam, lam=.5)
@@ -95,7 +148,8 @@ class ForecastScoredTest(unittest.TestCase):
     def test_gradient_routing(self):
         enc, pri = flow_grad_split(build(self.Lam, lam=0.), self.batch)
         self.assertGreater(enc, 0); self.assertEqual(pri, 0)        # lambda = 0: flow loss never reaches the prior
-        for kw in (dict(lam=1.), dict(lam=1., horizon="rollout")):
+        for kw in (dict(lam=1.), dict(lam=1., horizon="rollout"), dict(lam=1., forecast_noise="mean"),
+                   dict(lam=1., horizon="rollout", rho=.8)):
             enc, pri = flow_grad_split(build(self.Lam, **kw), self.batch)
             self.assertGreater(enc, 0, kw); self.assertGreater(pri, 0, kw)
         enc, pri = flow_grad_split(build(self.Lam, lam=1., forecast_grad="encoder_only"), self.batch)
@@ -181,6 +235,16 @@ class MetricsTest(unittest.TestCase):
             self.assertTrue(self.CORE | keys <= set(met), (cls.__name__, sorted(self.CORE | keys - set(met))))
             values = {k: float(v.detach()) for k, v in met.items()}
             self.assertTrue(all(map(math.isfinite, values.values())), cls.__name__)
+
+
+class UnsupportedOptionsTest(unittest.TestCase):
+    def test_subclasses_reject_options_they_do_not_implement(self):
+        from as_jepa_lewm.learned_variance import LearnedVarianceLeWM
+        from as_jepa_lewm.nce import NCELeWM
+        for cls in (LearnedVarianceLeWM, NCELeWM):
+            for kw in (dict(rho=.8), dict(forecast_noise="mean")):
+                with self.assertRaises(ValueError, msg=(cls.__name__, kw)):
+                    cls(**{**TINY, **kw})
 
 
 class ReconstructionFreeTest(unittest.TestCase):
