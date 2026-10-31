@@ -1,3 +1,9 @@
+# Scheduled12:00 review and low-overhead checker, 2026-10-31
+
+One12:00:26 read found native16400/16500, TF14200/14200, local8200/8200;allloggedloss/requiredgradientsfinitepositive, actualchild/source/configmatch,0/68complete and0failures. No requiredarchive reached yet; no partialplanning outcomes read. Onlyowned6GPUs checked. Next12:30:26 UTC /20:30:26 Beijing.
+
+Root reviewed reusable check.py/CHECKING.md. Instead of waking a researchagent eachhalf-hour, directly run `python3 experiments/training_maturity_20261031/check.py --all --label 123026` once. Immutable remoteB/reports/training-maturity-20261031/checker-v2/check.py SHA c180849044a3427d18c28191c8441ec94709175e4de5843982224b3788dc8d69. It performs3parallel one-shot SSH reads restricted tothisroot andGPU0/1 perhost, writes exclusive timestamped evidence, neverreadsplanning scores ormodels and neverstops/restarts/changestraining. Inspect reportedfailures/races before anynarrowfollowup; do notrerun alabel. Aggregate-only mode reuses savedhost snapshots withoutnewGPU reads. Finalscientificreview stillrequires all68 exits, actualarchives and allseeds/controllers/cases. Sixrunningmodels/cap remainunchanged; no additionalcandidate selected.
+
 # Cached measurement control rejected before GPU, 2026-10-31
 
 Completed one prespecified DC-coupled Gaussian measurement on existingCube fullpatch caches,0newRGB/model forwards/GPU/simulation,26sCPU. Original128 calibration rows/projection/probe reproduce; cache andcurrentlocal6k encoder tensors match. Both16D maps have rank16/nullity752. Old2×2mean structurally annihilates576zero-sum directions; fixedA_i=P/4+G_i−Gbar preservesconstant-patch response exactly and admits contrast. Independentconcat draft was unexecuted; no matrix/seed/outcome selection.
