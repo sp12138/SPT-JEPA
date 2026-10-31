@@ -70,6 +70,8 @@ def main():
     # The reference now differs by the planned controller treatment, not replay noise.
     d['white_reference_success_vector_equal']=r['metrics']['episode_successes']==read(s['reference_metrics'])['metrics']['episode_successes']
     d['original_replay_successes_exact']=None
+    d['inherited_scope']=d['scope']
+    d['scope']='Within the fixed correlated-proposal regime, L2 versus NGC changes only terminal cost. Relative to the designated white-proposal reference, this run additionally applies the frozen f4 correlated proposal and returned-command mapping. Original command execution/scaler/history and CEM budget remain; this is a controller intervention, not a replay or learning change.'
     r['controller_diagnostic']=dict(mode='correlated',calibration=s['calibration'],calibration_sha256=sha(s['calibration']),matrix_sha256=sha(matrix),
         source=s['correlation_source'],combined_source=s['combined_helper_source'],combined_spec_sha256=sha(a.spec),stats=stats,
         mapped_objective_metadata_verified=True,reference_white_metrics=s['reference_metrics'],reference_white_sha256=sha(s['reference_metrics']),
