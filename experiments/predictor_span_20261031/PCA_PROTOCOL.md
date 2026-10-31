@@ -1,0 +1,9 @@
+# One CPU-only Cube rank yardstick
+
+Exactly two fits, seeds1/2, using the existing `oldViT_seed{s}__train` and `oldViT_seed{s}__validation` arrays in `reports/direct-rgb-information-20261031/features-and-calibration.npz`. These are original normalized local1024 features, not rawRGB. Training128clips×8frames and validation64clips×8frames are episode-disjoint; validation rows must exactly match the previous span audit. No feature rescaling, whitening, label access, new cohort, encoder/network call or GPU.
+
+Use the896 training adjacent differences δ=u[t+1]−u[t]. Fit the mean c_train and top191 right singular vectors of centered training differences once per seed. This is the best affine191-dimensional empirical training reconstruction under the existing Euclidean metric. Evaluate projection residual on the448 held-out adjacent differences, without validation fitting, tuning, selection or extra PCA ranks. Check the training residual equals the discarded singular-value energy.
+
+Compare the same cached deltas against each existing local6000 output affine space c+range(V), V=W diag(γ)(I−11ᵀ/192), c=Wβ+b, and the original looser linear span(W,b), which has193 rather than191 dimensions. Read checkpoint tensors only. Report all two seeds, train/validation MSE and fraction of true delta energy; affine PCA/current differences can involve both offset and direction. Validation generalization of PCA is empirical, not a proven population optimum or a predictive dynamics method.
+
+The preexisting FP64 cached normalized features differ slightly from native FP32 observed states: max approximately9.1e−6/9.8e−6. Report and bound this numerical discrepancy; do not regenerate or renormalize arrays. Current/PCA/loose calculations all use the same original FP64 feature values. Preserve the v1 results, use a new immutable helper/protocol/output, and stop after the two declared fits. No architectural or learning change follows automatically.
