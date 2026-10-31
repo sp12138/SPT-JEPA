@@ -1,0 +1,3889 @@
+{
+  "scope": "CPU/read-only completed Cube logs and existing reports; no new forward/probe/evaluation or training.",
+  "collector": {
+    "path": "/efs/prescottsun/SPT-JEPA/code/experiments/training_maturity_20261031/collect.py",
+    "sha256": "a4118b1df3961c30ac050ee20c1fecf16f823c42f10a4ace8a2d6709c60475bb"
+  },
+  "data": {
+    "train_episodes": 9000,
+    "train_rows": 1809000,
+    "window": 8,
+    "frameskip": 5,
+    "valid_window_starts": 1494000,
+    "loader_windows_per_epoch": 1493888,
+    "updates_per_loader_epoch": 11671,
+    "metadata": [
+      {
+        "path": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/dataset_card.json",
+        "sha256": "2de904cf52d403e62fecd605c1de5fb9f216ecf7eb8c747dcccff8071c8ad0dd"
+      },
+      {
+        "path": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/lengths.npy",
+        "sha256": "8f91ed37a3e0d5a218be8c0568403823e6218af187131e59958c2804016315ea"
+      },
+      {
+        "path": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/episode_ids.npy",
+        "sha256": "b6128e5bfc4a1aa2c3e504425bd4be083a4cff98b413f66b36b49d65745173c0"
+      },
+      {
+        "path": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/train_episodes.npy",
+        "sha256": "215739685c610f5ac3fa57270c391b3e2cd7b5d6f67203ad7fca015b1bd6d2ea"
+      }
+    ]
+  },
+  "schedule": {
+    "max_steps": 124910,
+    "warmup_updates": 1249,
+    "budgets": {
+      "2000": {
+        "windows_seen": 256000,
+        "loader_epochs": 0.17136492160054836,
+        "natural_window_epochs": 0.1713520749665328,
+        "schedule_percent": 1.601152830037627,
+        "lr_fraction_of_peak": 0.9999090000935751,
+        "base_lr": 4.9995450004678755e-05
+      },
+      "6000": {
+        "windows_seen": 768000,
+        "loader_epochs": 0.5140947648016451,
+        "natural_window_epochs": 0.5140562248995983,
+        "schedule_percent": 4.803458490112881,
+        "lr_fraction_of_peak": 0.9963623827240903,
+        "base_lr": 4.981811913620452e-05
+      },
+      "12000": {
+        "windows_seen": 1536000,
+        "loader_epochs": 1.0281895296032901,
+        "natural_window_epochs": 1.0281124497991967,
+        "schedule_percent": 9.606916980225762,
+        "lr_fraction_of_peak": 0.9814659441329016,
+        "base_lr": 4.907329720664508e-05
+      },
+      "124910": {
+        "windows_seen": 15988480,
+        "loader_epochs": 10.702596178562247,
+        "natural_window_epochs": 10.701793842034807,
+        "schedule_percent": 100.0,
+        "lr_fraction_of_peak": 0.0,
+        "base_lr": 0.0
+      }
+    }
+  },
+  "runs": [
+    {
+      "family": "local",
+      "seed": 1,
+      "cap": 6000,
+      "config": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed1/config.json",
+        "sha256": "05432717b409ee301d257b237803a86fdf5325e15597300adb730dbde4c790da"
+      },
+      "log": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed1/metrics.jsonl",
+        "sha256": "03536cddd7c81574680745a585da1c9560893a6cdd5375770bbe4a93ea390c0c"
+      },
+      "source_record": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/source-record.json",
+        "sha256": "dd0fbc9799eabbaeb32468fe2ed78c3bafd24f45236904ce311fae651a9eb869"
+      },
+      "model_source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+      "source_files": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_tools/benchmark_data.py",
+          "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/train.py",
+          "sha256": "04c89b8d3912174018678f2ca1e362304a5b4d2e8af1c08d83fb405fa2762735"
+        }
+      ],
+      "last_quarter": {
+        "interval": [
+          4500.0,
+          6000
+        ],
+        "early_steps": [
+          4500,
+          4600,
+          4700,
+          4800,
+          4900,
+          5000,
+          5100,
+          5200
+        ],
+        "late_steps": [
+          5300,
+          5400,
+          5500,
+          5600,
+          5700,
+          5800,
+          5900,
+          6000
+        ],
+        "unique_records": 16,
+        "duplicates_removed": 2,
+        "metrics": {
+          "grad_norm_encoder": {
+            "early_median": 0.0,
+            "late_median": 0.0,
+            "median_change_percent": null,
+            "slope_per_1000_updates": 0.0,
+            "quarter_slope_change_percent": null,
+            "minimum": 0.0,
+            "maximum": 0.0
+          },
+          "grad_norm_pool": {
+            "early_median": 0.0,
+            "late_median": 0.0,
+            "median_change_percent": null,
+            "slope_per_1000_updates": 0.0,
+            "quarter_slope_change_percent": null,
+            "minimum": 0.0,
+            "maximum": 0.0
+          },
+          "grad_norm_predictor": {
+            "early_median": 0.12481798604130745,
+            "late_median": 0.12249048426747322,
+            "median_change_percent": -1.8647166547487437,
+            "slope_per_1000_updates": -0.002094864078304347,
+            "quarter_slope_change_percent": -2.5175026589650344,
+            "minimum": 0.11682882159948349,
+            "maximum": 0.13832220435142517
+          },
+          "grad_norm_renderer": {
+            "early_median": 0.19573428481817245,
+            "late_median": 0.17887688428163528,
+            "median_change_percent": -8.612390288291527,
+            "slope_per_1000_updates": 0.02850494150291471,
+            "quarter_slope_change_percent": 21.844620779692022,
+            "minimum": 0.06025635451078415,
+            "maximum": 0.43793609738349915
+          },
+          "grad_norm_action_encoder": {
+            "early_median": 0.03615720570087433,
+            "late_median": 0.03478587605059147,
+            "median_change_percent": -3.7926870279406,
+            "slope_per_1000_updates": -0.0010751173831522465,
+            "quarter_slope_change_percent": -4.460178942117126,
+            "minimum": 0.020193900913000107,
+            "maximum": 0.05362125486135483
+          },
+          "loss": {
+            "early_median": 0.3048076033592224,
+            "late_median": 0.28842321038246155,
+            "median_change_percent": -5.375322923769554,
+            "slope_per_1000_updates": -0.016102116774110234,
+            "quarter_slope_change_percent": -7.924072396809704,
+            "minimum": 0.2822662591934204,
+            "maximum": 0.3082669973373413
+          },
+          "fm": {
+            "early_median": 0.010001488029956818,
+            "late_median": 0.00898671755567193,
+            "median_change_percent": -10.14619495864425,
+            "slope_per_1000_updates": -0.0013643196948310908,
+            "quarter_slope_change_percent": -20.461750652672354,
+            "minimum": 0.00841514952480793,
+            "maximum": 0.010703024454414845
+          },
+          "rate": {
+            "early_median": 1.1776734590530396,
+            "late_median": 1.1175580024719238,
+            "median_change_percent": -5.104594666628071,
+            "slope_per_1000_updates": -0.058951188536251295,
+            "quarter_slope_change_percent": -7.508599444491209,
+            "minimum": 1.0928521156311035,
+            "maximum": 1.1939332485198975
+          },
+          "feature_std": {
+            "early_median": 0.7166668772697449,
+            "late_median": 0.7124508619308472,
+            "median_change_percent": -0.5882810372036862,
+            "slope_per_1000_updates": -0.005044217495357289,
+            "quarter_slope_change_percent": -1.0557661422641773,
+            "minimum": 0.7019634246826172,
+            "maximum": 0.7330271005630493
+          }
+        },
+        "qualification": "Descriptive medians/OLS only: correlated sampled training minibatches; no statistical-significance claim."
+      },
+      "final_record": {
+        "state": "finished",
+        "step": 6000,
+        "elapsed_seconds": 1977.0103113651276,
+        "updated_at": 1793404011.8883476,
+        "pid": 1072670,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 0.28612998127937317,
+        "fm": 0.00841514952480793,
+        "rate": 1.1108592748641968,
+        "entry": 2346.571533203125,
+        "surprise": 13315.0166015625,
+        "rate_share": 33.00177001953125,
+        "feature_std": 0.7152610421180725,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.12180624902248383,
+        "grad_norm_renderer": 0.1393687129020691,
+        "grad_norm_action_encoder": 0.04905388131737709,
+        "seconds_per_step": 6.369555473327637,
+        "peak_gib": 107.3281455039978,
+        "learning_rates": [
+          4.981811913620452e-05,
+          9.963623827240904e-05
+        ]
+      }
+    },
+    {
+      "family": "local",
+      "seed": 2,
+      "cap": 6000,
+      "config": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed2/config.json",
+        "sha256": "1cdc69be3633589115df6a95ff2daef99c586c5b1e75ef8c3cfca4a651b71792"
+      },
+      "log": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed2/metrics.jsonl",
+        "sha256": "93885d8bd0ff4f344c57512be69faa4d51eb9a6c65886943e0efe5e0c6424eae"
+      },
+      "source_record": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/source-record.json",
+        "sha256": "dd0fbc9799eabbaeb32468fe2ed78c3bafd24f45236904ce311fae651a9eb869"
+      },
+      "model_source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+      "source_files": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_tools/benchmark_data.py",
+          "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2/as_jepa_lewm/train.py",
+          "sha256": "04c89b8d3912174018678f2ca1e362304a5b4d2e8af1c08d83fb405fa2762735"
+        }
+      ],
+      "last_quarter": {
+        "interval": [
+          4500.0,
+          6000
+        ],
+        "early_steps": [
+          4500,
+          4600,
+          4700,
+          4800,
+          4900,
+          5000,
+          5100,
+          5200
+        ],
+        "late_steps": [
+          5300,
+          5400,
+          5500,
+          5600,
+          5700,
+          5800,
+          5900,
+          6000
+        ],
+        "unique_records": 16,
+        "duplicates_removed": 2,
+        "metrics": {
+          "grad_norm_encoder": {
+            "early_median": 0.0,
+            "late_median": 0.0,
+            "median_change_percent": null,
+            "slope_per_1000_updates": 0.0,
+            "quarter_slope_change_percent": null,
+            "minimum": 0.0,
+            "maximum": 0.0
+          },
+          "grad_norm_pool": {
+            "early_median": 0.0,
+            "late_median": 0.0,
+            "median_change_percent": null,
+            "slope_per_1000_updates": 0.0,
+            "quarter_slope_change_percent": null,
+            "minimum": 0.0,
+            "maximum": 0.0
+          },
+          "grad_norm_predictor": {
+            "early_median": 0.12744956463575363,
+            "late_median": 0.12617818266153336,
+            "median_change_percent": -0.9975569378003257,
+            "slope_per_1000_updates": -0.0012144515400423724,
+            "quarter_slope_change_percent": -1.429331920646295,
+            "minimum": 0.12235257774591446,
+            "maximum": 0.1336030662059784
+          },
+          "grad_norm_renderer": {
+            "early_median": 0.15859689563512802,
+            "late_median": 0.14349403977394104,
+            "median_change_percent": -9.5227941257646,
+            "slope_per_1000_updates": -0.030648942488957852,
+            "quarter_slope_change_percent": -28.98758739843456,
+            "minimum": 0.08116673678159714,
+            "maximum": 0.3144242763519287
+          },
+          "grad_norm_action_encoder": {
+            "early_median": 0.031448530964553356,
+            "late_median": 0.04186408594250679,
+            "median_change_percent": 33.11936888146902,
+            "slope_per_1000_updates": 0.008583122836973737,
+            "quarter_slope_change_percent": 40.9389051271491,
+            "minimum": 0.01588682271540165,
+            "maximum": 0.06338034570217133
+          },
+          "loss": {
+            "early_median": 0.29692380130290985,
+            "late_median": 0.283878356218338,
+            "median_change_percent": -4.393532962776325,
+            "slope_per_1000_updates": -0.017640450421501606,
+            "quarter_slope_change_percent": -8.91160476733163,
+            "minimum": 0.278231143951416,
+            "maximum": 0.31164759397506714
+          },
+          "fm": {
+            "early_median": 0.01015884755179286,
+            "late_median": 0.009086830075830221,
+            "median_change_percent": -10.552550085008871,
+            "slope_per_1000_updates": -0.0012700167375014107,
+            "quarter_slope_change_percent": -18.75237418949074,
+            "minimum": 0.00886850617825985,
+            "maximum": 0.010912830010056496
+          },
+          "rate": {
+            "early_median": 1.1467314958572388,
+            "late_median": 1.099421739578247,
+            "median_change_percent": -4.125617587892738,
+            "slope_per_1000_updates": -0.06548172060181112,
+            "quarter_slope_change_percent": -8.565438488221728,
+            "minimum": 1.0774505138397217,
+            "maximum": 1.2030316591262817
+          },
+          "feature_std": {
+            "early_median": 0.7091359794139862,
+            "late_median": 0.7181939482688904,
+            "median_change_percent": 1.2773246764872237,
+            "slope_per_1000_updates": 0.002534219447304221,
+            "quarter_slope_change_percent": 0.5360508113123329,
+            "minimum": 0.692996621131897,
+            "maximum": 0.7283645868301392
+          }
+        },
+        "qualification": "Descriptive medians/OLS only: correlated sampled training minibatches; no statistical-significance claim."
+      },
+      "final_record": {
+        "state": "finished",
+        "step": 6000,
+        "elapsed_seconds": 1990.5294404029846,
+        "updated_at": 1793404025.41753,
+        "pid": 1072681,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 0.278231143951416,
+        "fm": 0.00886850617825985,
+        "rate": 1.0774505138397217,
+        "entry": 2345.4892578125,
+        "surprise": 12904.6435546875,
+        "rate_share": 30.372941970825195,
+        "feature_std": 0.7052967548370361,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.1336030662059784,
+        "grad_norm_renderer": 0.08116673678159714,
+        "grad_norm_action_encoder": 0.05312299728393555,
+        "seconds_per_step": 6.435239791870117,
+        "peak_gib": 107.3281455039978,
+        "learning_rates": [
+          4.981811913620452e-05,
+          9.963623827240904e-05
+        ]
+      }
+    },
+    {
+      "family": "native",
+      "seed": 1,
+      "cap": 12000,
+      "config": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/config.json",
+        "sha256": "9ad4a5bae4cd3285960b20b5806a34bce65de54bb8c9e64d6c3ce8c0056c5323"
+      },
+      "log": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed1/metrics.jsonl",
+        "sha256": "b2cf9cb43f28b76969254da2a369f82fb6786d8f2083fc51627fcbab349b2500"
+      },
+      "source_record": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/source-record.json",
+        "sha256": "02f0eee183c3ea19234608b955bec995e7ae8111aee79dc5f1a87e0ad48dec38"
+      },
+      "model_source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+      "source_files": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_tools/benchmark_data.py",
+          "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/train.py",
+          "sha256": "04c89b8d3912174018678f2ca1e362304a5b4d2e8af1c08d83fb405fa2762735"
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/native_lewm.py",
+          "sha256": "511311ccc9421e2856f8f7724cf60b6d7a2dc95fa97e04e54e0eefaa047e5b45"
+        }
+      ],
+      "last_quarter": {
+        "interval": [
+          9000.0,
+          12000
+        ],
+        "early_steps": [
+          9000,
+          9100,
+          9200,
+          9300,
+          9400,
+          9500,
+          9600,
+          9700,
+          9800,
+          9900,
+          10000,
+          10100,
+          10200,
+          10300,
+          10400
+        ],
+        "late_steps": [
+          10500,
+          10600,
+          10700,
+          10800,
+          10900,
+          11000,
+          11100,
+          11200,
+          11300,
+          11400,
+          11500,
+          11600,
+          11700,
+          11800,
+          11900,
+          12000
+        ],
+        "unique_records": 31,
+        "duplicates_removed": 3,
+        "metrics": {
+          "grad_norm_encoder": {
+            "early_median": 0.2920035421848297,
+            "late_median": 0.26961441338062286,
+            "median_change_percent": -7.667416852784337,
+            "slope_per_1000_updates": -0.01589382259595778,
+            "quarter_slope_change_percent": -16.32907170615498,
+            "minimum": 0.23337602615356445,
+            "maximum": 0.3717960715293884
+          },
+          "grad_norm_predictor": {
+            "early_median": 0.043593630194664,
+            "late_median": 0.04283852130174637,
+            "median_change_percent": -1.732154192127966,
+            "slope_per_1000_updates": 0.00014923864434803673,
+            "quarter_slope_change_percent": 1.0270214502551616,
+            "minimum": 0.033385708928108215,
+            "maximum": 0.05417513847351074
+          },
+          "grad_norm_action_encoder": {
+            "early_median": 0.04222693294286728,
+            "late_median": 0.0382018368691206,
+            "median_change_percent": -9.532058790991538,
+            "slope_per_1000_updates": -0.0014305100926468447,
+            "quarter_slope_change_percent": -10.163016773552894,
+            "minimum": 0.02259477972984314,
+            "maximum": 0.07718507200479507
+          },
+          "grad_norm_projector": {
+            "early_median": 0.33799466490745544,
+            "late_median": 0.32275184988975525,
+            "median_change_percent": -4.509779768823796,
+            "slope_per_1000_updates": -0.007092179309937262,
+            "quarter_slope_change_percent": -6.2949330681410025,
+            "minimum": 0.30591970682144165,
+            "maximum": 0.35132768750190735
+          },
+          "grad_norm_pred_proj": {
+            "early_median": 0.06124240532517433,
+            "late_median": 0.060197627171874046,
+            "median_change_percent": -1.7059717817301645,
+            "slope_per_1000_updates": -0.00042950431065213286,
+            "quarter_slope_change_percent": -2.103955462093423,
+            "minimum": 0.05651313066482544,
+            "maximum": 0.06564406305551529
+          },
+          "loss": {
+            "early_median": 0.1605641096830368,
+            "late_median": 0.1509227380156517,
+            "median_change_percent": -6.0046866553289835,
+            "slope_per_1000_updates": -0.005093891534113115,
+            "quarter_slope_change_percent": -9.517490946455151,
+            "minimum": 0.14294859766960144,
+            "maximum": 0.16803354024887085
+          },
+          "pred": {
+            "early_median": 0.019269844517111778,
+            "late_median": 0.01795684825628996,
+            "median_change_percent": -6.8137356254009624,
+            "slope_per_1000_updates": -0.0007151112170709716,
+            "quarter_slope_change_percent": -11.133113447323568,
+            "minimum": 0.016624268144369125,
+            "maximum": 0.020911946892738342
+          },
+          "sigreg": {
+            "early_median": 1.5703125,
+            "late_median": 1.47265625,
+            "median_change_percent": -6.218905472636815,
+            "slope_per_1000_updates": -0.04838709677419354,
+            "quarter_slope_change_percent": -9.24410207029369,
+            "minimum": 1.3984375,
+            "maximum": 1.6640625
+          },
+          "feature_std": {
+            "early_median": 0.9864789843559265,
+            "late_median": 0.9850353002548218,
+            "median_change_percent": -0.14634717251957863,
+            "slope_per_1000_updates": -0.0011073165843563694,
+            "quarter_slope_change_percent": -0.3367481523428514,
+            "minimum": 0.9772368669509888,
+            "maximum": 0.9909858703613281
+          }
+        },
+        "qualification": "Descriptive medians/OLS only: correlated sampled training minibatches; no statistical-significance claim."
+      },
+      "final_record": {
+        "state": "finished",
+        "step": 12000,
+        "elapsed_seconds": 1727.4933218955994,
+        "updated_at": 1793416779.099951,
+        "pid": 146783,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 0.15643692016601562,
+        "pred": 0.017765048891305923,
+        "sigreg": 1.5390625,
+        "feature_std": 0.9867317080497742,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.27121108770370483,
+        "grad_norm_predictor": 0.047785330563783646,
+        "grad_norm_action_encoder": 0.04152245819568634,
+        "grad_norm_projector": 0.32477158308029175,
+        "grad_norm_pred_proj": 0.06003426015377045,
+        "seconds_per_step": 2.263857126235962,
+        "peak_gib": 24.613686561584473,
+        "learning_rates": [
+          4.907329720664508e-05
+        ]
+      }
+    },
+    {
+      "family": "native",
+      "seed": 2,
+      "cap": 12000,
+      "config": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/config.json",
+        "sha256": "9da0f4492811f9494f8563ac751bb5fd8c0c0c6a92b5430fd77e4bc869509966"
+      },
+      "log": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/cube-native-lewm-seed2/metrics.jsonl",
+        "sha256": "f2b997d827e0d721cee3fd512d327b79774c02c2e58b760633e0c95404ff362d"
+      },
+      "source_record": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/source-record.json",
+        "sha256": "02f0eee183c3ea19234608b955bec995e7ae8111aee79dc5f1a87e0ad48dec38"
+      },
+      "model_source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+      "source_files": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_tools/benchmark_data.py",
+          "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/train.py",
+          "sha256": "04c89b8d3912174018678f2ca1e362304a5b4d2e8af1c08d83fb405fa2762735"
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1/as_jepa_lewm/native_lewm.py",
+          "sha256": "511311ccc9421e2856f8f7724cf60b6d7a2dc95fa97e04e54e0eefaa047e5b45"
+        }
+      ],
+      "last_quarter": {
+        "interval": [
+          9000.0,
+          12000
+        ],
+        "early_steps": [
+          9000,
+          9100,
+          9200,
+          9300,
+          9400,
+          9500,
+          9600,
+          9700,
+          9800,
+          9900,
+          10000,
+          10100,
+          10200,
+          10300,
+          10400
+        ],
+        "late_steps": [
+          10500,
+          10600,
+          10700,
+          10800,
+          10900,
+          11000,
+          11100,
+          11200,
+          11300,
+          11400,
+          11500,
+          11600,
+          11700,
+          11800,
+          11900,
+          12000
+        ],
+        "unique_records": 31,
+        "duplicates_removed": 3,
+        "metrics": {
+          "grad_norm_encoder": {
+            "early_median": 0.3354514241218567,
+            "late_median": 0.33220888674259186,
+            "median_change_percent": -0.9666190530426721,
+            "slope_per_1000_updates": -0.0021533845893798335,
+            "quarter_slope_change_percent": -1.925809015433714,
+            "minimum": 0.28180640935897827,
+            "maximum": 0.4301620423793793
+          },
+          "grad_norm_predictor": {
+            "early_median": 0.042603932321071625,
+            "late_median": 0.04363890737295151,
+            "median_change_percent": 2.4292946577797236,
+            "slope_per_1000_updates": -0.0004496521827194,
+            "quarter_slope_change_percent": -3.1662723947456253,
+            "minimum": 0.034942954778671265,
+            "maximum": 0.05269334465265274
+          },
+          "grad_norm_action_encoder": {
+            "early_median": 0.0403674952685833,
+            "late_median": 0.04118591733276844,
+            "median_change_percent": 2.0274284018362065,
+            "slope_per_1000_updates": 0.00046877883705160315,
+            "quarter_slope_change_percent": 3.483833965416515,
+            "minimum": 0.026783866807818413,
+            "maximum": 0.08422325551509857
+          },
+          "grad_norm_projector": {
+            "early_median": 0.3426787555217743,
+            "late_median": 0.33878302574157715,
+            "median_change_percent": -1.1368460161078175,
+            "slope_per_1000_updates": -0.0014282102065701645,
+            "quarter_slope_change_percent": -1.2503344752687016,
+            "minimum": 0.3046002984046936,
+            "maximum": 0.35956934094429016
+          },
+          "grad_norm_pred_proj": {
+            "early_median": 0.0618400052189827,
+            "late_median": 0.05894628167152405,
+            "median_change_percent": -4.6793714476763615,
+            "slope_per_1000_updates": -0.0013461326729626423,
+            "quarter_slope_change_percent": -6.530397280186971,
+            "minimum": 0.05548739805817604,
+            "maximum": 0.06665173918008804
+          },
+          "loss": {
+            "early_median": 0.16202741861343384,
+            "late_median": 0.15481216460466385,
+            "median_change_percent": -4.453106807795415,
+            "slope_per_1000_updates": -0.004024458027655078,
+            "quarter_slope_change_percent": -7.451438889963417,
+            "minimum": 0.1447996199131012,
+            "maximum": 0.16759739816188812
+          },
+          "pred": {
+            "early_median": 0.01918763853609562,
+            "late_median": 0.017894280143082142,
+            "median_change_percent": -6.7405813934863446,
+            "slope_per_1000_updates": -0.0007955005031920249,
+            "quarter_slope_change_percent": -12.437703082047374,
+            "minimum": 0.016398867592215538,
+            "maximum": 0.02079496532678604
+          },
+          "sigreg": {
+            "early_median": 1.5859375,
+            "late_median": 1.51953125,
+            "median_change_percent": -4.187192118226601,
+            "slope_per_1000_updates": -0.035660282258064516,
+            "quarter_slope_change_percent": -6.745590338471318,
+            "minimum": 1.4140625,
+            "maximum": 1.640625
+          },
+          "feature_std": {
+            "early_median": 0.9863933324813843,
+            "late_median": 0.9868745803833008,
+            "median_change_percent": 0.04878864100854585,
+            "slope_per_1000_updates": 3.4052277764966395e-05,
+            "quarter_slope_change_percent": 0.01035660217186506,
+            "minimum": 0.980621337890625,
+            "maximum": 0.992398738861084
+          }
+        },
+        "qualification": "Descriptive medians/OLS only: correlated sampled training minibatches; no statistical-significance claim."
+      },
+      "final_record": {
+        "state": "finished",
+        "step": 12000,
+        "elapsed_seconds": 1077.1637461185455,
+        "updated_at": 1793415576.741775,
+        "pid": 146718,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 0.15690551698207855,
+        "pred": 0.0182336438447237,
+        "sigreg": 1.5390625,
+        "feature_std": 0.9877144694328308,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.3933482766151428,
+        "grad_norm_predictor": 0.043424952775239944,
+        "grad_norm_action_encoder": 0.041962575167417526,
+        "grad_norm_projector": 0.340160995721817,
+        "grad_norm_pred_proj": 0.05548739805817604,
+        "seconds_per_step": 2.1803085803985596,
+        "peak_gib": 24.613686561584473,
+        "learning_rates": [
+          4.907329720664508e-05
+        ]
+      }
+    },
+    {
+      "family": "tf",
+      "seed": 1,
+      "cap": 12000,
+      "config": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed1/config.json",
+        "sha256": "915ebc44a318e265e58f484f2c5efe9acb05a476e7a7ec22851895b4760b639f"
+      },
+      "log": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed1/metrics.jsonl",
+        "sha256": "cd6dce45bb5f545cde5d1558e4d34207500907975226ea26048a20a3c916aebb"
+      },
+      "source_record": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/source-record.json",
+        "sha256": "929342ddda04367b714216d063be3e7cd29ceaf5af858b5df82b63699ddb0c62"
+      },
+      "model_source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+      "source_files": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_tools/benchmark_data.py",
+          "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/train.py",
+          "sha256": "f4e22ccb236d8bb285b060bc16b719ea0ae7befd782caf67b5cb521209c60844"
+        }
+      ],
+      "last_quarter": {
+        "interval": [
+          9000.0,
+          12000
+        ],
+        "early_steps": [
+          9000,
+          9100,
+          9200,
+          9300,
+          9400,
+          9500,
+          9600,
+          9700,
+          9800,
+          9900,
+          10000,
+          10100,
+          10200,
+          10300,
+          10400
+        ],
+        "late_steps": [
+          10500,
+          10600,
+          10700,
+          10800,
+          10900,
+          11000,
+          11100,
+          11200,
+          11300,
+          11400,
+          11500,
+          11600,
+          11700,
+          11800,
+          11900,
+          12000
+        ],
+        "unique_records": 31,
+        "duplicates_removed": 1,
+        "metrics": {
+          "grad_norm_encoder": {
+            "early_median": 0.11047056317329407,
+            "late_median": 0.09958802536129951,
+            "median_change_percent": -9.851074801640348,
+            "slope_per_1000_updates": 0.001194249237737348,
+            "quarter_slope_change_percent": 3.2431695922395387,
+            "minimum": 0.06523057818412781,
+            "maximum": 0.17516055703163147
+          },
+          "grad_norm_predictor": {
+            "early_median": 0.03700747340917587,
+            "late_median": 0.03592340834438801,
+            "median_change_percent": -2.9293139058746864,
+            "slope_per_1000_updates": -0.000431924787980895,
+            "quarter_slope_change_percent": -3.501385651530056,
+            "minimum": 0.017148422077298164,
+            "maximum": 0.06266714632511139
+          },
+          "grad_norm_renderer": {
+            "early_median": 0.13968640565872192,
+            "late_median": 0.19843246042728424,
+            "median_change_percent": 42.05567069431875,
+            "slope_per_1000_updates": 0.016932922205136668,
+            "quarter_slope_change_percent": 36.3662923216166,
+            "minimum": 0.058031562715768814,
+            "maximum": 0.4185178875923157
+          },
+          "loss": {
+            "early_median": 0.007731712888926268,
+            "late_median": 0.007394176675006747,
+            "median_change_percent": -4.3656071916865375,
+            "slope_per_1000_updates": -0.00022287109318459708,
+            "quarter_slope_change_percent": -8.647673408972693,
+            "minimum": 0.006698756478726864,
+            "maximum": 0.008553504012525082
+          },
+          "fm": {
+            "early_median": 0.006951220333576202,
+            "late_median": 0.0066295715514570475,
+            "median_change_percent": -4.627227546874146,
+            "slope_per_1000_updates": -0.0002229713136330247,
+            "quarter_slope_change_percent": -9.622971346024608,
+            "minimum": 0.005909765139222145,
+            "maximum": 0.007778755389153957
+          },
+          "rate": {
+            "early_median": 0.003098995890468359,
+            "late_median": 0.0031182439997792244,
+            "median_change_percent": 0.6211079327361313,
+            "slope_per_1000_updates": 4.009127752074316e-07,
+            "quarter_slope_change_percent": 0.038810581495818695,
+            "minimum": 0.0030408164020627737,
+            "maximum": 0.0032182626891881227
+          },
+          "feature_std": {
+            "early_median": 0.7134141325950623,
+            "late_median": 0.7462069988250732,
+            "median_change_percent": 4.596610121911393,
+            "slope_per_1000_updates": 0.02447183718604426,
+            "quarter_slope_change_percent": 10.29072851291605,
+            "minimum": 0.6736569404602051,
+            "maximum": 0.7976489067077637
+          }
+        },
+        "qualification": "Descriptive medians/OLS only: correlated sampled training minibatches; no statistical-significance claim."
+      },
+      "final_record": {
+        "state": "finished",
+        "step": 12000,
+        "elapsed_seconds": 5927.6687178611755,
+        "updated_at": 1793401591.8259275,
+        "pid": 906437,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.007383579388260841,
+        "fm": 0.006614573299884796,
+        "rate": 0.00307602365501225,
+        "entry": 135.91824340820312,
+        "surprise": 18.381284713745117,
+        "rate_share": 0.11625933647155762,
+        "feature_std": 0.7476794719696045,
+        "active_dims": 64.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.11353358626365662,
+        "grad_norm_predictor": 0.05608120188117027,
+        "grad_norm_renderer": 0.22933095693588257,
+        "seconds_per_step": 6.602595329284668,
+        "peak_gib": 129.47442722320557,
+        "learning_rates": [
+          4.907329720664508e-05,
+          9.814659441329016e-05
+        ]
+      }
+    },
+    {
+      "family": "tf",
+      "seed": 2,
+      "cap": 12000,
+      "config": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed2/config.json",
+        "sha256": "419bd4f6eed074d09dcd146d07ae4bdaa2701a4463861e61e0ce1b730994bc1b"
+      },
+      "log": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed2/metrics.jsonl",
+        "sha256": "916120871a2c902d0fd8a3829c32478137efe8e249d6348b91ebad2b28cd326b"
+      },
+      "source_record": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/source-record.json",
+        "sha256": "929342ddda04367b714216d063be3e7cd29ceaf5af858b5df82b63699ddb0c62"
+      },
+      "model_source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+      "source_files": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_tools/benchmark_data.py",
+          "sha256": "4ccf70275cdce6f2742d469dac9dbbbe430d414c7102ce774af94f672a6c723d"
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/train.py",
+          "sha256": "f4e22ccb236d8bb285b060bc16b719ea0ae7befd782caf67b5cb521209c60844"
+        }
+      ],
+      "last_quarter": {
+        "interval": [
+          9000.0,
+          12000
+        ],
+        "early_steps": [
+          9000,
+          9100,
+          9200,
+          9300,
+          9400,
+          9500,
+          9600,
+          9700,
+          9800,
+          9900,
+          10000,
+          10100,
+          10200,
+          10300,
+          10400
+        ],
+        "late_steps": [
+          10500,
+          10600,
+          10700,
+          10800,
+          10900,
+          11000,
+          11100,
+          11200,
+          11300,
+          11400,
+          11500,
+          11600,
+          11700,
+          11800,
+          11900,
+          12000
+        ],
+        "unique_records": 31,
+        "duplicates_removed": 1,
+        "metrics": {
+          "grad_norm_encoder": {
+            "early_median": 0.08504397422075272,
+            "late_median": 0.09226398169994354,
+            "median_change_percent": 8.489734334909492,
+            "slope_per_1000_updates": 0.0013042381183514676,
+            "quarter_slope_change_percent": 4.600813156847518,
+            "minimum": 0.054868459701538086,
+            "maximum": 0.13839535415172577
+          },
+          "grad_norm_predictor": {
+            "early_median": 0.0363813079893589,
+            "late_median": 0.04044520668685436,
+            "median_change_percent": 11.170292994094932,
+            "slope_per_1000_updates": 0.00012452512859336827,
+            "quarter_slope_change_percent": 1.0268333010164756,
+            "minimum": 0.02053070068359375,
+            "maximum": 0.08062482625246048
+          },
+          "grad_norm_renderer": {
+            "early_median": 0.18679705262184143,
+            "late_median": 0.14047789573669434,
+            "median_change_percent": -24.796513775255992,
+            "slope_per_1000_updates": -0.008670665443904938,
+            "quarter_slope_change_percent": -13.925271285931057,
+            "minimum": 0.061016395688056946,
+            "maximum": 0.3299717307090759
+          },
+          "loss": {
+            "early_median": 0.007750189397484064,
+            "late_median": 0.007381071802228689,
+            "median_change_percent": -4.762691288230981,
+            "slope_per_1000_updates": -0.00032780462342704974,
+            "quarter_slope_change_percent": -12.68890113318255,
+            "minimum": 0.0069699641317129135,
+            "maximum": 0.008615312166512012
+          },
+          "fm": {
+            "early_median": 0.006969940382987261,
+            "late_median": 0.006594405742362142,
+            "median_change_percent": -5.38791754290685,
+            "slope_per_1000_updates": -0.0003351522046291539,
+            "quarter_slope_change_percent": -14.425612826497824,
+            "minimum": 0.006175443064421415,
+            "maximum": 0.007833529263734818
+          },
+          "rate": {
+            "early_median": 0.0031271306797862053,
+            "late_median": 0.003176094382070005,
+            "median_change_percent": 1.5657709030294509,
+            "slope_per_1000_updates": 2.9390417752907643e-05,
+            "quarter_slope_change_percent": 2.8195576804213056,
+            "minimum": 0.003083564806729555,
+            "maximum": 0.0032439969945698977
+          },
+          "feature_std": {
+            "early_median": 0.6926825046539307,
+            "late_median": 0.7423240542411804,
+            "median_change_percent": 7.166566104055283,
+            "slope_per_1000_updates": 0.0281569371300359,
+            "quarter_slope_change_percent": 12.194737245790543,
+            "minimum": 0.6701369881629944,
+            "maximum": 0.7765992283821106
+          }
+        },
+        "qualification": "Descriptive medians/OLS only: correlated sampled training minibatches; no statistical-significance claim."
+      },
+      "final_record": {
+        "state": "finished",
+        "step": 12000,
+        "elapsed_seconds": 5913.739410161972,
+        "updated_at": 1793401577.905608,
+        "pid": 906441,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.007160959765315056,
+        "fm": 0.006367433816194534,
+        "rate": 0.0031741042621433735,
+        "entry": 135.9723663330078,
+        "surprise": 19.578765869140625,
+        "rate_share": 0.12462258338928223,
+        "feature_std": 0.739304780960083,
+        "active_dims": 64.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.11102545261383057,
+        "grad_norm_predictor": 0.05688093975186348,
+        "grad_norm_renderer": 0.18217414617538452,
+        "seconds_per_step": 6.250082969665527,
+        "peak_gib": 129.47442722320557,
+        "learning_rates": [
+          4.907329720664508e-05,
+          9.814659441329016e-05
+        ]
+      }
+    }
+  ],
+  "existing_reports": {
+    "local-isotropic6000-20261031": {
+      "artifact": {
+        "path": "/efs/prescottsun/SPT-JEPA/reports/local-isotropic6000-20261031/results.json",
+        "sha256": "6c076311d3fbde81cbc68f3ab4141d4b1cc373d390bad72bcef9c5f791427b62"
+      },
+      "rows": [
+        {
+          "id": "cube-spatial-local-seed1",
+          "seed": 1,
+          "state": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 0.7074865024949096,
+            "observed_rms": 0.9569127427883423,
+            "initial_copy_mse": 1.2971541089647154,
+            "local_copy_mse": 0.8485492722687955,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 0.2945745173495414,
+                "normalized_by_initial_variation": 0.22709292235495995,
+                "normalized_by_local_variation": 0.3471507512603567,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.24492349158890583,
+                "normalized_by_initial_variation": 0.18881603187795795,
+                "normalized_by_local_variation": 0.2886379136641593,
+                "over_clean": 0.8314483336597654
+              },
+              "other_initial": {
+                "mse": 1.610404679146626,
+                "normalized_by_initial_variation": 1.2414906355513318,
+                "normalized_by_local_variation": 1.897832844568744,
+                "over_clean": 5.466883875891152
+              },
+              "zero_initial": {
+                "mse": 1.11078450858411,
+                "normalized_by_initial_variation": 0.8563242415896514,
+                "normalized_by_local_variation": 1.3090394923257278,
+                "over_clean": 3.7708099077221124
+              },
+              "wrong_action_order": {
+                "mse": 0.9431454518537554,
+                "normalized_by_initial_variation": 0.727088204351061,
+                "normalized_by_local_variation": 1.111479890062288,
+                "over_clean": 3.2017211140318067
+              },
+              "other_episode_actions": {
+                "mse": 1.2995005075175499,
+                "normalized_by_initial_variation": 1.0018088818719522,
+                "normalized_by_local_variation": 1.5314378905105066,
+                "over_clean": 4.411449161352833
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.2971541089647154,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 1.5286727021714006,
+                "over_clean": 4.403483779370894
+              },
+              "shifted_observed_carry": {
+                "mse": 0.8485492722687956,
+                "normalized_by_initial_variation": 0.6541622667687803,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 2.8805929307928193
+              },
+              "zero_prediction": {
+                "mse": 0.9206060290154673,
+                "normalized_by_initial_variation": 0.7097121480424723,
+                "normalized_by_local_variation": 1.0849175871119552,
+                "over_clean": 3.125205931927501
+              }
+            }
+          },
+          "health": {
+            "feature_std": 0.6809470653533936,
+            "summary": {
+              "fm_t0.2_posterior": 0.04237625561654568,
+              "fm_t0.2_shuffled_posterior": 0.12504222965799272,
+              "fm_t0.2_forecast": 0.04337097704410553,
+              "fm_t0.2_wrong_state": 0.08133853110484779,
+              "fm_t0.2_wrong_actions": 0.054194576339796185,
+              "fm_t0.2_carry": 0.09521984751336277,
+              "fm_t0.2_zero": 0.05913881957530975,
+              "fm_t0.5_posterior": 0.01016609842190519,
+              "fm_t0.5_shuffled_posterior": 0.1225905274040997,
+              "fm_t0.5_forecast": 0.011630051769316196,
+              "fm_t0.5_wrong_state": 0.06824221136048436,
+              "fm_t0.5_wrong_actions": 0.03457426559180021,
+              "fm_t0.5_carry": 0.08899664203636348,
+              "fm_t0.5_zero": 0.033358585089445114,
+              "fm_t0.8_posterior": 0.005206589994486421,
+              "fm_t0.8_shuffled_posterior": 0.07732028025202453,
+              "fm_t0.8_forecast": 0.007193953380919993,
+              "fm_t0.8_wrong_state": 0.06263829418458045,
+              "fm_t0.8_wrong_actions": 0.03745398868340999,
+              "fm_t0.8_carry": 0.06000988814048469,
+              "fm_t0.8_zero": 0.03799609455745667,
+              "fm_t0.95_posterior": 0.0041077639907598495,
+              "fm_t0.95_shuffled_posterior": 0.05677948403172195,
+              "fm_t0.95_forecast": 0.005950373233645223,
+              "fm_t0.95_wrong_state": 0.05040753458160907,
+              "fm_t0.95_wrong_actions": 0.029382274253293872,
+              "fm_t0.95_carry": 0.04422055836766958,
+              "fm_t0.95_zero": 0.03178802947513759
+            },
+            "audit": {
+              "step": 6000,
+              "model_finite": true,
+              "optimizer_finite": true,
+              "scheduler_finite": true,
+              "cursor": true,
+              "rng_present": true,
+              "optimizer_present": true,
+              "scheduler_present": true,
+              "portable_equal": true,
+              "gradient_max": {
+                "encoder": 0.0,
+                "pool": 0.0,
+                "predictor": 0.13832220435142517,
+                "renderer": 0.505905270576477,
+                "action_encoder": 0.055863603949546814
+              },
+              "gradient_expectations": {
+                "encoder": "frozen",
+                "pool": "frozen",
+                "predictor": "active",
+                "renderer": "active",
+                "action_encoder": "active"
+              }
+            }
+          },
+          "old_state": {
+            "clean_mse": 0.46817678929299905,
+            "clean_over_initial_carry": 0.36092611206131886,
+            "clean_over_shifted_carry": 0.5517378950089941,
+            "teacher_over_shifted_carry": 0.4349627687926689,
+            "wrong_order_over_clean": 1.9824718929022451,
+            "other_actions_over_clean": 2.6531297086073082,
+            "other_initial_over_clean": 3.413290936800427,
+            "observed_state_std": 0.7074865024949096
+          },
+          "state_summary": {
+            "clean_mse": 0.2945745173495414,
+            "clean_over_initial_carry": 0.22709292235495995,
+            "clean_over_shifted_carry": 0.3471507512603567,
+            "teacher_over_shifted_carry": 0.2886379136641593,
+            "wrong_order_over_clean": 3.2017211140318067,
+            "other_actions_over_clean": 4.411449161352833,
+            "other_initial_over_clean": 5.466883875891152,
+            "observed_state_std": 0.7074865024949096
+          },
+          "health_summary": {
+            "feature_std": 0.6809470653533936,
+            "forecast_fm_t095": 0.005950373233645223,
+            "wrong_state_over_forecast": 8.4713231594599,
+            "wrong_actions_over_forecast": 4.93788760798357,
+            "carry_over_forecast": 7.431560446936853,
+            "zero_over_forecast": 5.342190855423722
+          },
+          "parent2000": {
+            "primary": {
+              "success_rate": 24.0,
+              "artifact": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-cube-spatial-local-seed1/metrics.json",
+                "sha256": "3e5df4e9cde4b6c574d2fa1fb5a2da8ca004b214cf68757bb997b17f70e28dfb",
+                "bytes": 25218
+              }
+            },
+            "fresh": {
+              "success_rate": 16.0,
+              "artifact": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-cube-spatial-local-seed1/metrics.json",
+                "sha256": "3a036d254126475033376c24b278a1868e2fd36542e9aa5e7d820cc55b0eb714",
+                "bytes": 25192
+              }
+            }
+          },
+          "planning": {
+            "primary": {
+              "success_rate": 16.0,
+              "artifact": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/planning-cube-spatial-local-seed1/metrics.json",
+                "sha256": "f2c808448ef018c3a8758d7b8fef4413db688324dad6603bf7b4781ad9ea5009",
+                "bytes": 25221
+              }
+            },
+            "fresh": {
+              "success_rate": 24.0,
+              "artifact": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/fresh-planning-cube-spatial-local-seed1/metrics.json",
+                "sha256": "847061c596a3081a92faa3c7ff878c32871d6d5529ddb655706202fd17577c9d",
+                "bytes": 25187
+              }
+            }
+          }
+        },
+        {
+          "id": "cube-spatial-local-seed2",
+          "seed": 2,
+          "state": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 0.6990120070251256,
+            "observed_rms": 0.9489319020003079,
+            "initial_copy_mse": 1.2874919841416288,
+            "local_copy_mse": 0.851762865323171,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 0.28465405941828986,
+                "normalized_by_initial_variation": 0.22109190808521323,
+                "normalized_by_local_variation": 0.3341940239555853,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.23739074027997437,
+                "normalized_by_initial_variation": 0.18438230544654052,
+                "normalized_by_local_variation": 0.2787052006427926,
+                "over_clean": 0.833962251460944
+              },
+              "other_initial": {
+                "mse": 1.5249487583556538,
+                "normalized_by_initial_variation": 1.1844335942583264,
+                "normalized_by_local_variation": 1.7903442618117262,
+                "over_clean": 5.357200109747219
+              },
+              "zero_initial": {
+                "mse": 0.9837209227054081,
+                "normalized_by_initial_variation": 0.7640598425638004,
+                "normalized_by_local_variation": 1.1549234684376268,
+                "over_clean": 3.4558471595863045
+              },
+              "wrong_action_order": {
+                "mse": 0.9302826952692408,
+                "normalized_by_initial_variation": 0.7225541647853134,
+                "normalized_by_local_variation": 1.0921850824246464,
+                "over_clean": 3.268116734995234
+              },
+              "other_episode_actions": {
+                "mse": 1.2958828173195778,
+                "normalized_by_initial_variation": 1.0065171925583234,
+                "normalized_by_local_variation": 1.521412672561043,
+                "over_clean": 4.552483178942901
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.287491984141629,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 1.5115615349738636,
+                "over_clean": 4.523005878689056
+              },
+              "shifted_observed_carry": {
+                "mse": 0.8517628653231712,
+                "normalized_by_initial_variation": 0.661567509401654,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 2.9922737341733585
+              },
+              "zero_prediction": {
+                "mse": 0.9054858753985153,
+                "normalized_by_initial_variation": 0.7032943789566215,
+                "normalized_by_local_variation": 1.063072730994161,
+                "over_clean": 3.181004610469768
+              }
+            }
+          },
+          "health": {
+            "feature_std": 0.6720715165138245,
+            "summary": {
+              "fm_t0.2_posterior": 0.04170129238627851,
+              "fm_t0.2_shuffled_posterior": 0.1159994387999177,
+              "fm_t0.2_forecast": 0.04241338442079723,
+              "fm_t0.2_wrong_state": 0.08012388995848596,
+              "fm_t0.2_wrong_actions": 0.052174044540151954,
+              "fm_t0.2_carry": 0.08955050050280988,
+              "fm_t0.2_zero": 0.05703615094535053,
+              "fm_t0.5_posterior": 0.010470354405697435,
+              "fm_t0.5_shuffled_posterior": 0.10997185786254704,
+              "fm_t0.5_forecast": 0.011356741772033274,
+              "fm_t0.5_wrong_state": 0.07149162818677723,
+              "fm_t0.5_wrong_actions": 0.03068906639236957,
+              "fm_t0.5_carry": 0.075337044429034,
+              "fm_t0.5_zero": 0.027933650533668697,
+              "fm_t0.8_posterior": 0.005829131696373224,
+              "fm_t0.8_shuffled_posterior": 0.0760792123619467,
+              "fm_t0.8_forecast": 0.007289538567420095,
+              "fm_t0.8_wrong_state": 0.06438418384641409,
+              "fm_t0.8_wrong_actions": 0.036712081637233496,
+              "fm_t0.8_carry": 0.05939825554378331,
+              "fm_t0.8_zero": 0.03820425539743155,
+              "fm_t0.95_posterior": 0.004537090426310897,
+              "fm_t0.95_shuffled_posterior": 0.05673624528571963,
+              "fm_t0.95_forecast": 0.006049735893611796,
+              "fm_t0.95_wrong_state": 0.05072719953022897,
+              "fm_t0.95_wrong_actions": 0.029173099959734827,
+              "fm_t0.95_carry": 0.04437516478355974,
+              "fm_t0.95_zero": 0.031911218422465026
+            },
+            "audit": {
+              "step": 6000,
+              "model_finite": true,
+              "optimizer_finite": true,
+              "scheduler_finite": true,
+              "cursor": true,
+              "rng_present": true,
+              "optimizer_present": true,
+              "scheduler_present": true,
+              "portable_equal": true,
+              "gradient_max": {
+                "encoder": 0.0,
+                "pool": 0.0,
+                "predictor": 0.14071984589099884,
+                "renderer": 0.5453340411186218,
+                "action_encoder": 0.06576225161552429
+              },
+              "gradient_expectations": {
+                "encoder": "frozen",
+                "pool": "frozen",
+                "predictor": "active",
+                "renderer": "active",
+                "action_encoder": "active"
+              }
+            }
+          },
+          "old_state": {
+            "clean_mse": 0.45579437281166413,
+            "clean_over_initial_carry": 0.35401725092334635,
+            "clean_over_shifted_carry": 0.5351188592129208,
+            "teacher_over_shifted_carry": 0.42321303122576875,
+            "wrong_order_over_clean": 1.982207380938749,
+            "other_actions_over_clean": 2.7479201518253262,
+            "other_initial_over_clean": 3.3902169971343623,
+            "observed_state_std": 0.6990120070251256
+          },
+          "state_summary": {
+            "clean_mse": 0.28465405941828986,
+            "clean_over_initial_carry": 0.22109190808521323,
+            "clean_over_shifted_carry": 0.3341940239555853,
+            "teacher_over_shifted_carry": 0.2787052006427926,
+            "wrong_order_over_clean": 3.268116734995234,
+            "other_actions_over_clean": 4.552483178942901,
+            "other_initial_over_clean": 5.357200109747219,
+            "observed_state_std": 0.6990120070251256
+          },
+          "health_summary": {
+            "feature_std": 0.6720715165138245,
+            "forecast_fm_t095": 0.006049735893611796,
+            "wrong_state_over_forecast": 8.385027118918403,
+            "wrong_actions_over_forecast": 4.822210501873328,
+            "carry_over_forecast": 7.335058185005661,
+            "zero_over_forecast": 5.274811823795746
+          },
+          "parent2000": {
+            "primary": {
+              "success_rate": 20.0,
+              "artifact": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-cube-spatial-local-seed2/metrics.json",
+                "sha256": "667381743ee68c3a381667548610b4110c7a2e208b3080d3754013d0da72e04a",
+                "bytes": 25220
+              }
+            },
+            "fresh": {
+              "success_rate": 10.0,
+              "artifact": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-cube-spatial-local-seed2/metrics.json",
+                "sha256": "1e29641d1ff8e2dd6c9adfe9e614faf231e19c4d1f25a509260657ae0c30ca5d",
+                "bytes": 25195
+              }
+            }
+          },
+          "planning": {
+            "primary": {
+              "success_rate": 22.0,
+              "artifact": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/planning-cube-spatial-local-seed2/metrics.json",
+                "sha256": "777b3e61b41136b2634420cc0419c56158d547e627e0db31f7b94797f60885a5",
+                "bytes": 25219
+              }
+            },
+            "fresh": {
+              "success_rate": 20.0,
+              "artifact": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/fresh-planning-cube-spatial-local-seed2/metrics.json",
+                "sha256": "f394c48a6305e1ad8d1aa89c589502653105a084c167e92873609d19757930d4",
+                "bytes": 25190
+              }
+            }
+          }
+        }
+      ],
+      "comparison_summaries": [
+        {
+          "task": "cube",
+          "case_set": "primary",
+          "candidate": "local",
+          "reference": "dense",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            4.0,
+            4.0
+          ],
+          "mean_difference_pp": 4.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -3.0,
+            12.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "primary",
+          "candidate": "local",
+          "reference": "F-identity",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            6.0,
+            10.0
+          ],
+          "mean_difference_pp": 8.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -1.0,
+            18.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "primary",
+          "candidate": "local",
+          "reference": "TF",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            -8.0,
+            8.0
+          ],
+          "mean_difference_pp": 0.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -7.000000000000001,
+            7.000000000000001
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "primary",
+          "candidate": "local",
+          "reference": "native-raw",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            -8.0,
+            0.0
+          ],
+          "mean_difference_pp": -4.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -11.0,
+            2.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "primary",
+          "candidate": "local",
+          "reference": "native-cal",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            0.0,
+            4.0
+          ],
+          "mean_difference_pp": 2.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -5.024999999999977,
+            10.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "primary",
+          "candidate": "local",
+          "reference": "same2000",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            -8.0,
+            2.0
+          ],
+          "mean_difference_pp": -3.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -11.0,
+            5.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "primary",
+          "candidate": "dense",
+          "reference": "same2000",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            -4.0,
+            6.0
+          ],
+          "mean_difference_pp": 1.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -5.0,
+            7.000000000000001
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "fresh",
+          "candidate": "local",
+          "reference": "dense",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            14.000000000000002,
+            6.0
+          ],
+          "mean_difference_pp": 10.0,
+          "shared_case_bootstrap_ci95_pp": [
+            2.0,
+            19.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "fresh",
+          "candidate": "local",
+          "reference": "F-identity",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            12.0,
+            10.0
+          ],
+          "mean_difference_pp": 11.0,
+          "shared_case_bootstrap_ci95_pp": [
+            4.0,
+            20.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "fresh",
+          "candidate": "local",
+          "reference": "TF",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            10.0,
+            2.0
+          ],
+          "mean_difference_pp": 6.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -1.0,
+            14.000000000000002
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "fresh",
+          "candidate": "local",
+          "reference": "native-raw",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            12.0,
+            6.0
+          ],
+          "mean_difference_pp": 9.0,
+          "shared_case_bootstrap_ci95_pp": [
+            0.0,
+            19.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "fresh",
+          "candidate": "local",
+          "reference": "native-cal",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            4.0,
+            4.0
+          ],
+          "mean_difference_pp": 4.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -7.000000000000001,
+            15.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "fresh",
+          "candidate": "local",
+          "reference": "same2000",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            8.0,
+            10.0
+          ],
+          "mean_difference_pp": 9.0,
+          "shared_case_bootstrap_ci95_pp": [
+            0.0,
+            18.024999999999636
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "fresh",
+          "candidate": "dense",
+          "reference": "same2000",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            -2.0,
+            0.0
+          ],
+          "mean_difference_pp": -1.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -11.0,
+            8.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        }
+      ]
+    },
+    "local-isotropic2000-20261031": {
+      "artifact": {
+        "path": "/efs/prescottsun/SPT-JEPA/reports/local-isotropic2000-20261031/results.json",
+        "sha256": "1417456f4cda84710a4492f009689a0b95fe1b45a0dc0eea4f7f8ff4ed8815e4"
+      },
+      "rows": [
+        {
+          "id": "cube-spatial-local-seed1",
+          "seed": 1,
+          "state": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 0.7074865024949096,
+            "observed_rms": 0.9569127427883423,
+            "initial_copy_mse": 1.2971541089647154,
+            "local_copy_mse": 0.8485492722687955,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 0.46817678929299905,
+                "normalized_by_initial_variation": 0.36092611206131886,
+                "normalized_by_local_variation": 0.5517378950089941,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.3690873409230396,
+                "normalized_by_initial_variation": 0.28453623079343715,
+                "normalized_by_local_variation": 0.4349627687926689,
+                "over_clean": 0.788350361153965
+              },
+              "other_initial": {
+                "mse": 1.5980235917141168,
+                "normalized_by_initial_variation": 1.2319458271535149,
+                "normalized_by_local_variation": 1.8832419565235448,
+                "over_clean": 3.413290936800427
+              },
+              "zero_initial": {
+                "mse": 1.0669032849741147,
+                "normalized_by_initial_variation": 0.822495397887327,
+                "normalized_by_local_variation": 1.2573262624119614,
+                "over_clean": 2.2788470282460214
+              },
+              "wrong_action_order": {
+                "mse": 0.9281473256825874,
+                "normalized_by_initial_variation": 0.7155258725760506,
+                "normalized_by_local_variation": 1.0938048691043807,
+                "over_clean": 1.9824718929022451
+              },
+              "other_episode_actions": {
+                "mse": 1.2421337485536397,
+                "normalized_by_initial_variation": 0.9575837905220155,
+                "normalized_by_local_variation": 1.463832200612822,
+                "over_clean": 2.6531297086073082
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.2971541089647154,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 1.5286727021714006,
+                "over_clean": 2.7706501873439042
+              },
+              "shifted_observed_carry": {
+                "mse": 0.8485492722687956,
+                "normalized_by_initial_variation": 0.6541622667687803,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 1.812454806976234
+              },
+              "zero_prediction": {
+                "mse": 0.9206060290154673,
+                "normalized_by_initial_variation": 0.7097121480424723,
+                "normalized_by_local_variation": 1.0849175871119552,
+                "over_clean": 1.9663640959341204
+              }
+            }
+          },
+          "health": {
+            "feature_std": 0.6809470653533936,
+            "summary": {
+              "fm_t0.2_posterior": 0.10704477643594146,
+              "fm_t0.2_shuffled_posterior": 0.11271546641364694,
+              "fm_t0.2_forecast": 0.10938258888199925,
+              "fm_t0.2_wrong_state": 0.11280900752171874,
+              "fm_t0.2_wrong_actions": 0.11017683520913124,
+              "fm_t0.2_carry": 0.11251614848151803,
+              "fm_t0.2_zero": 0.11265321914106607,
+              "fm_t0.5_posterior": 0.0350975408218801,
+              "fm_t0.5_shuffled_posterior": 0.04392129206098616,
+              "fm_t0.5_forecast": 0.03555754141416401,
+              "fm_t0.5_wrong_state": 0.039986909134313464,
+              "fm_t0.5_wrong_actions": 0.0376097303815186,
+              "fm_t0.5_carry": 0.04436637950129807,
+              "fm_t0.5_zero": 0.039108682656660676,
+              "fm_t0.8_posterior": 0.024693671613931656,
+              "fm_t0.8_shuffled_posterior": 0.04314782936125994,
+              "fm_t0.8_forecast": 0.0245969524839893,
+              "fm_t0.8_wrong_state": 0.03660514985676855,
+              "fm_t0.8_wrong_actions": 0.03172501642256975,
+              "fm_t0.8_carry": 0.044771655229851604,
+              "fm_t0.8_zero": 0.03317207074724138,
+              "fm_t0.95_posterior": 0.02188588143326342,
+              "fm_t0.95_shuffled_posterior": 0.03721619630232453,
+              "fm_t0.95_forecast": 0.021198847040068358,
+              "fm_t0.95_wrong_state": 0.03331942611839622,
+              "fm_t0.95_wrong_actions": 0.028014233568683267,
+              "fm_t0.95_carry": 0.03770395438186824,
+              "fm_t0.95_zero": 0.03094087529461831
+            },
+            "audit": {
+              "step": 2000,
+              "model_finite": true,
+              "optimizer_finite": true,
+              "scheduler_finite": true,
+              "cursor": true,
+              "rng_present": true,
+              "optimizer_present": true,
+              "scheduler_present": true,
+              "portable_equal": true,
+              "gradient_max": {
+                "encoder": 0.0,
+                "pool": 0.0,
+                "predictor": 0.10963356494903564,
+                "renderer": 1.234721064567566,
+                "action_encoder": 0.03135913982987404
+              },
+              "gradient_expectations": {
+                "encoder": "frozen",
+                "pool": "frozen",
+                "predictor": "active",
+                "renderer": "active",
+                "action_encoder": "active"
+              }
+            }
+          },
+          "success_rate": 24,
+          "planning": {
+            "seconds": 92.40834736824036
+          }
+        },
+        {
+          "id": "cube-spatial-local-seed2",
+          "seed": 2,
+          "state": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 0.6990120070251256,
+            "observed_rms": 0.9489319020003079,
+            "initial_copy_mse": 1.2874919841416288,
+            "local_copy_mse": 0.851762865323171,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 0.45579437281166413,
+                "normalized_by_initial_variation": 0.35401725092334635,
+                "normalized_by_local_variation": 0.5351188592129208,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.36047714411896553,
+                "normalized_by_initial_variation": 0.2799839910143562,
+                "normalized_by_local_variation": 0.42321303122576875,
+                "over_clean": 0.7908766883085588
+              },
+              "other_initial": {
+                "mse": 1.5452418299043,
+                "normalized_by_initial_variation": 1.2001953013591093,
+                "normalized_by_local_variation": 1.814169051990794,
+                "over_clean": 3.3902169971343623
+              },
+              "zero_initial": {
+                "mse": 1.0075262101802718,
+                "normalized_by_initial_variation": 0.7825495013485382,
+                "normalized_by_local_variation": 1.1828717254514278,
+                "over_clean": 2.2104840916861983
+              },
+              "wrong_action_order": {
+                "mse": 0.9034789699776286,
+                "normalized_by_initial_variation": 0.7017356077599023,
+                "normalized_by_local_variation": 1.060716552411375,
+                "over_clean": 1.982207380938749
+              },
+              "other_episode_actions": {
+                "mse": 1.2524865421377573,
+                "normalized_by_initial_variation": 0.9728111379060664,
+                "normalized_by_local_variation": 1.4704638968529646,
+                "over_clean": 2.7479201518253262
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.287491984141629,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 1.5115615349738636,
+                "over_clean": 2.824721104386309
+              },
+              "shifted_observed_carry": {
+                "mse": 0.8517628653231712,
+                "normalized_by_initial_variation": 0.661567509401654,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 1.86874370578314
+              },
+              "zero_prediction": {
+                "mse": 0.9054858753985153,
+                "normalized_by_initial_variation": 0.7032943789566215,
+                "normalized_by_local_variation": 1.063072730994161,
+                "over_clean": 1.9866104748350313
+              }
+            }
+          },
+          "health": {
+            "feature_std": 0.6720715165138245,
+            "summary": {
+              "fm_t0.2_posterior": 0.09937050705775619,
+              "fm_t0.2_shuffled_posterior": 0.10558792017400265,
+              "fm_t0.2_forecast": 0.10151153663173318,
+              "fm_t0.2_wrong_state": 0.10541274258866906,
+              "fm_t0.2_wrong_actions": 0.10268788645043969,
+              "fm_t0.2_carry": 0.10566251492127776,
+              "fm_t0.2_zero": 0.10313632898032665,
+              "fm_t0.5_posterior": 0.03364773909561336,
+              "fm_t0.5_shuffled_posterior": 0.04400535125751048,
+              "fm_t0.5_forecast": 0.03395159321371466,
+              "fm_t0.5_wrong_state": 0.03948437422513962,
+              "fm_t0.5_wrong_actions": 0.03644928988069296,
+              "fm_t0.5_carry": 0.04360073269344866,
+              "fm_t0.5_zero": 0.03714457910973579,
+              "fm_t0.8_posterior": 0.023642467916943133,
+              "fm_t0.8_shuffled_posterior": 0.043960377224721014,
+              "fm_t0.8_forecast": 0.023758390685543418,
+              "fm_t0.8_wrong_state": 0.03827909484971315,
+              "fm_t0.8_wrong_actions": 0.030989571707323194,
+              "fm_t0.8_carry": 0.04524203983601183,
+              "fm_t0.8_zero": 0.032922556856647134,
+              "fm_t0.95_posterior": 0.020736669946927577,
+              "fm_t0.95_shuffled_posterior": 0.036994641995988786,
+              "fm_t0.95_forecast": 0.020606095669791102,
+              "fm_t0.95_wrong_state": 0.034682272002100945,
+              "fm_t0.95_wrong_actions": 0.027779609663411975,
+              "fm_t0.95_carry": 0.03761911694891751,
+              "fm_t0.95_zero": 0.031107620685361326
+            },
+            "audit": {
+              "step": 2000,
+              "model_finite": true,
+              "optimizer_finite": true,
+              "scheduler_finite": true,
+              "cursor": true,
+              "rng_present": true,
+              "optimizer_present": true,
+              "scheduler_present": true,
+              "portable_equal": true,
+              "gradient_max": {
+                "encoder": 0.0,
+                "pool": 0.0,
+                "predictor": 0.12969298660755157,
+                "renderer": 1.1538794040679932,
+                "action_encoder": 0.06561468541622162
+              },
+              "gradient_expectations": {
+                "encoder": "frozen",
+                "pool": "frozen",
+                "predictor": "active",
+                "renderer": "active",
+                "action_encoder": "active"
+              }
+            }
+          },
+          "success_rate": 20,
+          "planning": {
+            "seconds": 94.83652114868164
+          }
+        }
+      ],
+      "comparison_summaries": [
+        {
+          "task": "cube",
+          "candidate": "local",
+          "reference": "dense",
+          "differences_by_seed_pp": [
+            8.0,
+            8.0
+          ],
+          "mean_difference_pp": 8.0,
+          "shared_case_ci95_pp": [
+            0.0,
+            16.0
+          ],
+          "scope": "Conditional on these two trained seeds; shared-case resampling, no seed-uncertainty/multiplicity correction."
+        },
+        {
+          "task": "cube",
+          "candidate": "local",
+          "reference": "carrier64_identity",
+          "differences_by_seed_pp": [
+            16.0,
+            4.0
+          ],
+          "mean_difference_pp": 10.0,
+          "shared_case_ci95_pp": [
+            2.0,
+            19.0
+          ],
+          "scope": "Conditional on these two trained seeds; shared-case resampling, no seed-uncertainty/multiplicity correction."
+        },
+        {
+          "task": "cube",
+          "candidate": "local",
+          "reference": "carrier64_unconstrained",
+          "differences_by_seed_pp": [
+            14.000000000000002,
+            10.0
+          ],
+          "mean_difference_pp": 12.0,
+          "shared_case_ci95_pp": [
+            2.0,
+            22.0
+          ],
+          "scope": "Conditional on these two trained seeds; shared-case resampling, no seed-uncertainty/multiplicity correction."
+        },
+        {
+          "task": "cube",
+          "candidate": "local",
+          "reference": "carrier64_bounded",
+          "differences_by_seed_pp": [
+            16.0,
+            6.0
+          ],
+          "mean_difference_pp": 11.0,
+          "shared_case_ci95_pp": [
+            2.0,
+            20.0
+          ],
+          "scope": "Conditional on these two trained seeds; shared-case resampling, no seed-uncertainty/multiplicity correction."
+        },
+        {
+          "task": "cube",
+          "candidate": "local",
+          "reference": "TF64",
+          "differences_by_seed_pp": [
+            12.0,
+            14.000000000000002
+          ],
+          "mean_difference_pp": 13.0,
+          "shared_case_ci95_pp": [
+            4.0,
+            22.0
+          ],
+          "scope": "Conditional on these two trained seeds; shared-case resampling, no seed-uncertainty/multiplicity correction."
+        },
+        {
+          "task": "cube",
+          "candidate": "dense",
+          "reference": "carrier64_identity",
+          "differences_by_seed_pp": [
+            8.0,
+            -4.0
+          ],
+          "mean_difference_pp": 2.0,
+          "shared_case_ci95_pp": [
+            -5.0,
+            10.0
+          ],
+          "scope": "Conditional on these two trained seeds; shared-case resampling, no seed-uncertainty/multiplicity correction."
+        },
+        {
+          "task": "cube",
+          "candidate": "dense",
+          "reference": "TF64",
+          "differences_by_seed_pp": [
+            4.0,
+            6.0
+          ],
+          "mean_difference_pp": 5.0,
+          "shared_case_ci95_pp": [
+            -2.0,
+            13.0
+          ],
+          "scope": "Conditional on these two trained seeds; shared-case resampling, no seed-uncertainty/multiplicity correction."
+        }
+      ]
+    },
+    "native-lewm2000-20261031": {
+      "artifact": {
+        "path": "/efs/prescottsun/SPT-JEPA/reports/native-lewm2000-20261031/results.json",
+        "sha256": "745dc847e4499122c0530996d1097fe734368e9ac6b3f9f29db162ba9091adad"
+      },
+      "rows": [
+        {
+          "id": "cube-native-lewm-seed1",
+          "seed": 1,
+          "state": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 1.0747274415215258,
+            "observed_rms": 1.2805659388144919,
+            "initial_copy_mse": 1.4001862530655391,
+            "local_copy_mse": 0.550238427030568,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 0.5419081424768118,
+                "normalized_by_initial_variation": 0.3870257555310011,
+                "normalized_by_local_variation": 0.9848605910737428,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.2848360621416184,
+                "normalized_by_initial_variation": 0.20342726656400467,
+                "normalized_by_local_variation": 0.517659342112423,
+                "over_clean": 0.5256168708588955
+              },
+              "other_initial": {
+                "mse": 2.2123744754521275,
+                "normalized_by_initial_variation": 1.5800572749578135,
+                "normalized_by_local_variation": 4.020756033691592,
+                "over_clean": 4.082563634014402
+              },
+              "zero_initial": {
+                "mse": 1.9659220969033784,
+                "normalized_by_initial_variation": 1.404043278241897,
+                "normalized_by_local_variation": 3.572854966732745,
+                "over_clean": 3.6277773718587367
+              },
+              "wrong_action_order": {
+                "mse": 1.1169459986366086,
+                "normalized_by_initial_variation": 0.7977124444631489,
+                "normalized_by_local_variation": 2.0299309240620476,
+                "over_clean": 2.061135294132257
+              },
+              "other_episode_actions": {
+                "mse": 1.7782943922767658,
+                "normalized_by_initial_variation": 1.270041316562996,
+                "normalized_by_local_variation": 3.2318615075169475,
+                "over_clean": 3.281542115512425
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.4001862530655393,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 2.5446900548582603,
+                "over_clean": 2.5838073712381115
+              },
+              "shifted_observed_carry": {
+                "mse": 0.5502384270305681,
+                "normalized_by_initial_variation": 0.3929751672864144,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 1.0153721339481676
+              },
+              "zero_prediction": {
+                "mse": 1.6542920411794506,
+                "normalized_by_initial_variation": 1.1814799906495135,
+                "normalized_by_local_variation": 3.0065003822198473,
+                "over_clean": 3.0527167088105482
+              }
+            }
+          },
+          "state600": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 0.9307305177188986,
+            "observed_rms": 1.377704639382781,
+            "initial_copy_mse": 0.9864153660769515,
+            "local_copy_mse": 0.3911460175258109,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 1.0115462838730649,
+                "normalized_by_initial_variation": 1.0254770137006897,
+                "normalized_by_local_variation": 2.586109121784207,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.7775235539842199,
+                "normalized_by_initial_variation": 0.7882313888483812,
+                "normalized_by_local_variation": 1.9878089489506634,
+                "over_clean": 0.7686485199739891
+              },
+              "other_initial": {
+                "mse": 1.8323614847857574,
+                "normalized_by_initial_variation": 1.85759624981634,
+                "normalized_by_local_variation": 4.6845970626937135,
+                "over_clean": 1.8114460148772527
+              },
+              "zero_initial": {
+                "mse": 1.7451617427112163,
+                "normalized_by_initial_variation": 1.7691956175133974,
+                "normalized_by_local_variation": 4.461663073422591,
+                "over_clean": 1.7252416132944937
+              },
+              "wrong_action_order": {
+                "mse": 1.20024442614595,
+                "normalized_by_initial_variation": 1.2167738535130619,
+                "normalized_by_local_variation": 3.0685329068108134,
+                "over_clean": 1.1865442494142602
+              },
+              "other_episode_actions": {
+                "mse": 1.5832399408854805,
+                "normalized_by_initial_variation": 1.6050438743489421,
+                "normalized_by_local_variation": 4.047695412828806,
+                "over_clean": 1.5651680660854024
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 0.9864153660769516,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 2.521859668459644,
+                "over_clean": 0.9751559387872094
+              },
+              "shifted_observed_carry": {
+                "mse": 0.3911460175258109,
+                "normalized_by_initial_variation": 0.3965327700453696,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 0.38668128563348503
+              },
+              "zero_prediction": {
+                "mse": 1.9006809045120396,
+                "normalized_by_initial_variation": 1.9268565453021997,
+                "normalized_by_local_variation": 4.8592618085051,
+                "over_clean": 1.8789856033424457
+              }
+            }
+          },
+          "native_success": 12.0,
+          "calibrated_success": 14.000000000000002,
+          "fullstate_metrics": {
+            "loss": 0.380443274974823,
+            "pred": 0.2557591497898102,
+            "sigreg": 1.3853790760040283,
+            "feature_std": 0.9005867838859558
+          },
+          "fullstate_metrics600": {
+            "loss": 0.8843107223510742,
+            "pred": 0.7326112985610962,
+            "sigreg": 1.6855494976043701,
+            "feature_std": 0.8979202508926392
+          }
+        },
+        {
+          "id": "cube-native-lewm-seed2",
+          "seed": 2,
+          "state": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 0.9213560886361256,
+            "observed_rms": 1.1553542685906608,
+            "initial_copy_mse": 1.0957654303163704,
+            "local_copy_mse": 0.4353248588030146,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 0.565977820629187,
+                "normalized_by_initial_variation": 0.5165136670407436,
+                "normalized_by_local_variation": 1.300127500610511,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.2996319365233222,
+                "normalized_by_initial_variation": 0.27344532710510144,
+                "normalized_by_local_variation": 0.6882950294802859,
+                "over_clean": 0.5294057922450511
+              },
+              "other_initial": {
+                "mse": 2.0793823817972776,
+                "normalized_by_initial_variation": 1.8976528408976325,
+                "normalized_by_local_variation": 4.776622193170463,
+                "over_clean": 3.6739644311249986
+              },
+              "zero_initial": {
+                "mse": 1.9120517398443406,
+                "normalized_by_initial_variation": 1.7449462147133907,
+                "normalized_by_local_variation": 4.392241107254452,
+                "over_clean": 3.378315669187793
+              },
+              "wrong_action_order": {
+                "mse": 1.1197390993514242,
+                "normalized_by_initial_variation": 1.021878468120802,
+                "normalized_by_local_variation": 2.5721919543724208,
+                "over_clean": 1.9784151578707292
+              },
+              "other_episode_actions": {
+                "mse": 1.760600066751362,
+                "normalized_by_initial_variation": 1.6067308002617307,
+                "normalized_by_local_variation": 4.0443361575821175,
+                "over_clean": 3.110722721950722
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.0957654303163706,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 2.5171211984753823,
+                "over_clean": 1.9360571923087526
+              },
+              "shifted_observed_carry": {
+                "mse": 0.4353248588030146,
+                "normalized_by_initial_variation": 0.3972792413037954,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 0.7691553324811775
+              },
+              "zero_prediction": {
+                "mse": 1.343836023008441,
+                "normalized_by_initial_variation": 1.2263902344687467,
+                "normalized_by_local_variation": 3.086972856784477,
+                "over_clean": 2.3743616340204348
+              }
+            }
+          },
+          "state600": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 0.9251363381738421,
+            "observed_rms": 2.7872527216986764,
+            "initial_copy_mse": 1.0289386243627825,
+            "local_copy_mse": 0.3936105712566558,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 5.429894920474894,
+                "normalized_by_initial_variation": 5.2771805741451345,
+                "normalized_by_local_variation": 13.795094230165642,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 3.95283875638479,
+                "normalized_by_initial_variation": 3.8416662206968537,
+                "normalized_by_local_variation": 10.042511672805968,
+                "over_clean": 0.727977026126148
+              },
+              "other_initial": {
+                "mse": 5.7687259449494235,
+                "normalized_by_initial_variation": 5.606482066432264,
+                "normalized_by_local_variation": 14.655922290227052,
+                "over_clean": 1.062401027908823
+              },
+              "zero_initial": {
+                "mse": 7.838757504980997,
+                "normalized_by_initial_variation": 7.618294540974694,
+                "normalized_by_local_variation": 19.915007566881876,
+                "over_clean": 1.4436296870907819
+              },
+              "wrong_action_order": {
+                "mse": 5.543848526452052,
+                "normalized_by_initial_variation": 5.387929265348879,
+                "normalized_by_local_variation": 14.084602729933183,
+                "over_clean": 1.0209863372396886
+              },
+              "other_episode_actions": {
+                "mse": 5.685787543459143,
+                "normalized_by_initial_variation": 5.525876285361848,
+                "normalized_by_local_variation": 14.445210466036231,
+                "over_clean": 1.0471266252352944
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.0289386243627825,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 2.6141031250196223,
+                "over_clean": 0.18949512641264749
+              },
+              "shifted_observed_carry": {
+                "mse": 0.3936105712566557,
+                "normalized_by_initial_variation": 0.3825403789272826,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 0.0724895374627675
+              },
+              "zero_prediction": {
+                "mse": 7.76298533151936,
+                "normalized_by_initial_variation": 7.544653439681055,
+                "normalized_by_local_variation": 19.72250213386029,
+                "over_clean": 1.4296750572919772
+              }
+            }
+          },
+          "native_success": 6.0,
+          "calibrated_success": 16.0,
+          "fullstate_metrics": {
+            "loss": 0.44531965255737305,
+            "pred": 0.31388843059539795,
+            "sigreg": 1.4603469371795654,
+            "feature_std": 0.8459643125534058
+          },
+          "fullstate_metrics600": {
+            "loss": 3.9723081588745117,
+            "pred": 3.6528160572052,
+            "sigreg": 3.549912452697754,
+            "feature_std": 0.8921717405319214
+          }
+        }
+      ],
+      "comparison_summaries": [
+        {
+          "task": "cube",
+          "label": "BN2000-minus-raw2000",
+          "difference_pp": 6.0,
+          "case_bootstrap_ci95_pp": [
+            0.0,
+            12.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "task": "cube",
+          "label": "raw2000-minus-raw600",
+          "difference_pp": 5.0,
+          "case_bootstrap_ci95_pp": [
+            -1.0,
+            12.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "task": "cube",
+          "label": "BN2000-minus-BN600",
+          "difference_pp": 7.000000000000001,
+          "case_bootstrap_ci95_pp": [
+            -2.0,
+            16.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "task": "cube",
+          "label": "BN2000-minus-TF",
+          "difference_pp": 6.0,
+          "case_bootstrap_ci95_pp": [
+            -2.0,
+            14.000000000000002
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "task": "cube",
+          "label": "BN2000-minus-F-identity",
+          "difference_pp": 3.0,
+          "case_bootstrap_ci95_pp": [
+            -5.0,
+            11.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "task": "cube",
+          "label": "BN2000-minus-F-unconstrained",
+          "difference_pp": 5.0,
+          "case_bootstrap_ci95_pp": [
+            -3.0,
+            13.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "task": "cube",
+          "label": "BN2000-minus-F-bounded",
+          "difference_pp": 4.0,
+          "case_bootstrap_ci95_pp": [
+            -4.0,
+            12.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        }
+      ]
+    },
+    "native-cube12000-20261031": {
+      "artifact": {
+        "path": "/efs/prescottsun/SPT-JEPA/reports/native-cube12000-20261031/results.json",
+        "sha256": "af1152dc6d04db20bdf13972e0e29e5692201c7dd100c7cbfbcf004a9c4708c0"
+      },
+      "rows": [
+        {
+          "id": "cube-native-lewm-seed1",
+          "seed": 1,
+          "state": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 1.0047802424354844,
+            "observed_rms": 1.0190698076771607,
+            "initial_copy_mse": 1.350205328517991,
+            "local_copy_mse": 0.7124830811659264,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 0.06820883321854876,
+                "normalized_by_initial_variation": 0.05051737819270494,
+                "normalized_by_local_variation": 0.09573396901850637,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.028336680637794296,
+                "normalized_by_initial_variation": 0.020986941792695436,
+                "normalized_by_local_variation": 0.039771724251224876,
+                "over_clean": 0.4154400434764863
+              },
+              "other_initial": {
+                "mse": 1.9457134759387846,
+                "normalized_by_initial_variation": 1.4410500646404898,
+                "normalized_by_local_variation": 2.7308907781427836,
+                "over_clean": 28.52582846131527
+              },
+              "zero_initial": {
+                "mse": 1.5241613062455368,
+                "normalized_by_initial_variation": 1.1288366843570992,
+                "normalized_by_local_variation": 2.1392245606048053,
+                "over_clean": 22.345512074102672
+              },
+              "wrong_action_order": {
+                "mse": 1.0311311269423784,
+                "normalized_by_initial_variation": 0.7636846819988231,
+                "normalized_by_local_variation": 1.447235947350508,
+                "over_clean": 15.117266756909894
+              },
+              "other_episode_actions": {
+                "mse": 1.6813425553520962,
+                "normalized_by_initial_variation": 1.24524953341546,
+                "normalized_by_local_variation": 2.359835061066576,
+                "over_clean": 24.649924005661934
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.350205328517991,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 1.8950700223063244,
+                "over_clean": 19.79516823270941
+              },
+              "shifted_observed_carry": {
+                "mse": 0.7124830811659264,
+                "normalized_by_initial_variation": 0.527684986955251,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 10.445613090654264
+              },
+              "zero_prediction": {
+                "mse": 1.0431454631032797,
+                "normalized_by_initial_variation": 0.7725828368995215,
+                "normalized_by_local_variation": 1.4640985739566594,
+                "over_clean": 15.293407230129924
+              }
+            }
+          },
+          "state6000": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 0.9983311446931166,
+            "observed_rms": 1.06269312400076,
+            "initial_copy_mse": 1.245985003098717,
+            "local_copy_mse": 0.5992166540394068,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 0.22103121116321114,
+                "normalized_by_initial_variation": 0.17739476046141406,
+                "normalized_by_local_variation": 0.36886693597917797,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.1436100992296701,
+                "normalized_by_initial_variation": 0.11525828872138692,
+                "normalized_by_local_variation": 0.23966306387109482,
+                "over_clean": 0.6497276944459546
+              },
+              "other_initial": {
+                "mse": 1.962361184283031,
+                "normalized_by_initial_variation": 1.574947675455735,
+                "normalized_by_local_variation": 3.27487757734113,
+                "over_clean": 8.87820852971759
+              },
+              "zero_initial": {
+                "mse": 1.5404608347752575,
+                "normalized_by_initial_variation": 1.2363397881549059,
+                "normalized_by_local_variation": 2.5707910893176718,
+                "over_clean": 6.969426745971045
+              },
+              "wrong_action_order": {
+                "mse": 1.0371447714054136,
+                "normalized_by_initial_variation": 0.8323894499741765,
+                "normalized_by_local_variation": 1.7308343558441999,
+                "over_clean": 4.69230008715637
+              },
+              "other_episode_actions": {
+                "mse": 1.6806255541515454,
+                "normalized_by_initial_variation": 1.3488328912241272,
+                "normalized_by_local_variation": 2.8047043466202135,
+                "over_clean": 7.603566687740576
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.245985003098717,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 2.079356430932535,
+                "over_clean": 5.637145073501281
+              },
+              "shifted_observed_carry": {
+                "mse": 0.5992166540394069,
+                "normalized_by_initial_variation": 0.4809180307541247,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 2.7110047078235513
+              },
+              "zero_prediction": {
+                "mse": 1.1380936518799776,
+                "normalized_by_initial_variation": 0.9134087882675813,
+                "normalized_by_local_variation": 1.8993024379544896,
+                "over_clean": 5.14901785087537
+              }
+            }
+          },
+          "planning": {
+            "primary": {
+              "raw": {
+                "success": 26.0,
+                "artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-cube-native-lewm-seed1/metrics.json",
+                  "sha256": "1a251ae2e187f2d44026c5c9c7de196f19135d4e6a49d17944a39c20547eb526"
+                },
+                "parent_artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/planning-cube-native-lewm-seed1/metrics.json",
+                  "sha256": "729a3c266ece6fede8e0e57491976537469cd6df690cb461c4384b84fc191984"
+                }
+              },
+              "cal": {
+                "success": 30.0,
+                "artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-calibrated-cube-native-lewm-seed1/metrics.json",
+                  "sha256": "a0497c070bf57a52a8398f77c4ddd2f6adbdefc80b8d472c5a9a1f35b6ee3634"
+                },
+                "parent_artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/planning-calibrated-cube-native-lewm-seed1/metrics.json",
+                  "sha256": "6967195afb969ee5c5af2c78bd61b1b3b9577365d2d10ea9323bf858eb24d7b9"
+                }
+              }
+            },
+            "fresh": {
+              "raw": {
+                "success": 28.000000000000004,
+                "artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-cube-native-lewm-seed1/metrics.json",
+                  "sha256": "271ad13977abfb0cd81d366a66865ef33188c0fe7a1217461af8f8fafbc415b0"
+                },
+                "parent_artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_rawfresh6000_20261031/fresh-planning-raw-cube-native-lewm-seed1/metrics.json",
+                  "sha256": "1ae74d06d7dad990714310014d50e513e0b8fbd4e28a73521a933542cfc7fcc6"
+                }
+              },
+              "cal": {
+                "success": 30.0,
+                "artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-calibrated-cube-native-lewm-seed1/metrics.json",
+                  "sha256": "be7ed470db3c30f9bc7b4dc519cd59652d2f3827c398749d98d9a4f07330d7b7"
+                },
+                "parent_artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/fresh-planning-calibrated-cube-native-lewm-seed1/metrics.json",
+                  "sha256": "3842d4cb3bee54b1cf2933c09b5b179cd248ba0df761904ef9feb89d2c078e0c"
+                }
+              }
+            }
+          },
+          "planning6000": {
+            "primary": {
+              "raw": {
+                "success": 24.0
+              },
+              "cal": {
+                "success": 16.0
+              }
+            },
+            "fresh": {
+              "raw": {
+                "success": 12.0
+              },
+              "cal": {
+                "success": 20.0
+              }
+            }
+          }
+        },
+        {
+          "id": "cube-native-lewm-seed2",
+          "seed": 2,
+          "state": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 0.9551269058014726,
+            "observed_rms": 0.9687592092153979,
+            "initial_copy_mse": 1.2608797409199306,
+            "local_copy_mse": 0.6647348664994919,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 0.06842330839787553,
+                "normalized_by_initial_variation": 0.0542663238826839,
+                "normalized_by_local_variation": 0.10293323224971507,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.02615598889166082,
+                "normalized_by_initial_variation": 0.020744237569062345,
+                "normalized_by_local_variation": 0.039348002052906936,
+                "over_clean": 0.3822672347201635
+              },
+              "other_initial": {
+                "mse": 1.8580547109363226,
+                "normalized_by_initial_variation": 1.473617705666915,
+                "normalized_by_local_variation": 2.7951816650161274,
+                "over_clean": 27.155288956972054
+              },
+              "zero_initial": {
+                "mse": 1.4494031617937615,
+                "normalized_by_initial_variation": 1.1495173685131028,
+                "normalized_by_local_variation": 2.180422954833632,
+                "over_clean": 21.182886296079246
+              },
+              "wrong_action_order": {
+                "mse": 0.9818485915070418,
+                "normalized_by_initial_variation": 0.7787012191905714,
+                "normalized_by_local_variation": 1.4770529439466262,
+                "over_clean": 14.349621707820361
+              },
+              "other_episode_actions": {
+                "mse": 1.6146794258076225,
+                "normalized_by_initial_variation": 1.2805974855536673,
+                "normalized_by_local_variation": 2.429057820166045,
+                "over_clean": 23.598382826191383
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.2608797409199306,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 1.8968160156240197,
+                "over_clean": 18.427634828588317
+              },
+              "shifted_observed_carry": {
+                "mse": 0.6647348664994918,
+                "normalized_by_initial_variation": 0.5271992601090608,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 9.715035447191722
+              },
+              "zero_prediction": {
+                "mse": 0.9410928525989003,
+                "normalized_by_initial_variation": 0.7463779629866084,
+                "normalized_by_local_variation": 1.4157416739018305,
+                "over_clean": 13.753980546022827
+              }
+            }
+          },
+          "state6000": {
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "observed_std": 1.0207230165998753,
+            "observed_rms": 1.1071881524763467,
+            "initial_copy_mse": 1.303745794264642,
+            "local_copy_mse": 0.6127851246440773,
+            "conditions": {
+              "clean_rollout": {
+                "mse": 0.3879981129616025,
+                "normalized_by_initial_variation": 0.297602580708954,
+                "normalized_by_local_variation": 0.6331715594221754,
+                "over_clean": 1.0
+              },
+              "teacher_forced_prefix": {
+                "mse": 0.211236680505744,
+                "normalized_by_initial_variation": 0.1620229046452179,
+                "normalized_by_local_variation": 0.34471574457430926,
+                "over_clean": 0.5444270821148263
+              },
+              "other_initial": {
+                "mse": 1.99548044503435,
+                "normalized_by_initial_variation": 1.5305747898192608,
+                "normalized_by_local_variation": 3.2564113663715,
+                "over_clean": 5.143015850780255
+              },
+              "zero_initial": {
+                "mse": 1.669703659169778,
+                "normalized_by_initial_variation": 1.2806972544149595,
+                "normalized_by_local_variation": 2.7247783799249183,
+                "over_clean": 4.3033808758111585
+              },
+              "wrong_action_order": {
+                "mse": 1.1567652821644272,
+                "normalized_by_initial_variation": 0.8872629060459466,
+                "normalized_by_local_variation": 1.8877176283225032,
+                "over_clean": 2.981368319899288
+              },
+              "other_episode_actions": {
+                "mse": 1.7588206849140544,
+                "normalized_by_initial_variation": 1.3490518570808432,
+                "normalized_by_local_variation": 2.870207865988305,
+                "over_clean": 4.533065048922319
+              },
+              "observed_future": {
+                "mse": 0.0,
+                "normalized_by_initial_variation": 0.0,
+                "normalized_by_local_variation": 0.0,
+                "over_clean": 0.0
+              },
+              "initial_carry": {
+                "mse": 1.3037457942646422,
+                "normalized_by_initial_variation": 1.0,
+                "normalized_by_local_variation": 2.127574155821576,
+                "over_clean": 3.3601859151146565
+              },
+              "shifted_observed_carry": {
+                "mse": 0.6127851246440773,
+                "normalized_by_initial_variation": 0.47001886973657264,
+                "normalized_by_local_variation": 1.0,
+                "over_clean": 1.5793507859269418
+              },
+              "zero_prediction": {
+                "mse": 1.235691970611951,
+                "normalized_by_initial_variation": 0.9478013091569926,
+                "normalized_by_local_variation": 2.016517570216273,
+                "over_clean": 3.1847886093565583
+              }
+            }
+          },
+          "planning": {
+            "primary": {
+              "raw": {
+                "success": 26.0,
+                "artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-cube-native-lewm-seed2/metrics.json",
+                  "sha256": "3fed8ca4a2f55a93e6b1015ad8d26dcf446f087191ac9854c9a6772ab7870ee0"
+                },
+                "parent_artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/planning-cube-native-lewm-seed2/metrics.json",
+                  "sha256": "b34ecd53db1e021bf93923f0d4bc8c90b165f91c38379101dece543c448b8d8f"
+                }
+              },
+              "cal": {
+                "success": 28.000000000000004,
+                "artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/planning-calibrated-cube-native-lewm-seed2/metrics.json",
+                  "sha256": "dd7248a5a90aa37085f1b30b9143a1121c5b2c21f5570a55c028393b1099df97"
+                },
+                "parent_artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/planning-calibrated-cube-native-lewm-seed2/metrics.json",
+                  "sha256": "0c7d04d38a4764beb1cc0480076409a97d3cb0f241586d87285c5c546e6911b3"
+                }
+              }
+            },
+            "fresh": {
+              "raw": {
+                "success": 26.0,
+                "artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-cube-native-lewm-seed2/metrics.json",
+                  "sha256": "e98535692539bbcd416aa52138984f28e713a2f42c94d4ad94296aa2fd406295"
+                },
+                "parent_artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_rawfresh6000_20261031/fresh-planning-raw-cube-native-lewm-seed2/metrics.json",
+                  "sha256": "829b78451510b9055363b3c19a245371a2b3210dc1e70e223007e0a2e6dac662"
+                }
+              },
+              "cal": {
+                "success": 26.0,
+                "artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/fresh-planning-calibrated-cube-native-lewm-seed2/metrics.json",
+                  "sha256": "e9388d5c441984e8565d1827e1cf42d784a52df6884c7289bd9ece5bfceaf6ee"
+                },
+                "parent_artifact": {
+                  "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/fresh-planning-calibrated-cube-native-lewm-seed2/metrics.json",
+                  "sha256": "6e226a4927c1d782a38da6ef430ca68ab71fd855564ca5a682382a404c9217b9"
+                }
+              }
+            }
+          },
+          "planning6000": {
+            "primary": {
+              "raw": {
+                "success": 22.0
+              },
+              "cal": {
+                "success": 18.0
+              }
+            },
+            "fresh": {
+              "raw": {
+                "success": 14.000000000000002
+              },
+              "cal": {
+                "success": 16.0
+              }
+            }
+          }
+        }
+      ],
+      "comparison_summaries": [
+        {
+          "case_set": "primary",
+          "label": "raw12000-minus-raw6000",
+          "difference_pp": 3.0,
+          "case_bootstrap_ci95_pp": [
+            -5.0,
+            11.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "case_set": "primary",
+          "label": "cal12000-minus-cal6000",
+          "difference_pp": 12.0,
+          "case_bootstrap_ci95_pp": [
+            3.0,
+            22.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "case_set": "primary",
+          "label": "raw12000-minus-TF12000",
+          "difference_pp": 7.000000000000001,
+          "case_bootstrap_ci95_pp": [
+            -3.0,
+            17.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "case_set": "primary",
+          "label": "cal12000-minus-TF12000",
+          "difference_pp": 10.0,
+          "case_bootstrap_ci95_pp": [
+            0.0,
+            20.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "case_set": "primary",
+          "label": "cal-minus-raw",
+          "difference_pp": 3.0,
+          "case_bootstrap_ci95_pp": [
+            -2.0,
+            9.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "case_set": "fresh",
+          "label": "raw12000-minus-raw6000",
+          "difference_pp": 14.000000000000002,
+          "case_bootstrap_ci95_pp": [
+            2.0,
+            26.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "case_set": "fresh",
+          "label": "cal12000-minus-cal6000",
+          "difference_pp": 10.0,
+          "case_bootstrap_ci95_pp": [
+            0.0,
+            20.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "case_set": "fresh",
+          "label": "raw12000-minus-TF12000",
+          "difference_pp": 12.0,
+          "case_bootstrap_ci95_pp": [
+            3.0,
+            22.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "case_set": "fresh",
+          "label": "cal12000-minus-TF12000",
+          "difference_pp": 13.0,
+          "case_bootstrap_ci95_pp": [
+            6.0,
+            21.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        },
+        {
+          "case_set": "fresh",
+          "label": "cal-minus-raw",
+          "difference_pp": 1.0,
+          "case_bootstrap_ci95_pp": [
+            -8.0,
+            11.0
+          ],
+          "scope": "Same50 cases jointly resampled across two fixed training seeds; not population uncertainty across seeds."
+        }
+      ]
+    },
+    "carrier6000-20261031": {
+      "artifact": {
+        "path": "/efs/prescottsun/SPT-JEPA/reports/carrier6000-20261031/results.json",
+        "sha256": "0d4843a7c809062aea682ee3f506cd767eb866b032ed848a46822cdcd38c5928"
+      },
+      "rows": [
+        {
+          "id": "cube-temporal-forecast-seed1",
+          "seed": 1,
+          "state": null,
+          "parent2000_state": null,
+          "health": {
+            "feature_std": 0.5939273834228516,
+            "summary": {
+              "fm_t0.2_posterior": 0.04632303863763809,
+              "fm_t0.2_shuffled_posterior": 0.2025137534365058,
+              "fm_t0.2_forecast": 0.046325065195560455,
+              "fm_t0.2_wrong_state": 0.15966097498312593,
+              "fm_t0.2_wrong_actions": 0.06378835183568299,
+              "fm_t0.2_carry": 0.137370303273201,
+              "fm_t0.2_zero": 0.0808644664939493,
+              "fm_t0.5_posterior": 0.011408308695536107,
+              "fm_t0.5_shuffled_posterior": 0.11316771921701729,
+              "fm_t0.5_forecast": 0.011268092144746333,
+              "fm_t0.5_wrong_state": 0.09506599046289921,
+              "fm_t0.5_wrong_actions": 0.033441699808463454,
+              "fm_t0.5_carry": 0.08187262271530926,
+              "fm_t0.5_zero": 0.04914766165893525,
+              "fm_t0.8_posterior": 0.006892205332405865,
+              "fm_t0.8_shuffled_posterior": 0.07333053834736347,
+              "fm_t0.8_forecast": 0.007017903990345076,
+              "fm_t0.8_wrong_state": 0.0686598711181432,
+              "fm_t0.8_wrong_actions": 0.036431037588045,
+              "fm_t0.8_carry": 0.05738509725779295,
+              "fm_t0.8_zero": 0.05536592728458345,
+              "fm_t0.95_posterior": 0.005512867064680904,
+              "fm_t0.95_shuffled_posterior": 0.05464950134046376,
+              "fm_t0.95_forecast": 0.005663081785314716,
+              "fm_t0.95_wrong_state": 0.0520714953308925,
+              "fm_t0.95_wrong_actions": 0.028343520243652165,
+              "fm_t0.95_carry": 0.042653183452785015,
+              "fm_t0.95_zero": 0.043140076217241585
+            },
+            "audit": {
+              "step": 6000,
+              "model_finite": true,
+              "optimizer_finite": true,
+              "scheduler_finite": true,
+              "cursor": true,
+              "rng_present": true,
+              "optimizer_present": true,
+              "scheduler_present": true,
+              "portable_equal": true,
+              "gradient_max": {
+                "encoder": 0.2533433735370636,
+                "predictor": 0.06540755927562714,
+                "renderer": 0.6389930248260498
+              },
+              "gradient_expectations": {
+                "encoder": "active",
+                "predictor": "active",
+                "renderer": "active"
+              }
+            }
+          },
+          "state_summary": null,
+          "parent2000_state_summary": null,
+          "parent2000": {
+            "primary": {
+              "success_rate": 12.0,
+              "source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-temporal-forecast-seed1-learn2000/metrics.json",
+                "sha256": "c10dc22ac91f06f208118d9dda13f532e58ff6927fd9409d304c7c877775421c",
+                "bytes": 25238
+              }
+            },
+            "fresh": {
+              "success_rate": 6.0,
+              "source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/cube-temporal-forecast-seed1-learn2000/metrics.json",
+                "sha256": "2c17f602588f02801952866b9afc0bfeae1c3950597987589d1b692aef514e98",
+                "bytes": 25210
+              }
+            }
+          },
+          "planning": {
+            "primary": {
+              "success_rate": 24.0,
+              "source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-cube-temporal-forecast-seed1/metrics.json",
+                "sha256": "c1f1fbeeff5b4b199b7d75ee30ad75168866c364214b135f29c7f0cef7630f28",
+                "bytes": 25220
+              }
+            },
+            "fresh": {
+              "success_rate": 14.0,
+              "source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-cube-temporal-forecast-seed1/metrics.json",
+                "sha256": "b12bd458ea7a10ae7e6306d53051b619b8228d687abed5d795b369ab077b3675",
+                "bytes": 25209
+              }
+            }
+          }
+        },
+        {
+          "id": "cube-temporal-forecast-seed2",
+          "seed": 2,
+          "state": null,
+          "parent2000_state": null,
+          "health": {
+            "feature_std": 0.5866039991378784,
+            "summary": {
+              "fm_t0.2_posterior": 0.04551899270154536,
+              "fm_t0.2_shuffled_posterior": 0.19900407083332539,
+              "fm_t0.2_forecast": 0.045572461327537894,
+              "fm_t0.2_wrong_state": 0.1541638351045549,
+              "fm_t0.2_wrong_actions": 0.0605913030449301,
+              "fm_t0.2_carry": 0.1290836683474481,
+              "fm_t0.2_zero": 0.06859002425335348,
+              "fm_t0.5_posterior": 0.011523023538757116,
+              "fm_t0.5_shuffled_posterior": 0.11014048638753593,
+              "fm_t0.5_forecast": 0.01149973866995424,
+              "fm_t0.5_wrong_state": 0.09393541153986007,
+              "fm_t0.5_wrong_actions": 0.030814308556728065,
+              "fm_t0.5_carry": 0.08290007198229432,
+              "fm_t0.5_zero": 0.04374783963430673,
+              "fm_t0.8_posterior": 0.006754201953299344,
+              "fm_t0.8_shuffled_posterior": 0.0735886124894023,
+              "fm_t0.8_forecast": 0.007890821696491912,
+              "fm_t0.8_wrong_state": 0.06930196937173605,
+              "fm_t0.8_wrong_actions": 0.03597645845729858,
+              "fm_t0.8_carry": 0.05844756285659969,
+              "fm_t0.8_zero": 0.05548035725951195,
+              "fm_t0.95_posterior": 0.005441888468340039,
+              "fm_t0.95_shuffled_posterior": 0.055102039594203234,
+              "fm_t0.95_forecast": 0.007186565300798975,
+              "fm_t0.95_wrong_state": 0.05274093057960272,
+              "fm_t0.95_wrong_actions": 0.028503726003691554,
+              "fm_t0.95_carry": 0.0434371690498665,
+              "fm_t0.95_zero": 0.04290534765459597
+            },
+            "audit": {
+              "step": 6000,
+              "model_finite": true,
+              "optimizer_finite": true,
+              "scheduler_finite": true,
+              "cursor": true,
+              "rng_present": true,
+              "optimizer_present": true,
+              "scheduler_present": true,
+              "portable_equal": true,
+              "gradient_max": {
+                "encoder": 0.20613287389278412,
+                "predictor": 0.0713324174284935,
+                "renderer": 0.6438254714012146
+              },
+              "gradient_expectations": {
+                "encoder": "active",
+                "predictor": "active",
+                "renderer": "active"
+              }
+            }
+          },
+          "state_summary": null,
+          "parent2000_state_summary": null,
+          "parent2000": {
+            "primary": {
+              "success_rate": 6.0,
+              "source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/planning-cube-temporal-forecast-seed2-learn2000/metrics.json",
+                "sha256": "6dd32ef1c1cb91d5fc13631146e3ab994f76b5c5bb3d49ea621768b03a07277f",
+                "bytes": 25240
+              }
+            },
+            "fresh": {
+              "success_rate": 6.0,
+              "source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_fresh2000_20261031/cube-temporal-forecast-seed2-learn2000/metrics.json",
+                "sha256": "0b158d221f3a6a50854ef45e52c9b540195d8f2712189b48a6a1ab1f65e28f29",
+                "bytes": 25210
+              }
+            }
+          },
+          "planning": {
+            "primary": {
+              "success_rate": 14.0,
+              "source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-cube-temporal-forecast-seed2/metrics.json",
+                "sha256": "daa1ac47261d1c1bf286057f53a065b3df3acbed7e723a2404d29c9d792f95d8",
+                "bytes": 25239
+              }
+            },
+            "fresh": {
+              "success_rate": 18.0,
+              "source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-cube-temporal-forecast-seed2/metrics.json",
+                "sha256": "8e1cfe49ab0c397618ead5acadd91e5f1d46d80299a0dfb4f6613cdfbcc68822",
+                "bytes": 25193
+              }
+            }
+          }
+        }
+      ],
+      "comparison_summaries": [
+        {
+          "task": "cube",
+          "case_set": "primary",
+          "candidate": "identity",
+          "reference": "temporal-forecast",
+          "kind": "same6000",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            -14.000000000000002,
+            -2.0
+          ],
+          "mean_difference_pp": -8.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -17.0,
+            0.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "primary",
+          "candidate": "identity",
+          "reference": "identity",
+          "kind": "6000_minus2000",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            2.0,
+            -4.0
+          ],
+          "mean_difference_pp": -1.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -10.0,
+            8.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "primary",
+          "candidate": "temporal-forecast",
+          "reference": "temporal-forecast",
+          "kind": "6000_minus2000",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            12.0,
+            8.0
+          ],
+          "mean_difference_pp": 10.0,
+          "shared_case_bootstrap_ci95_pp": [
+            1.0,
+            19.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "fresh",
+          "candidate": "identity",
+          "reference": "temporal-forecast",
+          "kind": "same6000",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            -2.0,
+            -8.0
+          ],
+          "mean_difference_pp": -5.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -14.000000000000002,
+            3.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "fresh",
+          "candidate": "identity",
+          "reference": "identity",
+          "kind": "6000_minus2000",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            4.0,
+            4.0
+          ],
+          "mean_difference_pp": 4.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -2.0,
+            11.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "task": "cube",
+          "case_set": "fresh",
+          "candidate": "temporal-forecast",
+          "reference": "temporal-forecast",
+          "kind": "6000_minus2000",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            8.0,
+            12.0
+          ],
+          "mean_difference_pp": 10.0,
+          "shared_case_bootstrap_ci95_pp": [
+            3.0,
+            18.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        }
+      ]
+    },
+    "cube-tf12000-20261031": {
+      "artifact": {
+        "path": "/efs/prescottsun/SPT-JEPA/reports/cube-tf12000-20261031/results.json",
+        "sha256": "6cc97b000a50033ba8ce006be87659439a17a210e70312e3ba6de536ac2f13ae"
+      },
+      "rows": [
+        {
+          "id": "cube-temporal-forecast-seed1",
+          "seed": 1,
+          "health_old": {
+            "feature_std": 0.5939273834228516,
+            "summary": {
+              "fm_t0.2_posterior": 0.04632303863763809,
+              "fm_t0.2_shuffled_posterior": 0.2025137534365058,
+              "fm_t0.2_forecast": 0.046325065195560455,
+              "fm_t0.2_wrong_state": 0.15966097498312593,
+              "fm_t0.2_wrong_actions": 0.06378835183568299,
+              "fm_t0.2_carry": 0.137370303273201,
+              "fm_t0.2_zero": 0.0808644664939493,
+              "fm_t0.5_posterior": 0.011408308695536107,
+              "fm_t0.5_shuffled_posterior": 0.11316771921701729,
+              "fm_t0.5_forecast": 0.011268092144746333,
+              "fm_t0.5_wrong_state": 0.09506599046289921,
+              "fm_t0.5_wrong_actions": 0.033441699808463454,
+              "fm_t0.5_carry": 0.08187262271530926,
+              "fm_t0.5_zero": 0.04914766165893525,
+              "fm_t0.8_posterior": 0.006892205332405865,
+              "fm_t0.8_shuffled_posterior": 0.07333053834736347,
+              "fm_t0.8_forecast": 0.007017903990345076,
+              "fm_t0.8_wrong_state": 0.0686598711181432,
+              "fm_t0.8_wrong_actions": 0.036431037588045,
+              "fm_t0.8_carry": 0.05738509725779295,
+              "fm_t0.8_zero": 0.05536592728458345,
+              "fm_t0.95_posterior": 0.005512867064680904,
+              "fm_t0.95_shuffled_posterior": 0.05464950134046376,
+              "fm_t0.95_forecast": 0.005663081785314716,
+              "fm_t0.95_wrong_state": 0.0520714953308925,
+              "fm_t0.95_wrong_actions": 0.028343520243652165,
+              "fm_t0.95_carry": 0.042653183452785015,
+              "fm_t0.95_zero": 0.043140076217241585
+            },
+            "audit": {
+              "step": 6000,
+              "model_finite": true,
+              "optimizer_finite": true,
+              "scheduler_finite": true,
+              "cursor": true,
+              "rng_present": true,
+              "optimizer_present": true,
+              "scheduler_present": true,
+              "portable_equal": true,
+              "gradient_max": {
+                "encoder": 0.2533433735370636,
+                "predictor": 0.06540755927562714,
+                "renderer": 0.6389930248260498
+              },
+              "gradient_expectations": {
+                "encoder": "active",
+                "predictor": "active",
+                "renderer": "active"
+              }
+            }
+          },
+          "health_new": {
+            "feature_std": 0.7998471856117249,
+            "summary": {
+              "fm_t0.2_posterior": 0.028538547572679818,
+              "fm_t0.2_shuffled_posterior": 0.29213770013302565,
+              "fm_t0.2_forecast": 0.02880153665319085,
+              "fm_t0.2_wrong_state": 0.22092809458263218,
+              "fm_t0.2_wrong_actions": 0.0636332503054291,
+              "fm_t0.2_carry": 0.18282165937125683,
+              "fm_t0.2_zero": 0.09147594589740038,
+              "fm_t0.5_posterior": 0.00752966059371829,
+              "fm_t0.5_shuffled_posterior": 0.13656383962370455,
+              "fm_t0.5_forecast": 0.007481184555217624,
+              "fm_t0.5_wrong_state": 0.11998915625736117,
+              "fm_t0.5_wrong_actions": 0.04457763850223273,
+              "fm_t0.5_carry": 0.1031291326507926,
+              "fm_t0.5_zero": 0.0526753063313663,
+              "fm_t0.8_posterior": 0.0047741532034706324,
+              "fm_t0.8_shuffled_posterior": 0.08038368076086044,
+              "fm_t0.8_forecast": 0.00487307998992037,
+              "fm_t0.8_wrong_state": 0.07498962059617043,
+              "fm_t0.8_wrong_actions": 0.03902913874480873,
+              "fm_t0.8_carry": 0.061935047851875424,
+              "fm_t0.8_zero": 0.05870033195242286,
+              "fm_t0.95_posterior": 0.003895662186550908,
+              "fm_t0.95_shuffled_posterior": 0.05887701571919024,
+              "fm_t0.95_forecast": 0.003944544747355394,
+              "fm_t0.95_wrong_state": 0.05548557359725237,
+              "fm_t0.95_wrong_actions": 0.029308453551493585,
+              "fm_t0.95_carry": 0.045157106942497194,
+              "fm_t0.95_zero": 0.044239171664230525
+            },
+            "audit": {
+              "step": 12000,
+              "model_finite": true,
+              "optimizer_finite": true,
+              "scheduler_finite": true,
+              "cursor": true,
+              "rng_present": true,
+              "optimizer_present": true,
+              "scheduler_present": true,
+              "portable_equal": true,
+              "gradient_max": {
+                "encoder": 0.2598114311695099,
+                "predictor": 0.06356023997068405,
+                "renderer": 0.5033132433891296
+              },
+              "gradient_expectations": {
+                "encoder": "active",
+                "predictor": "active",
+                "renderer": "active"
+              }
+            }
+          },
+          "planning": {
+            "primary": {
+              "old_success": 24.0,
+              "new_success": 18.0,
+              "old_source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-cube-temporal-forecast-seed1/metrics.json",
+                "sha256": "c1f1fbeeff5b4b199b7d75ee30ad75168866c364214b135f29c7f0cef7630f28",
+                "bytes": 25220
+              },
+              "new_source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/planning-cube-temporal-forecast-seed1/metrics.json",
+                "sha256": "6de42848969f109179d33a082a484715b8cb1936d88c7f0cd5cc4cbccdddfa84",
+                "bytes": 25218
+              }
+            },
+            "fresh": {
+              "old_success": 14.0,
+              "new_success": 14.0,
+              "old_source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-cube-temporal-forecast-seed1/metrics.json",
+                "sha256": "b12bd458ea7a10ae7e6306d53051b619b8228d687abed5d795b369ab077b3675",
+                "bytes": 25209
+              },
+              "new_source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/fresh-planning-cube-temporal-forecast-seed1/metrics.json",
+                "sha256": "5278ec5cf5161aeb2020be78216e0261bf3ff24e7789104cd46a2f2f4d82a50b",
+                "bytes": 25204
+              }
+            }
+          }
+        },
+        {
+          "id": "cube-temporal-forecast-seed2",
+          "seed": 2,
+          "health_old": {
+            "feature_std": 0.5866039991378784,
+            "summary": {
+              "fm_t0.2_posterior": 0.04551899270154536,
+              "fm_t0.2_shuffled_posterior": 0.19900407083332539,
+              "fm_t0.2_forecast": 0.045572461327537894,
+              "fm_t0.2_wrong_state": 0.1541638351045549,
+              "fm_t0.2_wrong_actions": 0.0605913030449301,
+              "fm_t0.2_carry": 0.1290836683474481,
+              "fm_t0.2_zero": 0.06859002425335348,
+              "fm_t0.5_posterior": 0.011523023538757116,
+              "fm_t0.5_shuffled_posterior": 0.11014048638753593,
+              "fm_t0.5_forecast": 0.01149973866995424,
+              "fm_t0.5_wrong_state": 0.09393541153986007,
+              "fm_t0.5_wrong_actions": 0.030814308556728065,
+              "fm_t0.5_carry": 0.08290007198229432,
+              "fm_t0.5_zero": 0.04374783963430673,
+              "fm_t0.8_posterior": 0.006754201953299344,
+              "fm_t0.8_shuffled_posterior": 0.0735886124894023,
+              "fm_t0.8_forecast": 0.007890821696491912,
+              "fm_t0.8_wrong_state": 0.06930196937173605,
+              "fm_t0.8_wrong_actions": 0.03597645845729858,
+              "fm_t0.8_carry": 0.05844756285659969,
+              "fm_t0.8_zero": 0.05548035725951195,
+              "fm_t0.95_posterior": 0.005441888468340039,
+              "fm_t0.95_shuffled_posterior": 0.055102039594203234,
+              "fm_t0.95_forecast": 0.007186565300798975,
+              "fm_t0.95_wrong_state": 0.05274093057960272,
+              "fm_t0.95_wrong_actions": 0.028503726003691554,
+              "fm_t0.95_carry": 0.0434371690498665,
+              "fm_t0.95_zero": 0.04290534765459597
+            },
+            "audit": {
+              "step": 6000,
+              "model_finite": true,
+              "optimizer_finite": true,
+              "scheduler_finite": true,
+              "cursor": true,
+              "rng_present": true,
+              "optimizer_present": true,
+              "scheduler_present": true,
+              "portable_equal": true,
+              "gradient_max": {
+                "encoder": 0.20613287389278412,
+                "predictor": 0.0713324174284935,
+                "renderer": 0.6438254714012146
+              },
+              "gradient_expectations": {
+                "encoder": "active",
+                "predictor": "active",
+                "renderer": "active"
+              }
+            }
+          },
+          "health_new": {
+            "feature_std": 0.78250652551651,
+            "summary": {
+              "fm_t0.2_posterior": 0.029299679677933455,
+              "fm_t0.2_shuffled_posterior": 0.2995249219238758,
+              "fm_t0.2_forecast": 0.029424867243506014,
+              "fm_t0.2_wrong_state": 0.23173885000869632,
+              "fm_t0.2_wrong_actions": 0.06550039583817124,
+              "fm_t0.2_carry": 0.18634912464767694,
+              "fm_t0.2_zero": 0.09166154405102134,
+              "fm_t0.5_posterior": 0.007575954572530463,
+              "fm_t0.5_shuffled_posterior": 0.13306132634170353,
+              "fm_t0.5_forecast": 0.007545624452177435,
+              "fm_t0.5_wrong_state": 0.12152854027226567,
+              "fm_t0.5_wrong_actions": 0.04482968628872186,
+              "fm_t0.5_carry": 0.10569201176986098,
+              "fm_t0.5_zero": 0.062241372535936534,
+              "fm_t0.8_posterior": 0.00479420596093405,
+              "fm_t0.8_shuffled_posterior": 0.08018995448946953,
+              "fm_t0.8_forecast": 0.005498492362676188,
+              "fm_t0.8_wrong_state": 0.07625160249881446,
+              "fm_t0.8_wrong_actions": 0.03920349036343396,
+              "fm_t0.8_carry": 0.062274711206555367,
+              "fm_t0.8_zero": 0.05764057254418731,
+              "fm_t0.95_posterior": 0.0038528688019141555,
+              "fm_t0.95_shuffled_posterior": 0.05883913207799196,
+              "fm_t0.95_forecast": 0.0047374781424878165,
+              "fm_t0.95_wrong_state": 0.05677652079612017,
+              "fm_t0.95_wrong_actions": 0.029816734604537487,
+              "fm_t0.95_carry": 0.04549359995871782,
+              "fm_t0.95_zero": 0.04405650636181235
+            },
+            "audit": {
+              "step": 12000,
+              "model_finite": true,
+              "optimizer_finite": true,
+              "scheduler_finite": true,
+              "cursor": true,
+              "rng_present": true,
+              "optimizer_present": true,
+              "scheduler_present": true,
+              "portable_equal": true,
+              "gradient_max": {
+                "encoder": 0.20124593377113342,
+                "predictor": 0.08062482625246048,
+                "renderer": 0.48190996050834656
+              },
+              "gradient_expectations": {
+                "encoder": "active",
+                "predictor": "active",
+                "renderer": "active"
+              }
+            }
+          },
+          "planning": {
+            "primary": {
+              "old_success": 14.0,
+              "new_success": 20.0,
+              "old_source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-cube-temporal-forecast-seed2/metrics.json",
+                "sha256": "daa1ac47261d1c1bf286057f53a065b3df3acbed7e723a2404d29c9d792f95d8",
+                "bytes": 25239
+              },
+              "new_source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/planning-cube-temporal-forecast-seed2/metrics.json",
+                "sha256": "f34ec5e6028bbad6d7dcfb86fca5776f4e1b58dca5b301824228b56434995672",
+                "bytes": 25217
+              }
+            },
+            "fresh": {
+              "old_success": 18.0,
+              "new_success": 16.0,
+              "old_source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-cube-temporal-forecast-seed2/metrics.json",
+                "sha256": "8e1cfe49ab0c397618ead5acadd91e5f1d46d80299a0dfb4f6613cdfbcc68822",
+                "bytes": 25193
+              },
+              "new_source": {
+                "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/fresh-planning-cube-temporal-forecast-seed2/metrics.json",
+                "sha256": "1a1363ab3af802093ae5b578adc4e2a92f933fbb480ebc6ccd54ef3ae3701609",
+                "bytes": 25189
+              }
+            }
+          }
+        }
+      ],
+      "comparison_summaries": [
+        {
+          "case_set": "primary",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            -6.0,
+            6.0
+          ],
+          "mean_difference_pp": 0.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -8.0,
+            8.0
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        },
+        {
+          "case_set": "fresh",
+          "seeds": [
+            1,
+            2
+          ],
+          "differences_by_seed_pp": [
+            0.0,
+            -2.0
+          ],
+          "mean_difference_pp": -1.0,
+          "shared_case_bootstrap_ci95_pp": [
+            -9.0,
+            7.000000000000001
+          ],
+          "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+        }
+      ]
+    }
+  },
+  "tf_2000_health": [
+    {
+      "seed": 1,
+      "step": 2000,
+      "artifact": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-temporal-forecast-seed1-learn2000/health.json",
+        "sha256": "4794071791d8dcbf4a6c86627d376948cc456a78400eceb7eaafe6b72c2e1e0d"
+      },
+      "health": {
+        "feature_std": 0.15987035632133484,
+        "summary": {
+          "fm_t0.2_posterior": 0.09786059148609638,
+          "fm_t0.2_shuffled_posterior": 0.10401001758873463,
+          "fm_t0.2_forecast": 0.09724768670275807,
+          "fm_t0.2_wrong_state": 0.10731364460662007,
+          "fm_t0.2_wrong_actions": 0.09767004009336233,
+          "fm_t0.2_carry": 0.10314323147758842,
+          "fm_t0.2_zero": 0.09567395504564047,
+          "fm_t0.5_posterior": 0.03274367959238589,
+          "fm_t0.5_shuffled_posterior": 0.040207216632552445,
+          "fm_t0.5_forecast": 0.032402019132860005,
+          "fm_t0.5_wrong_state": 0.03614258277229965,
+          "fm_t0.5_wrong_actions": 0.03365612309426069,
+          "fm_t0.5_carry": 0.038718695752322674,
+          "fm_t0.5_zero": 0.03451836563181132,
+          "fm_t0.8_posterior": 0.024029097286984324,
+          "fm_t0.8_shuffled_posterior": 0.0411006003851071,
+          "fm_t0.8_forecast": 0.023382600396871567,
+          "fm_t0.8_wrong_state": 0.03338033054023981,
+          "fm_t0.8_wrong_actions": 0.02934653777629137,
+          "fm_t0.8_carry": 0.039628010359592736,
+          "fm_t0.8_zero": 0.03193620138335973,
+          "fm_t0.95_posterior": 0.021919791121035814,
+          "fm_t0.95_shuffled_posterior": 0.03544982150197029,
+          "fm_t0.95_forecast": 0.020859060052316636,
+          "fm_t0.95_wrong_state": 0.03085679392097518,
+          "fm_t0.95_wrong_actions": 0.027022498194128275,
+          "fm_t0.95_carry": 0.03453024988994002,
+          "fm_t0.95_zero": 0.030338827520608902
+        },
+        "audit": {
+          "step": 2000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.06421395391225815,
+            "predictor": 0.019625332206487656,
+            "renderer": 0.9461326599121094
+          }
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "step": 2000,
+      "artifact": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/hardtasks_learn2000_20261030/health-cube-temporal-forecast-seed2-learn2000/health.json",
+        "sha256": "2af9e45bada730acef9d822e72ebd8123fae72db60063db79bdc4fc03eab2bc3"
+      },
+      "health": {
+        "feature_std": 0.13772186636924744,
+        "summary": {
+          "fm_t0.2_posterior": 0.09758976008743048,
+          "fm_t0.2_shuffled_posterior": 0.10308421961963177,
+          "fm_t0.2_forecast": 0.09953092876821756,
+          "fm_t0.2_wrong_state": 0.11064585112035275,
+          "fm_t0.2_wrong_actions": 0.09942173911258578,
+          "fm_t0.2_carry": 0.10243772761896253,
+          "fm_t0.2_zero": 0.09647098369896412,
+          "fm_t0.5_posterior": 0.03316172130871564,
+          "fm_t0.5_shuffled_posterior": 0.038905847701244056,
+          "fm_t0.5_forecast": 0.033076551859267056,
+          "fm_t0.5_wrong_state": 0.03620833088643849,
+          "fm_t0.5_wrong_actions": 0.034144245903007686,
+          "fm_t0.5_carry": 0.03858417016454041,
+          "fm_t0.5_zero": 0.03440289420541376,
+          "fm_t0.8_posterior": 0.024329417385160923,
+          "fm_t0.8_shuffled_posterior": 0.038936403463594615,
+          "fm_t0.8_forecast": 0.023960146470926702,
+          "fm_t0.8_wrong_state": 0.03292743186466396,
+          "fm_t0.8_wrong_actions": 0.029802080476656556,
+          "fm_t0.8_carry": 0.03996195283252746,
+          "fm_t0.8_zero": 0.03060919139534235,
+          "fm_t0.95_posterior": 0.02210102090612054,
+          "fm_t0.95_shuffled_posterior": 0.03388391900807619,
+          "fm_t0.95_forecast": 0.021515428146813065,
+          "fm_t0.95_wrong_state": 0.031017780303955078,
+          "fm_t0.95_wrong_actions": 0.02754854445811361,
+          "fm_t0.95_carry": 0.03511740022804588,
+          "fm_t0.95_zero": 0.029669021372683346
+        },
+        "audit": {
+          "step": 2000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.11928287148475647,
+            "predictor": 0.04588133841753006,
+            "renderer": 1.1100678443908691
+          }
+        }
+      }
+    }
+  ],
+  "official_recipe": {
+    "commit": "21446f1ede6d5284e981bd7b47f432b994e6d812",
+    "yaml": {
+      "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/scripts/train/config/lewm.yaml",
+      "sha256": "b1d112467958587455b8fd71d7061286ee57d123af5f1b937d2f842e3c3ff523"
+    },
+    "script": {
+      "path": "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/scripts/train/lewm.py",
+      "sha256": "6d7608097956c7c0d08cd175b57a8744a8f5ceda4688540e876781a4771be724"
+    },
+    "default_epochs": 100,
+    "default_batch": 128,
+    "history": 3,
+    "window": 4,
+    "qualification": "Repository default, not proof of the released checkpoints actual training duration. Original script interval=epoch versus adapted per-update scheduler; defaults are not an executed matching-budget run."
+  }
+}
