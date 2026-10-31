@@ -1,0 +1,164 @@
+{
+  "passed": true,
+  "cpu_only": true,
+  "learned_models_loaded": 0,
+  "real_environments_created": 0,
+  "new_environment_rollouts": 0,
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/local_reviewed6000_20261031/source-v1",
+    "source_commit": "da26748c866137ad1ea06cf7250cabd64431e9ac",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_reviewed6000_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_reviewed6000_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "rows": {
+    "tworoom": {
+      "independent_sklearn_oracle_exact": true,
+      "model_and_returned_action_normalization_exact": true,
+      "input_unchanged": true,
+      "no_global_rng_consumption": true,
+      "generic_asymmetric_bounds": true,
+      "dead_nan_preserved": true,
+      "infinite_execution_rejected": true,
+      "idempotence_max": 5.960464477539063e-08,
+      "physical_reprojection_max": 5.960464477539063e-08,
+      "roundoff_tolerance": 1.1561444352992112e-06,
+      "native_original_policy_cost_candidates_rng_bitexact": true,
+      "bounded_native_returned_commands_match_model_projection": true,
+      "first_cem_proposal_unchanged": true,
+      "solver_random_draw_count_unchanged": true,
+      "policy_calls_31_two_replans": true,
+      "out_of_range_warmstart6_exercises_actual_execution_clipping": true,
+      "second_replan_history_exact_actual_returned_last10_commands": true,
+      "observation_history_frames_15_20_25_unchanged": true,
+      "stats": {
+        "physical_lower": [
+          -1.0,
+          -1.0
+        ],
+        "physical_upper": [
+          1.0,
+          1.0
+        ],
+        "action_mean": [
+          0.003467034940094584,
+          -0.05297856929844467
+        ],
+        "action_scale": [
+          0.8676368980233422,
+          0.8685753215839855
+        ],
+        "score_calls": 4,
+        "score_coordinates": 12800,
+        "score_clipped_coordinates": 12800,
+        "normalized_change_squared_sum": 312027.27650290483,
+        "execution_calls": 31,
+        "execution_finite_coordinates": 62,
+        "execution_clipped_coordinates": 62,
+        "returned_command_violations": 0,
+        "first_score": {
+          "shape": [
+            1,
+            64,
+            5,
+            10
+          ],
+          "input_sha256": "4b584d8d7ab3b3a917d80d857ee8ea3423c0eb976f50001de2e5edee31af31cf",
+          "projected_sha256": "6da50fb8970c27619242ab7f0c433ab6e1d574976f313413f11b8ea31d30a251",
+          "physical_projected_sha256": "24e6b88009f54119564f484c8d459c5388a76e114355e57cdc517a4bce875b70"
+        },
+        "first_execution": {
+          "input_sha256": "4883e937e6633768a9534f5d3ba164d9086e18339976b9da6e55633982fefa3a",
+          "returned_sha256": "0cb16664dda6f4d97a057effee84fb6538cab341e0901e2ab49d5afdc5ab44be"
+        }
+      }
+    },
+    "cube": {
+      "independent_sklearn_oracle_exact": true,
+      "model_and_returned_action_normalization_exact": true,
+      "input_unchanged": true,
+      "no_global_rng_consumption": true,
+      "generic_asymmetric_bounds": true,
+      "dead_nan_preserved": true,
+      "infinite_execution_rejected": true,
+      "idempotence_max": 5.960464477539063e-08,
+      "physical_reprojection_max": 5.960464477539063e-08,
+      "roundoff_tolerance": 4.416868250700645e-06,
+      "native_original_policy_cost_candidates_rng_bitexact": true,
+      "bounded_native_returned_commands_match_model_projection": true,
+      "first_cem_proposal_unchanged": true,
+      "solver_random_draw_count_unchanged": true,
+      "policy_calls_31_two_replans": true,
+      "out_of_range_warmstart6_exercises_actual_execution_clipping": true,
+      "second_replan_history_exact_actual_returned_last10_commands": true,
+      "observation_history_frames_15_20_25_unchanged": true,
+      "stats": {
+        "physical_lower": [
+          -1.0,
+          -1.0,
+          -1.0,
+          -1.0,
+          -1.0
+        ],
+        "physical_upper": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "action_mean": [
+          0.010887376617535206,
+          -0.003321364862838686,
+          0.0026450724077751045,
+          0.00015202548480306095,
+          0.15925747933930862
+        ],
+        "action_scale": [
+          0.28947019439435423,
+          0.3933047032815236,
+          0.6430005694821809,
+          0.3925344261000107,
+          0.25030272689144967
+        ],
+        "score_calls": 4,
+        "score_coordinates": 32000,
+        "score_clipped_coordinates": 31871,
+        "normalized_change_squared_sum": 399492.5988151758,
+        "execution_calls": 31,
+        "execution_finite_coordinates": 155,
+        "execution_clipped_coordinates": 155,
+        "returned_command_violations": 0,
+        "first_score": {
+          "shape": [
+            1,
+            64,
+            5,
+            25
+          ],
+          "input_sha256": "987f1bec4fc0569337e5b17c15de4bd317ed132c9f93e2a104b62f373fa18cfc",
+          "projected_sha256": "32dcce034b55fdf57e37d8ee7fec69ad3e86e81d00262ad8a8efde4034f0227c",
+          "physical_projected_sha256": "877ffc350bbfb07f6d1b91f10ff34d480cb4640b18bc3d9c03bc3a7a14fab4a8"
+        },
+        "first_execution": {
+          "input_sha256": "704965c07df5bc7b5f28c4f006dc845f043d8eab128db7ac3b3e81674af50c4e",
+          "returned_sha256": "0d227e6802a3da28c3e9153d23e68b1cdffc0e50ae4c20e2ae5e11886e5aba1b"
+        }
+      }
+    }
+  },
+  "native_files": {
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/policy.py": "a32f763026a57d5bf8ef5a3298d003c9a4d85c218865463cc4ca43c03b9a1f59",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/planning/evaluator.py": "054838d85850510de6f9ccdce531bfb2cc7d8ca1a4dc2a7ee319c7801080c69c",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/planning/objective.py": "b959f83c94a7543df113e474b3fec77882a7ef259c6cc42fe6a16a124877fdcf",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/planning/solver/cem.py": "c66625d42cf02f912fc4c99d5874c57aba686d899e510d91630df210ece2ee89",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/buffer.py": "0fc0c4e7ae216c8ba31596f19779d10e74b765a1e9ca0523ca7e7b1ddbb2aa51"
+  },
+  "sklearn_version": "1.8.0",
+  "helper_files": {
+    "/efs/prescottsun/SPT-JEPA/code/experiments/action_projection_20261031/adapter.py": "2cf906863b9c2e8be471dc8c960da9774354be0abf4d242fcf277c94b85ed61c",
+    "/efs/prescottsun/SPT-JEPA/code/experiments/action_projection_20261031/contracts.py": "0b8ddd9db075976c41900c098842d967cafcdb7eeedefbedfada0087fd4c8456"
+  },
+  "scope": "CPU native CEM/GoalMSE/WorldModelPolicy with a toy deterministic dynamics module, real train scalers, history3/block5 and31policy calls. Identity mode is exact; bounded mode jointly changes model candidate input and physical returned command. No trained model or task result asserted."
+}

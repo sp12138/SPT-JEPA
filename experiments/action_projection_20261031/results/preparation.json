@@ -1,0 +1,411 @@
+{
+  "prepared_only": true,
+  "root": "/efs/prescottsun/SPT-JEPA/runs/action_projection6000_20261031",
+  "jobs_count": 36,
+  "bounded_evaluations": 32,
+  "original_replays": 4,
+  "source_records": {
+    "native-cal": {
+      "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+      "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+      "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+    },
+    "TF64": {
+      "source": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1.json",
+      "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+      "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+    },
+    "F64": {
+      "source": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1.json",
+      "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+      "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+    },
+    "local1024": {
+      "source": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+      "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+      "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+    }
+  },
+  "helper_source": "/efs/prescottsun/SPT-JEPA/code/experiments/action_projection_20261031",
+  "helper_files": {
+    "adapter.py": "2cf906863b9c2e8be471dc8c960da9774354be0abf4d242fcf277c94b85ed61c",
+    "evaluate.py": "914ca6410ea37f0dcac47e0c86dbd91972f1e1f9f139421ce3afd66e4fc7bcd4"
+  },
+  "models": [
+    {
+      "task": "tworoom",
+      "family": "native-cal",
+      "seed": 1,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/calibrated-tworoom-native-lewm-seed1/model",
+      "checkpoint_sha256": "c672bc46f5f000628a49e303be9217f1d8ba6e0648bf925e7ff82342ec9d7c97",
+      "original_success": 82.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/planning-calibrated-tworoom-native-lewm-seed1/metrics.json",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "task": "tworoom",
+      "family": "native-cal",
+      "seed": 1,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/calibrated-tworoom-native-lewm-seed1/model",
+      "checkpoint_sha256": "c672bc46f5f000628a49e303be9217f1d8ba6e0648bf925e7ff82342ec9d7c97",
+      "original_success": 84.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/fresh-planning-calibrated-tworoom-native-lewm-seed1/metrics.json",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "task": "tworoom",
+      "family": "native-cal",
+      "seed": 2,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/calibrated-tworoom-native-lewm-seed2/model",
+      "checkpoint_sha256": "3032c7d42cb930b751335498fb1e4d22995ac339a5c7b09edaa41dcd0d41cfe3",
+      "original_success": 78.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/planning-calibrated-tworoom-native-lewm-seed2/metrics.json",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "task": "tworoom",
+      "family": "native-cal",
+      "seed": 2,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/calibrated-tworoom-native-lewm-seed2/model",
+      "checkpoint_sha256": "3032c7d42cb930b751335498fb1e4d22995ac339a5c7b09edaa41dcd0d41cfe3",
+      "original_success": 88.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/fresh-planning-calibrated-tworoom-native-lewm-seed2/metrics.json",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "task": "tworoom",
+      "family": "TF64",
+      "seed": 1,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/tworoom-temporal-forecast-seed1/model-step0006000",
+      "checkpoint_sha256": "3db4af726bc5f0c7900d3993b3be4f72c5b6c84ddb723f534f1e2f96a134ce2e",
+      "original_success": 2.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-tworoom-temporal-forecast-seed1/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "tworoom",
+      "family": "TF64",
+      "seed": 1,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/tworoom-temporal-forecast-seed1/model-step0006000",
+      "checkpoint_sha256": "3db4af726bc5f0c7900d3993b3be4f72c5b6c84ddb723f534f1e2f96a134ce2e",
+      "original_success": 4.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-tworoom-temporal-forecast-seed1/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "tworoom",
+      "family": "TF64",
+      "seed": 2,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/tworoom-temporal-forecast-seed2/model-step0006000",
+      "checkpoint_sha256": "37ceeaff2bcdc56115705aa4eb039b2f5ffb3604f9c143680136fb0df2f9746a",
+      "original_success": 4.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-tworoom-temporal-forecast-seed2/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "tworoom",
+      "family": "TF64",
+      "seed": 2,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/tworoom-temporal-forecast-seed2/model-step0006000",
+      "checkpoint_sha256": "37ceeaff2bcdc56115705aa4eb039b2f5ffb3604f9c143680136fb0df2f9746a",
+      "original_success": 2.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-tworoom-temporal-forecast-seed2/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "tworoom",
+      "family": "F64",
+      "seed": 1,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/tworoom-carrier-identity-seed1/model-step0006000",
+      "checkpoint_sha256": "cd37cabfac7152dc0e3d0e681674c537a87de93ae7e4055a557e01bf82b81059",
+      "original_success": 80.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-tworoom-carrier-identity-seed1/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "tworoom",
+      "family": "F64",
+      "seed": 1,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/tworoom-carrier-identity-seed1/model-step0006000",
+      "checkpoint_sha256": "cd37cabfac7152dc0e3d0e681674c537a87de93ae7e4055a557e01bf82b81059",
+      "original_success": 74.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-tworoom-carrier-identity-seed1/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "tworoom",
+      "family": "F64",
+      "seed": 2,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/tworoom-carrier-identity-seed2/model-step0006000",
+      "checkpoint_sha256": "3213bed119b811de47cf542d5e88551f37a7cce94f4122b6e86f77a36eea5535",
+      "original_success": 86.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-tworoom-carrier-identity-seed2/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "tworoom",
+      "family": "F64",
+      "seed": 2,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/tworoom-carrier-identity-seed2/model-step0006000",
+      "checkpoint_sha256": "3213bed119b811de47cf542d5e88551f37a7cce94f4122b6e86f77a36eea5535",
+      "original_success": 80.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-tworoom-carrier-identity-seed2/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "tworoom",
+      "family": "local1024",
+      "seed": 1,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed1/model-step0006000",
+      "checkpoint_sha256": "0ba998602c278daec5ebfd732af629e73de727c81dffaf0c3e703f6e89894687",
+      "original_success": 60.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/planning-tworoom-spatial-local-seed1/metrics.json",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "task": "tworoom",
+      "family": "local1024",
+      "seed": 1,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed1/model-step0006000",
+      "checkpoint_sha256": "0ba998602c278daec5ebfd732af629e73de727c81dffaf0c3e703f6e89894687",
+      "original_success": 72.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/fresh-planning-tworoom-spatial-local-seed1/metrics.json",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "task": "tworoom",
+      "family": "local1024",
+      "seed": 2,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed2/model-step0006000",
+      "checkpoint_sha256": "64c277d7cb80a0e9fb9b97fc6f106388de590a7076c2657c17d87541d165309a",
+      "original_success": 60.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/planning-tworoom-spatial-local-seed2/metrics.json",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "task": "tworoom",
+      "family": "local1024",
+      "seed": 2,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed2/model-step0006000",
+      "checkpoint_sha256": "64c277d7cb80a0e9fb9b97fc6f106388de590a7076c2657c17d87541d165309a",
+      "original_success": 60.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/fresh-planning-tworoom-spatial-local-seed2/metrics.json",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "task": "cube",
+      "family": "native-cal",
+      "seed": 1,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/calibrated-cube-native-lewm-seed1/model",
+      "checkpoint_sha256": "99ffd1b71e970cfcd9b7b47aa13c7360ed434aa4ae4a4a8acf18e3e98513175d",
+      "original_success": 16.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/planning-calibrated-cube-native-lewm-seed1/metrics.json",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "task": "cube",
+      "family": "native-cal",
+      "seed": 1,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/calibrated-cube-native-lewm-seed1/model",
+      "checkpoint_sha256": "99ffd1b71e970cfcd9b7b47aa13c7360ed434aa4ae4a4a8acf18e3e98513175d",
+      "original_success": 20.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/fresh-planning-calibrated-cube-native-lewm-seed1/metrics.json",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "task": "cube",
+      "family": "native-cal",
+      "seed": 2,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/calibrated-cube-native-lewm-seed2/model",
+      "checkpoint_sha256": "13d2dde05dbb101eb81ccc8fe45449835d592096e7b36de3d64018f65950947d",
+      "original_success": 18.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/planning-calibrated-cube-native-lewm-seed2/metrics.json",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "task": "cube",
+      "family": "native-cal",
+      "seed": 2,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/calibrated-cube-native-lewm-seed2/model",
+      "checkpoint_sha256": "13d2dde05dbb101eb81ccc8fe45449835d592096e7b36de3d64018f65950947d",
+      "original_success": 16.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/fresh-planning-calibrated-cube-native-lewm-seed2/metrics.json",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f"
+    },
+    {
+      "task": "cube",
+      "family": "TF64",
+      "seed": 1,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-temporal-forecast-seed1/model-step0006000",
+      "checkpoint_sha256": "78b676f0960bcdaca91cd7359563b0cdfa2a4e3022824c2344c1b4392ab0645c",
+      "original_success": 24.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-cube-temporal-forecast-seed1/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "cube",
+      "family": "TF64",
+      "seed": 1,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-temporal-forecast-seed1/model-step0006000",
+      "checkpoint_sha256": "78b676f0960bcdaca91cd7359563b0cdfa2a4e3022824c2344c1b4392ab0645c",
+      "original_success": 14.000000000000002,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-cube-temporal-forecast-seed1/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "cube",
+      "family": "TF64",
+      "seed": 2,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-temporal-forecast-seed2/model-step0006000",
+      "checkpoint_sha256": "65f0f4e52f6a08cc6647e95d7f93610faf7fe7caf017a2bb7216baeed3f19dcc",
+      "original_success": 14.000000000000002,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-cube-temporal-forecast-seed2/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "cube",
+      "family": "TF64",
+      "seed": 2,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-temporal-forecast-seed2/model-step0006000",
+      "checkpoint_sha256": "65f0f4e52f6a08cc6647e95d7f93610faf7fe7caf017a2bb7216baeed3f19dcc",
+      "original_success": 18.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-cube-temporal-forecast-seed2/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "cube",
+      "family": "F64",
+      "seed": 1,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-carrier-identity-seed1/model-step0006000",
+      "checkpoint_sha256": "7eec7d7dfec201264b1f006c9d680e28c61440bbc6b640c95c58c28a6da2ed13",
+      "original_success": 10.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-cube-carrier-identity-seed1/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "cube",
+      "family": "F64",
+      "seed": 1,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-carrier-identity-seed1/model-step0006000",
+      "checkpoint_sha256": "7eec7d7dfec201264b1f006c9d680e28c61440bbc6b640c95c58c28a6da2ed13",
+      "original_success": 12.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-cube-carrier-identity-seed1/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "cube",
+      "family": "F64",
+      "seed": 2,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-carrier-identity-seed2/model-step0006000",
+      "checkpoint_sha256": "0b5909f675be35c710a3b39a98c97a3268142d8223cbaaf2e2187eff0a7d855c",
+      "original_success": 12.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/planning-cube-carrier-identity-seed2/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "cube",
+      "family": "F64",
+      "seed": 2,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-carrier-identity-seed2/model-step0006000",
+      "checkpoint_sha256": "0b5909f675be35c710a3b39a98c97a3268142d8223cbaaf2e2187eff0a7d855c",
+      "original_success": 10.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/fresh-planning-cube-carrier-identity-seed2/metrics.json",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf"
+    },
+    {
+      "task": "cube",
+      "family": "local1024",
+      "seed": 1,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed1/model-step0006000",
+      "checkpoint_sha256": "5d2ab67d41aca66a8f5d77bedabeac1575735e10ff034c33254ff295488cfe44",
+      "original_success": 16.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/planning-cube-spatial-local-seed1/metrics.json",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "task": "cube",
+      "family": "local1024",
+      "seed": 1,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed1/model-step0006000",
+      "checkpoint_sha256": "5d2ab67d41aca66a8f5d77bedabeac1575735e10ff034c33254ff295488cfe44",
+      "original_success": 24.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/fresh-planning-cube-spatial-local-seed1/metrics.json",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "task": "cube",
+      "family": "local1024",
+      "seed": 2,
+      "case_set": "primary",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed2/model-step0006000",
+      "checkpoint_sha256": "491a846baca4d2e0a3bd9c2ea328c3e6bd63614fda8a861910bdae0d4f1805e0",
+      "original_success": 22.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/planning-cube-spatial-local-seed2/metrics.json",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    },
+    {
+      "task": "cube",
+      "family": "local1024",
+      "seed": 2,
+      "case_set": "fresh",
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/cube-spatial-local-seed2/model-step0006000",
+      "checkpoint_sha256": "491a846baca4d2e0a3bd9c2ea328c3e6bd63614fda8a861910bdae0d4f1805e0",
+      "original_success": 20.0,
+      "original_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/fresh-planning-cube-spatial-local-seed2/metrics.json",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea"
+    }
+  ],
+  "cpu_contracts": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/action-projection-20261031/cpu-contracts.json",
+    "sha256": "7ee02a0de0008b3383752508ffe58ab6afd06e4d886d40a564e7a0d5b1349498"
+  },
+  "cube_support": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/action-projection-20261031/cube-support.json",
+    "sha256": "c992a59c075d0e648dac436478051027a1ed8da7ba0044eb6044e0f15da760c2"
+  },
+  "scope": "One common Box-bounded controller for4families,2tasks,2seeds,primary/fresh50. Frozen6000 checkpoints; no learning/calibration/metric changes. Compare within-checkpoint original/projection paired cases, then compare all models under the same controller. Cube is an explicit bounded-controller change, not an execution-equivalent rewrite. Native calibrated is a train-only BN variant with existing extra exposure; F/local/TF/native capacities differ. Two seed means do not establish population stability or novelty.",
+  "treatment": "P(z)=scaler.transform(clip(scaler.inverse_transform(z), actual single_action_space.low, high)); returned physical commands clip to the same bounds. CEM proposals/moments/warm-start retain native code; past command history follows actual bounded returned commands.",
+  "launch_block": "Root must review CPU contracts, freeze helpers, repoint all36 commands to immutable source, verify actual GPU idle and explicit launch authorization. This script does not launch anything."
+}
