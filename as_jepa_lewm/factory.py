@@ -12,6 +12,7 @@ MODEL_TARGETS = {
     "native_lewm": "as_jepa_lewm.native_lewm.NativeLeWM",
     "spatial_carrier": "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM",
     "hybrid_carrier": "as_jepa_lewm.hybrid_carrier.HybridCarrierLeWM",
+    "patch_carrier": "as_jepa_lewm.patch_carrier.PatchCarrierLeWM",
 }
 
 

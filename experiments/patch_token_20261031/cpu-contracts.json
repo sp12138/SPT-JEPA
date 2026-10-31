@@ -1,0 +1,221 @@
+{
+  "passed": true,
+  "CPU_only": true,
+  "GPU_initialized": false,
+  "elapsed_seconds": 0.9221638161689043,
+  "torch_version": "2.9.1+cu130",
+  "CPU_threads": 2,
+  "sources": {
+    "/efs/prescottsun/SPT-JEPA/reports/patch-token-design-20261031/source-v1/contracts.py": "cd491a729f228fbe2e813f185612c02df6a46ee2de765384d71b5a900014ee26",
+    "/efs/prescottsun/SPT-JEPA/reports/patch-token-design-20261031/source-v1/prototype.py": "d4b39668a72587972f9a6afdb213a7ec4266ca5f9e816173ec82d5fcac31da1a",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/module.py": "d276fb896712bed23f70f25ae9774e5ce7b3ab44fbb6bf4dea61065ba1388ef9",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/wm/lewm/lewm.py": "10ad1c2365b569ad3f9cbda17c8154d799c3b0c4fc5d707a44dca600b5ca8315"
+  },
+  "parameter_counts": {
+    "native_predictor": 11389184,
+    "patch_predictor": 523536,
+    "orthogonal_predictor": 523536,
+    "orthogonal_fixed_buffer_elements": 1048576,
+    "retained_action_encoders": {
+      "10": 4240494,
+      "25": 4302474
+    }
+  },
+  "exact_linear_hook_counts_B2_T7": {
+    "native": 158957568,
+    "patch": 269058048
+  },
+  "private_RNG_unchanged": true,
+  "paired_parameters_exact": true,
+  "initial_raw_carry_exact": true,
+  "orthogonality_max_abs": 0.0,
+  "goal_metric_float64_max_abs": 2.220446049250313e-16,
+  "mask": {
+    "shape": [
+      192,
+      192
+    ],
+    "allowed": 24576,
+    "future_state_error": 0.0,
+    "future_action_error": 0.0,
+    "prefix_error": 1.1920928955078125e-07,
+    "sameframe_last_to_first_slot_effect": 0.00019794795662164688,
+    "current_action_effect": 0.006760448217391968,
+    "future_gradients_exact_zero": true,
+    "padded_action_rejected": true
+  },
+  "native_cached_rollout": [
+    {
+      "initial_history": 1,
+      "predict_lengths": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "output_shape": [
+        1,
+        2,
+        6,
+        1024
+      ],
+      "future_action_prefix_error": 0.0,
+      "executed_action_history_exact": true,
+      "encoder_calls": 0
+    },
+    {
+      "initial_history": 3,
+      "predict_lengths": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "output_shape": [
+        1,
+        2,
+        8,
+        1024
+      ],
+      "future_action_prefix_error": 0.0,
+      "executed_action_history_exact": true,
+      "encoder_calls": 0
+    }
+  ],
+  "shared_output_local_jacobian_rank": 16,
+  "output_stage_possible_global_rank": 1024,
+  "output_rank_is_capacity_not_empirical": true,
+  "budgets": {
+    "training_TF": {
+      "native": {
+        "linear": 50866421760,
+        "attention": 297271296,
+        "orthogonal": 0,
+        "total": 51163693056
+      },
+      "patch": {
+        "linear": 86098575360,
+        "attention": 76101451776,
+        "orthogonal": 0,
+        "total": 162200027136
+      },
+      "patch_orthogonal": {
+        "linear": 86098575360,
+        "attention": 76101451776,
+        "orthogonal": 9395240960,
+        "total": 171595268096
+      },
+      "batch": 128,
+      "predict_lengths": [
+        7,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "patch_over_native": 3.1702173445233486,
+      "orthogonal_over_patch": 1.0579237940085076
+    },
+    "CEM_H1": {
+      "native": {
+        "linear": 51093504000,
+        "attention": 202752000,
+        "orthogonal": 0,
+        "total": 51296256000
+      },
+      "patch": {
+        "linear": 86482944000,
+        "attention": 51904512000,
+        "orthogonal": 0,
+        "total": 138387456000
+      },
+      "patch_orthogonal": {
+        "linear": 86482944000,
+        "attention": 51904512000,
+        "orthogonal": 9437184000,
+        "total": 147824640000
+      },
+      "batch": 300,
+      "predict_lengths": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "patch_over_native": 2.697808120733022,
+      "orthogonal_over_patch": 1.068193926478423
+    },
+    "CEM_H3": {
+      "native": {
+        "linear": 85155840000,
+        "attention": 497664000,
+        "orthogonal": 0,
+        "total": 85653504000
+      },
+      "patch": {
+        "linear": 144138240000,
+        "attention": 127401984000,
+        "orthogonal": 0,
+        "total": 271540224000
+      },
+      "patch_orthogonal": {
+        "linear": 144138240000,
+        "attention": 127401984000,
+        "orthogonal": 15728640000,
+        "total": 287268864000
+      },
+      "batch": 300,
+      "predict_lengths": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "patch_over_native": 3.1702173445233486,
+      "orthogonal_over_patch": 1.0579237940085076
+    }
+  },
+  "naive_training_attention_score_bf16_GiB": 4.4296875,
+  "naive_training_attention_scope": "One attention-score tensor per layer/call summed across retained TF graph; excludes softmax/backward/other activations. Fused SDPA may not materialize it.",
+  "CPU_smoke_timings": [
+    {
+      "model": "native",
+      "batch": 1,
+      "frames": 7,
+      "seconds": 0.027187440544366837,
+      "train_mode": true,
+      "forward_backward_calls": 1,
+      "note": "Single CPU timing; not GPU throughput estimate"
+    },
+    {
+      "model": "patch",
+      "batch": 1,
+      "frames": 7,
+      "seconds": 0.09979081526398659,
+      "train_mode": true,
+      "forward_backward_calls": 1,
+      "note": "Single CPU timing; not GPU throughput estimate"
+    }
+  ],
+  "no_optimizer_steps": true,
+  "no_data_or_labels_read": true,
+  "not_included_in_MACs": [
+    "encoder",
+    "action_encoder",
+    "DiT",
+    "backward",
+    "nonlinearities",
+    "normalization",
+    "softmax",
+    "dropout",
+    "elementwise",
+    "memory traffic"
+  ]
+}
