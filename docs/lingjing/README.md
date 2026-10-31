@@ -15,6 +15,16 @@ channels. The state must support latent planning, generation and probing.
 
 ## Where to start
 
+- [decoder-free/](decoder-free/) (branch `lingjing/decoder-free-as-jepa`, 2026-10-31):
+  an exploratory line that replaces the renderer by the state's information beyond
+  the anchor, computed in state space. With an optimal renderer, the round-1
+  objective depends on the encoder only through that quantity, the encoder's other
+  entropies, and a constant, so the theory carries over and every term is in nats.
+  Theory in [decoder-free/story.md](decoder-free/story.md); a launchable spec
+  ([decoder-free/spec.md](decoder-free/spec.md)) with a price × prediction-weight
+  grid, forecast structure (`lam`, noise, open loop, one step), the transient
+  threshold, appearance, estimator gaming, initial scale and TwoRoom; reference implementation and 14
+  CPU tests. Origin: [discussions/2026-10-31-decoder-free-as-jepa.md](discussions/2026-10-31-decoder-free-as-jepa.md).
 - [as-jepa-round2-spec.md](as-jepa-round2-spec.md): the current handoff spec
   (2026-10-31, revision 2). Round 2 trains the renderer, with probability `lam` per
   frame, on a `sigma0`-noisy sample of the prior's forecast instead of the encoded
