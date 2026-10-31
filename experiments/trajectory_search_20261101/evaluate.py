@@ -56,9 +56,11 @@ def main():
         assert sha(path) == expected, path
     report = read(out / 'metrics.json')
     reference = read(spec['reference_metrics'])
-    for key in ('manifest_sha256', 'checkpoint', 'solver', 'plan', 'normalization', 'split', 'protocol', 'checkpoint_audit'):
+    assert report['manifest_sha256'] == sha(spec['manifest']) and report['checkpoint'] == spec['checkpoint']
+    for key in ('solver', 'plan', 'normalization', 'split', 'protocol', 'checkpoint_audit'):
         assert report[key] == reference[key], key
-    assert report['pairs'] == reference['pairs'][:spec.get('limit') or 50]
+    assert report['pairs'] == read(spec['manifest'])['pairs'][:spec.get('limit') or 50]
+    same_reference = report['manifest_sha256'] == reference['manifest_sha256'] and report['checkpoint'] == reference['checkpoint']
     diagnostic = dict(passed=True, mode=spec['mode'], spec_sha256=sha(a.spec), bank_report_sha256=sha(spec['bank_report']),
             state_before=state.state_before, state_after=after, model_source=state.model_source,
             model_source_sha256=sha(state.model_source), cost_calls=state.calls, predict_calls=state.predict_calls,
@@ -66,7 +68,7 @@ def main():
             candidates_per_cost=300, first_iteration_replacements=0 if spec['mode'] == 'original' else 64,
             action_execution='Unmodified native CEM elite update/return and WorldModelPolicy inverse scaler/unblocking.',
             training_steps=0, optimal_action_labels=0, extra_model_calls=0,
-            historical_original_success_vector_equal=None if spec['mode'] != 'original' else
+            historical_original_success_vector_equal=None if spec['mode'] != 'original' or not same_reference else
                 report['metrics']['episode_successes'] == reference['metrics']['episode_successes'][:spec.get('limit') or 50],
             limitation='Controller control using recorded training segments. No learned-method or novelty claim. Historical simulator repeats need not match bitwise.')
     write(out / 'trajectory-search.json', diagnostic)

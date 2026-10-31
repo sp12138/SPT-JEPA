@@ -59,7 +59,7 @@ def main():
                         environment=dict(PYTHONPATH=source['pythonpath'], PYTHONDONTWRITEBYTECODE='1', OMP_NUM_THREADS='2',
                                          MKL_NUM_THREADS='2', MUJOCO_GL='egl', MUJOCO_EGL_DEVICE_ID='0')))
     assert len(jobs) == 24
-    write(root / 'candidate-plan.json', dict(root=str(root), jobs=jobs))
+    write(root / 'candidate-plan.json', dict(root=str(root), environment=old['environment'], jobs=jobs))
     write(root / 'protocol.json', dict(helper_source=helper, bank_report=a.bank_report, bank_sha256=bank['bank_sha256'],
           contracts=a.contracts, specs=specs, jobs=24, cases_per_endpoint=50, models=4,
           per_host_wall_seconds=1200, training_steps=0, new_model_parameters=0,

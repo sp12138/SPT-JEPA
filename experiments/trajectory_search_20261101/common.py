@@ -38,6 +38,8 @@ def array_sha(value):
 
 def source_check(source):
     for key in ('manifest', 'runtime_manifest'):
+        if key not in source:
+            continue
         manifest = read(source[key])
         for relative, expected in manifest['files'].items():
             assert sha(Path(manifest['source']) / relative) == expected, relative

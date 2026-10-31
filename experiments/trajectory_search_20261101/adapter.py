@@ -14,7 +14,8 @@ class Injection:
         self.mode = mode
         self.features = np.asarray(features, dtype=np.float64)
         self.actions = np.asarray(actions, dtype=np.float32)
-        assert self.features.shape == (len(actions), 384) and self.actions.shape[1:] == (5, 25)
+        assert self.features.shape == (len(actions), 384) and self.actions.shape[1] == 5
+        assert self.actions.shape[-1] in (10, 25)
         self.rng = np.random.default_rng(SEED)
         self.calls = 0
         self.solves = 0
@@ -26,7 +27,7 @@ class Injection:
         self.solves += 1
 
     def apply(self, info, candidates):
-        assert candidates.shape == (1, 300, 5, 25) and not candidates.requires_grad
+        assert candidates.shape == (1, 300, 5, self.actions.shape[-1]) and not candidates.requires_grad
         first = self.within_solve % 30 == 0
         self.within_solve += 1
         self.calls += 1

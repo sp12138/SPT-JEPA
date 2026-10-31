@@ -77,11 +77,37 @@ def main():
     m.begin(); m.apply(expanded0, torch.zeros(1, 300, 5, 25)); ids0 = m.injections[-1]['ids']
     m.begin(); m.apply(expanded1, torch.zeros(1, 300, 5, 25)); ids1 = m.injections[-1]['ids']
     assert ids0 == list(range(64)) and ids1 == list(range(512, 576))
+    # Same installed solver/adapter with TwoRoom's two raw control coordinates.
+    small_actions = actions[:, :, :10].copy()
+    class SmallCost(torch.nn.Module):
+        def __init__(self, mode):
+            super().__init__()
+            self.map = Injection(mode, features, small_actions)
+            self.banks = []
+        def get_cost(self, expanded, candidates):
+            self.map.apply(expanded, candidates)
+            self.banks.append(candidates.clone())
+            if len(self.banks) == 2:
+                raise StopAfterUpdate()
+            return (candidates-.25).square().sum((-1, -2))
+    for mode in ('random', 'retrieval'):
+        c = SmallCost(mode)
+        s = CEMSolver(c, batch_size=1, num_samples=300, n_steps=30, topk=30, seed=42, device='cpu')
+        s.configure(action_space=Box(-1., 1., shape=(1, 2), dtype=np.float32), n_envs=1,
+                    config=SimpleNamespace(horizon=5, action_block=5))
+        c.map.begin()
+        try:
+            s.solve(info)
+        except StopAfterUpdate:
+            pass
+        assert c.banks[0].shape == (1, 300, 5, 10)
+        assert torch.equal(c.banks[0][0, 1:65], torch.from_numpy(small_actions[:64]))
+        assert torch.equal(c.banks[1][:, 0], torch.full((1, 5, 10), .25))
     files = {str(f): sha(f) for f in [__file__, inspect.getfile(Injection)]}
     write(a.output, dict(passed=True, native_original_bitwise=True, all30_banks_and_returned_actions_exact=True,
           original_CEM_RNG_exact=True, injected_candidates_drive_actual_native_elite_update=True,
           mean_and_remaining235_candidates_exact=True, stable_ties=True, query_dependence=True,
-          models_loaded=0, simulator_calls=0, native_cem=inspect.getfile(CEMSolver),
+          models_loaded=0, simulator_calls=0, validated_action_widths=[10, 25], native_cem=inspect.getfile(CEMSolver),
           native_cem_sha256=sha(inspect.getfile(CEMSolver)), helper_files=files))
     print('Native CPU candidate/elite/return/RNG contracts pass.', flush=True)
 

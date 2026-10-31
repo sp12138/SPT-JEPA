@@ -22,7 +22,7 @@ def main():
     assert not out.exists()
     out.mkdir(parents=True)
     card = read(data / 'dataset_card.json')
-    assert card['task'] == 'cube' and card['frameskip'] == 5
+    assert card['task'] in ('cube', 'tworoom') and card['frameskip'] == 5
     arrays = {name: np.load(data / (name + '.npy')) for name in
               ('episode_ids', 'offsets', 'lengths', 'train_episodes', 'validation_episodes', 'test_episodes')}
     selected = np.flatnonzero(np.isin(arrays['episode_ids'], arrays['train_episodes']) & (arrays['lengths'] > 35))
@@ -39,7 +39,8 @@ def main():
             # Exactly two allowed RGB rows and the 25 executed action rows.
             images = np.stack([h5['pixels'][row], h5['pixels'][row + 25]])
             raw = np.asarray(h5['action'][row:row + 25], dtype=np.float32)
-            assert images.shape == (2, 224, 224, 3) and raw.shape == (25, 5)
+            assert images.ndim == 4 and images.shape[0] == 2 and images.shape[-1] == 3
+            assert raw.shape == (25, len(mean))
             assert np.all(np.asarray(h5['ep_idx'][row:row + 26]) == arrays['episode_ids'][ep])
             assert np.isfinite(raw).all()
             normalized = raw.copy()
@@ -48,16 +49,16 @@ def main():
             pixels = transform(torch.from_numpy(images.copy()).permute(0, 3, 1, 2))
             feature = F.adaptive_avg_pool2d(pixels, (8, 8)).reshape(384).numpy()
             features.append(feature)
-            actions.append(normalized.reshape(5, 25))
+            actions.append(normalized.reshape(5, 5*len(mean)))
             raw_actions.append(raw)
             provenance.append(dict(episode=int(arrays['episode_ids'][ep]), start=start, rows=[row, row + 25],
                                    rgb_sha256=array_sha(images), raw_action_sha256=array_sha(raw)))
     destination = out / 'bank.npz'
     np.savez_compressed(destination, features=np.stack(features), actions=np.stack(actions), raw_actions=np.stack(raw_actions))
     with np.load(destination) as bank:
-        assert bank['features'].shape == (LIBRARY, 384) and bank['actions'].shape == (LIBRARY, 5, 25)
+        assert bank['features'].shape == (LIBRARY, 384) and bank['actions'].shape == (LIBRARY, 5, 5*len(mean))
         assert all(np.isfinite(bank[k]).all() for k in bank.files)
-    write(out / 'bank.json', dict(passed=True, task='cube', count=LIBRARY, seed=SEED, split='train',
+    write(out / 'bank.json', dict(passed=True, task=card['task'], count=LIBRARY, seed=SEED, split='train',
           bank=str(destination), bank_sha256=sha(destination), dataset_card_sha256=sha(data / 'dataset_card.json'),
           metadata_sha256={name: sha(data / (name + '.npy')) for name in arrays},
           action_mean=mean.tolist(), action_std=std.tolist(), image_transform_source=inspect.getfile(_image_transform),

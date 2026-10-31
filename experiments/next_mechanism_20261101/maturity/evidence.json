@@ -1,0 +1,2646 @@
+{
+  "scope": "Completed JSON-only CPU analysis; no model, GPU, simulation, fitting, or new cohort. Raw MSE is not compared across representations.",
+  "script_sha256": "e9d0c25f95fcc8269fcedbe405113f32277a87df596027433c38237a6ef5d58e",
+  "runs": [
+    {
+      "family": "local",
+      "seed": 1,
+      "current": {
+        "source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-spatial-local-seed1/state-audit.json",
+          "sha256": "b67bd876389ffbce9a80d79283ffd2fb9289f848b5bbf240ddf510192eb0742f"
+        },
+        "step": 23342,
+        "model_class": "spatial_carrier",
+        "config_sha256": "6318270e4239dc319dcae648d415d9ac903f9d8169e7c338406b1614dfa08864",
+        "weights_sha256": "15f154d34f5a3a85aa83a0d7ad00a975948b7e89e83fe16178f8bc693b395700",
+        "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+        "cases": 64,
+        "window": 8,
+        "state_dim": 1024,
+        "observed_state_std_mean": 0.7074865024949096,
+        "observed_state_rms": 0.9569127427883423,
+        "mse": {
+          "clean_rollout": 0.23677923738534373,
+          "teacher_forced_prefix": 0.19296715440088658,
+          "other_initial": 1.5444211439132627,
+          "zero_initial": 1.0801162976808842,
+          "wrong_action_order": 0.9117968461222568,
+          "other_episode_actions": 1.2645071353036432,
+          "observed_future": 0.0,
+          "initial_carry": 1.2971541089647154,
+          "shifted_observed_carry": 0.8485492722687956,
+          "zero_prediction": 0.9206060290154673
+        },
+        "horizon_mse": {
+          "clean_rollout": [
+            0.19379687277277155,
+            0.2104923582135273,
+            0.22553338069193085,
+            0.24401209930972553,
+            0.24706794195415155,
+            0.2680294463430991,
+            0.2685225624122004
+          ],
+          "teacher_forced_prefix": [
+            0.19379687277277155,
+            0.19244416139561074,
+            0.1816669068701786,
+            0.1905596541936362,
+            0.19071098689697893,
+            0.206741985633352,
+            0.1948495130436778
+          ],
+          "other_initial": [
+            1.6008229217941572,
+            1.5428810081921378,
+            1.5054392830027437,
+            1.5409539462387836,
+            1.5354066599743208,
+            1.5526946456344555,
+            1.5327495425562392
+          ],
+          "zero_initial": [
+            1.025558575850821,
+            1.0423952089497217,
+            1.0419770912559732,
+            1.0666104498467495,
+            1.1107736727496846,
+            1.172619371527086,
+            1.1008797135861532
+          ],
+          "wrong_action_order": [
+            0.9227949801552484,
+            1.0248377188110103,
+            1.0809048711303788,
+            1.098718791819468,
+            0.9543404647005479,
+            0.7374684578489666,
+            0.5635126383901777
+          ],
+          "other_episode_actions": [
+            0.8733814982999015,
+            1.2050214281515952,
+            1.3979976933466598,
+            1.3973750701646686,
+            1.3858906481318927,
+            1.3463969482725227,
+            1.2454866607582613
+          ],
+          "observed_future": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "initial_carry": [
+            0.9144116362308485,
+            1.220665963102642,
+            1.4222977199039615,
+            1.47469933850047,
+            1.4739720484174637,
+            1.3870300201443055,
+            1.187002036453316
+          ],
+          "shifted_observed_carry": [
+            0.9144116362308485,
+            0.9102358262822066,
+            0.7614747449152222,
+            0.7650155180526176,
+            0.7613024946351974,
+            0.9369061794226909,
+            0.8904985063427862
+          ],
+          "zero_prediction": [
+            0.9341500515356074,
+            0.9030693010703508,
+            0.926731275893603,
+            0.9542916078984907,
+            0.960920287228244,
+            0.9037759754340404,
+            0.8613037040479333
+          ]
+        },
+        "clean_over_copy": 0.1825374762712828,
+        "clean_over_zero": 0.25719931210809566,
+        "teacher_over_shifted_copy": 0.22740830816452604,
+        "clean_over_teacher": 1.227044250719675,
+        "excess_clean_over_teacher_fraction": 0.18503346606001467,
+        "intervention_error_over_clean": {
+          "other_initial": 6.522620652755172,
+          "zero_initial": 4.561701902616829,
+          "wrong_action_order": 3.850831078733323,
+          "other_episode_actions": 5.340447706762967
+        },
+        "intervention_effect": {
+          "other_initial": 1.5383469390869147,
+          "zero_initial": 1.0805966942037906,
+          "wrong_action_order": 0.7340626263736443,
+          "other_episode_actions": 1.1187069005716321
+        },
+        "access_contract": {
+          "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+          "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+          "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+          "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+          "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+          "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+        },
+        "horizon_clean_over_copy": [
+          0.21193614023941226,
+          0.17244058946192445,
+          0.15856974073414085,
+          0.16546565997503346,
+          0.16762050692848424,
+          0.19323983075378104,
+          0.2262191252969777
+        ],
+        "horizon_clean_over_zero": [
+          0.20745796936391275,
+          0.2330854984928001,
+          0.24336437817366172,
+          0.25569972248533224,
+          0.2571159598126649,
+          0.2965662438796045,
+          0.3117629253771984
+        ],
+        "windows_source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-spatial-local-seed1/windows.json",
+          "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+        }
+      },
+      "history": {
+        "6000": {
+          "transition": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/transition-cube-spatial-local-seed1/state-audit.json",
+              "sha256": "02ce3174573477c075df7931dca12131388b994059b47636ba42a11d79543dd5"
+            },
+            "step": 6000,
+            "model_class": "spatial_carrier",
+            "config_sha256": "05432717b409ee301d257b237803a86fdf5325e15597300adb730dbde4c790da",
+            "weights_sha256": "5d2ab67d41aca66a8f5d77bedabeac1575735e10ff034c33254ff295488cfe44",
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "cases": 64,
+            "window": 8,
+            "state_dim": 1024,
+            "observed_state_std_mean": 0.7074865024949096,
+            "observed_state_rms": 0.9569127427883423,
+            "mse": {
+              "clean_rollout": 0.2945745173495414,
+              "teacher_forced_prefix": 0.24492349158890583,
+              "other_initial": 1.610404679146626,
+              "zero_initial": 1.11078450858411,
+              "wrong_action_order": 0.9431454518537554,
+              "other_episode_actions": 1.2995005075175499,
+              "observed_future": 0.0,
+              "initial_carry": 1.2971541089647154,
+              "shifted_observed_carry": 0.8485492722687956,
+              "zero_prediction": 0.9206060290154673
+            },
+            "horizon_mse": {
+              "clean_rollout": [
+                0.25060894853877846,
+                0.2646269108364938,
+                0.2828133864112202,
+                0.30371142133023693,
+                0.3102464136544456,
+                0.32385743019783886,
+                0.3261571104777757
+              ],
+              "teacher_forced_prefix": [
+                0.25060894853877846,
+                0.24927183816812132,
+                0.22474007221709202,
+                0.24149691961214834,
+                0.23916541809268244,
+                0.25772056248927055,
+                0.2514606820042481
+              ],
+              "other_initial": [
+                1.6283308301081314,
+                1.6218242321826093,
+                1.5795730085740294,
+                1.6224952084888913,
+                1.5986681877982583,
+                1.6102943306212723,
+                1.6116469562531899
+              ],
+              "zero_initial": [
+                1.1284766268808875,
+                1.0077736654364495,
+                1.0792338009930438,
+                1.1148992680862253,
+                1.165560229917757,
+                1.1440140381853352,
+                1.135533930589072
+              ],
+              "wrong_action_order": [
+                0.9265512892678335,
+                1.044230045059287,
+                1.1405321800394967,
+                1.1467848354680061,
+                0.995247438015904,
+                0.7566318805955907,
+                0.5920404945301702
+              ],
+              "other_episode_actions": [
+                0.8695983049330027,
+                1.2238321521854094,
+                1.4598755122285125,
+                1.4554072908261206,
+                1.4221582622446038,
+                1.3836108318391571,
+                1.282021198366042
+              ],
+              "observed_future": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "initial_carry": [
+                0.9144116362308485,
+                1.220665963102642,
+                1.4222977199039615,
+                1.47469933850047,
+                1.4739720484174637,
+                1.3870300201443055,
+                1.187002036453316
+              ],
+              "shifted_observed_carry": [
+                0.9144116362308485,
+                0.9102358262822066,
+                0.7614747449152222,
+                0.7650155180526176,
+                0.7613024946351974,
+                0.9369061794226909,
+                0.8904985063427862
+              ],
+              "zero_prediction": [
+                0.9341500515356074,
+                0.9030693010703508,
+                0.926731275893603,
+                0.9542916078984907,
+                0.960920287228244,
+                0.9037759754340404,
+                0.8613037040479333
+              ]
+            },
+            "clean_over_copy": 0.22709292235495995,
+            "clean_over_zero": 0.3199789139601563,
+            "teacher_over_shifted_copy": 0.2886379136641593,
+            "clean_over_teacher": 1.2027205534207097,
+            "excess_clean_over_teacher_fraction": 0.16855166634023458,
+            "intervention_error_over_clean": {
+              "other_initial": 5.466883875891152,
+              "zero_initial": 3.7708099077221124,
+              "wrong_action_order": 3.2017211140318067,
+              "other_episode_actions": 4.411449161352833
+            },
+            "intervention_effect": {
+              "other_initial": 1.6245687014004402,
+              "zero_initial": 1.1309316767578501,
+              "wrong_action_order": 0.7222477859677707,
+              "other_episode_actions": 1.1192554664641823
+            },
+            "access_contract": {
+              "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+              "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+              "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+              "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+              "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+              "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+            },
+            "horizon_clean_over_copy": [
+              0.27406579117012764,
+              0.2167889650694243,
+              0.1988426068983059,
+              0.20594802845647314,
+              0.21048324083726214,
+              0.23348984917005977,
+              0.2747738423872563
+            ],
+            "horizon_clean_over_zero": [
+              0.268274832428488,
+              0.29303056866493893,
+              0.3051730245518224,
+              0.3182585059079165,
+              0.3228638397773299,
+              0.358338171184851,
+              0.3786784022231772
+            ],
+            "windows_source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/transition-cube-spatial-local-seed1/windows.json",
+              "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+            }
+          },
+          "exact_windows_json_equal": true,
+          "manifest_sha_equal": true,
+          "clean_over_copy_change": -0.04455544608367715,
+          "teacher_over_shifted_copy_change": -0.06122960549963327,
+          "health": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/health-cube-spatial-local-seed1/health.json",
+              "sha256": "2b6883326fcaa5739deabd3f3e6c6ec89c459ed96fa0dbc16cc72be0be65bdca"
+            },
+            "feature_std": 0.6809470653533936,
+            "summary": {
+              "fm_t0.2_posterior": 0.04237625561654568,
+              "fm_t0.2_shuffled_posterior": 0.12504222965799272,
+              "fm_t0.2_forecast": 0.04337097704410553,
+              "fm_t0.2_wrong_state": 0.08133853110484779,
+              "fm_t0.2_wrong_actions": 0.054194576339796185,
+              "fm_t0.2_carry": 0.09521984751336277,
+              "fm_t0.2_zero": 0.05913881957530975,
+              "fm_t0.5_posterior": 0.01016609842190519,
+              "fm_t0.5_shuffled_posterior": 0.1225905274040997,
+              "fm_t0.5_forecast": 0.011630051769316196,
+              "fm_t0.5_wrong_state": 0.06824221136048436,
+              "fm_t0.5_wrong_actions": 0.03457426559180021,
+              "fm_t0.5_carry": 0.08899664203636348,
+              "fm_t0.5_zero": 0.033358585089445114,
+              "fm_t0.8_posterior": 0.005206589994486421,
+              "fm_t0.8_shuffled_posterior": 0.07732028025202453,
+              "fm_t0.8_forecast": 0.007193953380919993,
+              "fm_t0.8_wrong_state": 0.06263829418458045,
+              "fm_t0.8_wrong_actions": 0.03745398868340999,
+              "fm_t0.8_carry": 0.06000988814048469,
+              "fm_t0.8_zero": 0.03799609455745667,
+              "fm_t0.95_posterior": 0.0041077639907598495,
+              "fm_t0.95_shuffled_posterior": 0.05677948403172195,
+              "fm_t0.95_forecast": 0.005950373233645223,
+              "fm_t0.95_wrong_state": 0.05040753458160907,
+              "fm_t0.95_wrong_actions": 0.029382274253293872,
+              "fm_t0.95_carry": 0.04422055836766958,
+              "fm_t0.95_zero": 0.03178802947513759
+            },
+            "high_noise_forecast_over_posterior": 1.4485674559274107,
+            "high_noise_wrong_action_over_forecast": 4.93788760798357,
+            "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+          },
+          "forecast_health_relative_change": -0.47385549242933966
+        }
+      },
+      "config_source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-spatial-local-seed1/config.json",
+        "sha256": "6318270e4239dc319dcae648d415d9ac903f9d8169e7c338406b1614dfa08864"
+      },
+      "model_config": {
+        "mode": "L2",
+        "sigma0": 0.1,
+        "window": 8,
+        "renderer_width": 384,
+        "renderer_depth": 12,
+        "renderer_heads": 6,
+        "forecast_seed": 20361032,
+        "action_dim": 25,
+        "beta": 0.25,
+        "rho": 0.8,
+        "forecast_fraction": 0.5,
+        "flow_logit_shift": 0.0,
+        "spatial_mode": "local",
+        "state_slots": 64,
+        "state_width": 16
+      },
+      "large_config_fields_omitted_but_hash_bound": [
+        "spatial_mean",
+        "spatial_scale"
+      ],
+      "current_health": {
+        "source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/health-cube-spatial-local-seed1/health.json",
+          "sha256": "ca0a6595380a8a405fdd09b7f3a9cd7da7afb94a5f052539d0829f4d58b340d1"
+        },
+        "feature_std": 0.6809470653533936,
+        "summary": {
+          "fm_t0.2_posterior": 0.01670187496347353,
+          "fm_t0.2_shuffled_posterior": 0.3195054642856121,
+          "fm_t0.2_forecast": 0.01858918386278674,
+          "fm_t0.2_wrong_state": 0.07795874308794737,
+          "fm_t0.2_wrong_actions": 0.04177214845549315,
+          "fm_t0.2_carry": 0.1813632941339165,
+          "fm_t0.2_zero": 0.027567827026359737,
+          "fm_t0.5_posterior": 0.0036242117057554424,
+          "fm_t0.5_shuffled_posterior": 0.20512400288134813,
+          "fm_t0.5_forecast": 0.005584307873505168,
+          "fm_t0.5_wrong_state": 0.08342921559233218,
+          "fm_t0.5_wrong_actions": 0.0449135861126706,
+          "fm_t0.5_carry": 0.15211941534653306,
+          "fm_t0.5_zero": 0.015034544427180663,
+          "fm_t0.8_posterior": 0.0016274443551083095,
+          "fm_t0.8_shuffled_posterior": 0.08706529857590795,
+          "fm_t0.8_forecast": 0.0036296598336775787,
+          "fm_t0.8_wrong_state": 0.07166452892124653,
+          "fm_t0.8_wrong_actions": 0.039423792622983456,
+          "fm_t0.8_carry": 0.06584579567424953,
+          "fm_t0.8_zero": 0.03857248031999916,
+          "fm_t0.95_posterior": 0.0011953092216572259,
+          "fm_t0.95_shuffled_posterior": 0.062360885087400675,
+          "fm_t0.95_forecast": 0.003130756194877904,
+          "fm_t0.95_wrong_state": 0.055634602438658476,
+          "fm_t0.95_wrong_actions": 0.030156361171975732,
+          "fm_t0.95_carry": 0.04720430541783571,
+          "fm_t0.95_zero": 0.03194391285069287
+        },
+        "high_noise_forecast_over_posterior": 2.6192019087222422,
+        "high_noise_wrong_action_over_forecast": 9.632293061118354,
+        "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+      }
+    },
+    {
+      "family": "local",
+      "seed": 2,
+      "current": {
+        "source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-spatial-local-seed2/state-audit.json",
+          "sha256": "5acfec75f2041aff3ff36dbaeb47dc88932936292e67979e9c8534c50f51afd2"
+        },
+        "step": 23342,
+        "model_class": "spatial_carrier",
+        "config_sha256": "e9e24e3bf1cd9b73b1aba87a56bb6a50f7c5fc73cb23ad911411c1bf123a30b6",
+        "weights_sha256": "ea9e11b46560874d7134de3655c98c468a28a8d97156b95896df0e77c7660837",
+        "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+        "cases": 64,
+        "window": 8,
+        "state_dim": 1024,
+        "observed_state_std_mean": 0.6990120070251256,
+        "observed_state_rms": 0.9489319020003079,
+        "mse": {
+          "clean_rollout": 0.22414394482518743,
+          "teacher_forced_prefix": 0.18373957751463538,
+          "other_initial": 1.5135983646366238,
+          "zero_initial": 1.1233230701357166,
+          "wrong_action_order": 0.914394872835879,
+          "other_episode_actions": 1.2761685877681657,
+          "observed_future": 0.0,
+          "initial_carry": 1.287491984141629,
+          "shifted_observed_carry": 0.8517628653231712,
+          "zero_prediction": 0.9054858753985153
+        },
+        "horizon_mse": {
+          "clean_rollout": [
+            0.19290381550708025,
+            0.19916583893910628,
+            0.21055563891443807,
+            0.22932747900458744,
+            0.23662388384775823,
+            0.25170690079288593,
+            0.24872405677045606
+          ],
+          "teacher_forced_prefix": [
+            0.19290381550708025,
+            0.186043899848578,
+            0.16914619453541446,
+            0.17856908015115686,
+            0.1820321652723674,
+            0.19424879857522986,
+            0.1832330887126209
+          ],
+          "other_initial": [
+            1.581736008405579,
+            1.5306073196080456,
+            1.4785494597256548,
+            1.5196739758356943,
+            1.5178819712489868,
+            1.4975879827659748,
+            1.4691518348664299
+          ],
+          "zero_initial": [
+            1.0725430581947675,
+            1.0820465629682887,
+            1.1234025089774269,
+            1.1488936232713074,
+            1.158221923514068,
+            1.1374790865961073,
+            1.1406747274280518
+          ],
+          "wrong_action_order": [
+            0.916432737595704,
+            1.0064126921289172,
+            1.0983373506125191,
+            1.1270988762425365,
+            0.9787511594346499,
+            0.7068166435266837,
+            0.5669146503101421
+          ],
+          "other_episode_actions": [
+            0.8929883488276217,
+            1.1873852150167656,
+            1.4325136446711642,
+            1.4576836757019045,
+            1.4178833604853402,
+            1.330626472124949,
+            1.214099397549416
+          ],
+          "observed_future": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "initial_carry": [
+            0.8896669343203594,
+            1.192097921743982,
+            1.4381778758284844,
+            1.5125913866821048,
+            1.500340781838376,
+            1.3408011089189658,
+            1.138767879659131
+          ],
+          "shifted_observed_carry": [
+            0.8896669343203594,
+            0.9135746910974477,
+            0.7844808126424287,
+            0.7799514060009821,
+            0.7584943282242715,
+            0.9629447784828942,
+            0.8732271064938142
+          ],
+          "zero_prediction": [
+            0.9294566656991542,
+            0.8869019015293835,
+            0.9217714716999288,
+            0.9445723293321782,
+            0.9542412792833748,
+            0.8609917255628259,
+            0.8404657546827619
+          ]
+        },
+        "clean_over_copy": 0.17409346822040545,
+        "clean_over_zero": 0.24753996822594163,
+        "teacher_over_shifted_copy": 0.2157168209545293,
+        "clean_over_teacher": 1.2199001862150995,
+        "excess_clean_over_teacher_fraction": 0.18026080223609836,
+        "intervention_error_over_clean": {
+          "other_initial": 6.7527961365054825,
+          "zero_initial": 5.011614616722347,
+          "wrong_action_order": 4.079498438153333,
+          "other_episode_actions": 5.693522476208157
+        },
+        "intervention_effect": {
+          "other_initial": 1.5168344693491052,
+          "zero_initial": 1.1234056206900043,
+          "wrong_action_order": 0.7674636376954346,
+          "other_episode_actions": 1.145180820215757
+        },
+        "access_contract": {
+          "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+          "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+          "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+          "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+          "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+          "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+        },
+        "horizon_clean_over_copy": [
+          0.21682700352851114,
+          0.1670717105585892,
+          0.1464044486104643,
+          0.15161231316252646,
+          0.1577134253178279,
+          0.18772873852694463,
+          0.21841506176386621
+        ],
+        "horizon_clean_over_zero": [
+          0.20754471147073272,
+          0.2245635493572203,
+          0.22842498968440828,
+          0.242784455867688,
+          0.24797070613572733,
+          0.2923453191473431,
+          0.2959359800023479
+        ],
+        "windows_source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-spatial-local-seed2/windows.json",
+          "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+        }
+      },
+      "history": {
+        "6000": {
+          "transition": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/transition-cube-spatial-local-seed2/state-audit.json",
+              "sha256": "f3d1bd95119a7417754702c6cb093dfa27f3155014f9ca04f89ddb0f84ff9a62"
+            },
+            "step": 6000,
+            "model_class": "spatial_carrier",
+            "config_sha256": "1cdc69be3633589115df6a95ff2daef99c586c5b1e75ef8c3cfca4a651b71792",
+            "weights_sha256": "491a846baca4d2e0a3bd9c2ea328c3e6bd63614fda8a861910bdae0d4f1805e0",
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "cases": 64,
+            "window": 8,
+            "state_dim": 1024,
+            "observed_state_std_mean": 0.6990120070251256,
+            "observed_state_rms": 0.9489319020003079,
+            "mse": {
+              "clean_rollout": 0.28465405941828986,
+              "teacher_forced_prefix": 0.23739074027997437,
+              "other_initial": 1.5249487583556538,
+              "zero_initial": 0.9837209227054081,
+              "wrong_action_order": 0.9302826952692408,
+              "other_episode_actions": 1.2958828173195778,
+              "observed_future": 0.0,
+              "initial_carry": 1.287491984141629,
+              "shifted_observed_carry": 0.8517628653231712,
+              "zero_prediction": 0.9054858753985153
+            },
+            "horizon_mse": {
+              "clean_rollout": [
+                0.2471618067517503,
+                0.2567811881944001,
+                0.2706472421486897,
+                0.2837606162708771,
+                0.3009290253190221,
+                0.3197174021077383,
+                0.31358113513555125
+              ],
+              "teacher_forced_prefix": [
+                0.2471618067517503,
+                0.24365740825604576,
+                0.21898029543956057,
+                0.22669220943151305,
+                0.23329627197078612,
+                0.2515151600908598,
+                0.2404320300193049
+              ],
+              "other_initial": [
+                1.5890003520718081,
+                1.5708363918800199,
+                1.4974164030656398,
+                1.5201803693715419,
+                1.4994673365883924,
+                1.4823636809425544,
+                1.5153767745696194
+              ],
+              "zero_initial": [
+                1.0566833402002338,
+                0.9313632295001464,
+                0.969141812404861,
+                0.9532896649670777,
+                0.9716850449108039,
+                1.006118099945956,
+                0.9977652670087775
+              ],
+              "wrong_action_order": [
+                0.9009345397202254,
+                0.9959214526793161,
+                1.1010646135074535,
+                1.1439897258287417,
+                0.9965726664289525,
+                0.7483378241550633,
+                0.6251580445649336
+              ],
+              "other_episode_actions": [
+                0.8761778747865698,
+                1.2102295588011518,
+                1.461908967808216,
+                1.4609875239374035,
+                1.4348858658494457,
+                1.3868616066446844,
+                1.2401283234095744
+              ],
+              "observed_future": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "initial_carry": [
+                0.8896669343203594,
+                1.192097921743982,
+                1.4381778758284844,
+                1.5125913866821048,
+                1.500340781838376,
+                1.3408011089189658,
+                1.138767879659131
+              ],
+              "shifted_observed_carry": [
+                0.8896669343203594,
+                0.9135746910974477,
+                0.7844808126424287,
+                0.7799514060009821,
+                0.7584943282242715,
+                0.9629447784828942,
+                0.8732271064938142
+              ],
+              "zero_prediction": [
+                0.9294566656991542,
+                0.8869019015293835,
+                0.9217714716999288,
+                0.9445723293321782,
+                0.9542412792833748,
+                0.8609917255628259,
+                0.8404657546827619
+              ]
+            },
+            "clean_over_copy": 0.22109190808521323,
+            "clean_over_zero": 0.3143660957637911,
+            "teacher_over_shifted_copy": 0.2787052006427926,
+            "clean_over_teacher": 1.1990950408704821,
+            "excess_clean_over_teacher_fraction": 0.16603774853905592,
+            "intervention_error_over_clean": {
+              "other_initial": 5.357200109747219,
+              "zero_initial": 3.4558471595863045,
+              "wrong_action_order": 3.268116734995234,
+              "other_episode_actions": 4.552483178942901
+            },
+            "intervention_effect": {
+              "other_initial": 1.5253070305097503,
+              "zero_initial": 0.9759313940079412,
+              "wrong_action_order": 0.7146260461565517,
+              "other_episode_actions": 1.108864363021462
+            },
+            "access_contract": {
+              "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+              "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+              "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+              "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+              "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+              "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+            },
+            "horizon_clean_over_copy": [
+              0.2778138618139876,
+              0.21540276474833675,
+              0.18818759952956388,
+              0.18759898989859444,
+              0.20057378227784495,
+              0.23845251915514423,
+              0.2753687917764382
+            ],
+            "horizon_clean_over_zero": [
+              0.2659207425940947,
+              0.2895260318549366,
+              0.29361642278813715,
+              0.3004117392169413,
+              0.3153594712911777,
+              0.37133620755616514,
+              0.37310400023843215
+            ],
+            "windows_source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/transition-cube-spatial-local-seed2/windows.json",
+              "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+            }
+          },
+          "exact_windows_json_equal": true,
+          "manifest_sha_equal": true,
+          "clean_over_copy_change": -0.046998439864807784,
+          "teacher_over_shifted_copy_change": -0.06298837968826329,
+          "health": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/health-cube-spatial-local-seed2/health.json",
+              "sha256": "91388dc117ca02441599c55b81c0683fdc76dc9031636642de0187153b256dc8"
+            },
+            "feature_std": 0.6720715165138245,
+            "summary": {
+              "fm_t0.2_posterior": 0.04170129238627851,
+              "fm_t0.2_shuffled_posterior": 0.1159994387999177,
+              "fm_t0.2_forecast": 0.04241338442079723,
+              "fm_t0.2_wrong_state": 0.08012388995848596,
+              "fm_t0.2_wrong_actions": 0.052174044540151954,
+              "fm_t0.2_carry": 0.08955050050280988,
+              "fm_t0.2_zero": 0.05703615094535053,
+              "fm_t0.5_posterior": 0.010470354405697435,
+              "fm_t0.5_shuffled_posterior": 0.10997185786254704,
+              "fm_t0.5_forecast": 0.011356741772033274,
+              "fm_t0.5_wrong_state": 0.07149162818677723,
+              "fm_t0.5_wrong_actions": 0.03068906639236957,
+              "fm_t0.5_carry": 0.075337044429034,
+              "fm_t0.5_zero": 0.027933650533668697,
+              "fm_t0.8_posterior": 0.005829131696373224,
+              "fm_t0.8_shuffled_posterior": 0.0760792123619467,
+              "fm_t0.8_forecast": 0.007289538567420095,
+              "fm_t0.8_wrong_state": 0.06438418384641409,
+              "fm_t0.8_wrong_actions": 0.036712081637233496,
+              "fm_t0.8_carry": 0.05939825554378331,
+              "fm_t0.8_zero": 0.03820425539743155,
+              "fm_t0.95_posterior": 0.004537090426310897,
+              "fm_t0.95_shuffled_posterior": 0.05673624528571963,
+              "fm_t0.95_forecast": 0.006049735893611796,
+              "fm_t0.95_wrong_state": 0.05072719953022897,
+              "fm_t0.95_wrong_actions": 0.029173099959734827,
+              "fm_t0.95_carry": 0.04437516478355974,
+              "fm_t0.95_zero": 0.031911218422465026
+            },
+            "high_noise_forecast_over_posterior": 1.3333954859107424,
+            "high_noise_wrong_action_over_forecast": 4.822210501873328,
+            "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+          },
+          "forecast_health_relative_change": -0.44514148729255054
+        }
+      },
+      "config_source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-spatial-local-seed2/config.json",
+        "sha256": "e9e24e3bf1cd9b73b1aba87a56bb6a50f7c5fc73cb23ad911411c1bf123a30b6"
+      },
+      "model_config": {
+        "mode": "L2",
+        "sigma0": 0.1,
+        "window": 8,
+        "renderer_width": 384,
+        "renderer_depth": 12,
+        "renderer_heads": 6,
+        "forecast_seed": 20461035,
+        "action_dim": 25,
+        "beta": 0.25,
+        "rho": 0.8,
+        "forecast_fraction": 0.5,
+        "flow_logit_shift": 0.0,
+        "spatial_mode": "local",
+        "state_slots": 64,
+        "state_width": 16
+      },
+      "large_config_fields_omitted_but_hash_bound": [
+        "spatial_mean",
+        "spatial_scale"
+      ],
+      "current_health": {
+        "source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/health-cube-spatial-local-seed2/health.json",
+          "sha256": "e997f806ff817203bab9c1c1aaf28373666fdda027fb57920c987f77ef9c9007"
+        },
+        "feature_std": 0.6720715165138245,
+        "summary": {
+          "fm_t0.2_posterior": 0.017649562505539507,
+          "fm_t0.2_shuffled_posterior": 0.235349930357188,
+          "fm_t0.2_forecast": 0.01917217078153044,
+          "fm_t0.2_wrong_state": 0.06258656014688313,
+          "fm_t0.2_wrong_actions": 0.03490282315760851,
+          "fm_t0.2_carry": 0.1252973973751068,
+          "fm_t0.2_zero": 0.027501930366270244,
+          "fm_t0.5_posterior": 0.0039679363835603,
+          "fm_t0.5_shuffled_posterior": 0.19169154111295938,
+          "fm_t0.5_forecast": 0.005615946793113835,
+          "fm_t0.5_wrong_state": 0.07515968277584761,
+          "fm_t0.5_wrong_actions": 0.03455812484025955,
+          "fm_t0.5_carry": 0.14363701594993472,
+          "fm_t0.5_zero": 0.014362451009219512,
+          "fm_t0.8_posterior": 0.0018055687032756396,
+          "fm_t0.8_shuffled_posterior": 0.08609713800251484,
+          "fm_t0.8_forecast": 0.0038602373388130218,
+          "fm_t0.8_wrong_state": 0.07115161861293018,
+          "fm_t0.8_wrong_actions": 0.037271963781677186,
+          "fm_t0.8_carry": 0.06513168988749385,
+          "fm_t0.8_zero": 0.03720190213061869,
+          "fm_t0.95_posterior": 0.0013379482734308112,
+          "fm_t0.95_shuffled_posterior": 0.061620239401236176,
+          "fm_t0.95_forecast": 0.003356747460202314,
+          "fm_t0.95_wrong_state": 0.05453635845333338,
+          "fm_t0.95_wrong_actions": 0.029868305777199566,
+          "fm_t0.95_carry": 0.046686541638337076,
+          "fm_t0.95_zero": 0.032124822842888534
+        },
+        "high_noise_forecast_over_posterior": 2.508876857843563,
+        "high_noise_wrong_action_over_forecast": 8.897990132209522,
+        "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+      }
+    },
+    {
+      "family": "native",
+      "seed": 1,
+      "current": {
+        "source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-native-lewm-seed1/state-audit.json",
+          "sha256": "6d00e0a0f74e21a792db1ce436efa526d4e2e0eb4d508cab1798878dc5e89ea9"
+        },
+        "step": 23342,
+        "model_class": "native_lewm",
+        "config_sha256": "0d2e8fc827bf3c93d023080c0551991140ae7ed28bdef0277639d4482cae907e",
+        "weights_sha256": "4f353bea8db5e8ae6c1f1a7e107af60edb5d5452d5f1ec929e0c8e61e4485e3a",
+        "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+        "cases": 64,
+        "window": 8,
+        "state_dim": 192,
+        "observed_state_std_mean": 0.9877862673837703,
+        "observed_state_rms": 0.9972401656120792,
+        "mse": {
+          "clean_rollout": 0.04384054930778403,
+          "teacher_forced_prefix": 0.013863066295488304,
+          "other_initial": 1.8316146166191107,
+          "zero_initial": 1.2806371392015035,
+          "wrong_action_order": 1.001002438490368,
+          "other_episode_actions": 1.5853915689680576,
+          "observed_future": 0.0,
+          "initial_carry": 1.3247064278572462,
+          "shifted_observed_carry": 0.717600512945718,
+          "zero_prediction": 0.9952825863744098
+        },
+        "horizon_mse": {
+          "clean_rollout": [
+            0.015731805735991956,
+            0.02737640878986681,
+            0.0429106104262795,
+            0.054176944526894005,
+            0.06014453727522895,
+            0.05609644749723959,
+            0.0504470909029874
+          ],
+          "teacher_forced_prefix": [
+            0.015731805735991956,
+            0.01450342877635863,
+            0.013014678183395037,
+            0.012897273229343684,
+            0.015082501110701715,
+            0.01371224801711368,
+            0.012099529015513422
+          ],
+          "other_initial": [
+            1.88397306213922,
+            1.8772900344096808,
+            1.8484600876500064,
+            1.7880944611923915,
+            1.8291677935399346,
+            1.8041577018728754,
+            1.7901591755296669
+          ],
+          "zero_initial": [
+            1.0325073968907166,
+            1.133510649478176,
+            1.2362742958069575,
+            1.281084963326239,
+            1.3733550552650478,
+            1.4260603580551239,
+            1.4816672555882637
+          ],
+          "wrong_action_order": [
+            1.2054334954476646,
+            1.275003652643314,
+            1.261723123571225,
+            1.180152555633541,
+            1.0315501052275864,
+            0.7341487071091028,
+            0.31900542980014224
+          ],
+          "other_episode_actions": [
+            1.0606359512707768,
+            1.4292106321873879,
+            1.7052202011688906,
+            1.787237128641423,
+            1.7353496583232075,
+            1.7193703460841783,
+            1.6607170651005374
+          ],
+          "observed_future": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "initial_carry": [
+            0.7489643317107484,
+            1.2568472509965973,
+            1.418077174849881,
+            1.4499663281408868,
+            1.500159977741034,
+            1.5169062237987394,
+            1.382023707762838
+          ],
+          "shifted_observed_carry": [
+            0.7489643317107484,
+            0.7199184102459963,
+            0.6357897808861757,
+            0.6587791910505278,
+            0.7050247476083946,
+            0.8601745810884511,
+            0.6945525480297325
+          ],
+          "zero_prediction": [
+            0.9973554674504985,
+            0.9978196245978264,
+            0.9920127173042214,
+            1.0002697112959167,
+            1.0017492234486711,
+            0.9894022069213193,
+            0.9883691536024161
+          ]
+        },
+        "clean_over_copy": 0.033094539579382486,
+        "clean_over_zero": 0.04404834356389703,
+        "teacher_over_shifted_copy": 0.019318640448821638,
+        "clean_over_teacher": 3.1623991672067393,
+        "excess_clean_over_teacher_fraction": 0.6837843842201385,
+        "intervention_error_over_clean": {
+          "other_initial": 41.779007004684175,
+          "zero_initial": 29.21124756468602,
+          "wrong_action_order": 22.83279872847389,
+          "other_episode_actions": 36.16267574198862
+        },
+        "intervention_effect": {
+          "other_initial": 1.8091716180941808,
+          "zero_initial": 1.253788650929901,
+          "wrong_action_order": 0.9908565619015505,
+          "other_episode_actions": 1.5701995742585075
+        },
+        "access_contract": {
+          "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+          "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+          "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+          "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+          "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+          "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+        },
+        "horizon_clean_over_copy": [
+          0.02100474624747232,
+          0.021781810612354933,
+          0.03025971448332638,
+          0.037364277690750534,
+          0.04009208228964727,
+          0.036980827566755615,
+          0.036502333946679566
+        ],
+        "horizon_clean_over_zero": [
+          0.01577351932125721,
+          0.027436230071042084,
+          0.04325610919876954,
+          0.05416233633297177,
+          0.060039514748184586,
+          0.056697313898048114,
+          0.05104073788535127
+        ],
+        "windows_source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-native-lewm-seed1/windows.json",
+          "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+        }
+      },
+      "history": {
+        "6000": {
+          "transition": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/transition-cube-native-lewm-seed1/state-audit.json",
+              "sha256": "216ecaf29c4f4e07a4eb36ea17fa1567405b3e36a28fe0e4247ce95824c83ba6"
+            },
+            "step": 6000,
+            "model_class": "native_lewm",
+            "config_sha256": "f81a6985f13032caa355c8e6ea74436f4a3afe3a10bc7b22a66067d8cd6efa73",
+            "weights_sha256": "5d75daa26b1954c4af111baaf446b758b4d3202358b72d0bcef77f983e69b846",
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "cases": 64,
+            "window": 8,
+            "state_dim": 192,
+            "observed_state_std_mean": 0.9983311446931166,
+            "observed_state_rms": 1.06269312400076,
+            "mse": {
+              "clean_rollout": 0.22103121116321114,
+              "teacher_forced_prefix": 0.1436100992296701,
+              "other_initial": 1.962361184283031,
+              "zero_initial": 1.5404608347752575,
+              "wrong_action_order": 1.0371447714054136,
+              "other_episode_actions": 1.6806255541515454,
+              "observed_future": 0.0,
+              "initial_carry": 1.245985003098717,
+              "shifted_observed_carry": 0.5992166540394069,
+              "zero_prediction": 1.1380936518799776
+            },
+            "horizon_mse": {
+              "clean_rollout": [
+                0.1552643996941907,
+                0.21065565377804382,
+                0.21910606178290373,
+                0.23918461409739486,
+                0.23876776682907924,
+                0.24755165920103958,
+                0.23668832275982613
+              ],
+              "teacher_forced_prefix": [
+                0.1552643996941907,
+                0.14995683092656312,
+                0.1407776343999112,
+                0.13329782691972197,
+                0.13172092748989533,
+                0.15240152364308945,
+                0.14185155153431897
+              ],
+              "other_initial": [
+                2.017980940969732,
+                2.07666715809789,
+                1.9890421591735352,
+                1.9044031744936012,
+                1.864494195117242,
+                1.925533626388906,
+                1.9584070357403107
+              ],
+              "zero_initial": [
+                1.1872524131394377,
+                1.394129428563937,
+                1.5207421045769114,
+                1.5821652104813806,
+                1.635003781667814,
+                1.6963055070158237,
+                1.7676273979814974
+              ],
+              "wrong_action_order": [
+                1.2476762318719343,
+                1.3667443856683557,
+                1.3073916323941988,
+                1.185711453016928,
+                0.9694791576708088,
+                0.7566935168559732,
+                0.4263170223596974
+              ],
+              "other_episode_actions": [
+                1.012009357434914,
+                1.6322561218186824,
+                1.8308062963199019,
+                1.9429472247096204,
+                1.8235937996813039,
+                1.784650134639355,
+                1.7381159444570393
+              ],
+              "observed_future": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "initial_carry": [
+                0.6447551054307178,
+                1.2098613374256935,
+                1.384313604086561,
+                1.4095890128255315,
+                1.4121341847000912,
+                1.4372075720465234,
+                1.2240342051759006
+              ],
+              "shifted_observed_carry": [
+                0.6447551054307178,
+                0.6150937923877822,
+                0.5311406980014097,
+                0.5100701424226403,
+                0.5832485817162303,
+                0.707798365608013,
+                0.6024098927090549
+              ],
+              "zero_prediction": [
+                1.122654452946826,
+                1.1635844317140565,
+                1.130224322841332,
+                1.1272731397107483,
+                1.1252152057929965,
+                1.14608737957662,
+                1.1516166305772626
+              ]
+            },
+            "clean_over_copy": 0.17739476046141406,
+            "clean_over_zero": 0.19421179513487077,
+            "teacher_over_shifted_copy": 0.23966306387109482,
+            "clean_over_teacher": 1.5391063187674874,
+            "excess_clean_over_teacher_fraction": 0.3502723055540455,
+            "intervention_error_over_clean": {
+              "other_initial": 8.87820852971759,
+              "zero_initial": 6.969426745971045,
+              "wrong_action_order": 4.69230008715637,
+              "other_episode_actions": 7.603566687740576
+            },
+            "intervention_effect": {
+              "other_initial": 1.795186744744229,
+              "zero_initial": 1.3795900945704962,
+              "wrong_action_order": 0.9200377023678226,
+              "other_episode_actions": 1.5741428374783668
+            },
+            "access_contract": {
+              "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+              "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+              "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+              "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+              "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+              "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+            },
+            "horizon_clean_over_copy": [
+              0.24081143117194695,
+              0.1741155347820855,
+              0.15827776389402806,
+              0.16968393760245587,
+              0.16908291677662962,
+              0.17224488933671314,
+              0.19336740898168991
+            ],
+            "horizon_clean_over_zero": [
+              0.13830114803948915,
+              0.1810402821114842,
+              0.19386068531252376,
+              0.21217982197177895,
+              0.2121974228572635,
+              0.2159971949891713,
+              0.20552701000955767
+            ],
+            "windows_source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/transition-cube-native-lewm-seed1/windows.json",
+              "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+            }
+          },
+          "exact_windows_json_equal": true,
+          "manifest_sha_equal": true,
+          "clean_over_copy_change": -0.14430022088203157,
+          "teacher_over_shifted_copy_change": -0.22034442342227317
+        },
+        "12000": {
+          "transition": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/transition-cube-native-lewm-seed1/state-audit.json",
+              "sha256": "4fd37eee19c432727e4556314fd6aa7441acd5a13d428938a68b9c0d3fca2e13"
+            },
+            "step": 12000,
+            "model_class": "native_lewm",
+            "config_sha256": "9ad4a5bae4cd3285960b20b5806a34bce65de54bb8c9e64d6c3ce8c0056c5323",
+            "weights_sha256": "459033a8ff033116a369542b18270709f84f630bd5d1b08856d245b62803a7a4",
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "cases": 64,
+            "window": 8,
+            "state_dim": 192,
+            "observed_state_std_mean": 1.0047802424354844,
+            "observed_state_rms": 1.0190698076771607,
+            "mse": {
+              "clean_rollout": 0.06820883321854876,
+              "teacher_forced_prefix": 0.028336680637794296,
+              "other_initial": 1.9457134759387846,
+              "zero_initial": 1.5241613062455368,
+              "wrong_action_order": 1.0311311269423784,
+              "other_episode_actions": 1.6813425553520962,
+              "observed_future": 0.0,
+              "initial_carry": 1.350205328517991,
+              "shifted_observed_carry": 0.7124830811659264,
+              "zero_prediction": 1.0431454631032797
+            },
+            "horizon_mse": {
+              "clean_rollout": [
+                0.029713814255713934,
+                0.04749988493851199,
+                0.06883227924416191,
+                0.08349170944896153,
+                0.08619177645041504,
+                0.0865928170278192,
+                0.07513955116425779
+              ],
+              "teacher_forced_prefix": [
+                0.029713814255713934,
+                0.027176828820686564,
+                0.026190108764098993,
+                0.02853797329551357,
+                0.02929835121015758,
+                0.03062088904755356,
+                0.0268187990708359
+              ],
+              "other_initial": [
+                2.0133748902713973,
+                1.9972374617997868,
+                1.972624270128176,
+                1.9031668410057505,
+                1.9059211587733482,
+                1.9240020321750533,
+                1.9036676774179773
+              ],
+              "zero_initial": [
+                1.130064993955993,
+                1.3558544929144603,
+                1.512393367519795,
+                1.5692073096338808,
+                1.6570882333065589,
+                1.704118890659253,
+                1.7404018557288183
+              ],
+              "wrong_action_order": [
+                1.2687872003082705,
+                1.3393791788256117,
+                1.2946811782245575,
+                1.2006654498593479,
+                1.0539612742237945,
+                0.7518956773702014,
+                0.3085479297848657
+              ],
+              "other_episode_actions": [
+                1.1078605590960864,
+                1.5418960796191998,
+                1.782469139303848,
+                1.9044978875028342,
+                1.859440449248987,
+                1.8094244305861067,
+                1.7638093421076109
+              ],
+              "observed_future": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "initial_carry": [
+                0.7637529685453734,
+                1.309478235771356,
+                1.4816836752746272,
+                1.4778521717637083,
+                1.4913774710247027,
+                1.5371457290995665,
+                1.3901470481466023
+              ],
+              "shifted_observed_carry": [
+                0.7637529685453734,
+                0.7384156718816721,
+                0.6285674774320666,
+                0.6348673627194336,
+                0.6881666722423863,
+                0.8421446521351663,
+                0.6914667632053865
+              ],
+              "zero_prediction": [
+                1.0389421782829404,
+                1.0456254185946554,
+                1.0384702837341333,
+                1.0328888129085312,
+                1.0428809274648274,
+                1.0511743832516438,
+                1.052036237486226
+              ]
+            },
+            "clean_over_copy": 0.05051737819270494,
+            "clean_over_zero": 0.06538765266316031,
+            "teacher_over_shifted_copy": 0.039771724251224876,
+            "clean_over_teacher": 2.407086210640163,
+            "excess_clean_over_teacher_fraction": 0.5845599565235138,
+            "intervention_error_over_clean": {
+              "other_initial": 28.52582846131527,
+              "zero_initial": 22.345512074102672,
+              "wrong_action_order": 15.117266756909894,
+              "other_episode_actions": 24.649924005661934
+            },
+            "intervention_effect": {
+              "other_initial": 1.8781056294651117,
+              "zero_initial": 1.4407357804477572,
+              "wrong_action_order": 0.9525258175758626,
+              "other_episode_actions": 1.6179016011821554
+            },
+            "access_contract": {
+              "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+              "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+              "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+              "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+              "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+              "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+            },
+            "horizon_clean_over_copy": [
+              0.03890500656554722,
+              0.03627390180374544,
+              0.046455448212590976,
+              0.05649530517610587,
+              0.0577934011509467,
+              0.05633351177350229,
+              0.054051512942056554
+            ],
+            "horizon_clean_over_zero": [
+              0.028600065409628426,
+              0.04542724774456318,
+              0.06628237737978855,
+              0.08083320141095889,
+              0.08264776369047364,
+              0.08237721391188951,
+              0.0714229686078105
+            ],
+            "windows_source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/transition-cube-native-lewm-seed1/windows.json",
+              "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+            }
+          },
+          "exact_windows_json_equal": true,
+          "manifest_sha_equal": true,
+          "clean_over_copy_change": -0.01742283861332245,
+          "teacher_over_shifted_copy_change": -0.020453083802403238
+        }
+      },
+      "config_source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-native-lewm-seed1/config.json",
+        "sha256": "0d2e8fc827bf3c93d023080c0551991140ae7ed28bdef0277639d4482cae907e"
+      },
+      "model_config": {
+        "window": 8,
+        "action_dim": 25
+      },
+      "large_config_fields_omitted_but_hash_bound": []
+    },
+    {
+      "family": "native",
+      "seed": 2,
+      "current": {
+        "source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-native-lewm-seed2/state-audit.json",
+          "sha256": "54bdad9fdf99d88d41391e3e151ef1216358d21ae4ca537acc31218f899fad0a"
+        },
+        "step": 23342,
+        "model_class": "native_lewm",
+        "config_sha256": "5e6722c2ea40bce86f8703a2bd91467ac1886a0b1da5f19baec69e948501bec4",
+        "weights_sha256": "2b6844b65a0ab5be2e7bff612773f0d1221a0a1f21a7fcf01383149c5645a98c",
+        "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+        "cases": 64,
+        "window": 8,
+        "state_dim": 192,
+        "observed_state_std_mean": 0.9748152153080328,
+        "observed_state_rms": 0.9833797522561882,
+        "mse": {
+          "clean_rollout": 0.03798836948629874,
+          "teacher_forced_prefix": 0.012281305501941064,
+          "other_initial": 1.7976317770371502,
+          "zero_initial": 1.2112192295287834,
+          "wrong_action_order": 0.9851184098533246,
+          "other_episode_actions": 1.5747949634454297,
+          "observed_future": 0.0,
+          "initial_carry": 1.3041162442507932,
+          "shifted_observed_carry": 0.712054829023628,
+          "zero_prediction": 0.967227527813714
+        },
+        "horizon_mse": {
+          "clean_rollout": [
+            0.014132239541739184,
+            0.025982930159774233,
+            0.038268969919643056,
+            0.04501862752148866,
+            0.04700747960416824,
+            0.04819622204941617,
+            0.04731211760786166
+          ],
+          "teacher_forced_prefix": [
+            0.014132239541739184,
+            0.0119246443095102,
+            0.01119311972683538,
+            0.012129539991635848,
+            0.01307377987525363,
+            0.012685159558097542,
+            0.01083065551051567
+          ],
+          "other_initial": [
+            1.849580679614769,
+            1.8568644315058207,
+            1.843112545969693,
+            1.75801737866279,
+            1.7954534095082433,
+            1.7478054259994489,
+            1.7325885679992878
+          ],
+          "zero_initial": [
+            0.9916977248581142,
+            1.0781651389888032,
+            1.1696461027149267,
+            1.2087000889122756,
+            1.28599420609886,
+            1.3318160402078898,
+            1.4125153049206134
+          ],
+          "wrong_action_order": [
+            1.170719185655799,
+            1.2315071713326944,
+            1.2377989310751822,
+            1.169701360757359,
+            1.0453136011933961,
+            0.7349281425503885,
+            0.3058604764084518
+          ],
+          "other_episode_actions": [
+            1.0489448186861177,
+            1.4075681656883992,
+            1.6893740259039869,
+            1.779982021426651,
+            1.727376997726647,
+            1.7246521437074072,
+            1.6456665709787996
+          ],
+          "observed_future": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "initial_carry": [
+            0.7481235553248207,
+            1.2543879690376718,
+            1.401455006219906,
+            1.4198705151125306,
+            1.4351799360344488,
+            1.488240310617807,
+            1.3815564174083677
+          ],
+          "shifted_observed_carry": [
+            0.7481235553248207,
+            0.7111031513362276,
+            0.6358972538602545,
+            0.6500794865260636,
+            0.6925989288978558,
+            0.8550416457851342,
+            0.6915397814350406
+          ],
+          "zero_prediction": [
+            0.9583800992650233,
+            0.9696180880826112,
+            0.9672127706266251,
+            0.9719403367874685,
+            0.9752577155761842,
+            0.960713883984321,
+            0.9674698003737645
+          ]
+        },
+        "clean_over_copy": 0.029129588450240357,
+        "clean_over_zero": 0.039275525555156884,
+        "teacher_over_shifted_copy": 0.01724769638706226,
+        "clean_over_teacher": 3.0931865900001156,
+        "excess_clean_over_teacher_fraction": 0.6767088014564415,
+        "intervention_error_over_clean": {
+          "other_initial": 47.320582624255614,
+          "zero_initial": 31.88394884822929,
+          "wrong_action_order": 25.932105620080037,
+          "other_episode_actions": 41.45466059061605
+        },
+        "intervention_effect": {
+          "other_initial": 1.8076634893838524,
+          "zero_initial": 1.2172564021322723,
+          "wrong_action_order": 0.9789743670641309,
+          "other_episode_actions": 1.5842484700143362
+        },
+        "access_contract": {
+          "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+          "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+          "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+          "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+          "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+          "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+        },
+        "horizon_clean_over_copy": [
+          0.018890248062839354,
+          0.020713631508844546,
+          0.027306599034431056,
+          0.031706149992079206,
+          0.0327537184877701,
+          0.03238470407336882,
+          0.034245519771543935
+        ],
+        "horizon_clean_over_zero": [
+          0.014745965147416067,
+          0.02679707658007355,
+          0.039566237214640844,
+          0.04631830351880206,
+          0.0482000591775848,
+          0.050167092255952804,
+          0.04890294000865296
+        ],
+        "windows_source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-native-lewm-seed2/windows.json",
+          "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+        }
+      },
+      "history": {
+        "6000": {
+          "transition": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/transition-cube-native-lewm-seed2/state-audit.json",
+              "sha256": "5bc1ac7f4ff7b531d4edab0208d111ae821f43582848f250ef5f81288c0475b9"
+            },
+            "step": 6000,
+            "model_class": "native_lewm",
+            "config_sha256": "08b0f703d975319ce8b630a70176a66f7b868ec249af9074939e15bb3c2d5ab5",
+            "weights_sha256": "a226e5d9c8abbb8290448a64819fa849581e6a06c33feff39248c4ba79750127",
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "cases": 64,
+            "window": 8,
+            "state_dim": 192,
+            "observed_state_std_mean": 1.0207230165998753,
+            "observed_state_rms": 1.1071881524763467,
+            "mse": {
+              "clean_rollout": 0.3879981129616025,
+              "teacher_forced_prefix": 0.211236680505744,
+              "other_initial": 1.99548044503435,
+              "zero_initial": 1.669703659169778,
+              "wrong_action_order": 1.1567652821644272,
+              "other_episode_actions": 1.7588206849140544,
+              "observed_future": 0.0,
+              "initial_carry": 1.3037457942646422,
+              "shifted_observed_carry": 0.6127851246440773,
+              "zero_prediction": 1.235691970611951
+            },
+            "horizon_mse": {
+              "clean_rollout": [
+                0.21512294085923164,
+                0.37586220608824894,
+                0.4443394876737058,
+                0.44901837218888385,
+                0.434980886774626,
+                0.41399436017863844,
+                0.3826685369678833
+              ],
+              "teacher_forced_prefix": [
+                0.21512294085923164,
+                0.2212043996321114,
+                0.21191698536749182,
+                0.2001222701602756,
+                0.20285735741653826,
+                0.22131595489026012,
+                0.2061168552142993
+              ],
+              "other_initial": [
+                1.9733021507501864,
+                1.9934123830284145,
+                2.019247177103081,
+                1.9451670724231034,
+                1.9463248332286294,
+                2.0269914040252983,
+                2.0639180946817377
+              ],
+              "zero_initial": [
+                1.324995930974378,
+                1.5028503867508214,
+                1.672710915604739,
+                1.6886861011549439,
+                1.7239016949424069,
+                1.8216536195102688,
+                1.953126965250886
+              ],
+              "wrong_action_order": [
+                1.1005960552601242,
+                1.285847973517918,
+                1.46313812331022,
+                1.4115206012929828,
+                1.220325219942298,
+                0.9768973346699346,
+                0.6390316671575134
+              ],
+              "other_episode_actions": [
+                0.9646186758827584,
+                1.5735414188402683,
+                1.8819938368607967,
+                2.0131150076362387,
+                1.9806590572016716,
+                1.9892604449396283,
+                1.90855635303702
+              ],
+              "observed_future": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "initial_carry": [
+                0.6504891347664187,
+                1.2235691218651015,
+                1.4789804122420438,
+                1.4787298414415417,
+                1.5119010991381747,
+                1.5152217935306478,
+                1.267329156868566
+              ],
+              "shifted_observed_carry": [
+                0.6504891347664187,
+                0.6291651296954934,
+                0.534626399020939,
+                0.5520627250793763,
+                0.5764466142760789,
+                0.7409078735322778,
+                0.6057979961379574
+              ],
+              "zero_prediction": [
+                1.198804056354577,
+                1.2214314496257113,
+                1.265869860942345,
+                1.2440356741367098,
+                1.2249893025235656,
+                1.2474865383557987,
+                1.2472269123449486
+              ]
+            },
+            "clean_over_copy": 0.297602580708954,
+            "clean_over_zero": 0.31399258244710815,
+            "teacher_over_shifted_copy": 0.34471574457430926,
+            "clean_over_teacher": 1.836793269202372,
+            "excess_clean_over_teacher_fraction": 0.45557291788517373,
+            "intervention_error_over_clean": {
+              "other_initial": 5.143015850780255,
+              "zero_initial": 4.3033808758111585,
+              "wrong_action_order": 2.981368319899288,
+              "other_episode_actions": 4.533065048922319
+            },
+            "intervention_effect": {
+              "other_initial": 1.7473291289763226,
+              "zero_initial": 1.4069844520287405,
+              "wrong_action_order": 0.8560999690083665,
+              "other_episode_actions": 1.5244492626368404
+            },
+            "access_contract": {
+              "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+              "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+              "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+              "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+              "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+              "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+            },
+            "horizon_clean_over_copy": [
+              0.3307095066798913,
+              0.3071851024773472,
+              0.30043635736873237,
+              0.30365139027096233,
+              0.2877045906128232,
+              0.2732236045879344,
+              0.30194881487096537
+            ],
+            "horizon_clean_over_zero": [
+              0.17944795875432334,
+              0.30772271845745097,
+              0.3510151409584303,
+              0.3609368939523998,
+              0.3550895390502874,
+              0.33186278765323407,
+              0.30681549057373747
+            ],
+            "windows_source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/native_lewm6000_20261031/transition-cube-native-lewm-seed2/windows.json",
+              "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+            }
+          },
+          "exact_windows_json_equal": true,
+          "manifest_sha_equal": true,
+          "clean_over_copy_change": -0.2684729922587137,
+          "teacher_over_shifted_copy_change": -0.327468048187247
+        },
+        "12000": {
+          "transition": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/transition-cube-native-lewm-seed2/state-audit.json",
+              "sha256": "9571e12cfb5b55adb812b596c184754671c9b2c21d2ce76bd5d9bbaa36d434fd"
+            },
+            "step": 12000,
+            "model_class": "native_lewm",
+            "config_sha256": "9da0f4492811f9494f8563ac751bb5fd8c0c0c6a92b5430fd77e4bc869509966",
+            "weights_sha256": "10f9bf564f100577f230d93baa0cd95308fa6c17f32441426fd2905e2b3005a4",
+            "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+            "cases": 64,
+            "window": 8,
+            "state_dim": 192,
+            "observed_state_std_mean": 0.9551269058014726,
+            "observed_state_rms": 0.9687592092153979,
+            "mse": {
+              "clean_rollout": 0.06842330839787553,
+              "teacher_forced_prefix": 0.02615598889166082,
+              "other_initial": 1.8580547109363226,
+              "zero_initial": 1.4494031617937615,
+              "wrong_action_order": 0.9818485915070418,
+              "other_episode_actions": 1.6146794258076225,
+              "observed_future": 0.0,
+              "initial_carry": 1.2608797409199306,
+              "shifted_observed_carry": 0.6647348664994918,
+              "zero_prediction": 0.9410928525989003
+            },
+            "horizon_mse": {
+              "clean_rollout": [
+                0.027791893985882284,
+                0.05052842447608402,
+                0.07809090777759306,
+                0.08490598118358701,
+                0.08663882556525737,
+                0.08188184263116975,
+                0.06912528316555518
+              ],
+              "teacher_forced_prefix": [
+                0.027791893985882284,
+                0.026342848052444114,
+                0.02615437735056652,
+                0.025412731425211638,
+                0.025770236869794017,
+                0.026986276628556835,
+                0.024633557929170328
+              ],
+              "other_initial": [
+                1.8939341979910247,
+                1.9248496723217916,
+                1.9264569524612103,
+                1.8144420645984063,
+                1.840908970571557,
+                1.8079244987086707,
+                1.7978666199015985
+              ],
+              "zero_initial": [
+                0.9980176599535627,
+                1.228812036764839,
+                1.4405372710553195,
+                1.5133688480786975,
+                1.646299472195663,
+                1.6459474954660827,
+                1.6728393490421665
+              ],
+              "wrong_action_order": [
+                1.2732110287906426,
+                1.2832810495340425,
+                1.2283495904553456,
+                1.1352456397450932,
+                0.9845171504583016,
+                0.6754759125528633,
+                0.29285976901300437
+              ],
+              "other_episode_actions": [
+                1.0473308017308094,
+                1.4665333259296887,
+                1.73330392947802,
+                1.8351970266977484,
+                1.7925052313551837,
+                1.7402804399750722,
+                1.6876052254868348
+              ],
+              "observed_future": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "initial_carry": [
+                0.7312241347691589,
+                1.2270688967329504,
+                1.3444750776607464,
+                1.3664625998749758,
+                1.3803862953356854,
+                1.444936641164822,
+                1.3316045409011759
+              ],
+              "shifted_observed_carry": [
+                0.7312241347691589,
+                0.6725301153415526,
+                0.585488658927688,
+                0.5866415293868807,
+                0.6365912230202204,
+                0.7816559668475318,
+                0.6590124372034103
+              ],
+              "zero_prediction": [
+                0.9293211213221197,
+                0.9398943388369521,
+                0.9390489636044166,
+                0.9324774399429218,
+                0.9411500310727738,
+                0.9529889601729569,
+                0.9527691132401616
+              ]
+            },
+            "clean_over_copy": 0.0542663238826839,
+            "clean_over_zero": 0.07270622469283376,
+            "teacher_over_shifted_copy": 0.039348002052906936,
+            "clean_over_teacher": 2.6159709992723914,
+            "excess_clean_over_teacher_fraction": 0.6177327652798364,
+            "intervention_error_over_clean": {
+              "other_initial": 27.155288956972054,
+              "zero_initial": 21.182886296079246,
+              "wrong_action_order": 14.349621707820361,
+              "other_episode_actions": 23.598382826191383
+            },
+            "intervention_effect": {
+              "other_initial": 1.8723905161339789,
+              "zero_initial": 1.4538463339268723,
+              "wrong_action_order": 0.9715310488805832,
+              "other_episode_actions": 1.6225917197192459
+            },
+            "access_contract": {
+              "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+              "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+              "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+              "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+              "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+              "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+            },
+            "horizon_clean_over_copy": [
+              0.03800735323739819,
+              0.041178147869785534,
+              0.058082822861591096,
+              0.062135605607760845,
+              0.06276418844348809,
+              0.05666811976278869,
+              0.05191127023250761
+            ],
+            "horizon_clean_over_zero": [
+              0.029905587367199313,
+              0.053759685943644595,
+              0.08315956973942161,
+              0.09105419342776189,
+              0.09205633820837443,
+              0.08592108204098095,
+              0.07255197739405621
+            ],
+            "windows_source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/native_cube12000_20261031/transition-cube-native-lewm-seed2/windows.json",
+              "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+            }
+          },
+          "exact_windows_json_equal": true,
+          "manifest_sha_equal": true,
+          "clean_over_copy_change": -0.025136735432443547,
+          "teacher_over_shifted_copy_change": -0.022100305665844675
+        }
+      },
+      "config_source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-native-lewm-seed2/config.json",
+        "sha256": "5e6722c2ea40bce86f8703a2bd91467ac1886a0b1da5f19baec69e948501bec4"
+      },
+      "model_config": {
+        "window": 8,
+        "action_dim": 25
+      },
+      "large_config_fields_omitted_but_hash_bound": []
+    },
+    {
+      "family": "tf",
+      "seed": 1,
+      "current": {
+        "source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-temporal-forecast-seed1/state-audit.json",
+          "sha256": "a3f3dc145f1bfe6172f9f6261e9cbf1c39cf61d1a9d216798256bb3d35079d9c"
+        },
+        "step": 23342,
+        "model_class": "legacy",
+        "config_sha256": "8cf2475e88d97099b4a30679368939b77dfe4c53d722b2898c1ce98ea7e52dfb",
+        "weights_sha256": "50da7aa358f65b5b647adef516de19bd363cb6986e14e5b82e85fac342c43ae5",
+        "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+        "cases": 64,
+        "window": 8,
+        "state_dim": 64,
+        "observed_state_std_mean": 0.9586015104729624,
+        "observed_state_rms": 1.0096325798096752,
+        "mse": {
+          "clean_rollout": 0.003245034382261549,
+          "teacher_forced_prefix": 0.0015154998474519391,
+          "other_initial": 1.4200480499518158,
+          "zero_initial": 0.7303692558649206,
+          "wrong_action_order": 0.3417659130167935,
+          "other_episode_actions": 1.1641983034284553,
+          "observed_future": 0.0,
+          "initial_carry": 0.9667364983128296,
+          "shifted_observed_carry": 0.20604802337897185,
+          "zero_prediction": 1.0294862071133133
+        },
+        "horizon_mse": {
+          "clean_rollout": [
+            0.0015475080520519267,
+            0.0019433794327869591,
+            0.002091291143839626,
+            0.0036783828235190563,
+            0.004086234246514377,
+            0.004759820967283612,
+            0.004608624009835287
+          ],
+          "teacher_forced_prefix": [
+            0.0015475080520519267,
+            0.0013439760356014673,
+            0.001238403111767681,
+            0.0021508430854506413,
+            0.0013896611713217787,
+            0.0015617713479991896,
+            0.001376336127970889
+          ],
+          "other_initial": [
+            1.7467235579239677,
+            1.5698559715868692,
+            1.4230847257923651,
+            1.3305740003815623,
+            1.292448169712384,
+            1.281580053005687,
+            1.296069871259875
+          ],
+          "zero_initial": [
+            0.9469360544315565,
+            0.8267675995535857,
+            0.7238976623174983,
+            0.6741642849678161,
+            0.6456447161526166,
+            0.636783210307011,
+            0.6583912633243599
+          ],
+          "wrong_action_order": [
+            0.45235702344276135,
+            0.5035379480885545,
+            0.4789930564103747,
+            0.41653736170438493,
+            0.3022204056784848,
+            0.1685163820343822,
+            0.0701992137586121
+          ],
+          "other_episode_actions": [
+            0.36835147658494094,
+            1.0395416247561033,
+            1.4447004988215157,
+            1.5746319283703196,
+            1.4097197264426389,
+            1.2224783209902892,
+            1.0899645480333806
+          ],
+          "observed_future": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "initial_carry": [
+            0.22398292621647492,
+            0.749614214343926,
+            1.22282190567793,
+            1.4402585413643652,
+            1.3367399227991674,
+            1.060524606131617,
+            0.7332133716563269
+          ],
+          "shifted_observed_carry": [
+            0.22398292621647492,
+            0.21897264507196781,
+            0.17706696989969517,
+            0.18131586187680648,
+            0.193377160992624,
+            0.2256166673343809,
+            0.22200393226085363
+          ],
+          "zero_prediction": [
+            0.9471816958192566,
+            1.0431244825404673,
+            1.0780240358489905,
+            1.0896661606433629,
+            1.0646390871902978,
+            0.9896576125043408,
+            0.9941103752464768
+          ]
+        },
+        "clean_over_copy": 0.0033566896335504625,
+        "clean_over_zero": 0.0031520911692062867,
+        "teacher_over_shifted_copy": 0.007355080736030991,
+        "clean_over_teacher": 2.141230424877663,
+        "excess_clean_over_teacher_fraction": 0.5329788011688962,
+        "intervention_error_over_clean": {
+          "other_initial": 437.60647274317853,
+          "zero_initial": 225.07288670263864,
+          "wrong_action_order": 105.31965851733376,
+          "other_episode_actions": 358.7630102757479
+        },
+        "intervention_effect": {
+          "other_initial": 1.4151459769359704,
+          "zero_initial": 0.7204243342484387,
+          "wrong_action_order": 0.3381270946155988,
+          "other_episode_actions": 1.152383685823836
+        },
+        "access_contract": {
+          "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+          "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+          "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+          "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+          "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+          "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+        },
+        "horizon_clean_over_copy": [
+          0.006909044712436214,
+          0.002592506112611318,
+          0.00171021727213843,
+          0.0025539739691698015,
+          0.0030568655703479687,
+          0.004488175889332352,
+          0.0062855154965660515
+        ],
+        "horizon_clean_over_zero": [
+          0.0016338027422641683,
+          0.0018630369292588884,
+          0.0019399299777139419,
+          0.0033756970312331792,
+          0.0038381403573096383,
+          0.004809563334978879,
+          0.00463592788546507
+        ],
+        "windows_source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-temporal-forecast-seed1/windows.json",
+          "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+        }
+      },
+      "history": {
+        "6000": {
+          "health": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/health-cube-temporal-forecast-seed1/health.json",
+              "sha256": "ed86444bea44824662cc90461eb9a0516d585d8027501a0faf99349073d91fd8"
+            },
+            "feature_std": 0.5939273834228516,
+            "summary": {
+              "fm_t0.2_posterior": 0.04632303863763809,
+              "fm_t0.2_shuffled_posterior": 0.2025137534365058,
+              "fm_t0.2_forecast": 0.046325065195560455,
+              "fm_t0.2_wrong_state": 0.15966097498312593,
+              "fm_t0.2_wrong_actions": 0.06378835183568299,
+              "fm_t0.2_carry": 0.137370303273201,
+              "fm_t0.2_zero": 0.0808644664939493,
+              "fm_t0.5_posterior": 0.011408308695536107,
+              "fm_t0.5_shuffled_posterior": 0.11316771921701729,
+              "fm_t0.5_forecast": 0.011268092144746333,
+              "fm_t0.5_wrong_state": 0.09506599046289921,
+              "fm_t0.5_wrong_actions": 0.033441699808463454,
+              "fm_t0.5_carry": 0.08187262271530926,
+              "fm_t0.5_zero": 0.04914766165893525,
+              "fm_t0.8_posterior": 0.006892205332405865,
+              "fm_t0.8_shuffled_posterior": 0.07333053834736347,
+              "fm_t0.8_forecast": 0.007017903990345076,
+              "fm_t0.8_wrong_state": 0.0686598711181432,
+              "fm_t0.8_wrong_actions": 0.036431037588045,
+              "fm_t0.8_carry": 0.05738509725779295,
+              "fm_t0.8_zero": 0.05536592728458345,
+              "fm_t0.95_posterior": 0.005512867064680904,
+              "fm_t0.95_shuffled_posterior": 0.05464950134046376,
+              "fm_t0.95_forecast": 0.005663081785314716,
+              "fm_t0.95_wrong_state": 0.0520714953308925,
+              "fm_t0.95_wrong_actions": 0.028343520243652165,
+              "fm_t0.95_carry": 0.042653183452785015,
+              "fm_t0.95_zero": 0.043140076217241585
+            },
+            "high_noise_forecast_over_posterior": 1.0272480215596322,
+            "high_noise_wrong_action_over_forecast": 5.004963960992313,
+            "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+          },
+          "forecast_health_relative_change": -0.4681215979431109
+        },
+        "12000": {
+          "health": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/health-cube-temporal-forecast-seed1/health.json",
+              "sha256": "696600b370b74358942d672f66ad6a5dcfaa1e4e3af5ffdd32459b0cde9dc4a7"
+            },
+            "feature_std": 0.7998471856117249,
+            "summary": {
+              "fm_t0.2_posterior": 0.028538547572679818,
+              "fm_t0.2_shuffled_posterior": 0.29213770013302565,
+              "fm_t0.2_forecast": 0.02880153665319085,
+              "fm_t0.2_wrong_state": 0.22092809458263218,
+              "fm_t0.2_wrong_actions": 0.0636332503054291,
+              "fm_t0.2_carry": 0.18282165937125683,
+              "fm_t0.2_zero": 0.09147594589740038,
+              "fm_t0.5_posterior": 0.00752966059371829,
+              "fm_t0.5_shuffled_posterior": 0.13656383962370455,
+              "fm_t0.5_forecast": 0.007481184555217624,
+              "fm_t0.5_wrong_state": 0.11998915625736117,
+              "fm_t0.5_wrong_actions": 0.04457763850223273,
+              "fm_t0.5_carry": 0.1031291326507926,
+              "fm_t0.5_zero": 0.0526753063313663,
+              "fm_t0.8_posterior": 0.0047741532034706324,
+              "fm_t0.8_shuffled_posterior": 0.08038368076086044,
+              "fm_t0.8_forecast": 0.00487307998992037,
+              "fm_t0.8_wrong_state": 0.07498962059617043,
+              "fm_t0.8_wrong_actions": 0.03902913874480873,
+              "fm_t0.8_carry": 0.061935047851875424,
+              "fm_t0.8_zero": 0.05870033195242286,
+              "fm_t0.95_posterior": 0.003895662186550908,
+              "fm_t0.95_shuffled_posterior": 0.05887701571919024,
+              "fm_t0.95_forecast": 0.003944544747355394,
+              "fm_t0.95_wrong_state": 0.05548557359725237,
+              "fm_t0.95_wrong_actions": 0.029308453551493585,
+              "fm_t0.95_carry": 0.045157106942497194,
+              "fm_t0.95_zero": 0.044239171664230525
+            },
+            "high_noise_forecast_over_posterior": 1.0125479465271,
+            "high_noise_wrong_action_over_forecast": 7.430123228071714,
+            "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+          },
+          "forecast_health_relative_change": -0.2363958115293031
+        }
+      },
+      "config_source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-temporal-forecast-seed1/config.json",
+        "sha256": "8cf2475e88d97099b4a30679368939b77dfe4c53d722b2898c1ce98ea7e52dfb"
+      },
+      "model_config": {
+        "mode": "L2",
+        "sigma0": 0.1,
+        "window": 8,
+        "renderer_width": 384,
+        "renderer_depth": 12,
+        "renderer_heads": 6,
+        "forecast_seed": 20361032,
+        "action_dim": 25,
+        "beta": 0.25,
+        "rho": 0.8,
+        "forecast_fraction": 0.5,
+        "flow_logit_shift": 0.0
+      },
+      "large_config_fields_omitted_but_hash_bound": [],
+      "current_health": {
+        "source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/health-cube-temporal-forecast-seed1/health.json",
+          "sha256": "3614891ac82156358ff2e4190f604da5087b39ebea59ccfd5cf25cfb712bcf1a"
+        },
+        "feature_std": 1.0100955963134766,
+        "summary": {
+          "fm_t0.2_posterior": 0.01887745363637805,
+          "fm_t0.2_shuffled_posterior": 0.3852211609482765,
+          "fm_t0.2_forecast": 0.01888189814053476,
+          "fm_t0.2_wrong_state": 0.2990461653098464,
+          "fm_t0.2_wrong_actions": 0.07439981237985194,
+          "fm_t0.2_carry": 0.2300843307748437,
+          "fm_t0.2_zero": 0.10094651323743165,
+          "fm_t0.5_posterior": 0.0050218375836266205,
+          "fm_t0.5_shuffled_posterior": 0.15580896800383925,
+          "fm_t0.5_forecast": 0.00530785255250521,
+          "fm_t0.5_wrong_state": 0.1392373638227582,
+          "fm_t0.5_wrong_actions": 0.05682202707976103,
+          "fm_t0.5_carry": 0.12024973193183541,
+          "fm_t0.5_zero": 0.058926471043378115,
+          "fm_t0.8_posterior": 0.0028868780937045813,
+          "fm_t0.8_shuffled_posterior": 0.08355779200792313,
+          "fm_t0.8_forecast": 0.0038176767848199233,
+          "fm_t0.8_wrong_state": 0.07662864797748625,
+          "fm_t0.8_wrong_actions": 0.04144492337945849,
+          "fm_t0.8_carry": 0.06360249943099916,
+          "fm_t0.8_zero": 0.06143855303525925,
+          "fm_t0.95_posterior": 0.002188943028158974,
+          "fm_t0.95_shuffled_posterior": 0.060458903666585684,
+          "fm_t0.95_forecast": 0.0030120708906906657,
+          "fm_t0.95_wrong_state": 0.05595095222815871,
+          "fm_t0.95_wrong_actions": 0.03060596843715757,
+          "fm_t0.95_carry": 0.045992079423740506,
+          "fm_t0.95_zero": 0.04702273244038224
+        },
+        "high_noise_forecast_over_posterior": 1.3760389612442263,
+        "high_noise_wrong_action_over_forecast": 10.161104950003233,
+        "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+      }
+    },
+    {
+      "family": "tf",
+      "seed": 2,
+      "current": {
+        "source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-temporal-forecast-seed2/state-audit.json",
+          "sha256": "6bc24c058ab5186c648399ec9c8522e58dbeeede4ee24e34616b05cb183c5b1e"
+        },
+        "step": 23342,
+        "model_class": "legacy",
+        "config_sha256": "a68ca9f4966006d2f3e3457dbcd479ce43a732d6c48027338b0fbc38881e68e6",
+        "weights_sha256": "d63df5e0f2d55e78dee54604bd0a8999f5e336545b4f3356b52d0a3117f3ad45",
+        "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+        "cases": 64,
+        "window": 8,
+        "state_dim": 64,
+        "observed_state_std_mean": 0.94612931037515,
+        "observed_state_rms": 1.0091899244000773,
+        "mse": {
+          "clean_rollout": 0.0034880925043579013,
+          "teacher_forced_prefix": 0.0016117551222196605,
+          "other_initial": 1.4156488223382215,
+          "zero_initial": 0.7287734747987457,
+          "wrong_action_order": 0.34378674781216756,
+          "other_episode_actions": 1.1697530088424897,
+          "observed_future": 0.0,
+          "initial_carry": 0.9718773798258946,
+          "shifted_observed_carry": 0.20797082544659656,
+          "zero_prediction": 1.0284109459776336
+        },
+        "horizon_mse": {
+          "clean_rollout": [
+            0.0014803494869626808,
+            0.0019083947683201264,
+            0.0024331892394925773,
+            0.003692595013971669,
+            0.004483442853008503,
+            0.005557610152221971,
+            0.004861066016527778
+          ],
+          "teacher_forced_prefix": [
+            0.0014803494869626808,
+            0.0015388542201010594,
+            0.001254625951509118,
+            0.001801286153935377,
+            0.0017499744754300567,
+            0.0018317550869643019,
+            0.0016254404806350267
+          ],
+          "other_initial": [
+            1.7516596447986714,
+            1.5663451402630826,
+            1.4128557929773482,
+            1.3208320236502413,
+            1.2909676040412572,
+            1.2802935696919464,
+            1.2865879809450038
+          ],
+          "zero_initial": [
+            0.9516980233309869,
+            0.8237315242055749,
+            0.7172518575712676,
+            0.670484831044363,
+            0.6471947264325012,
+            0.6397277180739289,
+            0.6513256429325973
+          ],
+          "wrong_action_order": [
+            0.4584542423559339,
+            0.5046052413800981,
+            0.4789622640116613,
+            0.4193731132658698,
+            0.30147504189751395,
+            0.1703667532349363,
+            0.07327057853915966
+          ],
+          "other_episode_actions": [
+            0.37351474486919634,
+            1.045008924276006,
+            1.4504834292220106,
+            1.5721529831228649,
+            1.4212466682861198,
+            1.2296006351163498,
+            1.0962636770048815
+          ],
+          "observed_future": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "initial_carry": [
+            0.2261902795006822,
+            0.7532560838678611,
+            1.2357880674743609,
+            1.450527446780184,
+            1.3477777706215643,
+            1.0607019890705705,
+            0.7289000214660399
+          ],
+          "shifted_observed_carry": [
+            0.2261902795006822,
+            0.21986722041660706,
+            0.1783840526293228,
+            0.1845180291777649,
+            0.19411030182340744,
+            0.2285646356374964,
+            0.2241612589408949
+          ],
+          "zero_prediction": [
+            0.9449163660736783,
+            1.0358551386572457,
+            1.0743159569176857,
+            1.0839825700451118,
+            1.067865046732011,
+            0.993818047148726,
+            0.9981234962689771
+          ]
+        },
+        "clean_over_copy": 0.003589025299655364,
+        "clean_over_zero": 0.003391730239745778,
+        "teacher_over_shifted_copy": 0.007749909722955503,
+        "clean_over_teacher": 2.16415785268559,
+        "excess_clean_over_teacher_fraction": 0.5379264970163521,
+        "intervention_error_over_clean": {
+          "other_initial": 405.85185758965946,
+          "zero_initial": 208.9318083990724,
+          "wrong_action_order": 98.5601005084161,
+          "other_episode_actions": 335.356074238582
+        },
+        "intervention_effect": {
+          "other_initial": 1.4069699045030533,
+          "zero_initial": 0.7132334265862484,
+          "wrong_action_order": 0.3425151373832231,
+          "other_episode_actions": 1.1670714277837253
+        },
+        "access_contract": {
+          "observed_future": "Actual future encoding: tautological zero-error reference, not prediction.",
+          "clean_rollout": "Only real frame 0 plus executed actions; all subsequent states predicted.",
+          "teacher_forced_prefix": "Each step receives all real past frames through that step; no future frames.",
+          "shifted_observed_carry": "Copies the latest real encoding at every step; extra observations, no learned dynamics.",
+          "initial_carry": "Only initial encoding, repeated over the horizon; no dynamics.",
+          "interventions": "Same clean target; global different-episode initial, zero initial, valid-step action-order shift and other-episode actions."
+        },
+        "horizon_clean_over_copy": [
+          0.006544708686114055,
+          0.00253352718841751,
+          0.0019689373150085536,
+          0.002545691239533817,
+          0.0033265445912057457,
+          0.005239558527736685,
+          0.00666904359084898
+        ],
+        "horizon_clean_over_zero": [
+          0.0015666460441508036,
+          0.001842337501741733,
+          0.002264873032765545,
+          0.0034065077391585694,
+          0.004198510726359281,
+          0.005592180749953989,
+          0.00487020497433296
+        ],
+        "windows_source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/transition-cube-temporal-forecast-seed2/windows.json",
+          "sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731"
+        }
+      },
+      "history": {
+        "6000": {
+          "health": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/health-cube-temporal-forecast-seed2/health.json",
+              "sha256": "67f1186ee8b9c7d34a5cb8c0b84b758142adf99e13677e43a2bd8e9ad8d9f698"
+            },
+            "feature_std": 0.5866039991378784,
+            "summary": {
+              "fm_t0.2_posterior": 0.04551899270154536,
+              "fm_t0.2_shuffled_posterior": 0.19900407083332539,
+              "fm_t0.2_forecast": 0.045572461327537894,
+              "fm_t0.2_wrong_state": 0.1541638351045549,
+              "fm_t0.2_wrong_actions": 0.0605913030449301,
+              "fm_t0.2_carry": 0.1290836683474481,
+              "fm_t0.2_zero": 0.06859002425335348,
+              "fm_t0.5_posterior": 0.011523023538757116,
+              "fm_t0.5_shuffled_posterior": 0.11014048638753593,
+              "fm_t0.5_forecast": 0.01149973866995424,
+              "fm_t0.5_wrong_state": 0.09393541153986007,
+              "fm_t0.5_wrong_actions": 0.030814308556728065,
+              "fm_t0.5_carry": 0.08290007198229432,
+              "fm_t0.5_zero": 0.04374783963430673,
+              "fm_t0.8_posterior": 0.006754201953299344,
+              "fm_t0.8_shuffled_posterior": 0.0735886124894023,
+              "fm_t0.8_forecast": 0.007890821696491912,
+              "fm_t0.8_wrong_state": 0.06930196937173605,
+              "fm_t0.8_wrong_actions": 0.03597645845729858,
+              "fm_t0.8_carry": 0.05844756285659969,
+              "fm_t0.8_zero": 0.05548035725951195,
+              "fm_t0.95_posterior": 0.005441888468340039,
+              "fm_t0.95_shuffled_posterior": 0.055102039594203234,
+              "fm_t0.95_forecast": 0.007186565300798975,
+              "fm_t0.95_wrong_state": 0.05274093057960272,
+              "fm_t0.95_wrong_actions": 0.028503726003691554,
+              "fm_t0.95_carry": 0.0434371690498665,
+              "fm_t0.95_zero": 0.04290534765459597
+            },
+            "high_noise_forecast_over_posterior": 1.3206013578942608,
+            "high_noise_wrong_action_over_forecast": 3.9662515834264553,
+            "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+          },
+          "forecast_health_relative_change": -0.5442233281910284
+        },
+        "12000": {
+          "health": {
+            "source": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/health-cube-temporal-forecast-seed2/health.json",
+              "sha256": "33f22f5f8969d557d36e949fdbc3f06652a53e95b38832cef915e104e5da5340"
+            },
+            "feature_std": 0.78250652551651,
+            "summary": {
+              "fm_t0.2_posterior": 0.029299679677933455,
+              "fm_t0.2_shuffled_posterior": 0.2995249219238758,
+              "fm_t0.2_forecast": 0.029424867243506014,
+              "fm_t0.2_wrong_state": 0.23173885000869632,
+              "fm_t0.2_wrong_actions": 0.06550039583817124,
+              "fm_t0.2_carry": 0.18634912464767694,
+              "fm_t0.2_zero": 0.09166154405102134,
+              "fm_t0.5_posterior": 0.007575954572530463,
+              "fm_t0.5_shuffled_posterior": 0.13306132634170353,
+              "fm_t0.5_forecast": 0.007545624452177435,
+              "fm_t0.5_wrong_state": 0.12152854027226567,
+              "fm_t0.5_wrong_actions": 0.04482968628872186,
+              "fm_t0.5_carry": 0.10569201176986098,
+              "fm_t0.5_zero": 0.062241372535936534,
+              "fm_t0.8_posterior": 0.00479420596093405,
+              "fm_t0.8_shuffled_posterior": 0.08018995448946953,
+              "fm_t0.8_forecast": 0.005498492362676188,
+              "fm_t0.8_wrong_state": 0.07625160249881446,
+              "fm_t0.8_wrong_actions": 0.03920349036343396,
+              "fm_t0.8_carry": 0.062274711206555367,
+              "fm_t0.8_zero": 0.05764057254418731,
+              "fm_t0.95_posterior": 0.0038528688019141555,
+              "fm_t0.95_shuffled_posterior": 0.05883913207799196,
+              "fm_t0.95_forecast": 0.0047374781424878165,
+              "fm_t0.95_wrong_state": 0.05677652079612017,
+              "fm_t0.95_wrong_actions": 0.029816734604537487,
+              "fm_t0.95_carry": 0.04549359995871782,
+              "fm_t0.95_zero": 0.04405650636181235
+            },
+            "high_noise_forecast_over_posterior": 1.229597576780755,
+            "high_noise_wrong_action_over_forecast": 6.293798875213316,
+            "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+          },
+          "forecast_health_relative_change": -0.30860497589210323
+        }
+      },
+      "config_source": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-temporal-forecast-seed2/config.json",
+        "sha256": "a68ca9f4966006d2f3e3457dbcd479ce43a732d6c48027338b0fbc38881e68e6"
+      },
+      "model_config": {
+        "mode": "L2",
+        "sigma0": 0.1,
+        "window": 8,
+        "renderer_width": 384,
+        "renderer_depth": 12,
+        "renderer_heads": 6,
+        "forecast_seed": 20461035,
+        "action_dim": 25,
+        "beta": 0.25,
+        "rho": 0.8,
+        "forecast_fraction": 0.5,
+        "flow_logit_shift": 0.0
+      },
+      "large_config_fields_omitted_but_hash_bound": [],
+      "current_health": {
+        "source": {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/health-cube-temporal-forecast-seed2/health.json",
+          "sha256": "c4905c3e0baef773d941355b4df9222aa4e391121d7fb4a2c816aeb55b623404"
+        },
+        "feature_std": 0.9927456378936768,
+        "summary": {
+          "fm_t0.2_posterior": 0.018958174157887697,
+          "fm_t0.2_shuffled_posterior": 0.40093124751001596,
+          "fm_t0.2_forecast": 0.019552736601326615,
+          "fm_t0.2_wrong_state": 0.31574246287345886,
+          "fm_t0.2_wrong_actions": 0.07945889327675104,
+          "fm_t0.2_carry": 0.24022028455510736,
+          "fm_t0.2_zero": 0.12258881493471563,
+          "fm_t0.5_posterior": 0.005101692964672111,
+          "fm_t0.5_shuffled_posterior": 0.15273202024400234,
+          "fm_t0.5_forecast": 0.005649901780998334,
+          "fm_t0.5_wrong_state": 0.13604399701580405,
+          "fm_t0.5_wrong_actions": 0.05760880385059863,
+          "fm_t0.5_carry": 0.11994953756220639,
+          "fm_t0.5_zero": 0.07891736598685384,
+          "fm_t0.8_posterior": 0.0029439534482662566,
+          "fm_t0.8_shuffled_posterior": 0.08322553127072752,
+          "fm_t0.8_forecast": 0.003987360971223097,
+          "fm_t0.8_wrong_state": 0.07718563918024302,
+          "fm_t0.8_wrong_actions": 0.041590601205825806,
+          "fm_t0.8_carry": 0.06362451240420341,
+          "fm_t0.8_zero": 0.05589502723887563,
+          "fm_t0.95_posterior": 0.002238556604424957,
+          "fm_t0.95_shuffled_posterior": 0.059987448854371905,
+          "fm_t0.95_forecast": 0.003275468814535998,
+          "fm_t0.95_wrong_state": 0.056378050707280636,
+          "fm_t0.95_wrong_actions": 0.030642715049907565,
+          "fm_t0.95_carry": 0.04598618752788752,
+          "fm_t0.95_zero": 0.04180708632338792
+        },
+        "high_noise_forecast_over_posterior": 1.4632057139235948,
+        "high_noise_wrong_action_over_forecast": 9.35521501957832,
+        "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+      }
+    }
+  ],
+  "missing_historical_transition": [
+    "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/transition-cube-temporal-forecast-seed1/state-audit.json",
+    "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/transition-cube-temporal-forecast-seed1/state-audit.json",
+    "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/transition-cube-temporal-forecast-seed2/state-audit.json",
+    "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/transition-cube-temporal-forecast-seed2/state-audit.json"
+  ],
+  "plan_source": {
+    "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/plan.json",
+    "sha256": "14837f0ef3f27865f2ca87a5a14b38ab613072f89399741c0c4eb349ea400aa7"
+  },
+  "frozen_model_sources": {
+    "local": {
+      "source": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+      "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+      "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+    },
+    "native": {
+      "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+      "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+      "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+    },
+    "tf": {
+      "source": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1",
+      "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1.json",
+      "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+      "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+      "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+    }
+  },
+  "limitations": [
+    "Wrong-action interventions measure dependence, not accurate counterfactual predictions.",
+    "Observed targets are model coordinates; low normalized error does not establish retention of task-relevant physical information.",
+    "Clean rollout starts at one real frame; native planning has history3 and horizon5, so this is not identical to a complete CEM episode.",
+    "Teacher-forcing gap is an input/history intervention, not an additive causal attribution of error.",
+    "Old TF6000/12000 roots contain no matched common64-window transition audit; renderer health is not substituted for clean latent forecasting.",
+    "23342 is two loader lengths and 18.69% of the original LR schedule, not a proof of convergence."
+  ]
+}

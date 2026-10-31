@@ -1,0 +1,280 @@
+{
+  "passed": true,
+  "scope": "Schema only; no fitting/model/encoder/GPU/simulation",
+  "inventory": "/efs/prescottsun/SPT-JEPA/reports/cube-pool-reuse-review-20261031/inventory.json",
+  "inventory_sha256": "d49c88d317fbac9ad516f24b37a4d855de90fe29b382eeb07c1fbb9f1966777b",
+  "checks": {
+    "unique_episodes": 50,
+    "all_in_validation": true,
+    "any_in_train": false,
+    "any_in_test": false
+  },
+  "episode_ids": [
+    778,
+    829,
+    911,
+    937,
+    993,
+    1006,
+    1352,
+    1840,
+    2010,
+    2192,
+    2634,
+    3084,
+    3784,
+    3930,
+    4038,
+    4087,
+    4353,
+    4357,
+    4515,
+    4608,
+    4992,
+    5024,
+    5053,
+    5319,
+    5498,
+    6060,
+    6361,
+    6380,
+    6515,
+    6782,
+    6909,
+    6948,
+    7034,
+    7090,
+    7130,
+    7381,
+    7478,
+    7556,
+    7913,
+    7975,
+    7986,
+    8183,
+    8422,
+    8666,
+    8798,
+    8865,
+    8971,
+    9444,
+    9567,
+    9786
+  ],
+  "split_hashes": {
+    "episode_ids": "b6128e5bfc4a1aa2c3e504425bd4be083a4cff98b413f66b36b49d65745173c0",
+    "train_episodes": "215739685c610f5ac3fa57270c391b3e2cd7b5d6f67203ad7fca015b1bd6d2ea",
+    "validation_episodes": "b4eef874e40001c1f43932e0cbeae1d366bbb354259fe0b52081799d76f9d7a0",
+    "test_episodes": "2e26cf608c10e83c8b326aaf30509fa57c2da1b9de35e198a9ac9544b5f45b4e"
+  },
+  "model_rows": [
+    {
+      "seed": 1,
+      "cases": 50,
+      "compressed_npz_bytes": 2856886,
+      "report": "/efs/prescottsun/SPT-JEPA/runs/cube_pool_reuse2000_20261031/tf12000-seed1/result.json",
+      "report_sha256": "4eb4c9754ed0f7f73b4d954b895437a8d59fbda5dd1b02688fb5b780c23a47d1",
+      "schema": {
+        "predicted_cost": {
+          "shape": [
+            39
+          ],
+          "dtype": "float32"
+        },
+        "encoded_cost": {
+          "shape": [
+            39
+          ],
+          "dtype": "float32"
+        },
+        "physical_cost": {
+          "shape": [
+            39,
+            26
+          ],
+          "dtype": "float64"
+        },
+        "position_error_m": {
+          "shape": [
+            39,
+            26
+          ],
+          "dtype": "float64"
+        },
+        "orientation_error_deg": {
+          "shape": [
+            39,
+            26
+          ],
+          "dtype": "float64"
+        },
+        "success": {
+          "shape": [
+            39,
+            26
+          ],
+          "dtype": "bool"
+        },
+        "hold_count": {
+          "shape": [
+            39,
+            26
+          ],
+          "dtype": "int64"
+        },
+        "family": {
+          "shape": [
+            39
+          ],
+          "dtype": "<U24"
+        },
+        "raw_actions": {
+          "shape": [
+            39,
+            25,
+            5
+          ],
+          "dtype": "float32"
+        },
+        "predicted_endpoint": {
+          "shape": [
+            39,
+            64
+          ],
+          "dtype": "float32"
+        },
+        "true_endpoint": {
+          "shape": [
+            39,
+            64
+          ],
+          "dtype": "float32"
+        },
+        "goal": {
+          "shape": [
+            64
+          ],
+          "dtype": "float32"
+        },
+        "initial": {
+          "shape": [
+            64
+          ],
+          "dtype": "float32"
+        },
+        "initial_rgb_mse": {
+          "shape": [
+            39
+          ],
+          "dtype": "float64"
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "cases": 50,
+      "compressed_npz_bytes": 2858507,
+      "report": "/efs/prescottsun/SPT-JEPA/runs/cube_pool_reuse2000_20261031/tf12000-seed2/result.json",
+      "report_sha256": "48cc4e1cc6af162b758896cb072a1c277019c3a50310d145a10d1063f47d6773",
+      "schema": {
+        "predicted_cost": {
+          "shape": [
+            39
+          ],
+          "dtype": "float32"
+        },
+        "encoded_cost": {
+          "shape": [
+            39
+          ],
+          "dtype": "float32"
+        },
+        "physical_cost": {
+          "shape": [
+            39,
+            26
+          ],
+          "dtype": "float64"
+        },
+        "position_error_m": {
+          "shape": [
+            39,
+            26
+          ],
+          "dtype": "float64"
+        },
+        "orientation_error_deg": {
+          "shape": [
+            39,
+            26
+          ],
+          "dtype": "float64"
+        },
+        "success": {
+          "shape": [
+            39,
+            26
+          ],
+          "dtype": "bool"
+        },
+        "hold_count": {
+          "shape": [
+            39,
+            26
+          ],
+          "dtype": "int64"
+        },
+        "family": {
+          "shape": [
+            39
+          ],
+          "dtype": "<U24"
+        },
+        "raw_actions": {
+          "shape": [
+            39,
+            25,
+            5
+          ],
+          "dtype": "float32"
+        },
+        "predicted_endpoint": {
+          "shape": [
+            39,
+            64
+          ],
+          "dtype": "float32"
+        },
+        "true_endpoint": {
+          "shape": [
+            39,
+            64
+          ],
+          "dtype": "float32"
+        },
+        "goal": {
+          "shape": [
+            64
+          ],
+          "dtype": "float32"
+        },
+        "initial": {
+          "shape": [
+            64
+          ],
+          "dtype": "float32"
+        },
+        "initial_rgb_mse": {
+          "shape": [
+            39
+          ],
+          "dtype": "float64"
+        }
+      }
+    }
+  ],
+  "total_compressed_bytes": 5715393,
+  "uncompressed_endpoint_goal_initial_bytes": 2048000,
+  "join": "NPZ filename/result case id -> inventory cases_provenance.case -> pair.episode_id/start_row/goal_row; IDs are not duplicated inside each NPZ",
+  "grouping": "All39 candidates within a case and both model seeds must share one episode group;50 unique source episodes. Entire source is campaign validation; any fit is only cross-fitted diagnostic, not original heldout benchmark."
+}
