@@ -16,14 +16,20 @@ channels. The state must support latent planning, generation and probing.
 ## Where to start
 
 - [as-jepa-round2-spec.md](as-jepa-round2-spec.md): the current handoff spec
-  (2026-10-31). Round 2 trains the renderer, with probability `lam` per frame, on
-  a `sigma0`-noisy sample of the prior's forecast instead of the encoded state,
-  which makes the objective reward information that predicts the future
-  (sufficiency). PushT blocks on what the renderer reads, purity (dot, colour),
-  the price, the entry price and the anchor; then 10-epoch finals against LeWM, a
-  shape-varied PushT for fixed properties, and a reconstruction-free control;
-  harder tasks last. Reference implementation and CPU contract tests in
-  [round2/](round2/).
+  (2026-10-31, revision 2). Round 2 trains the renderer, with probability `lam` per
+  frame, on a `sigma0`-noisy sample of the prior's forecast instead of the encoded
+  state, which makes the objective reward information that predicts the future
+  (sufficiency). Three parts run in parallel:
+  - PushT closure, about 100 GPU-hours: matched LeWM, `lam = 1` over four seeds,
+    the initial state scale, the dot and colour purity tests, and a
+    reconstruction-free control.
+  - TwoRoom: why the state never left its initial scale, and whether starting it at
+    `sigma0` fixes that.
+  - Cube: whether a past-only or constant anchor moves the cube into the state and
+    into the planning cost.
+
+  It also divides the work with the collaborator's harder-task campaign. Reference
+  implementation and 16 CPU contract tests in [round2/](round2/).
 - [as-jepa-results-review-20261028.md](as-jepa-results-review-20261028.md) and
   [as-jepa-status-and-next-steps-20261029.md](as-jepa-status-and-next-steps-20261029.md):
   the review of the collaborator's first-round results and the plan that

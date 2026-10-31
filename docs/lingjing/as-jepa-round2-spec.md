@@ -1,24 +1,55 @@
-# AS-JEPA round 2: the forecast-scored renderer (implementation and experiment spec, handoff)
+# AS-JEPA round 2: PushT closure and the harder tasks (implementation and experiment spec, handoff)
 
-Written 2026-10-31 for the collaborator who runs the L-line experiments. Follow it as written. Section 13 lists what you may change without asking; anything else needs our agreement first.
+Written 2026-10-31 for the collaborator who runs the L-line experiments; this is revision 2, from the same day. Follow it as written. Section 12 lists what you may change without asking; anything else needs our agreement first.
 
-It builds on your branch `research/ideas-20261028` at `094e4f0`: its code, data, evaluation tools and the full-data PushT recipe of your `robustness20261029` and `stability20261029` runs. Where this spec is silent, the first-round spec ([as-jepa-experiment-spec.md](as-jepa-experiment-spec.md)) still applies.
+Revision 1 (commit `937707e`) planned about 715 GPU-hours on PushT before any harder-task work. This revision replaces it:
 
-Appendix A gives the theory this round tests. You do not need it to execute the spec, but every component below names the design reason it serves, so that implementation shortcuts do not silently change the method.
+- **PushT** shrinks to a closing set of about 100 GPU-hours. It settles six questions and then stops.
+- **TwoRoom and Cube** start now, in parallel, at about 70 GPU-hours. They are designed around what your runs revealed there.
+- **Section 0.7 divides the work with your campaign**, so that the two plans complement each other instead of repeating runs.
 
-A reference implementation of every new model class, with 11 CPU contract tests that pass against `094e4f0`, is in [round2/](round2/). Copy it; do not reimplement it.
-
-Context, if you want it: the review of your first-round results ([as-jepa-results-review-20261028.md](as-jepa-results-review-20261028.md)) and the plan that followed it ([as-jepa-status-and-next-steps-20261029.md](as-jepa-status-and-next-steps-20261029.md)). This spec supersedes that plan's Phases 1 and 2. Its blocks A to F reappear below, adapted to your later full-data PushT results; Appendix C lists what was narrowed or dropped.
+The spec builds on your branch `research/ideas-20261028` at `2fdd905`: its code, data, evaluation tools and recipes. A reference implementation of everything new is in [round2/](round2/): the two model classes, the past-only anchor for benchmark windows, and 16 CPU contract tests. All 16 tests pass against `2fdd905`. Copy the files; do not reimplement them. Appendix A gives the theory; you do not need it to execute the spec, but each component names the design reason it serves.
 
 ## 0. Overview
 
-### 0.1 The one change
+### 0.1 What changed in this revision, and why
 
-In L2 the renderer always reads the encoded state of the frame it draws, `s_t = mu(x_t) + sigma0 * noise`.
+Two things changed our view of the plan.
 
-In round 2, a coin is tossed for each rendered frame. With probability `lam`, the renderer instead reads a sample of the prior's forecast of that state, `s_hat_t = m_t + sigma0 * noise`. Here `m_t` is the prior's mean for `s_t`, computed from the earlier states and the actions. It is the same tensor the surprise term already uses.
+- **PushT cannot carry the performance claim.** It is simple, and published LeWM already reaches 96% on it. What PushT can still do cheaply is settle a few questions that need its controlled variants (the dot and colour domains) and its paired multi-seed references. Then we leave it.
+- **Your TwoRoom and Cube runs exposed two failures that our theory speaks to directly, and both are cheap to test.**
+  - On TwoRoom, the state never left its initial scale.
+  - On Cube, the state is used, but the planning cost follows the arm rather than the cube.
 
-Nothing else changes. Encoder, prior, rate (the one-step Gaussian KL priced at `beta`), renderer, flow loss, anchor, data and optimizer all stay L2's. At `lam = 0` the new class computes exactly L2's loss, with the same random draws.
+  Section 0.5 gives the numbers and our reading.
+
+Unchanged from revision 1: the λ model class, the contrastive control, their tests and the PushT evaluation tools. New in this revision:
+
+- the past-only distant anchor for benchmark windows (Section 3.4);
+- the initial state scale on the harder tasks (Section 3.5);
+- the dataset checks that choose the anchor gap (Section 5.6);
+- a use gate for the state (Section 5.7).
+
+Appendix C lists everything dropped from revision 1.
+
+### 0.2 The method as it runs on TwoRoom and Cube
+
+| Component | Setting | Reason |
+| --- | --- | --- |
+| Encoder | your L2 encoder: LeWM ViT on 224×224 frames, `QueryPool` to 4 slots × 16 = 64 dimensions, one frame at a time | The state is a function of its frame, so goal images encode without history. Kept fixed so that objective effects are attributable (Section 0.7). |
+| Initial state scale | `calibrate_state_std = sigma0`: the pool head is rescaled once at step 0 so that `mu` has spread `sigma0` | Start where the renderer can read the state. At the default initial spread (about 1e-3) each dimension carries about 5e-5 nats through the renderer's noise; on TwoRoom the state then shrank and never recovered (Section 0.5, Appendix A.6). |
+| Code noise | `sigma0 = 0.1`, fixed | The code's resolution. |
+| Prior | LeWM predictor with the identity carry, fixed variance `sigma0^2`; it reads states and actions only | Unchanged from L2. |
+| Rate | the exact one-step Gaussian KL, priced at `beta` ∈ {1/16, 1/4} per rendered value | The code length. `beta` is the only searched knob. |
+| Renderer | DiT 384 / 12 / 6, flow matching on 64×64 targets, condition dropout 0.1 | Unchanged from L2. |
+| What the renderer reads | for each rendered frame, with probability `lam = 1`, the one-step forecast sample `m_t + sigma0 * xi` | It rewards what predicts the future (Section 0.3, Appendix A.2). |
+| Anchor | a past frame at least `gap` kept frames before the window (TwoRoom, Cube). Cube also tests a constant (zero) anchor. Never a future frame | The anchor should carry appearance, not the current value of anything that moves (Appendix A.7). |
+| Window | 8 kept frames at frameskip 5 | Unchanged. |
+| Planning | unchanged: CEM on the encoder means with GoalMSE. The renderer and the anchor are not used | Unchanged. |
+
+### 0.3 The model change, `lam`
+
+In L2 the renderer always reads the encoded state of the frame it draws, `s_t = mu(x_t) + sigma0 * noise`. In round 2, a coin is tossed for each rendered frame. With probability `lam`, the renderer instead reads a sample of the prior's forecast of that state, `s_hat_t = m_t + sigma0 * noise`. Here `m_t` is the prior's mean for `s_t`, computed from the earlier states and the actions; it is the tensor the surprise term already uses.
 
 ```python
 forecast = predicted + sigma0 * xi                 # a sample of the prior p(s_t | s_<t, a_<t); xi ~ N(0, I)
@@ -26,141 +57,264 @@ use = torch.rand(B, T, 1, 1) < lam                 # one coin per rendered frame
 condition = torch.where(use, forecast, s[:, 1:])   # what the renderer reads
 ```
 
-### 0.2 Why
+Nothing else changes. At `lam = 0` the class computes exactly L2's loss, with the same random draws. Why this change:
 
-1. **It rewards what predicts the future (sufficiency).** At `lam = 0` the renderer asks whether a frame's own state, together with the anchor, describes that frame. That rewards information about the current frame. At `lam = 1` it asks whether the earlier states and the actions, passed through the prior, describe the next frame. That rewards information about the future, beyond what the anchor shows: the textbook definition of a state.
+1. **It rewards what predicts the future.** At `lam = 0` the renderer asks whether a frame's own state, with the anchor, describes that frame. At `lam = 1` it asks whether the earlier states and actions, passed through the prior, describe the next frame. The first rewards information about the current frame; the second rewards information about the future beyond what the anchor shows, which is the textbook definition of a state.
+2. **Unpredictable detail leaves at every price.** Detail drawn fresh in each frame costs `beta` per nat and earns `1 - lam` per nat, because no forecast can predict it. At `lam = 1` it is therefore excluded at every `beta > 0`, without calibrating `beta`.
+3. **The renderer trains on the input generation feeds it.** At generation time the renderer draws prior forecasts, but at `lam = 0` it has only ever seen encoded states.
 
-   It also closes a gap in the `lam = 0` objective. Take a fixed property that the dynamics read and the anchor shows, such as block shape or size when they vary. At `lam = 0` such a property earns nothing, because the anchor already draws it. An exact code then leaves it for the prior to infer after the first contact, and a planner that starts before any contact never sees it. At `lam = 1` the prior, which never sees the anchor, cannot forecast contacts without it, so the property must enter the state.
-2. **Unpredictable detail leaves without calibrating `beta`.** Take detail that is drawn fresh in every frame (the dot in the dot domain). It costs `beta` per nat, and it earns `1 - lam` per nat, because only the encoded-state branch can use it; no forecast can predict it. It is therefore excluded when `beta >= 1 - lam`, and at `lam = 1` that means at every `beta > 0`. At `lam = 0`, exclusion needed a true price near one, and the flow loss cannot certify that price because it is not measured in nats. (The renderer's condition dropout shifts these thresholds slightly; see Appendix A.3.)
-3. **The renderer trains on the kind of input generation feeds it.** Generation renders prior rollouts, but at `lam = 0` the renderer has only ever seen encoded states. Your forecast-render runs already suggest that rendering forecasts during training helps planning (Section 0.3).
+### 0.4 What the forecasts are: one-step and open-loop, noisy and noiseless
 
-### 0.3 How this differs from your forecast-render and temporal-forecast arms
+Take one window: frames `x_0 .. x_7`, actions `a_0 .. a_6`, encoded states `s_0 .. s_7`. Consider the forecast of frame 5.
 
-Your forecast-only (I05) and temporal-forecast (TF) arms are the closest existing evidence. They differ from `lam` in what the renderer reads.
+- **One-step (teacher-forced).** The prior reads the encoded states of the real frames 0 to 4 and the actions: `m_5 = prior(s_0 .. s_4, a_0 .. a_4)`. Every forecast is one step beyond real information. The rate term always uses one-step forecasts, and so does canonical `lam`.
+- **Open-loop (free-running rollout).** The prior reads only the encoded state of frame 0, then feeds back its own forecasts: `h_1 = prior(s_0, a_0)`, `h_2 = prior(s_0, h_1, a_0, a_1)`, and so on to `h_5`. The forecast of frame 5 is five steps beyond real information, so errors compound. This is what the planner does at test time.
 
-| | Forecast-only (I05) and TF (`robust.py`) | Round-2 `lam` (`forecast_scored.py`) |
+Either kind can be **noisy** (a sample, with `sigma0` noise at every step) or **noiseless** (the prior's means):
+
+| Forecast | What the prior reads for frame t | Noise | Used by |
+| --- | --- | --- | --- |
+| one-step | encoded states of frames 0 .. t-1 | `sigma0` sample | the rate term (all models); canonical `lam` |
+| open-loop, noisy | encoded `s_0`, then its own samples | `sigma0` at every step | our `horizon = "rollout"` (conditional arm C5) |
+| open-loop, noiseless | encoded `s_0`, then its own means | none after frame 0 | your forecast-only and TF arms; the planner at test time |
+
+The noise matters because a noiseless mean is a continuous vector that nothing prices. The prior can pass information about the actions through it to the renderer for free (Appendix A.5). A `sigma0` sample limits that channel to the code's resolution, and the surprise term prices the mean's departure from the encoded state.
+
+### 0.5 What your harder-task runs showed, and how this spec reads them
+
+**TwoRoom: the state never left its initial scale.**
+
+- **Every AS-JEPA arm stayed near its initial scale.** That covers original, lower-beta, TF, the high-noise variants, observed and constant anchors, shared prior, rate off and noise removal. The validation spread of `mu` was 0.9 to 2.1e-4 at every evaluated checkpoint (600 to 2,600 updates), about 1/600 of `sigma0`. The training-batch spread fell from about 1e-3 at step 100 to 5e-4 at 6,000 updates.
+- **The renderer ignored the state.** At 2,000 updates, swapping in another video's state changed the renderer's error by at most 0.0003% at t = 0.95, against 53 to 110% on Cube at the same step; no swap tested on TwoRoom exceeded 0.005%. Linear probes of the agent's position give R² 0.11 to 0.29 from clean `mu` and about -0.06 through the `sigma0` noise. Planning stayed at 0 to 16%.
+- **Two other models plan well on the same 50 cases.** Natively retrained LeWM scores 80 / 72% at 6,000 updates (82 / 78% with recalibrated BatchNorm statistics). Your frozen random ViT with a fixed spatial projection scores 90 / 94% at 6,000 updates with the free chart.
+- **The information was available from the start.** A fixed random projection of the same ViT's patch features reads the agent's position at R² 0.89 to 0.94 at initialization (0.96 at 2,000 updates).
+
+**This is not the collapse of the JEPA literature.** In a JEPA, a constant encoder makes the latent prediction loss exactly zero. The collapsed solution is the best one, so EMA, VICReg or SIGReg must rule it out. Here the renderer's loss would be lower with the agent in the state: 84 to 91% of its remaining error sits in the 9.4% of pixels that move. So the objective's best solution uses the state, and TwoRoom is stuck at a stationary point of training, not at the objective's optimum (Appendix A.6). The mechanism has three steps:
+
+1. The state starts at a spread of about 1e-3, because the `QueryPool` head is initialized with standard deviation 0.02. Through `sigma0 = 0.1` noise, each dimension then carries about 5e-5 nats.
+2. In the first 600 updates the encoder did receive sizeable gradients (norm up to 0.045 to 0.236), but the state moved toward the prior mean instead of spreading out. The entry term's excess fell from 2.8 to 7.5 nats to 0.1, and the validation spread settled near 1.5e-4, about 1e-6 nats per dimension.
+3. A renderer cannot use what it cannot read, so it learned to ignore the state. The encoder's gradient fell to 0.008 to 0.027 over updates 600 to 2,000 and to 0.002 to 0.005 over 2,000 to 2,600 (Cube over the same span: 0.15 to 0.27), and the state stayed small.
+
+Your linear toy (`hardtasks20261030/THEORY-AFTER-INFORMATION-AUDIT-20261030.md`) puts the escape rate at about `2 eta^2 / sigma0^2` for state scale `eta`. At the default initial scale (`eta / sigma0 ≈ 1e-2`) that is a ten-thousandth of its value at `eta = sigma0`, and at the trapped scale (1.5e-3) about two millionths. Removing the rate (`beta = 0`) did not free the state in your runs, so the rate is not the only cause. It is, however, a reason a calibrated state could shrink back; T4 against T6, and a `beta = 0` fallback (Section 11), test that.
+
+**Why Cube escaped from the same initial scale (our inference).** More of the picture moves: 31.6% of Cube render pixels against 9.4%. So the renderer gains more from the state at any scale. Cube's state grew 24 to 50 times by 2,000 updates.
+
+**Two contributing factors, which this spec also tests:**
+
+- **The pooled state carries little agent information even before noise**, while a fixed spatial projection carries a lot.
+- **Your TF arms combine a first-frame anchor with noiseless open-loop forecasts, which lets the renderer place the agent from the actions alone.** Their wrong-action effect reached 72% while no state swap exceeded 0.005%.
+
+The forecast shortcut cannot explain the `lam = 0` arms, which have no forecast path to the renderer. So this spec treats the initial scale as the primary cause (T1 against your original arm) and tests the shortcut separately (T5).
+
+**Cube: the state is used, but it holds the arm better than the cube.**
+
+- **Planning trails matched LeWM.** Original, lower-beta and TF reach 20 / 24, 22 / 26 and 24 / 26% at 11,671 updates. Native LeWM reaches 26 / 26% at 12,000 updates (30 / 28% recalibrated).
+- **The planning cost follows the arm.** On your fixed candidate bank, TF's cost has partial rank correlation 0.93 with arm displacement and 0.03 with cube displacement.
+- **The cube is read less accurately.** Cube position is read at 4.7 to 5.1 cm from TF against 3.7 to 3.9 cm from native LeWM.
+
+**Our reading.** With the first-frame anchor, the renderer sees the cube's pose at window frame 0. A resting cube keeps that pose through the window, and a carried cube follows the gripper, which the state already holds. In most windows, then, storing the cube's own pose earns nothing (Appendix A.7), and the planner compares states that barely differ in cube pose.
+
+Two anchor changes remove that free information, and `lam = 1` adds a separate reason to store the cube:
+
+- **A past anchor far enough back** that the cube has often moved since.
+- **No informative anchor at all**, a constant one. Cube's appearance does not vary across episodes, so the renderer can learn the scene itself.
+- **`lam = 1`**: the prior must forecast whether the gripper closes on the cube, and for that it needs the cube's pose.
+
+Two other Cube findings are in your campaign and are not repeated here:
+
+- **The planner's candidates don't look like the training actions.** Correlated CEM fixes part of this for every model.
+- **12,000 updates is only about one loader epoch**, with the learning rate still at 98% of peak.
+
+### 0.6 What this round answers
+
+| Question | Where |
+| --- | --- |
+| P-Q1. How does matched LeWM (L0) do on full-data PushT at 3 and 10 epochs? No full-data L0 run exists | P1 |
+| P-Q2. Does canonical `lam = 1` keep the planning gain of your forecast-render arms, over four training seeds? | P2 |
+| P-Q3. Is the original arm's seed instability at 2 epochs (P0 10 to 84% across seeds 1 to 8) the same trapped state, removed by the initial scale? | P3 |
+| P-Q4. At `lam = 1`, does the dot leave the state, while it stays at `lam = 0`? | P4 |
+| P-Q5. Does LeWM keep colour in its embedding while AS-JEPA leaves it to the anchor? | P5 |
+| P-Q6. What does a reconstruction-free version (a contrastive critic in place of the renderer) keep? | P6 |
+| T-Q1. Does starting the state at `sigma0` let TwoRoom train a state the renderer uses? | T1 against your original arm |
+| T-Q2. Which of initial scale, anchor rule and `lam` matters on TwoRoom? | T1 to T4 |
+| T-Q3. Was TF's TwoRoom failure the initial scale or the noiseless forecast shortcut? | T5 against your TF arm |
+| T-Q4. Does the canonical recipe plan near native LeWM and your fixed carrier at 6,000 updates? | T, continuation |
+| K-Q1. How often does each anchor rule show the cube where it no longer is? | K-pre (CPU) |
+| K-Q2. Does removing the anchor's free cube pose move the cube into the state and into the planning cost? | K1, K2, K3 |
+| K-Q3. Does `lam = 1` add to that? | K1 against K4 |
+| K-Q4. Does the canonical recipe reach native LeWM at matched updates and planner? | K-main, K-mature |
+
+### 0.7 Division of work with your campaign
+
+| Topic | Your campaign | This spec |
 | --- | --- | --- |
-| What the renderer reads, with probability 0.5 or `lam` | an open-loop rollout of prior **means** started at the noisy first state; no noise after frame 0 | **canonical:** the teacher-forced one-step prior mean plus `sigma0` noise; **variant:** an open-loop rollout of prior **samples**, with `sigma0` noise at every step |
-| Capacity of that channel | unbounded: a noiseless continuous vector, never priced. The prior can pass action information to the renderer for free | the code's own resolution `sigma0`. What the forecast carries is priced by the surprise term |
-| Posterior noise | i.i.d. (I05), or AR(1) with `rho = 0.8` (TF) | i.i.d. `sigma0`, as in L2 |
-| PushT P0, 3 epochs, seeds 1/2 | I05 90 / 90; TF 94 / 94 (original `beta = 1/4`: 88 / 74.67; lower-beta: 86 / 84) | not yet run |
-| Harder tasks | TF: TwoRoom state collapsed (2 to 6% success at 6,000 updates; an untrained model scores 4%); Cube 18 / 20% against native LeWM 26 / 26% at 12,000 updates (`hardtasks20261030`, `native_baseline_20261031`, `ideas10_20261030/results/relative600`) | not yet run |
+| Native LeWM baselines: TwoRoom 600 to 6,000 updates; Cube 600 to 12,000, with 23,342 running | owns them | reuses your checkpoints, cases and evaluations; reruns nothing |
+| PushT LeWM (L0) on full data | not run | P1 |
+| State architecture: fixed and local carriers, charts, readouts, patch tokens, predictor output span | owns it | keeps L2's encoder and `QueryPool` fixed, so that objective effects stay attributable |
+| Objective: `lam`, `beta`, initial state scale | | owns it |
+| Anchor rule | first frame (your default); constant anchor as an adaptation from TF at 2,000 | past-only distant anchor; constant anchor trained from scratch with calibrated scale (K3) |
+| Controllers: correlated CEM, NGC | owns them | evaluates every checkpoint under white CEM (primary) and your fixed correlated CEM (secondary). No new controller work |
+| Training maturity | owns it (the six 23,342-update continuations) | uses your result to decide whether K continues (Section 8) |
+| Already settled on TwoRoom and Cube by your runs | rate off (`beta = 0`), posterior-noise removal, training at pure target noise, high-noise logit shift, shared forecast prior, constant-anchor adaptation, quadrant pooling | cited as evidence; not repeated |
+| TF and original arms on the harder tasks | your runs at 2,000, 6,000, 11,671 and 12,000 updates | reused as references. T5 is your TF config with only the initial scale changed |
 
-The difference matters for the harder tasks. Suppose the anchor is the window's first frame, as in your TwoRoom and Cube runs, and the forecast is noiseless. Then an empty state plus a prior that integrates the actions can already draw the forecast frames: the anchor shows the start, and the forecast carries the displacement. Nothing forces information into the state (Appendix A.5).
+Where the two plans meet. Each meeting point is run once, by whoever has capacity, after both sides agree:
 
-That is one candidate cause of the TwoRoom collapse you measured: state spread 1e-4 to 1e-3, far below `sigma0`, even at `beta = 0`. The other candidate is the initialization scale: the state starts far below `sigma0`, so the renderer learns to ignore it. Block F tests the first cause on PushT, and Phase 3 tests both on TwoRoom.
+- **(a) Combining recipes.** If T or K shows that the canonical objective trains a useful state, the next step combines it with your best state architecture.
+- **(b) Readout bottleneck.** If every T arm fails the use gate (Section 5.7), the pooled readout is the bottleneck. We then decide together whether AS-JEPA adopts a spatial state, such as your local carrier made learnable.
+- **(c) Anchor rule.** If K shows that the first-frame anchor hides the cube, your renderer-based variants (TF, carriers with a renderer) should switch to the winning anchor rule. We suggest you own that change.
 
-### 0.4 What this round must answer
+Your six maturity runs occupy dev2, dev13 and dev15 GPUs 0 and 1 until about 16:30 UTC on 10-31. This spec's runs use other GPUs; do not stop or reuse those slots.
 
-| Question | Block | Phase |
-| --- | --- | --- |
-| Q1. Does the principled `lam` keep the planning gain of your forecast-render arms on PushT, and does it reduce open-loop drift? | C | 1 |
-| Q2. At `lam = 1`, does the dot leave the state at every `beta`, while it stays at `lam = 0`? | D | 1 |
-| Q3. Is colour kept out of the state equally at every `lam`, and do LeWM's objective and L1 keep the colour that AS-JEPA leaves to the anchor? | E | 1 |
-| Q4. Does the price matter at the working point, and what does pricing add over L1's SIGReg? | A | 1 |
-| Q5. Does a smaller code noise (`sigma0 = 0.03`) make `beta = 1` work? | B | 1 |
-| Q6. Does a first-frame anchor open the forecast shortcut, with noisy and with noiseless forecasts? | F | 1 |
-| Q7. How does the selected configuration compare with LeWM, L1 and TF at the full 10-epoch budget, and is it stable across training seeds? | H | 2 |
-| Q8. Does a fixed property that the dynamics read (block shape and size) enter the state at `lam = 1` and not in an exact `lam = 0` code? | G | 2 |
-| Q9. What does the same model learn with a contrastive critic instead of a renderer? | I | 2 |
-| Q10. Does the canonical recipe train a state on TwoRoom and Cube, where TF collapsed or trailed LeWM? | T | 3 |
+### 0.8 Stopping points
 
-Stopping points: after Phase 1, write the Phase-1 report and wait for our agreement. After Phase 2, write the PushT report and wait for our agreement before Phase 3.
+There are three reports: PushT closure (Part P), TwoRoom (Part T) and Cube (Part K). Write each when its part finishes, then stop for our agreement once all three exist.
+
+- **Launch automatically when the trigger fires:** the TwoRoom continuation from 2,000 to 6,000 updates for arms that pass the use gate (Section 8.2), and the PushT conditional arms C5, C2 and E1 (Section 8.1; at most about 60 GPU-hours together).
+- **Wait for our agreement:** the C1 continuation to 10 epochs (Section 8.1) and K-mature (Section 8.3).
 
 ## 1. Named quantities
 
-New code reads these from the run config or from module constants in `as_jepa_lewm/forecast_scored.py`. Derived values are computed, not retyped.
+New code reads these from the run config or from module constants. Derived values are computed, not retyped.
 
-### 1.1 Derived from your data and recipe
+### 1.1 PushT
 
 | Name | Definition | Value |
 | --- | --- | --- |
 | `BATCH` | windows per optimizer step | 128 |
-| `EPOCH_UPDATES` | `floor(train windows / BATCH)` on `pusht-lance-full-v1` at `W = 8` (1,598,974 train windows) | 12,491 |
-| `MAX_STEPS` | `10 * EPOCH_UPDATES`; the learning-rate schedule's horizon for every L2-family run, screens included | 124,910 |
-| `SCREEN_STEPS` | `3 * EPOCH_UPDATES`; where Phase-1 screens stop | 37,473 |
+| `EPOCH_UPDATES` | `floor(train windows / BATCH)` on `pusht-lance-full-v1` at `W = 8` (1,598,974 windows) | 12,491 |
+| `MAX_STEPS` | `10 * EPOCH_UPDATES`, the learning-rate horizon of every L2-family run | 124,910 |
+| `SCREEN_STEPS` | `3 * EPOCH_UPDATES` | 37,473 |
 | `EPOCH2_STEPS` | `2 * EPOCH_UPDATES` | 24,982 |
 | `L0_EPOCH_UPDATES` | the same for LeWM's window of 4 (your `full-L0-10epoch-*` configs) | 15,265 |
-| `STEP_S` | measured seconds per step of full L2 on one H200 | about 0.91: 11,328 s for epoch 2 of a new-seed replication run, peak 129 GiB (`hardtasks20261030/legacy-closure/newseed-epoch2/replication-results.json`) |
-| `SCREEN_GPU_H` | `SCREEN_STEPS * STEP_S / 3600` | about 9.5 |
-| `FULL_GPU_H` | `MAX_STEPS * STEP_S / 3600` | about 31.6 |
-| `CONTINUE_GPU_H` | from `SCREEN_STEPS` to `MAX_STEPS` | about 22.1 |
-| `EPOCH2_GPU_H` | `EPOCH2_STEPS * STEP_S / 3600` | about 6.3 |
+| `STEP_S` | measured seconds per step of full L2 on one H200 | about 0.91 (11,328 s for 12,491 steps, `legacy-closure/newseed-epoch2/replication-results.json`) |
+| `SCREEN_GPU_H`, `EPOCH2_GPU_H`, `CONTINUE_GPU_H` | `STEP_S` times 37,473, 24,982 and 87,437 steps | about 9.5, 6.3 and 22.1 |
 
-### 1.2 Method knobs
+### 1.2 Harder tasks
 
-| Name | Meaning | Value | Status |
-| --- | --- | --- | --- |
-| `lam` | probability that the renderer reads a forecast sample instead of the encoded sample, per rendered frame | {0, 0.5, 1} | **canonical value 1**: the principled setting (Appendix A), compared rather than searched. 0.5 is a hedge, and 0 is L2 |
-| `horizon` | `one_step`: the teacher-forced one-step prior mean. `rollout`: an open-loop rollout of prior samples from the encoded first state | `one_step` | `rollout` is one arm of Block C |
-| `forecast_grad` | `joint`: no stop-gradient anywhere. `encoder_only`: the forecast branch sends no gradient into the prior's parameters | `joint` | `encoder_only` only by the rule in Section 12 |
-| `beta` | price of one nat of state, per rendered value (the unit your configs use) | {1/16, 1/4, 1}; 1e-3 as "almost no price" | the only searched knob |
-| `sigma0` | code noise; the prior's spread is tied to it, and so is the forecast noise | 0.1 | frozen; 0.03 only in Block B |
-| `gap` | anchor gap in kept frames; set the top-level `gap` **and** `model.anchor_gap` to the same value (Section 3.7) | 8 | frozen; 0 only in Block F |
-| `W` | window, in kept frames | 8 | frozen |
-| `rho` | AR(1) correlation of the posterior noise | 0 | frozen; only the TF reference uses 0.8 |
-| `calibrate_state_std` | your one-time initialization of the state spread (`train.py`, `on_fit_start`) | absent, as in the reference runs | Phase 3 sets it to `sigma0`; never combine it with `LearnedVarianceLeWM` (Section 3.4) |
+| Name | Value | Why |
+| --- | --- | --- |
+| `TWOROOM_GATE` | 2,000 updates | past the 1,249-update warmup; your TwoRoom references exist here |
+| `TWOROOM_FULL` | 6,000 updates | native LeWM (80 / 72%) and your fixed carrier (90 / 94%) were evaluated here |
+| `CUBE_FULL` | 12,000 updates | native LeWM (26 / 26%) and TF (18 / 20%) exist here; one loader epoch is 11,671 |
+| `CUBE_MATURE` | 23,342 updates | two loader epochs, as in your running maturity continuations |
+| `MAX_STEPS` | 124,910 | the learning-rate horizon of all your harder-task runs |
+| `STEP_S_HARD` | budget 1.5 s per update for L2 on one H200 | your Cube startups measured 1.11 to 1.34 s; measure in the smoke (Section 10.3) |
+| `CASES` | your fixed 50-case strict-validation primary set and 50-case fresh set, per task | the test split stays untouched |
+| `WHITE_CEM` | 300 samples × 30 iterations, top 30, horizon 5, receding horizon 5, history 3, budget 50, GoalMSE on `mu` | your native protocol |
+| `CORR_CEM` | `WHITE_CEM` sampling in your fixed training-action covariance (`action_covariance_20261031`, same frozen calibration files) | your common controller |
 
-Why only `beta` is searched (unchanged from round 1): `beta` cannot be set from first principles while the flow loss is not in nats. `sigma0`, the gap and the window are frozen at values that favour keeping slow components. `lam` has a principled value, 1. It is compared against 0.5 and 0, and the selection rule (Section 8) prefers 1 when they tie.
+### 1.3 Method knobs
 
-### 1.3 Evaluation and decision constants
+| Name | Meaning | Values in this round |
+| --- | --- | --- |
+| `lam` | probability that the renderer reads a forecast sample instead of the encoded sample, per rendered frame | 1 (canonical) and 0 (L2). 0.5 only in conditional arm C5 |
+| `horizon` | `one_step` or `rollout` (Section 0.4) | `one_step`; `rollout` only in C5 |
+| `forecast_grad` | `joint`: no stop-gradient. `encoder_only`: the forecast branch sends no gradient into the prior's parameters | `joint`; `encoder_only` only by the rule in Section 11 |
+| `beta` | price of one nat of state, per rendered value (the unit of your configs) | 1/4 everywhere; 1/16 in T6 and conditional C2. The contrastive arm uses `beta = 1` in true nats |
+| `sigma0` | code noise; the prior's spread and the forecast noise are tied to it | 0.1, frozen |
+| `gap` | anchor distance in kept frames | PushT: 8, two-sided, as in your references (frozen for pairing). TwoRoom `gap_T` and Cube `gap_K`: past only, chosen by the rule in Section 5.6. Absent means the first-frame anchor |
+| `renderer_anchor_mode` | `observed`, or `zero` for a constant anchor (existing option) | `observed`; `zero` only in K3 |
+| `W` | window, in kept frames | 8, frozen |
+| `rho` | AR(1) correlation of the posterior noise | 0; only the TF reference and T5 use 0.8 |
+| `calibrate_state_std` | your one-time initialization of the state spread (`train.py`, `on_fit_start`) | `sigma0` on TwoRoom and Cube, and in P3. Absent in the other PushT arms, to stay paired with your references |
+
+Why only `beta` is searched: it cannot be set from first principles while the flow loss is not in nats. `sigma0` and the window are frozen at values that keep slow components. `lam` has a principled value, 1. The anchor gap and the initial scale are chosen by stated rules, not by results.
+
+### 1.4 Evaluation and decision constants
 
 | Name | Value | Meaning |
 | --- | --- | --- |
-| `PLAN_SEEDS` | 42, 43, 44 | primary planning cases: 3 × 50 = 150 episodes per checkpoint |
-| `FRESH_SEEDS` | 1042, 1043, 1044 | fresh planning cases, same protocol |
-| `PAIRED_CI` | 95% episode-clustered bootstrap of paired P0 differences (`report_main_conclusions.cluster_ci`), pooled over training seeds 1 and 2 | the uncertainty from planning episodes. It is conditional on the trained weights and does **not** include training-seed variation, which is large (the original arm scores 88 and 74.67 on seeds 1 and 2). Hence the per-seed conditions below |
-| `NONINF` | 5 points | arm A is **non-inferior** to arm B if the lower end of `PAIRED_CI(A - B)` is above -5 **and** each seed's mean difference is above -5 |
-| better, worse | | A is **better** than B if `PAIRED_CI(A - B)` lies above 0 **and** both seeds' mean differences are positive; **worse** if the interval lies below 0 and both are negative; otherwise **tied** |
-| `SLOPE_MIN` | 0.9 | lowest acceptable calibration slope of the prior, measured in eval mode (Section 5.3). The toys predict at most 3.5% overshoot with fixed variances, so 0.9 is about three times that |
-| `VAR_RATIO_MAX` | 1.25 | highest acceptable ratio of the prior's squared miss to its variance (learned variances, Section 5.3) |
-| `CHANCE_R2` | 0.05 | a probe `R^2` at or below this counts as chance. For the dot, decide on the **largest** of the five dot `R^2` values (position x and y, colour r, g, b), not their mean, so that one decodable component is not hidden |
-| `COLOUR_TOL` | 0.10 | two colour-probe `R^2` values closer than this count as unchanged |
-| `SHAPE_KEEP`, `SHAPE_DROP` | 0.8, 0.3 | balanced accuracy of the 7-way block-shape probe that counts as kept or dropped (chance 0.14) |
+| `PLAN_SEEDS`, `FRESH_SEEDS` | 42, 43, 44 and 1042, 1043, 1044 | PushT primary and fresh planning cases, 3 × 50 episodes each |
+| `PAIRED_CI` | 95% episode-clustered bootstrap of paired P0 differences, pooled over training seeds 1 and 2 (`report_main_conclusions.cluster_ci`) | the uncertainty from planning episodes. It does not include training-seed variation, hence the per-seed conditions below |
+| `NONINF` | 5 points | A is non-inferior to B if the lower end of `PAIRED_CI(A - B)` is above -5 and each seed's mean difference is above -5 |
+| better, worse | | A is better than B if `PAIRED_CI(A - B)` lies above 0 and both seeds' differences are positive; worse if below 0 and both negative; otherwise tied |
+| `SLOPE_MIN` | 0.9 | lowest acceptable eval-mode calibration slope of the prior (Section 5.3); the toys predict at most 3.5% overshoot |
+| `CHANCE_R2` | 0.05 | a probe R² at or below this is chance. For the dot, decide on the largest of the five dot R² values |
 | `COLLAPSE_RATIO` | 0.9 | as in `collapse_audit.py` |
-| `MOVE_PX` | 10 workspace pixels | as in your evaluation: a window moves the block if it moves more than this |
-| `GALLERY_PASS_MIN` | 24 of 32 | fixed gallery cases that we mark as passing (round-1 gate) |
+| `SPREAD_MIN` | 0.3 | lowest validation `feature_std / sigma0` for a used state. At 0.3 each dimension carries up to `0.5 * ln(1.09)` ≈ 0.04 nats, about 2.8 nats per frame over 64 dimensions; the trapped TwoRoom value is 0.0015, and Cube passed 0.3 by 2,000 updates |
+| `USE_MIN` | 5% | lowest relative increase of the renderer's error at t = 0.95 when the state is swapped for another video's (Section 5.7). At 2,000 updates under the posterior swap: trapped TwoRoom at most 0.0003%, Cube 53 to 110% |
+| `HARD_TIE` | 6 points | harder-task success differences below this, averaged over 2 seeds and both case sets, are ties. Your measured noise: re-evaluating one checkpoint moves 1 to 2 of 50 cases, and TF continued from one 2,000-update checkpoint scored 24 / 26% at 11,671 updates and 18 / 20% at 12,000 |
+| `FALLBACK_MAX` | 0.2 | largest share of windows allowed without an eligible past anchor (Section 5.6) |
+| `CUBE_TOL` | 3 cm and 15° (yaw modulo the cube's quarter-turn symmetry) | the strict success tolerance; used for anchor staleness |
+| `AGENT_TOL` | the strict success distance of your TwoRoom manifests (8.0, in `pos_agent` units; confirm the units) | used for anchor staleness |
+| `RANK_HIGH`, `RANK_LOW` | 0.3, 0.1 | the cube partial rank (`position_encoded_partial_rank`, Section 5.8): how well the latent distance from a candidate's reached endpoint to the goal tracks the cube's distance to its goal, holding the effector's distance and the angle fixed. Values at or above 0.3 count as cube-driven, at or below 0.1 as not. TF: 0.03 for the cube, 0.93 for the effector |
 
 ## 2. Starting point
 
 ### 2.1 Code
 
-1. Create branch `as-jepa/round2` from your current head (`094e4f0` or later; record the hash in every report).
-2. Copy, unchanged:
-   - `docs/lingjing/round2/as_jepa_lewm/forecast_scored.py`, `learned_variance.py` and `nce.py` into `as_jepa_lewm/`;
-   - `docs/lingjing/round2/tests/as_jepa/test_round2.py` into `tests/as_jepa/`.
-3. Register the three classes in the three places that list model targets:
-   - `as_jepa_lewm/factory.py`, `MODEL_TARGETS`: add `"forecast_scored": "as_jepa_lewm.forecast_scored.ForecastScoredLeWM"`, `"learned_variance": "as_jepa_lewm.learned_variance.LearnedVarianceLeWM"` and `"nce": "as_jepa_lewm.nce.NCELeWM"`.
-   - `as_jepa_tools/evaluate.py`, `load_model`: add one `elif` per class before the final `else`, as for `RobustLeWM`. Without it, a new checkpoint falls through to `ASJepaLeWM` and fails on the new keyword arguments.
-   - `as_jepa_tools/planning.py`: add the three targets to the set of allowed `_target_` values.
-4. Add two small evaluation options and one tool (Sections 5.1 to 5.3): `--condition {posterior,forecast}` and `--fp32` for `collapse_audit.py`, `--condition` for `color_swaps.py`, and `as_jepa_tools/forecast_calibration.py`.
-5. Do not edit `model.py`, `robust.py`, `research.py` or any frozen source; your earlier runs depend on them.
-6. Freeze every campaign's source with your usual `git archive` plus SHA256 manifest, and dispatch with `as_jepa_tools/workflow.py`.
+1. Create branch `as-jepa/round2` from your current head (`2fdd905` or later), and record the hash in every report.
+2. Copy unchanged from `docs/lingjing/round2/`:
+   - `as_jepa_lewm/forecast_scored.py` and `as_jepa_lewm/nce.py` into `as_jepa_lewm/`;
+   - `as_jepa_tools/benchmark_gap.py` into `as_jepa_tools/`;
+   - `tests/as_jepa/test_round2.py` and `tests/as_jepa/test_benchmark_gap.py` into `tests/as_jepa/`.
+
+   `learned_variance.py` is not used in this round.
+3. Register `forecast_scored` and `nce` in the three places that list model targets:
+   - `as_jepa_lewm/factory.py`, `MODEL_TARGETS`: add `"forecast_scored": "as_jepa_lewm.forecast_scored.ForecastScoredLeWM"` and `"nce": "as_jepa_lewm.nce.NCELeWM"`. `train.py` and `benchmark_health.py` build models through this table.
+   - `as_jepa_tools/evaluate.py`, `load_model`: one `elif` per class before the final `else`, as for `RobustLeWM`.
+   - `as_jepa_tools/planning.py`: add both targets to the allowed `_target_` values.
+
+   `benchmark_evaluate.py` needs no change, because it instantiates the `_target_` in each checkpoint's `config.json` through `load_pretrained`. Confirm this in the smoke.
+4. Route benchmark datasets through `make_benchmark_dataset(cfg, split)` from `benchmark_gap.py`, at the places that build `BenchmarkWindows` for training or for renderer diagnostics:
+   - `benchmark_data.make_training_dataset` (the benchmark branch). Import `benchmark_gap` inside the function, because `benchmark_gap` imports `benchmark_data`;
+   - `benchmark_health.py` (line 41);
+   - `benchmark_information_audit.py` (line 257, the renderer substitutions; line 175 never reads the anchor);
+   - `gradient_preflight.py` (line 35). It also builds `RobustLeWM(**cfg["model"])` directly (line 33), which fails on a `forecast_scored` config; switch it to `build_model(cfg)`.
+
+   With no `gap` in a config, `make_benchmark_dataset` returns `BenchmarkWindows` exactly as before; a test checks this, and none of your 75 existing benchmark configs sets a top-level `gap`. Old configs and frozen snapshots are therefore unaffected. `benchmark_spatial_probe.py` builds `ASJepaLeWM` directly and does not use the anchor; it is not used for round-2 runs.
+5. Tool additions:
+   - **PushT:** `--condition {posterior,forecast}` and `--fp32` for `collapse_audit.py`; `--condition` for `color_swaps.py`; the tool `as_jepa_tools/forecast_calibration.py` (Sections 5.2 and 5.3); and the colour-invariance tool (Section 5.4).
+   - **Harder tasks:** two conditions in `benchmark_health.py`, `one_step` and `one_step_shuffled` (Section 5.7); and a checkpoint argument for your Cube readout probe, `experiments/carrier_progress_20261031/tf_pose.py`, which currently hard-codes the TF runs (Section 5.8).
+6. Do not edit `model.py`, `robust.py`, `research.py` or any frozen source.
+7. Freeze every campaign's source with your usual `git archive` plus SHA256 manifest, and dispatch with your workflow tools.
 
 ### 2.2 Data
 
-- **`D-std`:** `/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1` with `all_phase_data: true`. Evaluation data is its `phase0/` view, and planning uses `pusht_expert_train.h5` exactly as `planning.py` sets it up. Use the existing 934 test episodes.
-- **`D-dot` and `D-colour`:** `D-std` with `model.domain` set to `"dot"` or `"color"`, applied in `ASJepaLeWM.prepare`. The dot is redrawn for every row (frame), and the anchor carries its own, different dot. The colour transform is a per-episode affine palette, shared by every frame and the anchor.
-- **`D-shape`:** Phase 2 only; see Section 3.5.
+- **`D-std`:** `/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1` with `all_phase_data: true`. Evaluation uses its `phase0/` view, and planning uses `pusht_expert_train.h5` as `planning.py` sets it up.
+- **`D-dot` and `D-colour`:** `D-std` with `model.domain` set to `"dot"` or `"color"`, applied in `ASJepaLeWM.prepare`.
+  - The dot is redrawn for every frame, and the anchor carries its own, different dot.
+  - The colour transform is a per-episode palette, shared by every frame and the anchor.
+- **TwoRoom:** `/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata`, `dataset_kind: benchmark_hdf5`, `action_dim: 10`.
+- **Cube:** `/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata`, `dataset_kind: benchmark_hdf5`, `action_dim: 25`.
+
+Splits and action normalization are those of your runs: training episodes only.
 
 ### 2.3 Reference runs reused, not rerun
 
-Use the 3-epoch checkpoints (`model-step0037473`) and their existing evaluations. The epoch-1 exports of these runs no longer exist, so compare against them only at epochs 2 and 3.
+**PushT** (P0 %, by training seed):
 
-| Reference | Configs | Seeds and budget | P0 at 3 epochs, seeds 1/2 |
+| Reference | Configs | 3 epochs, seeds 1 / 2 | 2 epochs, seeds 1 to 8 |
 | --- | --- | --- | --- |
-| original: L2, `beta = 1/4` | `experiments/stability20261029/configs/full-L2-beta0.25-stage3-seed{1..4}.json` | seeds 1 to 4 at 3 epochs; seeds 5 to 8 at 2 epochs | 88 / 74.67 |
-| lower-beta: L2, `beta = 1/16` | `experiments/robustness20261029/configs/lower-beta-seed{1..4}.json` | seeds 1, 2 at 3 epochs; seeds 3 to 8 at 2 epochs | 86 / 84 |
-| forecast-only (I05): `RobustLeWM`, `rho = 0`, `forecast_fraction = 0.5` | `experiments/robustness20261029/configs/forecast-render-seed{1,2}.json`; third epoch in `runs/forecast_confirm_20261030/forecast-render-seed{1,2}-forecast-epoch3` | seeds 1, 2 at 3 epochs | 90 / 90 |
-| TF: `RobustLeWM`, `rho = 0.8`, `forecast_fraction = 0.5` | `experiments/robustness20261029/configs/temporal-forecast-seed{1..4}.json` | seeds 1, 2 at 3 epochs; seeds 3 to 8 at 2 epochs | 94 / 94 |
+| original: L2, `beta = 1/4` | `experiments/stability20261029/configs/full-L2-beta0.25-stage3-seed*.json` | 88 / 74.67 (seeds 0 to 4: mean 85.1) | 73, 43, 22, 76, 10, 15.33, 15.33, 84 |
+| lower-beta: L2, `beta = 1/16` | `experiments/robustness20261029/configs/lower-beta-seed*.json` | 86 / 84 | 87, 85, 86.67, 70.67, 84, 80.67, 84, 82.67 |
+| forecast-only: `RobustLeWM`, `rho = 0`, `forecast_fraction = 0.5` | `robustness20261029/configs/forecast-render-seed{1,2}.json`; epoch 3 in `runs/forecast_confirm_20261030/` | 90 / 90 | 90, 90 (seeds 1, 2) |
+| TF: `RobustLeWM`, `rho = 0.8`, `forecast_fraction = 0.5` | `robustness20261029/configs/temporal-forecast-seed*.json` | 94 / 94 | 88, 90, 92.67, 88, 90, 91.33, 86.67, 91.33 |
 
-At a given training seed, `ASJepaLeWM`, `RobustLeWM` and `ForecastScoredLeWM` build identical initial tensors. The data order depends only on the seed. So the round-2 arms at seeds 1 and 2 are paired with these references. Section 11.2 checks this against the recorded initial weights of `lower-beta-seed{1,2}` (the original arm's configs did not record them).
+At a given training seed, `ASJepaLeWM`, `RobustLeWM` and `ForecastScoredLeWM` build identical initial tensors, and the data order depends only on the seed. So PushT arms at the same seed are paired with these references. All four PushT references use the two-sided anchor at gap 8 and no initial-scale calibration. Their 2-epoch values for seeds 1 and 2 were evaluated on planning seeds 42 and 43 only (100 episodes); compare C1's 2-epoch gates on the same 100.
+
+**TwoRoom** (success %, seeds 1 / 2, primary cases):
+
+- **AS-JEPA arms at 2,000 updates:** original 8 / 2, lower-beta 2 / 6, TF 2 / 6. All have a first-frame anchor and no calibration, and their spread is about 1.5e-4.
+- **TF at 6,000 updates:** 2 / 4.
+- **Native LeWM at 6,000 updates:** 80 / 72 (82 / 78 recalibrated).
+- **Your fixed carrier with the free chart, at 6,000 updates:** 90 / 94.
+- **Released LeWM:** 72. **Random:** 0.
+
+**Cube** (success %, seeds 1 / 2, primary cases):
+
+- **AS-JEPA arms at 11,671 updates:** original 20 / 24, lower-beta 22 / 26, TF 24 / 26.
+- **TF at 12,000 updates:** 18 / 20.
+- **Native LeWM at 12,000 updates:** 26 / 26 (30 / 28 recalibrated); 23,342 updates are running.
+- **Under `CORR_CEM`, at 12,000 updates:** TF 33, native 36 (means).
+- **Released LeWM:** 30. **Random:** 2.
 
 ## 3. Implementation
 
 ### 3.1 `ForecastScoredLeWM` (`as_jepa_lewm/forecast_scored.py`)
 
-The class subclasses `ASJepaLeWM` and adds four constructor arguments: `lam`, `horizon`, `forecast_grad` and `forecast_seed`. It adds no parameters. Its loss is `ASJepaLeWM.loss` line for line, except for the renderer's condition:
+The class subclasses `ASJepaLeWM` and adds four constructor arguments: `lam`, `horizon`, `forecast_grad` and `forecast_seed`. Other keyword arguments pass through, including `action_dim`, `renderer_anchor_mode` and `flow_logit_shift`, so the class trains on the benchmark data unchanged. It adds no parameters. Its loss is `ASJepaLeWM.loss` line for line, except for the renderer's condition:
 
 ```python
 mu = flat.reshape(b, w, K, d)
@@ -178,110 +332,78 @@ if self.lam > 0:
         else:
             forecast = self._forecast(s, info["act_emb"], xi)                 # rollout, or encoder_only
     condition = torch.where(use, forecast, condition)
-fm = flow_loss(self.renderer, y, condition.flatten(0, 1), a, self.training_shift)   # y, a: packed targets and anchors, as in L2
+fm = flow_loss(self.renderer, y, condition.flatten(0, 1), a, self.training_shift)
 rate = (entry + surprise.sum(1)).mean() / ((w - 1) * FRAME_ELEMS)
 loss = fm + beta * rate                                                       # unchanged
 ```
 
-The forecasts, by setting:
+With `horizon = "rollout"`, `_forecast` runs the open loop of Section 0.4 with a `sigma0` sample at every step: `h_0 = s_0`, then `h_t = m(h_<t, a_<t) + sigma0 * xi_t`. Never render a noiseless prior mean during training (Appendix A.5).
 
-- **`horizon = "one_step"` (canonical).** `m_t` is the teacher-forced prior mean from the encoded `s_<t` and `a_<t`, which is exactly the `predicted` tensor of the surprise term. The forecast is a sample of the distribution the rate already charges against.
-- **`horizon = "rollout"` (Block C, arm C5).** An open-loop rollout of prior samples from the encoded first state: `h_0 = s_0`, then `h_t = m(h_<t, a_<t) + sigma0 * xi_t`, with the identity carry. It is the principled counterpart of your forecast-render rollout, which uses means and adds no noise after frame 0.
+Logged metrics, in addition to L2's:
 
-The forecast noise always equals the code noise `sigma0`, because the prior's spread is tied to it. Never render a noiseless prior mean during training: that is an unpriced channel of unbounded capacity (Appendix A.5).
-
-Logged metrics (every 100 steps, as your other metrics), in addition to L2's:
-
-- `forecast_share`: the fraction of rendered frames that read a forecast. It should equal `lam` on average.
-- `calib_slope`: the calibration slope on the training batch, for plotting only. Predictor dropout pulls it slightly below 1; decisions use the eval-mode tool (Section 5.3).
-- `active_dims`, computed as in `ASJepaLeWM`.
+- `forecast_share`: the fraction of rendered frames that read a forecast. It should equal `lam`.
+- `calib_slope`: the calibration slope on the training batch, for plotting.
+- `active_dims`, as in `ASJepaLeWM`.
 
 ### 3.2 Random streams and pairing
 
-The coins, the forecast noise and any extra predictor forward passes (including their dropout masks) run inside `torch.random.fork_rng`, seeded by `FORECAST_STREAM + 1000003 * forecast_seed + step`. The main random stream is therefore consumed exactly as in L2: posterior noise, flow-matching noise and timesteps, and the renderer's condition dropout.
+The coins, the forecast noise and any extra predictor passes, including their dropout masks, run inside `torch.random.fork_rng`. That stream is seeded by `FORECAST_STREAM + 1000003 * forecast_seed + step`. The main stream is therefore consumed exactly as in L2: posterior noise, flow-matching noise and timesteps, and the renderer's condition dropout.
 
-Consequences:
-
-- An arm at seed `k` sees the same data order and the same initial tensors as the reference arms at seed `k`.
-- Its first update uses the same posterior noise and flow noise.
-- Every later update draws from the same stream positions.
-
-Comparisons across `lam` at the same seed are therefore paired. Set `forecast_seed` to the training seed. Pairing also requires one GPU per run with the same per-step batch (Section 13): `train.py` uses one device, and several ranks would change the data order and draw identical coins on every rank.
+An arm at seed `k` sees the same data order and the same initial tensors as the references at seed `k`, and the same draws at every update. Set `forecast_seed` to the training seed. Keep one GPU per run with the same per-step batch: several ranks would change the data order and draw identical coins on every rank.
 
 ### 3.3 Gradient routing
 
 With `forecast_grad = "joint"`, the default, there is no stop-gradient anywhere. The forecast branch's flow loss reaches:
 
 - the prior, through `m_t`;
-- the encoder, through the earlier states `s_<t`. This is how the encoder is rewarded for information that helps forecast later frames: the sufficiency reward.
+- the encoder, through the earlier states `s_<t`. This is how the encoder is rewarded for information that helps forecast later frames.
 
-At `lam = 1`, a frame's own encoding never enters its own render; it enters only the renders of later frames, because the prior's attention is causal. In particular, the last frame of a window reaches the loss only through the rate. The tests check the last-frame case.
+At `lam = 1`, a frame's own encoding enters only the renders of later frames, because the prior's attention is causal. The last frame of a window reaches the loss only through the rate; a test checks this.
 
-Joint training has one known side effect, from Appendix A.5. The renderer values forecast information at `lam` per nat, while the prior pays only to second order in surprise. So the prior is rewarded for slightly exaggerating its predicted changes. The eval-mode calibration slope (Section 5.3) watches for this.
+Joint training has one known side effect (Appendix A.5): the prior is rewarded for slightly exaggerating its predicted changes. The eval-mode calibration slope (Section 5.3) watches for this. The fallback, `forecast_grad = "encoder_only"`, recomputes the forecast branch with the predictor's parameters and the action embedding detached. It is a stop-gradient, so use it only under the rule in Section 11.
 
-The fallback, `forecast_grad = "encoder_only"`, recomputes the forecast branch with the predictor's parameters detached (`torch.func.functional_call` with detached parameters) and the action embedding detached. States still receive the gradient; the prior's parameters and the action encoder do not. This matches the theory's assumption that the prior is trained only by the code length.
+### 3.4 Past-only distant anchors for benchmark windows (`as_jepa_tools/benchmark_gap.py`)
 
-The recomputation runs in the separate random stream, so its dropout mask differs from the rate's; the forecast mean differs from the rate's `m_t` by a dropout-sized amount. It is a stop-gradient, so use it only when the rule in Section 12 fires.
+`GapBenchmarkWindows(root, window, seed, split, gap)` is `BenchmarkWindows` with one change: the renderer's anchor (`anchor`, `anchor224`, `anchor_row`) is a frame of the same episode, phase-aligned with the window, at least `gap` kept frames before window frame 0.
 
-### 3.4 `LearnedVarianceLeWM` (`as_jepa_lewm/learned_variance.py`; Phase 2, Block G)
+- **The draw.** It is uniform over the eligible past frames, using a generator seeded by `(episode, start, epoch)`, as `FullPushTWindows` does. So it is fixed within an epoch and redrawn across epochs.
+- **Fallback.** When no past frame is far enough back, the earliest phase-aligned frame before the window is used, or window frame 0 when the window starts the episode, and `anchor_fallback` is True.
+- **Everything else is unchanged.** Pixels, render targets, actions, rows, episode and start are byte-identical to `BenchmarkWindows`. `gap = 0` reproduces `BenchmarkWindows` exactly.
+- **Transforms.** The anchor frame goes through the transforms that window frames get: resizing to 224×224 if needed, then area downsampling to 64×64.
 
-Learned variances give the exact Gaussian code that the theory's fixed-property prediction is about (Appendix A.3). A fixed-variance prior cannot widen its uncertainty before a contact, so it keeps fixed properties for a side reason.
+`make_benchmark_dataset(cfg, split)` returns `GapBenchmarkWindows` when the config sets a top-level `gap`, and `BenchmarkWindows` otherwise.
 
-The same modules gain a log-variance half:
+Why past only:
 
-- **Posterior.** `pool.head` becomes `Linear(width, 2 d)`. The first `d` outputs are `mu`, initialized from the original head. The second `d` are `log var`, with zero weight and bias `log(sigma0^2)`. `encode` sets `info["emb"]` to the mean, so probes and planning are unchanged, and sets `info["logvar"]`.
-- **Prior.** `predictor.transformer.output_proj` becomes `Linear(in, 2 * STATE_DIM)`. The first half is the mean change, zero-initialized, so the identity carry is unchanged. The second half is `log var`, with zero weight and bias `log(sigma0^2)`. `predict` returns means only, so LeWM's `rollout` and the planner work unchanged. `predict_dist` returns both.
-- **Rate.** `entry = 0.5 * sum(exp(lv0) + mu0^2 - 1 - lv0)`, and `surprise = 0.5 * sum(lvp - lvq + (exp(lvq) + (mu - m)^2) / exp(lvp) - 1)`, in FP32.
-- **Samples.** Posterior `s = mu + exp(lvq / 2) * xi`. Forecast `m + exp(lvp / 2) * xi`, one-step only, with `forecast_grad` `joint` or `encoder_only`.
-- **Numerical guard.** Log variances are clamped to `[LOGVAR_MIN, LOGVAR_MAX] = [2 log 1e-3, 0]`, so the code spread stays between 0.001 and 1 prior unit.
-- **No `calibrate_state_std`.** The trainer's one-time initialization rescales `pool.head` as a mean-only head; with the log-variance half it would fail or rescale the log variances.
+- **A future frame would leak.** It would show where slow objects end up, such as the cube's resting place after the window, which is information about the future given to the renderer for free.
+- **Generation never has one.** It only ever has past frames.
+- **It matches your convention.** Your data contract already rules out future anchors.
 
-At initialization both variances equal `sigma0^2`, so the loss equals the fixed-variance loss exactly; this is tested. Additional metrics:
+PushT keeps its references' two-sided rule, for pairing.
 
-- `prior_var_ratio`: the mean squared miss of a posterior sample, divided by the mean prior variance. It is 1 when the prior is calibrated.
-- `posterior_sd` and `prior_sd`.
+### 3.5 The initial state scale on the harder tasks
 
-### 3.5 `D-shape` dataset (Phase 2, Block G)
+Set `"calibrate_state_std": 0.1` (that is, `sigma0`) at the top level of every TwoRoom and Cube config, and in P3. `train.py`'s `on_fit_start` then rescales the `QueryPool` head once, from 128 training windows, so that at step 0 the average per-dimension spread of `mu` is `sigma0`; it also subtracts the head's mean output, averaged over the four slots. Nothing normalizes the state after that, and the objective is unchanged. The step is skipped on resume.
 
-Collect with stable-worldmodel's own API at your pinned commit, following `scripts/data/collect_pusht_fov.py`:
+It writes `initial_scale.json` with `target_std`, `original_std`, `scale` and `mean_before`. Expect `original_std` of about 1e-3 to 2e-3 (your PushT calibrations measured 1.6 to 1.9e-3, with scales of 52 to 64). Read the spread after initialization from the first row of `metrics.jsonl` (step 100).
 
-```python
-world = swm.World("swm/PushT-v1", num_envs=16, max_episode_steps=SHAPE_EP_STEPS,
-                  image_shape=(224, 224), render_mode="rgb_array")
-world.set_policy(WeakPolicy(dist_constraint=100, seed=SHAPE_SEED))
-world.collect(path, episodes=SHAPE_EPISODES, seed=SHAPE_SEED,
-              options={"variation": ("block.shape", "block.scale",
-                                     "agent.start_position", "block.start_position", "block.angle")})
-```
+Why `sigma0`: it is the code's resolution. At spread `sigma0`, each dimension can carry up to `0.5 * ln 2` ≈ 0.35 nats through the renderer's noisy channel from the first update, against about 5e-5 at the default spread (Appendix A.6).
 
-Settings:
+This is an initialization, so it fits your constraint of sample-level objectives. The other PushT arms stay uncalibrated to remain paired with your references; P3 tests calibration on PushT directly.
 
-- **Collection constants.** `SHAPE_EP_STEPS = 125`, which gives about 25 kept frames at frameskip 5, the median of `D-std`. `SHAPE_EPISODES = 20,000`. `SHAPE_SEED = 20261031`.
-- **Variation names.** Check them with `swm fovs PushT-v1`. `block.shape` draws from {L, T, Z, square, I, small_tee, +}, and `block.scale` from [20, 60]. The goal overlay uses the block's shape.
-- **Preparation.** `prepare_lance_full.py` asserts 18,685 episodes, hard-codes its source revision and drops the `variation.*` columns. Write `as_jepa_tools/prepare_shape.py` as a copy that:
-  - reads the episode count and source from the collected file;
-  - writes the same arrays and splits (5% test episodes, seed 0);
-  - also writes per-row `variation_block_shape.npy` and `variation_block_scale.npy`.
+### 3.6 `NCELeWM` (`as_jepa_lewm/nce.py`; P6)
 
-  Then `FullPushTWindows` reads `D-shape` like `D-std`.
-- **Policy.** `WeakPolicy` makes random pushes near the block. It works for every shape, but its action distribution differs from `D-std`'s expert data. Compare arms only within `D-shape`.
-- **Budget.** `SHAPE_EPOCH_UPDATES = floor(D-shape train windows / BATCH)`, computed by the preparation script. Block G configs use `max_steps = 10 * SHAPE_EPOCH_UPDATES`, stop at `3 * SHAPE_EPOCH_UPDATES` (Section 3.7), `checkpoint_every = SHAPE_EPOCH_UPDATES`, and retain epochs 1 to 3.
-- **Dataset card.** Episode counts by shape, the fraction of windows with a contact, `SHAPE_EPOCH_UPDATES`, and the share of windows without an eligible anchor at `gap = 8`.
+This is the reconstruction-free control. It keeps L2's encoder, pooling, action encoder, prior and rate, and has no renderer.
 
-### 3.6 `NCELeWM` (`as_jepa_lewm/nce.py`; Phase 2, Block I)
+- **The bound.** The flow loss is replaced by an InfoNCE bound on the information the condition carries about its frame. The condition is the encoded sample at `lam = 0`, or the one-step forecast sample at `lam = 1`.
+- **The critic** is the encoder's own Gaussian log-likelihood, `score(t, j) = -||condition_t - mu(x_j)||^2 / (2 sigma0^2)`, so it has no parameters.
+- **The candidates** are all `B * T` rendered frames of the batch, including the other frames of the same window, so the bound is capped at `log(B * T)` ≈ 6.8 nats per frame.
+- **The loss** per window is `T * InfoNCE + beta * rate`. Both terms are in nats, so `beta = 1` is a calibrated price here.
+- **Evaluation.** Nothing renders, so evaluate with planning and probes only (Section 5.1).
 
-This is the reconstruction-free control for the JEPA reader. It keeps L2's encoder, pooling, action encoder, prior and rate, and has no renderer.
+### 3.7 Configs and launch
 
-The flow loss is replaced by an InfoNCE bound on the information that the condition carries about its frame. The condition is the encoded sample at `lam = 0`, or the one-step forecast sample at `lam = 1`. The critic is the encoder's own Gaussian log-likelihood, so it has no parameters: `score(t, j) = -||condition_t - mu(x_j)||^2 / (2 sigma0^2)`. The candidates are all `B * T` rendered frames of the batch, including the other frames of the same window, so the bound is capped at `log(B * T)`, about 6.8 nats per frame.
-
-The loss per window is `T * InfoNCE + beta * rate`. Both terms are in nats, so here `beta` is a calibrated price, and `beta = 1` is the canonical value.
-
-- **Gradient audit.** The class declares `audit_expected_gradients` without a renderer.
-- **Evaluation.** Nothing renders, so `completion_evaluate` does not apply: it always runs the collapse audit, which renders. Evaluate with planning and probes only, using the commands in Section 5.1.
-
-### 3.7 Config template and launch
-
-Example: arm C1, seed 1. Other arms change only the fields listed in Section 6.
+**PushT, arm C1, seed 1.** Other PushT arms change only the fields listed in Section 6.1.
 
 ```json
 {
@@ -291,8 +413,8 @@ Example: arm C1, seed 1. Other arms change only the fields listed in Section 6.
   "pose_weights": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
   "seed": 1, "batch_size": 128, "workers": 4, "cpu_threads": 2,
   "max_steps": 124910, "max_seconds": 31536000, "checkpoint_every": 12491,
-  "all_phase_data": true, "stop_after": 37473, "gap": 8,
-  "retain_steps": [12491, 24982, 37473, 99928, 124910],
+  "all_phase_data": true, "gap": 8,
+  "retain_steps": [12491, 24982, 37473, 124910],
   "model_class": "forecast_scored",
   "model": {"mode": "L2", "beta": 0.25, "sigma0": 0.1, "window": 8, "anchor_gap": 8,
             "renderer_width": 384, "renderer_depth": 12, "renderer_heads": 6,
@@ -301,421 +423,404 @@ Example: arm C1, seed 1. Other arms change only the fields listed in Section 6.
 }
 ```
 
-- **Launch screens with your staged trainer:** `python -B -u -m as_jepa_tools.train_stage --config <config.json> --stop-step 37473`, and add `--resume` after an interruption. `stop_after` acts only on a fresh start (`train.py` line 155), so a screen resumed after a crash without `--stop-step` would run to 124,910 steps.
-- **Set `gap` and `model.anchor_gap` together.** Training reads the top-level `gap`, and evaluation reads `model.anchor_gap`; nothing enforces equality. Add a startup assertion to `train.py` that they are equal for every round-2 run.
-- **Keep `max_steps = 124910`** in every L2-family screen, so the learning-rate schedule matches the reference runs and a screen can be continued to 10 epochs (Phase 2) with `as_jepa_tools.resume_lewm`.
+**TwoRoom, arm T4, seed 1.** Other T arms change only the fields listed in Section 6.2.
+
+```json
+{
+  "output": "/efs/prescottsun/SPT-JEPA/runs/round2_hard_20261101/T4-lam1-gapT-seed1",
+  "data": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+  "dataset_kind": "benchmark_hdf5",
+  "seed": 1, "batch_size": 128, "workers": 4, "cpu_threads": 2,
+  "max_steps": 124910, "max_seconds": 31536000, "checkpoint_every": 500,
+  "retain_steps": [2000, 6000],
+  "calibrate_state_std": 0.1,
+  "gap": "<gap_T from Section 5.6>",
+  "model_class": "forecast_scored",
+  "model": {"mode": "L2", "beta": 0.25, "sigma0": 0.1, "window": 8, "action_dim": 10,
+            "renderer_width": 384, "renderer_depth": 12, "renderer_heads": 6,
+            "lam": 1.0, "horizon": "one_step", "forecast_grad": "joint", "forecast_seed": 1},
+  "record_initial_weights": true
+}
+```
+
+**Cube** uses the same template with `cube-metadata`, `"action_dim": 25`, `"gap": <gap_K>` and `"retain_steps": [6000, 12000]`. Arms with a first-frame anchor omit `gap`. K3 omits `gap` and sets `"renderer_anchor_mode": "zero"` in `model`.
+
+**Launching:**
+
+- Launch with your staged trainer: `python -B -u -m as_jepa_tools.train_stage --config <config.json> --stop-step <N>`. Continue a stopped run with `--stop-step <new N> --resume`, which is also how to resume after an interruption. `stop_after` acts only on a fresh start.
+- PushT: set top-level `gap` and `model.anchor_gap` to the same value; training reads the first and evaluation the second.
+- Keep `max_steps = 124910` everywhere, so the learning-rate schedule matches all references.
 
 ### 3.8 What does not change
 
-The following are unchanged:
-
-- the encoder, `QueryPool`, action encoder, LeWM predictor with the identity carry, and the renderer (384 / 12 / 6);
-- the optimizer: AdamW, 5e-5 and 1e-4, 1% warmup, cosine to `MAX_STEPS`;
-- batch 128, bf16 with the rate in FP32, gradient clip 1.0, and one GPU per run;
-- data, anchors and evaluation tools;
-- the planner, which reads encoder means and noiseless prior rollouts, with no renderer and no anchor.
+- **Model:** the encoder, `QueryPool`, action encoder, LeWM predictor with the identity carry, and the renderer (384 / 12 / 6).
+- **Optimization:** AdamW at 5e-5 and 1e-4, 1% warmup, cosine to `MAX_STEPS`; batch 128; bf16 with the rate in FP32; gradient clip 1.0; one GPU per run.
+- **Harder-task data and evaluation:** your `BenchmarkWindows` data, splits, action normalization, renderer targets (64×64 from 224×224 frames), case manifests and evaluators.
+- **Planning:** the planner reads encoder means and noiseless prior rollouts, with no renderer and no anchor.
 
 No schedule acts on `lam`, `beta` or `sigma0`.
 
-## 4. Design invariants for round 2
+## 4. Design invariants
 
-Each line is a property the method depends on. Items 4, 6 and 8 changed from round 1.
+Each line is a property the method depends on.
 
 1. The encoder reads one frame and nothing else: no history, anchor or actions.
 2. The anchor reaches only the renderer. The prior never reads frames, the anchor or renderer features.
-3. Actions reach only the prior. The renderer never reads actions or history directly. A forecast can carry information about actions only through the prior's mean, which the surprise term prices, plus `sigma0` noise.
-4. **Changed.** For each rendered frame, the renderer reads either the posterior sample `s_t` (probability `1 - lam`) or a noisy prior sample (probability `lam`), with noise `sigma0` (or the learned prior spread in Block G). It never reads `mu`, never a noiseless prior mean, and never anything else from the prior.
+3. Actions reach only the prior. A forecast can carry information about actions only through the prior's mean, which the surprise term prices, plus `sigma0` noise.
+4. For each rendered frame, the renderer reads either the posterior sample (probability `1 - lam`) or a `sigma0`-noisy prior sample (probability `lam`). It never reads `mu` or a noiseless prior mean.
 5. Window frame 0 is encoded and starts the chain, and is never rendered.
-6. **Changed.** No augmentation, EMA, target network, SIGReg, VICReg, masking or stop-gradient in AS-JEPA arms. The only allowed exception is `forecast_grad = "encoder_only"` under the rule in Section 12.
-7. Nothing normalizes `mu`, `s`, the prior's mean or the forecast before the renderer's linear projection.
-8. **Changed.** Within a run, `sigma0`, `beta` and `lam` are constant, and the prior's spread and the forecast noise are tied to `sigma0` (fixed-variance code). The rate is the exact one-step Gaussian KL with one `beta` for entry and surprise. The `rollout` horizon changes only what the renderer reads, never the rate.
-9. The renderer's target is fixed data (packed rendered frames).
-10. The coins and forecast noise use their own random stream, so arms at the same seed are paired.
+6. AS-JEPA arms use no augmentation, EMA, target network, SIGReg, VICReg, masking or stop-gradient. The only exception is `forecast_grad = "encoder_only"` under the rule in Section 11.
+7. Nothing normalizes `mu`, `s`, the prior's mean or the forecast during training. **New:** the initial state scale is set once, at step 0 (Section 3.5).
+8. Within a run, `sigma0`, `beta` and `lam` are constant. The rate is the exact one-step Gaussian KL, with one `beta` for entry and surprise. The `rollout` horizon changes only what the renderer reads, never the rate.
+9. The renderer's target is fixed data.
+10. The coins and forecast noise use their own random stream.
+11. **New:** on the harder tasks, the anchor is never a future frame (Section 3.4).
 
 ## 5. Evaluation
 
-### 5.1 The package, and keeping comparisons paired
+### 5.1 PushT package
 
-Every comparison with a reference run must use the evaluation settings the reference was evaluated with. The defaults of your tools are those settings:
+Every comparison with a reference uses the settings the reference was evaluated with. Those are your tools' defaults: probes in BF16 and FP32, and the collapse audit under BF16 autocast. The new `--fp32` option of `collapse_audit.py` adds a second, FP32 verdict for every round-2 arm and its references; report both.
 
-- `completion_evaluate` runs probes in BF16 and FP32;
-- the collapse audit runs under BF16 autocast.
+- **At 2 epochs**, run the commands and flags of your `forecastconfirm20261030` gates:
 
-Do not change those defaults for the comparisons. Because BF16 can make an empty state look full (status note, insight 7), the new `--fp32` option of `collapse_audit.py` adds a second, FP32 verdict for every round-2 arm and its references. Report both.
+  ```bash
+  python -B -u -m as_jepa_tools.planning --checkpoint <ckpt> --output <dir> --upstream <stable-worldmodel> \
+      --data-root <data/planning> --test-episodes <pusht-lance-full-v1/phase0/test_episodes.npy> --seed 42 --episodes 50    # also 43, 44
+  python -B -u -m as_jepa_tools.collapse_audit --checkpoint <ckpt> --output <dir> --data <phase0> --pose <pose> --cases 32 --steps 20
+  python -B -u -m as_jepa_tools.quality_complete --checkpoint <ckpt> --output <dir> --data <phase0> --pose <pose> --i3d <i3d> \
+      --cases 64 --samples 1 --steps 20 --selection-seed 20261029
+  ```
 
-**At 2 epochs (short gates)**, run the same commands and flags as your `forecastconfirm20261030` gates, so the cases match:
+- **At 3 epochs**, run `as_jepa_tools.completion_evaluate --mode L2 --expected-step 37473`, plus planning on `FRESH_SEEDS`, the forecast checks (5.2), the calibration tool (5.3) and the drift decomposition (5.5).
+- **Models without a renderer** (L0, `NCELeWM`): run `as_jepa_tools.planning` and `as_jepa_tools.probes --checkpoint <ckpt> --data <phase0> --output <dir> [--noisy] [--fp32]` directly. `completion_evaluate` renders, so it fails for these models.
+  - For L0, also evaluate after your train-only BatchNorm recalibration, as in `native_baseline_20261031`, and report both.
+- **Comparisons.** P0 at 3 epochs on the primary cases, pooled over seeds 1 and 2 (300 paired episodes), with `PAIRED_CI` and the per-seed conditions of Section 1.4. At 2 epochs, compare seed by seed with your references.
+- **Also report:**
+  - `h{1,3,7,13}_{agent,block}_ratio` and `h7_moving_block_ratio`, for mean and sample rollouts;
+  - LPIPS and SSIM;
+  - `action_identification_accuracy`;
+  - the rate per window, `entry` and `surprise`.
 
-```bash
-python -B -u -m as_jepa_tools.planning --checkpoint <ckpt> --output <dir> --upstream <stable-worldmodel> \
-    --data-root <data/planning> --test-episodes <pusht-lance-full-v1/phase0/test_episodes.npy> --seed 42 --episodes 50    # also 43, 44
-python -B -u -m as_jepa_tools.collapse_audit --checkpoint <ckpt> --output <dir> --data <phase0> --pose <pose> --cases 32 --steps 20
-python -B -u -m as_jepa_tools.quality_complete --checkpoint <ckpt> --output <dir> --data <phase0> --pose <pose> --i3d <i3d> \
-    --cases 64 --samples 1 --steps 20 --selection-seed 20261029
-python -B -u -m as_jepa_tools.counterfactual --checkpoint <ckpt> --output <dir> --data <phase0> --pose <pose> \
-    --cases 16 --steps 20 --selection-seed 20261029
-```
-
-**At 3 epochs**, run the full package, `as_jepa_tools.completion_evaluate --mode L2 --expected-step 37473`. It runs:
-
-- probes, the collapse audit and `quality_complete` (256 cases);
-- `counterfactual` (64 cases), planning on `PLAN_SEEDS`, the swap gallery and `gallery_complete`.
-
-Also run planning on `FRESH_SEEDS`, the forecast checks (5.2), the calibration tool (5.3) and the drift decomposition (5.6).
-
-**Models without a renderer (L0 and `NCELeWM`).** Run `as_jepa_tools.planning` (as above) and `as_jepa_tools.probes --checkpoint <ckpt> --data <phase0> --output <dir> [--noisy] [--fp32]` directly. `completion_evaluate` renders, and its gallery stage reads `cases.json` before checking `--planning-only`, so it fails for these models.
-
-**Comparisons.** P0 at 3 epochs on the primary cases, pooled over seeds 1 and 2 (300 paired episodes), with `PAIRED_CI` and the per-seed conditions of Section 1.3, against each reference in Section 2.3.
-
-P0 is now primary, where the superseded plan made it secondary until three seeds existed. Three things changed: the seeds are paired with the references, the bootstrap is clustered by episode, and every decision also requires agreement in each training seed. The finals (Block H) add a third seed and a stability block.
-
-**Also report:**
-
-- `h{1,3,7,13}_{agent,block}_ratio` and `h7_moving_block_ratio`, for mean and sample rollouts;
-- LPIPS and SSIM;
-- `action_identification_accuracy`;
-- the rate per window, `entry` and `surprise`.
+  Send us the swap gallery of C1, seed 1, at 3 epochs; it is no longer a gate.
 
 ### 5.2 Forecast-based checks for `lam > 0`
 
-At `lam = 1` the renderer never sees encoded states during training, so any test that renders encoded states is out of distribution. Add a `--condition {posterior,forecast}` option, defaulting to `posterior`, to the two tools below. For `lam > 0` arms, report both conditions; the forecast version is the one that counts.
+At `lam = 1` the renderer never sees encoded states in training, so any test that renders encoded states is out of distribution. Add `--condition {posterior,forecast}`, defaulting to `posterior`, to the two tools below. For `lam > 0` arms, report both conditions; the forecast version is the one that counts.
 
-- **`collapse_audit.py`.** With `forecast`, render each held-out frame `t >= 1` from its one-step forecast sample, `m_t + sigma0 * xi`. Here `m_t` is computed from the encoded posterior samples of the earlier frames of the same window and their actions. Apply the existing rule: a run has collapsed if the ratio to the anchor-as-prediction baseline is at least `COLLAPSE_RATIO`, or if fewer than 2 dimensions are active.
-- **`color_swaps.py` (Block E).** With `forecast`, the state swap renders episode B's one-step forecasts with episode A's anchor.
+- **`collapse_audit.py`.** With `forecast`, render each held-out frame `t >= 1` from its one-step forecast sample `m_t + sigma0 * xi`. Here `m_t` is computed from the encoded posterior samples of the earlier frames of the same window and their actions. The existing collapse rule applies.
+- **`color_swaps.py` (P5).** With `forecast`, the state swap renders episode B's one-step forecasts with episode A's anchor.
 
 ### 5.3 Calibration of the prior
 
-Add the tool `as_jepa_tools/forecast_calibration.py`. It takes 32 held-out windows, the model in eval mode (no dropout) and FP32, and reports `calibration_slope` (from `forecast_scored.py`): the least-squares slope of the true change `mu_t - s_(t-1)` on the predicted change `m_t - s_(t-1)`, pooled over dimensions.
+`as_jepa_tools/forecast_calibration.py` takes 32 held-out windows, the model in eval mode and FP32. It reports `calibration_slope`: the least-squares slope of the true change `mu_t - s_(t-1)` on the predicted change `m_t - s_(t-1)`, pooled over dimensions.
 
-- A prior whose mean is the conditional expectation gives a slope of 1. A slope below 1 means the predicted changes are exaggerated.
-- For learned variances, also report `prior_var_ratio`; 1 means the prior is calibrated.
-- Evaluate at epochs 2 and 3 for every `lam > 0` arm. Also evaluate the `lam = 0` arm with the same `beta`, data and gap where one exists:
-  - C1, C4 and C5 against original;
-  - C2 against lower-beta;
-  - D2 and D3 against D1;
-  - E2 against E1;
-  - B3 against B1, and B4 against B2.
+- A slope of 1 means calibrated; below 1 means the predicted changes are exaggerated.
+- Evaluate C1, D3 and E2 at epochs 2 and 3, and C1's reference (original) with the same tool.
 
-  C3, D4, F1, F2 and A2 have no such reference and use the absolute threshold only.
+### 5.4 Dot and colour
 
-### 5.4 Domain probes and colour invariance
+- **Dot (P4).** `probes.py --noisy --fp32` on the dot domain reports R² for `dot_x`, `dot_y`, `dot_r`, `dot_g` and `dot_b`. Decide on the largest of the five, and report all of them plus the dynamics probes.
+- **Colour probe (P5).** The same tool on the colour domain reports R² for the three gains and three biases.
+- **Colour invariance (new tool, P5).** For 512 held-out frames, encode each frame under its own palette A and under the palette B of a different random test episode. Report:
+  - the **invariance index**, `E||mu(x_i^A) - mu(x_i^B)||^2 / E||mu(x_i^A) - mu(x_j^A)||^2`, with `j != i`. Near 0 means colour-invariant; near 1 means a palette change moves the state as much as a pose change does;
+  - the **recoloured-goal retrieval** accuracy: the fraction of frames whose `mu(x_i^B)` is nearest to `mu(x_i^A)` among the 512 frames under palette A.
 
-- **Dot (Block D).** `probes.py --noisy --fp32` on the dot domain reports `R^2` for `dot_x`, `dot_y`, `dot_r`, `dot_g` and `dot_b`, and their mean `nuisance_r2`. Decide on the largest of the five (Section 1.3), and report all six numbers plus the dynamics probes.
-- **Colour probe (Block E).** The same tool on the colour domain reports `R^2` for the three gains and three biases. Report them all.
-- **Colour invariance (new tool, Block E).** For 512 held-out frames, encode each frame twice: once under its own palette A, and once under the palette B of a different random test episode. The palette transform is the same as in `ASJepaLeWM.prepare`, with the episode id substituted. Report:
-  - the **invariance index**, `E||mu(x_i^A) - mu(x_i^B)||^2 / E||mu(x_i^A) - mu(x_j^A)||^2`, where `j != i` and both frames share palette A. Near 0 is colour-invariant; near 1 means palette changes move the state as much as pose changes do;
-  - the **recoloured-goal retrieval** accuracy: the fraction of frames for which `mu(x_i^B)` is nearest to `mu(x_i^A)` among the 512 frames under palette A.
+  For L0, use its embedding.
 
-  For L0 use its embedding, and for L1 use `mu`.
+### 5.5 Open-loop drift (PushT)
 
-### 5.5 `D-shape` metrics (Block G)
+Run `as_jepa_tools/decode_decomposition.py` (`--cases 128 --steps 50`, with and without `--fp32`) at 3 epochs for C1 and its references (original, forecast-only, TF). Report the block error from open-loop forecasts and from the frame's own encoded state at h1, h7 and h13, and their difference, the **drift**. For C1, the own-state render is out of distribution, so the forecast column is primary.
 
-- **Pose estimator.** Retrain your pose estimator (`pose.py`, same recipe) on `D-shape` train frames. Its targets are agent and block position plus `sin` and `cos` of `(2 pi / sym) * angle`, where `sym` is the shape's symmetry angle from the environment (`square` and `+`: `pi/2`; `I` and `Z`: `pi`; others: `2 pi`). Report its floor on test frames.
-- **Shape probes.** Logistic regression of `block.shape` on the window frame-0 `mu` (balanced accuracy over 7 classes), and ridge regression of `block.scale` (`R^2`). Fit on train episodes and score on test episodes.
-- **First-contact test.** Take 256 test windows of 16 kept frames in which the block moves less than `MOVE_PX` over the 3 context frames and more than `MOVE_PX` within the next 7 frames. Roll out the prior from 1 context frame and from 3 context frames. Report:
-  - block position and angle error at each horizon, relative to the copy baseline;
-  - the same error at the first frame in which the block has moved more than `MOVE_PX`, plus 3 frames.
-- **Planning.** Run planning on `D-shape` only if the upstream evaluation restores each episode's `block.shape` and `block.scale` at reset. Check this in a dry run, and say so either way.
+### 5.6 Dataset checks before harder-task training (CPU)
 
-### 5.6 Open-loop drift
+The gap rule needs the share of windows without an eligible past anchor. The Cube hypothesis needs to know how often an anchor shows a stale cube. `benchmark_gap.py` computes both from the stored physical labels, which never reach a model:
 
-Your `as_jepa_tools/decode_decomposition.py` separates the prior's forecast error from the renderer's error given the true future state. It is the measurement behind the superseded plan's "block error 5.1, 10.7, 18.9 px at h1, h7, h13 from forecasts, about 5 px from the frame's own state".
+```bash
+python -B -m as_jepa_tools.benchmark_gap --data <hardtasks-v1/tworoom-metadata> --gaps 0 1 2 4 8 16 \
+    --label agent:pos_agent:position:<AGENT_TOL> --output tworoom-anchor-table.json
+python -B -m as_jepa_tools.benchmark_gap --data <hardtasks-v1/cube-metadata> --gaps 0 1 2 4 8 16 \
+    --label cube:privileged_block_0_pos:position:0.03 --label cube_yaw:privileged_block_0_yaw:yaw90:15 \
+    --label effector:proprio_effector_pos:position:0.03 --output cube-anchor-table.json
+```
 
-Run it at 3 epochs (`--cases 128 --steps 50`, with and without `--fp32`) for every Block C arm and its references. Report the block error from open-loop forecasts and from the frame's own encoded state at h1, h7 and h13, and their difference, the **drift**.
+For each gap (0 is the first-frame anchor), the table reports two things:
 
-For `lam = 1` arms, the own-state render is out of distribution (Section 5.2), so read the forecast column as the primary number.
+- **`fallback_share`:** the share of windows without an eligible past anchor.
+- **Staleness, per label:** the share of rendered frames (window frames 1 to 7) in which the anchor's value differs from the frame's by more than the tolerance.
 
-### 5.7 What every report records
+A constant anchor counts as stale for every label.
 
-For every run, record its config, source hash, `gap`, `lam`, `horizon`, `forecast_grad`, `beta`, `sigma0` and `seed`. Also record the evaluated checkpoint step, GPU-hours, the metrics above, the collapse verdicts (posterior and forecast, BF16 and FP32) and the calibration slope.
+**Rule.** `gap_T` and `gap_K` are the largest gap in {1, 2, 4, 8, 16} with `fallback_share <= FALLBACK_MAX`. Before running, confirm that `privileged_block_0_pos` is in metres and the yaw in radians, and confirm the units of `AGENT_TOL`. Record both tables in the dataset cards and the reports. They are evidence in their own right: the Cube table tests the reading of Section 0.5 before any training.
 
-Write one JSON record per run. The report tables give the mean and spread over seeds, `PAIRED_CI` and both per-seed differences for every comparison.
+### 5.7 Harder-task health and the use gate
+
+**Health.** Run `benchmark_health.py --cases 16` at every evaluated checkpoint. It evaluates the step in `last.ckpt`, so run the 2,000-update health check before any `--resume`. Add two conditions:
+
+- **`one_step`:** the one-step forecast samples `m_t + sigma0 * xi`, from the window's own encoded posterior samples and actions;
+- **`one_step_shuffled`:** the same, from the other video's encoded states, with the window's own actions and the same draw of `xi`.
+
+Report, for every arm:
+
+- the validation `feature_signal_to_posterior_noise` (that is, `feature_std / sigma0`), in FP32;
+- every swap effect: the relative increase of the renderer's error at t = 0.95 for `shuffled_posterior` against `posterior`, `one_step_shuffled` against `one_step`, and `wrong_state` against `forecast`;
+- the wrong-action and zero-state effects; and, from `benchmark_information_audit.py`, the wrong-anchor effect (`forecast_wrong_anchor`).
+
+The **use effect** of an arm is the swap effect on the condition it trains on: `posterior` for `lam = 0`, `one_step` for `lam = 1`, `forecast` for T5. Compare T5 with T3 on the shared `one_step` condition as well. Also plot the training-log `feature_std / sigma0` every 100 steps.
+
+**Use gate (TwoRoom, at `TWOROOM_GATE`).** An arm passes if both seeds have `feature_std / sigma0 >= SPREAD_MIN` and a use effect of at least `USE_MIN`. Arms that pass continue to `TWOROOM_FULL`. Arms that fail stop there; they are diagnostic results.
+
+### 5.8 Harder-task planning and content
+
+- **Planning:** `benchmark_evaluate.py` on the primary and fresh manifests under `WHITE_CEM`; then `CORR_CEM` with your `action_covariance_20261031/evaluate.py` and the frozen calibration files.
+  - `CORR_CEM` needs per-checkpoint preparation: its hash-pinned `--spec` must carry the same checkpoint's white-CEM result as `reference_metrics`, and `prepare.py` hard-codes its model list. So run white CEM first and build one spec per checkpoint.
+  - TwoRoom: every arm at 2,000 updates, and the continuing arms at 6,000. No correlated-CEM reference exists for AS-JEPA TwoRoom arms at 2,000 updates; compare those across our arms only.
+  - Cube: every arm at 12,000.
+  - Report success per seed and case set; call differences below `HARD_TIE` ties.
+- **Content probes.** `benchmark_information_audit.py`, with clean and `sigma0`-noisy linear probes of the agent's position (TwoRoom), and of the cube's and effector's positions (Cube). For the Cube readout in centimetres and degrees, use your probe in `experiments/carrier_progress_20261031/tf_pose.py`, given a checkpoint argument, with the same 128 training and 64 validation clips, ridge and codebook. Compare clean with clean (TF 4.7 to 5.1 cm, native 3.7 to 3.9 cm). Add the noisy readout for the K arms and, by rerunning the probe, for TF and native.
+- **Cube goal geometry.** Score each K checkpoint on the candidate pool of your TF audit (`CUBE-ORACLE-AUDIT.md`), then summarize against TF:
+
+  ```bash
+  python -B -m as_jepa_tools.cube_oracle_audit score --manifest <same manifest> --data <cube-metadata> \
+      --pool <your TF audit pool> --checkpoint <ckpt> --label K1-seed1 --output <dir>
+  python -B -m as_jepa_tools.cube_oracle_summary --scores K1-seed1=<dir> --scores TF-seed1=<TF scores> \
+      --reference TF-seed1 --data <cube-metadata> --output <dir>
+  ```
+
+  Report `position_encoded_partial_rank` (the cube) and `effector_encoded_partial_rank` (the arm) for the non-oracle candidates. Both are computed on the encoded-goal cost: the latent distance from each candidate's reached endpoint to the goal.
+
+### 5.9 What every report records
+
+For every run, record:
+
+- its config and source hash;
+- `gap`, `lam`, `horizon`, `forecast_grad`, `beta`, `sigma0`, `calibrate_state_std` and `seed`;
+- the evaluated checkpoint step and GPU-hours;
+- the metrics above;
+- PushT only: the collapse verdicts (posterior and forecast, BF16 and FP32) and the calibration slope;
+- harder tasks only: `initial_scale.json`, the health report and `GapBenchmarkWindows.fallback_share()` for the run's gap.
+
+Write one JSON record per run. Tables give per-seed values, the mean over seeds, and for PushT `PAIRED_CI` with both per-seed differences.
 
 ## 6. Run plan
 
-Run IDs follow `r2-<arm>-seed<k>`, with arm names as in the tables. Every Phase-1 L2-family run uses the Section 3.7 template, stopped at `SCREEN_STEPS`, with the changes listed. Seeds 1 and 2 pair with the references.
+Run IDs follow `r2-<arm>-seed<k>`.
 
-Why Phase-1 screens stop at 3 epochs, not the published 10:
+### 6.1 Part P: PushT closure
 
-- every reference arm exists at 3 epochs on the same seeds, so the comparisons are paired;
-- planning is already 75 to 94% there;
-- the learning-rate schedule spans 10 epochs, so the selected arms continue to the published budget in Phase 2 rather than restart.
+All L2-family arms use the PushT template (Section 3.7), uncalibrated except P3, with gap 8 as in the references.
 
-### 6.1 Phase 1: `D-std` and its domains
+| Block | Arm | Change from the template | Seeds and budget | Compared with |
+| --- | --- | --- | --- | --- |
+| P1 | `L0-full` | your `full-L0-10epoch-seed{0,1,2}` configs, unchanged except output and `retain_steps` (`L0_EPOCH_UPDATES` × 2, 3 and 10) | 0, 1, 2; 10 LeWM epochs | C1 and the references, at 3 epochs and at 10 |
+| P2 | C1 | none (`lam = 1`, `one_step`, `beta = 1/4`) | 1, 2 to `SCREEN_STEPS`; 3, 4 to `EPOCH2_STEPS` | original, forecast-only, TF (3 epochs); original, lower-beta, TF seeds 3, 4 (2 epochs) |
+| P3 | `cal` | `lam = 0` (the same class computes L2's loss exactly), plus `"calibrate_state_std": 0.1` | 3, 5 to `EPOCH2_STEPS` | original seeds 3, 5 at 2 epochs (P0 22, 10) |
+| P4 | D1, D3 | `model.domain = "dot"`; D1 `lam = 0`, D3 `lam = 1` | 1; `SCREEN_STEPS` | each other |
+| P5 | E2 | `model.domain = "color"`, `lam = 1` | 1; `SCREEN_STEPS` | E4 |
+| P5 | E4 | your `full-L0-10epoch` config with `domain = "color"` | 1; `3 * L0_EPOCH_UPDATES` | E2 |
+| P6 | I2 | `model_class: nce`, `lam = 1`, `beta = 1` (nats) | 1; `SCREEN_STEPS` | C1 |
 
-**Block C (main): what the renderer reads.**
+**P3, first step, free.** Before P3 runs, read `feature_std / sigma0` from the training logs (`metrics.jsonl`) of the original arm's seeds 1 to 8 over their first two epochs. If the failing seeds (3, 5, 6, 7) reach `SPREAD_MIN` later than the working seeds (1, 4, 8), or never, the PushT instability looks like the TwoRoom trap, and P3 tests the remedy. Run P3 either way; the log check sharpens the reading.
 
-| Arm | `lam` | `horizon` | `beta` | Seeds | Compared with |
+**Conditional arms** (triggers in Section 8.1):
+
+- **C5:** `lam = 0.5`, `horizon = "rollout"`, seeds 1 and 2, `SCREEN_STEPS`. It differs from forecast-only only by the `sigma0` noise on each forecast step.
+- **C2:** `lam = 1`, `beta = 1/16`, seeds 1 and 2 to `SCREEN_STEPS` and seeds 3 and 4 to `EPOCH2_STEPS`.
+- **E1:** colour domain at `lam = 0`, seed 1, `SCREEN_STEPS`.
+- **C1 continuation:** seeds 1 and 2 to `MAX_STEPS`, with `as_jepa_tools.resume_lewm`.
+
+### 6.2 Part T: TwoRoom
+
+**T-pre (CPU).** The anchor table and `gap_T` (Section 5.6).
+
+**T-gate.** Seeds 1 and 2, to `TWOROOM_GATE`. Every arm uses `calibrate_state_std = 0.1` and `beta = 1/4` unless stated.
+
+| Arm | Class | `lam` | Anchor | Other | Differs from |
 | --- | --- | --- | --- | --- | --- |
-| C1 `lam1` | 1 | one_step | 1/4 | 1, 2 | original, forecast-only, TF |
-| C2 `lam1-b0.0625` | 1 | one_step | 1/16 | 1, 2 | lower-beta |
-| C3 `lam1-b1` | 1 | one_step | 1 | 1, 2 | C1; the full-data `beta = 1` run at `lam = 0` (seed 0: P0 8.67%, h7 agent ratio 0.838, action identification 35.94%, collapse test passed) |
-| C4 `lam0.5` | 0.5 | one_step | 1/4 | 1, 2 | C1, original, forecast-only |
-| C5 `lam0.5-roll` | 0.5 | rollout | 1/4 | 1, 2 | forecast-only: these differ only by the `sigma0` noise on every forecast step |
+| T1 | `forecast_scored` | 0 | first frame | | your original arm at 2,000: only the initial scale |
+| T2 | `forecast_scored` | 0 | past, `gap_T` | | T1: only the anchor |
+| T3 | `forecast_scored` | 1 | first frame | | T1: only `lam` |
+| T4 | `forecast_scored` | 1 | past, `gap_T` | | canonical; T2: only `lam`; T3: only the anchor |
+| T5 | your TF config (`RobustLeWM`, `rho = 0.8`, `forecast_fraction = 0.5`) | | first frame | | your TF arm at 2,000: only the initial scale |
+| T6 | `forecast_scored` | 1 | past, `gap_T` | `beta = 1/16` | T4: only the price |
 
-**Block D (purity): dot domain** (`model.domain = "dot"`, seed 1).
+**Evaluation at 2,000 updates:** health and the use gate (Section 5.7), probes, and planning under both controllers.
 
-| Arm | `lam` | `beta` |
-| --- | --- | --- |
-| D1 `dot-lam0` | 0 | 1/4 |
-| D2 `dot-lam0.5` | 0.5 | 1/4 |
-| D3 `dot-lam1` | 1 | 1/4 |
-| D4 `dot-lam1-b0.0625` | 1 | 1/16 |
+**T-continuation.** Every arm that passes the use gate continues to `TWOROOM_FULL` (`--stop-step 6000 --resume`). Evaluate it with health, probes and planning under both controllers.
 
-**Block E (appearance): colour domain** (`model.domain = "color"`, seed 1, 3 epochs).
+### 6.3 Part K: Cube
 
-| Arm | Model | Notes |
-| --- | --- | --- |
-| E1 `color-lam0` | L2, `lam = 0`, `beta = 1/4` | |
-| E2 `color-lam1` | L2, `lam = 1`, `beta = 1/4` | |
-| E3 `color-L1` | your `full-L1-10epoch` config (`mode = "L1"`, `batchnorm_projector: true`) | `domain = "color"`, stopped at `SCREEN_STEPS` |
-| E4 `color-L0` | your `full-L0-10epoch` config (`mode = "L0"`, `window = 4`) | `domain = "color"`, stopped at `3 * L0_EPOCH_UPDATES` |
+**K-pre (CPU).** The anchor table and `gap_K` (Section 5.6).
 
-**Block A (price): does the price matter at the working point, and what does it add over SIGReg?**
+**K-main.** Seeds 1 and 2, to `CUBE_FULL`. Every arm uses `forecast_scored`, `calibrate_state_std = 0.1` and `beta = 1/4`.
 
-| Arm | Model | Seeds | Budget |
+| Arm | `lam` | Anchor | Differs from |
 | --- | --- | --- | --- |
-| A1 `lam0-b0.001` | L2, `lam = 0`, `beta = 1e-3` | 1, 2 | 3 epochs |
-| A2 `lam1-b0.001` | L2, `lam = 1`, `beta = 1e-3` | 1, 2 | 3 epochs |
-| A3 `L0-full` | your `full-L0-10epoch-seed{0,1,2}` configs, unchanged except the output directory and `retain_steps` (keep `L0_EPOCH_UPDATES` × 2, 3 and 10) | 0, 1, 2 | 10 LeWM epochs |
-| A4 `L1-full` | your `full-L1-10epoch-seed{0,1,2}` configs, unchanged except the output directory and `retain_steps` (keep epochs 2, 3 and 10) | 0, 1, 2 | 10 epochs |
+| K1 | 1 | past, `gap_K` | canonical |
+| K2 | 1 | first frame | K1: only the anchor (the rule of your runs) |
+| K3 | 1 | constant (`renderer_anchor_mode: "zero"`) | K1: only the anchor (none) |
+| K4 | 0 | past, `gap_K` | K1: only `lam` |
 
-A3 and A4 are the missing PushT baselines: no full-data LeWM or L1 run has completed. They have no dependency, so start them first. Only seeds 0 to 2 of their configs exist; they are not paired with the L2 arms (different models), so their seeds need not match. Their 3-epoch checkpoints answer Q4; their 10-epoch checkpoints are the finals' baselines.
+**Evaluation at 12,000 updates:** health, content probes, the oracle audit, and planning under both controllers (Section 5.8).
 
-**Block B (entry price)** (`sigma0 = 0.03`, seed 1, 3 epochs).
-
-| Arm | `lam` | `beta` |
-| --- | --- | --- |
-| B1 `s0.03-lam0` | 0 | 1/4 |
-| B2 `s0.03-lam0-b1` | 0 | 1 |
-| B3 `s0.03-lam1` | 1 | 1/4 |
-| B4 `s0.03-lam1-b1` | 1 | 1 |
-
-At `sigma0 = 0.1`, `beta = 1` did not collapse; it failed planning and action following (C3's comparison row). So Block B is judged on the gate items of Section 10 and P0, not on the collapse test.
-
-**Block F (anchor)** (`gap = 0` and `anchor_gap = 0`, seeds 1 and 2, 3 epochs).
-
-| Arm | Change | Question |
-| --- | --- | --- |
-| F1 `g0-lam1` | C1 with a first-frame anchor | with priced, noisy forecasts, does a first-frame anchor still open the shortcut? |
-| F2 `g0-I05` | your forecast-only config (`RobustLeWM`, `rho = 0`, `forecast_fraction = 0.5`) with a first-frame anchor | with noiseless forecasts, as in your TwoRoom runs, does it? |
-
-**Evaluation per Phase-1 run:** short gates at 2 epochs, and the full package at 3 epochs (Section 5). For Blocks D and E, also run the domain probes and colour tools of Section 5.4.
-
-### 6.2 Phase 2: after the Phase-1 report and our agreement
-
-**Block H (finals, `D-std`, 10 epochs).** The selected configuration `(lam*, horizon*, beta*)` from Section 8, plus two references (lower-beta and TF):
-
-- **Continuations.** Continue seeds 1 and 2 of each of the three from their 3-epoch full states to `MAX_STEPS`, with `as_jepa_tools.resume_lewm`. If a full state is missing, rerun that seed from scratch.
-- **Seed 3.** Train seed 3 of each of the three from scratch, to `MAX_STEPS`.
-- **Baselines.** A3 (L0) and A4 (L1) at 10 epochs.
-- **Evaluation.** At 10 epochs: the full package, plus planning on `PLAN_SEEDS` and `FRESH_SEEDS`.
-- **Continue rule (round 1).** If the generation score of the selected configuration improves by more than 5% between epochs 8 and 10, run its seed 1 once to 20 epochs.
-
-**Block H2 (stability, `D-std`, 2 epochs).** Train seeds 4 to 8 of the selected configuration to `EPOCH2_STEPS`, and run the 2-epoch short gates. Compare the per-seed P0 with your existing seeds 3 to 8 of original, lower-beta and TF at 2 epochs. The original arm failed on several new seeds at 2 epochs, so stability must be shown directly.
-
-**Block G (fixed properties, `D-shape`, 3 epochs at `SHAPE_EPOCH_UPDATES`, seed 1).** All four arms use `beta*`.
-
-| Arm | Code | `lam` |
-| --- | --- | --- |
-| G1 `shape-lam0-fixed` | `ForecastScoredLeWM` | 0 |
-| G2 `shape-lam0-learned` | `LearnedVarianceLeWM` | 0 |
-| G3 `shape-lam1-fixed` | `ForecastScoredLeWM` | 1 |
-| G4 `shape-lam1-learned` | `LearnedVarianceLeWM` | 1 |
-
-Add seed 2 to all four if any two shape-probe accuracies that the predictions distinguish differ by less than 0.1.
-
-**Block I (reconstruction-free, `D-std`, 3 epochs, seed 1).**
-
-| Arm | Model | `lam` | `beta` |
-| --- | --- | --- | --- |
-| I1 `nce-lam0-b1` | `NCELeWM` | 0 | 1 |
-| I2 `nce-lam1-b1` | `NCELeWM` | 1 | 1 |
-| I3 `nce-lam1-b0.1` | `NCELeWM` | 1 | 0.1 |
-
-Here `beta` is in true nats (Section 3.6). Without a renderer these runs cost a small fraction of an L2 run. Evaluate them with planning and probes (Section 5.1).
-
-### 6.3 Phase 3: harder tasks, after the PushT report and our agreement
-
-Run TwoRoom first, then Cube, with your `BenchmarkWindows` data, budgets (TwoRoom 6,000 updates; Cube 12,000) and evaluation (primary and fresh cases, 50 each, two seeds). Your native LeWM and TF results are the references.
-
-- **Anchor gap.** Implement the anchor-gap rule in `BenchmarkWindows`. Model it on `FullPushTWindows` (`as_jepa_tools/data.py`, lines 72 to 74), which, like `BenchmarkWindows`, indexes raw rows and keeps the anchor phase-aligned with the window. Set `gap_T` to the largest gap that leaves at most 20% of windows without an eligible anchor, and record the table in the dataset card.
-
-| Arm (TwoRoom) | Recipe |
-| --- | --- |
-| T1 | `lam*`, `horizon*`; `beta` in {1/16, 1/4}; `gap = gap_T`; `calibrate_state_std = sigma0` |
-| T2 | T1 with a first-frame anchor (`gap = 0`) |
-| T3 | T1 without `calibrate_state_std` |
-| T4 | T1 with `lam = 0` |
-
-- **Diagnostics.** Track the FP32 state spread in units of `sigma0` (`feature_std / sigma0`) every 100 steps, and report the agent-position probe `R^2` from `mu`, the rate per window, the forecast collapse test and planning success.
-- **Cube.** If any T arm trains a state, run Cube with the best T arm at both prices, under the same planner as the native baseline.
+**K-mature (conditional, Section 8.3).** The best K arm, both seeds, from 12,000 to `CUBE_MATURE`.
 
 ### 6.4 Counts, GPU-hours and priorities
 
-| Block | Runs | Approximate GPU-hours |
+| Part | Runs | Approximate GPU-hours (training) |
 | --- | --- | --- |
-| C | 10 L2 screens | 95 |
-| D | 4 L2 screens | 38 |
-| E | 2 L2 screens, 1 L1 and 1 L0 at 3 epochs | 31 |
-| A | 4 L2 screens; 3 full L0 runs; 3 full L1 runs | 38 + about 25 (L0 has no renderer; measure in the smoke) + 95 |
-| B | 4 L2 screens | 38 |
-| F | 4 screens | 38 |
-| **Phase 1 total** | 30 screens, 6 full baseline runs | **about 400** |
-| H | 6 continuations + 3 new 10-epoch runs | about 133 + 95 |
-| H2 | 5 runs of 2 epochs | about 32 |
-| G | 4 screens on `D-shape`, plus data and pose estimator | about 45 |
-| I | 3 short runs without a renderer | under 10 |
-| **Phase 2 total** | | **about 315** |
+| P1 | 3 L0 runs of 10 LeWM epochs | 25 to 50 (no renderer; native LeWM ran 0.46 to 0.56 s per update on Cube; measure in the smoke) |
+| P2 | 2 screens + 2 two-epoch runs | 19 + 12.6 |
+| P3 | 2 two-epoch runs | 12.6 |
+| P4 | 2 screens | 19 |
+| P5 | 1 screen + 1 short L0 run | 9.5 + 2.5 |
+| P6 | 1 short run without a renderer | about 3 |
+| **Part P** | | **about 103 to 128** |
+| T-gate | 12 runs to 2,000 updates | about 10 |
+| T-continuation | up to 12 runs from 2,000 to 6,000 | up to 20 |
+| K-main | 8 runs to 12,000 updates | about 40 |
+| **Parts T and K** | | **about 70** |
+| Conditional: C5, C2, E1, C1 continuation, K-mature | | 19, 31.6, 9.5, 44, about 10 |
 
-You decide the allocation. When compute is short, run in this order:
+Evaluation GPU time is extra; measure it and report it. Everything without a dependency may start at once. When compute is short, run in this order:
 
-1. **A3** (`L0-full`) and **C** (C1 and C4 first, then C5, C2 and C3).
-2. **D**, then **E**.
-3. **A4** (`L1-full`), then **F**, then **A1** and **A2**, then **B**.
+1. T-pre and K-pre (CPU), the P3 log check, T-gate, P1, and P2 seeds 1 and 2.
+2. K-main and P4.
+3. P3, P2 seeds 3 and 4, P5 and P6.
 
-Everything without a dependency may start at once. `D-shape` collection (CPU) may start during Phase 1. Before launching, report the measured step times and the projected GPU-hours, and wait for our acknowledgement if they exceed this table by more than 25%.
+Before launching, report the measured step times and projected GPU-hours. Wait for our acknowledgement if they exceed this table by more than 25%.
 
 ## 7. Frozen predictions (record them, with the commit hash, before launch)
 
-Each prediction states what the theory or the toys predict and how confident we are. A failed prediction is a result, not an error.
+Each prediction states what the theory predicts and how confident we are. A failed prediction is a result, not an error.
 
-1. **C, planning (moderate confidence).**
-   - C1 is non-inferior to forecast-only and better than original (Section 1.3 definitions; 3 epochs; primary cases).
-   - C5 is non-inferior to forecast-only. These differ only by the forecast noise, which costs at most what an unpriced channel gains.
-2. **C, drift (moderate confidence).** The drift at h7 and h13 (Section 5.6) is smaller for C1 and C4 than for original, and smallest for C5.
-3. **C, calibration (high confidence).** Every Block C arm with `lam > 0` has an eval-mode calibration slope of at least `SLOPE_MIN` at epochs 2 and 3, and within 0.05 of its reference where one exists.
-4. **C3, `beta = 1` (no prediction).** The toy is ambiguous: `lam` raises the collapse barrier slightly with a prior trained only by the code length, but lowers it under joint training. C3 measures it.
-5. **D, dots (high confidence).**
-   - The largest dot `R^2` is at most `CHANCE_R2` in D3 and D4.
-   - In D1 it is above `CHANCE_R2`, because the working price is below the threshold of a true price of 0.9 that condition dropout sets at `lam = 0`.
-   - D2 lies between them. If D2 reaches chance, the true price at code `beta = 1/4` is at least 0.45.
-6. **E, colour (moderate confidence).**
-   - The colour-probe `R^2` in E2 lies within `COLOUR_TOL` of E1.
-   - E3 and E4 keep colour: `R^2` of at least 0.9, and an invariance index above E1's and E2's.
-7. **A, price (high confidence).** The rate per window falls as `beta` rises, at both `lam` values. Planning, and L1 against L2: no prediction.
-8. **F, anchor (moderate confidence).**
-   - F2's state carries less agent information than forecast-only at gap 8: a lower noisy agent-probe `R^2` and a lower P0.
-   - F1 loses less than F2 relative to its own gap-8 counterpart (C1), because its forecasts are priced.
-9. **B, entry price (moderate confidence).** B2 passes the rollout and action-identification items of the Section 10 gate, and its P0 is well above the 8.67% of the `beta = 1`, `sigma0 = 0.1` run. Its rate per window is above that run's 37 nats. A smaller `sigma0` makes entry cheaper, so the state can afford more information at the same price.
-10. **G, fixed properties (moderate confidence).**
-    - **Shape probe.** G1, G3 and G4 are at least `SHAPE_KEEP`. G2 is at most `SHAPE_DROP`, or at least 0.2 below G4.
-    - **First contact.** At the contact frame plus 3, the block error from one context frame is lower in G3 and G4 than in G2.
-11. **H2, stability (no prediction).** H2 measures it; compare with TF's seeds 3 to 8 (86.67 to 92.67% at 2 epochs).
-12. **I, contrastive critic (moderate confidence).** I2 keeps the agent (probe `R^2` of at least 0.8). Its block probe and P0 are below C1's: the bound saturates once the agent alone identifies the frame.
+**PushT**
 
-## 8. Selection rule (Phase 1 to Phase 2)
+1. **P1 (moderate).** L0 at 10 epochs reaches at least 90% P0 on the primary cases (published: 96 ± 2.8). No prediction at 3 epochs.
+2. **P2 (moderate).** C1 is non-inferior to forecast-only and better than original at 3 epochs. At 2 epochs, C1 seeds 3 and 4 each reach at least 70%, where original scored 22 and 76.
+3. **Calibration (high).** C1, D3 and E2 have an eval-mode slope of at least `SLOPE_MIN` at epochs 2 and 3.
+4. **P3 (moderate).** Both calibrated seeds reach at least 70% P0 at 2 epochs, where uncalibrated original scored 22 and 10. If they do, the original arm's instability was a delayed escape from the trapped state.
+5. **P4 (high).** The largest dot R² is at most `CHANCE_R2` in D3 and above it in D1.
+6. **P5 (moderate).** E4 keeps colour (R² of at least 0.9) and has a higher invariance index than E2. E2's colour R² is at most 0.6; a round-1 anchor run measured per-channel R² of 0.23 to 0.61 (seed 0, FP32).
+7. **P6 (moderate).** I2 keeps the agent (probe R² of at least 0.8). Its block probe and P0 fall below C1's, because the bound saturates once the agent alone identifies the frame.
 
-**Candidates** are the Block C arms (C1 to C5) and the two AS-JEPA references at `lam = 0` (original and lower-beta). Forecast-only and TF are comparisons only: they render unpriced means, so they cannot be the AS-JEPA configuration.
+**TwoRoom**
 
-1. **Exclude failing arms.** Exclude any candidate that fails the collapse test that counts for it (the posterior version for `lam = 0`, the forecast version for `lam > 0`; BF16 verdict, as for the references). Also exclude any candidate that still violates the calibration rule after its fallback (Section 12).
-2. **Generation filter.** Keep candidates whose mean rollout at 3 epochs has an `h7` agent ratio of at most 0.5 and an `h7_moving_block_ratio` below 1. This is the round-1 generation gate on the full 256-case evaluation.
-3. **Best planner.** Find the candidate `A*` with the highest pooled P0 (primary cases, seeds 1 and 2).
-4. **Tied set.** The tied set is every candidate non-inferior to `A*` (Section 1.3).
-5. **Prefer the canonical design.** Within the tied set, prefer:
-   1. `lam = 1, one_step` (C1, C2, C3);
-   2. `lam = 0.5, one_step` (C4);
-   3. `lam = 0.5, rollout` (C5);
-   4. `lam = 0` (original, lower-beta).
-6. **Lowest rate.** Among the remaining candidates in the same class, choose the lowest rate per window on held-out windows.
+8. **The initial scale (moderate to high).** T1, T2, T3, T4 and T6 pass the use gate at 2,000 updates. Their uncalibrated counterparts had `feature_std / sigma0` of 0.0015 and posterior-swap effects of at most 0.0003% at t = 0.95.
+9. **T5 (low).** T5 passes the spread criterion, but its swap effect on the shared `one_step` condition is below T3's, because the noiseless open-loop forecast still offers the renderer an action path.
+10. **Anchor on TwoRoom (moderate, conditional on T-pre).** If the agent is stale relative to the first-frame anchor in more than 80% of rendered frames, T1 and T2, and likewise T3 and T4, differ by less than 0.1 in noisy agent-probe R². The anchor matters for slow components, and the agent is not slow.
+11. **Planning (moderate).** At 6,000 updates, the best continuing arm reaches at least 60% on the primary cases, averaged over seeds. For reference: native LeWM 80 / 72%, fixed carrier 90 / 94%, uncalibrated AS-JEPA at most 16%.
 
-The selected `(lam*, horizon*, beta*)` goes to Phase 2. Then compare it with forecast-only and TF (Section 1.3 definitions), and apply Section 9.
+**Cube**
 
-## 9. Decision rules after Phase 1
+12. **K-pre (moderate).** With the first-frame anchor, the cube is stale in fewer than 30% of rendered frames, and the effector in more than 60%. With `gap_K`, the cube's stale share rises but stays below 50%.
+13. **Cube content (moderate).** The cube partial rank orders K3 ≥ K1 > K2. K2 stays at or below `RANK_LOW`, near TF's 0.03, and K3 reaches at least `RANK_HIGH`. The clean cube-position readout error of K1 and K3, from the same probe and clips, falls below TF's 4.7 to 5.1 cm.
+14. **`lam` on Cube (moderate).** At the same anchor, K1 has higher cube content than K4, by cube rank and probe, because the prior must forecast contacts.
+15. **Cube planning (low).** The best K arm is within `HARD_TIE` of native LeWM at 12,000 updates under the same controller.
+
+## 8. Decision rules
+
+### 8.1 PushT
 
 | Result | Then |
 | --- | --- |
-| A `lam = 1, one_step` arm is selected | The canonical method uses `lam = 1`, and the story's empirical design states the selected `beta`. |
-| C4 or C5 is selected | The theory keeps `lam` in the objective; the empirical design uses the selected value without emphasis. |
-| A `lam = 0` reference is selected | Rendering forecasts does not help planning at this point. Phase 2 keeps `lam = 0` for H, and `lam`'s case rests on Blocks D and G. Report it before Phase 2. |
-| The selected arm is non-inferior to forecast-only and to TF | The principled version keeps the gain. Proceed. |
-| The selected arm is non-inferior to forecast-only but worse than TF | The remaining TF gain comes from its AR(1) posterior noise (`rho = 0.8`), which is outside the AS-JEPA objective as specified. Report it; we decide whether `rho` deserves a theory and a test. |
-| The selected arm is worse than forecast-only | The noise or the pricing costs planning. Check the calibration slopes and B3. Do not adopt noiseless forecasts into AS-JEPA, because they are an unpriced channel. Report, and we decide with you before Phase 2. |
-| C1 or C4 does not reduce drift (Section 5.6), but C5 does | Multi-step training of what the renderer reads is what matters for drift. Report it; it informs the choice between C4 and C5. |
-| D3 or D4 keeps dot information | Check `forecast_share`, and check that the renderer really reads the forecast. If the implementation is correct, the mechanism does not operate, and `lam` loses its main theoretical support. Report it before Phase 2. |
-| E2 differs from E1 by more than `COLOUR_TOL` | Appearance exclusion under `lam` is in doubt; report it. |
-| E3 or E4 does not keep colour | The JEPA comparison for appearance does not hold on this domain; report it. |
-| A1 and A2 plan as well as C1 and C2, with much higher rate | The price does not drive planning at this point. The story must say so; its role is purity and minimality, tested in D, E and G. |
-| A4 (L1) plans as well as the selected arm at 3 epochs | Pricing adds nothing over SIGReg for planning at this budget; report it, and keep the comparison at 10 epochs in H. |
-| F2 loses state information and F1 does not | The noiseless shortcut is real and priced forecasts close it: strong support for T1 over TF on TwoRoom. |
-| F1 and F2 both equal their gap-8 counterparts | On PushT the first-frame shortcut does not matter. Phase 3 then focuses on the initialization scale (T3). |
-| B2 or B4 passes the gate items where `sigma0 = 0.1` failed | Propose `sigma0 = 0.03` for the finals, with the evidence. |
-| B2 and B4 fail as at `sigma0 = 0.1` | The `beta = 1` failure is not an entry-price effect. Report the entry and surprise split early in training; keep `sigma0 = 0.1`. |
+| C1 is non-inferior to forecast-only and better than original, and seeds 3 and 4 hold | The canonical `lam = 1, one_step` stands on PushT, and the harder tasks keep it. |
+| C1 is worse than forecast-only | Run C5. If C5 is non-inferior to forecast-only, the open-loop horizon carries the gain: report it, and switch the `lam = 1` arms of any later harder-task run to C5's setting. If C5 is also worse, the noise or the pricing costs planning; report before deciding anything else. Never adopt noiseless forecasts into AS-JEPA. |
+| C1 holds on seeds 1 and 2 but one of seeds 3 and 4 falls below 70% | Run C2. Lower-beta was the stable `lam = 0` arm across eight seeds. |
+| L0 at 3 epochs is non-inferior to C1 | AS-JEPA has no planning advantage on PushT at matched data. The story's PushT claims rest on P3 to P6. |
+| C1 at 3 epochs trails L0 at 10 epochs by more than 5 points | Propose the C1 continuation to 10 epochs, to compare at matched epochs, and wait for our agreement. |
+| P3 reaches 70% on both seeds | Calibration becomes part of the recipe on every dataset. A later PushT table uses calibrated arms. |
+| P3 does not help | The PushT instability has another cause. Report the log check. |
+| D3 keeps dot information | Check `forecast_share` and that the renderer really reads the forecast. If the implementation is correct, `lam` loses its main theoretical support; report before anything else. |
+| E2's colour R² is at least 0.9 | Run E1, to see whether `lam` or the anchor fails to exclude appearance. |
+| E4 does not keep colour | The appearance comparison with LeWM does not hold on this domain; report it. |
 
-## 10. Gate: when Phase 1 counts as working
+### 8.2 TwoRoom
 
-Phase 2 needs our agreement after the Phase-1 report. Agreement requires the selected configuration (seeds 1 and 2) to meet all of the following:
+| Result | Then |
+| --- | --- |
+| T1 passes the use gate and plans at least 30% by 6,000 updates | The initial scale explains your TwoRoom failure. Calibration becomes part of the recipe; tell your campaign. |
+| T1 fails, but T3 or T4 passes | The forecast reward is needed in addition to the scale. |
+| T5 passes and plans like T3 | TF's failure was the initial scale; the noiseless shortcut was not decisive. |
+| T5 fails while T3 passes | The noiseless forecast shortcut is real once the state can carry information, and priced forecasts close it. |
+| T1, T2, T3, T4 and T6 all fail the use gate | The initial scale is not enough, and the pooled readout is the bottleneck (your quadrant and carrier evidence). Stop Part T and report; this is meeting point (b). |
+| An arm passes the use gate but plans below 30% at 6,000 updates | The state carries the agent but planning fails. Report the agent probe, the health table and the planning logs, and stop for a joint diagnosis before any further training. (No TwoRoom candidate audit exists; `cube_oracle_audit.py` is Cube-only.) |
 
-- the round-1 generation gate: `h7` agent ratio of at most 0.5, and moving-block ratio below 1;
-- action identification of at least 0.75;
-- the collapse test that counts for it (Section 8, step 1) passed;
-- P0 non-inferior to the original arm;
-- at least `GALLERY_PASS_MIN` of the 32 fixed gallery cases of seed 1 marked as passing. We do this review; send us the gallery path.
+### 8.3 Cube
 
-Report everything else for understanding.
+| Result | Then |
+| --- | --- |
+| K-pre: the cube is stale in at most 50% of rendered frames at `gap_K` | A past anchor can only partly remove the free cube pose, so K3 is the decisive arm. Run all four arms anyway. |
+| K1 or K3 reaches `RANK_HIGH`, and K2 stays at or below `RANK_LOW` | The anchor was hiding the cube from the state. Adopt the better rule as the Cube recipe; this is meeting point (c). |
+| K1, K2 and K3 all stay at or below `RANK_LOW` | The anchor is not the cause. Report the content probes. Candidates outside this round: the cube's pixel footprint at 64×64, and the orientation that no model reads. No rescue runs. |
+| The best K arm is within `HARD_TIE` of native LeWM at 12,000 updates, under either controller | If your maturity runs show native LeWM gaining more than `HARD_TIE` between 12,000 and 23,342 updates, propose K-mature and wait for our agreement; then compare at 23,342. |
+| The best K arm trails native LeWM by more than `HARD_TIE` | Report it with the oracle audit. The Cube performance gap remains open; no automatic extension. |
 
-## 11. Tests and checks before any long run
+## 9. Reports
 
-1. **CPU contracts.** `tests/as_jepa/test_round2.py`, 11 tests. Run from the repository root:
+- **PushT closure report:** every Section 5.1 to 5.5 metric per arm, predictions 1 to 7 marked held or failed, the Section 8.1 decisions, and any conditional arm that ran.
+- **TwoRoom report:** the anchor table, `gap_T`, `initial_scale.json` values, spread curves for every arm, the health table, the use-gate verdicts, probes, planning at 2,000 and 6,000 updates under both controllers, predictions 8 to 11, and the Section 8.2 decisions.
+- **Cube report:** the anchor table, `gap_K`, health, content probes, oracle-audit ranks, planning under both controllers, predictions 12 to 15, and the Section 8.3 decisions.
+
+Each report lists the references it compares against, with their paths.
+
+## 10. Tests and checks before any long run
+
+1. **CPU contracts, 16 tests.** `tests/as_jepa/test_round2.py` (11) and `tests/as_jepa/test_benchmark_gap.py` (5). Run from the repository root:
 
    ```bash
-   PYTHONPATH=.:runtime:<stable-worldmodel checkout> python -B -m unittest tests/as_jepa/test_round2.py -v
+   PYTHONPATH=.:runtime:<stable-worldmodel checkout> python -B -m unittest tests/as_jepa/test_round2.py tests/as_jepa/test_benchmark_gap.py -v
    ```
 
    They check:
-   - `lam = 0` reproduces `ASJepaLeWM.loss` exactly, for every `horizon` and `forecast_grad`;
-   - the main random stream is identical across `lam`;
-   - `forecast_share` is about `lam`;
-   - gradient routing: at `lam = 0` the flow loss never reaches the prior; under `joint` it reaches encoder and prior; under `encoder_only` it reaches the encoder but not the prior. This holds for both fixed and learned variances;
-   - at `lam = 1` the last frame is not rendered from its own encoding;
-   - the calibration slope equals 1 for an exact prior and `1/1.2` for a prior that overshoots by 20%;
-   - the learned-variance KLs equal the fixed-variance ones at `sigma0` and torch's Normal KL in general, and the learned-variance loss at initialization equals the fixed-variance loss;
-   - all three classes log the same core metrics, each convertible to a float as `train.py` does;
-   - the contrastive variant has no renderer, its gradients reach the encoder and the prior, and its gradient audit lists no renderer.
+   - `lam = 0` reproduces `ASJepaLeWM.loss` exactly; the main random stream is identical across `lam`; `forecast_share` is about `lam`;
+   - gradient routing: at `lam = 0` the flow loss never reaches the prior; under `joint` it reaches encoder and prior; under `encoder_only`, the encoder only;
+   - at `lam = 1` the last frame is not rendered from its own encoding; the calibration slope is exact for a known overshoot;
+   - the contrastive variant has no renderer, and its gradients reach encoder and prior;
+   - `gap = 0` reproduces `BenchmarkWindows` exactly;
+   - the gap anchor is a past, phase-aligned frame of the same episode, read with the window frames' transforms, deterministic within an epoch and redrawn across epochs, with fallbacks flagged;
+   - the dataset dispatch follows the config;
+   - the staleness table counts moving and static labels correctly.
 
    Also rerun your existing `tests/as_jepa` suite.
-2. **Pairing check.** For C2 at seeds 1 and 2, the recorded initial weights (`record_initial_weights`) must equal those of `lower-beta-seed1` and `lower-beta-seed2`, tensor for tensor. Since every L2-family class builds identical tensors at a seed, this also covers the other arms. If they differ, stop and report: the pairing in Section 3.2 does not hold.
-3. **GPU smoke (200 steps each, one GPU).** Run C1, C5, C1 with `encoder_only`, G4 (learned variances, on `D-std`) and I2. Record step time and peak memory. Check that:
+2. **Pairing check.** C1's recorded initial weights at seeds 1 and 2 must equal those of `lower-beta-seed1` and `lower-beta-seed2`, tensor for tensor. If they differ, stop and report.
+3. **GPU smokes (200 steps each, one GPU).** Run C1 (PushT), L0 (PushT, P1), T4 (TwoRoom, with calibration and `gap_T`), K1 (Cube, gap anchor: the anchor adds one HDF5 read per window), K3 (Cube, constant anchor) and I2. Record step time and peak memory. Check that:
    - the loss is finite;
-   - every class logs `loss`, `rate`, `entry`, `surprise`, `feature_std`, `active_dims`, `forecast_share` (about `lam`) and `calib_slope`;
-   - the renderer classes also log `fm` and `rate_share`, and `fm`, `entry` and `surprise` all move;
-   - `LearnedVarianceLeWM` also logs `prior_var_ratio`, `posterior_sd` and `prior_sd`;
-   - `NCELeWM` also logs `nce` and `info_bound`;
-   - for the renderer classes, renders from noise change when the condition is replaced by zeros.
+   - `forecast_share` is about `lam`;
+   - `initial_scale.json` shows `original_std` of about 1e-3 to 2e-3, and the first `metrics.jsonl` row (step 100) shows `feature_std` near `sigma0`;
+   - for 64 training windows of T4 and K1, either `anchor_row <= rows[0] - gap * 5` or `anchor_fallback` is True, and `fallback_share()` matches the table of Section 5.6;
+   - `benchmark_evaluate.py` loads the T4 checkpoint through its `_target_`.
 
-## 12. Failure responses
+## 11. Failure responses
 
 | Symptom | Likely cause | Response |
 | --- | --- | --- |
-| A `lam > 0` arm (fixed variance) has an eval-mode calibration slope below `SLOPE_MIN` at epochs 2 and 3, and, where a reference exists, more than 0.05 below it | joint training exaggerates the forecasts (Appendix A.5) | Rerun that arm, on every seed it has, with `forecast_grad = "encoder_only"`. Report both; the fallback runs replace the arm in selection. |
-| G4 has `prior_var_ratio` above `VAR_RATIO_MAX` at epochs 2 and 3 | an overconfident learned prior; the toys predict this at `lam = 1` | Rerun G4 with `forecast_grad = "encoder_only"`, and report both. |
-| A `lam > 0` arm fails the forecast collapse test | the price is above the collapse barrier at that `beta` | Exclude it; it marks the top of the useful range. No rescue runs. |
-| Every `lam > 0` arm collapses | an implementation error, or `lam` lowers the barrier | Check `forecast_share`, the tests in Section 11 and the FP32 state spread. Then rerun C1 with `calibrate_state_std = sigma0`, once, and report. |
-| The BF16 and FP32 collapse verdicts disagree | BF16 makes an empty state look full | Use the FP32 verdict for that arm, and re-evaluate its reference in FP32 too. |
-| A screen is interrupted | `stop_after` does not act on resume | Resume with `train_stage --config <config> --stop-step 37473 --resume`. |
-| NaN or loss spikes | numerics | Keep the rate in FP32 and the gradient clip. If spikes persist, halve the learning rate for that arm only, mark its comparisons as unpaired, and report it. |
-| Good one-step forecasts but fast drift after a few steps | open-loop compounding | Report it; C5 (`rollout`) is the designed response. Do not add multi-step targets to the rate. |
-| `D-shape` shape probe at chance in every arm | shape is not visible at the encoder's resolution, or it is never dynamics-relevant in the windows | Report the contact fraction and the pose-estimator floor. Do not tune. |
+| A `lam > 0` arm has an eval-mode calibration slope below `SLOPE_MIN` at epochs 2 and 3 | joint training exaggerates the forecasts | Rerun that arm on every seed it has with `forecast_grad = "encoder_only"`, and report both. |
+| A T arm's `feature_std / sigma0` falls back below `SPREAD_MIN` after starting near 1 | the rate pulls the state down faster than the renderer rewards it | Rerun T4 once with `beta = 0` from the same initialization. If the state survives, the price is above TwoRoom's barrier at `beta = 1/4`; report. |
+| Every T arm fails the use gate | Section 8.2 | Stop Part T; report the spread curves and probes. |
+| The anchor table gives `gap_T` or `gap_K` = 0 (no gap meets `FALLBACK_MAX`) | short episodes | Use gap 1 and report its fallback share; do not lower the standard silently. |
+| A PushT `lam > 0` arm fails the forecast collapse test | the price is above the collapse barrier | Exclude it from comparisons and report. No rescue runs. |
+| The BF16 and FP32 collapse verdicts disagree | BF16 makes an empty state look full | Use the FP32 verdict for that arm and its reference. |
+| NaN or loss spikes | numerics | Keep the rate in FP32 and the gradient clip. If spikes persist, halve the learning rate for that arm only, mark its comparisons as unpaired, and report. |
+| A run is interrupted | `stop_after` does not act on resume | Resume with `train_stage --config <config> --stop-step <N> --resume`. |
 
-## 13. Latitude: what you may change without asking
+## 12. Latitude: what you may change without asking
 
 - Compute allocation and the order of runs, within the priorities of Section 6.4.
 - Evaluation sample counts, upward, applied to an arm and its references alike.
 - Adding seeds to any arm, applied to its paired references too.
 - Implementation mechanics not fixed here: launch wiring, report scripts, file layout of outputs.
 
-Keep one GPU per run (as `train.py` does) and the reference runs' learning rates. Several GPUs per run would change the data order and the coins, and a different learning rate would unpair an arm from its references.
+Keep one GPU per run and the references' learning rates. Everything in Sections 3, 4 and 8 needs our agreement before it changes: what the renderer reads, the noise, the pairing, the rate, the anchors, the initial scale and the decision rules. When unsure, stop and ask.
 
-Everything in Sections 3, 4 and 8 needs our agreement before it changes: what the renderer reads, the noise, the pairing, the rate, the anchors and the selection rule. When unsure, stop and ask.
+## 13. Order of work
 
-## 14. Order of work
-
-1. Branch, copy the reference files and register them (Section 2.1). Run the CPU tests (Section 11.1) and the pairing check (11.2).
-2. Add the evaluation options and the calibration tool (Sections 5.1 to 5.3). Run the GPU smokes (11.3). Report step times and projected GPU-hours.
-3. Launch A3 and Block C, then D and E, then A4, F, A1 and A2, and B, as compute allows (Section 6.4). Start the `D-shape` collection on CPU.
-4. Short gates at 2 epochs, and the full package, fresh planning, forecast checks, calibration and drift at 3 epochs (Section 5).
-5. **Phase-1 report:** every metric of Section 5 per arm, the predictions of Section 7 marked held or failed, the selection of Section 8, and the decision of Section 9. Stop for our agreement.
-6. Phase 2: H and H2, then G, then I. **PushT report**, then stop for our agreement.
-7. Phase 3 only after agreement.
+1. Branch, copy the reference files and register them (Section 2.1). Run the 16 CPU tests and the pairing check (Section 10).
+2. Run T-pre and K-pre (CPU) and the P3 log check, then fix `gap_T` and `gap_K`.
+3. Add the evaluation options (Sections 5.2, 5.3 and 5.7). Run the GPU smokes, then report step times and projected GPU-hours.
+4. Launch by the priorities of Section 6.4: T-gate, P1 and P2 first. Parts P, T and K run in parallel.
+5. Evaluate as Section 5 describes. Continue the T arms that pass the use gate to 6,000 updates.
+6. Write the three reports (Section 9), and stop for our agreement.
 
 ## Appendix A. The theory this round relies on
 
@@ -733,7 +838,7 @@ J(beta, lam) = sum_t E[ -log p_renderer(x_t | condition_t, x_anchor) ]
              + beta * [ KL(q(s_0|x_0) || N(0, I)) + sum_t KL(q(s_t|x_t) || p_prior(s_t | s_<t, a_<t)) ]
 ```
 
-At `beta = 1` this is the negative evidence lower bound of a generative model in which each frame is decoded from either its inferred state or the model's own forecast, chosen by a coin. So every `lam` is a code length, and `lam = 0` is round 1.
+At `beta = 1` this is the negative evidence lower bound of a generative model in which each frame is decoded either from its inferred state or from the model's own forecast, chosen by a coin. So every `lam` is a code length, and `lam = 0` is round 1.
 
 ### A.2 What the objective rewards
 
@@ -751,18 +856,16 @@ Here `C = sum_t H(x_t | x_anchor)` does not depend on the encoder.
 
 | Information | Cost | Reward | Result |
 | --- | --- | --- | --- |
-| Detail fresh in each frame (the dot) | `beta` per nat | `1 - lam` per nat; no forecast can predict it | Excluded if and only if `beta >= 1 - lam`, so at every `beta > 0` when `lam = 1`. Proved for an anchor outside the encoded chain, as with `gap = 8`. The renderer's condition dropout `p = 0.1` shifts the threshold to `(1 - p)(1 - lam)`: 0.9 at `lam = 0`, 0.45 at `lam = 0.5`. |
+| Detail fresh in each frame (the dot) | `beta` per nat | `1 - lam` per nat; no forecast can predict it | Excluded if and only if `beta >= 1 - lam`, so at every `beta > 0` when `lam = 1`. Proved for an anchor outside the encoded chain. Condition dropout `p = 0.1` shifts the threshold to `(1 - p)(1 - lam)`: 0.9 at `lam = 0`. |
 | Persistent appearance (colour) | `beta` per nat added after the first state | 0 in both branches; the anchor supplies it | Excluded at every `beta > 0`. Proved for codes that keep appearance separate from dynamics; the general case at `lam > 0` is open. |
-| Dynamics state (poses) | entry once, then surprise | both branches | Kept when it pays for its entry within the window (round-1 condition A5), at every `lam`. |
-| Fixed property that the dynamics read and the anchor shows (block shape and size, when varied) | entry once | at `lam = 0`: 0, because the anchor shows it. At `lam = 1`: its value for forecasting contacts, because the prior cannot see the anchor | `lam = 0`, exact code (learned variances): not stored. The prior infers it after a contact, and the toy gain from storing it is 0.0000 nats at every `beta`. `lam = 0`, fixed-variance code: stored for a side reason, a toy gain of 11 to 15 nats, because a fixed-variance prior pays about 12.5 nats per mispredicted contact instead of about 1.6. `lam = 1`: stored, with toy gains of 2.96, 2.51, 2.06 and 1.26 nats at `beta` = 0.1, 0.3, 1 and 2. |
+| Dynamics state (poses) | entry once, then surprise | both branches, but only for what the anchor does not show (A.7) | Kept when it pays for its entry within the window (round-1 condition A5), at every `lam`. |
+| Fixed property that the dynamics read and the anchor shows (block shape, when varied) | entry once | at `lam = 0`: 0. At `lam = 1`: its value for forecasting contacts, because the prior cannot see the anchor | Not stored in an exact `lam = 0` code; stored at `lam = 1` (toy gains of 1.3 to 3.0 nats). Not tested in this round (Appendix C). |
 
-On the line `beta + lam = 1` the incentive to store detail unique to one frame is zero. Round 1's canonical point (`beta = 1, lam = 0`) and the sufficiency point (`lam = 1`, `beta` toward 0) are its two ends.
+On the line `beta + lam = 1`, the incentive to store detail unique to one frame is zero. Round 1's canonical point (`beta = 1, lam = 0`) and the sufficiency point (`lam = 1`, `beta` toward 0) are its two ends.
 
 ### A.4 What `lam = 1` optimizes
 
-At `lam = 1` the objective selects the smallest state whose one-step forecast, made without seeing the anchor and rendered with the anchor, is most informative about the next frame. This is a sequential, anchor-conditional relative of the past-future information bottleneck (Creutzig, Globerson and Tishby 2009).
-
-Under deterministic dynamics given the actions, as in PushT, maximizing it makes the prior's context sufficient for the future. Under stochastic dynamics one forecast sample guarantees less, and that weaker claim must be stated.
+At `lam = 1`, the objective selects the smallest state whose one-step forecast, made without seeing the anchor and rendered with the anchor, is most informative about the next frame. This is a sequential, anchor-conditional relative of the past-future information bottleneck (Creutzig, Globerson and Tishby 2009). Under deterministic dynamics given the actions, maximizing it makes the prior's context sufficient for the future; under stochastic dynamics, one forecast sample guarantees less.
 
 The sufficiency claim is about the pair (prior context, anchor), not about `s_t` alone:
 
@@ -772,15 +875,40 @@ The sufficiency claim is about the pair (prior context, anchor), not about `s_t`
 
 ### A.5 Known costs, and what watches them
 
-- **Exaggerated forecasts under joint training.** The renderer values forecast information at `lam` per nat, while the prior pays for exaggeration only to second order in surprise. The toys give:
-  - with fixed variances, an overshoot of 0.5 to 3.5%;
-  - with learned variances, prior variances scaled by 0.78, 0.48 and 0.29 at `(beta, lam)` = (1, 1), (0.1, 1) and (0.01, 1), that is, variance ratios of about 1.3 to 3.4.
+- **Exaggerated forecasts under joint training.** The renderer values forecast information at `lam` per nat, while the prior pays for exaggeration only to second order in surprise. The toys give a 0.5 to 3.5% overshoot with fixed variances. The eval-mode calibration slope watches for it; the fallback is the encoder-only forecast gradient.
+- **The noiseless-mean shortcut.** A noiseless forecast mean is a channel of unbounded capacity that nothing prices, so the prior can pass information about the actions to the renderer for free. With a first-frame anchor, this admits an empty state plus a prior that integrates the actions. Your TF arms on TwoRoom show the signature: action effect up to 72%, while no state swap exceeded 0.005%. A `sigma0`-noisy sample limits the channel to the code's resolution, and the surprise term prices the mean's departure from the encoded state.
+- **Out-of-distribution tests.** At `lam = 1` the renderer never sees encoded states; hence the forecast versions of the renderer diagnostics (Sections 5.2 and 5.7).
+- **No branch flag.** Without a flag saying which branch it reads, the renderer pays at most `ln 2` nats per frame when `0 < lam < 1`, which is negligible against a frame's 12,288 rendered values.
 
-  Watched by the eval-mode calibration slope and the variance ratio; the fallback is the encoder-only forecast gradient.
-- **The noiseless-mean shortcut.** A noiseless forecast mean is a channel of unbounded capacity that nothing prices, so the prior can pass information about actions to the renderer for free. With a first-frame anchor this admits an empty state plus a prior that integrates the actions. A `sigma0`-noisy sample limits the channel to the code's resolution, and the surprise term prices the mean's departure from the encoded state. A distant anchor also removes the start position that the shortcut needs. Block F tests both halves.
-- **Out-of-distribution tests.** At `lam = 1` the renderer never sees encoded states, so tests that render encoded states are out of distribution; hence the forecast versions in Section 5.2.
-- **No branch flag.** A renderer without a flag saying which branch it reads pays at most `ln 2` nats per frame when `0 < lam < 1`. That is negligible against a frame's 12,288 rendered values, so there is no flag.
-- **Collapse barrier.** In the round-1 A5 toy, with a prior trained only by the code length, `lam` raises the collapse barrier slightly without changing which components are kept: from 0.34 to 0.40 nats with a first-frame anchor, and from 0.12 to 0.30 with a distant one. Under joint training at `lam = beta = 1` with a first-frame anchor, the barrier falls from 0.44 to 0.02.
+### A.6 Why a reconstruction objective can still leave the state unused
+
+**Collapse in a JEPA.** The latent prediction loss `E||g(f(x_t), a_t) - f(x_t+1)||^2` is exactly zero for a constant encoder `f`. The collapsed solution is a global minimum, so something outside the prediction loss (EMA with stop-gradient, VICReg, SIGReg) must exclude it.
+
+**AS-JEPA's objective has no such minimum.** A constant state leaves the renderer only the anchor. When the frames contain changes the anchor does not show, a state that encodes them lowers `J` (A.2). The trapped TwoRoom state is instead a stationary point of training:
+
+1. The renderer reads `c = mu + sigma0 xi`. Per dimension, `c` carries at most `0.5 ln(1 + Var(mu) / sigma0^2)` nats about `mu`. At the default initial spread of about 1e-3 that is about 5e-5 nats per dimension; at the trapped spread of 1.5e-4, about 1e-6 nats per dimension, or 7e-5 nats per frame over 64 dimensions.
+2. A renderer cannot use what it cannot read, so it learns to ignore `c`, and the gradient of the loss with respect to `c` is about 0.
+3. The encoder's gradient from the renderer passes through that same derivative, so `mu` does not grow. With `beta > 0`, the rate also pulls `mu` toward the prior mean. On TwoRoom the encoder's gradient was sizeable only in the first 600 updates, when the entry term's excess fell from 2.8 to 7.5 nats to about 0.1; by 2,000 to 2,600 updates it had fallen to 0.002 to 0.005.
+
+The point is unstable, but it escapes slowly. In your linear toy at `beta = 0`, the escaping direction grows at about `2 eta^2 / sigma0^2` for state scale `eta`. At the default initial scale (`eta / sigma0 ≈ 1e-2`) that is a ten-thousandth of its value at `eta = sigma0`, and at the trapped scale about two millionths. More moving pixels make the escape faster at any scale, which is our reading of why Cube (31.6% moving pixels) escaped and TwoRoom (9.4%) did not. That reading is an inference: the toy has not been computed with TwoRoom's numbers.
+
+So the objective's optimum is not the issue; the starting point is. SIGReg acts at every step by holding each embedding dimension at unit variance across the batch, so LeWM's embedding never sits at this scale. AS-JEPA's counterpart is an initialization: start `mu` at the code's resolution, a spread of `sigma0`, where each dimension can carry `0.5 ln 2` ≈ 0.35 nats from the first update. It adds no term to the loss and nothing that acts during training.
+
+The general phenomenon is known for VAEs as posterior collapse, or an inactive latent: a decoder that has other inputs (here the anchor and the noisy target) never learns to read a latent whose signal starts below its noise (Bowman et al. 2016; He et al. 2019). It also explains why the first-frame anchor and the forecast shortcut are secondary on TwoRoom. They account for your TF arms learning to read actions, but not for the `lam = 0` arms, which have no forecast path, leaving the state unused.
+
+### A.7 What an anchor gives away
+
+At `lam = 0`, the reward for storing a component in `s_t` is `I(x_t; s_t | x_anchor)` (A.2): only what the frame shows beyond the anchor. A component whose value in frame `t` equals its value in the anchor earns nothing in that frame. A component that is a function of others already in the state, such as a carried cube following the gripper, earns nothing either. Round 1's condition A5 gives the consequence: a slow component enters the state only if it changes often enough, between the anchor and the rendered frames, to pay its entry. On PushT, the gap of 8 kept frames was chosen for the block.
+
+Three anchor rules differ in how much of a slow component they give away:
+
+- **First frame:** everything that does not change within the window. On Cube that includes the cube in most windows, and the oracle audit (cube rank 0.03, arm rank 0.93) is what this looks like at planning time.
+- **A past frame at gap `g`:** everything that has not changed since the anchor time. The K-pre table measures how often that is the cube.
+- **Constant (no anchor information):** nothing. This suits datasets whose appearance does not vary across episodes, such as TwoRoom and Cube, because the renderer can learn the constant scene.
+
+The design principle: the anchor should share the episode's appearance and be as uninformative as possible about the current value of anything that moves. A future anchor violates this differently, by showing where slow objects end up, and generation never has one.
+
+At `lam = 1`, a component also earns its value for the forecast. The prior cannot see the anchor, so to forecast whether the gripper closes on the cube, it needs the cube's pose in the state.
 
 ## Appendix B. Design-to-plan trace
 
@@ -788,25 +916,30 @@ The sufficiency claim is about the pair (prior context, anchor), not about `s_t`
 | --- | --- | --- | --- |
 | Per-frame encoder | the state is a function of its frame; goal images encode without history | `ASJepaLeWM.encode`, unchanged | existing `test_contracts.py` |
 | Anchor only to the renderer | appearance is free side information and must not be free in the state | unchanged | existing contracts |
+| Past-only anchor on the harder tasks, chosen by a stated rule | the anchor must not show the current value of slow components (A.7), nor the future | `benchmark_gap.py`; Section 5.6 | `test_benchmark_gap.py`; T2 against T1, K1 to K3 |
 | Actions only to the prior | the renderer must not do the dynamics | unchanged; forecasts carry actions only through the priced mean plus noise | `test_gradient_routing` |
-| The renderer reads the posterior sample or a noisy prior sample, never a noiseless mean or `mu` | sufficiency (`lam`), and a priced channel | `ForecastScoredLeWM.loss`; `LearnedVarianceLeWM.loss` | `test_lambda_zero_reproduces_l2_loss`, `test_forecast_share`, `test_lambda_one_never_renders_a_frame_from_its_own_encoding` |
-| Frame 0 never rendered | transient exclusion (Proposition 3) | unchanged | existing contracts |
+| The renderer reads the posterior sample or a noisy prior sample, never a noiseless mean or `mu` | sufficiency (`lam`), and a priced channel | `ForecastScoredLeWM.loss` | `test_lambda_zero_reproduces_l2_loss`, `test_forecast_share`, `test_lambda_one_never_renders_a_frame_from_its_own_encoding` |
+| Initial state spread `sigma0`, set once | start where the renderer can read the state (A.6) | `calibrate_state_std` in `train.py` | `initial_scale.json` in the smoke; T1 against your original arm; P3 |
+| Frame 0 never rendered | transient exclusion | unchanged | existing contracts |
 | No stop-gradient by default | one objective, no heuristics | `forecast_grad = "joint"` | `test_gradient_routing`, `test_forecast_gradient_routing` |
-| One exact rate, one `beta`, `sigma0` fixed in a run | the rate is a code length | unchanged | existing KL tests; `test_kl_functions` |
-| `lam` constant | no schedules | constructor argument | Section 3.7 config |
-| Paired random streams | clean comparisons across `lam` | `fork_rng` stream | `test_main_random_stream_is_paired_across_lambda`; pairing check 11.2 |
-| Learned variances (Block G) | the exact code that the fixed-property prediction is about | `learned_variance.py` | `test_initial_loss_equals_fixed_variance`, `test_forecast_gradient_routing` |
-| Contrastive critic (Block I) | a reconstruction-free control | `nce.py` | `test_no_renderer_and_gradients` |
-| Comparable logging | one report format for every class | all three classes | `test_core_metrics` |
+| One exact rate, one `beta`, `sigma0` fixed in a run | the rate is a code length | unchanged | `test_kl_functions` |
+| Paired random streams | clean comparisons across `lam` | `fork_rng` stream | `test_main_random_stream_is_paired_across_lambda`; pairing check |
+| Contrastive critic (P6) | a reconstruction-free control | `nce.py` | `test_no_renderer_and_gradients` |
 
-## Appendix C. Changed from the superseded plan, or not in this round
+## Appendix C. Changed from revision 1
 
-- **Narrowed.**
-  - **Block F.** The old Block F swept anchor distance ({0, 8, the largest}) at the three highest prices that train, to see whether the surviving `beta` rises with the gap. With `lam`, purity no longer depends on reaching high prices, so that sweep lost its purpose. F now tests the first-frame shortcut that bears on TwoRoom.
-  - **Block B** is now judged on gate items and P0, because the full-data `beta = 1` failure was not a collapse.
-  - **P0 is now primary** (Section 5.1).
-- **Not in this round.**
-  - **Branch S (S2) and general video.** The S line returns when we move beyond PushT and the LeWM tasks.
-  - **An explicit appearance encoder for the renderer.** It already exists implicitly as the renderer's anchor pathway; making it a separate module would be presentation only.
-  - **Calibrating `beta` in nats** with an I-MMSE estimate from the renderer's anchor-only (condition-dropout) branch. This is our analysis and needs no training run.
-  - **Story edits.** We make them after the Phase-1 report.
+- **Dropped from PushT:**
+  - **Block A1 and A2** (the price at the working point): the harder tasks test `beta` ∈ {1/16, 1/4} directly.
+  - **A4** (full L1).
+  - **Block B** (`sigma0 = 0.03`).
+  - **Block F** (the first-frame anchor on PushT): now tested where it matters, in Parts T and K.
+  - **Block G** (block-shape variants): it needed new data and a new pose estimator. The fixed-property prediction waits for a dataset where such properties vary naturally.
+  - **Blocks H and H2** (finals and stability): replaced by C1's four seeds and P3.
+  - **Arms C3 and C4, E1, E3, I1 and I3.** C2, C5 and E1 remain as conditional arms.
+  - **The gallery gate:** the gallery is still sent.
+- **Kept unchanged:** `ForecastScoredLeWM`, `NCELeWM`, their 11 tests, and the PushT evaluation tools. `learned_variance.py` stays in `round2/` for a later round and is not used.
+- **Phase 3 replaced by Parts T and K**, which start now:
+  - the first-frame anchor is replaced by a past-only anchor, plus a constant anchor on Cube;
+  - the initial state scale moves from one arm to the recipe, with T1, T5 and P3 testing it;
+  - the arms are designed from your TwoRoom and Cube evidence.
+- **The theory gains A.6 and A.7.** Both come from your harder-task evidence.
