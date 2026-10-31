@@ -4,7 +4,9 @@ Branch: `lingjing/anchored-state-jepa`. Moved here on 2026-10-25 from a private
 LeWM / stable-worldmodel fork (`sparse_jepa`), where the ideas were developed.
 Only plans, design notes and discussion logs were carried over; datasets,
 checkpoints, results, PDFs and literature dumps stay outside this repository.
-Nothing in this folder has been implemented in SPT-JEPA yet.
+The collaborator implemented and ran the first round on branch
+`research/ideas-20261028`; this folder holds our plans, reviews and the round-2
+reference implementation.
 
 The goal is a video world model, trained end to end on top of SPT's ViT, causal
 transformer and DiT flow renderer, whose learned state holds what the dynamics
@@ -12,6 +14,20 @@ need and leaves persistent appearance and unpredictable detail to other
 channels. The state must support latent planning, generation and probing.
 
 ## Where to start
+
+- [as-jepa-round2-spec.md](as-jepa-round2-spec.md): the current handoff spec
+  (2026-10-31). Round 2 trains the renderer, with probability `lam` per frame, on
+  a `sigma0`-noisy sample of the prior's forecast instead of the encoded state,
+  which makes the objective reward information that predicts the future
+  (sufficiency). PushT blocks on what the renderer reads, purity (dot, colour),
+  the price, the entry price and the anchor; then 10-epoch finals against LeWM, a
+  shape-varied PushT for fixed properties, and a reconstruction-free control;
+  harder tasks last. Reference implementation and CPU contract tests in
+  [round2/](round2/).
+- [as-jepa-results-review-20261028.md](as-jepa-results-review-20261028.md) and
+  [as-jepa-status-and-next-steps-20261029.md](as-jepa-status-and-next-steps-20261029.md):
+  the review of the collaborator's first-round results and the plan that
+  followed it (its Phase 1 is superseded by the round-2 spec).
 
 0. [as-jepa-story.md](as-jepa-story.md): the canonical statement (2026-10-26):
    formulation, the objective and how the JEPA loss emerges from it, the
