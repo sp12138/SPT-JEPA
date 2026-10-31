@@ -1,0 +1,187 @@
+{
+  "passed": true,
+  "rows": [
+    {
+      "nodes": 5000,
+      "dimension": 64,
+      "unique_float32_rows": 5000,
+      "max_exact_multiplicity": 1,
+      "rows_with_at_least15_exact_copies": 0,
+      "mean_squared_norm": 0.21635972894021788,
+      "total_centered_variance": 2.5327710004091673e-06,
+      "feature_variance_quantiles": [
+        5.039135640386852e-09,
+        2.7438912795544597e-08,
+        1.37426473645877e-07
+      ],
+      "radii": {
+        "fp32_mm": {
+          "zero_count": 3424,
+          "quantiles": [
+            0.0,
+            0.0,
+            0.0,
+            0.0005320921773090959,
+            0.0010429691756144166
+          ]
+        },
+        "fp32_direct": {
+          "zero_count": 0,
+          "quantiles": [
+            2.7207957828068174e-05,
+            3.5539557138690725e-05,
+            0.00011104090663138777,
+            0.0005496764305280521,
+            0.001018104376271367
+          ]
+        },
+        "fp64_direct": {
+          "zero_count": 0,
+          "quantiles": [
+            2.7207958267363717e-05,
+            3.5539564003381216e-05,
+            0.00011104090727885984,
+            0.0005496764307454971,
+            0.0010181042787480838
+          ]
+        }
+      },
+      "fp32_mm_radius_zero_but_fp64_positive": 3424,
+      "pair_counts": {
+        "mm_zero_but_direct_positive": 966992,
+        "direct32_zero_but_direct64_positive": 0
+      },
+      "all_pair_absolute_error": {
+        "fp32_mm": {
+          "max": 0.0004784492087463915,
+          "mean": 3.7742584536173776e-05
+        },
+        "fp32_direct": {
+          "max": 2.1922457807410645e-09,
+          "mean": 7.877031138930334e-11
+        }
+      },
+      "precision": "All distance comparisons run on CPU on the same saved float32 rows. CPU FP32-mm is the official formula but not a bitwise replay of its CUDA kernel.",
+      "scope": "No fit, labels, graph change or production repair. Centered variance is descriptive only; no centered metric is evaluated.",
+      "id": "tworoom-TF64-seed1",
+      "capture": {
+        "passed": true,
+        "id": "tworoom-TF64-seed1",
+        "spec_sha256": "ae04021921f6d6c7b9b3c35bc221eff655657f3049ecacd4f7f18001eea052d8",
+        "original_spec_sha256": "fb755d43d681ac29786ae988e861c466086c969119cacbad67b732c416450279",
+        "nodes_sha256": "5bac33916df13dcf527ad6948f00b0e686119dd28ac61ee16ceec46de39d8097",
+        "cohort_sha256": "fcc1124651508fe920dd8acefc8ce4935ae75b58955a9d16a4519544d5045598",
+        "counts": {
+          "rgb": 5000,
+          "encoder": 157,
+          "predict": 0,
+          "action_encoder": 0,
+          "renderer": 0
+        },
+        "state_before": "278eceb58cb89509ed4404e5d6b4ee5d5a5f35516e64a63699f365100269b88b",
+        "state_after": "278eceb58cb89509ed4404e5d6b4ee5d5a5f35516e64a63699f365100269b88b",
+        "rng_before": "36ca720226ca72804e98eed1b271a1834261d74565d00ad19803b54c962ddf40",
+        "rng_after": "36ca720226ca72804e98eed1b271a1834261d74565d00ad19803b54c962ddf40",
+        "actual_model": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/robust.py",
+        "actual_model_sha256": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc",
+        "seconds": 118.77486923336983,
+        "peak_device_bytes": 349762048,
+        "scope": "Exact5000 original train rows; saved float32 codes. No NGC constructor or distance kernel called on GPU."
+      },
+      "cpu_radii_sha256": "cbd936a9b8262157248fe90a4de6f1d6862abf787b3db054fd77f6de14a8a1ea"
+    },
+    {
+      "nodes": 5000,
+      "dimension": 64,
+      "unique_float32_rows": 5000,
+      "max_exact_multiplicity": 1,
+      "rows_with_at_least15_exact_copies": 0,
+      "mean_squared_norm": 0.23396385212125095,
+      "total_centered_variance": 2.0635428894486656e-06,
+      "feature_variance_quantiles": [
+        6.47318096751144e-09,
+        2.068748954710956e-08,
+        1.178922921329141e-07
+      ],
+      "radii": {
+        "fp32_mm": {
+          "zero_count": 3251,
+          "quantiles": [
+            0.0,
+            0.0,
+            0.0,
+            0.0005980199784971774,
+            0.0012448778143152595
+          ]
+        },
+        "fp32_direct": {
+          "zero_count": 0,
+          "quantiles": [
+            3.4215558116557077e-05,
+            4.519727455772227e-05,
+            0.00012355451326584443,
+            0.0005974725354462862,
+            0.0012444225139915943
+          ]
+        },
+        "fp64_direct": {
+          "zero_count": 0,
+          "quantiles": [
+            3.4215560636848723e-05,
+            4.519727936810742e-05,
+            0.00012355450939386623,
+            0.0005974725473862597,
+            0.001244422577218063
+          ]
+        }
+      },
+      "fp32_mm_radius_zero_but_fp64_positive": 3251,
+      "pair_counts": {
+        "mm_zero_but_direct_positive": 569302,
+        "direct32_zero_but_direct64_positive": 0
+      },
+      "all_pair_absolute_error": {
+        "fp32_mm": {
+          "max": 0.0004640285867932229,
+          "mean": 3.173822126769385e-05
+        },
+        "fp32_direct": {
+          "max": 1.7179283898216546e-09,
+          "mean": 7.421771637027152e-11
+        }
+      },
+      "precision": "All distance comparisons run on CPU on the same saved float32 rows. CPU FP32-mm is the official formula but not a bitwise replay of its CUDA kernel.",
+      "scope": "No fit, labels, graph change or production repair. Centered variance is descriptive only; no centered metric is evaluated.",
+      "id": "tworoom-TF64-seed2",
+      "capture": {
+        "passed": true,
+        "id": "tworoom-TF64-seed2",
+        "spec_sha256": "ae120791074c9094474fe1b7cc5204a557ae7a165a9b14f9c96c461200e4b119",
+        "original_spec_sha256": "941c653803e7611e76dcdd574c07fb40f20717d1fb8c361a779c6558cfd7cf72",
+        "nodes_sha256": "7811d06f5a6983365c96a6cb483eabae8302ee6df757cf5b199df3e2eabfc7fb",
+        "cohort_sha256": "fcc1124651508fe920dd8acefc8ce4935ae75b58955a9d16a4519544d5045598",
+        "counts": {
+          "rgb": 5000,
+          "encoder": 157,
+          "predict": 0,
+          "action_encoder": 0,
+          "renderer": 0
+        },
+        "state_before": "3b5a91fa6392fc42df288019756c5cbb32869c3e9ffa93caddc12481b09000bd",
+        "state_after": "3b5a91fa6392fc42df288019756c5cbb32869c3e9ffa93caddc12481b09000bd",
+        "rng_before": "845a58de966cd71bdfaf458044d63ce63cb17bca6d3ff56b79912084ce9875a8",
+        "rng_after": "845a58de966cd71bdfaf458044d63ce63cb17bca6d3ff56b79912084ce9875a8",
+        "actual_model": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1/as_jepa_lewm/robust.py",
+        "actual_model_sha256": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc",
+        "seconds": 129.53611062001437,
+        "peak_device_bytes": 349762048,
+        "scope": "Exact5000 original train rows; saved float32 codes. No NGC constructor or distance kernel called on GPU."
+      },
+      "cpu_radii_sha256": "649856966ba74aafa2315b8cedf25a58d88ede58d3bd56a9c334fde8b14c59a7"
+    }
+  ],
+  "new_rgb": 10000,
+  "new_encoder_calls": 314,
+  "production_changed": false,
+  "planning_held": true
+}
