@@ -60,10 +60,13 @@ class SpatialCarrierLeWM(RobustLeWM):
     scale and compute differ. Only local versus dense is the matched control.
     """
     def __init__(self,spatial_mode='local',spatial_mean=None,spatial_scale=None,spatial_basis='identity',
-                 spatial_chart='none',state_slots=64,state_width=16,**kwargs):
+                 spatial_chart='none',spatial_state_interface='chart',state_slots=64,state_width=16,**kwargs):
         if spatial_mode not in {'local','dense'}:raise ValueError('Unknown spatial_mode')
         if spatial_basis not in {'identity','orthogonal'}:raise ValueError('Unknown spatial_basis')
         if spatial_chart not in {'none','identity','bounded'}:raise ValueError('Unknown spatial_chart')
+        if spatial_state_interface not in {'chart','raw'}:raise ValueError('Unknown spatial_state_interface')
+        if spatial_state_interface=='raw' and spatial_chart=='none':
+            raise ValueError('The raw chart interface requires an explicit identity or bounded chart')
         if spatial_chart!='none' and (spatial_mode!='local' or spatial_basis!='identity'):
             raise ValueError('Shared chart gate requires the original local spatial addresses')
         if (state_slots,state_width)!=(64,16):raise ValueError('This gate requires64 slots×16 channels')
@@ -75,6 +78,9 @@ class SpatialCarrierLeWM(RobustLeWM):
             raise ValueError('Calibration must remain fixed, never batch coupled')
         if kwargs.get('response_query_mode','none')!='none':raise ValueError('No auxiliary head in this gate')
         if (spatial_mean is None)!=(spatial_scale is None):raise ValueError('Provide both fixed statistics or neither')
+        if spatial_state_interface=='raw':
+            from as_jepa_lewm.carrier import RawConditionChartRenderer
+            self.renderer_type=RawConditionChartRenderer
         super().__init__(state_slots=state_slots,state_width=state_width,**kwargs)
         self.encoder.requires_grad_(False);self.pool.requires_grad_(False)
         self.encoder.eval();self.pool.eval()
@@ -92,11 +98,13 @@ class SpatialCarrierLeWM(RobustLeWM):
         if spatial_basis=='orthogonal':
             self.register_buffer('spatial_orthogonal_basis',torch.from_numpy(orthogonal_basis()))
         self.spatial_chart=spatial_chart
+        self.spatial_state_interface=spatial_state_interface
         if spatial_chart!='none':
             # Reuse the certified residual map. One2128-parameter16→64→16 map
             # acts on every slot; initialization uses its isolated CPU RNG.
             from as_jepa_lewm.carrier import ResidualCarrierChart
             self.carrier_chart_module=ResidualCarrierChart(16,64,spatial_chart,.5)
+            if spatial_state_interface=='raw':self.renderer.bind_condition_chart(self.carrier_chart_module)
 
     def train(self,mode=True):
         super().train(mode);self.encoder.eval();self.pool.eval();return self
@@ -143,9 +151,15 @@ class SpatialCarrierLeWM(RobustLeWM):
         if not self._spatial_has_statistics:raise RuntimeError('Prepare train-only statistics before encode or training')
         info['emb']=(self.raw_carrier(info['pixels'])-self.spatial_mean)/self.spatial_scale
         info['emb']=self.transform_spatial_basis(info['emb'])
-        info['emb']=self.transform_spatial_chart(info['emb'])
+        if self.spatial_state_interface=='chart':info['emb']=self.transform_spatial_chart(info['emb'])
         if 'action' in info:info['act_emb']=self.action_encoder(info['action'])
         return info
+
+    def predict(self,emb,act_emb):
+        if self.spatial_state_interface=='chart':return super().predict(emb,act_emb)
+        chart_prediction=super().predict(self.transform_spatial_chart(emb),act_emb)
+        slots=chart_prediction.reshape(*chart_prediction.shape[:-1],self.state_slots,self.state_width)
+        return self.carrier_chart_module.differentiable_inverse(slots).reshape_as(chart_prediction)
 
     def audit_expected_gradients(self):
         result=dict(encoder='frozen',pool='frozen',predictor='active',renderer='active',action_encoder='optional')

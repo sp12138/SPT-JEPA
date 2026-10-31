@@ -56,6 +56,8 @@ class PartitionedQueryPool(QueryPool):
 
 
 class ASJepaLeWM(LeWM):
+    renderer_type = AnchoredWorldDiT
+
     def __init__(self, mode="L2", beta=4.0, sigma0=.1, window=8, use_anchor=True,
                  renderer_width=192, renderer_depth=6, renderer_heads=3,
                  carry=True, domain="standard", encoder_size=224, encoder_depth=12,
@@ -98,7 +100,7 @@ class ASJepaLeWM(LeWM):
         self.renderer=None
         if not baseline:
             cfg=replace(renderer_config(self.state_width),width=renderer_width,depth=renderer_depth,heads=renderer_heads,adaln_lora_dim=min(256,renderer_width))
-            self.renderer=AnchoredWorldDiT(cfg,state_dim=self.state_width,num_slots=self.state_slots,use_anchor=use_anchor)
+            self.renderer=self.renderer_type(cfg,state_dim=self.state_width,num_slots=self.state_slots,use_anchor=use_anchor)
             self.renderer.sequence_parallel=False
             self.shift=timestep_shift(cfg)
             # Multiplication of odds adds exactly this amount in logit space.

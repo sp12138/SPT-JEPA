@@ -9,12 +9,95 @@ import numpy as np
 import torch
 from torch import nn
 from torch.nn import functional as F
+from torch.autograd.function import once_differentiable
 
 from as_jepa_lewm.robust import RobustLeWM
+from vforge.models.as_jepa.renderer import AnchoredWorldDiT
 
 
 PROJECTION_SEED = 20261030
 CHART_SEED = 20261031
+
+
+def _contractive_solve(target, residual, bound, iterations, atol, rtol, label):
+    """Solve x+residual(x)=target, checking a per-vector Euclidean certificate.
+
+    For a bound-Lipschitz residual, ||x-x*|| <= ||x+r(x)-target||/(1-bound).
+    The certificate is in exact arithmetic; its measured residual uses the
+    actual execution precision. Nonconvergence/nonfinite values fail closed.
+    """
+    result = target.clone()
+    tolerance = atol + rtol * torch.linalg.vector_norm(target, dim=-1)
+    for step in range(iterations):
+        result = target - residual(result)
+        if (step + 1) % 4 == 0 or step + 1 == iterations:
+            error_bound = torch.linalg.vector_norm(result + residual(result) - target, dim=-1) / (1-bound)
+            if bool(torch.isfinite(error_bound).all() and (error_bound <= tolerance).all()):
+                return result
+    raise RuntimeError(f"{label} failed contraction residual certificate after {iterations} iterations")
+
+
+class _ImplicitChartInverse(torch.autograd.Function):
+    """First-order implicit inverse; no iteration tape or double backward.
+
+    Effective matrices are tensor inputs, so ordinary autograd subsequently
+    differentiates their spectral normalization. The fixed-point solve stores
+    one solution, not a graph per iteration. The adjoint uses the same bound.
+    """
+    @staticmethod
+    def forward(ctx, value, first, second, bias_one, bias_two, bound, iterations, atol, rtol):
+        with torch.autocast(device_type=value.device.type, enabled=False):
+            def residual(x):
+                return F.linear(torch.tanh(F.linear(x, first, bias_one)), bound*second, bias_two)
+            result = _contractive_solve(value, residual, bound, iterations, atol, rtol, "Chart inverse")
+        ctx.save_for_backward(result, first, second, bias_one)
+        ctx.bound, ctx.iterations, ctx.atol, ctx.rtol = bound, iterations, atol, rtol
+        return result
+
+    @staticmethod
+    @once_differentiable
+    def backward(ctx, grad_output):
+        value, first, second, bias_one = ctx.saved_tensors
+        bound = ctx.bound
+        with torch.autocast(device_type=value.device.type, enabled=False):
+            hidden = torch.tanh(F.linear(value, first, bias_one))
+            derivative = 1-hidden.square()
+            def adjoint_residual(vector):
+                return bound * F.linear(F.linear(vector, second.T)*derivative, first.T)
+            adjoint = _contractive_solve(grad_output.float(), adjoint_residual, bound,
+                ctx.iterations, 0., ctx.rtol, "Chart inverse adjoint")
+            hidden_grad = bound * F.linear(adjoint, second.T) * derivative
+            flat_adjoint, flat_hidden = adjoint.reshape(-1, adjoint.shape[-1]), hidden.reshape(-1, hidden.shape[-1])
+            flat_hg, flat_value = hidden_grad.reshape(-1, hidden_grad.shape[-1]), value.reshape(-1, value.shape[-1])
+            # d inverse / d theta = -J_T^{-1} partial_theta T: both input and
+            # explicit chart-parameter derivatives are essential.
+            return (adjoint, -(flat_hg.T @ flat_value), -bound*(flat_adjoint.T @ flat_hidden),
+                    -flat_hg.sum(0), -flat_adjoint.sum(0), None, None, None, None)
+
+
+class RawConditionChartRenderer(AnchoredWorldDiT):
+    """Public conditions are raw; transform exactly once at every forward.
+
+    This explicit renderer subtype covers loss, generation and direct health
+    calls, including condition_drop. No hooks or renamed checkpoint tensors.
+    The owning model registers the shared chart once; this reference must not
+    register a duplicate module/optimizer parameter subtree.
+    """
+    def bind_condition_chart(self, chart):
+        object.__setattr__(self, "_raw_condition_chart", chart)
+
+    def forward(self, latent, timestep, *, condition=None, **kwargs):
+        if not hasattr(self, "_raw_condition_chart"):
+            raise RuntimeError("Bind the shared chart before using the raw-condition renderer")
+        if condition is not None:
+            width = self._raw_condition_chart.input.in_features
+            if condition.shape[-1] != width:
+                slots = self.semantic_raw_projector[1].slot.shape[0]
+                if condition.shape[-1] != slots*width:
+                    raise ValueError("Raw renderer condition must contain the declared slots and channels")
+                condition = condition.unflatten(-1, (slots, width))
+            condition = self._raw_condition_chart(condition)
+        return super().forward(latent, timestep, condition=condition, **kwargs)
 
 
 class ResidualCarrierChart(nn.Module):
@@ -100,6 +183,22 @@ The identity control freezes the exact identity initialization of this same net.
         for _ in range(iterations):
             result = value.float() - (self(result) - result)
         return result
+
+    def differentiable_inverse(self, value, iterations=64, atol=1e-6, rtol=1e-6):
+        """Certified first-order inverse for the raw public state interface.
+
+        Leaves the historical no_grad inverse and all old forward paths intact.
+        Second-order derivatives are deliberately unsupported. The tolerance
+        bounds each slot's Euclidean solution error; it is not a KL correction.
+        """
+        if self.mode == "unconstrained":
+            raise ValueError("A bounded chart is required for the implicit inverse")
+        if iterations < 1 or not all(math.isfinite(x) and x > 0 for x in (atol, rtol)):
+            raise ValueError("Require positive inverse iterations and finite positive tolerances")
+        with torch.autocast(device_type=value.device.type, enabled=False):
+            first, second = self.effective_weights()
+            return _ImplicitChartInverse.apply(value.float(), first, second,
+                self.input.bias.float(), self.output.bias.float(), self.bound, iterations, atol, rtol)
 
 
 class CarrierLeWM(RobustLeWM):

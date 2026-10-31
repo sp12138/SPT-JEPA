@@ -37,7 +37,6 @@ class SharedChartContracts(unittest.TestCase):
     def test_full_native_default_identity_loss_all_gradients_and_initial_rng(self):
         legacy=legacy_class();checks=[]
         self.assertIs(SpatialCarrierLeWM.loss,RobustLeWM.loss)
-        self.assertIs(SpatialCarrierLeWM.predict,RobustLeWM.predict)
         for task in ['tworoom','cube']:
             cfg=json.loads((B/f'runs/local_isotropic600_20261031/{task}-spatial-local-seed1/config.json').read_text())
             torch.manual_seed(cfg['seed']);old=legacy(**cfg['model']).train();rng=torch.get_rng_state().clone()
