@@ -1,0 +1,540 @@
+{
+  "full_results": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/cube-tf12000-20261031/results.json",
+    "sha256": "6cc97b000a50033ba8ce006be87659439a17a210e70312e3ba6de536ac2f13ae",
+    "bytes": 292047
+  },
+  "completed_endpoint_count": 10,
+  "all_checks_passed": true,
+  "source_commit": "8e0f821bba84e7ed8c0f16500d7c880fde56d4cf",
+  "helper_commit": "0934d3c445e6c754a6ab547d801890c34740b330",
+  "provenance": {
+    "original": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1.json",
+      "sha256": "74a69a2f466923e6e33d4ab82989cd1053d1b036e83c1e04dbbe5eb41ff80ee8",
+      "bytes": 19603
+    },
+    "helper": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/reviewed_followup_20261031/source-v1.json",
+      "sha256": "934e368c936b9a369b13c1a266183aa90dc409018d71ff2f24d0e31c4b0d2d20",
+      "bytes": 35533
+    },
+    "runtime": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+      "sha256": "21d850572b9fba94e2e4a0d2c6103c81fd31e2119c3fce3c202f80f6b65df9fd",
+      "bytes": 138909
+    }
+  },
+  "parent_report": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/carrier6000-20261031/results.json",
+    "sha256": "0d4843a7c809062aea682ee3f506cd767eb866b032ed848a46822cdcd38c5928",
+    "bytes": 2749269
+  },
+  "comparison_summaries": [
+    {
+      "case_set": "primary",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -6.0,
+        6.0
+      ],
+      "mean_difference_pp": 0.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -8.0,
+        8.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "case_set": "fresh",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        0.0,
+        -2.0
+      ],
+      "mean_difference_pp": -1.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -9.0,
+        7.000000000000001
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    }
+  ],
+  "rows": [
+    {
+      "seed": 1,
+      "planning": {
+        "primary": {
+          "old_success": 24.0,
+          "new_success": 18.0
+        },
+        "fresh": {
+          "old_success": 14.0,
+          "new_success": 14.0
+        }
+      },
+      "portable": [
+        {
+          "step": 6000,
+          "finite": true,
+          "tensors": 550,
+          "shapes_equal": true,
+          "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-temporal-forecast-seed1/model-step0006000/weights.pt",
+          "sha256": "78b676f0960bcdaca91cd7359563b0cdfa2a4e3022824c2344c1b4392ab0645c",
+          "bytes": 204755443
+        },
+        {
+          "step": 8000,
+          "finite": true,
+          "tensors": 550,
+          "shapes_equal": true,
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed1/model-step0008000/weights.pt",
+          "sha256": "05433d9d9658106de54aba743ffce5392954bfdba89e86db383d7e587d45e189",
+          "bytes": 204755443
+        },
+        {
+          "step": 10000,
+          "finite": true,
+          "tensors": 550,
+          "shapes_equal": true,
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed1/model-step0010000/weights.pt",
+          "sha256": "613106ad01e9e88d60492b89a7e9d39210c3b5b1ec0ece4ba0e11359fd4853d1",
+          "bytes": 204755443
+        },
+        {
+          "step": 12000,
+          "finite": true,
+          "tensors": 550,
+          "shapes_equal": true,
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed1/model-step0012000/weights.pt",
+          "sha256": "d631228eb3ff86106f6895886caca1f6b5478132930f124881d5717d6505a9be",
+          "bytes": 204755443
+        }
+      ],
+      "health_old": {
+        "audit": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.2533433735370636,
+            "predictor": 0.06540755927562714,
+            "renderer": 0.6389930248260498
+          },
+          "gradient_expectations": {
+            "encoder": "active",
+            "predictor": "active",
+            "renderer": "active"
+          }
+        },
+        "summary": {
+          "fm_t0.2_posterior": 0.04632303863763809,
+          "fm_t0.2_shuffled_posterior": 0.2025137534365058,
+          "fm_t0.2_forecast": 0.046325065195560455,
+          "fm_t0.2_wrong_state": 0.15966097498312593,
+          "fm_t0.2_wrong_actions": 0.06378835183568299,
+          "fm_t0.2_carry": 0.137370303273201,
+          "fm_t0.2_zero": 0.0808644664939493,
+          "fm_t0.5_posterior": 0.011408308695536107,
+          "fm_t0.5_shuffled_posterior": 0.11316771921701729,
+          "fm_t0.5_forecast": 0.011268092144746333,
+          "fm_t0.5_wrong_state": 0.09506599046289921,
+          "fm_t0.5_wrong_actions": 0.033441699808463454,
+          "fm_t0.5_carry": 0.08187262271530926,
+          "fm_t0.5_zero": 0.04914766165893525,
+          "fm_t0.8_posterior": 0.006892205332405865,
+          "fm_t0.8_shuffled_posterior": 0.07333053834736347,
+          "fm_t0.8_forecast": 0.007017903990345076,
+          "fm_t0.8_wrong_state": 0.0686598711181432,
+          "fm_t0.8_wrong_actions": 0.036431037588045,
+          "fm_t0.8_carry": 0.05738509725779295,
+          "fm_t0.8_zero": 0.05536592728458345,
+          "fm_t0.95_posterior": 0.005512867064680904,
+          "fm_t0.95_shuffled_posterior": 0.05464950134046376,
+          "fm_t0.95_forecast": 0.005663081785314716,
+          "fm_t0.95_wrong_state": 0.0520714953308925,
+          "fm_t0.95_wrong_actions": 0.028343520243652165,
+          "fm_t0.95_carry": 0.042653183452785015,
+          "fm_t0.95_zero": 0.043140076217241585
+        },
+        "feature_std": 0.5939273834228516,
+        "feature_signal_to_posterior_noise": 5.939273834228516,
+        "parameters": 51101514,
+        "inference_shift": 1.7420771050673962,
+        "training_shift": 1.7420771050673962,
+        "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+      },
+      "health_new": {
+        "audit": {
+          "step": 12000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.2598114311695099,
+            "predictor": 0.06356023997068405,
+            "renderer": 0.5033132433891296
+          },
+          "gradient_expectations": {
+            "encoder": "active",
+            "predictor": "active",
+            "renderer": "active"
+          }
+        },
+        "summary": {
+          "fm_t0.2_posterior": 0.028538547572679818,
+          "fm_t0.2_shuffled_posterior": 0.29213770013302565,
+          "fm_t0.2_forecast": 0.02880153665319085,
+          "fm_t0.2_wrong_state": 0.22092809458263218,
+          "fm_t0.2_wrong_actions": 0.0636332503054291,
+          "fm_t0.2_carry": 0.18282165937125683,
+          "fm_t0.2_zero": 0.09147594589740038,
+          "fm_t0.5_posterior": 0.00752966059371829,
+          "fm_t0.5_shuffled_posterior": 0.13656383962370455,
+          "fm_t0.5_forecast": 0.007481184555217624,
+          "fm_t0.5_wrong_state": 0.11998915625736117,
+          "fm_t0.5_wrong_actions": 0.04457763850223273,
+          "fm_t0.5_carry": 0.1031291326507926,
+          "fm_t0.5_zero": 0.0526753063313663,
+          "fm_t0.8_posterior": 0.0047741532034706324,
+          "fm_t0.8_shuffled_posterior": 0.08038368076086044,
+          "fm_t0.8_forecast": 0.00487307998992037,
+          "fm_t0.8_wrong_state": 0.07498962059617043,
+          "fm_t0.8_wrong_actions": 0.03902913874480873,
+          "fm_t0.8_carry": 0.061935047851875424,
+          "fm_t0.8_zero": 0.05870033195242286,
+          "fm_t0.95_posterior": 0.003895662186550908,
+          "fm_t0.95_shuffled_posterior": 0.05887701571919024,
+          "fm_t0.95_forecast": 0.003944544747355394,
+          "fm_t0.95_wrong_state": 0.05548557359725237,
+          "fm_t0.95_wrong_actions": 0.029308453551493585,
+          "fm_t0.95_carry": 0.045157106942497194,
+          "fm_t0.95_zero": 0.044239171664230525
+        },
+        "feature_std": 0.7998471856117249,
+        "feature_signal_to_posterior_noise": 7.9984718561172485,
+        "parameters": 51101514,
+        "inference_shift": 1.7420771050673962,
+        "training_shift": 1.7420771050673962,
+        "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+      },
+      "health_change_percent": {
+        "fm_t0.2_posterior": -38.39232396664958,
+        "fm_t0.2_shuffled_posterior": 44.25573333942461,
+        "fm_t0.2_forecast": -37.82731544660398,
+        "fm_t0.2_wrong_state": 38.37325909226183,
+        "fm_t0.2_wrong_actions": -0.24315023948796588,
+        "fm_t0.2_carry": 33.08674074021847,
+        "fm_t0.2_zero": 13.122549203048406,
+        "fm_t0.5_posterior": -33.99844977315061,
+        "fm_t0.5_shuffled_posterior": 20.67384636587173,
+        "fm_t0.5_forecast": -33.60735376391405,
+        "fm_t0.5_wrong_state": 26.216700286932348,
+        "fm_t0.5_wrong_actions": 33.29955940502458,
+        "fm_t0.5_carry": 25.962903386394885,
+        "fm_t0.5_zero": 7.17764498525173,
+        "fm_t0.8_posterior": -30.731123447186725,
+        "fm_t0.8_shuffled_posterior": 9.618288059043767,
+        "fm_t0.8_forecast": -30.562173597351293,
+        "fm_t0.8_wrong_state": 9.218994115406387,
+        "fm_t0.8_wrong_actions": 7.131559595262016,
+        "fm_t0.8_carry": 7.928801747329239,
+        "fm_t0.8_zero": 6.022485003638445,
+        "fm_t0.95_posterior": -29.335096586871956,
+        "fm_t0.95_shuffled_posterior": 7.735687014579096,
+        "fm_t0.95_forecast": -30.346322075301224,
+        "fm_t0.95_wrong_state": 6.556520500640195,
+        "fm_t0.95_wrong_actions": 3.4044229493953804,
+        "fm_t0.95_carry": 5.870425808858792,
+        "fm_t0.95_zero": 2.547736451493954
+      },
+      "training": {
+        "old_late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.009945312980562449,
+          "fm": 0.009183500738193592,
+          "rate": 0.003047249357526501,
+          "feature_std": 0.5609900951385498
+        },
+        "recent": {
+          "step_range": [
+            10500,
+            11000
+          ],
+          "records": 6,
+          "loss": 0.007429215125739574,
+          "fm": 0.006652528730531533,
+          "rate": 0.003106745231586198,
+          "feature_std": 0.731162408987681
+        },
+        "late": {
+          "step_range": [
+            11500,
+            12000
+          ],
+          "records": 6,
+          "loss": 0.007230125367641449,
+          "fm": 0.006452423209945361,
+          "rate": 0.0031108083203434944,
+          "feature_std": 0.7608748972415924
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "planning": {
+        "primary": {
+          "old_success": 14.0,
+          "new_success": 20.0
+        },
+        "fresh": {
+          "old_success": 18.0,
+          "new_success": 16.0
+        }
+      },
+      "portable": [
+        {
+          "step": 6000,
+          "finite": true,
+          "tensors": 550,
+          "shapes_equal": true,
+          "path": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-temporal-forecast-seed2/model-step0006000/weights.pt",
+          "sha256": "65f0f4e52f6a08cc6647e95d7f93610faf7fe7caf017a2bb7216baeed3f19dcc",
+          "bytes": 204755443
+        },
+        {
+          "step": 8000,
+          "finite": true,
+          "tensors": 550,
+          "shapes_equal": true,
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed2/model-step0008000/weights.pt",
+          "sha256": "2beec8696fcde37ac706e71e5d048ade91dddc1202104dade3b0c5210f1fc499",
+          "bytes": 204755443
+        },
+        {
+          "step": 10000,
+          "finite": true,
+          "tensors": 550,
+          "shapes_equal": true,
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed2/model-step0010000/weights.pt",
+          "sha256": "80df08471a5557e4ef22e7c78c52212267953171b8b08b17c0f8f03630e2399d",
+          "bytes": 204755443
+        },
+        {
+          "step": 12000,
+          "finite": true,
+          "tensors": 550,
+          "shapes_equal": true,
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_tf12000_20261031/cube-temporal-forecast-seed2/model-step0012000/weights.pt",
+          "sha256": "42beba9395ae8632e06aafe38af2447b7b8ee2bf3281155963dcd4541df42702",
+          "bytes": 204755443
+        }
+      ],
+      "health_old": {
+        "audit": {
+          "step": 6000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.20613287389278412,
+            "predictor": 0.0713324174284935,
+            "renderer": 0.6438254714012146
+          },
+          "gradient_expectations": {
+            "encoder": "active",
+            "predictor": "active",
+            "renderer": "active"
+          }
+        },
+        "summary": {
+          "fm_t0.2_posterior": 0.04551899270154536,
+          "fm_t0.2_shuffled_posterior": 0.19900407083332539,
+          "fm_t0.2_forecast": 0.045572461327537894,
+          "fm_t0.2_wrong_state": 0.1541638351045549,
+          "fm_t0.2_wrong_actions": 0.0605913030449301,
+          "fm_t0.2_carry": 0.1290836683474481,
+          "fm_t0.2_zero": 0.06859002425335348,
+          "fm_t0.5_posterior": 0.011523023538757116,
+          "fm_t0.5_shuffled_posterior": 0.11014048638753593,
+          "fm_t0.5_forecast": 0.01149973866995424,
+          "fm_t0.5_wrong_state": 0.09393541153986007,
+          "fm_t0.5_wrong_actions": 0.030814308556728065,
+          "fm_t0.5_carry": 0.08290007198229432,
+          "fm_t0.5_zero": 0.04374783963430673,
+          "fm_t0.8_posterior": 0.006754201953299344,
+          "fm_t0.8_shuffled_posterior": 0.0735886124894023,
+          "fm_t0.8_forecast": 0.007890821696491912,
+          "fm_t0.8_wrong_state": 0.06930196937173605,
+          "fm_t0.8_wrong_actions": 0.03597645845729858,
+          "fm_t0.8_carry": 0.05844756285659969,
+          "fm_t0.8_zero": 0.05548035725951195,
+          "fm_t0.95_posterior": 0.005441888468340039,
+          "fm_t0.95_shuffled_posterior": 0.055102039594203234,
+          "fm_t0.95_forecast": 0.007186565300798975,
+          "fm_t0.95_wrong_state": 0.05274093057960272,
+          "fm_t0.95_wrong_actions": 0.028503726003691554,
+          "fm_t0.95_carry": 0.0434371690498665,
+          "fm_t0.95_zero": 0.04290534765459597
+        },
+        "feature_std": 0.5866039991378784,
+        "feature_signal_to_posterior_noise": 5.866039991378784,
+        "parameters": 51101514,
+        "inference_shift": 1.7420771050673962,
+        "training_shift": 1.7420771050673962,
+        "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+      },
+      "health_new": {
+        "audit": {
+          "step": 12000,
+          "model_finite": true,
+          "optimizer_finite": true,
+          "scheduler_finite": true,
+          "cursor": true,
+          "rng_present": true,
+          "optimizer_present": true,
+          "scheduler_present": true,
+          "portable_equal": true,
+          "gradient_max": {
+            "encoder": 0.20124593377113342,
+            "predictor": 0.08062482625246048,
+            "renderer": 0.48190996050834656
+          },
+          "gradient_expectations": {
+            "encoder": "active",
+            "predictor": "active",
+            "renderer": "active"
+          }
+        },
+        "summary": {
+          "fm_t0.2_posterior": 0.029299679677933455,
+          "fm_t0.2_shuffled_posterior": 0.2995249219238758,
+          "fm_t0.2_forecast": 0.029424867243506014,
+          "fm_t0.2_wrong_state": 0.23173885000869632,
+          "fm_t0.2_wrong_actions": 0.06550039583817124,
+          "fm_t0.2_carry": 0.18634912464767694,
+          "fm_t0.2_zero": 0.09166154405102134,
+          "fm_t0.5_posterior": 0.007575954572530463,
+          "fm_t0.5_shuffled_posterior": 0.13306132634170353,
+          "fm_t0.5_forecast": 0.007545624452177435,
+          "fm_t0.5_wrong_state": 0.12152854027226567,
+          "fm_t0.5_wrong_actions": 0.04482968628872186,
+          "fm_t0.5_carry": 0.10569201176986098,
+          "fm_t0.5_zero": 0.062241372535936534,
+          "fm_t0.8_posterior": 0.00479420596093405,
+          "fm_t0.8_shuffled_posterior": 0.08018995448946953,
+          "fm_t0.8_forecast": 0.005498492362676188,
+          "fm_t0.8_wrong_state": 0.07625160249881446,
+          "fm_t0.8_wrong_actions": 0.03920349036343396,
+          "fm_t0.8_carry": 0.062274711206555367,
+          "fm_t0.8_zero": 0.05764057254418731,
+          "fm_t0.95_posterior": 0.0038528688019141555,
+          "fm_t0.95_shuffled_posterior": 0.05883913207799196,
+          "fm_t0.95_forecast": 0.0047374781424878165,
+          "fm_t0.95_wrong_state": 0.05677652079612017,
+          "fm_t0.95_wrong_actions": 0.029816734604537487,
+          "fm_t0.95_carry": 0.04549359995871782,
+          "fm_t0.95_zero": 0.04405650636181235
+        },
+        "feature_std": 0.78250652551651,
+        "feature_signal_to_posterior_noise": 7.8250652551651,
+        "parameters": 51101514,
+        "inference_shift": 1.7420771050673962,
+        "training_shift": 1.7420771050673962,
+        "scope": "Validation-only matched-noise diagnostics. State permutations preserve posterior-noise draws; zero-state sensitivity alone can be a constant-bias effect. Numerical health is not learned control or generation success."
+      },
+      "health_change_percent": {
+        "fm_t0.2_posterior": -35.631968242261344,
+        "fm_t0.2_shuffled_posterior": 50.51195720249413,
+        "fm_t0.2_forecast": -35.43278904331295,
+        "fm_t0.2_wrong_state": 50.31985280563988,
+        "fm_t0.2_wrong_actions": 8.101975938033412,
+        "fm_t0.2_carry": 44.3630530750724,
+        "fm_t0.2_zero": 33.63684449570648,
+        "fm_t0.5_posterior": -34.25376120209147,
+        "fm_t0.5_shuffled_posterior": 20.810549059606707,
+        "fm_t0.5_forecast": -34.38438325653308,
+        "fm_t0.5_wrong_state": 29.37457587088643,
+        "fm_t0.5_wrong_actions": 45.483343253320044,
+        "fm_t0.5_carry": 27.4932689955137,
+        "fm_t0.5_zero": 42.27301977930657,
+        "fm_t0.8_posterior": -29.01891305467791,
+        "fm_t0.8_shuffled_posterior": 8.970602620096834,
+        "fm_t0.8_forecast": -30.317873420955653,
+        "fm_t0.8_wrong_state": 10.028045653075957,
+        "fm_t0.8_wrong_actions": 8.969843182217696,
+        "fm_t0.8_carry": 6.54800330912948,
+        "fm_t0.8_zero": 3.893657848255838,
+        "fm_t0.95_posterior": -29.199783782238896,
+        "fm_t0.95_shuffled_posterior": 6.782130954335619,
+        "fm_t0.95_forecast": -34.07868788221931,
+        "fm_t0.95_wrong_state": 7.651723570607971,
+        "fm_t0.95_wrong_actions": 4.606445489533129,
+        "fm_t0.95_carry": 4.734265500798429,
+        "fm_t0.95_zero": 2.6830191809273707
+      },
+      "training": {
+        "old_late": {
+          "step_range": [
+            5500,
+            6000
+          ],
+          "records": 6,
+          "loss": 0.010206117605169615,
+          "fm": 0.009438602409015099,
+          "rate": 0.0030700600861261287,
+          "feature_std": 0.5593431194623312
+        },
+        "recent": {
+          "step_range": [
+            10500,
+            11000
+          ],
+          "records": 6,
+          "loss": 0.007605417321125667,
+          "fm": 0.0068105257426699,
+          "rate": 0.003179566546653708,
+          "feature_std": 0.7358235915501913
+        },
+        "late": {
+          "step_range": [
+            11500,
+            12000
+          ],
+          "records": 6,
+          "loss": 0.007266519746432702,
+          "fm": 0.0064691171670953436,
+          "rate": 0.0031896105501800776,
+          "feature_std": 0.7519286274909973
+        }
+      }
+    }
+  ],
+  "scope": "CPU read-only review. No model forward, training, GPU, or added evaluation. Case bootstrap10000 seed1042 jointly resamples50 cases across the same2 trained seeds; conditional on checkpoints, not training-seed-population uncertainty. Primary/fresh remain distinct validation sets. Health is matched-noise renderer error, not clean latent outcome error."
+}

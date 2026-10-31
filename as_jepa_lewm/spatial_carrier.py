@@ -54,14 +54,18 @@ def projection_matrix(mode):
 class SpatialCarrierLeWM(RobustLeWM):
     """Same64×16 native state interface in both fixed-measurement arms.
 
-    No learned chart/head, auxiliary loss, privileged label, or batch statistics.
+    Optional shared local chart changes coordinates without mixing spatial slots.
+    No auxiliary loss/head, privileged label, or batch statistics.
     Compared with the old64-D carrier, state dimension, parameter count, rate
     scale and compute differ. Only local versus dense is the matched control.
     """
     def __init__(self,spatial_mode='local',spatial_mean=None,spatial_scale=None,spatial_basis='identity',
-                 state_slots=64,state_width=16,**kwargs):
+                 spatial_chart='none',state_slots=64,state_width=16,**kwargs):
         if spatial_mode not in {'local','dense'}:raise ValueError('Unknown spatial_mode')
         if spatial_basis not in {'identity','orthogonal'}:raise ValueError('Unknown spatial_basis')
+        if spatial_chart not in {'none','identity','bounded'}:raise ValueError('Unknown spatial_chart')
+        if spatial_chart!='none' and (spatial_mode!='local' or spatial_basis!='identity'):
+            raise ValueError('Shared chart gate requires the original local spatial addresses')
         if (state_slots,state_width)!=(64,16):raise ValueError('This gate requires64 slots×16 channels')
         if kwargs.get('mode','L2')!='L2' or kwargs.get('domain','standard')!='standard':
             raise ValueError('This fixed gate requires standard benchmark L2')
@@ -87,6 +91,12 @@ class SpatialCarrierLeWM(RobustLeWM):
         # No new default buffer/key or tensor operation in legacy checkpoints.
         if spatial_basis=='orthogonal':
             self.register_buffer('spatial_orthogonal_basis',torch.from_numpy(orthogonal_basis()))
+        self.spatial_chart=spatial_chart
+        if spatial_chart!='none':
+            # Reuse the certified residual map. One2128-parameter16→64→16 map
+            # acts on every slot; initialization uses its isolated CPU RNG.
+            from as_jepa_lewm.carrier import ResidualCarrierChart
+            self.carrier_chart_module=ResidualCarrierChart(16,64,spatial_chart,.5)
 
     def train(self,mode=True):
         super().train(mode);self.encoder.eval();self.pool.eval();return self
@@ -124,21 +134,34 @@ class SpatialCarrierLeWM(RobustLeWM):
         with torch.autocast(device_type=state.device.type,enabled=False):
             return (state.double()@self.spatial_orthogonal_basis.double()).to(state.dtype)
 
+    def transform_spatial_chart(self,state):
+        if self.spatial_chart=='none':return state
+        slots=state.reshape(*state.shape[:-1],self.state_slots,self.state_width)
+        return self.carrier_chart_module(slots).reshape_as(state)
+
     def encode(self,info):
         if not self._spatial_has_statistics:raise RuntimeError('Prepare train-only statistics before encode or training')
         info['emb']=(self.raw_carrier(info['pixels'])-self.spatial_mean)/self.spatial_scale
         info['emb']=self.transform_spatial_basis(info['emb'])
+        info['emb']=self.transform_spatial_chart(info['emb'])
         if 'action' in info:info['act_emb']=self.action_encoder(info['action'])
         return info
 
     def audit_expected_gradients(self):
-        return dict(encoder='frozen',pool='frozen',predictor='active',renderer='active',action_encoder='optional')
+        result=dict(encoder='frozen',pool='frozen',predictor='active',renderer='active',action_encoder='optional')
+        if self.spatial_chart!='none':
+            result['carrier_chart_module']='frozen' if self.spatial_chart=='identity' else 'active'
+        return result
 
     def spatial_parameter_counts(self):
-        return dict(total=sum(p.numel() for p in self.parameters()),
+        result=dict(total=sum(p.numel() for p in self.parameters()),
             trainable=sum(p.numel() for p in self.parameters() if p.requires_grad),
             frozen=sum(p.numel() for p in self.parameters() if not p.requires_grad),
             fixed_projection_elements=self.spatial_projection.numel(),
             fixed_projection_bytes=self.spatial_projection.numel()*self.spatial_projection.element_size(),
             fixed_statistics_elements=self.spatial_mean.numel()+self.spatial_scale.numel(),
             state_slots=self.state_slots,state_width=self.state_width,state_dim=self.state_dim)
+        if self.spatial_chart!='none':
+            result.update(chart=sum(p.numel() for p in self.carrier_chart_module.parameters()),
+                chart_trainable=sum(p.numel() for p in self.carrier_chart_module.parameters() if p.requires_grad))
+        return result

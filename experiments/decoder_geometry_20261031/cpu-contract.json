@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "checks": [
+    "Rademacher unbiased identity",
+    "PSD and same-spectrum rotation",
+    "linear JVP finite differences",
+    "actual anchored DiT math-SDPA forward AD and VJP",
+    "frozen parameters/buffers",
+    "scalar-buffer hashing detects mutation"
+  ],
+  "tiny_renderer": {
+    "jvp_norm": 3.252753973007202,
+    "mean_squared_response": 0.0008610363001935184,
+    "finite_differences": [
+      {
+        "step": 0.012560859043267881,
+        "relative_error": 0.0009759101085364819
+      },
+      {
+        "step": 0.006280429521633941,
+        "relative_error": 0.0002501262060832232
+      }
+    ]
+  }
+}

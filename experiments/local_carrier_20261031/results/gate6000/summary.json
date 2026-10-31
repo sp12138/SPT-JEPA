@@ -1,0 +1,1633 @@
+{
+  "root": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031",
+  "completed_endpoint_count": 64,
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+    "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/local_reviewed6000_20261031/source-v1",
+    "source_commit": "da26748c866137ad1ea06cf7250cabd64431e9ac",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_reviewed6000_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_reviewed6000_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "provenance": {
+    "training": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+      "sha256": "cb11c97cd162d6593585d9006850e10ad3841c3890741d9ac5a9f386ab2ba7c9",
+      "bytes": 30862
+    },
+    "helper": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/local_reviewed6000_20261031/source-v1.json",
+      "sha256": "20734179fd90402a3a9f8c42fba2c60a24bd2ba87d5aebda2e08a4a5618a34a6",
+      "bytes": 36520
+    },
+    "runtime": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+      "sha256": "21d850572b9fba94e2e4a0d2c6103c81fd31e2119c3fce3c202f80f6b65df9fd",
+      "bytes": 138909
+    }
+  },
+  "comparison_summaries": [
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "dense",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        48.0,
+        46.0
+      ],
+      "mean_difference_pp": 47.0,
+      "shared_case_bootstrap_ci95_pp": [
+        35.0,
+        59.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "F-identity",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -20.0,
+        -26.0
+      ],
+      "mean_difference_pp": -23.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -34.0,
+        -13.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "TF",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        57.99999999999999,
+        56.00000000000001
+      ],
+      "mean_difference_pp": 56.99999999999999,
+      "shared_case_bootstrap_ci95_pp": [
+        45.0,
+        69.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "native-raw",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -20.0,
+        -12.0
+      ],
+      "mean_difference_pp": -16.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -28.000000000000004,
+        -4.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "native-cal",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -22.0,
+        -18.0
+      ],
+      "mean_difference_pp": -20.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -31.0,
+        -9.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "F-unconstrained",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -30.0,
+        -34.0
+      ],
+      "mean_difference_pp": -32.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -45.0,
+        -19.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "F-bounded",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -32.0,
+        -28.000000000000004
+      ],
+      "mean_difference_pp": -30.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -44.0,
+        -17.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "same2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        0.0,
+        4.0
+      ],
+      "mean_difference_pp": 2.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -3.0,
+        7.000000000000001
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "primary",
+      "candidate": "dense",
+      "reference": "same2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        2.0,
+        2.0
+      ],
+      "mean_difference_pp": 2.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -3.0,
+        8.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "dense",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        52.0,
+        42.0
+      ],
+      "mean_difference_pp": 47.0,
+      "shared_case_bootstrap_ci95_pp": [
+        34.0,
+        60.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "F-identity",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -2.0,
+        -20.0
+      ],
+      "mean_difference_pp": -11.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -23.0,
+        0.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "TF",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        68.0,
+        57.99999999999999
+      ],
+      "mean_difference_pp": 63.0,
+      "shared_case_bootstrap_ci95_pp": [
+        50.0,
+        75.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "native-raw",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -4.0,
+        -10.0
+      ],
+      "mean_difference_pp": -7.000000000000001,
+      "shared_case_bootstrap_ci95_pp": [
+        -20.0,
+        6.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "native-cal",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -12.0,
+        -28.000000000000004
+      ],
+      "mean_difference_pp": -20.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -31.0,
+        -10.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "F-unconstrained",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -10.0,
+        -26.0
+      ],
+      "mean_difference_pp": -18.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -32.0,
+        -5.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "F-bounded",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -8.0,
+        -34.0
+      ],
+      "mean_difference_pp": -21.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -35.0,
+        -8.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "same2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        12.0,
+        4.0
+      ],
+      "mean_difference_pp": 8.0,
+      "shared_case_bootstrap_ci95_pp": [
+        0.0,
+        16.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "tworoom",
+      "case_set": "fresh",
+      "candidate": "dense",
+      "reference": "same2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        0.0,
+        6.0
+      ],
+      "mean_difference_pp": 3.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -5.0,
+        11.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "dense",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        4.0,
+        4.0
+      ],
+      "mean_difference_pp": 4.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -3.0,
+        12.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "F-identity",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        6.0,
+        10.0
+      ],
+      "mean_difference_pp": 8.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -1.0,
+        18.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "TF",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -8.0,
+        8.0
+      ],
+      "mean_difference_pp": 0.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -7.000000000000001,
+        7.000000000000001
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "native-raw",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -8.0,
+        0.0
+      ],
+      "mean_difference_pp": -4.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -11.0,
+        2.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "native-cal",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        0.0,
+        4.0
+      ],
+      "mean_difference_pp": 2.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -5.024999999999977,
+        10.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "candidate": "local",
+      "reference": "same2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -8.0,
+        2.0
+      ],
+      "mean_difference_pp": -3.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -11.0,
+        5.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "primary",
+      "candidate": "dense",
+      "reference": "same2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -4.0,
+        6.0
+      ],
+      "mean_difference_pp": 1.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -5.0,
+        7.000000000000001
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "dense",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        14.000000000000002,
+        6.0
+      ],
+      "mean_difference_pp": 10.0,
+      "shared_case_bootstrap_ci95_pp": [
+        2.0,
+        19.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "F-identity",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        12.0,
+        10.0
+      ],
+      "mean_difference_pp": 11.0,
+      "shared_case_bootstrap_ci95_pp": [
+        4.0,
+        20.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "TF",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        10.0,
+        2.0
+      ],
+      "mean_difference_pp": 6.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -1.0,
+        14.000000000000002
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "native-raw",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        12.0,
+        6.0
+      ],
+      "mean_difference_pp": 9.0,
+      "shared_case_bootstrap_ci95_pp": [
+        0.0,
+        19.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "native-cal",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        4.0,
+        4.0
+      ],
+      "mean_difference_pp": 4.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -7.000000000000001,
+        15.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "candidate": "local",
+      "reference": "same2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        8.0,
+        10.0
+      ],
+      "mean_difference_pp": 9.0,
+      "shared_case_bootstrap_ci95_pp": [
+        0.0,
+        18.024999999999636
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    },
+    {
+      "task": "cube",
+      "case_set": "fresh",
+      "candidate": "dense",
+      "reference": "same2000",
+      "seeds": [
+        1,
+        2
+      ],
+      "differences_by_seed_pp": [
+        -2.0,
+        0.0
+      ],
+      "mean_difference_pp": -1.0,
+      "shared_case_bootstrap_ci95_pp": [
+        -11.0,
+        8.0
+      ],
+      "scope": "Conditional on these two trained seeds. Same case indices resampled jointly; not training-seed uncertainty or multiple-comparison-adjusted inference."
+    }
+  ],
+  "parent_report": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/local-isotropic2000-20261031/results.json",
+    "sha256": "1417456f4cda84710a4492f009689a0b95fe1b45a0dc0eea4f7f8ff4ed8815e4",
+    "bytes": 5528350
+  },
+  "reference_report": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/carrier6000-20261031/results.json",
+    "sha256": "0d4843a7c809062aea682ee3f506cd767eb866b032ed848a46822cdcd38c5928",
+    "bytes": 2749269
+  },
+  "native_report": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/native-lewm6000-20261031/results.json",
+    "sha256": "8016d29d3e95545cb0dfbed3d61c35e96abe14fe5c8623f8d2a3474ac4ccd52c",
+    "bytes": 533111
+  },
+  "collector": {
+    "path": "/efs/prescottsun/SPT-JEPA/code/experiments/local_carrier_20261031/collect6000.py",
+    "sha256": "434686a0d6f8c86ad91e83f3a2c891ae82ee53dc741ec1e454dd2992ffba469f",
+    "bytes": 17547
+  },
+  "scope": "Read-only CPU audit of completed runs. Archive/portable hashes verified; existing immutable CPU audit proves finite fullstate/native load/optimizer/scheduler/RNG/sampler and210 frozen tensors. No new model load or forward. All paired CIs jointly resample50cases over fixed2 seeds10000times seed1042; no training-seed-population or multiplicity adjustment.",
+  "full_results": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/local-isotropic6000-20261031/results.json",
+    "sha256": "6c076311d3fbde81cbc68f3ab4141d4b1cc373d390bad72bcef9c5f791427b62",
+    "bytes": 1190804
+  },
+  "rows": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "local",
+      "model_size": {
+        "total": 55913454,
+        "trainable": 50248094,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning": {
+        "primary": 60.0,
+        "fresh": 72.0
+      },
+      "parent2000": {
+        "primary": 60.0,
+        "fresh": 60.0
+      },
+      "state": {
+        "clean_mse": 0.13780713156401708,
+        "clean_over_initial_carry": 0.08553775989398536,
+        "clean_over_shifted_carry": 0.1578338839592827,
+        "teacher_over_shifted_carry": 0.04999972635939212,
+        "wrong_order_over_clean": 7.510266925836557,
+        "other_actions_over_clean": 11.631324828154046,
+        "other_initial_over_clean": 13.447929839518729,
+        "observed_state_std": 0.6136572744524826
+      },
+      "old_state": {
+        "clean_mse": 0.3850049284506424,
+        "clean_over_initial_carry": 0.23897499900078523,
+        "clean_over_shifted_carry": 0.44095557690787535,
+        "teacher_over_shifted_carry": 0.18300065460542936,
+        "wrong_order_over_clean": 2.5467520838861653,
+        "other_actions_over_clean": 3.775300405799239,
+        "other_initial_over_clean": 4.466223502954977,
+        "observed_state_std": 0.6136572744524826
+      },
+      "health": {
+        "feature_std": 0.46268147230148315,
+        "forecast_fm_t095": 0.0010316751167920302,
+        "wrong_state_over_forecast": 14.346718594574515,
+        "wrong_actions_over_forecast": 9.235150634058323,
+        "carry_over_forecast": 14.25591176932928,
+        "zero_over_forecast": 7.58675954188279
+      },
+      "old_health": {
+        "feature_std": 0.46268147230148315,
+        "forecast_fm_t095": 0.006963143037864938,
+        "wrong_state_over_forecast": 1.3218560516163866,
+        "wrong_actions_over_forecast": 1.1366090775009638,
+        "carry_over_forecast": 1.2996320533014398,
+        "zero_over_forecast": 1.3811900528737147
+      },
+      "fullstate_checks": [
+        {
+          "step": 4000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        },
+        {
+          "step": 6000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        }
+      ]
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "dense",
+      "model_size": {
+        "total": 55913454,
+        "trainable": 50248094,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning": {
+        "primary": 12.0,
+        "fresh": 20.0
+      },
+      "parent2000": {
+        "primary": 10.0,
+        "fresh": 20.0
+      },
+      "state": {
+        "clean_mse": 0.28593033360524484,
+        "clean_over_initial_carry": 0.16066511660857197,
+        "clean_over_shifted_carry": 0.21581518386186893,
+        "teacher_over_shifted_carry": 0.08001544050573457,
+        "wrong_order_over_clean": 5.044044255165517,
+        "other_actions_over_clean": 6.116543482405555,
+        "other_initial_over_clean": 6.536016905837998,
+        "observed_state_std": 0.9840521982752356
+      },
+      "old_state": {
+        "clean_mse": 0.6581611372147502,
+        "clean_over_initial_carry": 0.36982272753134204,
+        "clean_over_shifted_carry": 0.4967684437246171,
+        "teacher_over_shifted_carry": 0.23459745864264853,
+        "wrong_order_over_clean": 2.1875498143307097,
+        "other_actions_over_clean": 2.4195494378942435,
+        "other_initial_over_clean": 2.646896841988868,
+        "observed_state_std": 0.9840521982752356
+      },
+      "health": {
+        "feature_std": 0.9773672223091125,
+        "forecast_fm_t095": 0.001711105061986018,
+        "wrong_state_over_forecast": 8.493609360914661,
+        "wrong_actions_over_forecast": 5.580212079993761,
+        "carry_over_forecast": 8.309429220694263,
+        "zero_over_forecast": 5.596098955265129
+      },
+      "old_health": {
+        "feature_std": 0.9773672223091125,
+        "forecast_fm_t095": 0.006036616206984036,
+        "wrong_state_over_forecast": 1.6993411762576607,
+        "wrong_actions_over_forecast": 1.4443861251411643,
+        "carry_over_forecast": 1.7585355355931127,
+        "zero_over_forecast": 1.5277476105589616
+      },
+      "fullstate_checks": [
+        {
+          "step": 4000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        },
+        {
+          "step": 6000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        }
+      ]
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "local",
+      "model_size": {
+        "total": 55913454,
+        "trainable": 50248094,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning": {
+        "primary": 60.0,
+        "fresh": 60.0
+      },
+      "parent2000": {
+        "primary": 56.0,
+        "fresh": 56.0
+      },
+      "state": {
+        "clean_mse": 0.1537835729662591,
+        "clean_over_initial_carry": 0.09485834947619683,
+        "clean_over_shifted_carry": 0.17627717838854678,
+        "teacher_over_shifted_carry": 0.046199901833540585,
+        "wrong_order_over_clean": 6.799178206001648,
+        "other_actions_over_clean": 10.586120482114675,
+        "other_initial_over_clean": 12.213679652064533,
+        "observed_state_std": 0.5937941752883318
+      },
+      "old_state": {
+        "clean_mse": 0.3994195885553959,
+        "clean_over_initial_carry": 0.2463740579570184,
+        "clean_over_shifted_carry": 0.4578418663683115,
+        "teacher_over_shifted_carry": 0.19790075636801283,
+        "wrong_order_over_clean": 2.500385909634736,
+        "other_actions_over_clean": 3.754460473569965,
+        "other_initial_over_clean": 4.381958808629515,
+        "observed_state_std": 0.5937941752883318
+      },
+      "health": {
+        "feature_std": 0.46446752548217773,
+        "forecast_fm_t095": 0.0020775578614120604,
+        "wrong_state_over_forecast": 6.87143360713406,
+        "wrong_actions_over_forecast": 4.4586642764693805,
+        "carry_over_forecast": 7.01442504051569,
+        "zero_over_forecast": 4.059730824400395
+      },
+      "old_health": {
+        "feature_std": 0.46446752548217773,
+        "forecast_fm_t095": 0.007489916228223592,
+        "wrong_state_over_forecast": 1.2083076962245134,
+        "wrong_actions_over_forecast": 1.0963062893708024,
+        "carry_over_forecast": 1.2167525099381367,
+        "zero_over_forecast": 1.2375958611822997
+      },
+      "fullstate_checks": [
+        {
+          "step": 4000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        },
+        {
+          "step": 6000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        }
+      ]
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "dense",
+      "model_size": {
+        "total": 55913454,
+        "trainable": 50248094,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning": {
+        "primary": 14.0,
+        "fresh": 18.0
+      },
+      "parent2000": {
+        "primary": 12.0,
+        "fresh": 12.0
+      },
+      "state": {
+        "clean_mse": 0.33733940002870705,
+        "clean_over_initial_carry": 0.18991127164646013,
+        "clean_over_shifted_carry": 0.25072172101486606,
+        "teacher_over_shifted_carry": 0.08407370648188255,
+        "wrong_order_over_clean": 4.350120047356872,
+        "other_actions_over_clean": 5.220005568630021,
+        "other_initial_over_clean": 5.530230385780794,
+        "observed_state_std": 0.9871108926363608
+      },
+      "old_state": {
+        "clean_mse": 0.6520059344415682,
+        "clean_over_initial_carry": 0.3670584465387072,
+        "clean_over_shifted_carry": 0.4845922236809122,
+        "teacher_over_shifted_carry": 0.24414588918033417,
+        "wrong_order_over_clean": 2.1918503223661165,
+        "other_actions_over_clean": 2.4658098327952183,
+        "other_initial_over_clean": 2.6880418388381417,
+        "observed_state_std": 0.9871108926363608
+      },
+      "health": {
+        "feature_std": 0.9881901741027832,
+        "forecast_fm_t095": 0.0022770298637624364,
+        "wrong_state_over_forecast": 6.237475728413141,
+        "wrong_actions_over_forecast": 4.190236673907311,
+        "carry_over_forecast": 6.364486297456134,
+        "zero_over_forecast": 3.969215063387163
+      },
+      "old_health": {
+        "feature_std": 0.9881901741027832,
+        "forecast_fm_t095": 0.007327699655434117,
+        "wrong_state_over_forecast": 1.4630443791672327,
+        "wrong_actions_over_forecast": 1.287118684228302,
+        "carry_over_forecast": 1.5284155405207758,
+        "zero_over_forecast": 1.3494167475253174
+      },
+      "fullstate_checks": [
+        {
+          "step": 4000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        },
+        {
+          "step": 6000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        }
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "local",
+      "model_size": {
+        "total": 55975434,
+        "trainable": 50310074,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning": {
+        "primary": 16.0,
+        "fresh": 24.0
+      },
+      "parent2000": {
+        "primary": 24.0,
+        "fresh": 16.0
+      },
+      "state": {
+        "clean_mse": 0.2945745173495414,
+        "clean_over_initial_carry": 0.22709292235495995,
+        "clean_over_shifted_carry": 0.3471507512603567,
+        "teacher_over_shifted_carry": 0.2886379136641593,
+        "wrong_order_over_clean": 3.2017211140318067,
+        "other_actions_over_clean": 4.411449161352833,
+        "other_initial_over_clean": 5.466883875891152,
+        "observed_state_std": 0.7074865024949096
+      },
+      "old_state": {
+        "clean_mse": 0.46817678929299905,
+        "clean_over_initial_carry": 0.36092611206131886,
+        "clean_over_shifted_carry": 0.5517378950089941,
+        "teacher_over_shifted_carry": 0.4349627687926689,
+        "wrong_order_over_clean": 1.9824718929022451,
+        "other_actions_over_clean": 2.6531297086073082,
+        "other_initial_over_clean": 3.413290936800427,
+        "observed_state_std": 0.7074865024949096
+      },
+      "health": {
+        "feature_std": 0.6809470653533936,
+        "forecast_fm_t095": 0.005950373233645223,
+        "wrong_state_over_forecast": 8.4713231594599,
+        "wrong_actions_over_forecast": 4.93788760798357,
+        "carry_over_forecast": 7.431560446936853,
+        "zero_over_forecast": 5.342190855423722
+      },
+      "old_health": {
+        "feature_std": 0.6809470653533936,
+        "forecast_fm_t095": 0.021198847040068358,
+        "wrong_state_over_forecast": 1.5717565231457409,
+        "wrong_actions_over_forecast": 1.3214979812691234,
+        "carry_over_forecast": 1.7785851424185124,
+        "zero_over_forecast": 1.4595546274821622
+      },
+      "fullstate_checks": [
+        {
+          "step": 4000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        },
+        {
+          "step": 6000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        }
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "dense",
+      "model_size": {
+        "total": 55975434,
+        "trainable": 50310074,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning": {
+        "primary": 12.0,
+        "fresh": 10.0
+      },
+      "parent2000": {
+        "primary": 16.0,
+        "fresh": 12.0
+      },
+      "state": {
+        "clean_mse": 0.5055529874592023,
+        "clean_over_initial_carry": 0.36242847033479625,
+        "clean_over_shifted_carry": 0.4736368949250262,
+        "teacher_over_shifted_carry": 0.3989608059390822,
+        "wrong_order_over_clean": 2.237560146856533,
+        "other_actions_over_clean": 2.7651381952782543,
+        "other_initial_over_clean": 3.189444758162931,
+        "observed_state_std": 0.9394377340001305
+      },
+      "old_state": {
+        "clean_mse": 0.6955939579368667,
+        "clean_over_initial_carry": 0.4986679149424069,
+        "clean_over_shifted_carry": 0.6516803787899956,
+        "teacher_over_shifted_carry": 0.5320158911212435,
+        "wrong_order_over_clean": 1.635925087488311,
+        "other_actions_over_clean": 1.9640455663334762,
+        "other_initial_over_clean": 2.339299427010867,
+        "observed_state_std": 0.9394377340001305
+      },
+      "health": {
+        "feature_std": 0.9233056902885437,
+        "forecast_fm_t095": 0.0071127280534710735,
+        "wrong_state_over_forecast": 7.306721676768799,
+        "wrong_actions_over_forecast": 4.196330833553011,
+        "carry_over_forecast": 6.066511182519767,
+        "zero_over_forecast": 4.737977165529198
+      },
+      "old_health": {
+        "feature_std": 0.9233056902885437,
+        "forecast_fm_t095": 0.020521855039987713,
+        "wrong_state_over_forecast": 1.7273852428865968,
+        "wrong_actions_over_forecast": 1.2974708830939148,
+        "carry_over_forecast": 1.7374068564837324,
+        "zero_over_forecast": 1.650591851320893
+      },
+      "fullstate_checks": [
+        {
+          "step": 4000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        },
+        {
+          "step": 6000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        }
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "local",
+      "model_size": {
+        "total": 55975434,
+        "trainable": 50310074,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning": {
+        "primary": 22.0,
+        "fresh": 20.0
+      },
+      "parent2000": {
+        "primary": 20.0,
+        "fresh": 10.0
+      },
+      "state": {
+        "clean_mse": 0.28465405941828986,
+        "clean_over_initial_carry": 0.22109190808521323,
+        "clean_over_shifted_carry": 0.3341940239555853,
+        "teacher_over_shifted_carry": 0.2787052006427926,
+        "wrong_order_over_clean": 3.268116734995234,
+        "other_actions_over_clean": 4.552483178942901,
+        "other_initial_over_clean": 5.357200109747219,
+        "observed_state_std": 0.6990120070251256
+      },
+      "old_state": {
+        "clean_mse": 0.45579437281166413,
+        "clean_over_initial_carry": 0.35401725092334635,
+        "clean_over_shifted_carry": 0.5351188592129208,
+        "teacher_over_shifted_carry": 0.42321303122576875,
+        "wrong_order_over_clean": 1.982207380938749,
+        "other_actions_over_clean": 2.7479201518253262,
+        "other_initial_over_clean": 3.3902169971343623,
+        "observed_state_std": 0.6990120070251256
+      },
+      "health": {
+        "feature_std": 0.6720715165138245,
+        "forecast_fm_t095": 0.006049735893611796,
+        "wrong_state_over_forecast": 8.385027118918403,
+        "wrong_actions_over_forecast": 4.822210501873328,
+        "carry_over_forecast": 7.335058185005661,
+        "zero_over_forecast": 5.274811823795746
+      },
+      "old_health": {
+        "feature_std": 0.6720715165138245,
+        "forecast_fm_t095": 0.020606095669791102,
+        "wrong_state_over_forecast": 1.6831073949125532,
+        "wrong_actions_over_forecast": 1.3481258220176746,
+        "carry_over_forecast": 1.8256305101052108,
+        "zero_over_forecast": 1.5096319644368945
+      },
+      "fullstate_checks": [
+        {
+          "step": 4000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        },
+        {
+          "step": 6000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        }
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "dense",
+      "model_size": {
+        "total": 55975434,
+        "trainable": 50310074,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "planning": {
+        "primary": 18.0,
+        "fresh": 14.0
+      },
+      "parent2000": {
+        "primary": 12.0,
+        "fresh": 14.0
+      },
+      "state": {
+        "clean_mse": 0.47963378207966784,
+        "clean_over_initial_carry": 0.3407637544268838,
+        "clean_over_shifted_carry": 0.45156823399808915,
+        "teacher_over_shifted_carry": 0.38185124185065367,
+        "wrong_order_over_clean": 2.3615740183632257,
+        "other_actions_over_clean": 2.9149403712877304,
+        "other_initial_over_clean": 3.387715388198384,
+        "observed_state_std": 0.9391859285561406
+      },
+      "old_state": {
+        "clean_mse": 0.6777311178943908,
+        "clean_over_initial_carry": 0.4815052835191269,
+        "clean_over_shifted_carry": 0.6380739961771226,
+        "teacher_over_shifted_carry": 0.519367612012339,
+        "wrong_order_over_clean": 1.6559885101803282,
+        "other_actions_over_clean": 2.026192605715103,
+        "other_initial_over_clean": 2.3865552092604374,
+        "observed_state_std": 0.9391859285561406
+      },
+      "health": {
+        "feature_std": 0.9223098754882812,
+        "forecast_fm_t095": 0.006556697218911722,
+        "wrong_state_over_forecast": 7.45320539787042,
+        "wrong_actions_over_forecast": 4.428359792564665,
+        "carry_over_forecast": 6.6546225664104774,
+        "zero_over_forecast": 5.046164095807985
+      },
+      "old_health": {
+        "feature_std": 0.9223098754882812,
+        "forecast_fm_t095": 0.020591463893651962,
+        "wrong_state_over_forecast": 1.6072512102714456,
+        "wrong_actions_over_forecast": 1.2917742993686634,
+        "carry_over_forecast": 1.776788195396129,
+        "zero_over_forecast": 1.6319405510179235
+      },
+      "fullstate_checks": [
+        {
+          "step": 4000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        },
+        {
+          "step": 6000,
+          "passed": true,
+          "frozen210": true,
+          "archive_sha_verified": true,
+          "portable_sha_verified": true
+        }
+      ]
+    }
+  ],
+  "references": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "F-identity",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45443294,
+        "frozen": 5662160,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 80.0,
+        "fresh": 74.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "F-unconstrained",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45451614,
+        "frozen": 5653840,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 90.0,
+        "fresh": 82.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "F-bounded",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45451614,
+        "frozen": 5653840,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 92.0,
+        "fresh": 80.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "F-identity",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45443294,
+        "frozen": 5662160,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 86.0,
+        "fresh": 80.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "F-unconstrained",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45451614,
+        "frozen": 5653840,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 94.0,
+        "fresh": 86.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "F-bounded",
+      "model_size": {
+        "total": 51105454,
+        "trainable": 45451614,
+        "frozen": 5653840,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 88.0,
+        "fresh": 94.0
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "F-identity",
+      "model_size": {
+        "total": 51109834,
+        "trainable": 45447674,
+        "frozen": 5662160,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 10.0,
+        "fresh": 12.0
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "F-identity",
+      "model_size": {
+        "total": 51109834,
+        "trainable": 45447674,
+        "frozen": 5662160,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 12.0,
+        "fresh": 10.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "TF",
+      "model_size": {
+        "total": 51097134,
+        "trainable": 51097134,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 2.0,
+        "fresh": 4.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "TF",
+      "model_size": {
+        "total": 51097134,
+        "trainable": 51097134,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 4.0,
+        "fresh": 2.0
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "TF",
+      "model_size": {
+        "total": 51101514,
+        "trainable": 51101514,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 24.0,
+        "fresh": 14.0
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "TF",
+      "model_size": {
+        "total": 51101514,
+        "trainable": 51101514,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10828544,
+        "renderer": 34595376
+      },
+      "planning": {
+        "primary": 14.0,
+        "fresh": 18.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "native-raw",
+      "model_size": {
+        "total": 18035246,
+        "trainable": 18035246,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10792128,
+        "renderer": 0
+      },
+      "planning": {
+        "primary": 80.0,
+        "fresh": 76.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "native-cal",
+      "model_size": {
+        "total": 18035246,
+        "trainable": 18035246,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10792128,
+        "renderer": 0
+      },
+      "planning": {
+        "primary": 82.0,
+        "fresh": 84.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "native-raw",
+      "model_size": {
+        "total": 18035246,
+        "trainable": 18035246,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10792128,
+        "renderer": 0
+      },
+      "planning": {
+        "primary": 72.0,
+        "fresh": 70.0
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "native-cal",
+      "model_size": {
+        "total": 18035246,
+        "trainable": 18035246,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10792128,
+        "renderer": 0
+      },
+      "planning": {
+        "primary": 78.0,
+        "fresh": 88.0
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "native-raw",
+      "model_size": {
+        "total": 18035396,
+        "trainable": 18035396,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10792128,
+        "renderer": 0
+      },
+      "planning": {
+        "primary": 24.0,
+        "fresh": 12.0
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "native-cal",
+      "model_size": {
+        "total": 18035396,
+        "trainable": 18035396,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10792128,
+        "renderer": 0
+      },
+      "planning": {
+        "primary": 16.0,
+        "fresh": 20.0
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "native-raw",
+      "model_size": {
+        "total": 18035396,
+        "trainable": 18035396,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10792128,
+        "renderer": 0
+      },
+      "planning": {
+        "primary": 22.0,
+        "fresh": 14.0
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "native-cal",
+      "model_size": {
+        "total": 18035396,
+        "trainable": 18035396,
+        "frozen": 0,
+        "encoder": 5501376,
+        "prior": 10792128,
+        "renderer": 0
+      },
+      "planning": {
+        "primary": 18.0,
+        "fresh": 16.0
+      }
+    }
+  ]
+}
