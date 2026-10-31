@@ -1,0 +1,50 @@
+{
+  "command": [
+    "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+    "-B",
+    "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1/experiments/decoder_geometry_20261031/pilot.py",
+    "--checkpoint",
+    "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-carrier-identity-seed1/model-step0006000",
+    "--manifest",
+    "/efs/prescottsun/SPT-JEPA/runs/carrier_metric_20261031/train-clips128.json",
+    "--source-record",
+    "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-record.json",
+    "--output",
+    "/efs/prescottsun/SPT-JEPA/runs/decoder_geometry_pilot_20261031",
+    "--device",
+    "cuda"
+  ],
+  "environment": {
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MUJOCO_GL": "egl",
+    "SDL_VIDEODRIVER": "dummy",
+    "PYGLET_HEADLESS": "true",
+    "MPLCONFIGDIR": "/efs/prescottsun/SPT-JEPA/cache/matplotlib",
+    "TMPDIR": "/efs/prescottsun/SPT-JEPA/tmp/hardtasks20261030",
+    "STABLEWM_HOME": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/planning",
+    "PYOPENGL_PLATFORM": "egl",
+    "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+    "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json",
+    "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+    "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "output": "/efs/prescottsun/SPT-JEPA/runs/decoder_geometry_pilot_20261031",
+  "control": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031",
+  "gpu": 0,
+  "host": "dev2",
+  "gpu_preflight": {
+    "gpus": "0, GPU-6ed84194-c712-388f-2730-9a9d94eccf11, 0 MiB, 0 %\n1, GPU-77277811-7523-3a04-78e5-1d8e15dc1800, 0 MiB, 0 %\n2, GPU-bff74550-eee8-5c88-2fb1-b131200c106c, 0 MiB, 0 %\n3, GPU-60f98c04-fafb-6d1c-98bf-bb6b14b0068a, 0 MiB, 0 %\n4, GPU-bb619007-7bc0-bfca-8917-e43a02bc2f58, 0 MiB, 0 %\n5, GPU-4a6e0e8d-3d7b-5f96-89b9-65fe4baa68fc, 0 MiB, 0 %\n6, GPU-06241fba-d12f-3e1d-47c9-cc9726909519, 0 MiB, 0 %\n7, GPU-db53e14f-fc80-fb20-e70c-6eaac002f635, 0 MiB, 0 %\n",
+    "applications": ""
+  },
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1",
+    "source_commit": "9c3b9fdadf81116242ef9e9c5bf48603aa3c3a1c",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "authorized_scope": "One training-clip technical pilot only; no calibration or planning"
+}

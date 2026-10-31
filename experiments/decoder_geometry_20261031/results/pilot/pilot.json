@@ -1,0 +1,187 @@
+{
+  "passed": true,
+  "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/carrier_learn6000_20261031/cube-carrier-identity-seed1/model-step0006000",
+  "checkpoint_sha256": "7eec7d7dfec201264b1f006c9d680e28c61440bbc6b640c95c58c28a6da2ed13",
+  "config_sha256": "e0d71a66f6600b009e316a57f5ffb90fffaacfcde66f1de719773611a846c8ed",
+  "training_config_sha256": "c708798dacd682f5956e79aa741c9df0809447ddac68c0b891f62cc6319afe5e",
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1",
+    "source_commit": "9c3b9fdadf81116242ef9e9c5bf48603aa3c3a1c",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "source_record_sha256": "1040a6c1d97c4e6fea0b635e4d96882d764fb59b7e3a3d5bacc9b49933ce2bfa",
+  "imported_sources": {
+    "as_jepa_lewm.factory": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1/as_jepa_lewm/factory.py",
+      "sha256": "7d0b609a1c3ebc382d25ac28ad45a797b35c037446db7eb6435c18475c99a48d"
+    },
+    "as_jepa_lewm.model": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1/as_jepa_lewm/model.py",
+      "sha256": "c7dc10afeaceb398151d67dfb687d69e71e867c006ba8c627176d2e4b17bbf2a"
+    },
+    "as_jepa_lewm.robust": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1/as_jepa_lewm/robust.py",
+      "sha256": "d16bc820c2e37fd7082ad36ee8782a4fcc30f5e53002da4a31ffba5f41fe6dbc"
+    },
+    "as_jepa_lewm.carrier": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/source-v1/as_jepa_lewm/carrier.py",
+      "sha256": "214dd2f10c2836eceb936afe17c45c4951934dcad308969a400188a03e47e421"
+    },
+    "vforge.models.as_jepa.flow": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime/vforge/models/as_jepa/flow.py",
+      "sha256": "a2473a6e98770e39314fb4121aff52ffd2c38025ca57951fc83c9c5cfe919360"
+    },
+    "vforge.models.as_jepa.renderer": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime/vforge/models/as_jepa/renderer.py",
+      "sha256": "e35b20957cac9be6fe776ae1b3ab9fa44bc23920ba5acf1eb1d7efcaf17417b3"
+    },
+    "vforge.ops._attention.dispatch": {
+      "path": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime/vforge/ops/_attention/dispatch.py",
+      "sha256": "b5381ff5c3b4d3bf36e9e606e6aad493ae3ab03fc61e01a5d8db120668c6cf4a"
+    }
+  },
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_metric_20261031/train-clips128.json",
+  "manifest_sha256": "16070202b03fe85f44e997be574a65edaec308006891e9b498a11528eb1d6cac",
+  "train_entry": {
+    "index": 1447688,
+    "episode": 9694,
+    "episode_array_index": 9694,
+    "start": 2,
+    "rows": [
+      1948496,
+      1948501,
+      1948506,
+      1948511,
+      1948516,
+      1948521,
+      1948526,
+      1948531
+    ]
+  },
+  "point": {
+    "clip_index": 0,
+    "horizon": 4,
+    "forecast": false,
+    "time": 0.918436586856842,
+    "shift": 1.7420771050673962,
+    "flow_mean": 0.8,
+    "flow_std": 0.8,
+    "rho": 0.8,
+    "sigma0": 0.1,
+    "posterior_noise_scale": 1.0,
+    "forecast_fraction": 0.5,
+    "condition_shape": [
+      1,
+      64
+    ],
+    "anchor_row": 1948496,
+    "target_row": 1948516,
+    "output_elements": 12288,
+    "condition_is_leaf_for_jacobian": true
+  },
+  "seed": 20261031,
+  "probes": 8,
+  "directional_check": {
+    "jvp_norm": 1.910042405128479,
+    "mean_squared_response": 0.0002968963235616684,
+    "finite_differences": [
+      {
+        "step": 0.0389901029368178,
+        "relative_error": 0.00027643286739476025
+      },
+      {
+        "step": 0.0194950514684089,
+        "relative_error": 0.0006556606385856867
+      }
+    ]
+  },
+  "sketch_directional_energy": 0.0004234405131800566,
+  "spectrum": {
+    "eigenvalues": [
+      -5.544320694529093e-18,
+      -1.311882828880552e-18,
+      -1.0553377854531258e-18,
+      -9.923024754164921e-19,
+      -9.72171391727292e-19,
+      -8.958890688818518e-19,
+      -7.399640271362051e-19,
+      -7.00002999588134e-19,
+      -6.855635900468562e-19,
+      -5.991034465492813e-19,
+      -4.853480640733783e-19,
+      -4.345797898582919e-19,
+      -3.6453446445495974e-19,
+      -3.603910988481912e-19,
+      -3.312144751456377e-19,
+      -3.13722343135975e-19,
+      -2.8816889888150985e-19,
+      -2.694830481256005e-19,
+      -2.610925057217799e-19,
+      -2.486800797586611e-19,
+      -2.235163697017867e-19,
+      -1.9647436937097012e-19,
+      -1.7336864623896706e-19,
+      -1.688127617852459e-19,
+      -1.5254705640744231e-19,
+      -1.163161861664495e-19,
+      -1.0899294892330342e-19,
+      -6.586533132540454e-20,
+      -5.072872923760195e-20,
+      -5.0635782643687725e-20,
+      -3.7694308988092574e-20,
+      -2.3784770555702655e-20,
+      -6.269744338348862e-21,
+      1.2033586497454943e-21,
+      1.510135857729488e-21,
+      4.552296127035038e-20,
+      6.960520987314187e-20,
+      1.1271804822935085e-19,
+      1.2046596767589337e-19,
+      1.382536424490149e-19,
+      1.6060076827599187e-19,
+      2.0159893300110222e-19,
+      2.0702460477576945e-19,
+      2.3164444239550328e-19,
+      2.570176347886775e-19,
+      2.8780742327511976e-19,
+      2.9271890677055696e-19,
+      2.958592855052628e-19,
+      3.843231017404521e-19,
+      4.478111880761046e-19,
+      5.090857953832756e-19,
+      5.942426616605835e-19,
+      7.714690803372453e-19,
+      8.685800125799108e-19,
+      1.1838946258274662e-18,
+      2.3054175051869557e-18,
+      0.0001401022550902517,
+      0.0001885368784891552,
+      0.0002480035560482035,
+      0.00028742737819294683,
+      0.00039287154356954933,
+      0.0016261076663084855,
+      0.009118232209303112,
+      0.043610015216850595
+    ],
+    "numerical_rank": 8,
+    "tolerance": 6.197355903744124e-16,
+    "psd": true,
+    "trace": 0.05561129670385229,
+    "participation_rank": 1.5556627847169913
+  },
+  "state_before_after_equal": true,
+  "parameters_frozen": true,
+  "parameter_grads_absent": true,
+  "attention": "sdpa_math",
+  "dtype": "float32",
+  "torch_version": "2.9.1+cu130",
+  "device": "cuda",
+  "directional_seconds": 0.7095134239643812,
+  "eight_vjp_seconds": 0.20457143895328045,
+  "rough128_clip_vjp_seconds": 26.185144186019897,
+  "peak_device_bytes": 432356864,
+  "scope": "Technical one-point pilot only. The rank<=8 matrix is not a global calibrated metric and must not be used in planning. No validation or physical labels read; no parameter/buffer updates."
+}
