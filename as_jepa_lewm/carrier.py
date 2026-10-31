@@ -75,6 +75,69 @@ class _ImplicitChartInverse(torch.autograd.Function):
                     -flat_hg.sum(0), -flat_adjoint.sum(0), None, None, None, None)
 
 
+def _certify_rounded_solution(result, target, residual, bound, atol, rtol, label):
+    """Certify the public dtype value, not only its hidden FP64 solution."""
+    error_bound = torch.linalg.vector_norm(result.double()+residual(result.double())-target.double(), dim=-1)/(1-bound)
+    tolerance = atol+rtol*torch.linalg.vector_norm(target.double(), dim=-1)
+    if not bool(torch.isfinite(error_bound).all() and (error_bound <= tolerance).all()):
+        raise RuntimeError(f"{label} failed public-dtype residual certificate")
+
+
+def _precise_adjoint(target, first, second, derivative, bound, iterations, rtol):
+    """Local FP64 linear algebra; returns public and unrounded adjoints.
+
+    This operates on tensors only and never changes global matmul/TF32 policy.
+    Kept separate so captured full-batch operands can exercise the exact
+    production solver, including its final public-dtype rounding certificate.
+    """
+    first, second, derivative = first.double(), second.double(), derivative.double()
+    def residual(vector):
+        return bound*F.linear(F.linear(vector, second.T)*derivative, first.T)
+    solved = _contractive_solve(target.double(), residual, bound, iterations, 0., rtol, "Precise chart inverse adjoint")
+    public = solved.to(target.dtype)
+    _certify_rounded_solution(public, target, residual, bound, 0., rtol, "Precise chart inverse adjoint")
+    return public, solved
+
+
+class _PreciseImplicitChartInverse(torch.autograd.Function):
+    """FP64 inverse/adjoint internals with the unchanged public FP32 contract.
+
+    Backward differentiates the unrounded FP64 inverse followed by the public
+    cast, as ordinary autograd would. The returned rounded state and input
+    gradient are independently certified with the same original tolerances.
+    Parameter reductions use the FP64 adjoint then return their input dtype;
+    autograd retains the existing effective-weight normalization chain.
+    """
+    @staticmethod
+    def forward(ctx, value, first, second, bias_one, bias_two, bound, iterations, atol, rtol):
+        ctx.input_dtypes = tuple(x.dtype for x in (value, first, second, bias_one, bias_two))
+        with torch.autocast(device_type=value.device.type, enabled=False):
+            target, a, b, c, d = (x.double() for x in (value, first, second, bias_one, bias_two))
+            def residual(x): return F.linear(torch.tanh(F.linear(x, a, c)), bound*b, d)
+            solved = _contractive_solve(target, residual, bound, iterations, atol, rtol, "Precise chart inverse")
+            public = solved.to(value.dtype)
+            _certify_rounded_solution(public, target, residual, bound, atol, rtol, "Precise chart inverse")
+        ctx.save_for_backward(solved, a, b, c)
+        ctx.bound, ctx.iterations, ctx.rtol = bound, iterations, rtol
+        return public
+
+    @staticmethod
+    @once_differentiable
+    def backward(ctx, grad_output):
+        value, first, second, bias_one = ctx.saved_tensors
+        with torch.autocast(device_type=value.device.type, enabled=False):
+            hidden = torch.tanh(F.linear(value, first, bias_one))
+            derivative = 1-hidden.square()
+            public, adjoint = _precise_adjoint(grad_output, first, second, derivative,
+                ctx.bound, ctx.iterations, ctx.rtol)
+            hidden_grad = ctx.bound*F.linear(adjoint, second.T)*derivative
+            ga, h = adjoint.reshape(-1, adjoint.shape[-1]), hidden.reshape(-1, hidden.shape[-1])
+            gh, v = hidden_grad.reshape(-1, hidden_grad.shape[-1]), value.reshape(-1, value.shape[-1])
+            gradients = (public, -(gh.T@v), -ctx.bound*(ga.T@h), -gh.sum(0), -ga.sum(0))
+            gradients = tuple(g.to(dtype) for g, dtype in zip(gradients, ctx.input_dtypes))
+            return (*gradients, None, None, None, None)
+
+
 class RawConditionChartRenderer(AnchoredWorldDiT):
     """Public conditions are raw; transform exactly once at every forward.
 
@@ -84,6 +147,10 @@ class RawConditionChartRenderer(AnchoredWorldDiT):
     register a duplicate module/optimizer parameter subtree.
     """
     def bind_condition_chart(self, chart):
+        # Binding the raw public interface explicitly configures the ONE owned
+        # chart used by both the predictor and renderer; checkpoint reloads
+        # reconstruct this from the same raw-interface config, without buffers.
+        chart.enable_raw_precision()
         object.__setattr__(self, "_raw_condition_chart", chart)
 
     def forward(self, latent, timestep, *, condition=None, **kwargs):
@@ -116,6 +183,7 @@ The identity control freezes the exact identity initialization of this same net.
         if width < 1 or hidden < 1:
             raise ValueError("Chart dimensions must be positive")
         self.mode, self.bound = mode, float(bound)
+        self._raw_precision = False
         # nn.Linear constructors consume CPU RNG; restore it and do not seed or
         # touch CUDA generators. The explicit private stream initializes W1.
         with torch.random.fork_rng(devices=[]):
@@ -148,10 +216,25 @@ The identity control freezes the exact identity initialization of this same net.
             return self.input.weight.float(), self.output.weight.float()
         return self.bounded_weight(self.input.weight), self.bounded_weight(self.output.weight)
 
+    def enable_raw_precision(self):
+        """Use local FP64 map/inverse arithmetic, retaining FP32 public state.
+
+        Only the raw-interface owner calls this. Legacy chart configurations
+        keep the original forward and no-grad inverse byte-for-byte pathways.
+        No process-global precision flag, parameter, buffer or RNG change.
+        """
+        if self.mode == "unconstrained":
+            raise ValueError("Raw precision requires a contractive chart")
+        self._raw_precision = True
+        return self
+
     def forward(self, value):
         # Do not let BF16 autocast silently change the matrix norm contract.
         with torch.autocast(device_type=value.device.type, enabled=False):
             first, second = self.effective_weights()
+            if self._raw_precision:
+                hidden = torch.tanh(F.linear(value.double(), first.double(), self.input.bias.double()))
+                return (value.double()+F.linear(hidden, self.bound*second.double(), self.output.bias.double())).float()
             hidden = torch.tanh(F.linear(value.float(), first, self.input.bias.float()))
             return value.float() + F.linear(hidden, self.bound * second, self.output.bias.float())
 
@@ -197,7 +280,8 @@ The identity control freezes the exact identity initialization of this same net.
             raise ValueError("Require positive inverse iterations and finite positive tolerances")
         with torch.autocast(device_type=value.device.type, enabled=False):
             first, second = self.effective_weights()
-            return _ImplicitChartInverse.apply(value.float(), first, second,
+            inverse = _PreciseImplicitChartInverse if self._raw_precision else _ImplicitChartInverse
+            return inverse.apply(value.float(), first, second,
                 self.input.bias.float(), self.output.bias.float(), self.bound, iterations, atol, rtol)
 
 

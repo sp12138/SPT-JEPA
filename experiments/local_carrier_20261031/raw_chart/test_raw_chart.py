@@ -161,6 +161,7 @@ class RawChartContracts(unittest.TestCase):
 
     def test_inverse_values_all_gradients_double_oracle_and_finite_difference(self):
         chart = ResidualCarrierChart(4, 6, 'bounded', .5); activate_chart(chart)
+        chart.enable_raw_precision()
         g = torch.Generator().manual_seed(49)
         value = torch.randn(3, 4, generator=g).requires_grad_()
         direction = torch.randn(3, 4, generator=g)
@@ -212,12 +213,25 @@ class RawChartContracts(unittest.TestCase):
 
     def test_inverse_failure_and_higher_order_contract(self):
         chart = ResidualCarrierChart(4, 6); activate_chart(chart)
+        chart.enable_raw_precision()
         with self.assertRaises(RuntimeError): chart.differentiable_inverse(torch.ones(3, 4), iterations=1, atol=1e-12, rtol=1e-12)
         with self.assertRaises(RuntimeError): chart.differentiable_inverse(torch.full((1, 4), float('nan')))
         x = torch.ones(1, 4, requires_grad=True)
         derivative = torch.autograd.grad(chart.differentiable_inverse(x).square().sum(), x, create_graph=True)[0]
         with self.assertRaises(RuntimeError): torch.autograd.grad(derivative.sum(), x)
         with self.assertRaises(ValueError): ResidualCarrierChart(4, 6, 'unconstrained').differentiable_inverse(x)
+
+        # An internally accurate double solution must not silently certify a
+        # rounded public value that violates a caller's stricter tolerance.
+        with self.assertRaisesRegex(RuntimeError, 'public-dtype'):
+            chart.differentiable_inverse(torch.tensor([[.17, -.33, .71, 1.23]]), atol=1e-14, rtol=1e-14)
+
+        # Module-local FP64 must leave the global GEMM policy untouched, even
+        # when the native process keeps its original high/TF32 policy.
+        before = torch.get_float32_matmul_precision(), torch.backends.cuda.matmul.allow_tf32
+        y = chart.differentiable_inverse(chart(x)); y.sum().backward()
+        self.assertEqual((torch.get_float32_matmul_precision(), torch.backends.cuda.matmul.allow_tf32), before)
+        self.assertEqual(y.dtype, torch.float32)
 
     def test_conjugacy_native_rho_forecast_mixture_and_renderer_all_paths(self):
         raw = slim().train(); reference = slim(interface='chart', chart='none').train()
