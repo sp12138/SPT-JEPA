@@ -25,6 +25,14 @@ def main():
     assert args.step in [FAMILIES[args.family]['step'], *stages(args.family)]
     source_proof = source_check(source)
     sys.path[:0] = source['pythonpath'].split(':')
+    # Native7a intentionally contains only its model/evaluator package. Reuse
+    # the previously audited093 CPU sampler primitives AFTER original sources.
+    sampler_source = read(B/'runs/local_isotropic2000_20261031/helper-source-record.json')
+    assert sampler_source['source_commit'] == '0934d3c445e6c754a6ab547d801890c34740b330'
+    sampler_manifest = read(sampler_source['manifest'])
+    for rel in ['experiments/carrier_progress_20261031/prepare_learning.py', 'experiments/carrier_progress_20261031/prepare_next.py']:
+        assert sha(Path(sampler_source['source'])/rel) == sampler_manifest['files'][rel]
+    sys.path.append(sampler_source['source'])
     import torch
     from as_jepa_lewm.train import TrainModule
     from as_jepa_lewm.factory import gradient_expectations
@@ -36,8 +44,12 @@ def main():
     torch.set_num_threads(2)
     initialize_ops(OpsConfig(backend='sdpa_math', allow_fallback=False), device=torch.device('cpu'), parallel_state=None)
     modules = ['as_jepa_lewm.train', 'as_jepa_lewm.factory', 'as_jepa_tools.benchmark_data',
-               'experiments.ideas_validate_20261031.preflight', 'experiments.carrier_progress_20261031.prepare_next']
+               'experiments.ideas_validate_20261031.preflight']
     for module in modules: assert Path(importlib.import_module(module).__file__).is_relative_to(Path(source['source'])), module
+    sampler_file = Path(importlib.import_module(resume_sequence.__module__).__file__)
+    expected_sampler = Path(source['source'])/'experiments/carrier_progress_20261031/prepare_next.py'
+    if not expected_sampler.exists(): expected_sampler = Path(sampler_source['source'])/'experiments/carrier_progress_20261031/prepare_next.py'
+    assert sampler_file == expected_sampler
     run, parent = Path(args.run), Path(args.parent)
     cfg = read(run/'config.json'); assert semantic(cfg) == semantic(read(parent/'config.json'))
     assert cfg['batch_size'] == 128 and cfg['max_steps'] == 124910 and cfg['model']['window'] == 8
@@ -90,6 +102,7 @@ def main():
                   checkpoint_sha256=sha(run/'last.ckpt'), portable_path=str(pp), portable_sha256=sha(pp),
                   config_sha256=sha(run/'config.json'), initial_weights=str(args.initial), initial_sha256=sha(args.initial),
                   source=source, source_proof=source_proof, imported_files={n: str(importlib.import_module(n).__file__) for n in modules},
+                  auditor_sha256=sha(__file__), sampler_helper=dict(path=str(sampler_file), sha256=sha(sampler_file), fallback_source=sampler_source),
                   sampler=sequence, optimizer_parameter_tensors=list(map(len, current)), learning_rates=scheduler.get_last_lr(),
                   frozen_tensor_count=len(frozen), frozen_tensor_names=frozen,
                   rng_component_sha256={k: rng_digest(v) for k, v in checkpoint['campaign_rng'].items()},

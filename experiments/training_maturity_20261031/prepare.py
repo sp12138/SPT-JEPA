@@ -83,7 +83,11 @@ def validate_jobs(jobs):
 
 
 def prepare(args):
-    root = Path(args.root); assert not root.exists()
+    root = Path(args.root)
+    if args.continue_preparation:
+        assert root.exists() and (root/'HOLD').exists() and (root/'HOLD_DISPATCH').exists()
+        assert not any((root/n).exists() for n in ['plan.json', 'candidate-plan.json', 'protocol.json'])
+    else: assert not root.exists()
     helper = read(args.helper_record); source_check(helper)
     assert sha(__file__) == read(helper['manifest'])['files'][PREFIX+'prepare.py']
     proof = read(Path(helper['source'])/PREFIX/'cpu-contracts.json'); assert proof['passed']
@@ -129,30 +133,62 @@ def prepare(args):
     assert len({r['windows_sha256'] for r in records}) == 1
     # Retain the original proven EGL/CPU environment; helpers never take import precedence over model code.
     environment = read(B/'runs/patch_token2000_20261031/plan.json')['environment']
-    root.mkdir(); write(root/'helper-source-record.json', helper); write(root/'correlation-source-record.json', corr)
-    write(root/'correlation-calibration-inputs.json', calibration_inputs)
-    for a in ['HOLD', 'HOLD_DISPATCH']: (root/a).write_text('Prepared only. Root review/authorization and actual-free/startup checks required. No dispatch has been launched.\n')
-    for family in FAMILIES: write(root/'model-sources'/f'{family}.json', next(r['source'] for r in records if r['family'] == family))
+    def ensure(path, value):
+        if path.exists(): assert read(path) == value
+        else: write(path, value)
+    if args.continue_preparation:
+        original_helper = read(root/'helper-source-record.json')
+        assert original_helper['source_commit'] == '29256c4a2206dc9d83483575e06531fcc113d59f'
+        source_check(original_helper)
+        ensure(root/'completion-helper-source-record.json', helper)
+        write(root/'preparation-recovery.json', dict(original_helper=original_helper, completion_helper=helper,
+            preserved_failure=str(root/'cube-native-lewm-seed1/pre-restore.log'),
+            cause='Native7a omitted prepare_next helper; failure occurred before loading weights.093 sampler-only fallback is now appended after original model paths. No model/Trainer/config change; old logs and passed proofs remain.'))
+    else:
+        root.mkdir(); write(root/'helper-source-record.json', helper)
+        for a in ['HOLD', 'HOLD_DISPATCH']: (root/a).write_text('Prepared only. Root review/authorization and actual-free/startup checks required. No dispatch has been launched.\n')
+    ensure(root/'correlation-source-record.json', corr)
+    ensure(root/'correlation-calibration-inputs.json', calibration_inputs)
+    for family in FAMILIES: ensure(root/'model-sources'/f'{family}.json', next(r['source'] for r in records if r['family'] == family))
     # Exact pre/post restore in separate interpreters prevents cross-family module caching.
-    proofs = []
+    proofs = []; executed = 0; reused = 0
     for r in records:
-        run = root/r['id']; parent = Path(r['parent']); run.mkdir(); write(run/'config.json', r['config']); r['config_sha256'] = sha(run/'config.json')
+        run = root/r['id']; parent = Path(r['parent']); run.mkdir(exist_ok=args.continue_preparation); ensure(run/'config.json', r['config']); r['config_sha256'] = sha(run/'config.json')
         env = dict(os.environ, CUDA_VISIBLE_DEVICES='', PYTHONPATH=r['source']['pythonpath'], OMP_NUM_THREADS='2', MKL_NUM_THREADS='2', OPENBLAS_NUM_THREADS='2')
         prepath = run/'pre-resume-fullstate.json'; postpath = run/'post-copy-fullstate.json'
         for label, command in [('pre', audit_command(helper, r, parent, r['initial_step'], prepath)),
                                ('post', audit_command(helper, r, run, r['initial_step'], postpath,
                                         parent/f'model-step{r["initial_step"]:07d}/weights.pt'))]:
+            result_path = prepath if label == 'pre' else postpath
+            if result_path.exists():
+                assert args.continue_preparation and r['family'] == 'local'
+                proof = read(result_path); audit_run = parent if label == 'pre' else run
+                assert proof['passed'] and all(proof['checks'].values()) and proof['step'] == r['initial_step']
+                assert proof['source'] == r['source'] and proof['run'] == str(audit_run)
+                assert proof['checkpoint_sha256'] == sha(audit_run/'last.ckpt') == r['parent_checkpoint_sha256']
+                assert proof['config_sha256'] == sha(audit_run/'config.json')
+                assert proof['portable_sha256'] == sha(parent/f'model-step{r["initial_step"]:07d}/weights.pt')
+                assert proof['initial_sha256'] == r['initial_sha256']
+                reused += 1
+                continue
             if label == 'post':
+                assert not (run/'last.ckpt').exists()
                 shutil.copy2(r['parent_archive'], run/'last.ckpt')
                 assert sha(run/'last.ckpt') == r['parent_checkpoint_sha256']
-            with (run/f'{label}-restore.log').open('x') as log:
+            suffix = '-recovery' if args.continue_preparation else ''
+            with (run/f'{label}-restore{suffix}.log').open('x') as log:
                 subprocess.run(command, env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
+            executed += 1
         pre, post = read(prepath), read(postpath)
         assert pre['passed'] and post['passed']
         for key in ['checkpoint_sha256', 'portable_sha256', 'rng_component_sha256', 'sampler', 'optimizer_parameter_tensors', 'learning_rates']:
             assert pre[key] == post[key], key
         proofs.append(dict(id=r['id'], passed=True, pre=prepath.name, post=postpath.name, checkpoint_sha256=post['checkpoint_sha256'],
-                           sampler=post['sampler'], optimizer_parameter_tensors=post['optimizer_parameter_tensors']))
+                           sampler=post['sampler'], optimizer_parameter_tensors=post['optimizer_parameter_tensors'],
+                           actual_execution_helper=(original_helper if args.continue_preparation and r['family']=='local' else helper),
+                           reused_prior_execution=bool(args.continue_preparation and r['family']=='local'),
+                           proof_sha256={str(p):sha(p) for p in [prepath,postpath]},
+                           compatibility='Reused292 local proofs retain actual parent/copy checkpoint, portable, config, initial and original model-source hash bindings; sampler checks unchanged. Only missing native audit-helper dependency repaired. No claim reused checks ran under the new helper.'))
         print(json.dumps(dict(id=r['id'], native_pre_post_passed=True)), flush=True)
     jobs = [j for r in records for j in jobs_for(root, helper, r)]; dag = validate_jobs(jobs)
     write(root/'candidate-plan.json', dict(root=str(root), deadline=None, environment=environment, jobs=jobs))
@@ -167,7 +203,9 @@ def prepare(args):
         rng_scope='Pre/post actual model/AdamW/scheduler restore, copied saved RNG field hashes, native stateless next32 cursor oracle. CPU does not restore RNG; no bitwise uninterrupted-GPU claim.',
         stop='Candidate only; no plan.json/dispatcher. Original roots/HOLDs unchanged. Root review required before activation; all6 stop23342, no automatic budget/seed/method extension.'))
     assert not (root/'plan.json').exists()
+    assert executed + reused == 12
     write(root/'preparation-summary.json', dict(passed=True, prepared_only=True, launched=False, actual_cpu_restore_audits=12,
+        executed_in_this_preparation=executed, verified_reused_prior_actual_audits=reused,
         copies=proofs, dag=dag, helper=helper, candidate_sha256=sha(root/'candidate-plan.json'), protocol_sha256=sha(root/'protocol.json')))
     print(json.dumps(dict(root=str(root), actual_cpu_restores=12, endpoints=68, launched=False)), flush=True)
 
@@ -202,7 +240,7 @@ def correlated(args):
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser(); p.add_argument('phase', choices=['prepare', 'correlated']); p.add_argument('--root', default=str(ROOT))
-    p.add_argument('--helper-record'); p.add_argument('--run-id'); p.add_argument('--case', choices=['primary', 'fresh'])
+    p.add_argument('--helper-record'); p.add_argument('--run-id'); p.add_argument('--case', choices=['primary', 'fresh']); p.add_argument('--continue-preparation', action='store_true')
     a = p.parse_args()
     if a.phase == 'prepare': assert a.helper_record; prepare(a)
     else: assert a.run_id and a.case; correlated(a)
