@@ -1,3 +1,7 @@
+<!-- LIVE_MATURITY_STATUS_BEGIN -->
+Current live status: 2026-10-31 13:00:26 UTC. Only cube_maturity23342_20261031 runs;6 original runs capped23342. Native23342/23342 finished and evaluating,TF17900/17900,local11800/11800;15/68 endpoints exit0,0 actual failures,6 fullarchives pass. The v2 checker falsely flagged finished native summaries because they omit gradient fields; preserved raw evidence and actual23300 gradients plus final fullstate exit0 confirm health. v3 uses explicitly timestamped last running gradients only for finished summaries; running missing gradients still fail. No model/training/source/cap changes or planning outcomes read. Next13:30:26 UTC /21:30:26 Beijing: run `python3 experiments/training_maturity_20261031/check.py --all --label 133026` once. Preserve allotherHOLDs; no newcandidate/extension selected. Authoritative recovery: /efs/prescottsun/SPT-JEPA/runs/geometry_research_20261031/next-review.json.
+<!-- LIVE_MATURITY_STATUS_END -->
+
 # Scheduled12:00 review and low-overhead checker, 2026-10-31
 
 One12:00:26 read found native16400/16500, TF14200/14200, local8200/8200;allloggedloss/requiredgradientsfinitepositive, actualchild/source/configmatch,0/68complete and0failures. No requiredarchive reached yet; no partialplanning outcomes read. Onlyowned6GPUs checked. Next12:30:26 UTC /20:30:26 Beijing.

@@ -18,7 +18,7 @@ import time
 
 B = Path('/efs/prescottsun/SPT-JEPA')
 ROOT = B/'runs/cube_maturity23342_20261031'
-REMOTE = B/'reports/training-maturity-20261031/checker-v2/check.py'
+REMOTE = B/'reports/training-maturity-20261031/checker-v3/check.py'
 PY = '/efs/prescottsun/project_jepa/envs/lewm/bin/python'
 HOSTS = ('dev2', 'dev13', 'dev15')
 
@@ -39,6 +39,23 @@ def write(p, data):
     with p.open('x') as f: print(json.dumps(clean(data), indent=2, allow_nan=False), file=f)
 
 
+def gradient_evidence(status, records, family):
+    """Finished summaries omit gradients; retain the actual training timestamp."""
+    row, source = status, 'status'
+    if status['state'] == 'finished' and not any(k.startswith('grad_norm_') for k in status):
+        row = next((r for r in reversed(records) if r.get('state') == 'running'
+                    and any(k.startswith('grad_norm_') for k in r)), {})
+        source = 'last_logged_running_record' if row else 'missing'
+    grads = {k: v for k, v in row.items() if k.startswith('grad_norm_')}
+    active = {k: v for k, v in grads.items()
+              if not (family == 'local' and k in ['grad_norm_encoder', 'grad_norm_pool'])}
+    positive = bool(active) and all(isinstance(v, (int, float)) and math.isfinite(v) and v > 0
+                                    for v in active.values())
+    return dict(gradients=grads, active_gradient_positive=positive,
+                gradient_source=source, gradient_evidence_step=row.get('step'),
+                gradient_evidence_updated_at=row.get('updated_at'))
+
+
 def check(host, label):
     plan, protocol = read(ROOT/'plan.json'), read(ROOT/'protocol.json')
     jobs = [j for j in plan['jobs'] if j['host'] == host]
@@ -55,17 +72,15 @@ def check(host, label):
         records = [json.loads(x) for x in (run/'metrics.jsonl').read_text().splitlines() if x]
         finite = all(math.isfinite(v) for row in records for k, v in row.items()
                      if isinstance(v, (int, float)) and (k in ['loss', 'fm', 'rate', 'pred', 'sigreg', 'feature_std'] or k.startswith('grad_norm_')))
-        grads = {k: v for k, v in status.items() if k.startswith('grad_norm_')}
-        active = {k: v for k, v in grads.items() if not (a['family'] == 'local' and k in ['grad_norm_encoder', 'grad_norm_pool'])}
-        gradient_ok = bool(active) and all(math.isfinite(v) and v > 0 for v in active.values())
-        if not finite or not gradient_ok or (run/'error.txt').exists(): errors.append(a['id']+': unhealthy trace or error.txt')
+        evidence = gradient_evidence(status, records, a['family'])
+        if not finite or not evidence['active_gradient_positive'] or (run/'error.txt').exists(): errors.append(a['id']+': unhealthy trace or error.txt')
         if status['step'] > 23342: errors.append(a['id']+': configured cap exceeded')
         if sha(run/'config.json') != a['config_sha256']: errors.append(a['id']+': config hash changed')
         recent = [x['seconds_per_step'] for x in records if x['state'] == 'running'][-3:]
         rate = statistics.median(recent) if recent else status['seconds_per_step']
         rows.append(dict(id=a['id'], family=a['family'], state=status['state'], step=status['step'], loss=status['loss'],
             parts={k: status[k] for k in ['fm', 'rate', 'pred', 'sigreg', 'feature_std'] if k in status},
-            gradients=grads, all_trace_finite=finite, active_gradient_positive=gradient_ok,
+            **evidence, all_trace_finite=finite,
             recent_seconds_per_step=rate, remaining_training_hours=max(0, 23342-status['step'])*rate/3600,
             updated_at=status['updated_at'], trace_records=len(records),
             error=(run/'error.txt').read_text() if (run/'error.txt').exists() else None))

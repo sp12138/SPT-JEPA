@@ -1,0 +1,115 @@
+{
+  "cause": "Finished status omits gradient fields;v2 monitor mistook their absence for failed gradients. Training and final fullstate exit0, raw v2 snapshots preserved.",
+  "no_new_gpu_or_model_call": true,
+  "runs": [
+    {
+      "id": "cube-native-lewm-seed1",
+      "family": "native",
+      "snapshot_state": "finished",
+      "snapshot_step": 23342,
+      "snapshot_gradients": {},
+      "snapshot_error": null,
+      "last_actual_training_gradient_record": {
+        "state": "running",
+        "step": 23300,
+        "elapsed_seconds": 2614.9135661125183,
+        "updated_at": 1793451504.935048,
+        "pid": 228042,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 0.12302735447883606,
+        "pred": 0.011210951954126358,
+        "sigreg": 1.2421875,
+        "feature_std": 0.9877971410751343,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.19089540839195251,
+        "grad_norm_predictor": 0.0285336971282959,
+        "grad_norm_action_encoder": 0.03877923637628555,
+        "grad_norm_projector": 0.2782934308052063,
+        "grad_norm_pred_proj": 0.0511227510869503,
+        "seconds_per_step": 0.4515491890907288,
+        "peak_gib": 24.613683223724365,
+        "learning_rates": [
+          4.617868195339919e-05
+        ]
+      },
+      "fullstate_exit": {
+        "id": "fullstate-cube-native-lewm-seed1",
+        "returncode": 0,
+        "started_at": 1793451573.7744193,
+        "finished_at": 1793451605.1989665,
+        "pid": 228188,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "gpu": 0
+      },
+      "trace_sha256": "c568d1d777d2bf905954b9959de5e0ff0323af19e00364c90a9a23127d2f28a8",
+      "corrected_gradient_evidence": {
+        "gradients": {
+          "grad_norm_encoder": 0.19089540839195251,
+          "grad_norm_predictor": 0.0285336971282959,
+          "grad_norm_action_encoder": 0.03877923637628555,
+          "grad_norm_projector": 0.2782934308052063,
+          "grad_norm_pred_proj": 0.0511227510869503
+        },
+        "active_gradient_positive": true,
+        "gradient_source": "last_logged_running_record",
+        "gradient_evidence_step": 23300,
+        "gradient_evidence_updated_at": 1793451504.935048
+      }
+    },
+    {
+      "id": "cube-native-lewm-seed2",
+      "family": "native",
+      "snapshot_state": "finished",
+      "snapshot_step": 23342,
+      "snapshot_gradients": {},
+      "snapshot_error": null,
+      "last_actual_training_gradient_record": {
+        "state": "running",
+        "step": 23300,
+        "elapsed_seconds": 2545.9681375026703,
+        "updated_at": 1793451435.9793677,
+        "pid": 228036,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "loss": 0.1219431534409523,
+        "pred": 0.013056431896984577,
+        "sigreg": 1.2109375,
+        "feature_std": 0.9831945896148682,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.24345894157886505,
+        "grad_norm_predictor": 0.03637178614735603,
+        "grad_norm_action_encoder": 0.03476191312074661,
+        "grad_norm_projector": 0.2783370912075043,
+        "grad_norm_pred_proj": 0.051934923976659775,
+        "seconds_per_step": 0.46823045969009397,
+        "peak_gib": 24.613683223724365,
+        "learning_rates": [
+          4.617868195339919e-05
+        ]
+      },
+      "fullstate_exit": {
+        "id": "fullstate-cube-native-lewm-seed2",
+        "returncode": 0,
+        "started_at": 1793451522.2664256,
+        "finished_at": 1793451562.771531,
+        "pid": 228154,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "gpu": 1
+      },
+      "trace_sha256": "00ccb474e6da8e98c1806e9d97ca7e04aef8f95d6182e746f1c09a08736056b7",
+      "corrected_gradient_evidence": {
+        "gradients": {
+          "grad_norm_encoder": 0.24345894157886505,
+          "grad_norm_predictor": 0.03637178614735603,
+          "grad_norm_action_encoder": 0.03476191312074661,
+          "grad_norm_projector": 0.2783370912075043,
+          "grad_norm_pred_proj": 0.051934923976659775
+        },
+        "active_gradient_positive": true,
+        "gradient_source": "last_logged_running_record",
+        "gradient_evidence_step": 23300,
+        "gradient_evidence_updated_at": 1793451435.9793677
+      }
+    }
+  ],
+  "correction": "Both finished native statuses are healthy. Gradient evidence is the actual logged step23300, not a claimed measurement at23342. Actual final fullstate endpoints exited0."
+}
