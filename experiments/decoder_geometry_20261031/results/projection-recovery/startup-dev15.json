@@ -1,0 +1,52 @@
+{
+  "utc": "2026-10-31T01:16:15.154357+00:00",
+  "actual_children": [
+    {
+      "id": "original-primary-tworoom-native-cal-seed1",
+      "pid": 1162397,
+      "gpu": 0,
+      "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u /efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py --spec /efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/original-primary-tworoom-native-cal-seed1.json ",
+      "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "0",
+        "MUJOCO_EGL_DEVICE_ID": "0",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "log_tail": "01:16:05 | INFO  | __init__.py | JAX version 0.11.2 available.\n01:16:07 | INFO  | atomic_chec~| [atomic_save] installed crash-safe checkpoint plugin (write to sibling .tmp + fsync + atomic rename)\n01:16:08 | INFO  | utils.py    | Created ViT-tiny from scratch with config: {'hidden_size': 192, 'num_hidden_layers': 12, 'num_attention_heads': 3, 'intermediate_size': 768, 'image_size': 224, 'patch_size': 14}\n/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/gymnasium/utils/passive_env_checker.py:146: UserWarning: \u001b[33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>\u001b[0m\n  logger.warn(\n/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/gymnasium/spaces/box.py:486: UserWarning: \u001b[33mWARN: Casting input x to numpy array.\u001b[0m\n  gym.logger.warn(\"Casting input x to numpy array.\")\n"
+    },
+    {
+      "id": "original-primary-tworoom-local1024-seed1",
+      "pid": 1162401,
+      "gpu": 6,
+      "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python -B -u /efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py --spec /efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/original-primary-tworoom-local1024-seed1.json ",
+      "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "6",
+        "MUJOCO_EGL_DEVICE_ID": "6",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "log_tail": "/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/gymnasium/utils/passive_env_checker.py:146: UserWarning: \u001b[33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>\u001b[0m\n  logger.warn(\n/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/gymnasium/spaces/box.py:486: UserWarning: \u001b[33mWARN: Casting input x to numpy array.\u001b[0m\n  gym.logger.warn(\"Casting input x to numpy array.\")\n"
+    }
+  ],
+  "gpu_applications": "GPU-288d9f8d-a739-31fb-7aa0-99b293271a8e, 1162397, 850 MiB\nGPU-62fbeeaf-d05a-48e6-9ec4-fbb5f41672b9, 1162401, 1060 MiB\n",
+  "worker": {
+    "state": "running",
+    "updated_at": 1793409371.229564,
+    "host": "prescottsun-dev15-2d-1027-worker-0",
+    "pid": 1162394,
+    "running": {
+      "0": {
+        "id": "original-primary-tworoom-native-cal-seed1",
+        "pid": 1162397,
+        "started_at": 1793409320.3980603
+      },
+      "6": {
+        "id": "original-primary-tworoom-local1024-seed1",
+        "pid": 1162401,
+        "started_at": 1793409321.093344
+      }
+    },
+    "queued": 10
+  },
+  "passed": true
+}

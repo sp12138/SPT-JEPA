@@ -1,0 +1,387 @@
+{
+  "prepared_only": false,
+  "root": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031",
+  "deadline": null,
+  "environment": {
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MUJOCO_GL": "egl",
+    "SDL_VIDEODRIVER": "dummy",
+    "PYGLET_HEADLESS": "true",
+    "MPLCONFIGDIR": "/efs/prescottsun/SPT-JEPA/cache/matplotlib",
+    "TMPDIR": "/efs/prescottsun/SPT-JEPA/tmp/hardtasks20261030",
+    "STABLEWM_HOME": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/planning",
+    "PYOPENGL_PLATFORM": "egl",
+    "LD_LIBRARY_PATH": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu:/usr/lib64",
+    "__EGL_VENDOR_LIBRARY_FILENAMES": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json"
+  },
+  "jobs": [
+    {
+      "id": "original-primary-tworoom-native-cal-seed1",
+      "phase": "planning-original-replay",
+      "host": "dev15",
+      "gpu": 0,
+      "task": "tworoom",
+      "family": "native-cal",
+      "training_seed": 1,
+      "case_set": "primary",
+      "mode": "original",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/original-primary-tworoom-native-cal-seed1",
+      "spec": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/original-primary-tworoom-native-cal-seed1.json",
+      "spec_sha256": "f0004a73498ad9d564964bc7132e0d099decd2142a7c6f7abb776bf314a771db",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/original-primary-tworoom-native-cal-seed1.json"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "0"
+      },
+      "depends_on": [],
+      "hold": false
+    },
+    {
+      "id": "bounded-fresh-cube-native-cal-seed1",
+      "phase": "planning-bounded",
+      "host": "dev15",
+      "gpu": 0,
+      "task": "cube",
+      "family": "native-cal",
+      "training_seed": 1,
+      "case_set": "fresh",
+      "mode": "bounded",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/bounded-fresh-cube-native-cal-seed1",
+      "spec": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-fresh-cube-native-cal-seed1.json",
+      "spec_sha256": "2caec5bed5d9a34b0f1278ca5b81ac0312c27d8237aa69948475ad7a0f81946a",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-fresh-cube-native-cal-seed1.json"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "0"
+      },
+      "depends_on": [
+        "original-primary-tworoom-native-cal-seed1"
+      ],
+      "hold": false
+    },
+    {
+      "id": "bounded-primary-cube-native-cal-seed1",
+      "phase": "planning-bounded",
+      "host": "dev15",
+      "gpu": 0,
+      "task": "cube",
+      "family": "native-cal",
+      "training_seed": 1,
+      "case_set": "primary",
+      "mode": "bounded",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/bounded-primary-cube-native-cal-seed1",
+      "spec": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-primary-cube-native-cal-seed1.json",
+      "spec_sha256": "176755feaa4dc246a7eaf2240cdeab3353303350381c7abcfa828e3a7f7946de",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-primary-cube-native-cal-seed1.json"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "0"
+      },
+      "depends_on": [
+        "bounded-fresh-cube-native-cal-seed1"
+      ],
+      "hold": false
+    },
+    {
+      "id": "bounded-fresh-tworoom-native-cal-seed1",
+      "phase": "planning-bounded",
+      "host": "dev15",
+      "gpu": 0,
+      "task": "tworoom",
+      "family": "native-cal",
+      "training_seed": 1,
+      "case_set": "fresh",
+      "mode": "bounded",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/bounded-fresh-tworoom-native-cal-seed1",
+      "spec": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-fresh-tworoom-native-cal-seed1.json",
+      "spec_sha256": "30cc989d1732199c3b4b3b4d0031022a6fcff44e3991cf538cfc5e7d4a86296a",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-fresh-tworoom-native-cal-seed1.json"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "0"
+      },
+      "depends_on": [
+        "bounded-primary-cube-native-cal-seed1"
+      ],
+      "hold": false
+    },
+    {
+      "id": "bounded-primary-tworoom-native-cal-seed1",
+      "phase": "planning-bounded",
+      "host": "dev15",
+      "gpu": 0,
+      "task": "tworoom",
+      "family": "native-cal",
+      "training_seed": 1,
+      "case_set": "primary",
+      "mode": "bounded",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+        "source_commit": "7a1ab4feb1a44cb3a6a37f5f7f2ad6a0e110487f",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/bounded-primary-tworoom-native-cal-seed1",
+      "spec": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-primary-tworoom-native-cal-seed1.json",
+      "spec_sha256": "9288d8622c349c907361a466bb4840673ccf57ada08a2bee9c6afef70049b4f3",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-primary-tworoom-native-cal-seed1.json"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "0"
+      },
+      "depends_on": [
+        "bounded-fresh-tworoom-native-cal-seed1"
+      ],
+      "hold": false
+    },
+    {
+      "id": "original-primary-tworoom-local1024-seed1",
+      "phase": "planning-original-replay",
+      "host": "dev15",
+      "gpu": 6,
+      "task": "tworoom",
+      "family": "local1024",
+      "training_seed": 1,
+      "case_set": "primary",
+      "mode": "original",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+        "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/original-primary-tworoom-local1024-seed1",
+      "spec": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/original-primary-tworoom-local1024-seed1.json",
+      "spec_sha256": "5f765ab23acb3a39a23bd8500c73ac9cf709f9b596640f2ce7121f114e99bd5a",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/original-primary-tworoom-local1024-seed1.json"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "6"
+      },
+      "depends_on": [],
+      "hold": false
+    },
+    {
+      "id": "bounded-fresh-cube-local1024-seed1",
+      "phase": "planning-bounded",
+      "host": "dev15",
+      "gpu": 6,
+      "task": "cube",
+      "family": "local1024",
+      "training_seed": 1,
+      "case_set": "fresh",
+      "mode": "bounded",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+        "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/bounded-fresh-cube-local1024-seed1",
+      "spec": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-fresh-cube-local1024-seed1.json",
+      "spec_sha256": "616f55fa5f7355df978939cdae21e87ba440f290a9060331f2ac41a375b6bbb7",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-fresh-cube-local1024-seed1.json"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "6"
+      },
+      "depends_on": [
+        "original-primary-tworoom-local1024-seed1"
+      ],
+      "hold": false
+    },
+    {
+      "id": "bounded-primary-cube-local1024-seed1",
+      "phase": "planning-bounded",
+      "host": "dev15",
+      "gpu": 6,
+      "task": "cube",
+      "family": "local1024",
+      "training_seed": 1,
+      "case_set": "primary",
+      "mode": "bounded",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+        "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/bounded-primary-cube-local1024-seed1",
+      "spec": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-primary-cube-local1024-seed1.json",
+      "spec_sha256": "2826b14bd2a56dae9f1f47ff6375f388901d98a8d92b7db1c93f7865a8525c5c",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-primary-cube-local1024-seed1.json"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "6"
+      },
+      "depends_on": [
+        "bounded-fresh-cube-local1024-seed1"
+      ],
+      "hold": false
+    },
+    {
+      "id": "bounded-fresh-tworoom-local1024-seed1",
+      "phase": "planning-bounded",
+      "host": "dev15",
+      "gpu": 6,
+      "task": "tworoom",
+      "family": "local1024",
+      "training_seed": 1,
+      "case_set": "fresh",
+      "mode": "bounded",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+        "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/bounded-fresh-tworoom-local1024-seed1",
+      "spec": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-fresh-tworoom-local1024-seed1.json",
+      "spec_sha256": "9e6bf06f946ce2542dd6a904edb5c743d24fefd43a1c8774fcacaccefda9504e",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-fresh-tworoom-local1024-seed1.json"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "6"
+      },
+      "depends_on": [
+        "bounded-primary-cube-local1024-seed1"
+      ],
+      "hold": false
+    },
+    {
+      "id": "bounded-primary-tworoom-local1024-seed1",
+      "phase": "planning-bounded",
+      "host": "dev15",
+      "gpu": 6,
+      "task": "tworoom",
+      "family": "local1024",
+      "training_seed": 1,
+      "case_set": "primary",
+      "mode": "bounded",
+      "source": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+        "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "output": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/bounded-primary-tworoom-local1024-seed1",
+      "spec": "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-primary-tworoom-local1024-seed1.json",
+      "spec_sha256": "dfd938b7d0dd984b7e4091a51809402a6a7afe61bbdb8ceb4eadcba0f1671954",
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_evaluation_source_20261031/source-v1/experiments/action_projection_20261031/evaluate.py",
+        "--spec",
+        "/efs/prescottsun/SPT-JEPA/runs/action_projection_recovery_20261031/specs/bounded-primary-tworoom-local1024-seed1.json"
+      ],
+      "environment": {
+        "MUJOCO_EGL_DEVICE_ID": "6"
+      },
+      "depends_on": [
+        "bounded-fresh-tworoom-local1024-seed1"
+      ],
+      "hold": false
+    }
+  ]
+}

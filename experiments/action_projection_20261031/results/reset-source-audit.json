@@ -1,0 +1,38 @@
+{
+  "scope": "Read-only source audit only; no new environment/model/RNG experiment, no source mutation. Existing bare-original repeats are owned by the cube agent.",
+  "dataset_has_seed_column": false,
+  "facts": [
+    "world/world.py:549-554 derives reset seeds only from the dataset seed column; Cube metrics report seeds=null.",
+    "CubeEnv.reset:815-822 supplies seed=None to variation reset and does not forward its seed parameter to super().reset.",
+    "CubeEnv.initialize_episode:1156-1158 executes two random self.action_space.sample() actions during reset.",
+    "ManipSpaceEnv.action_space:144-151 constructs a new Box on every property access; these Boxes receive no seed.",
+    "Gym Env.np_random:239-247 initializes an independent RNG if absent; np.random.seed in the evaluator does not seed this independent generator.",
+    "OGBench CustomMuJoCoEnv.set_state:212-219 restores qpos/qvel and calls mj_forward, without an explicit full MjData reset or complete simulator-state restore.",
+    "CLEAR runner.py:250-288 patches Cube target/hold/success, not reset seeding/state restoration."
+  ],
+  "inference": "There is a concrete unseeded reset pathway, and equal qpos/qvel plus policy seed is not a proof of equal full reset state. Whether residual simulator/controller fields or numeric kernel behavior actually caused the observed single-case flips remains untested; do not attribute them from source alone.",
+  "source_sha256": {
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/world/world.py": "3392bd31159daab859f2d73e5a52e59ac898259f829c9d1363e64eef151b91b3",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/envs/ogbench/cube_env.py": "143e5e81f424ff7a4d7fdde287dee88b722c09082a6fc9e68721839788e94c19",
+    "/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel/stable_worldmodel/spaces.py": "69e583dd06fa754e226f2430d4ff459e2dc8d7534fdb27cf7f9f5921bdec8018",
+    "/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/ogbench/manipspace/envs/manipspace_env.py": "03524eb1c95155bbc2ec3d29e9836fccffe8eb9fce1be15b6f0e7062cc1bb5fd",
+    "/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/ogbench/manipspace/envs/env.py": "c656f4733a1ad4cb07289bc58ac1ac0f7da378e1f2714dc80a5ed8c0b3028c38",
+    "/efs/prescottsun/project_jepa/envs/lewm/lib/python3.12/site-packages/gymnasium/core.py": "2a7a1bef059c8be021a53540bff4ea6393a853e0205c5cce28f8ba24bad304eb",
+    "/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030/clear_lewm/runner.py": "b8b48ad308e6a1c62cae78c9f8d0b4d9e4e9d27b0dd6ef4121f87dd176b45774"
+  },
+  "replay_discrepancies": [
+    {
+      "model": "native-cal",
+      "old": 16,
+      "replay": 18,
+      "only_gained_case": 28
+    },
+    {
+      "model": "local1024",
+      "old": 16,
+      "replay": 18,
+      "only_gained_case": 35
+    }
+  ],
+  "controls": "Failed exits and their blocked dependencies remain unchanged; no retry or assertion relaxation on dev15."
+}
