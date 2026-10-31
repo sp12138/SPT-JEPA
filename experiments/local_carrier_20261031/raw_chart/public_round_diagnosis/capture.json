@@ -1,0 +1,187 @@
+{
+  "label": "Precise chart inverse adjoint",
+  "bound": 0.5,
+  "atol": 0.0,
+  "rtol": 1e-06,
+  "iterations": 64,
+  "float32_matmul_precision": "high",
+  "allow_tf32": true,
+  "cudnn_allow_tf32": true,
+  "autocast_enabled": false,
+  "torch_version": "2.9.1+cu130",
+  "device_name": "NVIDIA H200",
+  "cuda_visible_devices": "0",
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1",
+    "source_commit": "1060dde0e36ba4fb32a54e4a141c6e1d2cbd7a98",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_sha256": "587279989af9e9689344e395247410e5024270ca458961faaca6ee64365d2b14",
+  "config_sha256": "d3064fbb4a54473863fa67eeca0b40bc21db463f286d7059769a829bda8abd63",
+  "reference_status_sha256": "46e885b187b86a21155130cb0b3adf51e4d6fbd48bf5e29cee7e23bcb57c72d6",
+  "caught_at": 1793419940.659468,
+  "pid": 1043383,
+  "traceback": "Traceback (most recent call last):\n  File \"/efs/prescottsun/SPT-JEPA/runs/raw_chart_public_round_capture_source_20261031/source-v1/experiments/local_carrier_20261031/raw_chart/public_round_capture.py\", line 52, in observing_certificate\n    return original(result, target, residual, bound, atol, rtol, label)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1/as_jepa_lewm/carrier.py\", line 83, in _certify_rounded_solution\n    raise RuntimeError(f\"{label} failed public-dtype residual certificate\")\nRuntimeError: Precise chart inverse adjoint failed public-dtype residual certificate\n",
+  "violations": 1,
+  "solved_violations": 0,
+  "tensor_metadata": {
+    "public": {
+      "shape": [
+        128,
+        4,
+        64,
+        16
+      ],
+      "stride": [
+        4096,
+        1024,
+        16,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float32",
+      "device": "cuda:0"
+    },
+    "target": {
+      "shape": [
+        128,
+        4,
+        64,
+        16
+      ],
+      "stride": [
+        4096,
+        1024,
+        16,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float32",
+      "device": "cuda:0"
+    },
+    "solved64": {
+      "shape": [
+        128,
+        4,
+        64,
+        16
+      ],
+      "stride": [
+        4096,
+        1024,
+        16,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float64",
+      "device": "cuda:0"
+    },
+    "closure_derivative": {
+      "shape": [
+        128,
+        4,
+        64,
+        64
+      ],
+      "stride": [
+        16384,
+        4096,
+        64,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float64",
+      "device": "cuda:0"
+    },
+    "closure_first": {
+      "shape": [
+        64,
+        16
+      ],
+      "stride": [
+        16,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float64",
+      "device": "cuda:0"
+    },
+    "closure_second": {
+      "shape": [
+        16,
+        64
+      ],
+      "stride": [
+        64,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float64",
+      "device": "cuda:0"
+    },
+    "public_error_bound": {
+      "shape": [
+        128,
+        4,
+        64
+      ],
+      "stride": [
+        256,
+        64,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float64",
+      "device": "cuda:0"
+    },
+    "solved_error_bound": {
+      "shape": [
+        128,
+        4,
+        64
+      ],
+      "stride": [
+        256,
+        64,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float64",
+      "device": "cuda:0"
+    },
+    "tolerance": {
+      "shape": [
+        128,
+        4,
+        64
+      ],
+      "stride": [
+        256,
+        64,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float64",
+      "device": "cuda:0"
+    },
+    "target_norm": {
+      "shape": [
+        128,
+        4,
+        64
+      ],
+      "stride": [
+        256,
+        64,
+        1
+      ],
+      "storage_offset": 0,
+      "dtype": "torch.float64",
+      "device": "cuda:0"
+    }
+  },
+  "capture_sha256": "dbbb5d4814869e760a7b409cd10aed261c99cc63c63c2beb492c6b6637edb91c"
+}

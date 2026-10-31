@@ -1,0 +1,202 @@
+{
+  "time": 1793419285.898744,
+  "planned": 20,
+  "completed": 4,
+  "all_complete0": false,
+  "exits": {
+    "train600-tworoom-raw-chart-bounded-seed1": {
+      "id": "train600-tworoom-raw-chart-bounded-seed1",
+      "returncode": 1,
+      "started_at": 1793418359.999414,
+      "finished_at": 1793418814.3548884,
+      "pid": 1043072,
+      "host": "prescottsun-dev13-2d-1027-worker-0",
+      "gpu": 0
+    },
+    "train600-tworoom-raw-chart-bounded-seed2": {
+      "id": "train600-tworoom-raw-chart-bounded-seed2",
+      "returncode": 1,
+      "started_at": 1793418360.6286752,
+      "finished_at": 1793419005.1328497,
+      "pid": 1043076,
+      "host": "prescottsun-dev13-2d-1027-worker-0",
+      "gpu": 1
+    },
+    "train600-cube-raw-chart-bounded-seed1": {
+      "id": "train600-cube-raw-chart-bounded-seed1",
+      "returncode": 1,
+      "started_at": 1793418361.2357612,
+      "finished_at": 1793418934.801451,
+      "pid": 1043080,
+      "host": "prescottsun-dev13-2d-1027-worker-0",
+      "gpu": 2
+    },
+    "train600-cube-raw-chart-bounded-seed2": {
+      "id": "train600-cube-raw-chart-bounded-seed2",
+      "returncode": 1,
+      "started_at": 1793418361.8683844,
+      "finished_at": 1793418934.8290317,
+      "pid": 1043084,
+      "host": "prescottsun-dev13-2d-1027-worker-0",
+      "gpu": 3
+    }
+  },
+  "training": [
+    {
+      "id": "train600-tworoom-raw-chart-bounded-seed1",
+      "status": {
+        "state": "failed",
+        "step": 574,
+        "elapsed_seconds": 409.9834966659546,
+        "updated_at": 1793418804.795398,
+        "pid": 1043072,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.8144274950027466,
+        "fm": 0.048641450703144073,
+        "rate": 3.0631442070007324,
+        "entry": 2357.93310546875,
+        "surprise": 37303.0703125,
+        "rate_share": 15.743487358093262,
+        "feature_std": 0.6359276175498962,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "seconds_per_step": 1.0465490399180233,
+        "peak_gib": 107.57131624221802,
+        "learning_rates": [
+          2.297838270616493e-05,
+          4.595676541232986e-05
+        ]
+      },
+      "error": "RuntimeError('Precise chart inverse adjoint failed public-dtype residual certificate')",
+      "finite_available": true,
+      "missing_metric_keys": [
+        "grad_norm_predictor",
+        "grad_norm_renderer",
+        "grad_norm_action_encoder",
+        "grad_norm_carrier_chart_module"
+      ]
+    },
+    {
+      "id": "train600-tworoom-raw-chart-bounded-seed2",
+      "status": {
+        "state": "failed",
+        "step": 553,
+        "elapsed_seconds": 596.5538642406464,
+        "updated_at": 1793418992.575147,
+        "pid": 1043076,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.8043064475059509,
+        "fm": 0.05223879590630531,
+        "rate": 3.008270502090454,
+        "entry": 2362.57470703125,
+        "surprise": 36628.1171875,
+        "rate_share": 14.39672565460205,
+        "feature_std": 0.6068823933601379,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "seconds_per_step": 1.0450738825888004,
+        "peak_gib": 107.57131624221802,
+        "learning_rates": [
+          2.213771016813451e-05,
+          4.427542033626902e-05
+        ]
+      },
+      "error": "RuntimeError('Precise chart inverse adjoint failed public-dtype residual certificate')",
+      "finite_available": true,
+      "missing_metric_keys": [
+        "grad_norm_predictor",
+        "grad_norm_renderer",
+        "grad_norm_action_encoder",
+        "grad_norm_carrier_chart_module"
+      ]
+    },
+    {
+      "id": "train600-cube-raw-chart-bounded-seed1",
+      "status": {
+        "state": "failed",
+        "step": 452,
+        "elapsed_seconds": 524.1847081184387,
+        "updated_at": 1793418920.2060897,
+        "pid": 1043080,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.8757966160774231,
+        "fm": 0.07606767863035202,
+        "rate": 3.198915719985962,
+        "entry": 2344.166015625,
+        "surprise": 38973.40234375,
+        "rate_share": 10.513386726379395,
+        "feature_std": 0.7317590117454529,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "seconds_per_step": 1.113494405379662,
+        "peak_gib": 107.57246923446655,
+        "learning_rates": [
+          1.8094475580464373e-05,
+          3.6188951160928746e-05
+        ]
+      },
+      "error": "RuntimeError('Precise chart inverse failed public-dtype residual certificate')",
+      "finite_available": true,
+      "missing_metric_keys": [
+        "grad_norm_predictor",
+        "grad_norm_renderer",
+        "grad_norm_action_encoder",
+        "grad_norm_carrier_chart_module"
+      ]
+    },
+    {
+      "id": "train600-cube-raw-chart-bounded-seed2",
+      "status": {
+        "state": "failed",
+        "step": 456,
+        "elapsed_seconds": 529.2749238014221,
+        "updated_at": 1793418925.1376588,
+        "pid": 1043084,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "loss": 0.8827904462814331,
+        "fm": 0.07391709834337234,
+        "rate": 3.2354934215545654,
+        "entry": 2296.989990234375,
+        "surprise": 39429.60546875,
+        "rate_share": 10.942980766296387,
+        "feature_std": 0.6929736137390137,
+        "active_dims": 1024.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "seconds_per_step": 1.1187133618763514,
+        "peak_gib": 107.57246923446655,
+        "learning_rates": [
+          1.825460368294636e-05,
+          3.650920736589272e-05
+        ]
+      },
+      "error": "RuntimeError('Precise chart inverse adjoint failed public-dtype residual certificate')",
+      "finite_available": true,
+      "missing_metric_keys": [
+        "grad_norm_predictor",
+        "grad_norm_renderer",
+        "grad_norm_action_encoder",
+        "grad_norm_carrier_chart_module"
+      ]
+    }
+  ],
+  "worker": {
+    "state": "running",
+    "updated_at": 1793419276.3091989,
+    "host": "prescottsun-dev13-2d-1027-worker-0",
+    "pid": 1043066,
+    "running": {},
+    "queued": 20
+  },
+  "gpus": "0, GPU-170dcf84-3202-5179-c251-e6a13288bc31, 0 %, 0 MiB\n1, GPU-8bedce53-4283-cf75-a8ee-53fb2762b518, 0 %, 0 MiB\n2, GPU-6f92808d-cf59-fb1a-305d-ebf327b63aab, 0 %, 0 MiB\n3, GPU-d236fdaa-fbcb-6dab-5684-38a95e7b045d, 0 %, 0 MiB\n4, GPU-134d6172-45cc-81fe-4a7c-96a928328641, 0 %, 0 MiB\n5, GPU-cfa40fc4-bca9-b1b1-5b79-64a2d8298ae9, 0 %, 0 MiB\n6, GPU-da928991-9eb6-a800-9036-e5527edf236d, 0 %, 0 MiB\n7, GPU-345f3388-c9be-be22-1a83-6eb54ae6013a, 0 %, 0 MiB\n",
+  "compute_apps": "",
+  "planning_metrics_read": false,
+  "reader_correction": "Initial reader assumed all status records contain gradient keys; corrected to expose missing keys rather than manufacture values."
+}

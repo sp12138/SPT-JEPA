@@ -1,0 +1,1663 @@
+{
+  "full_results": {
+    "path": "/efs/prescottsun/SPT-JEPA/reports/dynamic-readout600-20261031/results.json",
+    "sha256": "7707f3dd19fe936dc1dd0ade4c76970fb35d772fe79ad545dcfceebed187488c",
+    "bytes": 1331440
+  },
+  "rows": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "identity",
+      "id": "tworoom-spatial-local-seed1",
+      "success": 16,
+      "rollout_over_copy": 0.8062356421778069,
+      "one_step_over_copy": 0.8409542941358027,
+      "other_initial_ratio": 1.2956925614941062,
+      "other_actions_ratio": 1.0414070165539298,
+      "wrong_order_ratio": 1.0172709319094766,
+      "renderer": {
+        "wrong_state": 0.9987539855713057,
+        "wrong_actions": 0.9999273970495293,
+        "carry": 0.9984593242125966
+      },
+      "size": {
+        "total": 55913454,
+        "trainable": 50248094,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "static",
+      "id": "tworoom-readout-static-seed1",
+      "success": 24,
+      "rollout_over_copy": 0.7974604799951684,
+      "one_step_over_copy": 0.8330874073094391,
+      "other_initial_ratio": 1.306602108610908,
+      "other_actions_ratio": 1.0476917926064129,
+      "wrong_order_ratio": 1.018905344363339,
+      "renderer": {
+        "wrong_state": 0.9984465138472362,
+        "wrong_actions": 0.9998311974343561,
+        "carry": 1.0048360526125415
+      },
+      "size": {
+        "total": 55918830,
+        "trainable": 50253470,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "head": {
+        "id": "tworoom-readout-static-seed1",
+        "mode": "static",
+        "observed": {
+          "states": [
+            64,
+            8,
+            1024
+          ],
+          "matrix_entry_rms": 0.030968331834795443,
+          "fixed_zero_state_entry_rms": 0.030968331834795443,
+          "departure_from_fixed_zero_state_rms": 0.0,
+          "departure_from_fixed_zero_state_energy_over_total": 0.0,
+          "same_position_across_states_variance": 0.0,
+          "same_position_variance_over_total": 0.0,
+          "per_time_matrix_entry_rms": [
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "clean_prefix": {
+          "states": [
+            64,
+            7,
+            1024
+          ],
+          "matrix_entry_rms": 0.030968331834795446,
+          "fixed_zero_state_entry_rms": 0.030968331834795446,
+          "departure_from_fixed_zero_state_rms": 0.0,
+          "departure_from_fixed_zero_state_energy_over_total": 0.0,
+          "same_position_across_states_variance": 0.0,
+          "same_position_variance_over_total": 0.0,
+          "per_time_matrix_entry_rms": [
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543,
+            0.03096833183479543
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "training_os_exit_code": null,
+        "training_stage_complete": true,
+        "fullstate600_verified": true,
+        "source": {
+          "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1",
+          "source_commit": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+          "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+          "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+          "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+          "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+        },
+        "weights_sha256": "d5ac3452d1f06c92fcdc12cb3b04835b4b807ccbcfeb0e87b5b06cbe52e530e2",
+        "cache_sha256": "9f2aadf96a8e55825c05b25858eb4ff785554cf6889b7548f01012e75b1f9a76",
+        "state_audit_sha256": "16f7f68442a12da9c8123b9ff16cf3ccfe472ea2441839b99121ea23f0c4bd64",
+        "manifest_sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+        "correction_over_original_increment": null,
+        "missing_quantity": "Cache stores only the final corrected prediction, not the original p or delta=p-u. No inversion or surrogate correction is reported."
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "arm": "state",
+      "id": "tworoom-readout-state-seed1",
+      "success": 38,
+      "rollout_over_copy": 0.6150073002925204,
+      "one_step_over_copy": 0.6717156448535474,
+      "other_initial_ratio": 1.400647356971915,
+      "other_actions_ratio": 1.188957354940164,
+      "wrong_order_ratio": 1.0714003376546757,
+      "renderer": {
+        "wrong_state": 0.9894762253972058,
+        "wrong_actions": 1.0018511119037394,
+        "carry": 0.9736758142034494
+      },
+      "size": {
+        "total": 55918830,
+        "trainable": 50253470,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "head": {
+        "id": "tworoom-readout-state-seed1",
+        "mode": "state",
+        "observed": {
+          "states": [
+            64,
+            8,
+            1024
+          ],
+          "matrix_entry_rms": 0.04310940151447749,
+          "fixed_zero_state_entry_rms": 0.008189889871489879,
+          "departure_from_fixed_zero_state_rms": 0.04158610587599717,
+          "departure_from_fixed_zero_state_energy_over_total": 0.9305774462342495,
+          "same_position_across_states_variance": 0.0015461668242474302,
+          "same_position_variance_over_total": 0.8319789978276148,
+          "per_time_matrix_entry_rms": [
+            0.04375426213644486,
+            0.04384429586515589,
+            0.04313242524685066,
+            0.04277601611018895,
+            0.04281197510341771,
+            0.042415304380885796,
+            0.04288537040542076,
+            0.04323579930742721
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.042166178817402665,
+            0.04228674186554157,
+            0.041567390136782845,
+            0.04127530582899698,
+            0.04130091642986225,
+            0.04093313184541789,
+            0.041381146727444154,
+            0.04175994926497415
+          ]
+        },
+        "clean_prefix": {
+          "states": [
+            64,
+            7,
+            1024
+          ],
+          "matrix_entry_rms": 0.038816337241169986,
+          "fixed_zero_state_entry_rms": 0.008189889871489879,
+          "departure_from_fixed_zero_state_rms": 0.03747887241215283,
+          "departure_from_fixed_zero_state_energy_over_total": 0.932274762568361,
+          "same_position_across_states_variance": 0.0011706460178108598,
+          "same_position_variance_over_total": 0.776956111737078,
+          "per_time_matrix_entry_rms": [
+            0.04375426213644486,
+            0.04114182662549709,
+            0.039348024938297865,
+            0.03752336630622781,
+            0.036671449661375255,
+            0.036689680964784394,
+            0.0359537607141976
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.042166178817402665,
+            0.0399015371056072,
+            0.03822096005923774,
+            0.03635915513764352,
+            0.03539420054633248,
+            0.03524074052830518,
+            0.03442459391312088
+          ]
+        },
+        "training_os_exit_code": null,
+        "training_stage_complete": true,
+        "fullstate600_verified": true,
+        "source": {
+          "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1",
+          "source_commit": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+          "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+          "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+          "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+          "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+        },
+        "weights_sha256": "4fcfe1395ff014562a4808c2b9b3554405d18fc1041ee4ccf3d0cfa7226f92aa",
+        "cache_sha256": "3fef29ed6449613a495bd5b344378d4fd23a373a5c3a82393c47d90fbd3550c9",
+        "state_audit_sha256": "eab5d6cad293b7621c60c2af47afe3dc6aa8a06f1ecd8cea15c67914ac530f39",
+        "manifest_sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+        "correction_over_original_increment": null,
+        "missing_quantity": "Cache stores only the final corrected prediction, not the original p or delta=p-u. No inversion or surrogate correction is reported."
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "identity",
+      "id": "tworoom-spatial-local-seed2",
+      "success": 24,
+      "rollout_over_copy": 0.82758332845564,
+      "one_step_over_copy": 0.8371351371140434,
+      "other_initial_ratio": 1.277828715362829,
+      "other_actions_ratio": 1.0447271258625344,
+      "wrong_order_ratio": 1.019484671525971,
+      "renderer": {
+        "wrong_state": 1.0000258883278887,
+        "wrong_actions": 1.000747705775054,
+        "carry": 0.9979249859887017
+      },
+      "size": {
+        "total": 55913454,
+        "trainable": 50248094,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "static",
+      "id": "tworoom-readout-static-seed2",
+      "success": 30,
+      "rollout_over_copy": 0.8276243988343555,
+      "one_step_over_copy": 0.8400497378503793,
+      "other_initial_ratio": 1.2774108602571994,
+      "other_actions_ratio": 1.0450285970389601,
+      "wrong_order_ratio": 1.019332099002518,
+      "renderer": {
+        "wrong_state": 1.0006560283314574,
+        "wrong_actions": 0.999582475669056,
+        "carry": 0.9993060741504143
+      },
+      "size": {
+        "total": 55918830,
+        "trainable": 50253470,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "head": {
+        "id": "tworoom-readout-static-seed2",
+        "mode": "static",
+        "observed": {
+          "states": [
+            64,
+            8,
+            1024
+          ],
+          "matrix_entry_rms": 0.027174681377165943,
+          "fixed_zero_state_entry_rms": 0.027174681377165943,
+          "departure_from_fixed_zero_state_rms": 0.0,
+          "departure_from_fixed_zero_state_energy_over_total": 0.0,
+          "same_position_across_states_variance": 0.0,
+          "same_position_variance_over_total": 0.0,
+          "per_time_matrix_entry_rms": [
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "clean_prefix": {
+          "states": [
+            64,
+            7,
+            1024
+          ],
+          "matrix_entry_rms": 0.027174681377165943,
+          "fixed_zero_state_entry_rms": 0.027174681377165943,
+          "departure_from_fixed_zero_state_rms": 0.0,
+          "departure_from_fixed_zero_state_energy_over_total": 0.0,
+          "same_position_across_states_variance": 0.0,
+          "same_position_variance_over_total": 0.0,
+          "per_time_matrix_entry_rms": [
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926,
+            0.027174681377165926
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "training_os_exit_code": null,
+        "training_stage_complete": true,
+        "fullstate600_verified": true,
+        "source": {
+          "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1",
+          "source_commit": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+          "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+          "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+          "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+          "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+        },
+        "weights_sha256": "687ff4ab8f05a34b44b07ecf4cc866c8495bbb79f77af213462d54350113d0ed",
+        "cache_sha256": "b139a9d3de2778f04bb7f603be6825026daf3a6d6df15c6651aef4c89f038cf1",
+        "state_audit_sha256": "fbb4bd5cdf98fdbb828679ad679e6a95e032c7214e98f4f1572d35361ed226ac",
+        "manifest_sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+        "correction_over_original_increment": null,
+        "missing_quantity": "Cache stores only the final corrected prediction, not the original p or delta=p-u. No inversion or surrogate correction is reported."
+      }
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "arm": "state",
+      "id": "tworoom-readout-state-seed2",
+      "success": 20,
+      "rollout_over_copy": 0.5858605253471306,
+      "one_step_over_copy": 0.5881774317308246,
+      "other_initial_ratio": 1.4364586235445544,
+      "other_actions_ratio": 1.2269570312292608,
+      "wrong_order_ratio": 1.1325332606876855,
+      "renderer": {
+        "wrong_state": 0.9815796062067021,
+        "wrong_actions": 0.9825066605387796,
+        "carry": 0.9576352947601359
+      },
+      "size": {
+        "total": 55918830,
+        "trainable": 50253470,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "head": {
+        "id": "tworoom-readout-state-seed2",
+        "mode": "state",
+        "observed": {
+          "states": [
+            64,
+            8,
+            1024
+          ],
+          "matrix_entry_rms": 0.046024046663308824,
+          "fixed_zero_state_entry_rms": 0.014518500133319689,
+          "departure_from_fixed_zero_state_rms": 0.043149290804884305,
+          "departure_from_fixed_zero_state_energy_over_total": 0.8789774258388448,
+          "same_position_across_states_variance": 0.0017167033349427287,
+          "same_position_variance_over_total": 0.8104489205168285,
+          "per_time_matrix_entry_rms": [
+            0.04628284368862517,
+            0.045790103243541096,
+            0.045987367652284665,
+            0.04620071778684885,
+            0.04620727584284948,
+            0.045569249709153895,
+            0.04573091872474438,
+            0.0464169979671622
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.04339552919469155,
+            0.04284336267416547,
+            0.04309115642112776,
+            0.043325262437987275,
+            0.04335958755645625,
+            0.04266363422567439,
+            0.0428560149914702,
+            0.04365044134955068
+          ]
+        },
+        "clean_prefix": {
+          "states": [
+            64,
+            7,
+            1024
+          ],
+          "matrix_entry_rms": 0.04223057258422122,
+          "fixed_zero_state_entry_rms": 0.014518500133319689,
+          "departure_from_fixed_zero_state_rms": 0.03883492472260651,
+          "departure_from_fixed_zero_state_energy_over_total": 0.8456506667086916,
+          "same_position_across_states_variance": 0.0013320825515232711,
+          "same_position_variance_over_total": 0.7469253511827716,
+          "per_time_matrix_entry_rms": [
+            0.04628284368862517,
+            0.045894348395651464,
+            0.04428345862442725,
+            0.042928067746351134,
+            0.039506713023183156,
+            0.03955187332035874,
+            0.03614666271937928
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.04339552919469155,
+            0.042943500150939694,
+            0.04104062756244444,
+            0.03946023724132246,
+            0.035850706826720855,
+            0.03576113672762069,
+            0.032002624490574484
+          ]
+        },
+        "training_os_exit_code": null,
+        "training_stage_complete": true,
+        "fullstate600_verified": true,
+        "source": {
+          "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1",
+          "source_commit": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+          "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+          "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+          "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+          "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+        },
+        "weights_sha256": "3daca146020f379d71c814a18ff000525de696c6cc18ae2601329e53cea1a927",
+        "cache_sha256": "61ef7fa159e9d06adc38aaad0b39b59194094df8d8af253ad4840c40081891aa",
+        "state_audit_sha256": "6f04d9773d665cfe654f8077a8facbe219424f127d1d54d4e25186d05542ab49",
+        "manifest_sha256": "6dae4024a39b820f98cadcccf16f67515a48d9c310690500673b3afb0d85cc0b",
+        "correction_over_original_increment": null,
+        "missing_quantity": "Cache stores only the final corrected prediction, not the original p or delta=p-u. No inversion or surrogate correction is reported."
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "identity",
+      "id": "cube-spatial-local-seed1",
+      "success": 0,
+      "rollout_over_copy": 0.773797180223117,
+      "one_step_over_copy": 0.8314412105360964,
+      "other_initial_ratio": 1.6264236199695188,
+      "other_actions_ratio": 1.1562992495863273,
+      "wrong_order_ratio": 1.067260703695749,
+      "renderer": {
+        "wrong_state": 1.0089618076682385,
+        "wrong_actions": 1.0054947423086633,
+        "carry": 1.02259900806177
+      },
+      "size": {
+        "total": 55975434,
+        "trainable": 50310074,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "static",
+      "id": "cube-readout-static-seed1",
+      "success": 6,
+      "rollout_over_copy": 0.7469608499952745,
+      "one_step_over_copy": 0.8188680612749033,
+      "other_initial_ratio": 1.6844137110331856,
+      "other_actions_ratio": 1.209976426635331,
+      "wrong_order_ratio": 1.0920715100713667,
+      "renderer": {
+        "wrong_state": 1.006323209339777,
+        "wrong_actions": 1.004240395029523,
+        "carry": 1.0234161800508819
+      },
+      "size": {
+        "total": 55980810,
+        "trainable": 50315450,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "head": {
+        "id": "cube-readout-static-seed1",
+        "mode": "static",
+        "observed": {
+          "states": [
+            64,
+            8,
+            1024
+          ],
+          "matrix_entry_rms": 0.05655005139642135,
+          "fixed_zero_state_entry_rms": 0.05655005139642135,
+          "departure_from_fixed_zero_state_rms": 0.0,
+          "departure_from_fixed_zero_state_energy_over_total": 0.0,
+          "same_position_across_states_variance": 0.0,
+          "same_position_variance_over_total": 0.0,
+          "per_time_matrix_entry_rms": [
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "clean_prefix": {
+          "states": [
+            64,
+            7,
+            1024
+          ],
+          "matrix_entry_rms": 0.05655005139642135,
+          "fixed_zero_state_entry_rms": 0.05655005139642135,
+          "departure_from_fixed_zero_state_rms": 0.0,
+          "departure_from_fixed_zero_state_energy_over_total": 0.0,
+          "same_position_across_states_variance": 0.0,
+          "same_position_variance_over_total": 0.0,
+          "per_time_matrix_entry_rms": [
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135,
+            0.05655005139642135
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "training_os_exit_code": null,
+        "training_stage_complete": true,
+        "fullstate600_verified": true,
+        "source": {
+          "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1",
+          "source_commit": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+          "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+          "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+          "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+          "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+        },
+        "weights_sha256": "0dc319dc089d071c70722c7f849b5b1267d01cf0d852ec7a57c3f5d0665c6d1a",
+        "cache_sha256": "9fcff75c7a4734b0c9310c453ca7492c8a8852abbb88f7b4a3db9eed511a460f",
+        "state_audit_sha256": "03b82265ba6da1c06dbbfe9bf1c3b795549f36e85c1b32d3e1ab15c55f13a9a2",
+        "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+        "correction_over_original_increment": null,
+        "missing_quantity": "Cache stores only the final corrected prediction, not the original p or delta=p-u. No inversion or surrogate correction is reported."
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "arm": "state",
+      "id": "cube-readout-state-seed1",
+      "success": 6,
+      "rollout_over_copy": 0.7009369473764046,
+      "one_step_over_copy": 0.7317297443635677,
+      "other_initial_ratio": 1.4885708759791343,
+      "other_actions_ratio": 1.1868076192630823,
+      "wrong_order_ratio": 1.0708564469096797,
+      "renderer": {
+        "wrong_state": 1.004290045178949,
+        "wrong_actions": 1.0059025752637916,
+        "carry": 1.028284957118494
+      },
+      "size": {
+        "total": 55980810,
+        "trainable": 50315450,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "head": {
+        "id": "cube-readout-state-seed1",
+        "mode": "state",
+        "observed": {
+          "states": [
+            64,
+            8,
+            1024
+          ],
+          "matrix_entry_rms": 0.05528419131413569,
+          "fixed_zero_state_entry_rms": 0.021365386485091398,
+          "departure_from_fixed_zero_state_rms": 0.054458554865884405,
+          "departure_from_fixed_zero_state_energy_over_total": 0.9703542284102665,
+          "same_position_across_states_variance": 0.0026925115204807187,
+          "same_position_variance_over_total": 0.8809589007109216,
+          "per_time_matrix_entry_rms": [
+            0.05455931197035627,
+            0.05601841840326245,
+            0.05505123973824987,
+            0.055814826796159525,
+            0.05566449001502944,
+            0.05572804671913891,
+            0.05497943918824809,
+            0.05443463502918299
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.05402054727295592,
+            0.05499656664215194,
+            0.05408732853155348,
+            0.0548112744029865,
+            0.0549189635860557,
+            0.05489467927628787,
+            0.054166162944476244,
+            0.053757094628055946
+          ]
+        },
+        "clean_prefix": {
+          "states": [
+            64,
+            7,
+            1024
+          ],
+          "matrix_entry_rms": 0.04430116422182341,
+          "fixed_zero_state_entry_rms": 0.021365386485091398,
+          "departure_from_fixed_zero_state_rms": 0.04127765051637091,
+          "departure_from_fixed_zero_state_energy_over_total": 0.8681597767364303,
+          "same_position_across_states_variance": 0.0013674964385482565,
+          "same_position_variance_over_total": 0.6967803987120387,
+          "per_time_matrix_entry_rms": [
+            0.05455931197035627,
+            0.04611792985563205,
+            0.04304510152971008,
+            0.04159947818377776,
+            0.0414332400860206,
+            0.04103478112132292,
+            0.040627651746670705
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.05402054727295592,
+            0.04385500915641659,
+            0.04012915200660414,
+            0.038028931402526285,
+            0.0372115802706694,
+            0.03651231979590174,
+            0.03620814827876015
+          ]
+        },
+        "training_os_exit_code": null,
+        "training_stage_complete": true,
+        "fullstate600_verified": true,
+        "source": {
+          "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1",
+          "source_commit": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+          "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+          "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+          "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+          "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+        },
+        "weights_sha256": "3134f1d6afa0d871e56fbde66977736d4f66a95a42161e1545d36cb3ece27d19",
+        "cache_sha256": "d049440e8a1ae75fbb00a975f0e01998c757396c17a322e3728de3aec49bbf17",
+        "state_audit_sha256": "aaa0eebca2f916b0e9b73b4423aa5ca95eb4c70d5e45945b33c365cc8812e7e2",
+        "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+        "correction_over_original_increment": null,
+        "missing_quantity": "Cache stores only the final corrected prediction, not the original p or delta=p-u. No inversion or surrogate correction is reported."
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "identity",
+      "id": "cube-spatial-local-seed2",
+      "success": 4,
+      "rollout_over_copy": 0.7652175091112241,
+      "one_step_over_copy": 0.8279611307445234,
+      "other_initial_ratio": 1.6022109837429734,
+      "other_actions_ratio": 1.1508969433024732,
+      "wrong_order_ratio": 1.0703361388157295,
+      "renderer": {
+        "wrong_state": 1.0045377591321807,
+        "wrong_actions": 1.0046813063865072,
+        "carry": 1.020224178567055
+      },
+      "size": {
+        "total": 55975434,
+        "trainable": 50310074,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "static",
+      "id": "cube-readout-static-seed2",
+      "success": 10,
+      "rollout_over_copy": 0.7331892392724791,
+      "one_step_over_copy": 0.8095677001012344,
+      "other_initial_ratio": 1.6715513399641326,
+      "other_actions_ratio": 1.2180724101412221,
+      "wrong_order_ratio": 1.096818935816225,
+      "renderer": {
+        "wrong_state": 1.0068863993274595,
+        "wrong_actions": 1.0080397023552568,
+        "carry": 1.0273880124965222
+      },
+      "size": {
+        "total": 55980810,
+        "trainable": 50315450,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "head": {
+        "id": "cube-readout-static-seed2",
+        "mode": "static",
+        "observed": {
+          "states": [
+            64,
+            8,
+            1024
+          ],
+          "matrix_entry_rms": 0.0440711286766143,
+          "fixed_zero_state_entry_rms": 0.0440711286766143,
+          "departure_from_fixed_zero_state_rms": 0.0,
+          "departure_from_fixed_zero_state_energy_over_total": 0.0,
+          "same_position_across_states_variance": 0.0,
+          "same_position_variance_over_total": 0.0,
+          "per_time_matrix_entry_rms": [
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "clean_prefix": {
+          "states": [
+            64,
+            7,
+            1024
+          ],
+          "matrix_entry_rms": 0.0440711286766143,
+          "fixed_zero_state_entry_rms": 0.0440711286766143,
+          "departure_from_fixed_zero_state_rms": 0.0,
+          "departure_from_fixed_zero_state_energy_over_total": 0.0,
+          "same_position_across_states_variance": 0.0,
+          "same_position_variance_over_total": 0.0,
+          "per_time_matrix_entry_rms": [
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314,
+            0.044071128676614314
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "training_os_exit_code": null,
+        "training_stage_complete": true,
+        "fullstate600_verified": true,
+        "source": {
+          "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1",
+          "source_commit": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+          "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+          "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+          "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+          "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+        },
+        "weights_sha256": "dbb55977aa378d4e88b060400ba7cea413a4f493e3679f9b14f494ef0ee5cccd",
+        "cache_sha256": "6ed4cf594c52d30311a9f4f7a688b44a7c0c4b72d88b3a433f686d71157ed28d",
+        "state_audit_sha256": "dc27503073740dc094eb25eb48b3d43e55421d1f923e9c4ec063ae39c7738102",
+        "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+        "correction_over_original_increment": null,
+        "missing_quantity": "Cache stores only the final corrected prediction, not the original p or delta=p-u. No inversion or surrogate correction is reported."
+      }
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "arm": "state",
+      "id": "cube-readout-state-seed2",
+      "success": 2,
+      "rollout_over_copy": 0.6892634867107565,
+      "one_step_over_copy": 0.7260604743079512,
+      "other_initial_ratio": 1.4814381629723146,
+      "other_actions_ratio": 1.2312371655224832,
+      "wrong_order_ratio": 1.0777647471822294,
+      "renderer": {
+        "wrong_state": 1.0074453091304763,
+        "wrong_actions": 1.007401513559231,
+        "carry": 1.0320191881452572
+      },
+      "size": {
+        "total": 55980810,
+        "trainable": 50315450,
+        "frozen": 5665360,
+        "encoder": 5501376,
+        "prior": 11389184,
+        "renderer": 34618416
+      },
+      "head": {
+        "id": "cube-readout-state-seed2",
+        "mode": "state",
+        "observed": {
+          "states": [
+            64,
+            8,
+            1024
+          ],
+          "matrix_entry_rms": 0.057072531006396934,
+          "fixed_zero_state_entry_rms": 0.021036854352586662,
+          "departure_from_fixed_zero_state_rms": 0.056867296613724826,
+          "departure_from_fixed_zero_state_energy_over_total": 0.9928208763551724,
+          "same_position_across_states_variance": 0.0029168896526222516,
+          "same_position_variance_over_total": 0.8955002974184638,
+          "per_time_matrix_entry_rms": [
+            0.056175841903297,
+            0.057958059668611374,
+            0.05688472607476818,
+            0.05712969491815424,
+            0.05715060572765251,
+            0.057890445915009046,
+            0.05722482029567177,
+            0.05613803386763462
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.056254402321591755,
+            0.05777709917286686,
+            0.05663838772949049,
+            0.05672355736345785,
+            0.05700601982249571,
+            0.057759720599312135,
+            0.05685789901807229,
+            0.055894572176659545
+          ]
+        },
+        "clean_prefix": {
+          "states": [
+            64,
+            7,
+            1024
+          ],
+          "matrix_entry_rms": 0.04326647790110377,
+          "fixed_zero_state_entry_rms": 0.021036854352586665,
+          "departure_from_fixed_zero_state_rms": 0.04217805015474826,
+          "departure_from_fixed_zero_state_energy_over_total": 0.9503200930523561,
+          "same_position_across_states_variance": 0.0014162455860887108,
+          "same_position_variance_over_total": 0.7565462507739448,
+          "per_time_matrix_entry_rms": [
+            0.056175841903297,
+            0.04627340174398112,
+            0.04275141984011889,
+            0.040361994151241955,
+            0.03897503031174571,
+            0.03781575004470582,
+            0.037431342986949445
+          ],
+          "per_time_zero_state_departure_rms": [
+            0.056254402321591755,
+            0.04516882251846491,
+            0.04155844839656428,
+            0.03917864053971004,
+            0.03746619391520264,
+            0.036001249046469036,
+            0.03586445271663802
+          ]
+        },
+        "training_os_exit_code": null,
+        "training_stage_complete": true,
+        "fullstate600_verified": true,
+        "source": {
+          "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1",
+          "source_commit": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+          "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+          "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+          "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+          "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+        },
+        "weights_sha256": "635e658a47281fd569f75e427185dc9bd0e4c89b9eb6186e5cb9d52162fd18e6",
+        "cache_sha256": "711633b2f6045ce4a02725e3358ad8ce26cdc4f755e457beb9cef5310cc53d01",
+        "state_audit_sha256": "0ed800eb37c9babaf088cca845336ea8dad1f61a6dd471370839eba1876063f2",
+        "manifest_sha256": "6ea9cf49e5b0f319038882818cb0c58f3d52b162cf4ca3c69ce5f1981f2aa731",
+        "correction_over_original_increment": null,
+        "missing_quantity": "Cache stores only the final corrected prediction, not the original p or delta=p-u. No inversion or surrogate correction is reported."
+      }
+    }
+  ],
+  "completion": {
+    "training_stages_complete": 8,
+    "training_os_exits_unknown": 8,
+    "first_recovery_fullstate_exits0": 8,
+    "preserved_health_exits1": 8,
+    "first_recovery_blocked_pending": 16,
+    "second_recovery_actual_exits0": 24
+  },
+  "checks": [
+    {
+      "id": "tworoom-readout-static-seed1",
+      "original_initial553": true,
+      "frozen210": true,
+      "observed_and_actions_byte_identical": true,
+      "same_cases_solver_normalization": true,
+      "extra_parameters": 5376,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-tworoom-readout-static-seed1/preflight.json",
+        "sha256": "13e56ab31af00c6cf24f4ae6963ded53f692def222a3b56f36c91431922d9f61",
+        "bytes": 8248
+      },
+      "direct_gradient": {
+        "mode": "static",
+        "per_tensor": {
+          "input.weight": {
+            "max_abs": 5.8214456657879055e-05,
+            "finite": true
+          },
+          "input.bias": {
+            "max_abs": 8.16593601484783e-05,
+            "finite": true
+          },
+          "output.weight": {
+            "max_abs": 0.002382025821134448,
+            "finite": true
+          },
+          "output.bias": {
+            "max_abs": 0.010011272504925728,
+            "finite": true
+          }
+        },
+        "state_input_gradient_max": 0.0,
+        "position_input_gradient_max": 5.8214456657879055e-05,
+        "static_inactive_parameter_elements": 1024,
+        "passed": true,
+        "scope": "Actual native checkpoint eval FP32 backward, no optimizer step. Zero STATIC state-input columns are intentional. Positive current gradient does not require first-layer weights already changed under tiny warmup LR."
+      },
+      "strict_health_sidecar": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/health-tworoom-readout-static-seed1/exact-parameter-evidence.json",
+        "sha256": "350e30c2ffbc460cb9e708bb54f69eff4ce6f97bc8655eaa2bf75cd894e338bd",
+        "bytes": 3737
+      }
+    },
+    {
+      "id": "tworoom-readout-state-seed1",
+      "original_initial553": true,
+      "frozen210": true,
+      "observed_and_actions_byte_identical": true,
+      "same_cases_solver_normalization": true,
+      "extra_parameters": 5376,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-tworoom-readout-state-seed1/preflight.json",
+        "sha256": "523f6798416b32febcb43aa7bd5005ac8976a1a4eaa7aa18260c278f00f211e3",
+        "bytes": 8253
+      },
+      "direct_gradient": {
+        "mode": "state",
+        "per_tensor": {
+          "input.weight": {
+            "max_abs": 0.019438548013567924,
+            "finite": true
+          },
+          "input.bias": {
+            "max_abs": 0.0030706231482326984,
+            "finite": true
+          },
+          "output.weight": {
+            "max_abs": 0.03597201406955719,
+            "finite": true
+          },
+          "output.bias": {
+            "max_abs": 0.009878916665911674,
+            "finite": true
+          }
+        },
+        "state_input_gradient_max": 0.019438548013567924,
+        "position_input_gradient_max": 0.004612662363797426,
+        "static_inactive_parameter_elements": 0,
+        "passed": true,
+        "scope": "Actual native checkpoint eval FP32 backward, no optimizer step. Zero STATIC state-input columns are intentional. Positive current gradient does not require first-layer weights already changed under tiny warmup LR."
+      },
+      "strict_health_sidecar": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/health-tworoom-readout-state-seed1/exact-parameter-evidence.json",
+        "sha256": "05259a29812b256e7b6722988f2eda0364cd99f3857a84db934d5f7ff989bc4e",
+        "bytes": 3734
+      }
+    },
+    {
+      "id": "tworoom-readout-static-seed2",
+      "original_initial553": true,
+      "frozen210": true,
+      "observed_and_actions_byte_identical": true,
+      "same_cases_solver_normalization": true,
+      "extra_parameters": 5376,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-tworoom-readout-static-seed2/preflight.json",
+        "sha256": "c78192e43fc97277a35c25a844b08a0407e46b7bab106e2d5aab4849d6105c4a",
+        "bytes": 8258
+      },
+      "direct_gradient": {
+        "mode": "static",
+        "per_tensor": {
+          "input.weight": {
+            "max_abs": 8.216648711822927e-05,
+            "finite": true
+          },
+          "input.bias": {
+            "max_abs": 7.809091039234772e-05,
+            "finite": true
+          },
+          "output.weight": {
+            "max_abs": 0.0016574743203818798,
+            "finite": true
+          },
+          "output.bias": {
+            "max_abs": 0.002819362562149763,
+            "finite": true
+          }
+        },
+        "state_input_gradient_max": 0.0,
+        "position_input_gradient_max": 8.216648711822927e-05,
+        "static_inactive_parameter_elements": 1024,
+        "passed": true,
+        "scope": "Actual native checkpoint eval FP32 backward, no optimizer step. Zero STATIC state-input columns are intentional. Positive current gradient does not require first-layer weights already changed under tiny warmup LR."
+      },
+      "strict_health_sidecar": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/health-tworoom-readout-static-seed2/exact-parameter-evidence.json",
+        "sha256": "046c9e54a415f49384c870a3d056c49aa3ff0821ee8e3492f45c35eca14a6088",
+        "bytes": 3738
+      }
+    },
+    {
+      "id": "tworoom-readout-state-seed2",
+      "original_initial553": true,
+      "frozen210": true,
+      "observed_and_actions_byte_identical": true,
+      "same_cases_solver_normalization": true,
+      "extra_parameters": 5376,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-tworoom-readout-state-seed2/preflight.json",
+        "sha256": "350804b3b47fe45a61a4d2a5450c176042e17b7829cfa8e81b79bcdcbb6942d6",
+        "bytes": 8261
+      },
+      "direct_gradient": {
+        "mode": "state",
+        "per_tensor": {
+          "input.weight": {
+            "max_abs": 0.014896661974489689,
+            "finite": true
+          },
+          "input.bias": {
+            "max_abs": 0.0022072279825806618,
+            "finite": true
+          },
+          "output.weight": {
+            "max_abs": 0.01998899318277836,
+            "finite": true
+          },
+          "output.bias": {
+            "max_abs": 0.006909672170877457,
+            "finite": true
+          }
+        },
+        "state_input_gradient_max": 0.014896661974489689,
+        "position_input_gradient_max": 0.0011778402840718627,
+        "static_inactive_parameter_elements": 0,
+        "passed": true,
+        "scope": "Actual native checkpoint eval FP32 backward, no optimizer step. Zero STATIC state-input columns are intentional. Positive current gradient does not require first-layer weights already changed under tiny warmup LR."
+      },
+      "strict_health_sidecar": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/health-tworoom-readout-state-seed2/exact-parameter-evidence.json",
+        "sha256": "d1d1a8c1c31d804c0eb890db10905b0907306fcdaeda1b8903d9696d92e2a06a",
+        "bytes": 3734
+      }
+    },
+    {
+      "id": "cube-readout-static-seed1",
+      "original_initial553": true,
+      "frozen210": true,
+      "observed_and_actions_byte_identical": true,
+      "same_cases_solver_normalization": true,
+      "extra_parameters": 5376,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-cube-readout-static-seed1/preflight.json",
+        "sha256": "d5a91b6ef7d7893fe6e829b94b9c06e015158a84d530c44342f0bbd1a08e5cf1",
+        "bytes": 8254
+      },
+      "direct_gradient": {
+        "mode": "static",
+        "per_tensor": {
+          "input.weight": {
+            "max_abs": 0.0007004935177974403,
+            "finite": true
+          },
+          "input.bias": {
+            "max_abs": 0.0003553893475327641,
+            "finite": true
+          },
+          "output.weight": {
+            "max_abs": 0.004018841776996851,
+            "finite": true
+          },
+          "output.bias": {
+            "max_abs": 0.007054155692458153,
+            "finite": true
+          }
+        },
+        "state_input_gradient_max": 0.0,
+        "position_input_gradient_max": 0.0007004935177974403,
+        "static_inactive_parameter_elements": 1024,
+        "passed": true,
+        "scope": "Actual native checkpoint eval FP32 backward, no optimizer step. Zero STATIC state-input columns are intentional. Positive current gradient does not require first-layer weights already changed under tiny warmup LR."
+      },
+      "strict_health_sidecar": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/health-cube-readout-static-seed1/exact-parameter-evidence.json",
+        "sha256": "85409ea2a46e80b635f1ed37accd2efc8548f2d9de343da7f9ed1a606db3b7cc",
+        "bytes": 3734
+      }
+    },
+    {
+      "id": "cube-readout-state-seed1",
+      "original_initial553": true,
+      "frozen210": true,
+      "observed_and_actions_byte_identical": true,
+      "same_cases_solver_normalization": true,
+      "extra_parameters": 5376,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-cube-readout-state-seed1/preflight.json",
+        "sha256": "fe28471171525d9edfa33a6e5984e4fd78c4efb5667f2977763741cc79df35c4",
+        "bytes": 8264
+      },
+      "direct_gradient": {
+        "mode": "state",
+        "per_tensor": {
+          "input.weight": {
+            "max_abs": 0.0043656183406710625,
+            "finite": true
+          },
+          "input.bias": {
+            "max_abs": 0.0013364655897021294,
+            "finite": true
+          },
+          "output.weight": {
+            "max_abs": 0.012805224396288395,
+            "finite": true
+          },
+          "output.bias": {
+            "max_abs": 0.012829259969294071,
+            "finite": true
+          }
+        },
+        "state_input_gradient_max": 0.0043656183406710625,
+        "position_input_gradient_max": 0.0009893052047118545,
+        "static_inactive_parameter_elements": 0,
+        "passed": true,
+        "scope": "Actual native checkpoint eval FP32 backward, no optimizer step. Zero STATIC state-input columns are intentional. Positive current gradient does not require first-layer weights already changed under tiny warmup LR."
+      },
+      "strict_health_sidecar": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/health-cube-readout-state-seed1/exact-parameter-evidence.json",
+        "sha256": "75e23ab2a95d661e5c676bb32c1e4e56293969c5d8745149096886260a5ca819",
+        "bytes": 3733
+      }
+    },
+    {
+      "id": "cube-readout-static-seed2",
+      "original_initial553": true,
+      "frozen210": true,
+      "observed_and_actions_byte_identical": true,
+      "same_cases_solver_normalization": true,
+      "extra_parameters": 5376,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-cube-readout-static-seed2/preflight.json",
+        "sha256": "ad2ff4e61e422f7000c7e2cc59d92a5da34a0cd7e34d3017edebd3b19e7028e0",
+        "bytes": 8258
+      },
+      "direct_gradient": {
+        "mode": "static",
+        "per_tensor": {
+          "input.weight": {
+            "max_abs": 0.0009061276796273887,
+            "finite": true
+          },
+          "input.bias": {
+            "max_abs": 0.0005919965915381908,
+            "finite": true
+          },
+          "output.weight": {
+            "max_abs": 0.0044783432967960835,
+            "finite": true
+          },
+          "output.bias": {
+            "max_abs": 0.009821424260735512,
+            "finite": true
+          }
+        },
+        "state_input_gradient_max": 0.0,
+        "position_input_gradient_max": 0.0009061276796273887,
+        "static_inactive_parameter_elements": 1024,
+        "passed": true,
+        "scope": "Actual native checkpoint eval FP32 backward, no optimizer step. Zero STATIC state-input columns are intentional. Positive current gradient does not require first-layer weights already changed under tiny warmup LR."
+      },
+      "strict_health_sidecar": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/health-cube-readout-static-seed2/exact-parameter-evidence.json",
+        "sha256": "1cb634bd246042cd6fea1454e6fb7091d2684db251696a67e695a65f158fca30",
+        "bytes": 3735
+      }
+    },
+    {
+      "id": "cube-readout-state-seed2",
+      "original_initial553": true,
+      "frozen210": true,
+      "observed_and_actions_byte_identical": true,
+      "same_cases_solver_normalization": true,
+      "extra_parameters": 5376,
+      "fullstate": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031/fullstate-cube-readout-state-seed2/preflight.json",
+        "sha256": "3398eaa85609ecfecd4874d3b5a9abd01fe95aaf3f7f0209a5851c290098833d",
+        "bytes": 8265
+      },
+      "direct_gradient": {
+        "mode": "state",
+        "per_tensor": {
+          "input.weight": {
+            "max_abs": 0.004141284618526697,
+            "finite": true
+          },
+          "input.bias": {
+            "max_abs": 0.001301864511333406,
+            "finite": true
+          },
+          "output.weight": {
+            "max_abs": 0.012014813721179962,
+            "finite": true
+          },
+          "output.bias": {
+            "max_abs": 0.017527326941490173,
+            "finite": true
+          }
+        },
+        "state_input_gradient_max": 0.004141284618526697,
+        "position_input_gradient_max": 0.0013108104467391968,
+        "static_inactive_parameter_elements": 0,
+        "passed": true,
+        "scope": "Actual native checkpoint eval FP32 backward, no optimizer step. Zero STATIC state-input columns are intentional. Positive current gradient does not require first-layer weights already changed under tiny warmup LR."
+      },
+      "strict_health_sidecar": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031/health-cube-readout-state-seed2/exact-parameter-evidence.json",
+        "sha256": "958c1f0b1612202bea97ef76d27918338dcfe1911b6ffafe21422da222b7004e",
+        "bytes": 3731
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "candidate": "static",
+      "reference": "identity",
+      "difference_pp": 8.0,
+      "gained": 5,
+      "lost": 1,
+      "ci95_pp": [
+        0.0,
+        18.0
+      ]
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "candidate": "static",
+      "reference": "identity",
+      "difference_pp": 6.0,
+      "gained": 7,
+      "lost": 4,
+      "ci95_pp": [
+        -6.0,
+        18.0
+      ]
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "candidate": "state",
+      "reference": "identity",
+      "difference_pp": 22.0,
+      "gained": 14,
+      "lost": 3,
+      "ci95_pp": [
+        6.0,
+        36.0
+      ]
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "candidate": "state",
+      "reference": "identity",
+      "difference_pp": -4.0,
+      "gained": 6,
+      "lost": 8,
+      "ci95_pp": [
+        -20.0,
+        10.0
+      ]
+    },
+    {
+      "task": "tworoom",
+      "seed": 1,
+      "candidate": "state",
+      "reference": "static",
+      "difference_pp": 14.000000000000002,
+      "gained": 11,
+      "lost": 4,
+      "ci95_pp": [
+        0.0,
+        28.000000000000004
+      ]
+    },
+    {
+      "task": "tworoom",
+      "seed": 2,
+      "candidate": "state",
+      "reference": "static",
+      "difference_pp": -10.0,
+      "gained": 5,
+      "lost": 10,
+      "ci95_pp": [
+        -26.0,
+        4.0
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "candidate": "static",
+      "reference": "identity",
+      "difference_pp": 6.0,
+      "gained": 3,
+      "lost": 0,
+      "ci95_pp": [
+        0.0,
+        14.000000000000002
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "candidate": "static",
+      "reference": "identity",
+      "difference_pp": 6.0,
+      "gained": 3,
+      "lost": 0,
+      "ci95_pp": [
+        0.0,
+        14.000000000000002
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "candidate": "state",
+      "reference": "identity",
+      "difference_pp": 6.0,
+      "gained": 3,
+      "lost": 0,
+      "ci95_pp": [
+        0.0,
+        14.000000000000002
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "candidate": "state",
+      "reference": "identity",
+      "difference_pp": -2.0,
+      "gained": 1,
+      "lost": 2,
+      "ci95_pp": [
+        -8.0,
+        4.0
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 1,
+      "candidate": "state",
+      "reference": "static",
+      "difference_pp": 0.0,
+      "gained": 2,
+      "lost": 2,
+      "ci95_pp": [
+        -8.0,
+        8.0
+      ]
+    },
+    {
+      "task": "cube",
+      "seed": 2,
+      "candidate": "state",
+      "reference": "static",
+      "difference_pp": -8.0,
+      "gained": 1,
+      "lost": 5,
+      "ci95_pp": [
+        -18.0,
+        0.0
+      ]
+    }
+  ],
+  "comparison_summaries": [
+    {
+      "task": "tworoom",
+      "candidate": "static",
+      "reference": "identity",
+      "mean_difference_pp": 7.000000000000001,
+      "differences_by_seed_pp": [
+        8.0,
+        6.0
+      ],
+      "paired_shared_case_ci95_pp": [
+        -1.0,
+        15.0
+      ]
+    },
+    {
+      "task": "tworoom",
+      "candidate": "state",
+      "reference": "identity",
+      "mean_difference_pp": 9.0,
+      "differences_by_seed_pp": [
+        22.0,
+        -4.0
+      ],
+      "paired_shared_case_ci95_pp": [
+        -1.0,
+        19.0
+      ]
+    },
+    {
+      "task": "tworoom",
+      "candidate": "state",
+      "reference": "static",
+      "mean_difference_pp": 2.0,
+      "differences_by_seed_pp": [
+        14.000000000000002,
+        -10.0
+      ],
+      "paired_shared_case_ci95_pp": [
+        -9.0,
+        13.0
+      ]
+    },
+    {
+      "task": "cube",
+      "candidate": "static",
+      "reference": "identity",
+      "mean_difference_pp": 6.0,
+      "differences_by_seed_pp": [
+        6.0,
+        6.0
+      ],
+      "paired_shared_case_ci95_pp": [
+        2.0,
+        11.0
+      ]
+    },
+    {
+      "task": "cube",
+      "candidate": "state",
+      "reference": "identity",
+      "mean_difference_pp": 2.0,
+      "differences_by_seed_pp": [
+        6.0,
+        -2.0
+      ],
+      "paired_shared_case_ci95_pp": [
+        -2.0,
+        6.0
+      ]
+    },
+    {
+      "task": "cube",
+      "candidate": "state",
+      "reference": "static",
+      "mean_difference_pp": -4.0,
+      "differences_by_seed_pp": [
+        0.0,
+        -8.0
+      ],
+      "paired_shared_case_ci95_pp": [
+        -9.0,
+        0.0
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "record": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+        "source_commit": "32fad0cc04ca46cb9e6f5516a9aa0525b65b4cea",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2.json",
+        "sha256": "cb11c97cd162d6593585d9006850e10ad3841c3890741d9ac5a9f386ab2ba7c9",
+        "bytes": 30862
+      }
+    },
+    {
+      "record": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1",
+        "source_commit": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+        "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+        "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+        "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+      },
+      "manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+        "sha256": "c97180a2a98b438b18ff28d9ac47529b980e4b3adf6fbfbf752226efd73daf5d",
+        "bytes": 44477
+      }
+    },
+    {
+      "record": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_recovery_source_20261031/source-v1",
+        "source_commit": "22e02a1ded00c17639267d308c21a28c0247bc6c",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_recovery_source_20261031/source-v1.json",
+        "role": "Independentcontrol-planeonly;jobmodel/evaluatorsource remains d6 unchanged",
+        "original_model_source_record": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-record.json",
+        "approved_scope": "Resumeonlyunfinishedoriginal32read-onlyendpoints;unknown8trainingOSexitsremainunknown"
+      },
+      "manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_recovery_source_20261031/source-v1.json",
+        "sha256": "71649f20a73b026162b2de300ec82b3ea43ff6acf9e701c70328f30eea698218",
+        "bytes": 719
+      }
+    },
+    {
+      "record": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_health_source_20261031/source-v1",
+        "source_commit": "703aca3505d1fc82c6ae04ac8ead8410cc283f9e",
+        "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_health_source_20261031/source-v1.json",
+        "role": "Strict exactname-gradient compatibility only; originalhealth body and alljob modelsource d6 unchanged",
+        "model_source_record": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-record.json",
+        "scope": "8health retry+8originaltransition+8originalprimaryplanning;no training"
+      },
+      "manifest": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_health_source_20261031/source-v1.json",
+        "sha256": "4323b9032dfcfd712e4b2587a11c066cfe0ad8b7e3ea9f83da141a3445aadedd",
+        "bytes": 719
+      }
+    }
+  ],
+  "collector": {
+    "path": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_review_source_20261031/source-v1/experiments/dynamic_readout_20261031/collect600.py",
+    "sha256": "434b61938995f1bcd3af3362556d0411f55fbd565216113a89f11d0d07ad7d34",
+    "bytes": 13612
+  },
+  "scope": "Complete-only CPU artifact/head checks. Paired intervals resample the same50 cases jointly across the two fixed seeds,10000 draws seed1042; conditional on these trained models, not training-seed uncertainty or multiplicity-adjusted.600<1249warmup. No newcohort/model forward/GPU/training or continuation."
+}

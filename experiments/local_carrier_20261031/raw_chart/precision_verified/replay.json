@@ -1,0 +1,69 @@
+{
+  "passed": true,
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1",
+    "source_commit": "1060dde0e36ba4fb32a54e4a141c6e1d2cbd7a98",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_sha256": "aea4c5c3bb69b4a1bc1e1d6f7c499a466f78443c7c70e984f134e96d9acef82b",
+  "capture_sha256": "a204b9fbacb6a70adc8526f8e7e52c9ccb50ef81afeabafbaf9edf3188f774cd",
+  "target_shape": [
+    128,
+    4,
+    64,
+    16
+  ],
+  "target_stride": [
+    4096,
+    1024,
+    16,
+    1
+  ],
+  "unchanged_original_tolerance": {
+    "atol": 0,
+    "rtol": 1e-06,
+    "iterations": 64
+  },
+  "rows": [
+    {
+      "mode": "ieee_fp32_solver",
+      "public_dtype": "torch.float32",
+      "global_policy_before": [
+        "highest",
+        false
+      ],
+      "global_policy_unchanged": true,
+      "all_public_residual_certificates_pass": true,
+      "max_solution_error_over_rhs_norm": 4.750704645822653e-08,
+      "max_public_residual_bound_over_rhs_norm": 9.501942806008528e-08,
+      "wall_seconds_single_timed_call": 0.0007060971111059189,
+      "peak_allocated_bytes": 88236032,
+      "peak_increment_bytes": 19005440,
+      "scope": "Captured32768-slot solver only; one warm+one timed call, excludes whole model and is not a stable throughput measurement."
+    },
+    {
+      "mode": "local_fp64_production",
+      "public_dtype": "torch.float32",
+      "global_policy_before": [
+        "high",
+        true
+      ],
+      "global_policy_unchanged": true,
+      "all_public_residual_certificates_pass": true,
+      "max_solution_error_over_rhs_norm": 4.750704645822653e-08,
+      "max_public_residual_bound_over_rhs_norm": 9.501942806008528e-08,
+      "wall_seconds_single_timed_call": 0.0007829470559954643,
+      "peak_allocated_bytes": 139239424,
+      "peak_increment_bytes": 65028096,
+      "scope": "Captured32768-slot solver only; one warm+one timed call, excludes whole model and is not a stable throughput measurement."
+    }
+  ],
+  "strict_public_rounding_failure_propagates": true,
+  "strict_failure_message": "Precise chart inverse adjoint failed public-dtype residual certificate",
+  "no_model_or_training": true,
+  "dynamic_readout_enabled": false,
+  "limitation": "Only the captured adjoint operands run on GPU. Complete precision-repaired native training/memory beyond this solver remains untested."
+}

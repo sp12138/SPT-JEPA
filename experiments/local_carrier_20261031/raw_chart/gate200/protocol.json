@@ -1,0 +1,33 @@
+{
+  "model_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1",
+    "source_commit": "1060dde0e36ba4fb32a54e4a141c6e1d2cbd7a98",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_gate200_helpers_20261031/source-v1",
+    "source_commit": "6e6d69e3bb14bd9e977a48a39edf3e2926b8faae",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_gate200_helpers_20261031/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json"
+  },
+  "cap": 200,
+  "fresh": true,
+  "slots": [
+    {
+      "host": "dev13",
+      "gpu": 0
+    }
+  ],
+  "reference_initial": "/efs/prescottsun/SPT-JEPA/runs/local_raw_chart600_20261031/tworoom-raw-chart-bounded-seed1/initial-model/weights.pt",
+  "reference_initial_sha256": "d2082f2817f9c85675cbd5bd8c1bab338ab6af5e29cb4d3cc1328be380aa2c5a",
+  "authorization": "Root approved one fresh TwoRoomseed1 nativebatch128 numerical gate only; no planning, no automatic>200 or four-run restart.",
+  "purpose": "Cross the original112 adjoint failure under consistent localFP64 from initialization; judge actual state/gradients/numerics/cost, not task success.",
+  "checkpoints": "Native atomic last.ckpt every25; retain portable25..200. Final200 fullstate audited; does not claim eight archived optimizer states.",
+  "unchanged": "Original557 initial tensors, fixedcalibration/data/sampler/RNG/LR horizon/nativeoptimizer/loss/planner. Dynamic disabled. Old100 fullstate and all holds remain immutable.",
+  "candidate_only": true
+}

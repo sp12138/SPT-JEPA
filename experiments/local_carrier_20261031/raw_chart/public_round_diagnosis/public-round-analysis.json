@@ -1,0 +1,121 @@
+{
+  "cpu_only": true,
+  "helper_sha256": "42a0f8d2bd8820a9225ff329225e817737c2fed184dd6b1a907b6ecbfa231453",
+  "capture_sha256": "dbbb5d4814869e760a7b409cd10aed261c99cc63c63c2beb492c6b6637edb91c",
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1",
+    "source_commit": "1060dde0e36ba4fb32a54e4a141c6e1d2cbd7a98",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/raw_chart_precision_verify_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "original_failure_exact": true,
+  "label": "Precise chart inverse adjoint",
+  "shape": [
+    128,
+    4,
+    64,
+    16
+  ],
+  "public_dtype": "torch.float32",
+  "bound": 0.5,
+  "atol": 0.0,
+  "rtol": 1e-06,
+  "original_iteration_cap": 64,
+  "recorded_violations": 1,
+  "cpu_recorded_residual_agreement_relative_to_rhs": 1.6613571635179388e-22,
+  "original_internal_stop_updates": 4,
+  "internal_replay_difference_relative_to_rhs": 0.0,
+  "recorded_internal": {
+    "violations": 0,
+    "max_error_over_tolerance": 0.9966365154603601
+  },
+  "recorded_public": {
+    "violations": 1,
+    "max_error_over_tolerance": 1.0157375308669645
+  },
+  "violating_slots": {
+    "indices": [
+      [
+        22,
+        3,
+        47
+      ]
+    ],
+    "internal_error_over_tolerance": [
+      0.9966365154603601
+    ],
+    "public_error_over_tolerance": [
+      1.0157375308669645
+    ],
+    "target_norm": [
+      3.2288498915656936e-07
+    ],
+    "tolerance": [
+      3.2288498915656936e-13
+    ],
+    "minimum_nonzero_rhs_component": 5.228592225847706e-09,
+    "subnormal_rhs_components": 0,
+    "subnormal_public_components": 0
+  },
+  "extra_updates_same_full_cpu_shape": [
+    {
+      "additional_updates": 1,
+      "internal": {
+        "violations": 0,
+        "max_error_over_tolerance": 0.0548718904755104
+      },
+      "public": {
+        "violations": 0,
+        "max_error_over_tolerance": 0.10129356381394555
+      }
+    },
+    {
+      "additional_updates": 2,
+      "internal": {
+        "violations": 0,
+        "max_error_over_tolerance": 0.0030210300909324426
+      },
+      "public": {
+        "violations": 0,
+        "max_error_over_tolerance": 0.09666791540048879
+      }
+    },
+    {
+      "additional_updates": 3,
+      "internal": {
+        "violations": 0,
+        "max_error_over_tolerance": 0.00016632518479460647
+      },
+      "public": {
+        "violations": 0,
+        "max_error_over_tolerance": 0.09666791540048879
+      }
+    },
+    {
+      "additional_updates": 4,
+      "internal": {
+        "violations": 0,
+        "max_error_over_tolerance": 9.157204936462058e-06
+      },
+      "public": {
+        "violations": 0,
+        "max_error_over_tolerance": 0.09666791540048879
+      }
+    }
+  ],
+  "independent_oracle": {
+    "every_violating_slot": true,
+    "direct_matrix_dimension": 16,
+    "public_all_pass": true,
+    "public_error_over_tolerance": [
+      0.04231635271359245
+    ],
+    "solved_distance_from_oracle_over_rhs": [
+      5.273527257319079e-07
+    ]
+  },
+  "conclusion": "For this exactly reproduced failure, representable FP32 solutions satisfy the unchanged external certificate, and additional unchanged fixed-point updates pass after rounding. The original FP64 internal stopping criterion leaves insufficient margin for final public rounding. This is a captured-case diagnosis, not a universal representability guarantee.",
+  "scope": "Frozen operands only. No change to source, model, tolerance, iteration cap, training, or planner."
+}

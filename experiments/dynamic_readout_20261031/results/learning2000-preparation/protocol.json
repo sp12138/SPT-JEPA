@@ -1,0 +1,218 @@
+{
+  "at": 1793420349.7403607,
+  "model_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1",
+    "source_commit": "d6d0a9f85127a8af3e65bd31b29c161c3584867c",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout2000_source_20261031/source-v1",
+    "source_commit": "daad1e825d2e300065a4e5167d8fe0f64dd1645a",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout2000_source_20261031/source-v1.json",
+    "role": "Independentnativecontinuation/archive/stricthealthhelpers;modelsource remainsd6",
+    "model_source_record": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_source_20261031/source-record.json",
+    "reused_native_auditor_record": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/helper-source-record.json",
+    "dispatcher_helper_record": "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout_recovery_source_20261031/source-record.json"
+  },
+  "initial_step": 600,
+  "intermediate_step": 1200,
+  "stop_step": 2000,
+  "runs": 8,
+  "endpoints": 72,
+  "allocations": [
+    {
+      "id": "tworoom-readout-static-seed1",
+      "host": "dev15",
+      "gpu": 0,
+      "task": "tworoom",
+      "training_seed": 1,
+      "arm": "static",
+      "family": "spatial_carrier"
+    },
+    {
+      "id": "tworoom-readout-state-seed1",
+      "host": "dev15",
+      "gpu": 1,
+      "task": "tworoom",
+      "training_seed": 1,
+      "arm": "state",
+      "family": "spatial_carrier"
+    },
+    {
+      "id": "tworoom-readout-static-seed2",
+      "host": "dev15",
+      "gpu": 2,
+      "task": "tworoom",
+      "training_seed": 2,
+      "arm": "static",
+      "family": "spatial_carrier"
+    },
+    {
+      "id": "tworoom-readout-state-seed2",
+      "host": "dev15",
+      "gpu": 3,
+      "task": "tworoom",
+      "training_seed": 2,
+      "arm": "state",
+      "family": "spatial_carrier"
+    },
+    {
+      "id": "cube-readout-static-seed1",
+      "host": "dev15",
+      "gpu": 4,
+      "task": "cube",
+      "training_seed": 1,
+      "arm": "static",
+      "family": "spatial_carrier"
+    },
+    {
+      "id": "cube-readout-state-seed1",
+      "host": "dev15",
+      "gpu": 5,
+      "task": "cube",
+      "training_seed": 1,
+      "arm": "state",
+      "family": "spatial_carrier"
+    },
+    {
+      "id": "cube-readout-static-seed2",
+      "host": "dev15",
+      "gpu": 6,
+      "task": "cube",
+      "training_seed": 2,
+      "arm": "static",
+      "family": "spatial_carrier"
+    },
+    {
+      "id": "cube-readout-state-seed2",
+      "host": "dev15",
+      "gpu": 7,
+      "task": "cube",
+      "training_seed": 2,
+      "arm": "state",
+      "family": "spatial_carrier"
+    }
+  ],
+  "references": [
+    {
+      "id": "tworoom-readout-static-seed1",
+      "primary_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-tworoom-spatial-local-seed1/metrics.json",
+      "primary_metrics_sha256": "8d88d2fd7739ac21ac4046e04a81bf229be07308cafbccc094efa0e02afdf302",
+      "fresh_metrics": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-tworoom-spatial-local-seed1/metrics.json",
+      "fresh_metrics_sha256": "d5ccd09413b138edb142695b63c149f191d2f4f764429a44fd262bdba4f66b96",
+      "primary_manifest": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+      "primary_manifest_sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94",
+      "fresh_manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_freshcases_20261031/fresh-manifest.json",
+      "fresh_manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "scope": "Existing identity2000 controls and exact existing50primary/50fresh;no newcase generation"
+    },
+    {
+      "id": "tworoom-readout-state-seed1",
+      "primary_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-tworoom-spatial-local-seed1/metrics.json",
+      "primary_metrics_sha256": "8d88d2fd7739ac21ac4046e04a81bf229be07308cafbccc094efa0e02afdf302",
+      "fresh_metrics": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-tworoom-spatial-local-seed1/metrics.json",
+      "fresh_metrics_sha256": "d5ccd09413b138edb142695b63c149f191d2f4f764429a44fd262bdba4f66b96",
+      "primary_manifest": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+      "primary_manifest_sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94",
+      "fresh_manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_freshcases_20261031/fresh-manifest.json",
+      "fresh_manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "scope": "Existing identity2000 controls and exact existing50primary/50fresh;no newcase generation"
+    },
+    {
+      "id": "tworoom-readout-static-seed2",
+      "primary_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-tworoom-spatial-local-seed2/metrics.json",
+      "primary_metrics_sha256": "56e87928f65a557622ce6c72e55c1b7e1ec85d82817bbc2226c0266de4375dd1",
+      "fresh_metrics": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-tworoom-spatial-local-seed2/metrics.json",
+      "fresh_metrics_sha256": "de67e8521309cc3edad18177574ef507efe8ac8f8c9b6a931636565862fdbe64",
+      "primary_manifest": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+      "primary_manifest_sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94",
+      "fresh_manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_freshcases_20261031/fresh-manifest.json",
+      "fresh_manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "scope": "Existing identity2000 controls and exact existing50primary/50fresh;no newcase generation"
+    },
+    {
+      "id": "tworoom-readout-state-seed2",
+      "primary_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-tworoom-spatial-local-seed2/metrics.json",
+      "primary_metrics_sha256": "56e87928f65a557622ce6c72e55c1b7e1ec85d82817bbc2226c0266de4375dd1",
+      "fresh_metrics": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-tworoom-spatial-local-seed2/metrics.json",
+      "fresh_metrics_sha256": "de67e8521309cc3edad18177574ef507efe8ac8f8c9b6a931636565862fdbe64",
+      "primary_manifest": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata/manifests/validation-strict.json",
+      "primary_manifest_sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94",
+      "fresh_manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_freshcases_20261031/fresh-manifest.json",
+      "fresh_manifest_sha256": "a709b2a94021d600d4c1f187882bcbbbfca7bf25004a50691bff3c8a65f7a75a",
+      "scope": "Existing identity2000 controls and exact existing50primary/50fresh;no newcase generation"
+    },
+    {
+      "id": "cube-readout-static-seed1",
+      "primary_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-cube-spatial-local-seed1/metrics.json",
+      "primary_metrics_sha256": "3e5df4e9cde4b6c574d2fa1fb5a2da8ca004b214cf68757bb997b17f70e28dfb",
+      "fresh_metrics": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-cube-spatial-local-seed1/metrics.json",
+      "fresh_metrics_sha256": "3a036d254126475033376c24b278a1868e2fd36542e9aa5e7d820cc55b0eb714",
+      "primary_manifest": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+      "primary_manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7",
+      "fresh_manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+      "fresh_manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "scope": "Existing identity2000 controls and exact existing50primary/50fresh;no newcase generation"
+    },
+    {
+      "id": "cube-readout-state-seed1",
+      "primary_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-cube-spatial-local-seed1/metrics.json",
+      "primary_metrics_sha256": "3e5df4e9cde4b6c574d2fa1fb5a2da8ca004b214cf68757bb997b17f70e28dfb",
+      "fresh_metrics": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-cube-spatial-local-seed1/metrics.json",
+      "fresh_metrics_sha256": "3a036d254126475033376c24b278a1868e2fd36542e9aa5e7d820cc55b0eb714",
+      "primary_manifest": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+      "primary_manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7",
+      "fresh_manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+      "fresh_manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "scope": "Existing identity2000 controls and exact existing50primary/50fresh;no newcase generation"
+    },
+    {
+      "id": "cube-readout-static-seed2",
+      "primary_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-cube-spatial-local-seed2/metrics.json",
+      "primary_metrics_sha256": "667381743ee68c3a381667548610b4110c7a2e208b3080d3754013d0da72e04a",
+      "fresh_metrics": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-cube-spatial-local-seed2/metrics.json",
+      "fresh_metrics_sha256": "1e29641d1ff8e2dd6c9adfe9e614faf231e19c4d1f25a509260657ae0c30ca5d",
+      "primary_manifest": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+      "primary_manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7",
+      "fresh_manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+      "fresh_manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "scope": "Existing identity2000 controls and exact existing50primary/50fresh;no newcase generation"
+    },
+    {
+      "id": "cube-readout-state-seed2",
+      "primary_metrics": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic2000_20261031/planning-cube-spatial-local-seed2/metrics.json",
+      "primary_metrics_sha256": "667381743ee68c3a381667548610b4110c7a2e208b3080d3754013d0da72e04a",
+      "fresh_metrics": "/efs/prescottsun/SPT-JEPA/runs/followup_fresh2000_20261031/fresh-planning-cube-spatial-local-seed2/metrics.json",
+      "fresh_metrics_sha256": "1e29641d1ff8e2dd6c9adfe9e614faf231e19c4d1f25a509260657ae0c30ca5d",
+      "primary_manifest": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata/manifests/validation-strict.json",
+      "primary_manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7",
+      "fresh_manifest": "/efs/prescottsun/SPT-JEPA/runs/carrier_cube_freshcases_20261031/fresh-manifest.json",
+      "fresh_manifest_sha256": "9794cd32020fde94a452f1fe83c387eb86ea622b421be593c10bb9dd64c8e78f",
+      "scope": "Existing identity2000 controls and exact existing50primary/50fresh;no newcase generation"
+    }
+  ],
+  "parent_review_sha256": "52106f59439bafc95d807ae52bfe0df035ea4d1e538093100f2a167423b5f33b",
+  "training_parent_os_exits_unknown": 8,
+  "original_roots_preserved": [
+    "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_20261031",
+    "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_recovery_20261031",
+    "/efs/prescottsun/SPT-JEPA/runs/dynamic_readout600_health_recovery_20261031"
+  ],
+  "native_archives": [
+    1200,
+    2000
+  ],
+  "retained_portables": [
+    1200,
+    2000
+  ],
+  "unchanged": "d6 model/data/batch128/max_steps124910/warmup1249/sampler/calibration/loss/primary50/existingfresh50;botharms/tasks/seeds.",
+  "helpers": "Reused093 nativeCPU model/optimizer/scheduler/RNG/sampler audit;d6 directp.grad fullstate2000;stricthealth explicitexpected-step2000;dispatcher22e.",
+  "stop_policy": "All chains stop2000. Failed1200 archive blocks2000. No automaticlonger budget;STATE lacks pairedtaskgain at2000 => stopdynamicextension.",
+  "logger": "Preserve four artificialzero exact-parameter tracekeys;aggregate moduletrace and actualsamecheckpointp.grad are separate evidence.",
+  "candidate_only": true,
+  "authorization": "Root explicitly approved activation after immutablehelpers/CPUcopyaudits and actualdev15free check. No additionalpermission needed."
+}
