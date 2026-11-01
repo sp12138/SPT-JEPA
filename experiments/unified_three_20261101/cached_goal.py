@@ -13,6 +13,7 @@ import torch
 
 from common import B, read, sha, write
 from graph import encoding_state
+import graph as graph_helpers
 
 
 def interval(x):
@@ -28,7 +29,7 @@ def main():
     a = p.parse_args()
     root, out = Path(a.root), Path(a.output)
     out.mkdir(parents=True, exist_ok=False)
-    public = Path(__file__).resolve().parents[1] / 'public_ngc_20261031'
+    public = Path(graph_helpers.__file__).resolve().parents[1] / 'public_ngc_20261031'
     sys.path.insert(0, str(public))
     from stable_cost import StableNGCCost
     torch.set_num_threads(4)
