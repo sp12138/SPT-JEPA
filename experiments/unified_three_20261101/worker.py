@@ -21,13 +21,18 @@ def main():
         approval=read(root/'gate-approval.json');assert approval['passed'] and a.id in approval['run_ids']
         assert read(root/'audits'/f'{a.id}-step2/audit.json')['passed']
     memory=subprocess.check_output(['nvidia-smi','--query-gpu=memory.used','--format=csv,noheader,nounits','-i',str(row['gpu'])],text=True)
-    assert int(memory.strip())==0,memory
+    uuid=subprocess.check_output(['nvidia-smi','--query-gpu=uuid','--format=csv,noheader','-i',str(row['gpu'])],text=True).strip()
+    processes=subprocess.check_output(['nvidia-smi','--query-compute-apps=gpu_uuid','--format=csv,noheader'],text=True).splitlines()
+    # NVML can retain1MiB of driver bookkeeping after all CUDA processes exit.
+    # Require both an empty compute-process list and at most that bookkeeping.
+    assert int(memory.strip())<=1 and uuid not in {x.strip() for x in processes},(memory,uuid,processes)
     env=dict(os.environ,**protocol['environment'],PYTHONPATH=source['pythonpath'],
              CUDA_VISIBLE_DEVICES=str(row['gpu']),MUJOCO_EGL_DEVICE_ID=str(row['gpu']),PYTHONDONTWRITEBYTECODE='1')
     target=2 if a.phase=='preflight' else 600
     record=root/'worker-records'/f'{a.id}-{a.phase}.json';assert not record.exists()
     write(record.with_name(record.stem+'-start.json'),dict(pid=os.getpid(),started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
-          gpu=row['gpu'],phase=a.phase,monitor=False))
+          gpu=row['gpu'],phase=a.phase,monitor=False,initial_memory_mib=int(memory.strip()),
+          initial_gpu_uuid=uuid,initial_compute_processes=[]))
     results=[];started=time.monotonic()
     def execute(name,cmd,timeout):
         log=root/'logs'/f'{a.id}-{a.phase}-{name}.log';log.parent.mkdir(exist_ok=True)
