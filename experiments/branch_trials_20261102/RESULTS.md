@@ -1,6 +1,25 @@
 # Three-machine branch trials, 2026-11-02
 
-The 28 fresh runs have passed native two-update training, full CPU model/AdamW/scheduler restoration, GPU objective backward, and two-case planning integration. Sixteen actual paired-initialization comparisons pass. The bounded 2000-update stage was dispatched on all three hosts at about 01:55 Beijing. These are technical preflight results; no 2000-update task performance is available yet.
+All 28 runs finished at exactly 2000 updates, and all 56 full primary/fresh task endpoints passed. Model/full-state/backward checks, input cases and both seeds are retained in [results/final2000-summary.json](results/final2000-summary.json). No unified three-task improvement was established.
+
+Values below are mean success percentages over the two fixed training seeds, primary / fresh (50 cases each).
+
+| Method | PushT | TwoRoom | Cube |
+| --- | --- | --- | --- |
+| Future-query score | 7 / 8 | 66 / 68 | 4 / 3 |
+| Fixed direct forecast | 10 / 13 | 61 / 65 | 15 / 4 |
+| Decoder-free, sample-level window | 1 / 2 | 9 / 12 | 2 / 3 |
+| Decoder-free, batch-pooled control | — | 6 / 5 | — |
+
+The query-minus-forecast conditional primary case intervals are PushT −3pp [−10,+4], TwoRoom +5 [−8,+18], Cube −11 [−20,−3]. Fresh deltas are −5 [−13,+3], +3 [−11,+17], −1 [−6,+4]. These condition on two trained models and exclude simulator repeats, seed-population uncertainty and multiplicity. TwoRoom is inconclusive; Cube primary is worse. The 2k screen is not convergence or a maturity comparison against the much longer PushT TF controls.
+
+TwoRoom forecast-scored original-near/original-past/calibrated-near/calibrated-past means are 3/4, 3/3, 3/6 and 8/5 percent (primary/fresh). Neither calibration nor anchor placement established a substantial planning improvement.
+
+A subsequent matched-input audit isolates pooling precision as a numerical defect in the uploaded-model trials. On the same eight TwoRoom windows, decoder-window seed1 has information surrogate 5.756 nats under full BF16 versus 0.0238 under FP32; keeping the BF16 encoder and changing only the pool to FP32 gives 0.0352, whereas FP32 encoder plus BF16 pool gives 5.881. All 16 frozen models passed exact manual/native encoding and FP32 train/eval equivalence checks with unchanged state hashes. This proves precision sensitivity of the reward, not that it caused every failure or that a training repair improves task performance. See [repair evidence](../branch_repairs_20261102/results/mechanism-evidence-v1.json).
+
+The frozen query classifiers also separate global references much more easily than references within the same episode. PushT factual/reference pair accuracy falls from 97.5–99.1% to 78.1–78.8%; Cube from 97.8–99.7% to 90.9–91.3%. The factual query/cache is unchanged. This supports a more demanding reference-distribution test; it does not prove background reliance or task improvement.
+
+The new bounded repair/continuation protocol is tracked separately in [branch_repairs_20261102](../branch_repairs_20261102/RESULTS.md). All original outputs, failures and HOLD remain intact.
 
 | Machine | Mechanism | Runs |
 | --- | --- | --- |
