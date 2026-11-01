@@ -17,8 +17,10 @@ def interval(delta):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',required=True);p.add_argument('--output',required=True)
     p.add_argument('--tasks',nargs='+',default=['pusht','tworoom','cube']);p.add_argument('--step',type=int,choices=[600,1200,2000],default=600)
+    p.add_argument('--graph-controls',action='store_true')
     a=p.parse_args();root=Path(a.root);protocol=read(root/'protocol.json');rows=[];diagnostics=[];bindings={}
-    arms=['flat','field','tf'] if a.step==600 else ['flat','field']
+    graph_controls=a.step!=600 or a.graph_controls
+    arms=['flat','field'] if graph_controls else ['flat','field','tf']
     cases=['primary','fresh'] if a.step==2000 else ['primary']
     for task in a.tasks:
         for arm in arms:
@@ -36,12 +38,12 @@ def main():
                 diagnostics.append(dict(task=task,arm=arm,seed=seed,step=a.step,
                     conditions=d['results']['conditions'],audit_sha256=sha(audit_path),diagnostic_sha256=sha(dpath)))
                 for case in cases:
-                    for mode in (['l2'] if a.step==600 else ['l2','ngc']):
+                    for mode in (['l2','ngc'] if graph_controls else ['l2']):
                         suffix='' if case=='primary' else '-fresh'
-                        out=(root/'evaluations'/ident) if a.step==600 else root/'graph-evaluations'/f'{ident}-step{a.step}-{mode}{suffix}'
+                        out=(root/'evaluations'/ident) if not graph_controls else root/'graph-evaluations'/f'{ident}-step{a.step}-{mode}{suffix}'
                         metrics=read(out/'metrics.json');values=metrics['metrics']['episode_successes'];assert len(values)==50
                         assert all(isinstance(x,bool) for x in values)
-                        if a.step!=600:
+                        if graph_controls:
                             g=read(out/'graph-audit.json');assert g['passed'] and g['model_audit']['state_before']==g['state_after']
                         pair_key=metrics['pairs'] if 'pairs' in metrics else dict(episodes=metrics['episodes'],start_steps=metrics['start_steps'])
                         rows.append(dict(task=task,arm=arm,seed=seed,case_set=case,mode=mode,step=a.step,
@@ -50,7 +52,7 @@ def main():
     contrasts=[]
     for task in a.tasks:
         for case in cases:
-            for mode in (['l2'] if a.step==600 else ['l2','ngc']):
+            for mode in (['l2','ngc'] if graph_controls else ['l2']):
                 diffs=[]
                 for seed in [1,2]:
                     find=lambda arm:next(x for x in rows if (x['task'],x['case_set'],x['mode'],x['seed'],x['arm'])==(task,case,mode,seed,arm))
