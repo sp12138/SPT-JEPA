@@ -17,6 +17,9 @@ def main():
     source_check(source)
     assert cpu['passed'] and len(cpu['full_actual_model_regressions']) == 3
     assert cpu['all_original_pixels_covered_once']
+    extra = {r['extra_parameters'] for r in cpu['full_actual_model_regressions']}
+    assert len(extra) == 1
+    extra = extra.pop()
     runs = []
     for row in old['runs']:
         if row['arm'] != 'tf':
@@ -37,7 +40,7 @@ def main():
           review_required_before600=True, automatic_long_training=False,
           note='Same global64D TF encoder/predictor;sample-level FM renders one uniform quadrant at64px '
                'with its matching local anchor and known2D address. Full224px RGB already existed in both arms. '
-               '576 extra renderer-only query parameters;all550 original initial tensors and outer RNG exact. '
+               f'{extra} extra renderer-only query parameters;all550 original initial tensors and outer RNG exact. '
                'No physical labels/action targets/prior-sampling/high-noise change or task-specific setting. '
                'No novel-method or expected task-success claim.'))
     print('Prepared6 local-query technical gates', root)
