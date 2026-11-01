@@ -26,6 +26,14 @@ def main():
     initial=torch.load(run/'initial-model/weights.pt',map_location='cpu',weights_only=True)
     check=checkpoint_report(checkpoint,portable,cfg,a.step);assert all(check['checks'].values()),check
     torch.manual_seed(cfg['seed']);module=TrainModule(cfg)
+    declared_encoder=None
+    if cfg.get('initial_encoder_checkpoint'):
+        encoder_path=Path(cfg['initial_encoder_checkpoint'])/'weights.pt'
+        if cfg.get('frozen_encoder_sha256'):assert sha(encoder_path)==cfg['frozen_encoder_sha256']
+        declared=torch.load(encoder_path,map_location='cpu',weights_only=True,mmap=True)
+        module.model.encoder.load_state_dict({k.removeprefix('encoder.'):v for k,v in declared.items() if k.startswith('encoder.')},strict=True)
+        declared_encoder=dict(path=str(encoder_path),sha256=sha(encoder_path))
+        del declared
     assert same(module.model.state_dict(),initial),'Fresh initial tensors differ from native constructor'
     module.load_state_dict(checkpoint['state_dict'],strict=True)
     configured=module.configure_optimizers();opt=configured['optimizer'];sched=configured['lr_scheduler']['scheduler']
@@ -106,7 +114,7 @@ def main():
               scope='Frozen real-input prediction/state/action diagnostic;no optimizer,physical labels or success claim.'))
     after=state_hash(model);assert before==after
     write(out/'audit.json',dict(passed=True,step=a.step,checkpoint=check,
-          native_cpu_model_optimizer_scheduler_restore=True,fresh_initial_exact=True,
+          native_cpu_model_optimizer_scheduler_restore=True,fresh_initial_exact=True,declared_encoder_initialization=declared_encoder,
           next16_sampler_indices=next16,saved_rng_fields_checked=True,uninterrupted_rng_replay_claim=False,
           frozen_tensors=frozen_proof,gradients=gradients,layers=layers,loss=float(loss.detach()),
           state_before=before,state_after=after,config_sha256=sha(run/'config.json'),

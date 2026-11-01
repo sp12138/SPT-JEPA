@@ -16,6 +16,9 @@ def main():
     p.add_argument('--phase',choices=['preflight','gate'],required=True);a=p.parse_args()
     root=Path(a.root);protocol=read(root/'protocol.json');row=next(r for r in protocol['runs'] if r['id']==a.id)
     source=protocol['source'];source_check(source);run=Path(row['run']);cfg=read(run/'config.json')
+    if protocol.get('worker_sha256'):assert sha(__file__)==protocol['worker_sha256']
+    if cfg.get('frozen_encoder_sha256'):
+        assert sha(Path(cfg['initial_encoder_checkpoint'])/'weights.pt')==cfg['frozen_encoder_sha256']
     assert sha(run/'config.json')==row['config_sha256'] and not(run/'STOP').exists()
     if a.phase=='gate':
         approval=read(root/'gate-approval.json');assert approval['passed'] and a.id in approval['run_ids']
@@ -55,7 +58,8 @@ def main():
         status=read(run/'status.json');assert status['state']=='finished' and status['step']==target
         dest=run/'full-archives'/f'step{target:07d}.ckpt';dest.parent.mkdir(exist_ok=True);assert not dest.exists()
         shutil.copy2(run/'last.ckpt',dest);assert sha(dest)==sha(run/'last.ckpt')
-        helper=Path(source['source'])/'experiments/unified_three_20261101/audit.py'
+        helper=Path(protocol.get('audit_helper',str(Path(source['source'])/'experiments/unified_three_20261101/audit.py')))
+        if protocol.get('audit_helper_sha256'):assert sha(helper)==protocol['audit_helper_sha256']
         cmd=[PY,'-B','-u',str(helper),'--root',str(root),'--id',a.id,'--step',str(target)]
         if target==600:cmd.append('--diagnostics')
         execute('audit',cmd,1200)
