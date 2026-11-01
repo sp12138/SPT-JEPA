@@ -56,9 +56,13 @@ def main():
     torch.manual_seed(1042);loss,metrics=model.loss(batch,step=a.step,ramp_steps=cfg.get('ramp_steps',0))
     assert finite(loss) and finite(metrics);loss.backward()
     gradients=gradient_report(model,expectations);assert all(r['passed'] for r in gradients.values()),gradients
-    if cfg['model_class']=='local_readout':
+    if cfg['model_class'] in ['local_readout','spatial_native']:
         groups={f'predictor.transformer.layers.{i}':'active' for i in range(6)}
-        groups.update({'predictor.readout.0':'active','predictor.readout.2':'active'})
+        if cfg['model_class']=='local_readout':
+            groups.update({'predictor.readout.0':'active','predictor.readout.2':'active'})
+        else:
+            groups.update({'predictor.transformer.input_proj':'active','predictor.transformer.output_proj':'active',
+                          'predictor.transformer.cond_proj':'active'})
         layers=gradient_report(model,groups);assert all(r['passed'] for r in layers.values()),layers
     else:layers={}
     assert all(finite(p.grad) for p in model.parameters() if p.grad is not None)
