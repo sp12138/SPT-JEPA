@@ -1,5 +1,6 @@
 """Native full-state restore/backward and frozen causal diagnostics on3 tasks."""
 import argparse
+from contextlib import nullcontext
 import gc
 from pathlib import Path
 
@@ -80,7 +81,11 @@ def main():
             # One prespecified matched-noise renderer check. This is not image
             # generation or likelihood; no inference from zero sensitivity alone.
             from vforge.models.as_jepa.pixels import pack
-            pixels,render,anchor=model.prepare(batch)
+            if hasattr(model,'render_query_batch'):
+                render_batch,address=model.render_query_batch(batch,a.step)
+                query_context=model.renderer.queried(address.repeat_interleave(batch['pixels'].shape[1]-1,0))
+            else:render_batch,query_context=batch,nullcontext()
+            pixels,render,anchor=model.prepare(render_batch)
             real=model.encode(dict(pixels=pixels))['emb'];acts=model.action_encoder(batch['action'])
             def forecast(acts):
                 zs=[real[:,0]]
@@ -90,9 +95,10 @@ def main():
             y=pack(render[:,1:].flatten(0,1));anc=pack(anchor).repeat_interleave(real.shape[1]-1,0)
             torch.manual_seed(1042);eps=torch.randn_like(y);noised=.05*y+.95*eps;t=y.new_full((len(y),1),.95)
             energies={}
-            for name,z in [('forecast',good),('wrong_actions',wrong),('other_state',good.roll(1,0)),('zero',torch.zeros_like(good))]:
-                with model.renderer.anchored(anc):v=model.renderer(noised,t,condition=z.reshape(-1,model.state_slots,model.state_width))
-                energies[name]=float((y-eps-v).square().mean())
+            with query_context:
+                for name,z in [('forecast',good),('wrong_actions',wrong),('other_state',good.roll(1,0)),('zero',torch.zeros_like(good))]:
+                    with model.renderer.anchored(anc):v=model.renderer(noised,t,condition=z.reshape(-1,model.state_slots,model.state_width))
+                    energies[name]=float((y-eps-v).square().mean())
             diag['renderer_t095_last4_windows']=energies
         assert finite(diag)
         write(out/'state-audit.json',dict(step=a.step,cohort=cohort,results=diag,

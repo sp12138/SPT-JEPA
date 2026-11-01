@@ -15,6 +15,7 @@ MODEL_TARGETS = {
     "patch_carrier": "as_jepa_lewm.patch_carrier.PatchCarrierLeWM",
     "local_readout": "as_jepa_lewm.local_readout.LocalReadoutLeWM",
     "spatial_native": "as_jepa_lewm.spatial_native.SpatialNativeLeWM",
+    "quadrant_render": "as_jepa_lewm.quadrant_render.QuadrantRenderLeWM",
 }
 
 
