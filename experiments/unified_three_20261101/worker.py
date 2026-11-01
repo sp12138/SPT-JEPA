@@ -51,7 +51,7 @@ def main():
     try:
         cmd=[PY,'-B','-u','-m','as_jepa_tools.train_stage','--config',str(run/'config.json'),'--stop-step',str(target)]
         if a.phase=='gate':cmd.append('--resume')
-        execute('train',cmd,1200 if target==2 else 3600)
+        execute('train',cmd,1200 if target==2 else 7200)
         status=read(run/'status.json');assert status['state']=='finished' and status['step']==target
         dest=run/'full-archives'/f'step{target:07d}.ckpt';dest.parent.mkdir(exist_ok=True);assert not dest.exists()
         shutil.copy2(run/'last.ckpt',dest);assert sha(dest)==sha(run/'last.ckpt')
@@ -68,7 +68,7 @@ def main():
             else:
                 cmd=[PY,'-B','-u','-m','as_jepa_tools.benchmark_evaluate','--manifest',str(Path(cfg['data'])/'manifests/validation-strict.json'),
                      '--checkpoint',str(checkpoint),'--data',cfg['data'],'--output',str(out)]
-            execute('planning',cmd,1200)
+            execute('planning',cmd,1800)
         ok=True
     except Exception as exc:error=repr(exc)
     write(record,dict(passed=ok,run_id=a.id,phase=a.phase,step=target,results=results,error=error,
