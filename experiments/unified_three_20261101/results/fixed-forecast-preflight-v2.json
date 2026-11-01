@@ -1,0 +1,1541 @@
+{
+  "passed": true,
+  "root": "/efs/prescottsun/SPT-JEPA/runs/unified_fixed_forecast600_v2_20261101",
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v11",
+    "source_commit": "3b077df1f7ff40f02c6649b234553bbff34dd479",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v11.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v11:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "protocol_sha256": "1e0eaa3f60064af13844b4129f5a6a3d268fdc34cb31e6d245f014986a5eb4c6",
+  "rows": [
+    {
+      "id": "pusht-flat-seed1",
+      "record_sha256": "b00115d01b819deafce69f268f031f5a9c92c19453e3a4b5ec65e83dcbafced6",
+      "audit_sha256": "a05e7c3a8b52aa08135b7019998b8e8357adeb36fa314b4ade4a14b784ee91c4",
+      "loss": 1.3976866006851196,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/pusht-flat-seed1/initial-model/weights.pt",
+        "sha256": "756d1bb73cc2fd5eb622762901dd4e05945dee3c00d141c73109f70c74728d1e"
+      },
+      "full_checkpoint_sha256": "9cc7d897fa3ba90a95629fada6fb973af736554866d0bdac804a23c0e45a01d6",
+      "portable_sha256": "c4377e10e04500fc3eac07671cdd8b092d1a7355cccfeda5656d75eaefffe664",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11389184,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11389184,
+          "gradient_tensors": 87,
+          "gradient_norm": 1.686375829991617,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4240494,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4240494,
+          "gradient_tensors": 6,
+          "gradient_norm": 8.13759215651043e-16,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 8.146218931184041e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 8.848751738823972e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 8.90937858939315e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 8.964335978698242e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 9.070940710894152e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 8.416989345621139e-08,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "pusht-field-seed1",
+      "record_sha256": "613c9c5d67162479521049c768d5a48e4bebdcc8e3a147f9fc4adef03272f500",
+      "audit_sha256": "8c3585e0547315346aa9e05ecf2e86b2150edb6c9f41df03a8405cb10d536599",
+      "loss": 1.3976789712905884,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/pusht-flat-seed1/initial-model/weights.pt",
+        "sha256": "756d1bb73cc2fd5eb622762901dd4e05945dee3c00d141c73109f70c74728d1e"
+      },
+      "full_checkpoint_sha256": "1eeefa3980550e7af0d455c510764774cf571c8eef2951e3142c0934d29dcdeb",
+      "portable_sha256": "7e8fef4a96b3aab6608548460d6026f294bb54f8570d041b9c21a0f17299a7ed",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11001104,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11001104,
+          "gradient_tensors": 87,
+          "gradient_norm": 3.2063843487178563,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4240494,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4240494,
+          "gradient_tensors": 6,
+          "gradient_norm": 4.733912735279977e-15,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.69185102457479e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.731907852207541e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.7715434972217426e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.343019614099082e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.850203179155899e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.172068667067608e-08,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "pusht-flat-seed2",
+      "record_sha256": "630f26cb131ef13f9ca08426170b186ad7befd0c5c854892b8b530b58092b832",
+      "audit_sha256": "3cf34d30430dd21dee139fc04c855a422354013aae2b5b98f21aa63c6c217114",
+      "loss": 1.1957463026046753,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/pusht-flat-seed2/initial-model/weights.pt",
+        "sha256": "30f3202c8fc0ce16305255a3f4a92226d7b08e9143f242c9ae19185f07da3280"
+      },
+      "full_checkpoint_sha256": "a5fd396ec5140d8bdac9549c42df13b240b556be5b750a0444877747db731ce2",
+      "portable_sha256": "384d2b5df441465e2b56b3673eec7a95004b2a4579ba923603a8892749bd0a84",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11389184,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11389184,
+          "gradient_tensors": 87,
+          "gradient_norm": 1.5074967066265175,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4240494,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4240494,
+          "gradient_tensors": 6,
+          "gradient_norm": 1.38086566350474e-15,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.096959615381097e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.0184699163517628e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 9.953424199172012e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.1385969178207135e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.1467581757092728e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 9.726798853428283e-08,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "pusht-field-seed2",
+      "record_sha256": "c03c9678af205680910084eee9c98bc1f551687c82f11a76e5fd7df13e612936",
+      "audit_sha256": "39249057291804e98838097ac1d17e704461a896377a337ad631b17534cd469a",
+      "loss": 1.195742130279541,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/pusht-flat-seed2/initial-model/weights.pt",
+        "sha256": "30f3202c8fc0ce16305255a3f4a92226d7b08e9143f242c9ae19185f07da3280"
+      },
+      "full_checkpoint_sha256": "beb567154a8c7d9b718215c9849ce79af29ad84e59eae2fd8adf7a89feecc5b6",
+      "portable_sha256": "5b2e7af51f47dff31ba1fa8a8feb8c4a020669268f0e4016081f96b57855202b",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11001104,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11001104,
+          "gradient_tensors": 87,
+          "gradient_norm": 2.315753670806708,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4240494,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4240494,
+          "gradient_tensors": 6,
+          "gradient_norm": 5.258600943608229e-15,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.270765289500057e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.625214111642867e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.862480958360328e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.18073632075798e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.817933307140905e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.964197270860319e-08,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "tworoom-flat-seed1",
+      "record_sha256": "8185ef04e41423e0d32d952acbc12268e09424c113736223d739bbf2ca997255",
+      "audit_sha256": "9093caead541b083e366a9a96a3a56a29ebe01850f8a56d55f0ba130e8f3557e",
+      "loss": 1.392337441444397,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/tworoom-flat-seed1/initial-model/weights.pt",
+        "sha256": "bd2308e60536b2d1bc4ffa71fc682db63471379832544868229a5bac00467ea1"
+      },
+      "full_checkpoint_sha256": "e79add159a0a138eff147c042b38eea3509228c725c8180d73868f5ac51cab26",
+      "portable_sha256": "c3061e19c95704561cee79f1c3b368990b7b36169b408a013938471993fbeec0",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11389184,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11389184,
+          "gradient_tensors": 87,
+          "gradient_norm": 1.5375825034429564,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4240494,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4240494,
+          "gradient_tensors": 6,
+          "gradient_norm": 5.701803998375838e-15,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.431238765585216e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.5390924748072714e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.5733018328508077e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.496946194830206e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.4138261560386733e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.5253679991817175e-07,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "tworoom-field-seed1",
+      "record_sha256": "1b42f70af578f3c9e02a86a537f2e954c3d283c5a5b638735fa81e66b363b94f",
+      "audit_sha256": "1de297838f27671b47050d3e22c2e78051c9b6b7b30cee88439e2fc035ad0d2f",
+      "loss": 1.3923349380493164,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/tworoom-flat-seed1/initial-model/weights.pt",
+        "sha256": "bd2308e60536b2d1bc4ffa71fc682db63471379832544868229a5bac00467ea1"
+      },
+      "full_checkpoint_sha256": "3d579c5e0842657a1450ae3359f8c7a0c05601cf7ea1aad7789e018be412b087",
+      "portable_sha256": "ffee5448eb7bb228d2b183e07baac6bfa202700b16f0604b05455faa8da8d2f1",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11001104,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11001104,
+          "gradient_tensors": 87,
+          "gradient_norm": 2.804686554058879,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4240494,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4240494,
+          "gradient_tensors": 6,
+          "gradient_norm": 8.512040883324538e-15,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 7.287372522799754e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 7.225821072493239e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 7.330815362916935e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 7.386852299461229e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 8.007286218301504e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 7.02534303561293e-08,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "tworoom-flat-seed2",
+      "record_sha256": "f9dcbf0ba289d5cfcd121fe39fbc31cfd2508665f7ebfe04e81e7c51faaa1b34",
+      "audit_sha256": "51b3445b1b1f0855930501cf6be2ae92b6d4cad807eb6674057f154182c1cee9",
+      "loss": 1.451038122177124,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/tworoom-flat-seed2/initial-model/weights.pt",
+        "sha256": "df3f1a80b5c38f1f2cdbb231694e3f6741a4cf8bc9edc7cf4b997df65e6e1ecf"
+      },
+      "full_checkpoint_sha256": "63420a9322c7ba71c81e8782266539cb49e36a468a39d969655731cd6456382e",
+      "portable_sha256": "e050d334df09a602d45828767a17e47a6e465efe169b424a8807688bd134beab",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11389184,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11389184,
+          "gradient_tensors": 87,
+          "gradient_norm": 1.5386131989619305,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4240494,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4240494,
+          "gradient_tensors": 6,
+          "gradient_norm": 8.182887962919852e-15,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.561087086589279e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.6517422484658935e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.7073294882742715e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.6860186805921376e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.7639960379067943e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.6938045628492575e-07,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "tworoom-field-seed2",
+      "record_sha256": "c300abba7569ad2236a18d273e1401f4b9b83f15251f702a5dd94f4ce1e796fe",
+      "audit_sha256": "d0702ac2406629f7c9abce0572651268948c58feba8501f03d3950c6351e5626",
+      "loss": 1.4510350227355957,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/tworoom-flat-seed2/initial-model/weights.pt",
+        "sha256": "df3f1a80b5c38f1f2cdbb231694e3f6741a4cf8bc9edc7cf4b997df65e6e1ecf"
+      },
+      "full_checkpoint_sha256": "9d47551b372388840ae27a32211b6fb4d041e3522a0165297641ec6d4892e35a",
+      "portable_sha256": "ca16023fd5543b3539a66cf68a2a14972a76e0d4d6ebc62570dc850aa33c02e0",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11001104,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11001104,
+          "gradient_tensors": 87,
+          "gradient_norm": 2.4890461136434947,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4240494,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4240494,
+          "gradient_tensors": 6,
+          "gradient_norm": 9.71299077925328e-15,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 7.699973176155385e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 7.446549304861078e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 7.818160557980693e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 7.850290453358655e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 7.069388881503189e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.766015152423998e-08,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cube-flat-seed1",
+      "record_sha256": "247f82730f807cda24eb35e471df30d68f3df5a9d7fdc8509be0edb80b1014eb",
+      "audit_sha256": "d888b190f126a1fa128d8924d2431814d3885529bd9dbadc7bebe4b7553d439e",
+      "loss": 1.644087791442871,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/cube-flat-seed1/initial-model/weights.pt",
+        "sha256": "c51ee227deda914ec4bbf5d6c14c9638c356e010a52995f219bf3ca53f6f2ccd"
+      },
+      "full_checkpoint_sha256": "80acd84d15f2efab951f082cb40138d4811db75ed639e645da68fe5e65ec3f92",
+      "portable_sha256": "1c3e648b59ce2f6d40fa85b8ca0cb6e6af8f295de9b8dd51452b668ce5eed67a",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11389184,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11389184,
+          "gradient_tensors": 87,
+          "gradient_norm": 1.5930132314037322,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4302474,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4302474,
+          "gradient_tensors": 6,
+          "gradient_norm": 1.826840806085305e-14,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.5602523982741796e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.6148534108834587e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.6551829730604667e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.544012010202521e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.6716265757154673e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.606164927580079e-07,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cube-field-seed1",
+      "record_sha256": "ff5b0383ce607523f06c60459a059800450cf0fa5cd8ac8d49953f343f29e697",
+      "audit_sha256": "286ed6a852826ecd5d9fe552028c5db60a05b334e3a86ce947cb83d7ec5d7ad6",
+      "loss": 1.6440820693969727,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/cube-flat-seed1/initial-model/weights.pt",
+        "sha256": "c51ee227deda914ec4bbf5d6c14c9638c356e010a52995f219bf3ca53f6f2ccd"
+      },
+      "full_checkpoint_sha256": "7e2be25b650ae8826d1af3fd1e2ca9efc7b61b3cd12948f2601bb3ba2d59a613",
+      "portable_sha256": "1e3f3fe1197e1c1a33b5408b07a3db1f1a01dde6add9d25f55ece6ed2cb260b2",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11001104,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11001104,
+          "gradient_tensors": 87,
+          "gradient_norm": 3.766312914851511,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4302474,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4302474,
+          "gradient_tensors": 6,
+          "gradient_norm": 3.427064216307419e-15,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.092516311970949e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.35892997879879e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.056870174484876e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 6.383530429751493e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.987738710402293e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.7381822404493834e-08,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cube-flat-seed2",
+      "record_sha256": "d72b43b5ee1387afae7645d77b46b9e61d8fdbe7e636d52c605dcfe8643998b2",
+      "audit_sha256": "d014e631001bda187fb8617ba3b6e9c46f06d8e7eb3f0d7926b34c2cb34dce05",
+      "loss": 1.5795440673828125,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/cube-flat-seed2/initial-model/weights.pt",
+        "sha256": "e20276d1fef578237cbeb077bf15e84658f6433df6d4cd2756ba74d8311e6d30"
+      },
+      "full_checkpoint_sha256": "5332cf63a90e8444870c21c0bcea55f328ba23ba7a4bc74031453766f4183b88",
+      "portable_sha256": "8252e6f9ee6e7c937b04962ba7d90bdc1d0220f1a207499993ee29e0fbc5ac23",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11389184,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11389184,
+          "gradient_tensors": 87,
+          "gradient_norm": 1.594599489969716,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4302474,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4302474,
+          "gradient_tensors": 6,
+          "gradient_norm": 2.0481097136829987e-14,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.894567611439957e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.762067418302947e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.7660012818227765e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.733962558608719e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.7937435437025207e-07,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 1.5763452284682527e-07,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "cube-field-seed2",
+      "record_sha256": "41c30ed26a3c502cd970033f1cda66fac9f3296482abb7e058959cf94e947540",
+      "audit_sha256": "7044f1615435bd1c817f7d6bf88d78d319d6e472f64734d8cc4ea016c347eb8e",
+      "loss": 1.5795388221740723,
+      "declared_encoder_initialization": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/unified_three_20261101/cube-flat-seed2/initial-model/weights.pt",
+        "sha256": "e20276d1fef578237cbeb077bf15e84658f6433df6d4cd2756ba74d8311e6d30"
+      },
+      "full_checkpoint_sha256": "419a8ed609ab5426743d0a87a944681add8629e0eae9203845ebc7e5a6e2fe8a",
+      "portable_sha256": "be92759b4253b8e183f4d52e5b46622d355589eb27f0918b4bc4bedf0ee6b0a7",
+      "frozen_tensors": {
+        "prefixes": [
+          "encoder",
+          "pool",
+          "spatial_projection",
+          "spatial_mean",
+          "spatial_scale"
+        ],
+        "compared_tensors": 210,
+        "missing": [],
+        "different": [],
+        "equal": true
+      },
+      "gradients": {
+        "encoder": {
+          "expectation": "frozen",
+          "parameters": 5501376,
+          "parameter_tensors": 198,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "pool": {
+          "expectation": "frozen",
+          "parameters": 163984,
+          "parameter_tensors": 9,
+          "trainable_parameters": 0,
+          "gradient_tensors": 0,
+          "gradient_norm": 0.0,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor": {
+          "expectation": "active",
+          "parameters": 11001104,
+          "parameter_tensors": 87,
+          "trainable_parameters": 11001104,
+          "gradient_tensors": 87,
+          "gradient_norm": 3.7350521604064655,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "action_encoder": {
+          "expectation": "active",
+          "parameters": 4302474,
+          "parameter_tensors": 6,
+          "trainable_parameters": 4302474,
+          "gradient_tensors": 6,
+          "gradient_norm": 1.7035923138056777e-15,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.0": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.479529262171839e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.1": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 4.723271427474829e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.2": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 4.657046559623809e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.3": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.003888793173732e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.4": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 5.334590281620915e-08,
+          "gradients_finite": true,
+          "passed": true
+        },
+        "predictor.transformer.layers.5": {
+          "expectation": "active",
+          "parameters": 1798400,
+          "parameter_tensors": 13,
+          "trainable_parameters": 1798400,
+          "gradient_tensors": 13,
+          "gradient_norm": 4.7749964739792934e-08,
+          "gradients_finite": true,
+          "passed": true
+        }
+      }
+    }
+  ],
+  "checked_utc": "2026-11-01T13:53:37.683474+00:00",
+  "scope": "All12 actual native two-update train and CPU restoration/GPU backward checks. Exact declared random frozen encoder loaded uniformly. Technical evidence only;no600 or task result;no extension while user requests success-mechanism analysis."
+}
