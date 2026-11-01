@@ -15,7 +15,7 @@ from vforge.models.as_jepa.pixels import pack
 class RobustLeWM(ASJepaLeWM):
     def __init__(self, rho=0., forecast_fraction=0., forecast_seed=20261029, rate_prior="one-step",
                  posterior_noise_scale=1., flow_force_t_one=False, response_query_mode="none",
-                 response_query_encoded_fraction=0., **kwargs):
+                 response_query_encoded_fraction=0., sample_forecast=False, **kwargs):
         super().__init__(**kwargs)
         if self.mode != "L2" or self.objective != "flow":
             raise ValueError("This controlled extension applies only to AS-JEPA L2 flow loss")
@@ -46,6 +46,12 @@ class RobustLeWM(ASJepaLeWM):
             raise ValueError("Encoded response queries require an active response_query_mode")
         self.response_query_mode = response_query_mode
         self.response_query_encoded_fraction = float(response_query_encoded_fraction)
+        if not isinstance(sample_forecast, bool):
+            raise ValueError('sample_forecast must be a bool')
+        if sample_forecast and (not self.forecast_fraction or rate_prior != 'one-step'
+                                or posterior_noise_scale != 1. or response_query_mode != 'none'):
+            raise ValueError('Reviewed prior sampling requires forecast_fraction>0,one-step rate,full posterior noise,no response auxiliary')
+        self.sample_forecast = sample_forecast
         if response_query_mode != "none":
             # The shared 550 baseline tensors and caller RNG stay unchanged.
             # Direct and annihilator draw exactly the same auxiliary head.
@@ -230,11 +236,22 @@ class RobustLeWM(ASJepaLeWM):
             # Common posterior/renderer noise keeps its original draw order across arms.
             with torch.random.fork_rng(devices=devices):
                 torch.manual_seed(self.forecast_seed + int(step))
+                if self.sample_forecast:
+                    # The existing Gaussian transition prior has covariance
+                    # sigma0²I. Its decoder condition is a DRAW from that prior,
+                    # not its noise-free mean. Separate per-step innovations
+                    # leave native dropout/mask/image-noise streams unchanged.
+                    prior_generator = torch.Generator(device=flat.device).manual_seed(
+                        self.forecast_seed + 0x5052494F + int(step))
                 history = [noisy[:, 0].flatten(1)]
                 future = []
                 for t in range(w - 1):
                     past = torch.stack(history, 1)
                     nxt = self.predict(past, info["act_emb"][:, :t + 1])[:, -1]
+                    if self.sample_forecast:
+                        innovation = torch.randn(nxt.shape, device=nxt.device,
+                                                 dtype=nxt.dtype, generator=prior_generator)
+                        nxt = nxt + self.sigma0 * innovation
                     history.append(nxt)
                     future.append(nxt)
                 future = torch.stack(future, 1).reshape_as(condition)
@@ -274,4 +291,6 @@ class RobustLeWM(ASJepaLeWM):
             loss = loss + auxiliary
             metrics.update(response_metrics)
             metrics["loss"] = loss
+        if self.sample_forecast:
+            metrics['forecast_prior_samples'] = loss.new_tensor(1.)
         return loss, metrics
