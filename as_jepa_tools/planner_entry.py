@@ -45,7 +45,9 @@ def main():
                     start_steps=to_json(kwargs.get("start_steps")),split=split,
                     seed=seed,solver_rng_seed=seed,float32_matmul_precision=torch.get_float32_matmul_precision(),seconds=time.time()-started,
                     scope="Pinned upstream P0; deterministic posterior means; single trained seed" if not os.environ.get("ASJEPA_GEOMETRY_COST") else "Experimental geometry cost; same simulator/CEM/data protocol; not the original GoalMSE P0",
-                    geometry_cost=os.environ.get("ASJEPA_GEOMETRY_COST"))
+                    geometry_cost=os.environ.get("ASJEPA_GEOMETRY_COST"),goal_query_score=bool(os.environ.get('ASJEPA_GOAL_QUERY')))
+        if os.environ.get('ASJEPA_GOAL_QUERY'):
+            report['scope']='Learned future-query objective;same pinned heldout simulator/CEM300x30/H5/history3/budget50;not original GoalMSE P0'
         (output/"metrics.json").write_text(json.dumps(report,indent=2))
         return result
     swm.World.evaluate=recorded_evaluate

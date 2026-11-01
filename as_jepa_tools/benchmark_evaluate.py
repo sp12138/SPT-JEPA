@@ -48,7 +48,11 @@ def main():
         weights=torch.load(Path(a.checkpoint)/"weights.pt",map_location="cpu",weights_only=True)
         assert set(weights)==set(model.state_dict());assert all(torch.equal(v,model.state_dict()[k].cpu()) for k,v in weights.items())
         audit=dict(tensors=len(weights),parameters=sum(p.numel() for p in model.parameters()),strict_equal=True);del weights
-        cost=swm.planning.ShootingCostEvaluator(model,instantiate(cfg.objective));solver=instantiate(cfg.solver,cost=cost)
+        if hasattr(model,'query_predictions'):
+            from as_jepa_lewm.goal_query import GoalQueryObjective
+            objective=GoalQueryObjective()
+        else:objective=instantiate(cfg.objective)
+        cost=swm.planning.ShootingCostEvaluator(model,objective);solver=instantiate(cfg.solver,cost=cost)
         transform={"pixels":_image_transform(224),"goal":_image_transform(224)}
         policy=swm.policy.WorldModelPolicy(solver=solver,config=swm.PlanConfig(**cfg.plan_config),process=process,transform=transform)
     world=swm.World(**cfg.world,image_shape=(224,224));_install_task_success(world,manifest["task"],spec);world.set_policy(policy)
@@ -56,5 +60,6 @@ def main():
     try:metrics=world.evaluate(dataset=ds,start_steps=[x["start_step"] for x in pairs],goal_offset=spec.goal_offset,eval_budget=spec.eval_budget,episodes_idx=[x["episode_id"] for x in pairs],callables=OmegaConf.to_container(cfg.eval.callables,resolve=True),video=None)
     finally:world.close()
     report=dict(metrics=json_safe(metrics),pairs=pairs,manifest=str(mp),manifest_sha256=hashlib.sha256(mp.read_bytes()).hexdigest(),checkpoint=a.checkpoint,checkpoint_audit=audit,seconds=time.time()-started,solver=OmegaConf.to_container(cfg.solver,resolve=True),plan=OmegaConf.to_container(cfg.plan_config,resolve=True),normalization="train episodes" if own else "released reference full-data normalization",split=manifest["campaign_split"],protocol=manifest["protocol"],topology=json_safe(topology_audit_records()) if manifest["task"]=="tworoom" else [],scope="Custom SPT held-out manifest using pinned CLEAR task semantics and existing SWM planner; not canonical CLEAR benchmark. Released reference weights have different training/data exposure.")
+    if a.checkpoint!='random':report['objective_type']=type(objective).__module__+'.'+type(objective).__name__
     (out/"metrics.json").write_text(json.dumps(report,indent=2)+"\n");print(json.dumps(dict(metrics=report["metrics"],seconds=report["seconds"])),flush=True)
 if __name__=="__main__":main()

@@ -9,9 +9,18 @@ from torch.utils.data import Dataset
 
 def make_training_dataset(cfg):
     if cfg.get("dataset_kind") == "benchmark_hdf5":
-        return BenchmarkWindows(cfg["data"],window=cfg["model"]["window"],seed=cfg["seed"])
-    from as_jepa_tools.data import FullPushTWindows,PushTWindows
-    return (FullPushTWindows if cfg.get("all_phase_data",False) else PushTWindows)(cfg["data"],window=cfg["model"]["window"],gap=cfg.get("gap",8),seed=cfg["seed"])
+        if cfg.get("benchmark_anchor_rule") == "past_gap":
+            from as_jepa_tools.benchmark_gap import make_benchmark_dataset
+            dataset=make_benchmark_dataset(cfg)
+        else:
+            dataset=BenchmarkWindows(cfg["data"],window=cfg["model"]["window"],seed=cfg["seed"])
+    else:
+        from as_jepa_tools.data import FullPushTWindows,PushTWindows
+        dataset=(FullPushTWindows if cfg.get("all_phase_data",False) else PushTWindows)(cfg["data"],window=cfg["model"]["window"],gap=cfg.get("gap",8),seed=cfg["seed"])
+    if cfg.get("goal_query_reference",False):
+        from as_jepa_tools.goal_query_data import QueryReferenceWindows
+        dataset=QueryReferenceWindows(dataset,seed=cfg['seed'])
+    return dataset
 
 
 class BenchmarkWindows(Dataset):

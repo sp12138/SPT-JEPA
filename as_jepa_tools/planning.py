@@ -17,6 +17,9 @@ def main():
             "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM","as_jepa_lewm.local_readout.LocalReadoutLeWM",
             "as_jepa_lewm.spatial_native.SpatialNativeLeWM",
             "as_jepa_lewm.quadrant_render.QuadrantRenderLeWM",
+            "as_jepa_lewm.decoder_free.DecoderFreeLeWM",
+            "as_jepa_lewm.forecast_scored.ForecastScoredLeWM",
+            "as_jepa_lewm.goal_query.GoalQueryLeWM",
             "as_jepa_lewm.fixed_forecast.FixedForecastLeWM"}:
         raise ValueError("This planner entry requires the LeWM rollout interface")
     policy=out/"policy";policy.mkdir(exist_ok=True);(policy/"config.json").write_text(json.dumps(cfg,indent=2))
@@ -27,6 +30,8 @@ def main():
     command=[os.sys.executable,"-u","-m","as_jepa_tools.planner_entry",
              f"policy={policy}",f"+cache_dir={cache}",f"eval.num_eval={a.episodes}",f"seed={a.seed}",
              "+plan_config.history_len=3",f"bf16={str(a.bf16).lower()}","compile=false",f"hydra.run.dir={out}/hydra",f"world.num_envs={a.episodes}","--config-path",str(Path(a.upstream).resolve()/"scripts/plan/config")]
+    if cfg['_target_']=='as_jepa_lewm.goal_query.GoalQueryLeWM':
+        command.append('objective._target_=as_jepa_lewm.goal_query.GoalQueryObjective')
     import hdf5plugin
     env={**os.environ,"HDF5_PLUGIN_PATH":hdf5plugin.PLUGINS_PATH,"STABLEWM_HOME":str(cache),
          "MUJOCO_GL":"egl","SDL_VIDEODRIVER":"dummy","PYGLET_HEADLESS":"true",
@@ -35,6 +40,7 @@ def main():
     if a.split=="heldout":
         if not a.test_episodes:p.error("--test-episodes is required for heldout selection")
         env["ASJEPA_TEST_EPISODES"]=str(Path(a.test_episodes).resolve())
+    if cfg['_target_']=='as_jepa_lewm.goal_query.GoalQueryLeWM':env['ASJEPA_GOAL_QUERY']='1'
     started=time.time()
     with (out/"planner.log").open("w") as log:
         r=subprocess.run(command,cwd=out,env=env,stdout=log,stderr=subprocess.STDOUT)

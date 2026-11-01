@@ -17,6 +17,9 @@ MODEL_TARGETS = {
     "spatial_native": "as_jepa_lewm.spatial_native.SpatialNativeLeWM",
     "quadrant_render": "as_jepa_lewm.quadrant_render.QuadrantRenderLeWM",
     "fixed_forecast": "as_jepa_lewm.fixed_forecast.FixedForecastLeWM",
+    "goal_query": "as_jepa_lewm.goal_query.GoalQueryLeWM",
+    "decoder_free": "as_jepa_lewm.decoder_free.DecoderFreeLeWM",
+    "forecast_scored": "as_jepa_lewm.forecast_scored.ForecastScoredLeWM",
 }
 
 

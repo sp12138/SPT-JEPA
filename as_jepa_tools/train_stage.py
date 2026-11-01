@@ -33,7 +33,19 @@ def main():
         del state
     import as_jepa_lewm.train as entry
     original = entry.PersistentProgress.on_train_batch_end
+    runtime_recorded = False
     def capped(progress, trainer, module, outputs, batch, batch_idx):
+        nonlocal runtime_recorded
+        if cfg.get('record_runtime_source',False) and not runtime_recorded:
+            import inspect,os
+            from as_jepa_lewm.factory import build_model
+            paths=dict(model=inspect.getfile(type(module.model)),trainer=inspect.getfile(type(module)),
+                       factory=inspect.getfile(build_model),dataset=inspect.getfile(type(trainer.train_dataloader.dataset)))
+            record=dict(paths=paths,sha256={k:hashlib.sha256(Path(v).read_bytes()).hexdigest() for k,v in paths.items()},
+                        cwd=os.getcwd(),PYTHONPATH=os.environ.get('PYTHONPATH'),CUDA_VISIBLE_DEVICES=os.environ.get('CUDA_VISIBLE_DEVICES'),
+                        command=sys.argv,step=int(trainer.global_step),target_step=a.stop_step)
+            with (root/f'stage-runtime-source-{a.stop_step:07d}.json').open('x') as handle:json.dump(record,handle,indent=2)
+            runtime_recorded=True
         original(progress, trainer, module, outputs, batch, batch_idx)
         if int(trainer.global_step) >= a.stop_step:
             trainer.should_stop = True

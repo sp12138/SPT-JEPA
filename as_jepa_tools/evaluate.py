@@ -31,6 +31,12 @@ def load_model(folder,device="cuda"):
     elif target=="as_jepa_lewm.research.ResearchLeWM":
         from as_jepa_lewm.research import ResearchLeWM
         model=ResearchLeWM(**cfg).to(device)
+    elif target in {"as_jepa_lewm.decoder_free.DecoderFreeLeWM",
+                    "as_jepa_lewm.forecast_scored.ForecastScoredLeWM",
+                    "as_jepa_lewm.goal_query.GoalQueryLeWM"}:
+        from importlib import import_module
+        module,name=target.rsplit('.',1)
+        model=getattr(import_module(module),name)(**cfg).to(device)
     else:model=ASJepaLeWM(**cfg).to(device)
     weights=torch.load(folder/"weights.pt",map_location=device,weights_only=True)
     invalid=[name for name,value in weights.items() if not bool(torch.isfinite(value).all())]

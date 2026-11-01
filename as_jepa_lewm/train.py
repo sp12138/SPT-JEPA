@@ -177,7 +177,7 @@ def main():
         digest=hashlib.sha256()
         with (source/"weights.pt").open("rb") as handle:
             for block in iter(lambda:handle.read(1024*1024),b""):digest.update(block)
-        (root/"initial_encoder.json").write_text(json.dumps(dict(source=str(source),sha256=digest.hexdigest(),scope="Encoder-only warm initialization from our L0; pool, prior, renderer and optimizer are fresh"),indent=2))
+        (root/"initial_encoder.json").write_text(json.dumps(dict(source=str(source),sha256=digest.hexdigest(),scope=cfg.get('initial_encoder_scope','Declared encoder-only initialization; pool, prior, renderer and optimizer are fresh')),indent=2))
         del weights,encoder
     (root/"model_size.json").write_text(json.dumps(dict(total=sum(p.numel() for p in module.model.parameters()),trainable=sum(p.numel() for p in module.model.parameters() if p.requires_grad),frozen=sum(p.numel() for p in module.model.parameters() if not p.requires_grad),encoder=sum(p.numel() for p in module.model.encoder.parameters()),prior=sum(p.numel() for p in module.model.predictor.parameters()),renderer=sum(p.numel() for p in module.model.renderer.parameters()) if module.model.renderer else 0),indent=2))
     if cfg.get("record_initial_weights",False) and not args.resume:
