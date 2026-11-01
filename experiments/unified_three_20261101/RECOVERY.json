@@ -4,7 +4,7 @@
   "model_source_commit": "641dbaf",
   "model_source": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v1",
   "model_source_record": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-record-v1.json",
-  "phase": "All18 short600 chains and24 L2/NGC controls complete;12 paired local runs continue only to2000;6 reviewed direct-condition revisions are running600 gates",
+  "phase": "Original18x600/controller24/maturity12x2000/direct6x600 complete;spatial/noise24-cell600 and counterfactual8 complete;no common three-task success. Six ordinary prior-sampling600 chains complete,collection in progress. Learned-state high-noise12x600 running. Local-render query full3-task CPU proof passes;GPU preflights not launched yet.",
   "preflight_completed": 18,
   "preflight_actual_training_and_audit_exits_zero": true,
   "native_cpu_model_optimizer_scheduler_restores": 18,
@@ -12,18 +12,170 @@
   "local_head_parameter_difference": -16880,
   "long_training_approved": false,
   "completed_600_primary": {
-    "pusht": {"flat": [8,8], "field": [12,4], "tf": [0,4]},
-    "tworoom": {"flat": [16,24], "field": [66,68], "tf": [4,12]},
-    "cube": {"flat": [0,4], "field": [0,4], "tf": [16,6]}
+    "pusht": {
+      "flat": [
+        8,
+        8
+      ],
+      "field": [
+        12,
+        4
+      ],
+      "tf": [
+        0,
+        4
+      ]
+    },
+    "tworoom": {
+      "flat": [
+        16,
+        24
+      ],
+      "field": [
+        66,
+        68
+      ],
+      "tf": [
+        4,
+        12
+      ]
+    },
+    "cube": {
+      "flat": [
+        0,
+        4
+      ],
+      "field": [
+        0,
+        4
+      ],
+      "tf": [
+        16,
+        6
+      ]
+    }
   },
   "completed_1200_primary_l2_ngc": {
-    "pusht": {"flat_l2": [16,14], "field_l2": [8,6], "flat_ngc": [10,4], "field_ngc": [6,6]},
-    "tworoom": {"flat_l2": [52,48], "field_l2": [54,54], "flat_ngc": [96,98], "field_ngc": [82,74]},
-    "cube": {"flat_l2": [6,12], "field_l2": [10,4], "flat_ngc": [8,10], "field_ngc": [16,8]}
+    "pusht": {
+      "flat_l2": [
+        16,
+        14
+      ],
+      "field_l2": [
+        8,
+        6
+      ],
+      "flat_ngc": [
+        10,
+        4
+      ],
+      "field_ngc": [
+        6,
+        6
+      ]
+    },
+    "tworoom": {
+      "flat_l2": [
+        52,
+        48
+      ],
+      "field_l2": [
+        54,
+        54
+      ],
+      "flat_ngc": [
+        96,
+        98
+      ],
+      "field_ngc": [
+        82,
+        74
+      ]
+    },
+    "cube": {
+      "flat_l2": [
+        6,
+        12
+      ],
+      "field_l2": [
+        10,
+        4
+      ],
+      "flat_ngc": [
+        8,
+        10
+      ],
+      "field_ngc": [
+        16,
+        8
+      ]
+    }
   },
   "maturity_scope": "12 flat/field runs,unchanged model/source-v1/data/loss/schedule;full1200/2000 archives and actual restores;1200 primary L2/NGC,2000 primary/fresh L2/NGC;no automatic>2000",
   "maturity_helper_source": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v3",
   "maturity_terminal_records": "worker-records/{id}-maturity2000.json",
+  "maturity2000_completed": {
+    "all12_finite_chains_passed": true,
+    "actual_phase_exits_zero": 120,
+    "planning_endpoints": 48,
+    "primary_fresh_mean_percent": {
+      "pusht": {
+        "flat_l2": [
+          15,
+          9
+        ],
+        "field_l2": [
+          11,
+          6
+        ],
+        "flat_ngc": [
+          16,
+          6
+        ],
+        "field_ngc": [
+          5,
+          9
+        ]
+      },
+      "tworoom": {
+        "flat_l2": [
+          58,
+          58
+        ],
+        "field_l2": [
+          55,
+          58
+        ],
+        "flat_ngc": [
+          94,
+          97
+        ],
+        "field_ngc": [
+          89,
+          89
+        ]
+      },
+      "cube": {
+        "flat_l2": [
+          22,
+          13
+        ],
+        "field_l2": [
+          13,
+          9
+        ],
+        "flat_ngc": [
+          17,
+          10
+        ],
+        "field_ngc": [
+          11,
+          10
+        ]
+      }
+    },
+    "decision": "No shared improvement;do not continue indirect field. Cube primary L2 field-minus-flat -9pp CI[-17,-1] conditional on two fixed models. Root held;all source/configs/states retained."
+  },
   "direct_revision": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/unified_direct600_20261101",
     "model_source": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v4",
@@ -35,20 +187,123 @@
     "common_initial_tensors_exact_per_pair": 551,
     "all_native_layers_readout_and_condition_gradients_finite_positive": true,
     "gates_launched_utc": "2026-11-01T09:18:08-12+00:00",
-    "slots": {"dev2": [2,5], "dev13": [2,5], "dev15": [2,5]},
+    "slots": {
+      "dev2": [
+        2,
+        5
+      ],
+      "dev13": [
+        2,
+        5
+      ],
+      "dev15": [
+        2,
+        5
+      ]
+    },
     "cap": 600,
     "gate_approval": "/efs/prescottsun/SPT-JEPA/runs/unified_direct600_20261101/gate-approval.json",
     "idle_helper": "/efs/prescottsun/SPT-JEPA/runs/unified_direct600_20261101/idle-helper-v1",
     "idle_helper_scope": "Committed891bfc3 only permits<=1MiB driver bookkeeping with no compute process;model/train/audit remain source-v4",
     "initializer_correction": "CPU-only seeding now leaves CUDA untouched;all555 legacy initial tensors exact across6 original field constructions;paired CPU/CUDA RNG bytes were exact at2/600 on bothTR/Cube seeds",
+    "completed600": true,
+    "primary_seed1_seed2": {
+      "pusht": [
+        8,
+        6
+      ],
+      "tworoom": [
+        64,
+        48
+      ],
+      "cube": [
+        6,
+        4
+      ]
+    },
+    "actual_inputs_exact_all6": true,
+    "decision": "No uniform gain;TwoRoom -11pp[-20,-2] versus indirect600,other gains insufficient. Held without continuation.",
     "automatic_continuation": false
+  },
+  "full_capacity_spatial_candidate": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v8",
+    "commit": "c114af5",
+    "mechanism": "Original six192-hidden/16-head/64-headwidth/2048MLP blocks now operate on64 addressed spatial tokens;replace only global input/output projections with shared16-channel maps",
+    "predictor_parameters": 11001104,
+    "difference_from_flat": -388080,
+    "scope": "Same frozen local1024 carrier,loss,data,batch128,schedule and native goal interface. Higher compute;not equal-compute or novelty evidence. Different from held523536-parameter h64 patch branch.",
+    "original_failed_root": "/efs/prescottsun/SPT-JEPA/runs/unified_spatial600_20261101",
+    "original_failure": "All6 source-v7 native preflights OOM at step0;peakTorch138.203GiB,device139.8GiB. Held;no learned result.",
+    "memory_fix": "Non-reentrant block activation recomputation,preserve_rng_state=True;no batch/model/loss change. CPU teacher+private-stream autoregressive forward/loss/RNG exact and gradient max error0.",
+    "cpu_proof": "/efs/prescottsun/SPT-JEPA/reports/unified-three-20261101/spatial-cpu-v8.json",
+    "ordinary_root": "/efs/prescottsun/SPT-JEPA/runs/unified_spatial_checkpoint600_20261101",
+    "ordinary_phase": "All6 actual preflights and600 chains complete exit0;peak107.4GiB;no continuation selected.",
+    "ordinary_slots": {
+      "dev2": [
+        2,
+        5
+      ],
+      "dev13": [
+        2,
+        5
+      ],
+      "dev15": [
+        2,
+        5
+      ]
+    },
+    "highnoise_root": "/efs/prescottsun/SPT-JEPA/runs/unified_spatial_highnoise600_20261101",
+    "highnoise_phase": "All12 actual preflights and600 chains complete exit0;all553 paired initial tensors and every saved2-step RNG byte exact. All24 cells collected;no common/noise gain.",
+    "highnoise_change": "Single prior setting flow training logit+0.8;unchanged inference schedule. No time/K/feature sweep or new action label.",
+    "next": "Retain the full completed factorial;no continuation selected."
   },
   "short_stop_step": 600,
   "scheduler_total_steps": 124910,
   "batch_size": 128,
-  "arms": ["original local1024 flat output", "new shared local output with original full predictor body", "original temporal-forecast64"],
-  "seeds": [1,2],
-  "slots": {"dev2": {"task": "pusht", "gpus": [0,1,2,3,4,5]}, "dev13": {"task": "tworoom", "gpus": [0,1,2,3,4,5]}, "dev15": {"task": "cube", "gpus": [0,1,2,3,4,5]}},
+  "arms": [
+    "original local1024 flat output",
+    "new shared local output with original full predictor body",
+    "original temporal-forecast64"
+  ],
+  "seeds": [
+    1,
+    2
+  ],
+  "slots": {
+    "dev2": {
+      "task": "pusht",
+      "gpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "dev13": {
+      "task": "tworoom",
+      "gpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "dev15": {
+      "task": "cube",
+      "gpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
   "gate_launch_utc": "2026-11-01T07:52:15.318488+00:00",
   "terminal_records": "worker-records/{id}-gate.json",
   "checkpoint_and_backward_audits": "audits/{id}-step600/audit.json",
@@ -63,8 +318,90 @@
     "No three-task high-performance,novelty or ten-idea result has been established."
   ],
   "graph_support": "All6 frozen-carrier public5000-node/15NN/4anchor graph gates and actual2-case integration probes pass;4 oldgraphs exactly reused after tensor/actualforward checks,2 PushT train-only graphs built. All24 step600 L2/NGC controls exit0;not additive/universal benefit. Field TwoRoom L2 mean67->NGC33 at600;at1200 fieldNGC78 trails flatNGC97.",
-  "processed_remote_results": "/efs/prescottsun/SPT-JEPA/reports/unified-three-20261101/{short600,short600-graph,maturity1200}.json",
-  "cpu_analysis_jobs": "2026-11-01T09:23:48UTC dev2:cached-goal-v2 pid468557,PushT1024 train-only bank pid468558;frozen controller-cpu-source-v1 commit00514b2. No GPU/model/simulator calls. First cached-goal import failure retained;v2 fixes helper-source path.",
+  "processed_remote_results": "/efs/prescottsun/SPT-JEPA/reports/unified-three-20261101/{short600,short600-graph,maturity1200,maturity2000,direct600}.json",
+  "cpu_analysis_jobs": "Both completed:cached-goal-v2 and PushT1024 train-only bank. Frozen controller-cpu-source-v1 commit00514b2;zero GPU/model/simulator calls. Old cached-goal import failure retained. Cube true-encoded NGC18/22% versusL2 18/24 and40% coverage;not a50-step MPC bound. PushT bank passes all2048 native transform outputs and exact action alignment.",
+  "proposal_integration": "All6 actual2-case NGC+retrieval probes exit0 with source-v6 helper/source-v1 models;CPU nativeCEM elite/return/RNG contracts passed;correct native scalers on all3 tasks,unchanged full NN state,zero renderer/extra model calls. Technical composition only,not a performance result.",
+  "counterfactual_preparation": "All8 frozen passes exit0;zero encoder/simulator/fit,2000predict+400action forwards. All input/truth arrays and NN/RNG exact;processed complete summary collected. Matched field2000/flat2000 anddirect600/field600;not evidence of a unified improvement.",
   "incomplete_upload": "source-v5 empty directory is explicitly INVALID after SCP255/FileNotFoundError;never used. Do not treat it as frozen model/helper source.",
-  "next_action": "Review complete12 maturity2000 chains and6 direct600 chains before selecting a common learner or long continuation. Complete CPU goal-geometry and train-only PushT bank checks before any shared proposal controller. No three-task success is established. Preserve all old HOLD/STOP markers."
+  "next_action": "Review all six actual local-query technical checks,then bounded600 if passed. Collect all12 high-noise TF600 endpoints together. No prior-only long promotion,old goal/monitor or automatic extension.",
+  "sampling_candidate": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/unified_prior_sample600_20261101",
+    "source": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v9",
+    "commit": "fe0fed5",
+    "change": "Fresh existing-sigma0 independent Gaussian prior innovations at every forecast step,used for carry and renderer;no new parameter/loss/action target. Inference unchanged.",
+    "CPU_proof": "/efs/prescottsun/SPT-JEPA/reports/unified-three-20261101/prior-cpu-v9.json",
+    "native_preflights_passed": 6,
+    "all_initial550_tensors_and_saved2step_RNG_exact": true,
+    "600_chains_complete": 6,
+    "long_approved": false,
+    "noise_factorial_roots": [
+      "/efs/prescottsun/SPT-JEPA/runs/unified_tf_highnoise600_20261101",
+      "/efs/prescottsun/SPT-JEPA/runs/unified_prior_highnoise600_20261101"
+    ],
+    "noise_factorial_status": "All12 actual2-step/restoration/initial550/RNG checks pass;12 finite600 chains launched11:55UTC. Fixed+.8 only,not a sweep.",
+    "completed600_primary_seed1_seed2": {
+      "pusht": [
+        0,
+        0
+      ],
+      "tworoom": [
+        2,
+        8
+      ],
+      "cube": [
+        4,
+        8
+      ]
+    },
+    "ordinary_control600": {
+      "pusht": [
+        0,
+        4
+      ],
+      "tworoom": [
+        4,
+        12
+      ],
+      "cube": [
+        16,
+        6
+      ]
+    },
+    "decision": "No common gain at600;ordinary sampling not promoted. Keep high-noise factorial controls and every seed.",
+    "processed_results": "/efs/prescottsun/SPT-JEPA/reports/unified-three-20261101/prior-sampling600.json"
+  },
+  "local_query_candidate": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/unified_quadrant600_20261101",
+    "source": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v10",
+    "commit": "1b764e3",
+    "preparation_helper": "/efs/prescottsun/SPT-JEPA/reports/unified-three-20261101/prepare-quadrant-v1.py",
+    "preparation_commit": "ab7bf87",
+    "change": "Global original224px encoder/predictor;one uniformly chosen112px quadrant rendered at64px with matching local anchor and known2D query;1152 extra renderer parameters in actual384-wide configuration.",
+    "CPU_proof": "/efs/prescottsun/SPT-JEPA/reports/unified-three-20261101/quadrant-cpu-v10.json",
+    "CPU_passed_all3": true,
+    "all550_legacy_initial_tensors_outerRNG_encode_predict_unqueried_renderer_exact": true,
+    "train64_clip_query_over_overview_motion_energy": {
+      "pusht": 1.150496378531169,
+      "tworoom": 1.0282621415692041,
+      "cube": 1.1148319249238021
+    },
+    "motion_energy_is_not_task_information": true,
+    "GPU_phase": "Six native2-update/restoration/backward preflights launched12:00UTC onGPU2/5 eachhost;no600 approval until complete actual evidence review.",
+    "slots": {
+      "dev2": [
+        2,
+        5
+      ],
+      "dev13": [
+        2,
+        5
+      ],
+      "dev15": [
+        2,
+        5
+      ]
+    },
+    "metadata_correction": "Unexecuted source-v10 preparation note guessed576 from192-default width;separate committedab7 helper derives actual1152 from3 CPU proofs. NN source unchanged.",
+    "initial_orchestration_failure": "source10 freeze succeeded;CPU child first launch did not occur due duplicate OMP keyword. Corrected environment overrides;actual CPU evidence passes;old failure retained."
+  }
 }
