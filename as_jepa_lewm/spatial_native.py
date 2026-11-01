@@ -6,6 +6,7 @@ Only the input/output linear maps change to shared16-channel patch maps.
 import torch
 from torch import nn
 from torch.nn import functional as F
+from torch.utils.checkpoint import checkpoint
 
 from as_jepa_lewm.patch_carrier import frame_mask
 from as_jepa_lewm.spatial_carrier import SpatialCarrierLeWM
@@ -51,6 +52,8 @@ class SpatialNativePredictor(nn.Module):
         if not isinstance(seed, int) or isinstance(seed, bool) or seed < 0:
             raise ValueError('Explicit nonnegative private projection seed required')
         self.num_frames, self.input_dim, self.hidden_dim, self.output_dim = 7, 1024, 192, 1024
+        # Operational memory control; no tensor/parameter or inference change.
+        self.checkpoint_blocks = True
         self.pos_embedding, self.dropout = original.pos_embedding, original.dropout
         self.transformer = original.transformer
         self.transformer.layers = nn.ModuleList([SpatialBlock(x) for x in self.transformer.layers])
@@ -70,7 +73,10 @@ class SpatialNativePredictor(nn.Module):
         condition = self.transformer.cond_proj(action)
         mask = frame_mask(t, state.device)
         for block in self.transformer.layers:
-            hidden = block(hidden, condition, mask)
+            if self.training and torch.is_grad_enabled() and self.checkpoint_blocks:
+                hidden = checkpoint(block, hidden, condition, mask, use_reentrant=False, preserve_rng_state=True)
+            else:
+                hidden = block(hidden, condition, mask)
         return self.transformer.output_proj(self.transformer.norm(hidden)).reshape(b, t, 1024)
 
 

@@ -65,6 +65,32 @@ def main():
     jac = torch.autograd.functional.jacobian(lambda z: tr.output_proj(tr.norm(tr.input_proj(z))), torch.randn(16))
     rank = int(torch.linalg.matrix_rank(jac))
     assert rank == 16
+    # Match native stochastic teacher-forced + private-stream autoregressive
+    # forecasts. Recompute happens after the private RNG context has exited.
+    plain, checked = copy.deepcopy(spatial.predictor).train(), copy.deepcopy(spatial.predictor).train()
+    plain.checkpoint_blocks, checked.checkpoint_blocks = False, True
+    outer = torch.Generator(device='cpu').manual_seed(1042).get_state()
+    target = torch.randn_like(state)
+    results = []
+    for model in [plain, checked]:
+        torch.set_rng_state(outer)
+        teacher = model(state, action)
+        with torch.random.fork_rng(devices=[]):
+            torch.set_rng_state(torch.Generator(device='cpu').manual_seed(17).get_state())
+            history = [state[:, 0]]
+            for t in range(state.shape[1]-1):
+                history.append(history[-1] + model(torch.stack(history, 1), action[:, :t+1])[:, -1])
+            forecast = torch.stack(history, 1)
+        loss = (teacher-target).square().mean() + (forecast-target).square().mean()
+        loss.backward()
+        results.append((loss.detach(), torch.get_rng_state(), {k:v.grad.clone() for k,v in model.named_parameters()}))
+    torch.testing.assert_close(results[0][0], results[1][0], rtol=0, atol=0)
+    assert torch.equal(results[0][1], results[1][1])
+    max_gradient_error = 0.
+    for key in results[0][2]:
+        left_grad, right_grad = results[0][2][key], results[1][2][key]
+        torch.testing.assert_close(left_grad, right_grad, rtol=1e-5, atol=1e-6)
+        max_gradient_error = max(max_gradient_error, float((left_grad-right_grad).abs().max()))
     original_seed_all = torch.cuda.manual_seed_all
     def forbidden(*args, **kwargs):raise AssertionError('CPU projection initialization must not reseed CUDA')
     try:
@@ -79,6 +105,8 @@ def main():
         all_same_frame_slots_visible=True, actual_remote_slot_gradient_norm=remote_response,
         per_token_output_rank_after_probe=rank, old_predictor_parameters=old,
         new_predictor_parameters=new, parameter_difference=new-old,
+        checkpoint_loss_exact=True, checkpoint_outer_RNG_after_backward_exact=True,
+        checkpoint_gradients_match=True, checkpoint_gradient_max_abs_error=max_gradient_error,
         scope='CPU structural probes,not learned task success or novelty. Uses64 spatial tokens with full native6-layer/192hidden/16head/64headwidth/2048MLP body;compute and training dropout streams differ from flat.')
     out = Path(a.output); out.parent.mkdir(parents=True, exist_ok=True)
     with out.open('x') as f:json.dump(result, f, indent=2); f.write('\n')
