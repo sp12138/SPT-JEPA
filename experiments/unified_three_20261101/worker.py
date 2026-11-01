@@ -58,7 +58,7 @@ def main():
         status=read(run/'status.json');assert status['state']=='finished' and status['step']==target
         dest=run/'full-archives'/f'step{target:07d}.ckpt';dest.parent.mkdir(exist_ok=True);assert not dest.exists()
         shutil.copy2(run/'last.ckpt',dest);assert sha(dest)==sha(run/'last.ckpt')
-        helper=Path(protocol.get('audit_helper',str(Path(source['source'])/'experiments/unified_three_20261101/audit.py')))
+        helper=Path(protocol.get('audit_helper') or str(Path(source['source'])/'experiments/unified_three_20261101/audit.py'))
         if protocol.get('audit_helper_sha256'):assert sha(helper)==protocol['audit_helper_sha256']
         cmd=[PY,'-B','-u',str(helper),'--root',str(root),'--id',a.id,'--step',str(target)]
         if target==600:cmd.append('--diagnostics')
