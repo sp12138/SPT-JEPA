@@ -41,5 +41,5 @@ def dataset(cfg,split):
         ds=FullPushTWindows(cfg['data'],window=8,gap=cfg.get('gap',8),seed=cfg['seed'],split='train' if split=='train' else 'test')
     if cfg.get('goal_query_reference'):
         from as_jepa_tools.goal_query_data import QueryReferenceWindows
-        ds=QueryReferenceWindows(ds,seed=cfg['seed'])
+        ds=QueryReferenceWindows(ds,seed=cfg['seed'],mode=cfg.get('goal_query_reference_mode','global'))
     return ds

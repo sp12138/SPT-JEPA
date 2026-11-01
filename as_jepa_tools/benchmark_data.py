@@ -19,7 +19,7 @@ def make_training_dataset(cfg):
         dataset=(FullPushTWindows if cfg.get("all_phase_data",False) else PushTWindows)(cfg["data"],window=cfg["model"]["window"],gap=cfg.get("gap",8),seed=cfg["seed"])
     if cfg.get("goal_query_reference",False):
         from as_jepa_tools.goal_query_data import QueryReferenceWindows
-        dataset=QueryReferenceWindows(dataset,seed=cfg['seed'])
+        dataset=QueryReferenceWindows(dataset,seed=cfg['seed'],mode=cfg.get('goal_query_reference_mode','global'))
     return dataset
 
 
