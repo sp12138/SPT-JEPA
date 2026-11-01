@@ -1,6 +1,6 @@
 {
   "objective": "Tryfuture-query paradigm ondev2;inspectandvalidateKongLingjingbranches ondev13/dev15 under renewed2026-11-02 userauthorization.",
-  "phase": "CPU proofs passed;GPU source preparation",
+  "phase": "All28 preflights approved;24 actual native training children verified running;4 queued",
   "planned_root": "/efs/prescottsun/SPT-JEPA/runs/branch_trials_20261102",
   "planned_runs": 28,
   "host_counts": {
@@ -17,9 +17,51 @@
     "round2": "43962c526f825a8bbba28f424feddfada330910b"
   },
   "limitations": [
-    "TechnicalCPU proofs only,no newGPU training/performance yet.",
+    "No2000-step task results yet. Two-update preflights establish technical correctness only.",
     "Pooledlogdet controls arebatchcoupled,not sample-level candidates.",
     "Independentquery references add image/encoder exposure;not equaltrainFLOPs/exposure versusdirectforecast.",
     "Focused tests,not completepublishedspecs;alloldHOLDs preserved."
-  ]
+  ],
+  "root": "/efs/prescottsun/SPT-JEPA/runs/branch_trials_20261102",
+  "source": "/efs/prescottsun/SPT-JEPA/runs/branch_trials_source_20261102/source-v2",
+  "source_commit": "53763a01a840df0b26996ae7c69b66e5cba94c60",
+  "initial_nn_commit": "fc9b6e562e9adddf5a3d9e5d6f53f7eec4024933",
+  "dispatchers": {
+    "dev2": 579515,
+    "dev13": 1397525,
+    "dev15": 1800955
+  },
+  "completion": {
+    "host": "dev2",
+    "pid": 579600,
+    "helper_commit": "62aa12410a7f65a59f3e142241507bd4d9198916",
+    "finite_deadline_hours": 24,
+    "scope": "Metadata completion trigger only;no model restarts or extensions"
+  },
+  "preflight": {
+    "native_train_restore_backward": 28,
+    "planning_original_passes": 26,
+    "original_cli_failures_retained": 2,
+    "planning_repair_passes": 2,
+    "paired_initialization_checks": 16
+  },
+  "summary_when_complete": "/efs/prescottsun/SPT-JEPA/runs/branch_trials_20261102/results/summary.json",
+  "task_endpoints": 56,
+  "source_repair": "Only prior production-file change in v2 is PushT CLI ordering;model/training/data sources byte-identical to v1. Original protocol,failures and audits retained.",
+  "startup_check_utc": "2026-11-01T17:57:38\u201345+00:00",
+  "startup_evidence": "/efs/prescottsun/SPT-JEPA/runs/branch_trials_20261102/startup/initial-{host}.json",
+  "startup": {
+    "actual_train_children": 24,
+    "queued": 4,
+    "native_restored_all_states": 24,
+    "source_command_environment_match": 24,
+    "first_resumed_step": 3,
+    "last_processed_batch_range": [
+      17,
+      394
+    ],
+    "logged_100_or_later": 7,
+    "all_100_gradient_claim": false
+  },
+  "failure_recovery": "Read completion-failures.json and logs without deleting or clearing any original failures/HOLDs;no automatic restart."
 }
