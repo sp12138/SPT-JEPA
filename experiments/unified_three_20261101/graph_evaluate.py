@@ -1,5 +1,7 @@
 """Same public NGC seam on the three native task evaluators; no learner."""
 import argparse
+from contextlib import ExitStack, contextmanager
+import importlib.util
 import os
 from pathlib import Path
 import sys
@@ -16,7 +18,10 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--root',required=True);p.add_argument('--id',required=True)
     p.add_argument('--step',required=True,type=int);p.add_argument('--mode',choices=['l2','ngc'],required=True)
     p.add_argument('--limit',type=int,choices=[2,50],default=50)
-    p.add_argument('--case-set',choices=['primary','fresh'],default='primary');a=p.parse_args()
+    p.add_argument('--case-set',choices=['primary','fresh'],default='primary')
+    p.add_argument('--proposal',choices=['original','random','retrieval'])
+    p.add_argument('--bank-report');a=p.parse_args()
+    assert bool(a.proposal)==bool(a.bank_report),'Proposal controls require an explicit fixed train-only bank'
     root=Path(a.root);protocol=read(root/'protocol.json');row=next(r for r in protocol['runs'] if r['id']==a.id)
     assert row['arm'] in ['flat','field']
     cfg=read(root/a.id/'config.json');checkpoint=root/a.id/f'model-step{a.step:07d}'
@@ -32,7 +37,27 @@ def main():
     from stable_cost import StableNGCCost
     objective.NGCCost=StableNGCCost
     with np.load(graph['graph']) as f:nodes,distances=f['nodes'].copy(),f['graph_distance'].copy()
+    bank=None;trajectory_records=[]
+    if a.proposal:
+        bank=read(a.bank_report)
+        assert bank['passed'] and bank['count']==1024 and bank['no_validation_test_overlap']
+        assert bank['task']==row['task'] and sha(bank['bank'])==bank['bank_sha256']
+        with np.load(bank['bank']) as f:features,actions=f['features'].copy(),f['actions'].copy()
+        adapter_path=Path(__file__).resolve().parents[1]/'trajectory_search_20261101/adapter.py'
+        spec=importlib.util.spec_from_file_location('unified_fixed_trajectory_adapter',adapter_path)
+        adapter=importlib.util.module_from_spec(spec);spec.loader.exec_module(adapter)
+
+    @contextmanager
+    def controls(specification=None):
+        with ExitStack() as stack:
+            records=stack.enter_context(objective.install(nodes,distances,a.mode,recorder,specification))
+            if a.proposal:
+                states=stack.enter_context(adapter.install(a.proposal,features,actions,bank,protocol['source']['source']))
+            yield records
+            if a.proposal:trajectory_records.extend(states)
+
     suffix=('' if a.case_set=='primary' else '-fresh')+('' if a.limit==50 else '-limit2')
+    if a.proposal:suffix+='-'+a.proposal
     out=root/'graph-evaluations'/f'{a.id}-step{a.step}-{a.mode}{suffix}';out.mkdir(parents=True,exist_ok=False)
     recorder=objective.Recorder(out);previous=sys.argv
     try:
@@ -48,7 +73,7 @@ def main():
                       '+plan_config.history_len=3','bf16=false','compile=false',f'hydra.run.dir={out}/hydra',
                       f'world.num_envs={a.limit}','--config-path',str(B/'sources/stable-worldmodel/scripts/plan/config')]
             initialize_ops(OpsConfig(backend='sdpa',allow_fallback=False),device=torch.device('cuda'),parallel_state=None)
-            with objective.install(nodes,distances,a.mode,recorder) as records:planner_entry.main()
+            with controls() as records:planner_entry.main()
         else:
             from as_jepa_tools import benchmark_evaluate
             manifest=str(Path(cfg['data'])/'manifests/validation-strict.json')
@@ -62,17 +87,32 @@ def main():
                       '--checkpoint',str(checkpoint),'--data',cfg['data'],'--output',str(out)]
             if a.limit!=50:sys.argv+=['--limit',str(a.limit)]
             spec=dict(model_source=protocol['source'],data=cfg['data'])
-            with objective.install(nodes,distances,a.mode,recorder,spec) as records:benchmark_evaluate.main()
+            with controls(spec) as records:benchmark_evaluate.main()
     finally:sys.argv=previous
     assert len(records)==1;r=records[0];model=r.pop('model');after=state_hash(model)
     assert after==r['state_before']
     report=read(out/'metrics.json');assert len(report['metrics']['episode_successes'])==a.limit
     assert Path(r['model_source']).is_relative_to(Path(protocol['source']['source']))
+    if a.proposal:
+        assert len(trajectory_records)==1
+        state=trajectory_records[0]
+        assert state.model is model and state.state_before==after
+        assert state.predict_calls==5*state.calls and len(state.injections)*30==state.calls
+        assert sha(bank['bank'])==bank['bank_sha256']
+        write(out/'trajectory-search.json',dict(passed=True,mode=a.proposal,
+              bank_report=a.bank_report,bank_report_sha256=sha(a.bank_report),
+              adapter_sha256=sha(adapter_path),state_before=state.state_before,state_after=after,
+              cost_calls=state.calls,predict_calls=state.predict_calls,encoder_calls=state.encoder_calls,
+              solves=state.solves,injections=state.injections,candidates_per_cost=300,
+              first_iteration_replacements=0 if a.proposal=='original' else 64,
+              extra_model_calls=0,training_steps=0,optimal_action_labels=0,
+              action_execution='Unmodified native CEM elite return,policy inverse scaler and action history.'))
     write(out/'graph-audit.json',dict(passed=True,mode=a.mode,step=a.step,case_set=a.case_set,model_audit=r,
           state_after=after,graph_report=str(graph_path),graph_report_sha256=sha(graph_path),
           paired_recording=recorder.finish(),weights_sha256=sha(checkpoint/'weights.pt'),
           metrics_sha256=sha(out/'metrics.json'),extra_model_calls=0,
-          scope='Public NGC control only;both costs recorded with identical planner/data/model contract. Original task predicates retained.'))
+          proposal=a.proposal,
+          scope='Public NGC and optional fixed train-library controller control;both costs recorded with identical planner/data/model contract. Original task predicates retained.'))
     print('Graph evaluation complete',a.id,a.mode,flush=True)
 
 

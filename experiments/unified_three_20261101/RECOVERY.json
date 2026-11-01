@@ -4,13 +4,45 @@
   "model_source_commit": "641dbaf",
   "model_source": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v1",
   "model_source_record": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-record-v1.json",
-  "phase": "18 reviewed short600 chains launched;no task-performance result yet",
+  "phase": "All18 short600 chains and24 L2/NGC controls complete;12 paired local runs continue only to2000;6 reviewed direct-condition revisions are running600 gates",
   "preflight_completed": 18,
   "preflight_actual_training_and_audit_exits_zero": true,
   "native_cpu_model_optimizer_scheduler_restores": 18,
   "flat_field_common_initial_tensors_per_pair": 551,
   "local_head_parameter_difference": -16880,
   "long_training_approved": false,
+  "completed_600_primary": {
+    "pusht": {"flat": [8,8], "field": [12,4], "tf": [0,4]},
+    "tworoom": {"flat": [16,24], "field": [66,68], "tf": [4,12]},
+    "cube": {"flat": [0,4], "field": [0,4], "tf": [16,6]}
+  },
+  "completed_1200_primary_l2_ngc": {
+    "pusht": {"flat_l2": [16,14], "field_l2": [8,6], "flat_ngc": [10,4], "field_ngc": [6,6]},
+    "tworoom": {"flat_l2": [52,48], "field_l2": [54,54], "flat_ngc": [96,98], "field_ngc": [82,74]},
+    "cube": {"flat_l2": [6,12], "field_l2": [10,4], "flat_ngc": [8,10], "field_ngc": [16,8]}
+  },
+  "maturity_scope": "12 flat/field runs,unchanged model/source-v1/data/loss/schedule;full1200/2000 archives and actual restores;1200 primary L2/NGC,2000 primary/fresh L2/NGC;no automatic>2000",
+  "maturity_helper_source": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v3",
+  "maturity_terminal_records": "worker-records/{id}-maturity2000.json",
+  "direct_revision": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/unified_direct600_20261101",
+    "model_source": "/efs/prescottsun/SPT-JEPA/runs/unified_three_source_20261101/source-v4",
+    "model_source_commit": "906ac8e",
+    "change": "Same native action condition also enters local readout directly;98304 extra predictor parameters versus indirect field;no loss/data change",
+    "basis": "Weak PushT field600 action effect and zero-initialized native AdaLN gates;CPU structural action-route witness passes,but does not establish task benefit",
+    "preflight_passed": 6,
+    "native_cpu_restores": 6,
+    "common_initial_tensors_exact_per_pair": 551,
+    "all_native_layers_readout_and_condition_gradients_finite_positive": true,
+    "gates_launched_utc": "2026-11-01T09:18:08-12+00:00",
+    "slots": {"dev2": [2,5], "dev13": [2,5], "dev15": [2,5]},
+    "cap": 600,
+    "gate_approval": "/efs/prescottsun/SPT-JEPA/runs/unified_direct600_20261101/gate-approval.json",
+    "idle_helper": "/efs/prescottsun/SPT-JEPA/runs/unified_direct600_20261101/idle-helper-v1",
+    "idle_helper_scope": "Committed891bfc3 only permits<=1MiB driver bookkeeping with no compute process;model/train/audit remain source-v4",
+    "initializer_correction": "CPU-only seeding now leaves CUDA untouched;all555 legacy initial tensors exact across6 original field constructions;paired CPU/CUDA RNG bytes were exact at2/600 on bothTR/Cube seeds",
+    "automatic_continuation": false
+  },
   "short_stop_step": 600,
   "scheduler_total_steps": 124910,
   "batch_size": 128,
@@ -30,6 +62,9 @@
     "PushT uses original heldoutP0;TwoRoom/Cube use existing customCLEAR strict. Preserve native data/anchor rules and disclose these differences.",
     "No three-task high-performance,novelty or ten-idea result has been established."
   ],
-  "graph_support": "Separate shared publicNGC graph preparation is pending;four old task/seed graphs require encoder/buffer equality plus actual forward checks before reuse;PushT needs two train-only graphs. No graph/controller activation yet.",
-  "next_action": "Review all18 finite600 records,all native audits,real state/action use and every task result before any later maturity or long training. Preserve all old HOLD/STOP markers."
+  "graph_support": "All6 frozen-carrier public5000-node/15NN/4anchor graph gates and actual2-case integration probes pass;4 oldgraphs exactly reused after tensor/actualforward checks,2 PushT train-only graphs built. All24 step600 L2/NGC controls exit0;not additive/universal benefit. Field TwoRoom L2 mean67->NGC33 at600;at1200 fieldNGC78 trails flatNGC97.",
+  "processed_remote_results": "/efs/prescottsun/SPT-JEPA/reports/unified-three-20261101/{short600,short600-graph,maturity1200}.json",
+  "cpu_analysis_jobs": "2026-11-01T09:23:48UTC dev2:cached-goal-v2 pid468557,PushT1024 train-only bank pid468558;frozen controller-cpu-source-v1 commit00514b2. No GPU/model/simulator calls. First cached-goal import failure retained;v2 fixes helper-source path.",
+  "incomplete_upload": "source-v5 empty directory is explicitly INVALID after SCP255/FileNotFoundError;never used. Do not treat it as frozen model/helper source.",
+  "next_action": "Review complete12 maturity2000 chains and6 direct600 chains before selecting a common learner or long continuation. Complete CPU goal-geometry and train-only PushT bank checks before any shared proposal controller. No three-task success is established. Preserve all old HOLD/STOP markers."
 }
