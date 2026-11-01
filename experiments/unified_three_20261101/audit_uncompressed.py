@@ -31,7 +31,7 @@ def main():
         cached = torch.load(Path(metadata['run']) / 'model-step0000600/weights.pt', map_location='cpu', weights_only=True, mmap=True)
         current = torch.load(parent / 'model-step0000600/weights.pt', map_location='cpu', weights_only=True, mmap=True)
         names = [k for k in cached if k.startswith('encoder.')]
-        assert len(names) == 201 and all(torch.equal(cached[k], current[k]) for k in names)
+        assert len(names) == 198 and all(torch.equal(cached[k], current[k]) for k in names)
         assert np.array_equal(current['spatial_projection'].numpy(), projection)
         del cached, current
         inputs = {};bindings = {};nesting_error = 0.
@@ -71,7 +71,7 @@ def main():
             differences.append(dict(seed=seed, readout=kind,
                     xyz_cm=paired(full['xyz_euclidean']['per_frame_cm'], prior['xyz_euclidean']['per_frame_cm']),
                     angle_deg=paired(full['orientation_angles']['per_frame_deg'], prior['orientation_angles']['per_frame_deg'])))
-        proofs.append(dict(seed=seed, all201_encoder_tensors_exact=True, input_bindings=bindings,
+        proofs.append(dict(seed=seed, all198_encoder_tensors_exact=True, input_bindings=bindings,
                            fixed_projection_recovery_max_abs_error=nesting_error))
     assert not torch.cuda.is_initialized()
     write(args.output, dict(passed=True, rows=rows, differences=differences, proofs=proofs, source_sha256=sha(__file__),

@@ -78,28 +78,29 @@ def main():
             diag,states=evaluate_latents(model,observed,actions,batch_size=8)
             np.savez_compressed(out/'state-audit.npz',observed=observed.cpu().numpy(),actions=actions.cpu().numpy(),
                                 **{k:v.cpu().numpy() for k,v in states.items()})
-            # One prespecified matched-noise renderer check. This is not image
-            # generation or likelihood; no inference from zero sensitivity alone.
-            from vforge.models.as_jepa.pixels import pack
-            if hasattr(model,'render_query_batch'):
-                render_batch,address=model.render_query_batch(batch,a.step)
-                query_context=model.renderer.queried(address.repeat_interleave(batch['pixels'].shape[1]-1,0))
-            else:render_batch,query_context=batch,nullcontext()
-            pixels,render,anchor=model.prepare(render_batch)
-            real=model.encode(dict(pixels=pixels))['emb'];acts=model.action_encoder(batch['action'])
-            def forecast(acts):
-                zs=[real[:,0]]
-                for t in range(real.shape[1]-1):zs.append(model.predict(torch.stack(zs,1),acts[:,:t+1])[:,-1])
-                return torch.stack(zs[1:],1)
-            good=forecast(acts);wrong=forecast(model.action_encoder(batch['action'].roll(1,1)))
-            y=pack(render[:,1:].flatten(0,1));anc=pack(anchor).repeat_interleave(real.shape[1]-1,0)
-            torch.manual_seed(1042);eps=torch.randn_like(y);noised=.05*y+.95*eps;t=y.new_full((len(y),1),.95)
-            energies={}
-            with query_context:
-                for name,z in [('forecast',good),('wrong_actions',wrong),('other_state',good.roll(1,0)),('zero',torch.zeros_like(good))]:
-                    with model.renderer.anchored(anc):v=model.renderer(noised,t,condition=z.reshape(-1,model.state_slots,model.state_width))
-                    energies[name]=float((y-eps-v).square().mean())
-            diag['renderer_t095_last4_windows']=energies
+            if model.renderer is not None:
+                # One prespecified matched-noise renderer check. This is not image
+                # generation or likelihood; no inference from zero sensitivity alone.
+                from vforge.models.as_jepa.pixels import pack
+                if hasattr(model,'render_query_batch'):
+                    render_batch,address=model.render_query_batch(batch,a.step)
+                    query_context=model.renderer.queried(address.repeat_interleave(batch['pixels'].shape[1]-1,0))
+                else:render_batch,query_context=batch,nullcontext()
+                pixels,render,anchor=model.prepare(render_batch)
+                real=model.encode(dict(pixels=pixels))['emb'];acts=model.action_encoder(batch['action'])
+                def forecast(acts):
+                    zs=[real[:,0]]
+                    for t in range(real.shape[1]-1):zs.append(model.predict(torch.stack(zs,1),acts[:,:t+1])[:,-1])
+                    return torch.stack(zs[1:],1)
+                good=forecast(acts);wrong=forecast(model.action_encoder(batch['action'].roll(1,1)))
+                y=pack(render[:,1:].flatten(0,1));anc=pack(anchor).repeat_interleave(real.shape[1]-1,0)
+                torch.manual_seed(1042);eps=torch.randn_like(y);noised=.05*y+.95*eps;t=y.new_full((len(y),1),.95)
+                energies={}
+                with query_context:
+                    for name,z in [('forecast',good),('wrong_actions',wrong),('other_state',good.roll(1,0)),('zero',torch.zeros_like(good))]:
+                        with model.renderer.anchored(anc):v=model.renderer(noised,t,condition=z.reshape(-1,model.state_slots,model.state_width))
+                        energies[name]=float((y-eps-v).square().mean())
+                diag['renderer_t095_last4_windows']=energies
         assert finite(diag)
         write(out/'state-audit.json',dict(step=a.step,cohort=cohort,results=diag,
               scope='Frozen real-input prediction/state/action diagnostic;no optimizer,physical labels or success claim.'))

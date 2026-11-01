@@ -16,7 +16,8 @@ def main():
     if cfg.get("_target_") not in {"as_jepa_lewm.model.ASJepaLeWM","as_jepa_lewm.research.ResearchLeWM","as_jepa_lewm.robust.RobustLeWM","as_jepa_lewm.frontier.FrontierLeWM",
             "as_jepa_lewm.spatial_carrier.SpatialCarrierLeWM","as_jepa_lewm.local_readout.LocalReadoutLeWM",
             "as_jepa_lewm.spatial_native.SpatialNativeLeWM",
-            "as_jepa_lewm.quadrant_render.QuadrantRenderLeWM"}:
+            "as_jepa_lewm.quadrant_render.QuadrantRenderLeWM",
+            "as_jepa_lewm.fixed_forecast.FixedForecastLeWM"}:
         raise ValueError("This planner entry requires the LeWM rollout interface")
     policy=out/"policy";policy.mkdir(exist_ok=True);(policy/"config.json").write_text(json.dumps(cfg,indent=2))
     if not (policy/"weights.pt").exists():os.link(checkpoint/"weights.pt",policy/"weights.pt")

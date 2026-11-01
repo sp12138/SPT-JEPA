@@ -16,6 +16,7 @@ MODEL_TARGETS = {
     "local_readout": "as_jepa_lewm.local_readout.LocalReadoutLeWM",
     "spatial_native": "as_jepa_lewm.spatial_native.SpatialNativeLeWM",
     "quadrant_render": "as_jepa_lewm.quadrant_render.QuadrantRenderLeWM",
+    "fixed_forecast": "as_jepa_lewm.fixed_forecast.FixedForecastLeWM",
 }
 
 
