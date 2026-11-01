@@ -31,7 +31,9 @@ def main():
              f"policy={policy}",f"+cache_dir={cache}",f"eval.num_eval={a.episodes}",f"seed={a.seed}",
              "+plan_config.history_len=3",f"bf16={str(a.bf16).lower()}","compile=false",f"hydra.run.dir={out}/hydra",f"world.num_envs={a.episodes}","--config-path",str(Path(a.upstream).resolve()/"scripts/plan/config")]
     if cfg['_target_']=='as_jepa_lewm.goal_query.GoalQueryLeWM':
-        command.append('objective._target_=as_jepa_lewm.goal_query.GoalQueryObjective')
+        # Hydra's positional overrides must precede its optional flags.
+        command.insert(command.index('--config-path'),
+                       'objective._target_=as_jepa_lewm.goal_query.GoalQueryObjective')
     import hdf5plugin
     env={**os.environ,"HDF5_PLUGIN_PATH":hdf5plugin.PLUGINS_PATH,"STABLEWM_HOME":str(cache),
          "MUJOCO_GL":"egl","SDL_VIDEODRIVER":"dummy","PYGLET_HEADLESS":"true",
