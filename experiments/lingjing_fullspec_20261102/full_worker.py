@@ -18,9 +18,13 @@ def main(root, ident, gpu):
     assert sha(run / 'template-config.json') == row['source_config_sha256']
     if row['config_deferred']:
         dependency = Path(row['calibration_dependency']); metadata = read(dependency)
-        cfg['calibrate_state_std'] = metadata['original_std']; write(run / 'config.json', cfg)
-        write(run / 'sham-binding.json', dict(parent_initial_scale=str(dependency), sha256=sha(dependency),
-              target_std=metadata['original_std'], scope='Same pre-affine spread; mean shift only, no outcome-based scale selection.'))
+        cfg['calibrate_state_std'] = metadata['original_std']
+        if (run / 'config.json').exists():assert read(run / 'config.json') == cfg
+        else:write(run / 'config.json', cfg)
+        binding = dict(parent_initial_scale=str(dependency), sha256=sha(dependency), target_std=metadata['original_std'],
+                       scope='Same pre-affine spread; mean shift only, no outcome-based scale selection.')
+        if (run / 'sham-binding.json').exists():assert read(run / 'sham-binding.json') == binding
+        else:write(run / 'sham-binding.json', binding)
     else:assert read(run / 'config.json') == cfg
     row = dict(row, config_sha256=sha(run / 'config.json'))
     env = dict(os.environ, **p['environment'], PYTHONPATH=p['source']['pythonpath'], CUDA_VISIBLE_DEVICES=str(gpu),
@@ -83,6 +87,18 @@ def main(root, ident, gpu):
             sp = folder / ('correlated-' + case + '-spec.json'); write(sp, spec)
             execute(f'{step}-correlated-{case}', [PY, '-B', '-u', str(old / 'evaluate.py'), '--spec', str(sp)])
     try:
+        reuse_step = row.get('reuse_completed_training_step')
+        if reuse_step:
+            assert reuse_step == row['stages'][0] and not row.get('resume_parent')
+            parent_terminal = Path(row['repair_parent_terminal'])
+            binding = read(root / 'bindings' / (ident + '.json'))
+            assert sha(parent_terminal) == binding['parent_terminal_sha256']
+            complete = read(run / 'stage-complete.json')
+            assert complete['stage_complete'] and complete['stop_step'] == reuse_step
+            assert complete['config_sha256'] == sha(run / 'config.json')
+            results.append(dict(name='reuse-completed-training', returncode=0, step=reuse_step,
+                parent_terminal=str(parent_terminal), parent_terminal_sha256=sha(parent_terminal),
+                reason='Training completed exactly; repair only the missing-versus-zero gradient audit. No repeated SGD.'))
         if row.get('resume_parent'):
             parent = Path(row['resume_parent']); oldcfg = read(parent / 'config.json')
             for key in ['model', 'model_class', 'data', 'seed', 'batch_size', 'max_steps', 'calibrate_state_std', 'gap', 'benchmark_anchor_rule']:
@@ -99,7 +115,7 @@ def main(root, ident, gpu):
         for index, step in enumerate(row['stages']):
             command = [PY, '-B', '-u', '-m', 'as_jepa_tools.train_stage', '--config', str(run / 'config.json'), '--stop-step', str(step)]
             if index or row.get('resume_parent'):command.append('--resume')
-            execute(str(step) + '-train', command, 172800)
+            if step != reuse_step:execute(str(step) + '-train', command, 172800)
             native_audit(root, row, p['source'], step=step)
             cp = run / f'model-step{step:07d}'; before = sha(cp / 'weights.pt'); folder = root / 'evaluations' / ident / str(step)
             if row['task'] == 'cube':

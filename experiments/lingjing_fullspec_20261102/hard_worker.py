@@ -1,6 +1,7 @@
 """One finite native2000 chain with full-state restoration and frozen content/use diagnostics."""
 import argparse
 import datetime
+import math
 import os
 from pathlib import Path
 import signal
@@ -8,6 +9,29 @@ import subprocess
 import time
 
 from common import PY, read, write, sha, source_check
+
+
+def audit_gradients(trace, expectations, step, recent_count=10):
+    """Only measured optimizer-step gradients count; an unlogged final row is not zero."""
+    result = {}
+    for prefix, expectation in expectations.items():
+        key = 'grad_norm_' + prefix
+        measured = [row for row in trace if key in row]
+        missing = [row['step'] for row in trace if row['step'] > 0 and row['step'] % 100 == 0 and key not in row]
+        recent = measured[-recent_count:]
+        values = [row[key] for row in measured]
+        tail = [row[key] for row in recent]
+        fresh = bool(recent) and 0 <= step - recent[-1]['step'] < 100
+        finite = all(math.isfinite(value) and value >= 0 for value in values)
+        passed = finite
+        if expectation == 'active':passed = passed and not missing and fresh and min(tail) > 0
+        elif expectation == 'frozen':passed = passed and not missing and fresh and max(values) == 0
+        result[prefix] = dict(expectation=expectation, maximum=max(values) if values else None,
+            recent_minimum=min(tail) if tail else None, recent_maximum=max(tail) if tail else None,
+            measured_records=len(measured), last_measured_step=recent[-1]['step'] if recent else None,
+            missing_scheduled_steps=missing, contract_passed=passed)
+    assert all(row['contract_passed'] for row in result.values()), result
+    return result
 
 
 def native_audit(root, row, source, step=2000):
@@ -27,14 +51,7 @@ def native_audit(root, row, source, step=2000):
     assert same(model.state_dict(), state['state_dict'])
     assert same(optimizer.state_dict(), state['optimizer_states'][0]) and same(scheduler.state_dict(), state['lr_schedulers'][0])
     trace = [__import__('json').loads(x) for x in (run / 'metrics.jsonl').read_text().splitlines()]; assert all(finite(x) for x in trace)
-    gradients = {}
-    for prefix, expectation in gradient_expectations(model.model, cfg).items():
-        value = max(r.get('grad_norm_' + prefix, 0) for r in trace)
-        recent = [r.get('grad_norm_' + prefix, 0) for r in trace[-10:]]
-        gradients[prefix] = dict(expectation=expectation, maximum=value,
-                                 recent_minimum=min(recent), recent_maximum=max(recent),
-                                 contract_passed=min(recent) > 0 if expectation == 'active' else value == 0 if expectation == 'frozen' else True)
-    assert all(r['contract_passed'] for r in gradients.values()), gradients
+    gradients = audit_gradients(trace, gradient_expectations(model.model, cfg), step)
     common = []
     if row.get('reference_initial'):
         initial = torch.load(run / 'initial-model/weights.pt', map_location='cpu', weights_only=True)
