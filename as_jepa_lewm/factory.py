@@ -20,6 +20,7 @@ MODEL_TARGETS = {
     "goal_query": "as_jepa_lewm.goal_query.GoalQueryLeWM",
     "decoder_free": "as_jepa_lewm.decoder_free.DecoderFreeLeWM",
     "forecast_scored": "as_jepa_lewm.forecast_scored.ForecastScoredLeWM",
+    "nce": "as_jepa_lewm.nce.NCELeWM",
 }
 
 

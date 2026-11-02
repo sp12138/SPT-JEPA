@@ -18,6 +18,7 @@ def main():
             "as_jepa_lewm.spatial_native.SpatialNativeLeWM",
             "as_jepa_lewm.quadrant_render.QuadrantRenderLeWM",
             "as_jepa_lewm.decoder_free.DecoderFreeLeWM",
+            "as_jepa_lewm.nce.NCELeWM",
             "as_jepa_lewm.forecast_scored.ForecastScoredLeWM",
             "as_jepa_lewm.goal_query.GoalQueryLeWM",
             "as_jepa_lewm.fixed_forecast.FixedForecastLeWM"}:

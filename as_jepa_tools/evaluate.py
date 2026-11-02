@@ -32,6 +32,7 @@ def load_model(folder,device="cuda"):
         from as_jepa_lewm.research import ResearchLeWM
         model=ResearchLeWM(**cfg).to(device)
     elif target in {"as_jepa_lewm.decoder_free.DecoderFreeLeWM",
+                    "as_jepa_lewm.nce.NCELeWM",
                     "as_jepa_lewm.forecast_scored.ForecastScoredLeWM",
                     "as_jepa_lewm.goal_query.GoalQueryLeWM"}:
         from importlib import import_module
