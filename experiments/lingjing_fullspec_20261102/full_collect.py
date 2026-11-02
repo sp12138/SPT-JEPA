@@ -26,6 +26,9 @@ def main(root):
         evidence = []
         for step in job['stages']:
             base = root / 'evaluations' / job['id'] / str(step)
+            if original_terminal:
+                corrected_base = Path(binding['root']) / 'evaluations' / job['id'] / str(step)
+                if corrected_base.exists():base = corrected_base
             if not base.exists():continue
             keep = []
             for pattern in ['**/metrics.json', '**/probes.json', '**/latent-eval.json', '**/state-check.json', '**/pose.json',
@@ -33,6 +36,8 @@ def main(root):
                 keep += list(base.glob(pattern))
             evidence.append(dict(step=step, artifacts=[dict(path=str(path), sha256=sha(path)) for path in sorted(set(keep))]))
         audits = [dict(path=str(path), sha256=sha(path)) for path in (root / 'audits').glob(job['id'] + '*.json')]
+        if original_terminal:
+            audits += [dict(path=str(path), sha256=sha(path)) for path in (Path(binding['root']) / 'audits').glob(job['id'] + '*.json')]
         rows.append(dict(job=job, terminal=terminal, terminal_sha256=sha(terminal_path), evidence=evidence, audits=audits,
                          original_terminal=original_terminal, correction_binding=read(correction) if correction.exists() else None))
     outcomes = {}
