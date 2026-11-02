@@ -20,7 +20,13 @@ def main(checkpoint, config, seed, output):
         assert sha(module.__file__) == manifest['files']['experiments/carrier_progress_20261031/' + name]
     torch.set_num_threads(2); torch.set_float32_matmul_precision('highest'); torch.manual_seed(1042)
     initialize_ops(OpsConfig(backend='sdpa', allow_fallback=False), device=torch.device('cuda'), parallel_state=None)
-    model = load_model(checkpoint).eval(); model.requires_grad_(False); before = state_hash(model)
+    exported = read(Path(checkpoint) / 'config.json')
+    if exported.get('_target_') == 'as_jepa_lewm.native_lewm.NativeLeWM':
+        from as_jepa_lewm.native_lewm import NativeLeWM
+        model = NativeLeWM(**{k:v for k,v in exported.items() if k != '_target_'}).cuda()
+        model.load_state_dict(torch.load(Path(checkpoint) / 'weights.pt', map_location='cuda', weights_only=True), strict=True)
+    else:model = load_model(checkpoint)
+    model.eval(); model.requires_grad_(False); before = state_hash(model)
     saved = {}; actions = None
     for split, cohort in refs['manifests'].items():
         dataset = make_benchmark_dataset(cfg, split=split); observations, acts = [], []; offset = 0
@@ -44,7 +50,7 @@ def main(checkpoint, config, seed, output):
     states = {key: np.concatenate(value) for key, value in states.items()}
     np.testing.assert_array_equal(actions.numpy(), refs['actions'])
     dimension = observed.shape[-1]
-    if model.mode != 'L0':
+    if model.mode in {'L2', 'S2'}:
         rng = np.random.default_rng(1042)
         states['observed_noisy'] = states['observed_future'] + model.sigma0 * rng.standard_normal(states['observed_future'].shape)
     import h5py, hdf5plugin
