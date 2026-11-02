@@ -23,10 +23,16 @@ def main(root):
         write(root / 'launches' / (row['id'] + '.json'), dict(pid=child.pid, gpu=gpu, memory_before=memory, command=command, started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat()))
         running[seed] = (child, log)
     assert read(B / 'reports/lingjing_fullspec_20261102/p1-interface-v1/proof.json')['passed']
+    assert not (root / 'STOP').exists() and not (root / 'HOLD').exists()
     launch(0)
     exits = {}
     while running or not launched_pair:
         if time.monotonic() - started > 172800:raise TimeoutError('Finite48h coordinator cap reached; preserve all workers/checkpoints for explicit recovery.')
+        if (root / 'STOP').exists() or (root / 'HOLD').exists():
+            launched_pair = True
+            for seed in running:
+                marker = Path(jobs[seed]['run']) / 'STOP'
+                if not marker.exists():write(marker, dict(reason='Cooperative campaign stop; retain checkpoint.'))
         for seed, (child, log) in list(running.items()):
             code = child.poll()
             if code is not None:log.close(); exits[str(seed)] = code; del running[seed]
@@ -38,12 +44,12 @@ def main(root):
                 # Independent P1 controls remain useful even if a hard-task technical chain failed.
                 launch(1); launch(2); launched_pair = True
         if running or not launched_pair:time.sleep(30)
-    terminals = [read(root / 'terminals' / (r['id'] + '.json')) for r in p['jobs']]
-    report = dict(passed=all(r['passed'] for r in terminals), training_complete=all(r['training_complete'] for r in terminals),
+    terminals = [read(root / 'terminals' / (r['id'] + '.json')) for r in p['jobs'] if (root / 'terminals' / (r['id'] + '.json')).exists()]
+    report = dict(passed=len(terminals) == 3 and all(r['passed'] for r in terminals), training_complete=len(terminals) == 3 and all(r['training_complete'] for r in terminals),
                   terminals=terminals, exits=exits, protocol_sha256=sha(root / 'protocol.json'),
                   finished_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), automatic_extension=False)
     write(root / 'results/summary.json', report)
-    write(root / 'HOLD', dict(reason='Finite matched L0 budget ended; no extra epoch selected.'))
+    if not (root / 'HOLD').exists():write(root / 'HOLD', dict(reason='Finite matched L0 budget ended; no extra epoch selected.'))
 
 
 if __name__ == '__main__':
