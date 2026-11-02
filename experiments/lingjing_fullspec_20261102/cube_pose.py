@@ -32,6 +32,9 @@ def main(checkpoint, config, seed, output):
             observations.append(model.encode(dict(pixels=model.prepare(moved)[0]))['emb'].float().cpu())
             acts.append(batch['action'])
         observed, action = torch.cat(observations), torch.cat(acts)
+        dataset.file.close()
+        dataset.file = None
+        dataset.actions = None
         saved[split + '_observed'] = observed.numpy()
         if split == 'validation':actions = action
     observed = torch.from_numpy(saved['validation_observed']); states = {key: [] for key in old.MODES}
