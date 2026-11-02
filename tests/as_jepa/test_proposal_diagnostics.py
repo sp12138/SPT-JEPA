@@ -1,10 +1,24 @@
 """Guard the distinction between teacher-forced and sampled open-loop state interventions."""
 import unittest
 import torch
+import numpy as np
 
 from as_jepa_tools.round2_state_check import state_conditions
 from as_jepa_lewm.forecast_scored import ForecastScoredLeWM
 from vforge.ops import OpsConfig, initialize_ops, reset_ops
+
+
+class ReadoutTest(unittest.TestCase):
+    def test_known_heldout_pose_mapping(self):
+        from as_jepa_tools.latent_eval import fit_probe, targets
+        rng = np.random.default_rng(17)
+        train, test = rng.normal(size=(256, 8)), rng.normal(size=(64, 8))
+        weight, bias = rng.normal(size=(8, 6)), rng.normal(size=(6,))
+        read, _ = fit_probe(train, train @ weight + bias)
+        self.assertLess(np.mean((read(test) - (test @ weight + bias)) ** 2), 1e-9)
+        state = torch.tensor([[[256., 512., 128., 384., torch.pi / 2]]])
+        expected = torch.tensor([[[.5, 1., .25, .75, 1., 0.]]])
+        torch.testing.assert_close(targets(state), expected, atol=1e-6, rtol=0)
 
 
 class ConditionsTest(unittest.TestCase):
