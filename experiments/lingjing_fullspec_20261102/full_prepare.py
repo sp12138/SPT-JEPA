@@ -26,7 +26,8 @@ def main(root, helper, cube_review=None):
         if not sham:write(run / 'config.json', cfg)
         jobs.append(dict(recipe, run=str(run), stages=stages, resume_parent=resume_parent,
                          source_config_sha256=sha(run / 'template-config.json'), config_deferred=sham, calibration_dependency=dependency,
-                         reference_initial=cfg.get('initial_encoder_checkpoint'), initial_step=2000 if resume_parent else 0))
+                         reference_initial=recipe.get('reference_initial') if resume_parent else cfg.get('initial_encoder_checkpoint'),
+                         initial_step=2000 if resume_parent else 0))
     for recipe in chosen:
         cfg = copy.deepcopy(read(Path(recipe['run']) / 'config.json'))
         if recipe['model_class'] == 'base':
