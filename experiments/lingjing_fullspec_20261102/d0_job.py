@@ -25,6 +25,7 @@ def main(root,ident):
     command=[str(Path(rollout.__file__)),'--checkpoint',str(cp),'--data',p['data'],'--output',str(out),
              '--cases',str(p['cases']),'--window','16','--context','3']
     if job['fp32']:command.append('--fp32')
+    if p.get('dataset') == 'benchmark':command += ['--dataset', 'benchmark']
     started=time.monotonic();sys.argv=command
     rollout.main();assert len(tracked)==1
     model,state=tracked[0];assert state==state_hash(model) and before==sha(cp/'weights.pt')

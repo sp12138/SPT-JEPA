@@ -51,7 +51,7 @@ def main(root, source):
             cfg['data'] = str(B / 'data/pusht-lance-full-v1')
             cfg['evaluation_data'] = str(B / 'data/pusht-lance-full-v1/phase0')
             cfg['gap'] = cfg['model']['anchor_gap']
-            if seed in references:
+            if seed in references and recipe['model_class'] != 'base':
                 cfg['initial_encoder_checkpoint'] = references[seed]
                 cfg['initial_encoder_scope'] = 'Exact lower-beta RANDOM initial encoder; no trained/pretrained weights.'
                 cfg['frozen_encoder_sha256'] = sha(Path(references[seed]) / 'weights.pt')

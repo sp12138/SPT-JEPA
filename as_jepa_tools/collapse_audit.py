@@ -51,6 +51,8 @@ def main():
     parser.add_argument("--cases", type=int, default=256)
     parser.add_argument("--steps", type=int, default=50)
     parser.add_argument("--batch", type=int, default=8)
+    parser.add_argument("--condition", choices=["posterior", "forecast"], default="posterior")
+    parser.add_argument("--fp32", action="store_true")
     args = parser.parse_args()
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
@@ -63,6 +65,8 @@ def main():
     model, pose = load_model(args.checkpoint), pose_net(args.pose)
     if model.mode not in {"L2", "S2"}:
         raise ValueError("The formal collapse rule applies to noisy AS-JEPA states")
+    if args.condition == "forecast" and not hasattr(model, "_forecast"):
+        raise ValueError("Forecast collapse requires the uploaded ForecastScoredLeWM channel")
     data = PushTWindows(args.data, window=16, gap=8, split="test")
     data.open()
     indices = select_windows(data, args.cases)
@@ -82,11 +86,11 @@ def main():
         batch["anchor224"] = torch.from_numpy(np.array(data.p224[past])).permute(0, 3, 1, 2).cuda()
         batch["anchor"] = torch.from_numpy(np.array(data.p64[past])).permute(0, 3, 1, 2).cuda()
         batch["anchor_row"] = torch.tensor(past, device="cuda")
-        with torch.autocast("cuda", dtype=torch.bfloat16):
+        with torch.autocast("cuda", dtype=torch.bfloat16, enabled=not args.fp32):
             pixels, frames, anchor = model.prepare(batch)
             means = model.encode(dict(pixels=pixels[:, :width]))["emb"].float()
             noise = torch.randn(means.shape, device="cuda", generator=generator)
-            rho = getattr(model, "rho", 0.) if getattr(model, "method", "") == "correlated_noise" else 0.
+            rho = getattr(model, "rho", 0.)
             for t in range(1, width):
                 noise[:, t] = rho * noise[:, t - 1] + (1 - rho ** 2) ** .5 * noise[:, t]
             diagonal = getattr(model, "noise_diagonal", torch.ones(means.shape[-1], device="cuda"))
@@ -99,7 +103,13 @@ def main():
             entry = .5 * (means[:, 0].square() + model.sigma0 ** 2 * diagonal - 1
                           - torch.log(model.sigma0 ** 2 * diagonal))
             variable_rate = variable_dimension_rate(means, surprise, markov_constant)
-            states = noisy[:, 1:].flatten(0, 1)
+            condition = noisy[:, 1:]
+            if args.condition == "forecast":
+                shaped = noisy.reshape(len(means), width, model.state_slots, model.state_width)
+                xi = torch.randn(shaped[:, 1:].shape, device="cuda", generator=generator)
+                scale = model.sigma0 if model.forecast_noise == "sample" else 0.
+                condition = model._forecast(shaped, model.action_encoder(batch["action"][:, :width - 1]), xi, scale).flatten(2)
+            states = condition.flatten(0, 1)
             anchors = anchor.repeat_interleave(width - 1, 0)
             generated = torch.cat([
                 model.render_states(states[lo:lo + 64], anchors[lo:lo + 64],
@@ -108,9 +118,9 @@ def main():
             ]).float().clamp(-1, 1)
             estimated = pose(generated).float().reshape(len(means), width - 1, 6)
             baseline = pose(anchor).float()
-            own = model.render_states(noisy[:, 1], anchor, steps=args.steps, seed=73000 + batch_id).float()
-            zero = model.render_states(noisy[:, 1] * 0, anchor, steps=args.steps, seed=73000 + batch_id).float()
-            swap = model.render_states(noisy[:, 1].flip(0), anchor, steps=args.steps, seed=73000 + batch_id).float()
+            own = model.render_states(condition[:, 0], anchor, steps=args.steps, seed=73000 + batch_id).float()
+            zero = model.render_states(condition[:, 0] * 0, anchor, steps=args.steps, seed=73000 + batch_id).float()
+            swap = model.render_states(condition[:, 0].flip(0), anchor, steps=args.steps, seed=73000 + batch_id).float()
         truth = batch["state"][:, 1:width, :2].float()
         anchor_truth = torch.as_tensor(np.array(data.states[past, :2]), device="cuda")
         moving = (truth - anchor_truth[:, None]).norm(dim=-1) > 10
@@ -132,16 +142,19 @@ def main():
                               arrays["rate"].mean(0))
     result.update(
         checkpoint=str(Path(args.checkpoint).resolve()), cases=len(records),
+        rendered_condition=args.condition,
         target_frames_per_window=width - 1, sampler_steps=args.steps, sigma0=model.sigma0,
         actual_renderer_sampler=("finiteGaussianDiffusion"+str(model.density_steps)+"transitions+8bitGaussianEndpoint" if getattr(model,"method","")=="vdm_nats" else "Euler"+str(args.steps)),
         rate_nats_per_frame=float((arrays["entry"].sum(-1) + arrays["surprise"].sum((1, 2))).mean() / width),
         zero_state_intervention_mse=float(np.mean([x["zero_mse"] for x in interventions])),
         state_permutation_intervention_mse=float(np.mean([x["permutation_mse"] for x in interventions])),
         seconds=time.time() - started,
-        protocol="All training-window targets t>=1; own posterior sample; common fixed heldout windows; primary past anchor; agent moved>10px from anchor; collapsed if ratio>=.9 or active_dims<2.",
+        protocol="All training-window targets t>=1; declared posterior or exact training forecast channel; common fixed heldout windows; primary past anchor; agent moved>10px from anchor; collapsed if ratio>=.9 or active_dims<2.",
         active_scope="Per-window variable entry .5*mu0^2 plus summed transition KL per dimension; shared fixed-variance entry and transition constants excluded from activity.",
-        forward_precision="BF16 autocast; Gaussian rate and pose errors FP32; highest FP32 matmul",
+        forward_precision="FP32" if args.fp32 else "BF16 autocast; Gaussian rate and pose errors FP32; highest FP32 matmul",
     )
+    if args.condition == "forecast":
+        result['forecast_over_anchor'] = result['posterior_over_anchor']
     if hasattr(model, "frontier_method"):
         result["training_objective_variant"] = model.frontier_method
         result["rate_diagnostic_note"] = "This audit uses the original noisy one-step prior as a reference; surrogate training rate may differ. Posterior reconstruction and interventions evaluate the declared marginal posterior."
