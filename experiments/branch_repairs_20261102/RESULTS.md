@@ -1,4 +1,34 @@
-# Evidence-selected repairs, 2026-11-02
+# Final repair results, 2026-11-02
+
+All 34 finite chains and all 68 primary/fresh planning endpoints finished successfully. Final collection completed at 2026-11-01 20:31:04 UTC / 2026-11-02 04:31:04 Beijing, with no collection error. The stage is sealed with HOLD; there was no automatic extension. This study did not establish a high-performance candidate or a unified three-task improvement. The complete evidence is [final-summary.json](results/final-summary.json), with [completion proof](results/completion.json).
+
+Values are success percentages averaged over the two fixed training seeds, primary / fresh, 50 cases per set. All rows in this first table are at 4000 updates.
+
+| Method | PushT | TwoRoom | Cube |
+| --- | --- | --- | --- |
+| Fixed direct forecast control | 19 / 15 | 66 / 69 | 18 / 14 |
+| Query, unchanged global references | 10 / 8 | 67 / 63 | 7 / 7 |
+| Query, episode-conditioned references | 5 / 7 | 48 / 54 | 8 / 3 |
+
+Global-query minus forecast primary deltas are PushT −9pp, conditional95%CI[−16,−2]; TwoRoom +1[−10,+12]; Cube −11[−20,−3]. Fresh deltas are −7[−15,+1], −6[−19,+7], −7[−15,0]. Episode minus global on TwoRoom is −19pp[−29,−9] primary and −9[−19,+1] fresh. The harder reference distribution did not improve task performance in this continuation experiment and substantially hurt the TwoRoom primary cases. Query versus forecast has additional reference-image/encoder exposure; matching updates is not matching FLOPs. Both query arms share the initial 2000 global-reference updates.
+
+The uniform precision repair was tested at 2000 updates against the original 2000-update runs:
+
+| Decoder-free window | Original | FP32 pool |
+| --- | --- | --- |
+| PushT | 1 / 2 | 5 / 5 |
+| TwoRoom | 9 / 12 | 5 / 6 |
+| Cube | 2 / 3 | 4 / 4 |
+
+The batch-pooled TwoRoom control is 5/4 after repair versus6/5 originally. It is not a sample-level candidate. Forecast-scored TwoRoom original-near/original-past/calibrated-near/calibrated-past becomes8/11,5/3,8/9,11/9, versus3/4,3/3,3/6,8/5 originally. Some cells improve modestly, but all remain weak; no broad gain is established.
+
+The matched-input precision defect remains real, but correcting pooling precision alone did not solve the task failures. Repaired decoder-free TwoRoom FP32 observer standard deviations remain .00338/.00359; its horizon5 prediction/copy error ratios are209/112. Uncalibrated forecast-scored states remain around .00014–.00017. These observations support persistent representation/dynamics problems at this budget rather than a numerical-only explanation. Ratios refer to each model's own coordinate system and are not shared physical-state errors.
+
+The query model also has a nonzero factual-versus-swapped-action score gap while planning remains weak. Sensitivity to actions and an easy source-classification task do not establish useful optimization over CEM candidates. This experiment does not isolate whether the remaining cause is action-support extrapolation, score geometry, cold-start context, or another mechanism. Making references harder was therefore an unsuccessful intervention here, not an established general remedy.
+
+All seeds, checkpoints and case sets are retained. Case bootstrap intervals condition on two trained models and omit simulator repeats, seed-population uncertainty and multiplicity. Cases were inspected for research selection. These are bounded2k/4k results, not convergence or canonical CLEAR/public-checkpoint superiority. No longer run was selected from these results. Historical HOLDs and the paused goal remain unchanged.
+
+## Protocol and pre-run evidence (historical)
 
 The original 2000-update study is complete: all 28 full-state chains and all 56 planning endpoints pass. It did not establish a method that improves all three tasks. Full scores and both case sets are in [the original report](../branch_trials_20261102/RESULTS.md).
 
