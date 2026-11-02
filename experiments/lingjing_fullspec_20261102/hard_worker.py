@@ -30,8 +30,11 @@ def native_audit(root, row, source, step=2000):
     gradients = {}
     for prefix, expectation in gradient_expectations(model.model, cfg).items():
         value = max(r.get('grad_norm_' + prefix, 0) for r in trace)
+        recent = [r.get('grad_norm_' + prefix, 0) for r in trace[-10:]]
         gradients[prefix] = dict(expectation=expectation, maximum=value,
-                                 contract_passed=value > 0 if expectation == 'active' else value == 0 if expectation == 'frozen' else True)
+                                 recent_minimum=min(recent), recent_maximum=max(recent),
+                                 contract_passed=min(recent) > 0 if expectation == 'active' else value == 0 if expectation == 'frozen' else True)
+    assert all(r['contract_passed'] for r in gradients.values()), gradients
     common = []
     if row.get('reference_initial'):
         initial = torch.load(run / 'initial-model/weights.pt', map_location='cpu', weights_only=True)
