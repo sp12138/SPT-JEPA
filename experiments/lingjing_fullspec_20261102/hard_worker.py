@@ -10,7 +10,7 @@ import time
 from common import PY, read, write, sha, source_check
 
 
-def native_audit(root, row, source):
+def native_audit(root, row, source, step=2000):
     import torch
     from as_jepa_lewm.train import TrainModule
     from as_jepa_lewm.factory import gradient_expectations
@@ -19,8 +19,8 @@ def native_audit(root, row, source):
     torch.set_num_threads(2)
     run = Path(row['run']); cfg = read(run / 'config.json')
     state = torch.load(run / 'last.ckpt', map_location='cpu', weights_only=False)
-    weights = torch.load(run / 'model-step0002000/weights.pt', map_location='cpu', weights_only=True)
-    report = checkpoint_report(state, weights, cfg, 2000); assert all(report['checks'].values()), report
+    weights = torch.load(run / f'model-step{step:07d}/weights.pt', map_location='cpu', weights_only=True)
+    report = checkpoint_report(state, weights, cfg, step); assert all(report['checks'].values()), report
     model = TrainModule(cfg); model.load_state_dict(state['state_dict'], strict=True)
     opt = model.configure_optimizers(); optimizer = opt['optimizer']; scheduler = opt['lr_scheduler']['scheduler']
     optimizer.load_state_dict(state['optimizer_states'][0]); scheduler.load_state_dict(state['lr_schedulers'][0])
@@ -31,22 +31,26 @@ def native_audit(root, row, source):
     for prefix, expectation in gradient_expectations(model.model, cfg).items():
         value = max(r.get('grad_norm_' + prefix, 0) for r in trace)
         gradients[prefix] = dict(expectation=expectation, maximum=value,
-                                 contract_passed=value > 0 if expectation == 'active' else value == 0)
-    initial = torch.load(run / 'initial-model/weights.pt', map_location='cpu', weights_only=True)
-    reference = torch.load(Path(row['reference_initial']) / 'weights.pt', map_location='cpu', weights_only=True)
-    common = [k for k in initial if k in reference and not k.startswith('pool.head.')]
-    mismatch = [k for k in common if not torch.equal(initial[k], reference[k])]
-    assert not mismatch, mismatch
-    runtime = read(run / 'stage-runtime-source-0002000.json')
+                                 contract_passed=value > 0 if expectation == 'active' else value == 0 if expectation == 'frozen' else True)
+    common = []
+    if row.get('reference_initial'):
+        initial = torch.load(run / 'initial-model/weights.pt', map_location='cpu', weights_only=True)
+        reference = torch.load(Path(row['reference_initial']) / 'weights.pt', map_location='cpu', weights_only=True)
+        common = [k for k in initial if k in reference and not k.startswith('pool.head.')]
+        mismatch = [k for k in common if not torch.equal(initial[k], reference[k])]
+        assert not mismatch, mismatch
+    runtime = read(run / f'stage-runtime-source-{step:07d}.json')
     assert runtime['cwd'] == source['source'] and runtime['PYTHONPATH'] == source['pythonpath']
     for key, path in runtime['paths'].items(): assert sha(path) == runtime['sha256'][key]
-    archive = run / 'full-archives/step0002000.ckpt'; archive.parent.mkdir(exist_ok=True); os.link(run / 'last.ckpt', archive)
+    archive = run / f'full-archives/step{step:07d}.ckpt'; archive.parent.mkdir(exist_ok=True)
+    if archive.exists():assert sha(archive) == sha(run / 'last.ckpt')
+    else:os.link(run / 'last.ckpt', archive)
     result = dict(passed=True, checkpoint=report, gradients=gradients, native_cpu_model_optimizer_scheduler_restore=True,
                   learning_paths_active=all(r['contract_passed'] for r in gradients.values()),
-                  initial_common_non_head_tensors_exact=len(common), initial_head_scope='Head follows the declared one-time calibration, including uncalibrated and sigma-resolution controls.',
-                  runtime=runtime, full_checkpoint_sha256=sha(archive), portable_sha256=sha(run / 'model-step0002000/weights.pt'),
+                  initial_common_non_head_tensors_exact=len(common), initial_head_scope='No pooled state head for L0.' if cfg['model']['mode'] == 'L0' else 'Head follows the declared one-time calibration, including uncalibrated and sigma-resolution controls.',
+                  runtime=runtime, full_checkpoint_sha256=sha(archive), portable_sha256=sha(run / f'model-step{step:07d}/weights.pt'),
                   trace=trace, initial_scale=read(run / 'initial_scale.json') if (run / 'initial_scale.json').exists() else None)
-    write(root / 'audits' / (row['id'] + '.json'), result)
+    write(root / 'audits' / (row['id'] + (f'-step{step}' if step != 2000 else '') + '.json'), result)
 
 
 def main(root, ident, gpu):
