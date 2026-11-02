@@ -5,19 +5,19 @@
 - `lingjing/anchored-state-jepa`，`43962c526f825a8bbba28f424feddfada330910b`，round2 rev3。
 - `lingjing/decoder-free-as-jepa`，`fbb3efa6a44fce8ca4eaa53b9c36eb2b962ffcf2`；它引用的 round2 文档是 rev2，未悄悄用 rev3 替换。
 
-作者原文及逐文件 SHA 见 [upstream-provenance.json](upstream-provenance.json)、[upstream/](upstream/)。四个上传模型文件保持作者字节；本轮只补注册、评测和执行工具，不调 loss/LR/batch/架构。标准训练源固定 `0196dc17bf1f6d3823a2edd5509e1508d19bb8e8`；主队列评测/恢复 helper 固定 `e9281dde6d198215808921ac912234605805fa43`。
+作者原文及逐文件 SHA 见 [upstream-provenance.json](upstream-provenance.json)、[upstream/](upstream/)。四个上传模型文件保持作者字节；本轮只补注册、评测和执行工具，不调 loss/LR/batch/架构。标准训练源固定 `0196dc17bf1f6d3823a2edd5509e1508d19bb8e8`；原主队列helper为 `e9281dde6d198215808921ac912234605805fa43`，审计恢复d1f5ed1，保存I/O/后续派发c058745，NN不变。
 
 ## 135 个主要配方的覆盖清单
 
 | 提案块 | 配方数（含种子） | 要回答的问题 | 当前处置及预算 |
 |---|---:|---|---|
 | R2 D0 | 非新配方 | 成熟 prior 是否收缩、校准是否失效 | 已完成40个既存 PushT 导出的80个 BF16/FP32冻结诊断；另完成6个既存 Cube 导出的12个诊断 |
-| R2 P1 | 3 | 对齐曝光的原生 L0 baseline | 三种子按30530→45795→152650；3/10epoch 都保留 raw 与固定 train-only BN 两套结果 |
+| R2 P1 | 3 | 对齐曝光的原生 L0 baseline | 三种子按30530→45795→152650；3/10epoch的72个终点全部完成；raw与固定train-onlyBN都保留，10epoch raw均值90.89/87.33% |
 | R2 P2 F1–F10 | 20 | horizon、forecast noise、λ、ρ 的配对因素 | 逐12491→24982，未校准的原配方；首epoch只在联合强失效时早停 |
 | R2 P3 a/sham/b/c | 10 | 初始尺度、均值平移、噪声分辨率 | 逐12491→24982；sham 等同种子a的 `original_std`，不按结果挑尺度 |
 | R2 P4 I2 | 1 | InfoNCE reconstruction-free 对照 | 逐12491→24982→37473；批耦合，非 sample-level 候选 |
 | R2 T1–T9 | 18 | TwoRoom 初始化、anchor、价格、σ、forecast | **全部完成2000步门槛并失败，结束 Part T**；T3/T4复用严格匹配的既存检查点 |
-| R2 K1–K6 | 12 | Cube anchor、价格、σ、目标变量 | **12/12完成2000步门槛并通过**；完整状态续到12000，所有配方/种子/控制器均保留 |
+| R2 K1–K6 | 12 | Cube anchor、价格、σ、目标变量 | **12/12完成12000步与48个完整规划终点**；均未达到延长门槛，不续23342，所有配方/种子/控制器保留 |
 | DF A | 18 | β×λ 价格/预测平面 | 逐12491→24982→37473，首epoch联合强失效可提前结束 |
 | DF B | 12 | sample/mean 与有效权重、open-loop | 同上；区分通道噪声和隐含预测权重 |
 | DF C | 4 | prior input 读 mean 或 sample | 同上；不将 mean-input 对照悄悄选为 canonical |
@@ -28,7 +28,7 @@
 | DF H | 2 | σ不同但有效参数 π、w 对齐 | 同DF主要预算，比较 A 的 β.3/λ.5，参数不扫 |
 | DF T | 8 | decoder-free能否救 TwoRoom | **全部完成2000步门槛并失败，不续6000**；canonical pooled 两种子复用既存匹配检查点 |
 
-主要配方计数：Round2 `3+20+10+1+18+12=64`，DF `18+12+4+6+8+5+8+2+8=71`。合计135：**26个 TwoRoom 已按门槛结束，12个 Cube 进入成熟评测，3个匹配 L0 基线独立执行，其余94个 PushT 进入有限阶段队列。** 不是135个已跑满或已成功。
+主要配方计数：Round2 `3+20+10+1+18+12=64`，DF `18+12+4+6+8+5+8+2+8=71`。合计135：**26个 TwoRoom 已按门槛结束，12个 Cube 完成12000步成熟评测且停止延长，3个匹配 L0 基线独立执行，其余94个 PushT 进入有限阶段队列。** 不是135个已跑满或已成功。
 
 额外4条预先列出的条件诊断（不充当主要配方计数）：TwoRoom T4 β=0 ×2，DF初始化0.3 ×2，均完成2000步但未通过。14条200更新的原生技术 smoke 不当作名义任务完成；原冻结 FP32-pool repair 对照也单列。
 
@@ -51,9 +51,11 @@
 | TwoRoom6000 | 当前没有任何配方满足双种子 gate，故不触发 |
 | P2c：选中配方续3epoch，新增seed3/4至2epoch | 必须等20个cell与参考的全包结果，按作者排除/配对规则选择；当前未执行 |
 | P2 prior-gradient fallback/低β新增seed | 仅在作者明确条件满足时审查；当前未执行 |
-| K-mature23342 | 等12k matched控制结果和既存native成熟收益；不自动延长 |
+| K-mature23342 | 已完成12k完整对照，无K组达到门槛；本轮不触发 |
 | R2 Stage2 selected hard-task transfer | 等P2与K/T机制报告再选择；当前未执行 |
 | DF Phase2 stability/final/post-hoc decoder | 等Phase1可行性、gaming和规划判断；若无合格候选即结束，不启动 |
 | 任意新的architecture/feature/K/controller sweep | 未选择；不会靠填满GPU添加 |
 
 上传文档中的“等我们同意”不是本次再向用户索取许可的理由；用户已授权补全有意义的提案。这里暂不触发后续条件路线，是因为其所需实验证据尚未产生。旧 goal 与LLM轮询保持暂停；阶段内由有限本地队列存档、评测、早停和结束汇总。
+
+最新完整数字与解释见 [REVIEW_20261102_1229.md](REVIEW_20261102_1229.md)。主队列记录由恢复根目录及CORRECTIONS索引聚合，首epoch4条实际失效与实现错误分开计数。

@@ -25,3 +25,13 @@
 ## 持续成本与失败处理
 
 新任务使用有终点的本地队列与结束汇总：主队列72小时上限，baseline协调器48小时上限；每阶段训练/评测也有明确timeout。不是周期性唤醒LLM的monitor，不恢复旧goal。正常结束写summary/HOLD；技术错误写terminal/log，不偷改为算法负结果或自动换参数。超时、失败或主机异常时先读已有PID/日志/退出记录，不盲目重启或清HOLD。
+
+## 2026-11-02 本次复核与执行恢复
+
+- NN仍为0196dc17，无模型/loss/data/LR变动；没有重跑无关NN大套件。梯度日志缺字段的5个回归及dispatcher无重复接管的1个回归均通过，本地与实际EFS helper各跑6个。
+- 实际DF/L0首epoch原生CPU model/AdamW/scheduler恢复通过；另外24982与37473两个发生outer-tmp-rename故障的实际full/portable严格恢复通过。完整证据在EFS，SHA与简要证明随review目录保存。
+- 实际已安装同步/异步CheckpointIO各连续2次CPU payload恢复通过；旧异步立即outer-rename可复现失败。原出错进程IO类型未记录，不能断言其唯一原因。
+- 三机v8 dispatcher真实PID/command、冻结helper所有SHA、既存worker接管清单、新worker安全保存入口与设备绑定核验通过；沿用原72h截止，既存训练未重复。
+- Cube48全规划终点、12pose读出、4native/TF冻结对照、姿态codebook正负控制及L0全部72规划终点已保存。图v2已视觉核验。最终恢复读到第一条27900且必要梯度有限，第二条仅补37473规划。
+
+见 [本次完整复核](REVIEW_20261102_1229.md)及results/review20261102T122931Z/，历史失败原文件与HOLD不改。

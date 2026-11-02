@@ -17,13 +17,13 @@
     "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
   },
   "helper": {
-    "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3",
-    "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3.json",
-    "source_commit": "e9281dde6d198215808921ac912234605805fa43"
+    "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8",
+    "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8.json",
+    "source_commit": "c0587456ee4be97b20080de200d98a6a70762ddd"
   },
   "main": {
-    "root": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
-    "protocol_sha256": "6c6631430d35e5f84d7760e7eee311b9a6e4b893065de5c621b95e5005866c23",
+    "root": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+    "protocol_sha256": "42b32f3f207d5bbf378c3e0268af7749171d19f8776a4a793cfbee13a0315402",
     "jobs": 106,
     "pusht_primary": 94,
     "cube_continuations": 12,
@@ -59,179 +59,188 @@
     "launches": {
       "dev2": {
         "host": "dev2",
-        "pid": 751583,
+        "pid": 1056292,
         "command": [
           "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
           "-B",
           "-u",
-          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_dispatch.py",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8/experiments/lingjing_fullspec_20261102/repair_dispatch.py",
           "--root",
-          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
           "--host",
-          "dev2"
+          "dev2",
+          "--resume-owned"
         ],
-        "checked_slots": [
-          {
-            "gpu": 2,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 3,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 4,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 5,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 6,
-            "memory_mib": 0
-          }
-        ],
-        "started_utc": "2026-11-02T09:54:28.562239+00:00",
-        "protocol_sha256": "6c6631430d35e5f84d7760e7eee311b9a6e4b893065de5c621b95e5005866c23",
         "helper": {
-          "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3",
-          "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3.json",
-          "source_commit": "e9281dde6d198215808921ac912234605805fa43"
+          "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8",
+          "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8.json",
+          "source_commit": "c0587456ee4be97b20080de200d98a6a70762ddd"
         },
-        "scope": "Only106 reviewed primary recipes/continuations; fixed21 slots; remaining3 slots reserved for matched P1 baselines. Finite72h dispatch; no LLM monitor,old goal resume or automatic next research round."
+        "retired_dispatcher": {
+          "host": "dev2",
+          "pid": 918547,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4/experiments/lingjing_fullspec_20261102/repair_dispatch.py",
+            "--root",
+            "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+            "--host",
+            "dev2"
+          ],
+          "source": {
+            "source": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+            "source_commit": "0196dc17bf1f6d3823a2edd5509e1508d19bb8e8",
+            "manifest": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1.json",
+            "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+            "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+            "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+          },
+          "helper": {
+            "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4",
+            "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4.json",
+            "source_commit": "d1f5ed113eb177b113dc90e4d0662563c62ca4aa"
+          },
+          "started_utc": "2026-11-02T12:51:24.080547+00:00",
+          "scope": "Repaired31 existing PushT gates before any release of63 unstarted jobs; inherit12 complete Cube chains. Actual per-slot old-worker and memory checks precede every launch."
+        },
+        "started_utc": "2026-11-02T14:19:39.235406+00:00",
+        "scope": "Adopt existing owned workers; same106recipes/NN/loss/budget/slots; unchanged original72h deadline. New workers use verified atomic checkpoint I/O."
       },
       "dev13": {
         "host": "dev13",
-        "pid": 1462086,
+        "pid": 1681419,
         "command": [
           "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
           "-B",
           "-u",
-          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_dispatch.py",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8/experiments/lingjing_fullspec_20261102/repair_dispatch.py",
           "--root",
-          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
           "--host",
-          "dev13"
+          "dev13",
+          "--resume-owned"
         ],
-        "checked_slots": [
-          {
-            "gpu": 0,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 1,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 2,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 3,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 4,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 5,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 6,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 7,
-            "memory_mib": 0
-          }
-        ],
-        "started_utc": "2026-11-02T09:54:21.977301+00:00",
-        "protocol_sha256": "6c6631430d35e5f84d7760e7eee311b9a6e4b893065de5c621b95e5005866c23",
         "helper": {
-          "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3",
-          "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3.json",
-          "source_commit": "e9281dde6d198215808921ac912234605805fa43"
+          "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8",
+          "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8.json",
+          "source_commit": "c0587456ee4be97b20080de200d98a6a70762ddd"
         },
-        "scope": "Only106 reviewed primary recipes/continuations; fixed21 slots; remaining3 slots reserved for matched P1 baselines. Finite72h dispatch; no LLM monitor,old goal resume or automatic next research round."
+        "retired_dispatcher": {
+          "host": "dev13",
+          "pid": 1576551,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4/experiments/lingjing_fullspec_20261102/repair_dispatch.py",
+            "--root",
+            "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+            "--host",
+            "dev13"
+          ],
+          "source": {
+            "source": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+            "source_commit": "0196dc17bf1f6d3823a2edd5509e1508d19bb8e8",
+            "manifest": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1.json",
+            "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+            "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+            "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+          },
+          "helper": {
+            "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4",
+            "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4.json",
+            "source_commit": "d1f5ed113eb177b113dc90e4d0662563c62ca4aa"
+          },
+          "started_utc": "2026-11-02T12:51:26.876071+00:00",
+          "scope": "Repaired31 existing PushT gates before any release of63 unstarted jobs; inherit12 complete Cube chains. Actual per-slot old-worker and memory checks precede every launch."
+        },
+        "started_utc": "2026-11-02T14:19:41.203981+00:00",
+        "scope": "Adopt existing owned workers; same106recipes/NN/loss/budget/slots; unchanged original72h deadline. New workers use verified atomic checkpoint I/O."
       },
       "dev15": {
         "host": "dev15",
-        "pid": 1812570,
+        "pid": 1831906,
         "command": [
           "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
           "-B",
           "-u",
-          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_dispatch.py",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8/experiments/lingjing_fullspec_20261102/repair_dispatch.py",
           "--root",
-          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
           "--host",
-          "dev15"
+          "dev15",
+          "--resume-owned"
         ],
-        "checked_slots": [
-          {
-            "gpu": 0,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 1,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 2,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 3,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 4,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 5,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 6,
-            "memory_mib": 0
-          },
-          {
-            "gpu": 7,
-            "memory_mib": 0
-          }
-        ],
-        "started_utc": "2026-11-02T09:54:32.189291+00:00",
-        "protocol_sha256": "6c6631430d35e5f84d7760e7eee311b9a6e4b893065de5c621b95e5005866c23",
         "helper": {
-          "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3",
-          "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3.json",
-          "source_commit": "e9281dde6d198215808921ac912234605805fa43"
+          "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8",
+          "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8.json",
+          "source_commit": "c0587456ee4be97b20080de200d98a6a70762ddd"
         },
-        "scope": "Only106 reviewed primary recipes/continuations; fixed21 slots; remaining3 slots reserved for matched P1 baselines. Finite72h dispatch; no LLM monitor,old goal resume or automatic next research round."
+        "retired_dispatcher": {
+          "host": "dev15",
+          "pid": 1817020,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4/experiments/lingjing_fullspec_20261102/repair_dispatch.py",
+            "--root",
+            "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+            "--host",
+            "dev15"
+          ],
+          "source": {
+            "source": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+            "source_commit": "0196dc17bf1f6d3823a2edd5509e1508d19bb8e8",
+            "manifest": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1.json",
+            "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+            "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+            "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+          },
+          "helper": {
+            "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4",
+            "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4.json",
+            "source_commit": "d1f5ed113eb177b113dc90e4d0662563c62ca4aa"
+          },
+          "started_utc": "2026-11-02T12:51:26.803515+00:00",
+          "scope": "Repaired31 existing PushT gates before any release of63 unstarted jobs; inherit12 complete Cube chains. Actual per-slot old-worker and memory checks precede every launch."
+        },
+        "started_utc": "2026-11-02T14:19:41.176391+00:00",
+        "scope": "Adopt existing owned workers; same106recipes/NN/loss/budget/slots; unchanged original72h deadline. New workers use verified atomic checkpoint I/O."
       }
     },
     "collector": {
-      "pid": 751584,
+      "pid": 1010967,
       "command": [
         "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
         "-B",
         "-u",
-        "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_collect.py",
+        "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v7/experiments/lingjing_fullspec_20261102/full_collect.py",
         "--root",
-        "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102"
+        "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102"
       ],
-      "finite_hours": 72,
-      "continuous_monitor": false,
-      "started_utc": "2026-11-02T09:54:28.601525+00:00"
+      "helper": {
+        "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v7",
+        "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v7.json",
+        "source_commit": "e64e17376d029b85bf3337539b9ee28f81a8e976"
+      },
+      "retired_collector_pid": 918548,
+      "scope": "Samefinite106jobindexplusoneprovenoperationalcorrection;originalerrorandartifactsretained.",
+      "started_utc": "2026-11-02T14:08:50.845224+00:00"
     },
     "terminal_index": "terminals/<id>.json",
     "results": "results/summary.json",
     "finite_queue_hours": 72,
-    "automatic_new_research_round": false
+    "automatic_new_research_round": false,
+    "original_helper": {
+      "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4",
+      "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4.json",
+      "source_commit": "d1f5ed113eb177b113dc90e4d0662563c62ca4aa"
+    },
+    "worker_IO_binding": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102/SAVE_IO_RUNTIME.json",
+    "scope": "Same106jobs;12Cube inherited,31existingPushT no repeated first-stage SGD,63originalpending released. v8 dispatchers adopt existing workers and preserve original72h cutoff. NN0196 unchanged."
   },
   "baselines": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_P1_20261102",
@@ -259,7 +268,20 @@
     "helper": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/p1-helper-v2",
     "helper_commit": "53010bb2faf896dd42cb07507a646a8956de7b42",
     "finite_coordinator_hours": 48,
-    "results": "results/summary.json"
+    "results": "results/summary.json",
+    "status": "COMPLETE_HOLD",
+    "coordinator_status": "exited normally; historical PID only",
+    "training_complete": true,
+    "evaluation_endpoints": 72,
+    "mean_raw_3epoch": {
+      "primary": 84.88888888888889,
+      "fresh": 78.66666666666667
+    },
+    "mean_raw_10epoch": {
+      "primary": 90.88888888888889,
+      "fresh": 87.33333333333333
+    },
+    "evidence": "results/review20261102T122931Z/baseline-final.json"
   },
   "completed": {
     "hard_short_root": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_hard2000_20261102",
@@ -271,9 +293,13 @@
     "D0_pusht": 80,
     "D0_cube": 12,
     "technical_smokes": 14,
-    "frozen_diagnostics": 26
+    "frozen_diagnostics": 26,
+    "cube12000": 12,
+    "cube_planning_endpoints": 48,
+    "cube23342_extension_selected": false,
+    "P1_baselines": 3,
+    "P1_evaluation_endpoints": 72
   },
-  "one_shot_startup": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/main-startup-<host>-v1.json",
   "review_order": [
     "Read latest user instruction and this recovery file; old snapshots/HOLDs are historical,not scheduling instructions.",
     "Read all existing terminals/results/dispatcher records before any new SSH/GPU/model access; no partial winner selection.",
@@ -282,12 +308,11 @@
     "Do not resume/relaunch automatically. A new helper/source must have explicit scope,actual restore/interfaces and its own independent output/version."
   ],
   "cooperative_stop": [
-    "Create STOP in main root and baseline root; their finite coordinators propagate per-run STOP and cancel pending starts.",
-    "Native training saves full state on stop; a current evaluation can finish before its next command checks the marker. If an immediate stop is requested,identify only exact owned recorded PID/process groups and terminate those; preserve outputs."
+    "Create STOP in the recovery-v4 root and both listed checkpoint-correction roots; baseline is COMPLETE/HOLD. Markers preserve full states and cancel pending starts.",
+    "Existing workers can finish their current evaluation before checking STOP. For immediate stopping identify exact recorded owned process groups; never kill by broad name or all-user GPU list."
   ],
   "remaining_conditional": [
     "P2c selected continuation/new seeds and specified fallbacks",
-    "K23342 maturity if warranted by matched controls",
     "R2 selected Stage2 transfers",
     "DFPhase2 only if viable and not gaming"
   ],
@@ -295,10 +320,327 @@
     "No new three-task/high-performance/novelty conclusion.",
     "Pooled logdet,NCE andL0/SIGReg are batch-coupled controls,not sample-level candidates.",
     "Equal updates are not equal parameters/FLOPs/convergence.",
-    "Physical probes use labels only to fit diagnostic readouts; learners/planners receive no optimal-action or physical labels."
+    "Physical probes use labels only to fit diagnostic readouts; learners/planners receive no optimal-action or physical labels.",
+    "CubeK at12k has no continuation gate success; shared22degree pose readout is not a K-specific causal explanation. MatureL0 baseline required; do not compare only to early weak checkpoints."
   ],
-  "reviewed_utc": "2026-11-02T10:02:04+00:00",
-  "actual_startup": {
+  "reviewed_utc": "2026-11-02T14:20:17.532339+00:00",
+  "retired_queues": [
+    {
+      "main": {
+        "root": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+        "protocol_sha256": "6c6631430d35e5f84d7760e7eee311b9a6e4b893065de5c621b95e5005866c23",
+        "jobs": 106,
+        "pusht_primary": 94,
+        "cube_continuations": 12,
+        "slots": {
+          "dev2": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "dev13": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "dev15": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        "launches": {
+          "dev2": {
+            "host": "dev2",
+            "pid": 751583,
+            "command": [
+              "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+              "-B",
+              "-u",
+              "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_dispatch.py",
+              "--root",
+              "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+              "--host",
+              "dev2"
+            ],
+            "checked_slots": [
+              {
+                "gpu": 2,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 3,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 4,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 5,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 6,
+                "memory_mib": 0
+              }
+            ],
+            "started_utc": "2026-11-02T09:54:28.562239+00:00",
+            "protocol_sha256": "6c6631430d35e5f84d7760e7eee311b9a6e4b893065de5c621b95e5005866c23",
+            "helper": {
+              "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3",
+              "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3.json",
+              "source_commit": "e9281dde6d198215808921ac912234605805fa43"
+            },
+            "scope": "Only106 reviewed primary recipes/continuations; fixed21 slots; remaining3 slots reserved for matched P1 baselines. Finite72h dispatch; no LLM monitor,old goal resume or automatic next research round."
+          },
+          "dev13": {
+            "host": "dev13",
+            "pid": 1462086,
+            "command": [
+              "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+              "-B",
+              "-u",
+              "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_dispatch.py",
+              "--root",
+              "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+              "--host",
+              "dev13"
+            ],
+            "checked_slots": [
+              {
+                "gpu": 0,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 1,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 2,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 3,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 4,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 5,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 6,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 7,
+                "memory_mib": 0
+              }
+            ],
+            "started_utc": "2026-11-02T09:54:21.977301+00:00",
+            "protocol_sha256": "6c6631430d35e5f84d7760e7eee311b9a6e4b893065de5c621b95e5005866c23",
+            "helper": {
+              "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3",
+              "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3.json",
+              "source_commit": "e9281dde6d198215808921ac912234605805fa43"
+            },
+            "scope": "Only106 reviewed primary recipes/continuations; fixed21 slots; remaining3 slots reserved for matched P1 baselines. Finite72h dispatch; no LLM monitor,old goal resume or automatic next research round."
+          },
+          "dev15": {
+            "host": "dev15",
+            "pid": 1812570,
+            "command": [
+              "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+              "-B",
+              "-u",
+              "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_dispatch.py",
+              "--root",
+              "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+              "--host",
+              "dev15"
+            ],
+            "checked_slots": [
+              {
+                "gpu": 0,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 1,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 2,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 3,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 4,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 5,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 6,
+                "memory_mib": 0
+              },
+              {
+                "gpu": 7,
+                "memory_mib": 0
+              }
+            ],
+            "started_utc": "2026-11-02T09:54:32.189291+00:00",
+            "protocol_sha256": "6c6631430d35e5f84d7760e7eee311b9a6e4b893065de5c621b95e5005866c23",
+            "helper": {
+              "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3",
+              "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3.json",
+              "source_commit": "e9281dde6d198215808921ac912234605805fa43"
+            },
+            "scope": "Only106 reviewed primary recipes/continuations; fixed21 slots; remaining3 slots reserved for matched P1 baselines. Finite72h dispatch; no LLM monitor,old goal resume or automatic next research round."
+          }
+        },
+        "collector": {
+          "pid": 751584,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_collect.py",
+            "--root",
+            "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102"
+          ],
+          "finite_hours": 72,
+          "continuous_monitor": false,
+          "started_utc": "2026-11-02T09:54:28.601525+00:00"
+        },
+        "terminal_index": "terminals/<id>.json",
+        "results": "results/summary.json",
+        "finite_queue_hours": 72,
+        "automatic_new_research_round": false
+      },
+      "reason": "Missing gradient field audit false positive; immutable failures retained. Original v3 dispatchers retired; completed SGD reused."
+    }
+  ],
+  "checkpoint_corrections": [
+    {
+      "binding": {
+        "root": "/efs/prescottsun/SPT-JEPA/runs/lingjing_checkpoint_recovery_v7_20261102",
+        "terminal": "/efs/prescottsun/SPT-JEPA/runs/lingjing_checkpoint_recovery_v7_20261102/terminals/decoder_free-A-b0.3-l1-s1.json",
+        "original_terminal_sha256": "d04dd7f712af7220b1a161dcf9104e09eb7fa809e72c5bd7c24040efde4e2ff0",
+        "recovered_stage_proof": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/reviews/20261102T122931Z/save-io-proof-v7/recovered-stage24982.json",
+        "helper": {
+          "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v7",
+          "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v7.json",
+          "source_commit": "e64e17376d029b85bf3337539b9ee28f81a8e976"
+        },
+        "reason": "Operationaloutertmp-renamefailureafterexact24982; originalerrorunchanged,allnativeCPUrestorespass."
+      },
+      "launch": {
+        "pid": 1010966,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v7/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_checkpoint_recovery_v7_20261102",
+          "--id",
+          "decoder_free-A-b0.3-l1-s1",
+          "--gpu",
+          "7"
+        ],
+        "source": {
+          "source": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+          "source_commit": "0196dc17bf1f6d3823a2edd5509e1508d19bb8e8",
+          "manifest": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1.json",
+          "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+          "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+          "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+        },
+        "helper": {
+          "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v7",
+          "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v7.json",
+          "source_commit": "e64e17376d029b85bf3337539b9ee28f81a8e976"
+        },
+        "gpu": 7,
+        "started_utc": "2026-11-02T14:08:50.774100+00:00",
+        "scope": "Exact24982fullstate;completeoriginal37473budgetandmissing2/3epmetrics. SaveI/Oonly,nomodel/LRchange orrepeatedSGD."
+      }
+    },
+    {
+      "binding": {
+        "root": "/efs/prescottsun/SPT-JEPA/runs/lingjing_checkpoint_final_recovery_v8_20261102",
+        "terminal": "/efs/prescottsun/SPT-JEPA/runs/lingjing_checkpoint_final_recovery_v8_20261102/terminals/decoder_free-A-b0.1-l0-s1.json",
+        "original_terminal_sha256": "460bfb3e65da0e5279d9f49bd9e6b5383b912b38f209f6acacd24bed30ed3753",
+        "recovered_stage_proof": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/reviews/20261102T122931Z/save-io-v8/recovered-stage37473.json",
+        "helper": {
+          "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8",
+          "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8.json",
+          "source_commit": "c0587456ee4be97b20080de200d98a6a70762ddd"
+        },
+        "reason": "FinalSGDalreadycompleted;preserveI/Ofailureandappendmissingfinalevaluations."
+      },
+      "launch": {
+        "pid": 1056295,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_checkpoint_final_recovery_v8_20261102",
+          "--id",
+          "decoder_free-A-b0.1-l0-s1",
+          "--gpu",
+          "0"
+        ],
+        "gpu": 0,
+        "helper": {
+          "source": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8",
+          "manifest": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v8.json",
+          "source_commit": "c0587456ee4be97b20080de200d98a6a70762ddd"
+        },
+        "started_utc": "2026-11-02T14:19:39.440241+00:00",
+        "scope": "Reuse exact37473 final fullstate; evaluations only,zero repeated SGD."
+      }
+    }
+  ],
+  "latest_review": {
+    "evidence": "results/review20261102T122931Z/inventory141234.json",
+    "checked_utc": "2026-11-02T14:12:34+00:00",
+    "counts": {
+      "inherited_cube_nominal": 12,
+      "colour_L0_nominal": 1,
+      "early_collapse": 4,
+      "execution_error_with_followup_correction": 2,
+      "started_nonterminal": 24,
+      "not_started": 63
+    },
+    "scope": "Time-bound shared-filesystem snapshot before v8 takeover; workers may be auditing/planning,not all performing SGD.",
+    "report": "REVIEW_20261102_1229.md",
+    "runtime_evidence": "results/review20261102T122931Z/runtime-corrections-v8.json"
+  },
+  "actual_startup_history": {
     "source_verified_native": 21,
     "cube_actual_pre_post_copy_cpu_restores": 24,
     "cube_first_resumed_step": 2001,
@@ -327,5 +669,18 @@
       "results/main-health100-dev15-v2.json"
     ],
     "scope": "Time-bound startup proof,not later progress/performance/GPU availability."
+  },
+  "one_shot_startup_history": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/main-startup-<host>-v1.json",
+  "latest_runtime_check": {
+    "evidence": "results/review20261102T122931Z/recovery-live-once.json",
+    "checked_utc": "2026-11-02T14:24:27.178667+00:00",
+    "first_correction_resume_step": 27900,
+    "second_correction": "Full37473CPUrestorepassed;finalplanningonly,zeroSGD.",
+    "collector_alive": true,
+    "three_host_adoption_evidence": [
+      "results/review20261102T122931Z/startup-dev2.json",
+      "results/review20261102T122931Z/startup-dev13.json",
+      "results/review20261102T122931Z/startup-dev15.json"
+    ]
   }
 }

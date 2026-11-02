@@ -17,6 +17,14 @@ def main(review, output):
     base = Path('/efs/prescottsun/SPT-JEPA'); root = base / 'runs/lingjing_fullspec_recovery_v4_20261102'
     original = base / 'runs/lingjing_fullspec_main_v3_20261102'
     controls = read(review / 'archived-cube-controls.json'); floor = read(review / 'pose-floor-v1.json')
+    pose_controls_path = review / 'pose-controls-v6/summary.json'
+    pose_controls = read(pose_controls_path) if pose_controls_path.exists() else None
+    if pose_controls:
+        for row in pose_controls['rows']:
+            path = Path(row['command'][row['command'].index('--output') + 1]) / 'pose.json'
+            value = read(path); assert value['state_before'] == value['state_after']
+            row['frozen_proof'] = dict(path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                checkpoint_sha256=value['checkpoint_sha256'], state_before=value['state_before'], state_after=value['state_after'])
     records = []; pose_rows = []
     for arm in range(1, 7):
         for seed in [1, 2]:
@@ -64,7 +72,7 @@ def main(review, output):
             information={k:v for k,v in l['information'].items() if k not in ['records', 'eigenvalues_over_sigma2', 'nats_per_direction']},
             noisy_pose_r2=l['probes']['noisy_r2'], source=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
     result = dict(cube_complete48=True, cube=records, cube_means=means, cube_pose=pose_rows, prespecified_contrasts=contrasts,
-        archived_controls=controls, pose_floor=floor, first_epoch_gates=gates,
+        archived_controls=controls, pose_floor=floor, pose_controls=pose_controls, first_epoch_gates=gates,
         scope='All seeds/controllers/cases retained. Historical controls are not contemporary simulator repeats or equal model compute. Conditional intervals exclude training-seed and environment-repeat uncertainty;no multiplicity correction. Partial first-epoch gates are not3epoch winners or failed nominal budgets.')
     (output / 'analysis.json').write_text(json.dumps(result, indent=2) + '\n')
     plt.rcParams.update({'font.size': 10, 'axes.spines.top': False, 'axes.spines.right': False})
@@ -81,11 +89,18 @@ def main(review, output):
         ax.set(xticks=np.arange(8), xticklabels=labels, ylim=(0, 48), ylabel='Strict task success (%)', title='Cube12000: ' + controller + ' CEM')
         ax.grid(axis='y', alpha=.16); ax.legend(frameon=False, fontsize=9)
     ax = axes[2]
+    pose_labels = labels if pose_controls else labels[2:]
     for seed, marker, colour in [(1, 'o', '#28689d'), (2, 's', '#d88039')]:
-        ax.scatter(np.arange(6) + (-.08 if seed == 1 else .08), [next(r['conditions']['observed_future']['pose_deg'] for r in pose_rows if r['arm'] == 'K' + str(k) and r['seed'] == seed) for k in range(1, 7)], marker=marker, color=colour, label='training seed ' + str(seed))
+        values = []
+        if pose_controls:
+            for family in ['native-raw', 'TF64']:
+                row = next(r for r in pose_controls['rows'] if r['family'] == family and r['seed'] == seed)
+                values.append(next(x['conditions']['observed_future']['pose_deg'] for x in row['readouts'] if x['readout'] == 'rbf'))
+        values += [next(r['conditions']['observed_future']['pose_deg'] for r in pose_rows if r['arm'] == 'K' + str(k) and r['seed'] == seed) for k in range(1, 7)]
+        ax.scatter(np.arange(len(pose_labels)) + (-.08 if seed == 1 else .08), values, marker=marker, color=colour, label='training seed ' + str(seed))
     ax.axhline(floor['rows'][0]['constant_training_mean']['mean_deg'], linestyle='--', color='#666666', label='constant readout')
     ax.axhline(floor['rows'][0]['oracle_true_invariant']['mean_deg'], linestyle=':', color='#4b906a', label='true-feature codebook floor')
-    ax.set(xticks=np.arange(6), xticklabels=labels[2:], ylim=(0, 27), ylabel='Cube-symmetry angle error (deg)', title='Fixed RBF pose readout: observed state')
+    ax.set(xticks=np.arange(len(pose_labels)), xticklabels=pose_labels, ylim=(0, 27), ylabel='Cube-symmetry angle error (deg)', title='Fixed RBF pose readout: observed state')
     ax.legend(frameon=False, fontsize=8, loc='center right'); ax.grid(axis='y', alpha=.16)
     fig.suptitle('State use survived; goal precision and control did not follow', fontsize=13)
     for suffix in ['png', 'svg', 'pdf']:fig.savefig(output / ('cube12000-insights.' + suffix), dpi=180)

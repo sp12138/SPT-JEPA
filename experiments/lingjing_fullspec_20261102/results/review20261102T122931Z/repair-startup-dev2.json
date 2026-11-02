@@ -1,0 +1,318 @@
+{
+  "passed": true,
+  "host": "dev2",
+  "checked_utc": "2026-11-02T13:19:44.658857+00:00",
+  "rows": [
+    {
+      "id": "decoder_free-A-b0.1-l1-s1",
+      "gpu": 2,
+      "worker": {
+        "pid": 918551,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+          "--id",
+          "decoder_free-A-b0.1-l1-s1",
+          "--gpu",
+          "2"
+        ],
+        "CUDA_VISIBLE_DEVICES": null
+      },
+      "children": [
+        {
+          "pid": 920197,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/decoder_free-A-b0.1-l1-s1/config.json",
+            "--stop-step",
+            "24982",
+            "--resume"
+          ],
+          "CUDA_VISIBLE_DEVICES": "2"
+        }
+      ],
+      "audits": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102/audits/decoder_free-A-b0.1-l1-s1-step12491.json",
+          "full_sha256": "b780bb8a0bd9297d75380a431373ac715a6921df1b81196e0026c98f6960a3cd",
+          "last_measured": {
+            "encoder": 12400,
+            "pool": 12400,
+            "predictor": 12400,
+            "action_encoder": 12400
+          }
+        }
+      ],
+      "status": {
+        "step": 22300,
+        "state": "running",
+        "loss": 23.219417572021484,
+        "updated_at": 1793625575.9331262
+      },
+      "native_resume": [
+        {
+          "target": 24982,
+          "first_step": 12492
+        }
+      ]
+    },
+    {
+      "id": "decoder_free-A-b0.1-l1-s2",
+      "gpu": 3,
+      "worker": {
+        "pid": 918617,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+          "--id",
+          "decoder_free-A-b0.1-l1-s2",
+          "--gpu",
+          "3"
+        ],
+        "CUDA_VISIBLE_DEVICES": null
+      },
+      "children": [
+        {
+          "pid": 920199,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/decoder_free-A-b0.1-l1-s2/config.json",
+            "--stop-step",
+            "24982",
+            "--resume"
+          ],
+          "CUDA_VISIBLE_DEVICES": "3"
+        }
+      ],
+      "audits": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102/audits/decoder_free-A-b0.1-l1-s2-step12491.json",
+          "full_sha256": "068143ed4e103ae8bcf145b6acdc4ada82909f9015a3dbd46f798c0411af7f53",
+          "last_measured": {
+            "encoder": 12400,
+            "pool": 12400,
+            "predictor": 12400,
+            "action_encoder": 12400
+          }
+        }
+      ],
+      "status": {
+        "step": 22300,
+        "state": "running",
+        "loss": 20.866737365722656,
+        "updated_at": 1793625575.0591583
+      },
+      "native_resume": [
+        {
+          "target": 24982,
+          "first_step": 12492
+        }
+      ]
+    },
+    {
+      "id": "decoder_free-A-b0.3-l0-s1",
+      "gpu": 4,
+      "worker": {
+        "pid": 918683,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+          "--id",
+          "decoder_free-A-b0.3-l0-s1",
+          "--gpu",
+          "4"
+        ],
+        "CUDA_VISIBLE_DEVICES": null
+      },
+      "children": [
+        {
+          "pid": 920200,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/decoder_free-A-b0.3-l0-s1/config.json",
+            "--stop-step",
+            "24982",
+            "--resume"
+          ],
+          "CUDA_VISIBLE_DEVICES": "4"
+        }
+      ],
+      "audits": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102/audits/decoder_free-A-b0.3-l0-s1-step12491.json",
+          "full_sha256": "4ac17046f3ef4d83140844371808c09f01907bf599de7760f141ceaa6f0668f7",
+          "last_measured": {
+            "encoder": 12400,
+            "pool": 12400,
+            "predictor": 12400,
+            "action_encoder": 12400
+          }
+        }
+      ],
+      "status": {
+        "step": 22300,
+        "state": "running",
+        "loss": -273.5291442871094,
+        "updated_at": 1793625575.580967
+      },
+      "native_resume": [
+        {
+          "target": 24982,
+          "first_step": 12492
+        }
+      ]
+    },
+    {
+      "id": "decoder_free-A-b0.3-l0-s2",
+      "gpu": 5,
+      "worker": {
+        "pid": 918749,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+          "--id",
+          "decoder_free-A-b0.3-l0-s2",
+          "--gpu",
+          "5"
+        ],
+        "CUDA_VISIBLE_DEVICES": null
+      },
+      "children": [
+        {
+          "pid": 920196,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/decoder_free-A-b0.3-l0-s2/config.json",
+            "--stop-step",
+            "24982",
+            "--resume"
+          ],
+          "CUDA_VISIBLE_DEVICES": "5"
+        }
+      ],
+      "audits": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102/audits/decoder_free-A-b0.3-l0-s2-step12491.json",
+          "full_sha256": "f20d867a28a0f602deebe3882a01a77e3d88fd2d2457cef1461f23431d5c9c7c",
+          "last_measured": {
+            "encoder": 12400,
+            "pool": 12400,
+            "predictor": 12400,
+            "action_encoder": 12400
+          }
+        }
+      ],
+      "status": {
+        "step": 22300,
+        "state": "running",
+        "loss": 1.055877685546875,
+        "updated_at": 1793625582.7729466
+      },
+      "native_resume": [
+        {
+          "target": 24982,
+          "first_step": 12492
+        }
+      ]
+    },
+    {
+      "id": "decoder_free-A-b0.3-l1-s1",
+      "gpu": 6,
+      "worker": {
+        "pid": 918815,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+          "--id",
+          "decoder_free-A-b0.3-l1-s1",
+          "--gpu",
+          "6"
+        ],
+        "CUDA_VISIBLE_DEVICES": null
+      },
+      "children": [
+        {
+          "pid": 920201,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/decoder_free-A-b0.3-l1-s1/config.json",
+            "--stop-step",
+            "24982",
+            "--resume"
+          ],
+          "CUDA_VISIBLE_DEVICES": "6"
+        }
+      ],
+      "audits": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102/audits/decoder_free-A-b0.3-l1-s1-step12491.json",
+          "full_sha256": "3f97aeeb1eb1f83420b4b80a00e1a9956620d23a2dc25bad4c43b6000da41bb3",
+          "last_measured": {
+            "encoder": 12400,
+            "pool": 12400,
+            "predictor": 12400,
+            "action_encoder": 12400
+          }
+        }
+      ],
+      "status": {
+        "step": 22300,
+        "state": "running",
+        "loss": 60.75627517700195,
+        "updated_at": 1793625582.7550106
+      },
+      "native_resume": [
+        {
+          "target": 24982,
+          "first_step": 12492
+        }
+      ]
+    }
+  ],
+  "scope": "One-shot source/actualPID/fullCPUrestore review after audit repair. Native resume uses old exact first-stage states;eval-only work does not count as newSGD."
+}

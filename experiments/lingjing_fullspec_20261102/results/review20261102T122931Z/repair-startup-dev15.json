@@ -1,0 +1,70 @@
+{
+  "passed": true,
+  "host": "dev15",
+  "checked_utc": "2026-11-02T13:19:48.490529+00:00",
+  "rows": [
+    {
+      "id": "decoder_free-A-b0.1-l0.5-s1",
+      "gpu": 6,
+      "worker": {
+        "pid": 1817023,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v4/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+          "--id",
+          "decoder_free-A-b0.1-l0.5-s1",
+          "--gpu",
+          "6"
+        ],
+        "CUDA_VISIBLE_DEVICES": null
+      },
+      "children": [
+        {
+          "pid": 1817313,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/decoder_free-A-b0.1-l0.5-s1/config.json",
+            "--stop-step",
+            "24982",
+            "--resume"
+          ],
+          "CUDA_VISIBLE_DEVICES": "6"
+        }
+      ],
+      "audits": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102/audits/decoder_free-A-b0.1-l0.5-s1-step12491.json",
+          "full_sha256": "565b46d1d8bd96e6a10482760d64c1daaf13883d1682197b2c1942ae6f3e6785",
+          "last_measured": {
+            "encoder": 12400,
+            "pool": 12400,
+            "predictor": 12400,
+            "action_encoder": 12400
+          }
+        }
+      ],
+      "status": {
+        "step": 21700,
+        "state": "running",
+        "loss": -139.77365112304688,
+        "updated_at": 1793625580.2817287
+      },
+      "native_resume": [
+        {
+          "target": 24982,
+          "first_step": 12492
+        }
+      ]
+    }
+  ],
+  "scope": "One-shot source/actualPID/fullCPUrestore review after audit repair. Native resume uses old exact first-stage states;eval-only work does not count as newSGD."
+}
