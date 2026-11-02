@@ -9,12 +9,20 @@ from common import read, write, sha
 def main(root):
     root = Path(root); p = read(root / 'protocol.json'); started = time.monotonic()
     endings = [root / 'dispatchers' / (host + '-finished.json') for host in ['dev2', 'dev13', 'dev15']]
-    while not all(path.exists() for path in endings):
+    def corrections_complete():
+        return all(Path(read(path)['terminal']).exists() for path in (root / 'CORRECTIONS').glob('*.json'))
+    while not all(path.exists() for path in endings) or not corrections_complete():
         if time.monotonic() - started > 259200:raise TimeoutError('Finite72h collection dependency ended; no automatic extension.')
         time.sleep(30)
     rows = []
     for job in p['jobs']:
         terminal_path = root / 'terminals' / (job['id'] + '.json'); terminal = read(terminal_path)
+        original_terminal = None
+        correction = root / 'CORRECTIONS' / (job['id'] + '.json')
+        if correction.exists():
+            binding = read(correction); assert binding['original_terminal_sha256'] == sha(terminal_path)
+            original_terminal = dict(path=str(terminal_path), sha256=sha(terminal_path), terminal=terminal)
+            terminal_path = Path(binding['terminal']); terminal = read(terminal_path)
         evidence = []
         for step in job['stages']:
             base = root / 'evaluations' / job['id'] / str(step)
@@ -25,7 +33,8 @@ def main(root):
                 keep += list(base.glob(pattern))
             evidence.append(dict(step=step, artifacts=[dict(path=str(path), sha256=sha(path)) for path in sorted(set(keep))]))
         audits = [dict(path=str(path), sha256=sha(path)) for path in (root / 'audits').glob(job['id'] + '*.json')]
-        rows.append(dict(job=job, terminal=terminal, terminal_sha256=sha(terminal_path), evidence=evidence, audits=audits))
+        rows.append(dict(job=job, terminal=terminal, terminal_sha256=sha(terminal_path), evidence=evidence, audits=audits,
+                         original_terminal=original_terminal, correction_binding=read(correction) if correction.exists() else None))
     outcomes = {}
     for row in rows:outcomes[row['terminal']['outcome']] = outcomes.get(row['terminal']['outcome'], 0) + 1
     report = dict(passed=all(row['terminal'].get('passed') for row in rows), outcomes=outcomes, jobs=len(rows), rows=rows,

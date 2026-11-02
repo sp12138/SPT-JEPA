@@ -93,9 +93,16 @@ def main(root, ident, gpu):
             parent_terminal = Path(row['repair_parent_terminal'])
             binding = read(root / 'bindings' / (ident + '.json'))
             assert sha(parent_terminal) == binding['parent_terminal_sha256']
-            complete = read(run / 'stage-complete.json')
-            assert complete['stage_complete'] and complete['stop_step'] == reuse_step
-            assert complete['config_sha256'] == sha(run / 'config.json')
+            if row.get('recovered_stage_proof'):
+                complete = read(row['recovered_stage_proof'])
+                assert complete['passed'] and complete['step'] == reuse_step
+                assert complete['config_sha256'] == sha(run / 'config.json')
+                assert complete['full_checkpoint_sha256'] == sha(run / 'last.ckpt')
+                assert complete['portable_sha256'] == sha(run / f'model-step{reuse_step:07d}/weights.pt')
+            else:
+                complete = read(run / 'stage-complete.json')
+                assert complete['stage_complete'] and complete['stop_step'] == reuse_step
+                assert complete['config_sha256'] == sha(run / 'config.json')
             results.append(dict(name='reuse-completed-training', returncode=0, step=reuse_step,
                 parent_terminal=str(parent_terminal), parent_terminal_sha256=sha(parent_terminal),
                 reason='Training completed exactly; repair only the missing-versus-zero gradient audit. No repeated SGD.'))
@@ -114,13 +121,15 @@ def main(root, ident, gpu):
                   copied_sha256=sha(run / 'last.ckpt'), native_pre_and_post_copy_CPU_restore=True))
         for index, step in enumerate(row['stages']):
             command = [PY, '-B', '-u', '-m', 'as_jepa_tools.train_stage', '--config', str(run / 'config.json'), '--stop-step', str(step)]
+            if row.get('safe_checkpoint_io'):
+                command = [PY, '-B', '-u', str(helper / 'experiments/lingjing_fullspec_20261102/safe_train_stage.py'), '--config', str(run / 'config.json'), '--stop-step', str(step)]
             if index or row.get('resume_parent'):command.append('--resume')
             if step != reuse_step:execute(str(step) + '-train', command, 172800)
             native_audit(root, row, p['source'], step=step)
             cp = run / f'model-step{step:07d}'; before = sha(cp / 'weights.pt'); folder = root / 'evaluations' / ident / str(step)
             if row['task'] == 'cube':
                 cube_evaluate(step, folder); assert before == sha(cp / 'weights.pt'); stages.append(dict(step=step, complete=True)); continue
-            probe = probes(step, folder); first = index == 0; final = step == row['stages'][-1]
+            probe = probes(step, folder); first = step == row.get('original_first_stage_step', row['stages'][0]); final = step == row['stages'][-1]
             evidence = dict(step=step, probes=probe, gate=None)
             if row['model_class'] == 'decoder_free':
                 windows = 256 if final else 64
