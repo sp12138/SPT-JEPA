@@ -1,0 +1,72 @@
+{
+  "passed": true,
+  "checked_utc": "2026-11-02T08:29:39.386396+00:00",
+  "child": {
+    "pid": 720372,
+    "command": [
+      "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+      "-B",
+      "-u",
+      "-m",
+      "as_jepa_tools.train_stage",
+      "--config",
+      "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_P1_20261102/L0-s0/config.json",
+      "--stop-step",
+      "30530"
+    ],
+    "host": "dev2",
+    "gpu": 7
+  },
+  "runtime": {
+    "paths": {
+      "model": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/model.py",
+      "trainer": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/train.py",
+      "factory": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/factory.py",
+      "dataset": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_tools/data.py"
+    },
+    "sha256": {
+      "model": "fc31af3a1ab29e9e1ce8b64d97127a6ff078ce510e9bcb2afbaf7c665df6c8b6",
+      "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+      "factory": "5309366b5f2cc8871d798ceaf71173f4f6e9b7fe30ed3b23ec8fcea85bcac4c5",
+      "dataset": "cae654905532f65623913ee734e5f7f9cd2f7fc1b8ee2d139053b1d3df95a14b"
+    },
+    "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+    "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+    "CUDA_VISIBLE_DEVICES": "7",
+    "command": [
+      "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_P1_20261102/L0-s0/config.json",
+      "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_P1_20261102/L0-s0/config.json"
+    ],
+    "step": 1,
+    "target_step": 30530
+  },
+  "status": {
+    "state": "running",
+    "step": 20800,
+    "elapsed_seconds": 1653.112815618515,
+    "updated_at": 1793608175.8939924,
+    "pid": 720372,
+    "host": "prescottsun-dev2-2d-1030-worker-0",
+    "loss": 0.11695972830057144,
+    "pred": 0.01832691580057144,
+    "sigreg": 1.09375,
+    "feature_std": 0.9874610900878906,
+    "encoder_frozen": 0.0,
+    "grad_norm_encoder": 0.5318008661270142,
+    "grad_norm_predictor": 0.04290245473384857,
+    "grad_norm_renderer": 0.0,
+    "grad_norm_action_encoder": 0.01591729372739792,
+    "grad_norm_projector": 0.35105806589126587,
+    "grad_norm_pred_proj": 0.06235611066222191,
+    "seconds_per_step": 0.07805694103240966,
+    "peak_gib": 12.517037391662598,
+    "learning_rates": [
+      4.801998378015631e-05
+    ]
+  },
+  "queued_seeds": [
+    1,
+    2
+  ],
+  "scope": "One actual seed0 startup check; queued seeds not claimed running. No future maturity/convergence claim."
+}

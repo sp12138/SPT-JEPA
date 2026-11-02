@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "returncode": 0,
+  "source_commit": "0196dc17bf1f6d3823a2edd5509e1508d19bb8e8",
+  "source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+    "source_commit": "0196dc17bf1f6d3823a2edd5509e1508d19bb8e8",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "command": [
+    "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests/as_jepa",
+    "-v"
+  ],
+  "seconds": 130.94219720363617,
+  "validation_directory": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/cpu-validation-v2",
+  "test_reference_inputs": {
+    "model": {
+      "commit": "421523f931f1528ff858b999149c76d0d55e58bc",
+      "path": "as_jepa_lewm/model.py",
+      "sha256": "f5cee42cbe745b7b8d35845c28ff2ff3b2dfdedaf3ec8ea31259482b48bb5258"
+    },
+    "robust": {
+      "commit": "421523f931f1528ff858b999149c76d0d55e58bc",
+      "path": "as_jepa_lewm/robust.py",
+      "sha256": "827efe95e19e572b95b1e51b3bb598295be166194492facad7322e18753deb85"
+    },
+    "response": {
+      "commit": "b3f27e64c28a4f3d971c1cf3eb2a58720c71b4f2",
+      "path": "as_jepa_lewm/robust.py",
+      "sha256": "1203ffa28d480b2da2aab82fbefbedf5432a6f09ce73f0385b4dfd687fcedca7"
+    },
+    "absolute": {
+      "commit": "80fb8bdced97904482aa4533e28f70ffe17ece7d",
+      "path": "as_jepa_lewm/robust.py",
+      "sha256": "b96a835f027935dfb82bc70c7fe32f0ebd2fed875f61dce5b799714b0b524fff"
+    }
+  },
+  "note": "Original full-suite failure retained: immutable source archive lacks Git history/runtime provenance test inputs. This validation workspace copies unchanged tests and binds fixed historical reference files; NN source is unchanged.",
+  "finished_utc": "2026-11-02T06:56:05.375499+00:00"
+}

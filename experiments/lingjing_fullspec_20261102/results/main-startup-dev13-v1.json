@@ -1,0 +1,555 @@
+{
+  "host": "dev13",
+  "checked_utc": "2026-11-02T09:58:45.274255+00:00",
+  "rows": [
+    {
+      "id": "round2-K-K3-s2",
+      "gpu": 0,
+      "worker": {
+        "pid": 1462089,
+        "host": "dev13",
+        "gpu": 0,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "--id",
+          "round2-K-K3-s2",
+          "--gpu",
+          "0"
+        ]
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/forecast_scored.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_tools/benchmark_data.py"
+        },
+        "sha256": {
+          "model": "1642c9960d1504b3f415f72b67a5de07a140dc2f5b2c3cc33a1882be52ef841f",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "5309366b5f2cc8871d798ceaf71173f4f6e9b7fe30ed3b23ec8fcea85bcac4c5",
+          "dataset": "d52f3082f9de68d290c97eeea8972a0a7011f6a8f72726f683168658bca88a71"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+        "CUDA_VISIBLE_DEVICES": "0",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K3-s2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K3-s2/config.json",
+          "--resume"
+        ],
+        "step": 2001,
+        "target_step": 12000
+      },
+      "actual_native": {
+        "pid": 1463117,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.train_stage",
+          "--config",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K3-s2/config.json",
+          "--stop-step",
+          "12000",
+          "--resume"
+        ],
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "health": null,
+      "native_restore_log": true,
+      "actual_cpu_pre_post_copy": true
+    },
+    {
+      "id": "round2-K-K4-s1",
+      "gpu": 1,
+      "worker": {
+        "pid": 1462155,
+        "host": "dev13",
+        "gpu": 1,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "--id",
+          "round2-K-K4-s1",
+          "--gpu",
+          "1"
+        ]
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/forecast_scored.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_tools/benchmark_gap.py"
+        },
+        "sha256": {
+          "model": "1642c9960d1504b3f415f72b67a5de07a140dc2f5b2c3cc33a1882be52ef841f",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "5309366b5f2cc8871d798ceaf71173f4f6e9b7fe30ed3b23ec8fcea85bcac4c5",
+          "dataset": "cb7e3cdb2a97e086e1596b03d3bf8f7c2c363b3e1ef17062a0dfd1c98cfa9b47"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+        "CUDA_VISIBLE_DEVICES": "1",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K4-s1/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K4-s1/config.json",
+          "--resume"
+        ],
+        "step": 2001,
+        "target_step": 12000
+      },
+      "actual_native": {
+        "pid": 1463111,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.train_stage",
+          "--config",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K4-s1/config.json",
+          "--stop-step",
+          "12000",
+          "--resume"
+        ],
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "CUDA_VISIBLE_DEVICES": "1"
+      },
+      "health": null,
+      "native_restore_log": true,
+      "actual_cpu_pre_post_copy": true
+    },
+    {
+      "id": "round2-K-K4-s2",
+      "gpu": 2,
+      "worker": {
+        "pid": 1462221,
+        "host": "dev13",
+        "gpu": 2,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "--id",
+          "round2-K-K4-s2",
+          "--gpu",
+          "2"
+        ]
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/forecast_scored.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_tools/benchmark_gap.py"
+        },
+        "sha256": {
+          "model": "1642c9960d1504b3f415f72b67a5de07a140dc2f5b2c3cc33a1882be52ef841f",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "5309366b5f2cc8871d798ceaf71173f4f6e9b7fe30ed3b23ec8fcea85bcac4c5",
+          "dataset": "cb7e3cdb2a97e086e1596b03d3bf8f7c2c363b3e1ef17062a0dfd1c98cfa9b47"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+        "CUDA_VISIBLE_DEVICES": "2",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K4-s2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K4-s2/config.json",
+          "--resume"
+        ],
+        "step": 2001,
+        "target_step": 12000
+      },
+      "actual_native": {
+        "pid": 1463107,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.train_stage",
+          "--config",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K4-s2/config.json",
+          "--stop-step",
+          "12000",
+          "--resume"
+        ],
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "CUDA_VISIBLE_DEVICES": "2"
+      },
+      "health": null,
+      "native_restore_log": true,
+      "actual_cpu_pre_post_copy": true
+    },
+    {
+      "id": "round2-K-K5-s1",
+      "gpu": 3,
+      "worker": {
+        "pid": 1462287,
+        "host": "dev13",
+        "gpu": 3,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "--id",
+          "round2-K-K5-s1",
+          "--gpu",
+          "3"
+        ]
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/forecast_scored.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_tools/benchmark_gap.py"
+        },
+        "sha256": {
+          "model": "1642c9960d1504b3f415f72b67a5de07a140dc2f5b2c3cc33a1882be52ef841f",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "5309366b5f2cc8871d798ceaf71173f4f6e9b7fe30ed3b23ec8fcea85bcac4c5",
+          "dataset": "cb7e3cdb2a97e086e1596b03d3bf8f7c2c363b3e1ef17062a0dfd1c98cfa9b47"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+        "CUDA_VISIBLE_DEVICES": "3",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K5-s1/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K5-s1/config.json",
+          "--resume"
+        ],
+        "step": 2001,
+        "target_step": 12000
+      },
+      "actual_native": {
+        "pid": 1463112,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.train_stage",
+          "--config",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K5-s1/config.json",
+          "--stop-step",
+          "12000",
+          "--resume"
+        ],
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "CUDA_VISIBLE_DEVICES": "3"
+      },
+      "health": null,
+      "native_restore_log": true,
+      "actual_cpu_pre_post_copy": true
+    },
+    {
+      "id": "round2-K-K5-s2",
+      "gpu": 4,
+      "worker": {
+        "pid": 1462353,
+        "host": "dev13",
+        "gpu": 4,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "--id",
+          "round2-K-K5-s2",
+          "--gpu",
+          "4"
+        ]
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/forecast_scored.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_tools/benchmark_gap.py"
+        },
+        "sha256": {
+          "model": "1642c9960d1504b3f415f72b67a5de07a140dc2f5b2c3cc33a1882be52ef841f",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "5309366b5f2cc8871d798ceaf71173f4f6e9b7fe30ed3b23ec8fcea85bcac4c5",
+          "dataset": "cb7e3cdb2a97e086e1596b03d3bf8f7c2c363b3e1ef17062a0dfd1c98cfa9b47"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+        "CUDA_VISIBLE_DEVICES": "4",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K5-s2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K5-s2/config.json",
+          "--resume"
+        ],
+        "step": 2001,
+        "target_step": 12000
+      },
+      "actual_native": {
+        "pid": 1463113,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.train_stage",
+          "--config",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K5-s2/config.json",
+          "--stop-step",
+          "12000",
+          "--resume"
+        ],
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "CUDA_VISIBLE_DEVICES": "4"
+      },
+      "health": null,
+      "native_restore_log": true,
+      "actual_cpu_pre_post_copy": true
+    },
+    {
+      "id": "round2-K-K6-s1",
+      "gpu": 5,
+      "worker": {
+        "pid": 1462419,
+        "host": "dev13",
+        "gpu": 5,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "--id",
+          "round2-K-K6-s1",
+          "--gpu",
+          "5"
+        ]
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/forecast_scored.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_tools/benchmark_gap.py"
+        },
+        "sha256": {
+          "model": "1642c9960d1504b3f415f72b67a5de07a140dc2f5b2c3cc33a1882be52ef841f",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "5309366b5f2cc8871d798ceaf71173f4f6e9b7fe30ed3b23ec8fcea85bcac4c5",
+          "dataset": "cb7e3cdb2a97e086e1596b03d3bf8f7c2c363b3e1ef17062a0dfd1c98cfa9b47"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+        "CUDA_VISIBLE_DEVICES": "5",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K6-s1/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K6-s1/config.json",
+          "--resume"
+        ],
+        "step": 2001,
+        "target_step": 12000
+      },
+      "actual_native": {
+        "pid": 1463108,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.train_stage",
+          "--config",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K6-s1/config.json",
+          "--stop-step",
+          "12000",
+          "--resume"
+        ],
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "CUDA_VISIBLE_DEVICES": "5"
+      },
+      "health": null,
+      "native_restore_log": true,
+      "actual_cpu_pre_post_copy": true
+    },
+    {
+      "id": "round2-K-K6-s2",
+      "gpu": 6,
+      "worker": {
+        "pid": 1462485,
+        "host": "dev13",
+        "gpu": 6,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "--id",
+          "round2-K-K6-s2",
+          "--gpu",
+          "6"
+        ]
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/forecast_scored.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_tools/benchmark_gap.py"
+        },
+        "sha256": {
+          "model": "1642c9960d1504b3f415f72b67a5de07a140dc2f5b2c3cc33a1882be52ef841f",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "5309366b5f2cc8871d798ceaf71173f4f6e9b7fe30ed3b23ec8fcea85bcac4c5",
+          "dataset": "cb7e3cdb2a97e086e1596b03d3bf8f7c2c363b3e1ef17062a0dfd1c98cfa9b47"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+        "CUDA_VISIBLE_DEVICES": "6",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K6-s2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K6-s2/config.json",
+          "--resume"
+        ],
+        "step": 2001,
+        "target_step": 12000
+      },
+      "actual_native": {
+        "pid": 1463114,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.train_stage",
+          "--config",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/round2-K-K6-s2/config.json",
+          "--stop-step",
+          "12000",
+          "--resume"
+        ],
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "CUDA_VISIBLE_DEVICES": "6"
+      },
+      "health": null,
+      "native_restore_log": true,
+      "actual_cpu_pre_post_copy": true
+    },
+    {
+      "id": "decoder_free-A-b0.1-l1-s1",
+      "gpu": 7,
+      "worker": {
+        "pid": 1462551,
+        "host": "dev13",
+        "gpu": 7,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/full-helper-v3/experiments/lingjing_fullspec_20261102/full_worker.py",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102",
+          "--id",
+          "decoder_free-A-b0.1-l1-s1",
+          "--gpu",
+          "7"
+        ]
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/decoder_free.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1/as_jepa_tools/data.py"
+        },
+        "sha256": {
+          "model": "7cfa85632920c07f39c4baa6ead1d329f4dc4f326d713baf2d7ae346d344f94a",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "5309366b5f2cc8871d798ceaf71173f4f6e9b7fe30ed3b23ec8fcea85bcac4c5",
+          "dataset": "cae654905532f65623913ee734e5f7f9cd2f7fc1b8ee2d139053b1d3df95a14b"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030",
+        "CUDA_VISIBLE_DEVICES": "7",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/decoder_free-A-b0.1-l1-s1/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/decoder_free-A-b0.1-l1-s1/config.json"
+        ],
+        "step": 1,
+        "target_step": 12491
+      },
+      "actual_native": {
+        "pid": 1462615,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "as_jepa_tools.train_stage",
+          "--config",
+          "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_main_v3_20261102/decoder_free-A-b0.1-l1-s1/config.json",
+          "--stop-step",
+          "12491"
+        ],
+        "cwd": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_source_20261102/source-v1",
+        "CUDA_VISIBLE_DEVICES": "7"
+      },
+      "health": {
+        "step": 900,
+        "loss": 137.8096466064453,
+        "gradients": {
+          "encoder": {
+            "value": 4569.52587890625,
+            "expectation": "active",
+            "passed": true
+          },
+          "predictor": {
+            "value": 473.0855407714844,
+            "expectation": "active",
+            "passed": true
+          },
+          "action_encoder": {
+            "value": 3.903722047805786,
+            "expectation": "active",
+            "passed": true
+          },
+          "pool": {
+            "value": 6844.5556640625,
+            "expectation": "active",
+            "passed": true
+          },
+          "renderer": {
+            "value": 0.0,
+            "expectation": "optional",
+            "passed": true
+          }
+        }
+      }
+    }
+  ],
+  "failures": [],
+  "gpus": "0, 133811, 0\n1, 133811, 0\n2, 133811, 0\n3, 133811, 0\n4, 133811, 0\n5, 133811, 0\n6, 133811, 0\n7, 30065, 89\n",
+  "scope": "One-shot actual startup/source/restoration/recent-loss-and-gradient review,not a periodic monitor or partial planning-score review."
+}
