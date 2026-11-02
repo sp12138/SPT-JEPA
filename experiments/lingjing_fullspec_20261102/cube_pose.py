@@ -43,7 +43,10 @@ def main(checkpoint, config, seed, output):
         for key, value in batch.items():states[key].append(value.cpu().numpy())
     states = {key: np.concatenate(value) for key, value in states.items()}
     np.testing.assert_array_equal(actions.numpy(), refs['actions'])
-    rng = np.random.default_rng(1042); states['observed_noisy'] = states['observed_future'] + model.sigma0 * rng.standard_normal(states['observed_future'].shape)
+    dimension = observed.shape[-1]
+    if model.mode != 'L0':
+        rng = np.random.default_rng(1042)
+        states['observed_noisy'] = states['observed_future'] + model.sigma0 * rng.standard_normal(states['observed_future'].shape)
     import h5py, hdf5plugin
     card = read(refs['data'] / 'dataset_card.json')
     with h5py.File(card['h5_path'], 'r', swmr=True) as h5:
@@ -52,8 +55,8 @@ def main(checkpoint, config, seed, output):
         xyz = old.spatial.load_xyz(h5, refs['manifests']['train']).reshape(-1, 3)
         vxyz = old.spatial.load_xyz(h5, refs['manifests']['validation'])[:, 1:].reshape(-1, 3)
     target = np.concatenate([old.pose.invariant(tq), xyz], -1); validation = np.concatenate([old.pose.invariant(vq), vxyz], -1)
-    keys = list(states); concatenated = np.concatenate([states[key].reshape(448, 64) for key in keys])
-    outputs, normalization = old.fit_and_predict(saved['train_observed'].reshape(1024, 64).astype(np.float64), concatenated.astype(np.float64), target)
+    keys = list(states); concatenated = np.concatenate([states[key].reshape(448, dimension) for key in keys])
+    outputs, normalization = old.fit_and_predict(saved['train_observed'].reshape(1024, dimension).astype(np.float64), concatenated.astype(np.float64), target)
     rows = []
     for kind, (train_pred, pred, configuration) in outputs.items():
         scores = {key: old.spatial.score(pred[i*448:(i+1)*448], validation, vq, target, tq, 64) for i, key in enumerate(keys)}
@@ -63,6 +66,7 @@ def main(checkpoint, config, seed, output):
     out = Path(output); out.mkdir(parents=True, exist_ok=False)
     write(out / 'pose.json', dict(passed=True, rows=rows, fixed_manifests=refs['manifests'], reference_provenance=refs['provenance'],
           checkpoint_sha256=sha(Path(checkpoint) / 'weights.pt'), state_before=before, state_after=state_hash(model), model_updates=0,
+          actual_embedding_dimension=dimension, model_mode=model.mode,
           helpers_sha256={str(module.__file__): sha(module.__file__) for module in [old.pose, old.spatial]},
           scope='Same fixed1024train/448validation observations and untuned linear/RBF readouts. Physical labels fit only the diagnostic heads. Cold initial-only rollouts are not native history3/CEM-selected actions; joint readout is not P0 or a hold guarantee.'))
 
