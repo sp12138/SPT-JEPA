@@ -56,6 +56,17 @@ class ConditionsTest(unittest.TestCase):
                 self.assertEqual(c['forecast'].shape, mu[:, 1:].shape)
                 self.assertFalse(torch.equal(c['one_step'], c['one_step_shuffled']))
 
+    def test_collapse_forecast_keeps_full_action_alignment(self):
+        from as_jepa_tools.collapse_audit import forecast_condition
+        class Model:
+            state_slots, state_width, sigma0, forecast_noise = 2, 3, .1, 'sample'
+            def action_encoder(self, action):return action
+            def _forecast(self, state, action, xi, scale):
+                return state[:, :-1] + action[:, :-1].reshape_as(state[:, :-1]) + scale * xi
+        state = torch.zeros(2, 4, 6); actions = torch.ones(2, 4, 6); xi = torch.ones(2, 3, 2, 3)
+        torch.testing.assert_close(forecast_condition(Model(), state, actions, xi), torch.full((2, 3, 6), 1.1))
+        with self.assertRaises(ValueError):forecast_condition(Model(), state, actions[:, :-1], xi)
+
 
 if __name__ == '__main__':
     unittest.main()

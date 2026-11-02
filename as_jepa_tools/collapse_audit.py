@@ -17,6 +17,15 @@ def variable_dimension_rate(means,surprise,transition_variance_constant=0.):
     return .5*means[:,0].square()+(surprise-transition_variance_constant).sum(1)
 
 
+def forecast_condition(model, noisy, actions, xi):
+    """The training helper owns transition slicing; give it one action slot per frame."""
+    if actions.shape[1] != noisy.shape[1]:
+        raise ValueError('Forecast channel needs the full frame-aligned action sequence')
+    shaped = noisy.reshape(len(noisy), noisy.shape[1], model.state_slots, model.state_width)
+    scale = model.sigma0 if model.forecast_noise == 'sample' else 0.
+    return model._forecast(shaped, model.action_encoder(actions), xi, scale).flatten(2)
+
+
 def summarize_errors(posterior, anchor, moving, dimension_rate, ratio_limit=.9):
     posterior, anchor = np.asarray(posterior), np.asarray(anchor)
     moving, dimension_rate = np.asarray(moving, dtype=bool), np.asarray(dimension_rate)
@@ -107,8 +116,7 @@ def main():
             if args.condition == "forecast":
                 shaped = noisy.reshape(len(means), width, model.state_slots, model.state_width)
                 xi = torch.randn(shaped[:, 1:].shape, device="cuda", generator=generator)
-                scale = model.sigma0 if model.forecast_noise == "sample" else 0.
-                condition = model._forecast(shaped, model.action_encoder(batch["action"][:, :width - 1]), xi, scale).flatten(2)
+                condition = forecast_condition(model, noisy, batch["action"][:, :width], xi)
             states = condition.flatten(0, 1)
             anchors = anchor.repeat_interleave(width - 1, 0)
             generated = torch.cat([
