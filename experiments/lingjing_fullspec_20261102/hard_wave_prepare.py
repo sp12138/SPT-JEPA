@@ -31,6 +31,8 @@ def main(root, helper):
         ident = ident or recipe['id']; run = root / ident
         cfg.update(output=str(run), checkpoint_every=1000, retain_steps=[2000, 6000, 12000],
                    record_initial_weights=True, export_initial=True, record_runtime_source=True, trace_batches=False)
+        prefixes = ['encoder', 'pool', 'predictor', 'action_encoder'] + (['renderer'] if recipe['model_class'] == 'forecast_scored' else [])
+        cfg['audit_expectations'] = dict(gradients={prefix: 'active' for prefix in prefixes})
         reference = references[recipe['task'], recipe['seed']]
         cfg['initial_encoder_checkpoint'] = reference['initial_encoder_checkpoint']
         cfg['initial_encoder_scope'] = 'Exact original RANDOM encoder shared with archived controls; no trained/pretrained encoder.'
@@ -53,6 +55,10 @@ def main(root, helper):
         recipe = next(r for r in p['runs'] if r['id'] == f'decoder_free-T-df-s{seed}')
         add(recipe, f'decoder_free-T-df-init3-s{seed}', dict(calibrate_state_std=.3))
     assert len(jobs) == 36
+    # Put the most discriminating interventions first, before code-resolution followups.
+    jobs.sort(key=lambda r: (0 if r['conditional_diagnostic'] else 1 if r['task'] == 'tworoom' else 2,
+                             r['arm'], r['seed']))
+    for i, job in enumerate(jobs):job['host'] = ['dev2', 'dev13', 'dev15'][i % 3]
     write(root / 'protocol.json', dict(source=p['source'], helper=helper, jobs=jobs, environment=p['environment'],
           manifests=p['manifests'], manifest_sha256=p['manifest_sha256'], stop_step=2000,
           reused=['Round2 T3/T4 both seeds at2000', 'DF canonical TwoRoom both seeds at2000'],

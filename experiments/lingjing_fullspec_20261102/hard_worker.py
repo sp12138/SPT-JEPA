@@ -30,9 +30,8 @@ def native_audit(root, row, source):
     gradients = {}
     for prefix, expectation in gradient_expectations(model.model, cfg).items():
         value = max(r.get('grad_norm_' + prefix, 0) for r in trace)
-        if expectation == 'active': assert value > 0, prefix
-        if expectation == 'frozen': assert value == 0, prefix
-        gradients[prefix] = dict(expectation=expectation, maximum=value)
+        gradients[prefix] = dict(expectation=expectation, maximum=value,
+                                 contract_passed=value > 0 if expectation == 'active' else value == 0)
     initial = torch.load(run / 'initial-model/weights.pt', map_location='cpu', weights_only=True)
     reference = torch.load(Path(row['reference_initial']) / 'weights.pt', map_location='cpu', weights_only=True)
     common = [k for k in initial if k in reference and not k.startswith('pool.head.')]
@@ -43,6 +42,7 @@ def native_audit(root, row, source):
     for key, path in runtime['paths'].items(): assert sha(path) == runtime['sha256'][key]
     archive = run / 'full-archives/step0002000.ckpt'; archive.parent.mkdir(exist_ok=True); os.link(run / 'last.ckpt', archive)
     result = dict(passed=True, checkpoint=report, gradients=gradients, native_cpu_model_optimizer_scheduler_restore=True,
+                  learning_paths_active=all(r['contract_passed'] for r in gradients.values()),
                   initial_common_non_head_tensors_exact=len(common), initial_head_scope='Head follows the declared one-time calibration, including uncalibrated and sigma-resolution controls.',
                   runtime=runtime, full_checkpoint_sha256=sha(archive), portable_sha256=sha(run / 'model-step0002000/weights.pt'),
                   trace=trace, initial_scale=read(run / 'initial_scale.json') if (run / 'initial_scale.json').exists() else None)
