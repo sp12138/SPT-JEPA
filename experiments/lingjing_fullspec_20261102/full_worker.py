@@ -32,6 +32,13 @@ def main(root, ident, gpu):
     env['TMPDIR'] = '/tmp/spt-lingjing-fullspec'; Path(env['TMPDIR']).mkdir(exist_ok=True, parents=True)
     results = []; stages = []; started = time.monotonic(); outcome = 'execution_error'; error = None
     helper = Path(p['helper']['source']); cp = None
+    io_binding = root / 'SAVE_IO_RUNTIME.json'
+    if io_binding.exists():
+        binding = read(io_binding); source_check(binding['helper'])
+        assert binding['scope'] == 'checkpoint_io_only'
+        assert binding['model_source_commit'] == p['source']['source_commit']
+        helper = Path(binding['helper']['source'])
+        row['safe_checkpoint_io'] = True
     def execute(name, command, timeout=7200):
         if (root / 'STOP').exists() or (run / 'STOP').exists():raise InterruptedError('User stop marker')
         log = root / 'logs' / (ident + '-' + name + '.log')
