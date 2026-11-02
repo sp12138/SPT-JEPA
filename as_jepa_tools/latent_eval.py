@@ -64,6 +64,7 @@ def information(model, data, seed=20261029):
     entry = float(entry_nats(mu[:, 0], model.sigma0).mean())
     surprise = float(surprise_nats(mu[:, 1:], predicted, model.sigma0).sum(1).mean())
     return dict(windows=128, records=records, eigenvalues_over_sigma2=eigenvalues.cpu().tolist(),
+                state_spread_over_sigma0=float(mu.flatten(0, 1).flatten(1).std(0).mean() / model.sigma0),
                 nats_per_direction=(.5 * torch.log1p(eigenvalues)).cpu().tolist(),
                 diagnostics={k: float(v) for k, v in model.information_diagnostics(mu[:, 1:], anchor).items()},
                 information_nats=float(model.information(mu[:, 1:], anchor)),
