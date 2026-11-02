@@ -1,0 +1,92 @@
+{
+  "repository": "https://github.com/facebookresearch/jepa-wms",
+  "source_commit": "13cf1d9c7e476f53c17714d2e0f1dc239a883ce0",
+  "dataset_revision": "6116f042ae7ae4c8e3f1fd2f194f432615664182",
+  "files": {
+    "app/plan_common/datasets/metaworld_hf_dset.py": {
+      "sha256": "83e5975c90870f316140a3d6db22887b9bb46a673ffbc0fd5cb3c33bcefb19c6",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/app/plan_common/datasets/metaworld_hf_dset.py"
+    },
+    "app/plan_common/datasets/traj_dset.py": {
+      "sha256": "865f31178caf99c800b272148f876ab85d2f82ee97e2d7f18946459a80e8c893",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/app/plan_common/datasets/traj_dset.py"
+    },
+    "evals/simu_env_planning/envs/metaworld.py": {
+      "sha256": "e7799e33ccea099e1a479d5f130dbc060cceb1d8f488facb01cf2578f025ca42",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/evals/simu_env_planning/envs/metaworld.py"
+    },
+    "evals/simu_env_planning/envs/wrappers/time_limit.py": {
+      "sha256": "64045359e2158d3e4db406fb4c17af238728fbaf95f18f4422632fe4641fa72f",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/evals/simu_env_planning/envs/wrappers/time_limit.py"
+    },
+    "evals/simu_env_planning/planning/plan_evaluator.py": {
+      "sha256": "7a81a47af6eeea6b024b10d65115cdef96650621b0d60339aaad0a161d9b2ee0",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/evals/simu_env_planning/planning/plan_evaluator.py"
+    },
+    "app/vjepa_wm/modelcustom/simu_env_planning/vit_enc_preds.py": {
+      "sha256": "2a4e30a3beef4c1168679b08ec12b61a5b51d4a9d3b7a040391bebf9026c61a4",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/app/vjepa_wm/modelcustom/simu_env_planning/vit_enc_preds.py"
+    },
+    "configs/vjepa_wm/mw_final_sweep/mw_4f_fsk5_ask1_r224_pred_AdaLN_ftprop_depth6_repro_2roll_save.yaml": {
+      "sha256": "db0c9cab6c12cb6541c222026358e7ccb482aa2276ed12b5a597ff4b547d0bba",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/configs/vjepa_wm/mw_final_sweep/mw_4f_fsk5_ask1_r224_pred_AdaLN_ftprop_depth6_repro_2roll_save.yaml"
+    },
+    "configs/evals/simu_env_planning/mw/jepa-wm/reach-wall_L2_cem_sourcexp_H6_nas3_ctxt2_r256_alpha0.1_ep48_decode.yaml": {
+      "sha256": "37400233186d343e7a830ce820b75e86ad134bc26fa1adf43ebc3fd7ed4591c3",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/configs/evals/simu_env_planning/mw/jepa-wm/reach-wall_L2_cem_sourcexp_H6_nas3_ctxt2_r256_alpha0.1_ep48_decode.yaml"
+    },
+    "hubconf.py": {
+      "sha256": "b7493e1a55eaa0c64444dc8940387471a2c81db7822d1db86090c759df70688a",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/hubconf.py"
+    },
+    "pyproject.toml": {
+      "sha256": "d0f8a2c19ac191f8ccf8e3d7a325277dd93927a5421b9a2a5c87f0ffdfbcf8ba",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/pyproject.toml"
+    },
+    "LICENSE": {
+      "sha256": "1b0556efdc7e72b17b706c041002c6cdc1e0aa257f5e5676ea0f887b2f0854ec",
+      "url": "https://github.com/facebookresearch/jepa-wms/blob/13cf1d9c7e476f53c17714d2e0f1dc239a883ce0/LICENSE"
+    }
+  },
+  "findings": {
+    "python_requires": ">=3.10,<3.11",
+    "official_train_recipe": {
+      "frozen_encoder": "DINOv2-ViT-S/14",
+      "resolution": 224,
+      "context": 3,
+      "frameskip": 5,
+      "action_skip": 1,
+      "primitive_action_dim": 4,
+      "macro_action_dim": 20,
+      "rollout_train_steps": 2,
+      "proprio_feature_dim": 16,
+      "with_reward": false,
+      "trajectory_split_ratio": 0.9,
+      "num_epochs": 50,
+      "default_global_batch": 256
+    },
+    "provided_hub_checkpoint_uses_proprio": true,
+    "proprio_dim": 4,
+    "physical_state_dim": 39,
+    "public_cem": {
+      "samples": 300,
+      "iterations": 15,
+      "elite": 10,
+      "horizon_macro": 6,
+      "execute_macro": 3,
+      "context_planning": 2,
+      "frameskip": 5,
+      "primitive_episode_budget": 100
+    },
+    "public_success": "last info[success] when succ_def=simu; differs from Farama any-time success default.",
+    "goal_generation": "Original public evaluator shares _last_rand_vec through _encode_task/set_task, rather than relying only on reset(seed).",
+    "raw_loader_expected": {
+      "video_frames": 100,
+      "states": 100,
+      "actions": 99,
+      "drop_last_state_and_frame": true
+    },
+    "row_count_verified": false
+  },
+  "scope": "Static pinned-code and paper audit; raw data gated, no dataset-content or actual model restore claim. Native environment sanity separate from official fullPython3.10trainingstack."
+}

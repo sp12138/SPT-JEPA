@@ -1,0 +1,109 @@
+{
+  "status": "PREPARING_METAWORLD_WAITING_DATA_ACCESS",
+  "user_focus": "Meta-World is the main next research direction; finish existing finite proposal queue without extensions.",
+  "old_goal": "paused; no recurring LLM monitor",
+  "machines": [
+    "dev2",
+    "dev13",
+    "dev15"
+  ],
+  "old_queue": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102",
+    "snapshot_utc": "2026-11-02T19:23:06.952560+00:00",
+    "primary_total": 135,
+    "primary_disposed": 85,
+    "primary_unfinished": 50,
+    "unfinished_started": 21,
+    "unfinished_not_started": 29,
+    "remaining_blocks": {
+      "decoder_free/E": 2,
+      "round2/P2": 15,
+      "decoder_free/B": 2,
+      "round2/P3": 10,
+      "round2/P4": 1,
+      "decoder_free/C": 4,
+      "decoder_free/D": 6,
+      "decoder_free/G": 8,
+      "decoder_free/H": 2
+    },
+    "no_new_conditional_extensions": true,
+    "source_unchanged": "0196dc17bf1f6d3823a2edd5509e1508d19bb8e8",
+    "final_review": {
+      "evidence": "results/coverage-after-preparation.json",
+      "checked_utc": "2026-11-02T19:56:39.665034+00:00",
+      "main106_counts": {
+        "inherited_nominal_budget_complete": 12,
+        "nominal_budget_complete": 39,
+        "early_collapsed_at_first_epoch": 7,
+        "unfinished": 48
+      },
+      "primary_disposed": 87,
+      "primary_unfinished": 48,
+      "unfinished_started": 21,
+      "unfinished_not_started": 27,
+      "no_error_endpoints": true
+    }
+  },
+  "public_source": {
+    "repository": "https://github.com/facebookresearch/jepa-wms",
+    "commit": "13cf1d9c7e476f53c17714d2e0f1dc239a883ce0",
+    "efs": "/efs/prescottsun/SPT-JEPA/sources/jepa-wms-13cf1d9",
+    "manifest": "/efs/prescottsun/SPT-JEPA/reports/metaworld_transition_20261103/source-v1.json"
+  },
+  "dataset": {
+    "repository": "facebook/jepa-wms",
+    "revision": "6116f042ae7ae4c8e3f1fd2f194f432615664182",
+    "raw_metaworld_shards": 126,
+    "raw_metaworld_bytes": 737175770,
+    "expected_episodes_from_paper": 12600,
+    "raw_content_verified": false,
+    "access": "GatedRepoError; no existingHFlogin onallthreehosts; userasked to authorize/login ondev2; neverrequestorprinttokeninchat."
+  },
+  "native_environment": {
+    "prefix": "/efs/prescottsun/SPT-JEPA/environments/metaworld-sanity-20261103",
+    "version_pins": {
+      "metaworld": "3.1.1",
+      "mujoco": "3.3.0",
+      "gym": "0.23.1",
+      "setuptools": "80.9.0",
+      "packaging": "25.0"
+    },
+    "scope": "SeparatePython3.12native/wrappersanity,not the officialfullPython3.10JEPAtrainingstack.",
+    "status": "THREE_TASK_NATIVE_INTERFACE_PASS",
+    "proof": "results/environment-preflight-v5.json",
+    "checked_utc": "2026-11-02T19:51:27.818321+00:00",
+    "public_task_reconstruction_exact": true,
+    "task_sanity": [
+      {
+        "task": "mw-reach",
+        "steps": 100,
+        "expert_any_success": true
+      },
+      {
+        "task": "mw-push",
+        "steps": 100,
+        "expert_any_success": true
+      },
+      {
+        "task": "mw-bin-picking",
+        "steps": 100,
+        "expert_any_success": false
+      }
+    ],
+    "completion": "results/native-completion.json",
+    "requirements": "results/native-requirements.txt"
+  },
+  "training": {
+    "new_metaworld_SGD": 0,
+    "continuous_monitor": false,
+    "next_stage": "Authorized one-shard schema/video check,thencompletefixedmanifest andexactbaselinepreflight before any candidate training."
+  },
+  "files": {
+    "plan": "PROTOCOL.md",
+    "source_audit": "results/source-audit.json",
+    "access": "results/access-and-inventory-v1.json",
+    "existing_snapshot": "results/old-campaign-inventory.json",
+    "existing_complete_outputs": "results/completed-performance.json",
+    "F7_F8": "results/F7-F8-paired.json"
+  }
+}
