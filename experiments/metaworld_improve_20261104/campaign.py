@@ -134,7 +134,7 @@ def work(root,source,helper,host,gpu,python):
     assert digest(run/'config.json')==recipe['config_sha256']
     assert digest(run/'last.ckpt')==proof['parent_proof']['native_sha256']
     env=environments(root,source,helper,gpu)
-    plan=read(root/'plan.json');entry=plan.get('entry_step',8240);stages=plan['stages']
+    plan=read(root/'plan.json');entry=proof.get('entry_step',plan.get('entry_step',8240));stages=recipe.get('stages',plan['stages'])
     if proof.get('continuation_rng_seed') is not None:
         command([python,'-B','-u',str(helper/'experiments/metaworld_improve_20261104/campaign.py'),
                  '--mode','reseed','--root',str(root),'--source',str(source),'--helper',str(helper),

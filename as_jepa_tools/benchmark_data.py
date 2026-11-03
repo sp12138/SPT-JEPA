@@ -1,5 +1,7 @@
 """Episode-disjoint, pixel/action-only windows for public HDF5 control datasets."""
 import json
+import errno
+import time
 from pathlib import Path
 import numpy as np
 import torch
@@ -47,6 +49,16 @@ class BenchmarkWindows(Dataset):
             # releases its source-file/chunk caches on remote filesystems.
             self.pixels=self.file["pixels"]
     def __getitem__(self,index):
+        for attempt in range(3):
+            try:return self._item(index)
+            except OSError as error:
+                if error.errno!=errno.EIO or attempt==2:raise
+                # Retry the SAME read-only sample with fresh VDS/source handles.
+                # Never skip a row,replace pixels or change a random stream.
+                if self.file is not None:self.file.close()
+                self.file=None;self.actions=None;self.pixels=None
+                time.sleep(1+attempt)
+    def _item(self,index):
         self.open();ep,start=self.locate(index);offset=int(self.offsets[ep]);n=int(self.lengths[ep]);w=self.window
         rows=offset+start+np.arange(w)*self.stride
         # Read the small enclosing interval before selecting rows in NumPy.
