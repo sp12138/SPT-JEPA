@@ -24,7 +24,9 @@ def main(root):
                 save(work/'blocked.json',dict(executed=False,reason='Required native training stage failed',
                                              training_failure=str(run/'worker-failed.json')))
         disposed=all(any((Path(job['work'])/name).exists() for name in ['complete.json','failed.json','blocked.json']) for job in jobs)
-        if training_disposed and disposed:break
+        diagnostic_jobs=read(root/'diagnostic-plan.json')['jobs'] if (root/'diagnostic-plan.json').exists() else []
+        diagnostics_disposed=all(any((Path(j['work'])/name).exists() for name in ['complete.json','failed.json']) for j in diagnostic_jobs)
+        if training_disposed and disposed and diagnostics_disposed:break
         if (root/'STOP').exists():break
         time.sleep(20)
     counts=defaultdict(int);outcomes=[];observations=[];archive_checks=[]
@@ -54,8 +56,17 @@ def main(root):
                            goal_construction_failures=len(rows)-len(valid)))
     complete=(counts['training_complete']==8 and counts['evaluation_complete']==192
               and len(archive_checks)==32 and all(c['passed'] for c in archive_checks))
+    diagnostics=[]
+    for j in read(root/'diagnostic-plan.json')['jobs'] if (root/'diagnostic-plan.json').exists() else []:
+        work=Path(j['work']);state='complete' if (work/'complete.json').exists() else 'failed' if (work/'failed.json').exists() else 'unfinished'
+        diagnostics.append(dict(**j,state=state));counts['diagnostic_'+state]+=1
+        if state=='complete':
+            metric=read(work/'output/metrics.json')
+            assert digest(work/'output/metrics.json')==read(work/'complete.json')['metrics_sha256']
+            assert metric['passed'] and metric['model_state_before']==metric['model_state_after']
     summary=dict(passed=complete,closed_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),counts=dict(counts),
                  groups=groups,observations=observations,outcomes=outcomes,archives=archive_checks,
+                 diagnostics=diagnostics,
                  deadline_utc=dispatch['deadline_utc'],
                  scope='Prespecified independent LeRobot RGB image-goal extension on8tasks,2training seeds,500-native-step any-success. '
                        'All endpoints,cases,failed goal constructions and negative results retained. '

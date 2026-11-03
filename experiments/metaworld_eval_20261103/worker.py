@@ -82,9 +82,25 @@ def main(args):
     if args.mode=='train':
         run=Path(args.run);cfg=read(run/'config.json')
         assert read(gate)['config_sha256'][run.name]==digest(run/'config.json')
-        assert read(run/'audit-step2.json')['passed']
         stages=[600,2472,8240]
-        if args.adopt_native_pid:
+        if args.resume_step:
+            assert not args.adopt_native_pid
+            migration=read(run/'MIGRATION.json')
+            assert migration['passed'] and migration['step']==args.resume_step
+            assert migration['config_sha256']==digest(run/'config.json')
+            assert migration['checkpoint_sha256']==digest(run/'last.ckpt')
+            assert migration['runtime_source']==str(source)
+            command([args.python,'-B','-u',str(helper/'experiments/metaworld_eval_20261103/audit.py'),
+                     '--run',str(run),'--step',str(args.resume_step),'--output',str(run/f'audit-step{args.resume_step}.json')],
+                     run/f'audit-step{args.resume_step}.log',env,source,deadline,cap=1800)
+            restored=read(run/f'audit-step{args.resume_step}.json')
+            assert restored['passed'] and restored['checkpoint_sha256']==migration['checkpoint_sha256']
+            assert restored['config_sha256']==migration['config_sha256']
+            # Earlier archives retain their original provenance; only the
+            # entry-state CPU restore/backward audit is performed again here.
+            stages=[step for step in stages if step>args.resume_step]
+        elif args.adopt_native_pid:
+            assert read(run/'audit-step2.json')['passed']
             import psutil
             approval=read(root/'DATA_IO_APPROVED.json');assert approval['passed']
             assert approval['source']==str(source)
@@ -105,7 +121,9 @@ def main(args):
             assert read(run/f'audit-step{adopted}.json')['passed']
             if not (run/f'archive-step{adopted:07d}/manifest.json').exists():archive(run,adopted)
             stages=[step for step in stages if step>adopted]
-        else:archive(run,2)
+        else:
+            assert read(run/'audit-step2.json')['passed']
+            archive(run,2)
         for step in stages:
             if (root/'STOP').exists() or (run/'STOP').exists():raise RuntimeError('User stop marker')
             free_gpu(args.gpu)
@@ -135,7 +153,30 @@ def main(args):
             audit=Path(job['run'])/f"audit-step{job['step']}.json"
             if audit.exists() and read(audit)['passed']:ready.append(job)
         if disposed==len(jobs):break
-        if not ready:time.sleep(20);continue
+        if not ready:
+            # Use otherwise idle evaluation slots for a fixed,read-only
+            # mechanism queue. Primary task evaluations always take priority.
+            diagnostic_plan=root/'diagnostic-plan.json';claimed=False
+            for diagnostic in read(diagnostic_plan)['jobs'] if diagnostic_plan.exists() else []:
+                work=Path(diagnostic['work'])
+                if any((work/name).exists() for name in ['complete.json','failed.json','claim']):continue
+                work.mkdir(parents=True,exist_ok=True)
+                try:(work/'claim').mkdir()
+                except FileExistsError:continue
+                claimed=True
+                save(work/'claim/owner.json',dict(host=args.host,gpu=args.gpu,pid=os.getpid(),time=timestamp()))
+                try:
+                    free_gpu(args.gpu)
+                    command([args.python,'-B','-u',str(helper/'experiments/metaworld_eval_20261103/diagnose.py'),
+                             '--checkpoint',diagnostic['checkpoint'],'--data',cfg_data(root),
+                             '--output',str(work/'output')],work/'diagnose.log',env,source,deadline,cap=10800)
+                    report=read(work/'output/metrics.json');assert report['passed'] and report['model_updates']==0
+                    save(work/'complete.json',dict(passed=True,finished_utc=timestamp(),metrics_sha256=digest(work/'output/metrics.json')))
+                except Exception:
+                    save(work/'failed.json',dict(passed=False,finished_utc=timestamp(),traceback=traceback.format_exc()))
+                break
+            if not claimed:time.sleep(20)
+            continue
         # Existing JSON order alternates models/tasks; all methods receive the
         # same frozen cases, budgets and seed banks. No outcome-based selection.
         for job in ready:
@@ -176,6 +217,7 @@ if __name__=='__main__':
     parser.add_argument('--gpu',type=int,required=True);parser.add_argument('--host',required=True);parser.add_argument('--run')
     parser.add_argument('--adopt-native-pid',type=int)
     parser.add_argument('--adopt-stop-step',type=int,choices=[600,2472,8240],default=600)
+    parser.add_argument('--resume-step',type=int,choices=[2472])
     args=parser.parse_args()
     try:main(args)
     except Exception:
