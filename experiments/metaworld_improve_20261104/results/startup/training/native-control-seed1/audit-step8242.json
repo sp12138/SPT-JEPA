@@ -1,0 +1,134 @@
+{
+  "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training/native-control-seed1",
+  "step": 8242,
+  "config_sha256": "853e9edf5a5efd0f54dc400d852b2936e643bc31ce049e3cbabd54c95025cd3e",
+  "checkpoint_sha256": "5807cf5519e0eb71a34aae345136c200674b0b6a2c8029639f1238efae5e54cd",
+  "portable_sha256": "d2006c1285e3d91b998b2e52d26c543d48d42846a18f7a3616886677804b7b6f",
+  "checkpoint": {
+    "step": 8242,
+    "expected_step": 8242,
+    "checks": {
+      "exact_step": true,
+      "model_finite": true,
+      "portable_finite": true,
+      "optimizer_present": true,
+      "optimizer_finite": true,
+      "scheduler_present": true,
+      "scheduler_finite": true,
+      "rng_present": true,
+      "sample_cursor": true,
+      "portable_equal": true
+    },
+    "portable_missing": [],
+    "portable_different": [],
+    "campaign_samples": 1054976
+  },
+  "actual_cpu_restore": {
+    "model": true,
+    "optimizer": true,
+    "scheduler": true
+  },
+  "updated_tensors": 303,
+  "heldout_windows": {
+    "split": "test",
+    "indices": [
+      9385,
+      8670
+    ],
+    "original_episodes": [
+      1897,
+      1990
+    ],
+    "episode": [
+      9950,
+      9487
+    ],
+    "rows": [
+      [
+        160621,
+        160622,
+        160623,
+        160624,
+        160625,
+        160626,
+        160627,
+        160628
+      ],
+      [
+        151853,
+        151854,
+        151855,
+        151856,
+        151857,
+        151858,
+        151859,
+        151860
+      ]
+    ]
+  },
+  "loss": 0.12249720096588135,
+  "loss_finite": true,
+  "metrics": {
+    "loss": 0.12249720096588135,
+    "pred": 0.014578314498066902,
+    "sigreg": 1.1990987062454224,
+    "feature_std": 0.6938091516494751
+  },
+  "gradients": {
+    "encoder": {
+      "expectation": "active",
+      "parameters": 5501376,
+      "parameter_tensors": 198,
+      "trainable_parameters": 5501376,
+      "gradient_tensors": 198,
+      "gradient_norm": 1.2869987683338848,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "predictor": {
+      "expectation": "active",
+      "parameters": 10792128,
+      "parameter_tensors": 81,
+      "trainable_parameters": 10792128,
+      "gradient_tensors": 81,
+      "gradient_norm": 0.1257184568221195,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "action_encoder": {
+      "expectation": "active",
+      "parameters": 156306,
+      "parameter_tensors": 6,
+      "trainable_parameters": 156306,
+      "gradient_tensors": 6,
+      "gradient_norm": 0.02713740177063175,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "projector": {
+      "expectation": "active",
+      "parameters": 792768,
+      "parameter_tensors": 6,
+      "trainable_parameters": 792768,
+      "gradient_tensors": 6,
+      "gradient_norm": 0.4957975108256025,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "pred_proj": {
+      "expectation": "active",
+      "parameters": 792768,
+      "parameter_tensors": 6,
+      "trainable_parameters": 792768,
+      "gradient_tensors": 6,
+      "gradient_norm": 0.35109727964181286,
+      "gradients_finite": true,
+      "passed": true
+    }
+  },
+  "all_parameter_gradients_finite": true,
+  "eval_buffers_unchanged": true,
+  "passed": true,
+  "finished_utc": "2026-11-03T18:53:21.888224+00:00",
+  "scope": "Native full model/AdamW/scheduler CPU restores; actual held-out FP32 backward without optimizer step. No physical/optimal-action labels. Positive gradients are interface evidence,not task performance."
+}

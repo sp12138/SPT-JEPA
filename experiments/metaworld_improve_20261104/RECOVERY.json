@@ -1,0 +1,148 @@
+{
+  "updated_utc": "2026-11-03T19:47:43.123442+00:00",
+  "objective": "High MetaWorld control success with sample-level candidate learning;current performance inadequate. Use only dev13/dev15 and useful full GPU utilization.",
+  "hosts": [
+    "dev13",
+    "dev15"
+  ],
+  "excluded_hosts": [
+    "dev2"
+  ],
+  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104",
+  "previous_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104",
+  "status": "All16 effective logical screening runs now pass actual entry/full-state/optimizer-association/native2update/FP32-backward/planning/100new-update/positive-native-gradient/source checks. Eight earlier dev15EIO errors preserved with corrected fresh attempts;no current effective execution failure atstartup snapshot. Control performance gains not yet established;medium and conditional long jobs run finitely in background.",
+  "source": {
+    "screen_NN_commit": "b286906",
+    "dev13": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/source-b286906",
+    "dev15_recovery_and_long": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
+    "IO_commit": "66650f4",
+    "recovery_commit": "7b78f5d",
+    "scope": "All NN modules/trainers byte-identical across original/recovery;only Dataset boundedEIO retries differ. innovation.py adds parameter-free per-sample anchored pixel-innovation targets;factory mapping explicit."
+  },
+  "baseline10": {
+    "summary": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/results/summary.json",
+    "local": "experiments/metaworld_improve_20261104/results/baseline10/summary.json",
+    "training_complete": 8,
+    "evaluation_complete": 192,
+    "episodes": 1600,
+    "macro8_primary_fresh_combined": {
+      "temporal-forecast": 16.5625,
+      "as-jepa": 11.875,
+      "forecast-render": 11.875,
+      "native-lewm": 8.125
+    },
+    "six_manipulation_tasks_all_zero": true,
+    "scope": "Independent public LeRobot scripted data,RGB-only image-goal8-task500-step any-success;not officialJEPA-WMs/canonicalMT50. AS51.1M/native18.0M,differentoptimizer,not equalFLOPs."
+  },
+  "screen": {
+    "methods": [
+      "tf-control",
+      "native-control",
+      "high-noise",
+      "zero-anchor",
+      "forecast-only",
+      "quadrants",
+      "shuffled-control",
+      "innovation"
+    ],
+    "original_parent_seeds": [
+      1,
+      2
+    ],
+    "initial_step": 8240,
+    "native_two_update_step": 8242,
+    "mid_step": 9888,
+    "final_step": 16480,
+    "lr_horizon": 41200,
+    "primary_endpoints": 384,
+    "episodes": 3200,
+    "scope": "Same trained parent per seed,not fresh/pretrained initialization. Native has BN/SIGReg;all AS candidates sample-level. No privileged state/reward/success/task-ID/optimal-action learner/planner inputs."
+  },
+  "io_recovery": {
+    "record": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/EIO_RECOVERY.json",
+    "data_contract": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/EIO_DATA_CONTRACT.json",
+    "new_runs": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2",
+    "new_endpoint_paths": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/evaluation-eio-v2",
+    "affected_attempts": 8,
+    "recovery_entry_step": 8242,
+    "new_native_two_update_step": 8244,
+    "model_data_batch_workers_LR_unchanged": true,
+    "golden_windows": 64,
+    "transient_fault_recovered_same_sample": true,
+    "persistent_fault_stops_after3": true,
+    "torch_numpy_rng_unchanged": true,
+    "oom_events": 0,
+    "shm_capacity_GiB": 512,
+    "cause": "Observed simultaneous HDF5 EIO;underlying infrastructure cause unknown. Do not assert OOM/uniqueNFSrace or count as model-performance failure.",
+    "replay": "Original failed states reported8266 AS/8295native;recover8242. Unsaved24/53 updates replayed. Preserve all8 errors and original192 blocked/unfinished endpoint paths."
+  },
+  "ownership": {
+    "dev13": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/launch-dev13.json",
+    "dev15": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/launch-eio-v2-dev15.json",
+    "original_dev15_retained": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/launch-dev15.json",
+    "collector": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/completion-launch-v2.json",
+    "collector_pid": 2159767,
+    "promoter": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/promotion-launch.json",
+    "promoter_pid": 2159775,
+    "resident_long_starters": {
+      "dev13": 2159842,
+      "dev15": 2318241
+    }
+  },
+  "authoritative_summary": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/results/summary.json",
+  "conditional_long": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_long_20261104",
+    "rules": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/long-promotion/RULES.json",
+    "gates": [
+      "six-manipulation mean>=15%",
+      ">=10pp manipulation gain over both20epochcontrols",
+      "positive manipulation gain bothbanks/bothoriginalparents",
+      ">=2 manipulation tasks succeed bothparents",
+      "overall case-cluster95%CI>0 vs bothcontrols"
+    ],
+    "maximum_winning_methods": 2,
+    "global_cap": 41200,
+    "runs_if_qualified": 16,
+    "parent_warning": "Two original trained parents crossed with continuation RNG/sampler repeats;not16 independent from-scratch learners. CI must respect parent_seed hierarchy.",
+    "no_qualified": "WritesNO_PROMOTION;does not spend long budget or launch arbitrary next research round.",
+    "test": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/PROMOTION_RULE_TEST.json",
+    "scope": "One finite performance-gated continuation specifically authorized by latest user. No recurringLLM monitor/oldgoalresume/oldHOLD clearing. Long gate is promising evidence,not final highperformance/full50-task success."
+  },
+  "deadline_utc": "2026-11-06T09:12:24.534503+00:00",
+  "recovery_order": [
+    "Only dev13/dev15;do not connect dev2.",
+    "Read EIO_RECOVERY/currentplan and currentownership;old8 failures are historical,not failed algorithms.",
+    "Read latest startup health and actual nvidia-smi;assigned16slots do not prove instantaneous100% utilization.",
+    "Final effective screen index is root/results/summary.json from completion-launch-v2.",
+    "Promotion is one-shot:rules before outcomes;qualified only then50epochs16slots. Preserve parent/RNG ancestry.",
+    "High-performance algorithm NOT yet established. Online taskcontrol8 only;50-task offline prediction diagnostics are not50-task control scores."
+  ],
+  "startup": {
+    "local": "experiments/metaworld_improve_20261104/results/startup",
+    "remote": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/startup/health-verified-{dev13,dev15}.json",
+    "passed": true,
+    "steps_at_snapshot": {
+      "dev13": [
+        9888,
+        14800,
+        9888,
+        9888,
+        9888,
+        9888,
+        9888,
+        9888
+      ],
+      "dev15": [
+        8500,
+        9200,
+        8500,
+        8500,
+        8500,
+        8500,
+        8500,
+        8500
+      ]
+    },
+    "scope": "Observed steps/source/gradients. Instantaneousutilization varies during checkpoint/audit/load stages;do not infer100% from allocated slots."
+  }
+}
