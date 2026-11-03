@@ -11,7 +11,8 @@ from experiments.metaworld_eval_20261103.worker import read,save,digest
 
 def main(root,host,output):
     recipes=[r for r in read(root/'plan.json')['recipes'] if r['host']==host]
-    ownership=read(root/('launch-eio-v2-dev15.json' if host=='dev15' else 'launch-dev13.json'))['jobs']
+    corrections=sorted(root.glob(f'launch-eio-*-{host}.json'),key=lambda p:p.stat().st_mtime)
+    ownership=read(corrections[-1] if corrections else root/f'launch-{host}.json')['jobs']
     rows=[]
     for r in recipes:
         run=Path(r['run']);proof=read(run/'FORK.json');entry=proof['entry_step'];first=r.get('stages',[8242])[0]

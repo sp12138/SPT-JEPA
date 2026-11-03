@@ -146,6 +146,14 @@ def work(root,source,helper,host,gpu,python):
         command(cmd,run/f'audit-step{step}.log',env,source,deadline,cap=1800)
         assert read(run/f'audit-step{step}.json')['passed']
     audit(entry,True)
+    if recipe.get('archive_entry',False):
+        destination=run/f'archive-step{entry:07d}';destination.mkdir()
+        os.link(run/'last.ckpt',destination/'native.ckpt')
+        shutil.copy2(run/f'audit-step{entry}.json',destination/'audit.json')
+        save(destination/'INHERITANCE.json',dict(step=entry,inherited=True,source=proof['parent'],
+             scope='Actual saved native state and fresh restore audit;not a newly executed training stage.'))
+        save(destination/'manifest.json',dict(step=entry,created_utc=now(),
+             files={p.name:digest(p) for p in destination.iterdir() if p.is_file()}))
     for step in stages:
         if (root/'STOP').exists() or (run/'STOP').exists():raise RuntimeError('User stop marker')
         free_gpu(gpu)
