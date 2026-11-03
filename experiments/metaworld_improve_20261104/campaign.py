@@ -207,6 +207,8 @@ def reseed(root,host,gpu):
 
 def launch(root,source,helper,host,python):
     assert host in ['dev13','dev15'];result=root/f'launch-{host}.json';assert not result.exists()
+    for name in ['audit.py','evaluate.py','worker.py','environment.py']:
+        assert (helper/'experiments/metaworld_eval_20261103'/name).is_file(), ('Incomplete helper',name)
     deadline=read(root/'dispatch.json')['deadline_unix'];rows=[]
     env=os.environ.copy();env.update(PYTHONPATH=str(helper)+':'+str(source),PYTHONDONTWRITEBYTECODE='1')
     for gpu in range(8):

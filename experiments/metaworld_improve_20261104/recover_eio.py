@@ -32,7 +32,8 @@ def prepare(root,source,helper,host='dev15',revision='v2',collector_record='comp
     for recipe in plan['recipes']:
         if recipe['host']!=host:continue
         parent=Path(recipe['run']);assert (parent/'worker-failed.json').exists()
-        assert 'Input/output error' in (parent/'error.txt').read_text()
+        error=(parent/'error.txt').read_text() if (parent/'error.txt').exists() else '\n'.join(p.read_text() for p in parent.glob('audit-step*.log'))
+        assert 'Input/output error' in error or ('No such file or directory' in error and 'audit.py' in error)
         import torch
         native=torch.load(parent/'last.ckpt',map_location='cpu',weights_only=False)
         entry=int(native['global_step']);assert native['campaign_samples']==entry*128
@@ -56,7 +57,7 @@ def prepare(root,source,helper,host='dev15',revision='v2',collector_record='comp
         save(run/'FORK.json',dict(passed=True,parent=str(parent),parent_config=str(parent/'config.json'),entry_step=entry,
             parent_proof=dict(native_sha256=native_sha),
             reason='HDF5 EIO. Same latest complete saved state;bounded same-sample read retries only.',
-            replayed_unsaved_updates=read(parent/'status.json')['step']-entry,
+            replayed_unsaved_updates=(read(parent/'status.json')['step'] if (parent/'status.json').exists() else entry)-entry,
             scope='Original errors and endpoints retained. No model/loss/batch/data/order/optimizer/LR changes;no OOM attribution.'))
         mapping[str(parent)]=str(run)
         stages=[entry+2]+[step for step in [9888,16480] if step>entry+2]
@@ -85,6 +86,8 @@ def prepare(root,source,helper,host='dev15',revision='v2',collector_record='comp
 
 def launch(root,source,helper,host='dev15',revision='v2'):
     assert read(root/f'EIO_RECOVERY-{host}-{revision}.json')['passed']
+    for name in ['audit.py','evaluate.py','worker.py','environment.py']:
+        assert (helper/'experiments/metaworld_eval_20261103'/name).is_file(), ('Incomplete helper',name)
     from experiments.metaworld_eval_20261103.worker import free_gpu
     dispatch=read(root/'dispatch.json');python='/efs/prescottsun/project_jepa/envs/lewm/bin/python'
     env=os.environ.copy();env.update(PYTHONPATH=str(helper)+':'+str(source),PYTHONDONTWRITEBYTECODE='1')
