@@ -2,7 +2,7 @@
 
 2026-11-03用户授权评测我们的方法，并明确要求寻找无需HF授权的数据。选用LeRobot独立发布的`lerobot/metaworld_mt50`，固定revision `b46a1c185a2368660650a82ac5a5083a56722f48`。原`facebook/jepa-wms`数据继续保留访问失败证据，不绕过gate、不把本数据称为它的镜像或等价复现。
 
-实际无token下载已经通过：README、完整episode/task元数据和首个99.7MB原始Parquet；首帧480×480 RGB、4D动作均可读取。元数据声明2500episode、204806frames、50个任务注册项；全语料内容和因果时序还须单独核验。全部公开文件约45.86GB。本数据来自expert policies，与JEPA-WMs的TD-MPC2早期混合质量数据分开报告。
+实际无token全量下载已完成，497个文件共45,864,127,230 bytes。全语料逐行核对2500条episode、204806帧和50个实际task_id，所有PNG均已解码。当前注册表50项与task_id分组一致；不用历史版本合并过的push/push-back文本分组。本数据来自expert policies，与JEPA-WMs的TD-MPC2早期混合质量数据分开报告。
 
 ## 固定的比较边界
 
@@ -15,6 +15,26 @@
 - 第一组评估预先保留Reach/Reach-Wall及push、pick-place、drawer-open、door-open、peg-insert-side、bin-picking；逐任务报告，不只挑成功任务。之后扩展全部可验证task_id。
 - 原JEPA-WMs的100原始步final-success及Farama/LeRobot的500步any-success分开，若扩展两套规则，所有方法同样评估。原published Reach分数不直接与本数据/相机结果做优越性结论。
 
-旧PushT/TwoRoom/Cube所有HOLD/STOP和paused goal保留；不重启旧队列或周期LLM监控。当前仅数据/接口准备，尚无Meta-World训练成绩。
+## 数据与训练合同
+
+将所有5个时间相位都保留，原始t处输入图像与执行动作a[t:t+5]对应t+5图像。每个动作块为20D；storage stride=1、physical frameskip=5。最后一帧零填充动作不参与有效转移。所有图像使用CPU torch bilinear/antialias缩为224、round uint8，规划使用相同处理。动作按原生Box[-1,1]裁剪后拼接，mean/std只由训练轨迹拟合。
+
+按task_id各保留5条原始轨迹为test，45条train；seed=20261103+task_id。一个原始episode的全部相位属于同一划分。完整train有105486个window8窗口，batch128时每轮824 updates。训练HDF5只向学习器提供pixels/action；raw_row仅用于审计。动作因果对齐的合成跨文件回归已通过。
+
+预先固定4组×2 seeds：temporal-forecast（rho=.8、forecast_fraction=.5）、原AS-JEPA（0/0）、forecast-render（0/.5）、native LeWM。前三组同一随机初始化、51.1M参数body和原sample-level目标，必须实际比较所有初始张量；native LeWM保留原生BN/SIGReg和optimizer，是不同容量的batch-coupled参照。全部随机初始化，不加载旧任务学习权重。
+
+原生Lightning训练先到2 updates，必须实际恢复CPU model/AdamW/scheduler，并做真实held-out loss GPU反传。所有必要分组finite且有梯度、原生与portable权重一致、sample cursor正确，再通过小预算原生规划接口检查，才可放行短程训练。LR总horizon固定41200 updates（50轮），阶段为600、2472（3轮）、8240（10轮）；有限训练上限8240，不依照某一个任务的分数选择checkpoint。完整原生状态和所有结果保留。
+
+## 环境与评估合同
+
+所有方法共用MetaWorld3.1.1、MuJoCo3.3.0、Gymnasium1.4.0和公开LeRobot camera convention（corner2、固定cam_pos、双轴翻转）。这是独立评测轨道，没有证明与历史数据生成器完全同版本。MetaWorld3.0/Gym组合的失败记录保留。当前原生版本忽略reset(seed=...)，必须调用seed(seed)，并用_encode_task/set_task明确绑定rand_vec。
+
+环境起点比较39D诊断观测及qpos/qvel/mocap/ctrl，全部要求逐元素精确重放；这些物理量不输入学习器或规划器。原生OpenGL重放中少量像素出现1–2灰度级舍入差异，因此记录max、MSE及变化像素比例，统一要求RGB MSE<=.001（原始8-bit单位）、变化比例<=.001。规划第一帧用同一缓存图像，各方法输入完全相同。此接口修复在任何方法任务成绩之前完成。
+
+评测任务预定8项，各primary42–51、fresh1042–1051，160个case。goal由脚本专家在500原生步内首次成功图像构造；未成功则保留末帧并显式标记。当前156个goal构造成功、4个失败，所有case及goal-valid子集分别报告；专家构造失败不等于任务不可能。专家动作不进入学习器或在线planner。
+
+共用原生CEM300×15、top10、H6宏步、每次执行3宏步、最多2图像context、warm start及合法Box域投影。主指标是500原生步any-success。2472阶段各任务primary前5个case；8240阶段primary/fresh各10个。100步final-success若另测必须单独标注，不能从早停500步的轨迹推断。公共JEPA/DINO成绩或权重仅作明确外部参考，尚非同数据重训结果。
+
+旧PushT/TwoRoom/Cube所有HOLD/STOP和paused goal保留；不重启旧队列或周期LLM监控。当前2-update技术检查已经开始，尚无Meta-World任务性能成绩。后续自动化仅限已固定的有限训练/评测队列，72h结束，不自动重试、扩参或开启下一轮研究。
 
 公开来源：[数据](https://huggingface.co/datasets/lerobot/metaworld_mt50)、[作者环境与评测说明](https://github.com/huggingface/lerobot/blob/main/docs/source/metaworld.mdx)、[历史任务文本映射问题](https://github.com/huggingface/lerobot/issues/4409)。
