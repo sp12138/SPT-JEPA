@@ -1,0 +1,110 @@
+{
+  "checked_utc": "2026-11-03T11:55:20.676461+00:00",
+  "rows": [
+    {
+      "name": "temporal-forecast-seed1",
+      "host": "dev2",
+      "gpu": 0,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training-paired-v2/temporal-forecast-seed1",
+      "old_launcher": 1323258,
+      "suspended_parent": 1323259,
+      "complete": false,
+      "adopt_step": 8240,
+      "wait_pid": 1324773,
+      "child_command": [
+        "/usr/bin/timeout",
+        "--signal=TERM",
+        "--kill-after=60",
+        "172800",
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/runtime-60c887e/experiments/lingjing_fullspec_20261102/safe_train_stage.py",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training-paired-v2/temporal-forecast-seed1/config.json",
+        "--stop-step",
+        "8240",
+        "--resume"
+      ]
+    },
+    {
+      "name": "temporal-forecast-seed2",
+      "host": "dev2",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training-paired-v2/temporal-forecast-seed2",
+      "old_launcher": 1323260,
+      "suspended_parent": 1323261,
+      "complete": false,
+      "adopt_step": 8240,
+      "wait_pid": 1324779,
+      "child_command": [
+        "/usr/bin/timeout",
+        "--signal=TERM",
+        "--kill-after=60",
+        "172800",
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/runtime-60c887e/experiments/lingjing_fullspec_20261102/safe_train_stage.py",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training-paired-v2/temporal-forecast-seed2/config.json",
+        "--stop-step",
+        "8240",
+        "--resume"
+      ]
+    },
+    {
+      "name": "as-jepa-seed1",
+      "host": "dev2",
+      "gpu": 2,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training-paired-v2/as-jepa-seed1",
+      "old_launcher": 1323262,
+      "suspended_parent": 1323263,
+      "complete": false,
+      "adopt_step": 8240,
+      "wait_pid": 1324602,
+      "child_command": [
+        "/usr/bin/timeout",
+        "--signal=TERM",
+        "--kill-after=60",
+        "172800",
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/runtime-60c887e/experiments/lingjing_fullspec_20261102/safe_train_stage.py",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training-paired-v2/as-jepa-seed1/config.json",
+        "--stop-step",
+        "8240",
+        "--resume"
+      ]
+    },
+    {
+      "name": "as-jepa-seed2",
+      "host": "dev2",
+      "gpu": 3,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training-paired-v2/as-jepa-seed2",
+      "old_launcher": 1323264,
+      "suspended_parent": 1323265,
+      "complete": false,
+      "adopt_step": 8240,
+      "wait_pid": 1324608,
+      "child_command": [
+        "/usr/bin/timeout",
+        "--signal=TERM",
+        "--kill-after=60",
+        "172800",
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/runtime-60c887e/experiments/lingjing_fullspec_20261102/safe_train_stage.py",
+        "--config",
+        "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training-paired-v2/as-jepa-seed2/config.json",
+        "--stop-step",
+        "8240",
+        "--resume"
+      ]
+    }
+  ],
+  "scope": "Exact8 parent controller pause for renderer-only evaluator update. Native training/audit children untouched;all states/budgets retained."
+}

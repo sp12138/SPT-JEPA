@@ -39,7 +39,15 @@
 
 ## 运行状态与数据读取修复
 
-全部门禁已通过，四个AS配对比较各550个初始张量完全一致。8个原生恢复训练均实际到达step3，原生恢复日志和runtime源文件校验通过；status.json在第100步前仍显示原2-step检查的finished，不能当作600训练完成。有限队列已启动，deadline=2026-11-06T09:12:24Z，尚无正式任务成功率。
+2026-11-03复核后的统一3轮（2472 updates）结果已完整收集：64个有效端点、320次episode。每任务固定5个primary case、两个训练种子。8任务均值TF15%、AS-JEPA5%、forecast-render10%、本地native LeWM8.75%；Reach分别30/30/30/40%，Reach-Wall90/10/50/30%，其余6个操作任务全部0%。仅是初步小样本结果。TF−LeWM均值差+6.25pp的条件case-cluster 95%CI=[0,12.5]，不代表模型种子/总体不确定性；Native18.0M与AS系列51.1M容量不同。完整数值见results/epoch3/epoch3-summary.json。
+
+评测中抓到3个首帧RGB错误。仅预热的27a339e在连续案例验证中失败，原始失败保留；最终114213e统一预热一次无动作渲染，并在所属OpenGL context中先释放MjrContext，再释放EGL context。160个完整case逐一通过：物理状态、模拟时间及NumPy/Torch CPU/CUDA RNG不变，原RGB门槛不变。原13个有效LeWM端点和3个报错端点全数重测，13个有效端点逐步动作与success序列均逐位相同，3个错误已补齐。其余48个AS系列端点均使用修复后流程；没有模型/数据/目标/规划预算变化。
+
+当前有效汇总必须按RENDERER_REPAIR_REQUESTS.json解析16个LeWM短训端点；原始13个完成和3个报错仍完整保留。完整有限队列的新collector位于renderer-v2-completion，最终results/summary.json为权威索引。原dev2 collector及原始summary属于旧渲染流程历史。
+
+dev2在11:55:29UTC后无新训练心跳，SSH入口502/连接关闭，内部SSH亦不可达，原因未确认；TF/AS四个长训练接续受阻，但2472步完整model/optimizer/scheduler/RNG及初始权重均已归档。它们的父控制器在渲染流程升级时暂停，若机器被重建不可盲用旧PID。已询问用户最新SSH入口。dev13/dev15控制器已恢复，Native两次8240训练完成、forecast-render继续，评测后台按原预算执行。这里没有恢复旧goal或周期LLM监控。
+
+初始启动记录（现已由上述3轮结果更新）：全部门禁通过，四个AS配对比较各550个初始张量完全一致。8个原生恢复训练实际到达step3，原生恢复日志和runtime源文件校验通过；status.json在第100步前显示原2-step检查的finished，不能当作600训练完成。当时尚无正式任务成功率。固定deadline仍为2026-11-06T09:12:24Z。
 
 启动吞吐检查发现BenchmarkWindows每窗口临时打开HDF5 VDS Dataset，使句柄/源文件缓存反复释放。原生真实数据ABBA读取比较支持保留Dataset对象；这是读取耗时实验，不是端到端训练加速倍数。修复只延长句柄生命周期。64次真实窗口逐字段比较全部相等，24个NN模块及原生sampler/training源码逐字节不变；证据DATA_IO_APPROVED.json。
 
