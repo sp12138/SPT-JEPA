@@ -14,8 +14,8 @@ from stable_worldmodel.wm.loss import SIGReg
 
 class NativeLeWM(LeWM):
     def __init__(self, window=8, action_dim=10):
-        if window != 8 or action_dim not in (10, 25):
-            raise ValueError("This matched baseline is window8, TwoRoom10/Cube25 actions")
+        if window != 8 or action_dim not in (10, 20, 25):
+            raise ValueError("This matched baseline is window8, TwoRoom10/MetaWorld20/Cube25 actions")
         encoder = vit_hf(size="tiny", patch_size=14, image_size=224,
                          pretrained=False, use_mask_token=False)
         predictor = Predictor(num_frames=window-1, input_dim=192, hidden_dim=192,
