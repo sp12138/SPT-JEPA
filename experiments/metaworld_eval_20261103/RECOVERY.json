@@ -1,10 +1,9 @@
 {
-  "updated_utc": "2026-11-03T12:52:18.826912+00:00",
+  "updated_utc": "2026-11-03T17:05:13.030658+00:00",
   "objective": "Evaluate temporal-forecast and matched controls on independently public MetaWorld data,as explicitly requested after gated data could not be accessed.",
-  "status": "Canonical3-epoch comparison COMPLETE:64/64 endpoints/320episodes,no effective errors. TF Reach30/ReachWall90/other6all0,macro15%;AS5%,forecast-render10%,nativeLeWM8.75%. Small5cases/task x2learners. Native2trainings finished8240,forecast-render2continue;TF/AS4long continuations blocked bydev2SSH/heartbeatloss after2472 checkpoints. No broad manipulation gain or matureTF comparison established.",
-  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103",
+  "status": "All4 TF/AS archived2472 continuations actually resumed native training at2473;actual CPU full-state restores/GPU backward passed. Single startup checks passed:dev13 steps4000/4100,dev15 2700/2700,finite loss and all5 required gradients positive. Native/forecast-render4 trainings already8240 complete. Reuse128 completed primary endpoints;64 remaining mature TF/AS endpoints. Corrected read-only diagnostic v3 dispatched to remaining12 GPUs;read latest v3 startup evidence for actual progress.",
+  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104",
   "hosts": [
-    "dev2",
     "dev13",
     "dev15"
   ],
@@ -29,7 +28,9 @@
     "helper_commit": "5bd93d0",
     "helper": "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/helper-5bd93d0",
     "environment_reference_commit": "f5c9bc02137c331b009eccd44ece6f11b62187a8",
-    "environment_reference": "/efs/prescottsun/SPT-JEPA/sources/lerobot-mw-f5c9bc02"
+    "environment_reference": "/efs/prescottsun/SPT-JEPA/sources/lerobot-mw-f5c9bc02",
+    "training_runner_helper": "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/helper-ea8e7fb",
+    "diagnostic_helper": "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/helper-2aceec1"
   },
   "environment": {
     "metaworld": "3.1.1",
@@ -67,14 +68,15 @@
     "evaluation_episodes": 1600,
     "evaluation_tasks": 8,
     "cases": 160,
-    "goal_construction_failures": 4
+    "goal_construction_failures": 4,
+    "diagnostic_jobs": 12
   },
   "recovery_order": [
-    "Read canonical_epoch3_summary first for actual matched performance;all64 primary short endpoints complete.",
-    "Read RENDERER_REPAIR_REQUESTS:16native3epoch effectivework paths live under evaluation-renderer-v2;original nominal/error outputs are historical.",
-    "Read renderer-activation-dev13/dev15.json for CURRENT worker PIDs;former launch/adoption/pause records retained. NNsource runtime60c887e byte-identical to initialb574b4f;new evaluatorhelper114213e.",
-    "dev2 is unreachable with stale training heartbeat. Four saved2472 full checkpoints and initial weights are on EFS. Need reachableSSHentry before touching suspendedparentPIDs;verify host identity and PID command paths.",
-    "Use renderer-v2-completion/results/summary.json for full finitequeue final index,not original uncorrected collector. No oldgoals/monitors/HOLD clearing or automatic newround."
+    "Use only dev13 and dev15;do not contact or launch work on dev2. Latest user restriction supersedes the earlier SSH-entry question.",
+    "Read current two-host PREPARED.json and activation-dev13/dev15.json. Four migrated outputs inherit immutable2/600/2472 archives;new actual CPU restore/GPU backward audit gates continued SGD.",
+    "Read diagnostic-activation-v3-dev13/dev15.json for current6 evaluation parents/host;training parents remain in activation-dev13/dev15.json. Previousv2/currentroot original evaluation parents retired without touching native children.",
+    "Read canonical_epoch3_summary for the complete short comparison. All128 completed primary endpoints retain their original paths and hashes. Native16 short repairs still resolve through RENDERER_REPAIR_REQUESTS.",
+    "Canonical final index is now twohost results/summary.json. Same8 learners,192 primary endpoints,8240 update cap,41200 LR horizon and original deadline;no old-goal/recurring-LLM-monitor/automatic next round."
   ],
   "preserved_failures": [
     "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/environment-preflight-v1.json",
@@ -94,14 +96,14 @@
     "Report independent public data scope;no direct superiority over publishedJEPA/DINO scores.",
     "Retain all seeds,cases,endpoints and failed goal constructions."
   ],
-  "paired_plan": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/plan-paired-v2.json",
+  "paired_plan": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/plan.json",
   "original_pair_rejection": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/original-init-rejection-full.json",
-  "dispatch": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/dispatch.json",
+  "dispatch": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/dispatch.json",
   "deadline_utc": "2026-11-06T09:12:24.534503+00:00",
   "finite_completion_collector": {
-    "host": "dev2",
-    "pid": 1323068,
-    "launch": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/completion-launch.json"
+    "host": "dev13",
+    "launch": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/completion-launch.json",
+    "pid": 2157263
   },
   "io_continuation": {
     "source_commit": "60c887e",
@@ -161,10 +163,11 @@
   "canonical_epoch3_summary": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/results/epoch3-summary.json",
   "canonical_completion": {
     "host": "dev13",
-    "pid": 2156880,
-    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/renderer-v2-completion",
-    "summary": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/renderer-v2-completion/results/summary.json",
-    "scope": "Authoritative full finitequeue collector with renderer corrections in isolatedmetadata namespace. Originaldev2collector/summary retained and NOT canonical."
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104",
+    "launch": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/completion-launch.json",
+    "summary": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/results/summary.json",
+    "scope": "Canonical finite collector for original192 primary endpoints plus bounded read-only diagnostics. Earlier collectors retired/stopped;old outputs are historical.",
+    "pid": 2157263
   },
   "dev2_connectivity": {
     "ssh_alias": "dev2",
@@ -179,6 +182,55 @@
       "as-jepa-seed2"
     ],
     "cause": "Unknown;do not assume training still advances or assert VMdestroyed/OOM.",
-    "user_query": "Async request for currentSSHentry pending;other twohostscontinue."
+    "user_query": "Superseded: user explicitly restricts future work to dev13/dev15. No further dev2 connection or new SSH information needed."
+  },
+  "previous_remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103",
+  "excluded_hosts": [
+    "dev2"
+  ],
+  "migration": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104",
+    "entry_step": 2472,
+    "recipes": 4,
+    "proof": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/PREPARED.json",
+    "allowed_config_changes": [
+      "output"
+    ],
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/runtime-60c887e",
+    "entry_audit": "Actual new full model/AdamW/scheduler CPU restores and held-out GPU backward before training. Original earlier audits are marked inherited.",
+    "unsaved_work": "Resume exact archived state. Uncheckpointed updates on excluded host are unrecoverable and may be replayed;no promise of zero repeated unsaved SGD.",
+    "old_owner_stop": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/STOP",
+    "scope": "Only the4 remaining original continuations migrate;no new learner,seed or training recipe. Original checkpoints,errors,results,HOLDs retained."
+  },
+  "diagnostics": {
+    "jobs": 12,
+    "tasks": 50,
+    "plan": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/diagnostic-plan.json",
+    "corrections": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/DIAGNOSTIC_CORRECTIONS-v3.json",
+    "status": "v3 active. Preserve12 v1 cache-parity failures plus12 v2 short-task sampling failures. Task IDs8/23/24 have10/31/9 validwindows;uniformly choose min(32,available) without replacement. All50 task/episode/index sampling checks pass. Native uncached rollout and highest FP32 after opsinit match primary MPC. Read current metrics/health for completed coverage;not all50-model diagnostic jobs are claimed complete.",
+    "scope": "Read-only RGB/action observed-future forecasts,copy comparison and action ordering. Task ID only stratifies reports;executed actions are factual,not optimal labels. No simulator or SGD;no counterfactual performance claim.",
+    "max_windows_per_task": 32,
+    "total_windows_per_model": 1554,
+    "sampling_contract": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/SAMPLING_CONTRACT-v3.json"
+  },
+  "twohost_startup": {
+    "training_snapshot": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/startup/health-{dev13,dev15}.json",
+    "latest_snapshot": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/startup/health-v3-{dev13,dev15}.json",
+    "actual_source": "runtime60c887e",
+    "entry_step": 2473,
+    "all_four_native_restore_backward_passed": true,
+    "scope": "One startup validation only. Assigned slots are not a claim of constant100% GPU utilization or task success.",
+    "local_evidence": "experiments/metaworld_eval_20261103/results/twohost-startup",
+    "latest_steps": {
+      "dev13": [
+        4200,
+        4300
+      ],
+      "dev15": [
+        3100,
+        3100
+      ]
+    },
+    "corrected_diagnostic_errors_at_snapshot": 0
   }
 }

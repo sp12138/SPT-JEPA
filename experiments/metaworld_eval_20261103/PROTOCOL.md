@@ -56,3 +56,13 @@ dev2在11:55:29UTC后无新训练心跳，SSH入口502/连接关闭，内部SSH�
 旧PushT/TwoRoom/Cube所有HOLD/STOP和paused goal保留；不重启旧队列或周期LLM监控。自动化仅限已固定的有限训练/评测队列，72h结束，不自动重试、扩参或开启下一轮研究。
 
 公开来源：[数据](https://huggingface.co/datasets/lerobot/metaworld_mt50)、[作者环境与评测说明](https://github.com/huggingface/lerobot/blob/main/docs/source/metaworld.mdx)、[历史任务文本映射问题](https://github.com/huggingface/lerobot/issues/4409)。
+
+## 2026-11-04 两台机器接续
+
+用户明确要求后续只用dev13、dev15。新有限队列`runs/metaworld_eval_twohost_20261104`接管；不再连接dev2或等待其新SSH入口。4个TF/AS learner从不可变2472步完整检查点迁入新输出目录，唯一配置变化是output路径；新实际CPU模型/AdamW/scheduler恢复和GPU反传审计通过后，以原生Trainer继续8240。之前2/600/2472的归档与审计保留原来源。无法恢复的未保存更新可能被重做，不能宣称完全零重复SGD。
+
+Native和forecast-render的4次长训练已完成，128个已完成主评测端点全部复用，余64个TF/AS成熟端点仍按原案例、预算和原deadline执行。每台分配2卡续训、6卡统一评测；空闲评测卡先做12个已有checkpoint的50任务只读诊断，每任务最多32个不重复heldout窗口，不足则全部取一次。不为占卡新增训练种子或模型网格。训练完成的卡自动加入同一有限评测队列。
+
+诊断比较真实未来图像latent上的预测/复制误差，以及事实动作、时间反序动作、同任务其他episode动作和物理零动作的模型排序。事实动作不被假设为最优，替代动作未在模拟器执行，故不把排序当作真实反事实控制能力。task ID仅用于报告分组，不进入模型。第一版缓存一致性断言失败且保留全部12个失败记录；修订版直接使用MPC同一原生rollout接口、原生增长的想象历史，并在ops初始化后设置highest FP32，与主评测一致。没有改动训练、模型或主评估器。当前状态须读新root的activation与startup记录；分配16个slot不等于每个时刻16卡均计算。
+
+诊断v2在task8遇到有效窗口不足32的采样错误，12个失败及已输出的任务行均保留。统一min规则已逐任务核对全部50项：task8/23/24分别只有10/31/9个有效窗口，最终每模型1554个窗口，所有模型使用同一索引和动作对照。v3 helper为2aceec1，当前评测父进程见diagnostic-activation-v3-dev13/dev15.json；续训父进程和原生子进程未改动。单次训练启动检查已通过：dev13在4000/4100步、dev15在2700/2700步，损失有限且5个必需梯度组均为正；这不是任务性能结论。

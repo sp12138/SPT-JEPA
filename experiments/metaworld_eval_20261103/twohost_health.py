@@ -9,10 +9,10 @@ import psutil
 from experiments.metaworld_eval_20261103.worker import digest,read,save
 
 
-def main(root,host,output):
+def main(root,host,output,diagnostic_revision='v3'):
     assert host in ['dev13','dev15']
     activation=read(root/f'activation-{host}.json')
-    diagnostic=read(root/f'diagnostic-activation-v2-{host}.json')
+    diagnostic=read(root/f'diagnostic-activation-{diagnostic_revision}-{host}.json')
     source=root.parent.parent/'reports/metaworld_eval_20261103/runtime-60c887e'
     rows=[]
     for row in activation['jobs']:
@@ -49,7 +49,8 @@ def main(root,host,output):
                             failed=(path/'failed.json').exists(),claimed=(path/'claim').exists(),completed_tasks=completed_tasks))
     gpu_state=subprocess.check_output(['nvidia-smi','--query-gpu=index,memory.used,utilization.gpu',
                                        '--format=csv,noheader,nounits'],text=True)
-    report=dict(passed=len(rows)==2 and all(r['passed'] for r in rows) and all(r['alive'] for r in controllers),
+    report=dict(passed=len(rows)==2 and all(r['passed'] for r in rows) and all(r['alive'] for r in controllers)
+                      and not any(r['failed'] for r in diagnostics),
                 host=host,checked_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 training=rows,evaluation_controllers=controllers,diagnostics=diagnostics,gpu_state=gpu_state,
                 scope='Single startup check;no recurring monitor,model update,retry,extension or performance claim.')
@@ -61,5 +62,5 @@ def main(root,host,output):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--root',required=True);parser.add_argument('--host',required=True)
-    parser.add_argument('--output',required=True);args=parser.parse_args()
-    main(Path(args.root),args.host,Path(args.output))
+    parser.add_argument('--output',required=True);parser.add_argument('--diagnostic-revision',default='v3');args=parser.parse_args()
+    main(Path(args.root),args.host,Path(args.output),args.diagnostic_revision)
