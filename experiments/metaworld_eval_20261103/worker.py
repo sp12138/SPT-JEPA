@@ -95,13 +95,16 @@ def main(args):
                 except psutil.NoSuchProcess:alive=False
                 if not alive:break
                 time.sleep(10)
-            assert read(run/'stage-complete.json')['stop_step']==600
-            assert read(run/'status.json')['step']==600 and read(run/'status.json')['state']=='finished'
-            command([args.python,'-B','-u',str(helper/'experiments/metaworld_eval_20261103/audit.py'),
-                     '--run',str(run),'--step','600','--output',str(run/'audit-step600.json')],
-                     run/'audit-step600.log',env,source,deadline,cap=1800)
-            assert read(run/'audit-step600.json')['passed'];archive(run,600)
-            stages=[2472,8240]
+            adopted=args.adopt_stop_step
+            assert read(run/'stage-complete.json')['stop_step']==adopted
+            assert read(run/'status.json')['step']==adopted and read(run/'status.json')['state']=='finished'
+            if not (run/f'audit-step{adopted}.json').exists():
+                command([args.python,'-B','-u',str(helper/'experiments/metaworld_eval_20261103/audit.py'),
+                         '--run',str(run),'--step',str(adopted),'--output',str(run/f'audit-step{adopted}.json')],
+                         run/f'audit-step{adopted}.log',env,source,deadline,cap=1800)
+            assert read(run/f'audit-step{adopted}.json')['passed']
+            if not (run/f'archive-step{adopted:07d}/manifest.json').exists():archive(run,adopted)
+            stages=[step for step in stages if step>adopted]
         else:archive(run,2)
         for step in stages:
             if (root/'STOP').exists() or (run/'STOP').exists():raise RuntimeError('User stop marker')
@@ -113,16 +116,19 @@ def main(args):
                      '--run',str(run),'--step',str(step),'--output',str(run/f'audit-step{step}.json')],
                      run/f'audit-step{step}.log',env,source,deadline,cap=1800)
             assert read(run/f'audit-step{step}.json')['passed'];archive(run,step)
-        save(run/'complete.json',dict(passed=True,finished_utc=timestamp(),step=8240))
+        if not (run/'complete.json').exists():save(run/'complete.json',dict(passed=True,finished_utc=timestamp(),step=8240))
         # A completed training slot joins the same finite MPC queue,so faster
         # controls do not leave their GPU idle while other models finish.
         args.mode='evaluate'
         return main(args)
     jobs=read(root/'evaluation-plan.json')['jobs']
+    repairs=read(root/'RENDERER_REPAIR_REQUESTS.json')['jobs'] if (root/'RENDERER_REPAIR_REQUESTS.json').exists() else {}
     while time.time()<deadline:
         if (root/'STOP').exists() or (root/'HOLD').exists():break
         disposed=0; ready=[]
         for job in jobs:
+            if job['name'] in repairs:
+                job=dict(job,original_work=job['work'],work=repairs[job['name']]['work'])
             work=Path(job['work'])
             if (work/'complete.json').exists() or (work/'failed.json').exists():disposed+=1;continue
             if (work/'claim').exists():continue
@@ -146,6 +152,15 @@ def main(args):
                 command(cmd,work/'evaluate.log',env,source,deadline,cap=21600)
                 report=read(work/'output/metrics.json');assert report['passed'] and len(report['episodes'])==job['limit']
                 save(work/'complete.json',dict(passed=True,finished_utc=timestamp(),metrics_sha256=digest(work/'output/metrics.json')))
+                if job.get('original_work'):
+                    original=Path(job['original_work'])
+                    assert not (original/'output/metrics.json').exists()
+                    os.symlink(work/'output/metrics.json',original/'output/metrics.json')
+                    save(original/'CORRECTION.json',dict(passed=True,repair_work=str(work),
+                         original_failure_sha256=digest(original/'failed.json'),metrics_sha256=digest(work/'output/metrics.json'),
+                         scope='Uniform no-action render warmup;same weights,cases,planner,budget,seeds. Original failure retained.'))
+                    save(original/'complete.json',dict(passed=True,finished_utc=timestamp(),
+                         metrics_sha256=digest(work/'output/metrics.json'),supplement=str(work),original_failure_retained=True))
             except Exception:
                 save(work/'failed.json',dict(passed=False,finished_utc=timestamp(),traceback=traceback.format_exc()))
             break
@@ -162,6 +177,7 @@ if __name__=='__main__':
     parser.add_argument('--base',default='/efs/prescottsun/SPT-JEPA');parser.add_argument('--python',default='/efs/prescottsun/project_jepa/envs/lewm/bin/python')
     parser.add_argument('--gpu',type=int,required=True);parser.add_argument('--host',required=True);parser.add_argument('--run')
     parser.add_argument('--adopt-native-pid',type=int)
+    parser.add_argument('--adopt-stop-step',type=int,choices=[600,2472,8240],default=600)
     args=parser.parse_args()
     try:main(args)
     except Exception:

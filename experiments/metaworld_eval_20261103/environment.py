@@ -39,6 +39,12 @@ def make_environment(task, seed, rand_vec=None):
 
 
 def pixels(env):
+    # CUDA model initialization can expose a transient first OpenGL frame on
+    # some slots. One uniform no-action warmup matches the cached reference;
+    # retain the strict replay gate rather than accepting a different image.
+    if not getattr(env, '_spt_render_primed', False):
+        env.render()
+        env._spt_render_primed = True
     frame = np.flip(env.render(), (0, 1)).copy()
     assert frame.shape == (480, 480, 3) and frame.dtype == np.uint8
     return frame
