@@ -7,7 +7,8 @@ import json
 from pathlib import Path
 import numpy as np
 
-from experiments.metaworld_eval_20261103.environment import make_environment, pixels, expert
+from experiments.metaworld_eval_20261103.environment import (make_environment, pixels, expert,
+                                                           physics_state, rgb_replay_check)
 
 TASKS = ['reach-v3', 'reach-wall-v3', 'push-v3', 'pick-place-v3', 'drawer-open-v3',
          'door-open-v3', 'peg-insert-side-v3', 'bin-picking-v3']
@@ -19,6 +20,7 @@ def main(source, output, seeds, tasks):
     for task in tasks:
         for seed in seeds:
             env, initial_state, vector = make_environment(task, seed)
+            initial_physics = physics_state(env)
             initial = pixels(env); policy = expert(source, task)
             state = initial_state.copy(); success = False; any_success = False
             try:
@@ -30,16 +32,21 @@ def main(source, output, seeds, tasks):
                 goal = pixels(env)
             finally:env.close()
             replay, reconstructed, _ = make_environment(task, seed, vector)
-            try:reconstructed_pixels = pixels(replay)
+            try:
+                reconstructed_pixels = pixels(replay)
+                replay_physics = physics_state(replay)
             finally:replay.close()
             assert np.array_equal(initial_state, reconstructed), (task, seed, np.max(np.abs(initial_state - reconstructed)))
-            assert np.array_equal(initial, reconstructed_pixels), (task, seed, 'RGB reset differs')
+            assert all(np.array_equal(value, replay_physics[key]) for key, value in initial_physics.items()), (task, seed, 'physics reset differs')
+            rgb_check = rgb_replay_check(initial, reconstructed_pixels)
+            assert rgb_check['passed'], (task, seed, rgb_check)
             path = output / f'{task}-seed{seed}.npz'
-            np.savez_compressed(path, initial=initial, goal=goal, rand_vec=vector, initial_state=initial_state)
+            np.savez_compressed(path, initial=initial, goal=goal, rand_vec=vector, initial_state=initial_state,
+                                **{'initial_physics_' + key:value for key,value in initial_physics.items()})
             rows.append(dict(task=task, seed=seed, path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
                              initial_rgb_sha256=hashlib.sha256(initial.tobytes()).hexdigest(),
                              expert_any_success=any_success, expert_final_success=success, expert_steps=step + 1,
-                             exact_state_and_rgb_reconstruction=True))
+                             exact_state_and_physics_reconstruction=True, rgb_replay=rgb_check))
             print(json.dumps({k:v for k,v in rows[-1].items() if k not in ['path','sha256','initial_rgb_sha256']}), flush=True)
     result = dict(passed=True, finished_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), rows=rows,
                   packages={p:importlib.metadata.version(p) for p in ['metaworld','mujoco','gymnasium','numpy']},

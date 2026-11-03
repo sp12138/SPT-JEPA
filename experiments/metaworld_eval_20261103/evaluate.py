@@ -8,7 +8,8 @@ import time
 from types import SimpleNamespace
 import numpy as np
 
-from experiments.metaworld_eval_20261103.environment import make_environment, pixels
+from experiments.metaworld_eval_20261103.environment import (make_environment, pixels, physics_state,
+                                                           rgb_replay_check)
 
 
 def file_sha(path):
@@ -75,7 +76,11 @@ def main(checkpoint, data, manifest, output, task=None, bank=None, limit=None, b
         cached = np.load(case['path'])
         env, initial, vector = make_environment(case['task'], case['seed'], cached['rand_vec'])
         assert np.array_equal(initial, cached['initial_state'])
-        frame = pixels(env); assert np.array_equal(frame, cached['initial'])
+        assert all(np.array_equal(value, cached['initial_physics_'+key])
+                   for key,value in physics_state(env).items())
+        actual_frame = pixels(env); rgb_check = rgb_replay_check(cached['initial'], actual_frame)
+        assert rgb_check['passed'], rgb_check
+        frame = cached['initial'].copy()  # identical first RGB input for all methods
         frames, past_actions, successes, executed = [frame], [], [], []
         goal = model.normalize(resize_tensor([cached['goal']])[None].cuda())
         cost = BoundedCost()
@@ -113,6 +118,7 @@ def main(checkpoint, data, manifest, output, task=None, bank=None, limit=None, b
                             final_success=successes[-1], steps=len(successes), plan_calls=plan_calls,
                             expert_goal_success=case['expert_any_success'], case_sha256=case['sha256'],
                             first_bank_sha256=cost.first_bank_sha256, trace=str(trace), trace_sha256=file_sha(trace)))
+        results[-1]['initial_rgb_replay'] = rgb_check
         print(json.dumps(results[-1]), flush=True)
     after = model_sha(model); assert before == after
     groups = {}

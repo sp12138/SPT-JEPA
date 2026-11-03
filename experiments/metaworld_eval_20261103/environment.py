@@ -41,6 +41,23 @@ def pixels(env):
     return frame
 
 
+def physics_state(env):
+    return {name: np.asarray(getattr(env.data, name)).copy()
+            for name in ['qpos', 'qvel', 'mocap_pos', 'mocap_quat', 'ctrl']}
+
+
+def rgb_replay_check(expected, actual):
+    # An observed native replay had identical physical/model arrays and four
+    # RGB pixels differing by one 8-bit level. Record this renderer precision
+    # separately from physical equality; use the cached initial image in MPC.
+    difference = np.abs(expected.astype(np.int16) - actual.astype(np.int16))
+    changed = np.any(difference != 0, axis=-1)
+    return dict(exact=bool(np.array_equal(expected, actual)),
+                max_abs=int(difference.max()), changed_pixels=int(changed.sum()),
+                changed_fraction=float(changed.mean()),
+                passed=bool(difference.max() <= 1 and changed.mean() <= .001))
+
+
 def expert(source, task):
     import metaworld.policies as policies
     return getattr(policies, configuration(source)['TASK_POLICY_MAPPING'][task])()
