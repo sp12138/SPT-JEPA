@@ -118,7 +118,8 @@ def work(root,source,helper,host,gpu,python):
         time.sleep(10)
     assert read(previous/'results/summary.json')['passed']
     import psutil
-    old=read(previous/f'activation-{host}.json')['jobs'] if gpu<2 else read(previous/f'diagnostic-activation-v3-{host}.json')['jobs']
+    if (previous/f'launch-{host}.json').exists():old=read(previous/f'launch-{host}.json')['jobs']
+    else:old=read(previous/f'activation-{host}.json')['jobs'] if gpu<2 else read(previous/f'diagnostic-activation-v3-{host}.json')['jobs']
     owner=next(r for r in old if r['gpu']==gpu)
     while time.time()<deadline:
         try:
@@ -133,21 +134,26 @@ def work(root,source,helper,host,gpu,python):
     assert digest(run/'config.json')==recipe['config_sha256']
     assert digest(run/'last.ckpt')==proof['parent_proof']['native_sha256']
     env=environments(root,source,helper,gpu)
+    plan=read(root/'plan.json');entry=plan.get('entry_step',8240);stages=plan['stages']
+    if proof.get('continuation_rng_seed') is not None:
+        command([python,'-B','-u',str(helper/'experiments/metaworld_improve_20261104/campaign.py'),
+                 '--mode','reseed','--root',str(root),'--source',str(source),'--helper',str(helper),
+                 '--host',host,'--gpu',str(gpu)],run/'rng-fork.log',env,source,deadline,cap=1800)
     def audit(step,reference=False):
         cmd=[python,'-B','-u',str(helper/'experiments/metaworld_eval_20261103/audit.py'),
              '--run',str(run),'--step',str(step),'--output',str(run/f'audit-step{step}.json')]
         if reference:cmd+=['--reference-config',proof['parent_config']]
         command(cmd,run/f'audit-step{step}.log',env,source,deadline,cap=1800)
         assert read(run/f'audit-step{step}.json')['passed']
-    audit(8240,True)
-    for step in [8242,9888,16480]:
+    audit(entry,True)
+    for step in stages:
         if (root/'STOP').exists() or (run/'STOP').exists():raise RuntimeError('User stop marker')
         free_gpu(gpu)
         command([python,'-B','-u',str(source/'experiments/lingjing_fullspec_20261102/safe_train_stage.py'),
                  '--config',str(run/'config.json'),'--stop-step',str(step),'--resume'],
                  run/f'train-stage{step}.log',env,source,deadline)
         audit(step);archive(run,step)
-        if step==8242:
+        if step==stages[0]:
             command([python,'-B','-u',str(helper/'experiments/metaworld_eval_20261103/evaluate.py'),
                      '--checkpoint',str(run/f'model-step{step:07d}'),'--data',dispatch['data'],
                      '--manifest',dispatch['case_manifest'],'--output',str(run/'planning-preflight'),
@@ -155,12 +161,40 @@ def work(root,source,helper,host,gpu,python):
                      run/'planning-preflight.log',environments(root,source,helper,gpu,True),source,deadline,cap=900)
             result=read(run/'planning-preflight/metrics.json')
             assert result['passed'] and result['model_state_before']==result['model_state_after']
-            save(run/'PREFLIGHT_PASSED.json',dict(passed=True,step=8242,created_utc=now(),
+            save(run/'PREFLIGHT_PASSED.json',dict(passed=True,step=step,created_utc=now(),
                 scope='Actual full restore,2 native updates,FP32 backward and20-step MPC interface only;not task-performance evidence.'))
-    save(run/'complete.json',dict(passed=True,step=16480,finished_utc=now()))
+    save(run/'complete.json',dict(passed=True,step=stages[-1],finished_utc=now()))
     from experiments.metaworld_eval_20261103.worker import main as evaluate
     evaluate(SimpleNamespace(root=str(root),source=str(source),helper=str(helper),base=dispatch['base'],
                             mode='evaluate',python=python,gpu=gpu,host=host,run=None))
+
+
+def reseed(root,host,gpu):
+    # A separate process owns this CUDA generator;its context exits before
+    # native training. The operational parent never keeps GPU memory resident.
+    import random
+    import numpy as np
+    import torch
+    from experiments.metaworld_eval_20261103.audit import equal
+    recipe=next(r for r in read(root/'plan.json')['recipes'] if r['host']==host and r['gpu']==gpu)
+    run=Path(recipe['run']);proof=read(run/'FORK.json');seed=proof['continuation_rng_seed']
+    checkpoint=torch.load(run/'last.ckpt',map_location='cpu',weights_only=False)
+    checkpoint['campaign_rng']=dict(python=random.Random(seed).getstate(),
+        numpy=np.random.RandomState(seed%(2**32)).get_state(),
+        torch=torch.Generator(device='cpu').manual_seed(seed).get_state(),
+        cuda=[torch.Generator(device='cuda').manual_seed(seed).get_state()])
+    temporary=run/'rng-fork.ckpt.tmp'
+    with temporary.open('xb') as file:
+        torch.save(checkpoint,file);file.flush();os.fsync(file.fileno())
+    os.replace(temporary,run/'last.ckpt')
+    parent=torch.load(Path(proof['parent'])/'archive-step0016480/native.ckpt',map_location='cpu',weights_only=False)
+    assert checkpoint.keys()==parent.keys()
+    unchanged={k:equal(v,parent[k]) for k,v in checkpoint.items() if k!='campaign_rng'}
+    assert all(unchanged.values())
+    save(run/'RNG_FORK.json',dict(passed=True,seed=seed,unchanged_payload_fields=unchanged,
+        changed_payload_fields=['campaign_rng'],checkpoint_sha256=digest(run/'last.ckpt'),
+        scope='Independent continuation randomness only. Same2 trained parents,not4 independent pretrainings. '
+              'Model/AdamW/scheduler/global_step/sample cursor exactly preserved;future sampler seed is explicit in config.'))
 
 
 def launch(root,source,helper,host,python):
@@ -203,23 +237,28 @@ def finish(root):
         if state!='complete':continue
         metric=read(work/'output/metrics.json');assert digest(work/'output/metrics.json')==read(work/'complete.json')['metrics_sha256']
         assert metric['passed'] and metric['model_state_before']==metric['model_state_after']
-        for e in metric['episodes']:groups[(j['step'],j['arm'],j['bank'],j['task'])].append(dict(train_seed=j['seed'],**e))
+        for e in metric['episodes']:groups[(j['step'],j['arm'],j['bank'],j['task'])].append(
+            dict(train_seed=j['seed'],parent_seed=j.get('parent_seed',j['seed']),repeat=j.get('repeat'),**e))
     rows=[]
     for key,episodes in sorted(groups.items()):
         valid=[e for e in episodes if e['expert_goal_success']]
         rows.append(dict(step=key[0],arm=key[1],bank=key[2],task=key[3],episodes=len(episodes),
             training_seeds=sorted({e['train_seed'] for e in episodes}),success_rate=100*sum(e['success'] for e in episodes)/len(episodes),
+            parent_seeds=sorted({e['parent_seed'] for e in episodes}),
             goal_valid_episodes=len(valid),goal_valid_success_rate=100*sum(e['success'] for e in valid)/len(valid) if valid else None,observations=episodes))
-    passed=counts['training_complete']==16 and counts['evaluation_complete']==384 and len(archives)==48 and all(a['passed'] for a in archives)
+    passed=counts['training_complete']==len(recipes) and counts['evaluation_complete']==len(jobs) and len(archives)==3*len(recipes) and all(a['passed'] for a in archives)
+    plan=read(root/'plan.json')
     save(root/'results/summary.json',dict(passed=passed,closed_utc=now(),counts=dict(counts),groups=rows,outcomes=outcomes,archives=archives,
-         scope='Matched same-parent adaptation:16 learners,added8240 updates each. Same RGB/action data,cases,CEM,500-step any-success. '
+         entry_step=plan['entry_step'],global_cap=plan['stages'][-1],added_updates=plan['stages'][-1]-plan['entry_step'],
+         cohort_scope=plan['scope'],
+         scope='Matched continuations. Same RGB/action data,cases,CEM,500-step any-success. '
                'Candidate objectives sample-level;native BN/SIGReg baseline explicit. Not canonicalMT50,published reproduction,equalcapacity/FLOPs or novelty evidence.'))
     save(root/'HOLD',dict(closed=True,passed=passed,reason='Finite round ended;no automatic next round'))
     print(dict(passed=passed,counts=dict(counts)),flush=True)
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=['prepare','launch','work','finish'],required=True)
+    parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=['prepare','launch','work','finish','reseed'],required=True)
     for key in ['root','source','helper']:parser.add_argument('--'+key,required=True)
     parser.add_argument('--previous');parser.add_argument('--host',choices=['dev13','dev15']);parser.add_argument('--gpu',type=int)
     parser.add_argument('--python',default='/efs/prescottsun/project_jepa/envs/lewm/bin/python');args=parser.parse_args()
@@ -228,6 +267,7 @@ if __name__=='__main__':
         if args.mode=='prepare':prepare(root,Path(args.previous),source,helper)
         elif args.mode=='launch':launch(root,source,helper,args.host,args.python)
         elif args.mode=='finish':finish(root)
+        elif args.mode=='reseed':reseed(root,args.host,args.gpu)
         else:work(root,source,helper,args.host,args.gpu,args.python)
     except Exception:
         if args.mode=='work':
