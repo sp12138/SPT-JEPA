@@ -1,7 +1,7 @@
 {
-  "updated_utc": "2026-11-03T17:05:13.030658+00:00",
+  "updated_utc": "2026-11-03T17:11:36.346644+00:00",
   "objective": "Evaluate temporal-forecast and matched controls on independently public MetaWorld data,as explicitly requested after gated data could not be accessed.",
-  "status": "All4 TF/AS archived2472 continuations actually resumed native training at2473;actual CPU full-state restores/GPU backward passed. Single startup checks passed:dev13 steps4000/4100,dev15 2700/2700,finite loss and all5 required gradients positive. Native/forecast-render4 trainings already8240 complete. Reuse128 completed primary endpoints;64 remaining mature TF/AS endpoints. Corrected read-only diagnostic v3 dispatched to remaining12 GPUs;read latest v3 startup evidence for actual progress.",
+  "status": "All4 TF/AS archived2472 continuations actually resumed native training at2473;actual CPU full-state restores/GPU backward passed. Single startup checks passed:dev13 steps4000/4100,dev15 2700/2700,finite loss and all5 required gradients positive. Native/forecast-render4 trainings already8240 complete. Reuse128 completed primary endpoints;64 remaining mature TF/AS endpoints. All12 corrected read-only diagnostics complete;18648 matched windows,zero effective errors,unchanged model hashes. Evaluation workers now await the4 mature checkpoints,then consume remaining64 primary endpoints. Last read-only training snapshot stepsTF1=4400,AS1=4500,TF2/AS2=3200.",
   "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104",
   "hosts": [
     "dev13",
@@ -207,11 +207,13 @@
     "tasks": 50,
     "plan": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/diagnostic-plan.json",
     "corrections": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/DIAGNOSTIC_CORRECTIONS-v3.json",
-    "status": "v3 active. Preserve12 v1 cache-parity failures plus12 v2 short-task sampling failures. Task IDs8/23/24 have10/31/9 validwindows;uniformly choose min(32,available) without replacement. All50 task/episode/index sampling checks pass. Native uncached rollout and highest FP32 after opsinit match primary MPC. Read current metrics/health for completed coverage;not all50-model diagnostic jobs are claimed complete.",
+    "status": "COMPLETE:12/12 corrected diagnostic jobs,50tasks each,1554 common windows/model,18648 total evaluations. All metric hashes match completion markers,all model hashes unchanged,all12 held-out manifest hashes identical. Original24 diagnostic interface/sampling failures retained as history;zero effectivev3 failures. No task-performance,optimal-action or counterfactual-control claim.",
     "scope": "Read-only RGB/action observed-future forecasts,copy comparison and action ordering. Task ID only stratifies reports;executed actions are factual,not optimal labels. No simulator or SGD;no counterfactual performance claim.",
     "max_windows_per_task": 32,
     "total_windows_per_model": 1554,
-    "sampling_contract": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/SAMPLING_CONTRACT-v3.json"
+    "sampling_contract": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/SAMPLING_CONTRACT-v3.json",
+    "summary": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/results/diagnostic-summary-v3.json",
+    "local_summary": "experiments/metaworld_eval_20261103/results/twohost-startup/diagnostic-summary-v3.json"
   },
   "twohost_startup": {
     "training_snapshot": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/startup/health-{dev13,dev15}.json",
