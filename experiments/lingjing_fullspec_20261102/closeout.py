@@ -60,7 +60,7 @@ def main(root, coverage, frozen_gates, output):
         run = Path(job['run'])
         for file in [run / f'full-archives/step{step:07d}.ckpt', run / f'model-step{step:07d}/weights.pt']:
             assert file.is_file() and file.stat().st_size > 0, str(file)
-        proofs.append(dict(id=ident, step=step, audit=str(audit_path), audit_sha256=sha(audit_path),
+        proofs.append(dict(id=ident, step=step, nominal_budget_complete=nominal, audit=str(audit_path), audit_sha256=sha(audit_path),
                            full_checkpoint=str(run / f'full-archives/step{step:07d}.ckpt'),
                            full_checkpoint_sha256=audit['full_checkpoint_sha256'], portable_sha256=audit['portable_sha256']))
         statuses[ident] = dict(status=terminal['outcome'], nominal_budget_complete=nominal,
@@ -81,6 +81,7 @@ def main(root, coverage, frozen_gates, output):
             assert latent['model_updates'] == 0 and latent['state_before'] == latent['state_after']
             # Preserve scalar diagnostics without duplicating large case banks in the compact index.
             info = {k: v for k, v in latent['information'].items() if isinstance(v, (int, float, bool, str))}
+            info['diagnostics'] = latent['information']['diagnostics']
             rollout = latent['rollout']
             mechanisms.append(dict(id=ident, path=str(path), sha256=sha(path), information=info,
                                    noisy_r2=latent['probes']['noisy_r2'],
@@ -122,7 +123,7 @@ def main(root, coverage, frozen_gates, output):
                   main_summary=dict(path=str(summary_path), sha256=sha(summary_path)),
                   main_counts=summary['outcomes'], primary_counts=counts, primary_recipes=135, unfinished=0,
                   preserved_original_errors=sum(r['original_terminal'] is not None for r in summary['rows']),
-                  nominal_archive_proofs=proofs, primary_dispositions=statuses,
+                  archive_proofs=proofs, primary_dispositions=statuses,
                   scope='Final evidence collection only. Existing native restore/audit proofs indexed; no repeated model restore, SGD, GPU or simulator calls. '
                         'Early gates are dispositions, not full nominal training. P2c/new seeds/Stage2/DFPhase2 not launched. '
                         'Process exit/resource verification is recorded separately; this file alone does not prove GPUs idle.')
