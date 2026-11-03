@@ -38,28 +38,26 @@ def main(checkpoint,data,output,windows=32,tasks=50):
             originals=[int(dataset.episode_ids[dataset.locate(i)[0]])//5 for i in selected]
             assert len(set(originals))>=2
             perm=[next(j for j in range(windows) if originals[j]!=originals[i]) for i in range(windows)]
-            features=[];actions=[];records=[]
+            features=[];actions=[];contexts=[];records=[]
             for batch in DataLoader(Subset(dataset,selected),batch_size=8,num_workers=0):
                 normalized=model.normalize(batch['pixels'].cuda())
                 features.append(model.encode(dict(pixels=normalized))['emb'])
                 actions.append(batch['action'].cuda())
+                contexts.append(normalized[:,:2])
                 records.extend(zip(batch['episode'].tolist(),batch['start'].tolist()))
             z=torch.cat(features);a=torch.cat(actions);b=len(z)
             factual=a[:,1:7]
             # Physical zero is -mean/std, not a zero normalized action.
             zero=(-mean/std)[None,None,:].expand_as(factual)
             candidates=torch.stack([factual,factual.flip(1),factual[perm],zero],dim=1)
-            # Native rollout accepts cached RGB embeddings; verify one real
-            # encoding through its public path before reusing these embeddings.
-            sample=dataset[selected[0]]
-            pixel=model.normalize(sample['pixels'][None,:2].cuda())
-            check=model.rollout(dict(pixels=pixel[:,None],action_history=a[:1,None,:1]),candidates[:1,:1].clone(),history_size=2)['predicted_emb']
-            info=dict(pixels=pixel.expand(b,-1,-1,-1,-1)[:,None].expand(-1,4,-1,-1,-1,-1),
-                      emb=z[:,None,:2].expand(-1,4,-1,-1),
+            # Use the same uncached public rollout as MPC. Its native history
+            # grows with imagined frames; context2 is not a history2 override.
+            pixel=torch.cat(contexts)
+            info=dict(pixels=pixel[:,None].expand(-1,4,-1,-1,-1,-1),
                       action_history=a[:,None,:1].expand(-1,4,-1,-1))
-            pred=model.rollout(info,candidates,history_size=2)['predicted_emb']
+            pred=model.rollout(info,candidates)['predicted_emb']
             assert pred.shape[:3]==(b,4,8) and torch.isfinite(pred).all()
-            assert torch.allclose(check[0,0],pred[0,0],atol=2e-5,rtol=2e-5)
+            context_error=(pred[:,0,:2]-z[:,:2]).abs()
             actual=z[:,2:];copy=z[:,1:2].expand_as(actual)
             error=(pred[:,0,2:]-actual).square().mean(-1)
             copy_error=(copy-actual).square().mean(-1)
@@ -77,6 +75,7 @@ def main(checkpoint,data,output,windows=32,tasks=50):
                      action_effect_mse=effect.mean(0).tolist(),
                      candidate_names=['factual','time_reverse','different_original_same_task','physical_zero'],
                      factual_endpoint_mse=float(goal_cost[:,0].mean()),
+                     context_encoding_max_abs=float(context_error.max()),
                      future_motion_mse=float(copy_error[:,-1].mean()))
             manifest.append(dict(task_id=task,indices=selected,episode_start=[list(x) for x in records],permutation=perm))
             rows.append(row);print(json.dumps(row),flush=True)
