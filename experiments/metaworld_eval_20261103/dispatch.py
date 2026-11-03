@@ -11,9 +11,10 @@ import time
 from experiments.metaworld_eval_20261103.worker import digest, read, save, free_gpu
 
 
-def approve(root, helper, source, base):
+def approve(root, helper, source, base, plan):
     import torch
-    recipes=read(root/'plan.json')['recipes']; pairs=[]; configs={};proofs={}
+    recipes=read(plan)['recipes']; pairs=[]; configs={};proofs={}
+    by_arm_seed={(r['arm'],r['seed']):Path(r['run']) for r in recipes}
     for recipe in recipes:
         run=Path(recipe['run']);cfg=read(run/'config.json');audit=read(run/'audit-step2.json')
         assert audit['passed'];assert audit['config_sha256']==recipe['config_sha256']==digest(run/'config.json')
@@ -23,14 +24,14 @@ def approve(root, helper, source, base):
         assert str(source) in runtime['paths']['model']
         configs[run.name]=recipe['config_sha256'];proofs[str(run/'audit-step2.json')]=digest(run/'audit-step2.json')
     for seed in [1,2]:
-        reference=torch.load(root/f'training/temporal-forecast-seed{seed}/initial-model/weights.pt',map_location='cpu',weights_only=True)
+        reference=torch.load(by_arm_seed['temporal-forecast',seed]/'initial-model/weights.pt',map_location='cpu',weights_only=True)
         for arm in ['as-jepa','forecast-render']:
-            candidate=torch.load(root/f'training/{arm}-seed{seed}/initial-model/weights.pt',map_location='cpu',weights_only=True)
+            candidate=torch.load(by_arm_seed[arm,seed]/'initial-model/weights.pt',map_location='cpu',weights_only=True)
             assert candidate.keys()==reference.keys()
             different=[k for k in reference if not torch.equal(reference[k],candidate[k])]
             assert not different,(seed,arm,different)
             pairs.append(dict(seed=seed,reference='temporal-forecast',arm=arm,compared_tensors=len(reference),equal=True))
-    names=['planning-preflight-tf-reach-v3','planning-preflight-tf-push-v3','planning-preflight-native-push-v3']
+    names=['planning-preflight-paired-v2-tf-reach-v3','planning-preflight-paired-v2-tf-push-v3','planning-preflight-native-push-v3']
     smoke=[read(root/name/'metrics.json') for name in names]
     assert all(p['passed'] and p['model_state_before']==p['model_state_after'] for p in smoke)
     assert all(p['episodes'][0]['plan_calls']>=2 for p in smoke)
@@ -42,7 +43,7 @@ def approve(root, helper, source, base):
     dispatch=dict(created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),deadline_unix=deadline,
                   deadline_utc=datetime.datetime.fromtimestamp(deadline,datetime.timezone.utc).isoformat(),
                   data=str(data),case_manifest=str(root/'cases-v2/manifest.json'),
-                  helper=str(helper),source=str(source),base=str(base),
+                  helper=str(helper),source=str(source),base=str(base),plan_path=str(plan),
                   scope='Eight fixed trainings,8240-update cap;192 shared MPC endpoints;no retries,extensions,next research round or recurring LLM monitor.')
     jobs=[]
     for step in [2472,8240]:
@@ -59,7 +60,7 @@ def approve(root, helper, source, base):
          episodes=1600,scope='Prespecified8tasks;all cases and failed goal constructions retained;not canonicalMT50 or publishedJEPA-WMs.'))
     save(root/'TRAINING_APPROVED.json',dict(passed=True,approved_utc=dispatch['created_utc'],config_sha256=configs,
          proofs=proofs,paired_initializations=pairs,planning_context2=True,planning_initial_banks_equal=True,
-         case_manifest_sha256=digest(root/'cases-v2/manifest.json'),plan_sha256=digest(root/'plan.json'),
+         case_manifest_sha256=digest(root/'cases-v2/manifest.json'),plan_sha256=digest(plan),
          scope='All8 actual native two-update/CPUrestore/GPUbackward checks and3 actual20-native-step planning checks pass. Technical only;no task performance claim.'))
     print(json.dumps(dict(passed=True,paired_initializations=pairs,jobs=len(jobs),deadline=dispatch['deadline_utc'])),flush=True)
 
@@ -68,7 +69,7 @@ def launch(root, host):
     dispatch=read(root/'dispatch.json');helper=Path(dispatch['helper']);source=Path(dispatch['source']);base=Path(dispatch['base'])
     assert read(root/'TRAINING_APPROVED.json')['passed'];assert host in ['dev2','dev13','dev15']
     specs=[]
-    for recipe in read(root/'plan.json')['recipes']:
+    for recipe in read(dispatch['plan_path'])['recipes']:
         if recipe['host']==host:specs.append(dict(mode='train',gpu=recipe['gpu'],run=recipe['run'],name=recipe['name']))
     for gpu in (range(8) if host=='dev13' else range(4,8)):
         specs.append(dict(mode='evaluate',gpu=gpu,run=None,name=f'evaluation-{host}-g{gpu}'))
@@ -91,7 +92,8 @@ def launch(root, host):
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--root',required=True)
     parser.add_argument('--helper');parser.add_argument('--source');parser.add_argument('--base',default='/efs/prescottsun/SPT-JEPA')
+    parser.add_argument('--plan')
     parser.add_argument('--launch-host',choices=['dev2','dev13','dev15'])
     args=parser.parse_args()
     if args.launch_host:launch(Path(args.root),args.launch_host)
-    else:approve(Path(args.root),Path(args.helper),Path(args.source),Path(args.base))
+    else:approve(Path(args.root),Path(args.helper),Path(args.source),Path(args.base),Path(args.plan) if args.plan else Path(args.root)/'plan.json')
