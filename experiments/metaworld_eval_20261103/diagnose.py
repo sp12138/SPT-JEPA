@@ -16,8 +16,10 @@ def main(checkpoint,data,output,windows=32,tasks=50):
     import stable_worldmodel as swm
     from as_jepa_tools.benchmark_data import BenchmarkWindows
     from vforge.ops import OpsConfig,initialize_ops
-    torch.set_num_threads(2);torch.set_float32_matmul_precision('highest')
+    torch.set_num_threads(2)
     initialize_ops(OpsConfig(backend='sdpa',allow_fallback=False),device=torch.device('cuda'),parallel_state=None)
+    # Ops initialization sets backend flags; override afterward,as in MPC.
+    torch.set_float32_matmul_precision('highest')
     output=Path(output);output.mkdir(exist_ok=False,parents=True)
     model=swm.wm.utils.load_pretrained(checkpoint).cuda().eval().requires_grad_(False)
     before=model_sha(model);dataset=BenchmarkWindows(data,window=8,split='test')
