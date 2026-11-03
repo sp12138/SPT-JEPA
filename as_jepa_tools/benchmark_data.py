@@ -33,7 +33,7 @@ class BenchmarkWindows(Dataset):
         self.counts=self.lengths[self.episodes]-(window-1)*self.stride
         self.ends=np.cumsum(self.counts);self.natural_length=int(self.ends[-1]);self.encode_epoch_index=True
         self.mean=np.asarray(self.card["action_mean"],dtype=np.float32);self.std=np.asarray(self.card["action_std"],dtype=np.float32)
-        self.file=None;self.actions=None
+        self.file=None;self.actions=None;self.pixels=None
     def __len__(self):return self.natural_length
     def locate(self,index):
         index=int(index)%self.natural_length;i=int(np.searchsorted(self.ends,index,side="right"))
@@ -43,13 +43,16 @@ class BenchmarkWindows(Dataset):
             import h5py,hdf5plugin
             self.file=h5py.File(self.card["h5_path"],"r",rdcc_nbytes=32*1024*1024)
             self.actions=np.asarray(self.file["action"],dtype=np.float32)
+            # Keep the VDS Dataset alive: releasing it after each window also
+            # releases its source-file/chunk caches on remote filesystems.
+            self.pixels=self.file["pixels"]
     def __getitem__(self,index):
         self.open();ep,start=self.locate(index);offset=int(self.offsets[ep]);n=int(self.lengths[ep]);w=self.window
         rows=offset+start+np.arange(w)*self.stride
         # Read the small enclosing interval before selecting rows in NumPy.
         # HDF5 fancy selection is expensive for the supplied 100-frame chunks.
         # This preserves every selected byte, including the final valid window.
-        raw=np.asarray(self.file["pixels"][int(rows[0]):int(rows[-1])+1])[::self.stride]
+        raw=np.asarray(self.pixels[int(rows[0]):int(rows[-1])+1])[::self.stride]
         pixels=torch.from_numpy(raw.copy())
         if pixels.shape[-1] in (3,4):pixels=pixels[...,:3].permute(0,3,1,2)
         if pixels.shape[1]!=3:raise ValueError("Expected RGB pixels")

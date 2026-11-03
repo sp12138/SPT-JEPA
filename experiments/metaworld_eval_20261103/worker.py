@@ -64,6 +64,9 @@ def main(args):
     env=os.environ.copy()
     paths=[helper,source,Path(args.base)/'environments/completion-overlay',Path(args.base)/'environments/overlay',
            Path(args.base)/'runs/mechanism_cubeaudit_20261030/source-v1/runtime',Path(args.base)/'sources/stable-worldmodel']
+    # A small immutable runtime snapshot may inherit untouched audit helpers
+    # from the original full source; model/data packages resolve to source first.
+    paths.append(Path(dispatch['source']))
     if args.mode=='evaluate':paths.insert(0,Path(args.base)/'environments/metaworld-sanity-20261103/lib/python3.12/site-packages')
     env.update(PYTHONPATH=':'.join(map(str,paths)),PYTHONDONTWRITEBYTECODE='1',CUDA_VISIBLE_DEVICES=str(args.gpu),
                HF_HUB_OFFLINE='1',WANDB_MODE='disabled',OMP_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2',MKL_NUM_THREADS='2')
@@ -80,8 +83,27 @@ def main(args):
         run=Path(args.run);cfg=read(run/'config.json')
         assert read(gate)['config_sha256'][run.name]==digest(run/'config.json')
         assert read(run/'audit-step2.json')['passed']
-        archive(run,2)
-        for step in [600,2472,8240]:
+        stages=[600,2472,8240]
+        if args.adopt_native_pid:
+            import psutil
+            approval=read(root/'DATA_IO_APPROVED.json');assert approval['passed']
+            assert approval['source']==str(source)
+            while time.time()<deadline:
+                try:
+                    process=psutil.Process(args.adopt_native_pid)
+                    alive=process.is_running() and process.status()!=psutil.STATUS_ZOMBIE
+                except psutil.NoSuchProcess:alive=False
+                if not alive:break
+                time.sleep(10)
+            assert read(run/'stage-complete.json')['stop_step']==600
+            assert read(run/'status.json')['step']==600 and read(run/'status.json')['state']=='finished'
+            command([args.python,'-B','-u',str(helper/'experiments/metaworld_eval_20261103/audit.py'),
+                     '--run',str(run),'--step','600','--output',str(run/'audit-step600.json')],
+                     run/'audit-step600.log',env,source,deadline,cap=1800)
+            assert read(run/'audit-step600.json')['passed'];archive(run,600)
+            stages=[2472,8240]
+        else:archive(run,2)
+        for step in stages:
             if (root/'STOP').exists() or (run/'STOP').exists():raise RuntimeError('User stop marker')
             free_gpu(args.gpu)
             command([args.python,'-B','-u',str(source/'experiments/lingjing_fullspec_20261102/safe_train_stage.py'),
@@ -139,6 +161,7 @@ if __name__=='__main__':
     parser.add_argument('--root',required=True);parser.add_argument('--source',required=True);parser.add_argument('--helper',required=True)
     parser.add_argument('--base',default='/efs/prescottsun/SPT-JEPA');parser.add_argument('--python',default='/efs/prescottsun/project_jepa/envs/lewm/bin/python')
     parser.add_argument('--gpu',type=int,required=True);parser.add_argument('--host',required=True);parser.add_argument('--run')
+    parser.add_argument('--adopt-native-pid',type=int)
     args=parser.parse_args()
     try:main(args)
     except Exception:
