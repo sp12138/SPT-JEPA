@@ -6,6 +6,7 @@ MODEL_TARGETS = {
     "base": "as_jepa_lewm.model.ASJepaLeWM",
     "research": "as_jepa_lewm.research.ResearchLeWM",
     "robust": "as_jepa_lewm.robust.RobustLeWM",
+    "innovation": "as_jepa_lewm.innovation.InnovationLeWM",
     "frontier": "as_jepa_lewm.frontier.FrontierLeWM",
     "carrier": "as_jepa_lewm.carrier.CarrierLeWM",
     "pathquery": "as_jepa_lewm.pathquery.PathQueryLeWM",

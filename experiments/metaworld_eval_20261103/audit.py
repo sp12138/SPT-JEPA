@@ -22,7 +22,7 @@ def equal(left, right):
     return left == right
 
 
-def main(run, step, output):
+def main(run, step, output, reference_config=None):
     from as_jepa_lewm.train import TrainModule
     from as_jepa_tools.benchmark_data import BenchmarkWindows
     from vforge.ops import OpsConfig, initialize_ops
@@ -47,6 +47,16 @@ def main(run, step, output):
         model=equal(module.state_dict(), checkpoint['state_dict']),
         optimizer=equal(optimizer.state_dict(), checkpoint['optimizer_states'][0]),
         scheduler=equal(scheduler.state_dict(), checkpoint['lr_schedulers'][0]))
+    if reference_config:
+        reference=TrainModule(json.loads(Path(reference_config).read_text())).cpu()
+        reference_configured=reference.configure_optimizers()
+        def names_by_group(module,opt):
+            names={id(p):name for name,p in module.named_parameters()}
+            return [[names[id(p)] for p in group['params']] for group in opt.param_groups]
+        report['optimizer_parameter_names_equal']=(names_by_group(module,optimizer)==
+            names_by_group(reference,reference_configured['optimizer']))
+        assert report['optimizer_parameter_names_equal'], 'Fork changed optimizer parameter associations'
+        del reference,reference_configured
     initial = torch.load(root / 'initial-model/weights.pt', map_location='cpu', weights_only=True)
     report['updated_tensors'] = sum(not torch.equal(value, portable[key]) for key,value in initial.items())
     del initial, portable, checkpoint, optimizer, scheduler, configured
@@ -66,7 +76,15 @@ def main(run, step, output):
                                      episode=batch['episode'].tolist(), rows=batch['rows'].tolist())
     buffers = {key:value.detach().cpu().clone() for key,value in model.named_buffers()}
     torch.manual_seed(20261103 + cfg['seed']); model.zero_grad(set_to_none=True)
-    loss, metrics = model.loss(move_batch(batch, 'cuda'), step=step, ramp_steps=0)
+    moved=move_batch(batch,'cuda')
+    if type(model).__name__=='InnovationLeWM':
+        from as_jepa_lewm.robust import RobustLeWM
+        _,delta,anchor=model.prepare(moved)
+        _,original,_=RobustLeWM.prepare(model,moved)
+        error=float((delta+anchor[:,None]-original).abs().max())
+        report['innovation_translation_max_abs']=error
+        assert error<=2e-7, ('Innovation target is not reversible',error)
+    loss, metrics = model.loss(moved, step=step, ramp_steps=0)
     loss.backward()
     report.update(loss=float(loss.detach()), loss_finite=finite(loss),
                   metrics={k:float(v.detach()) if torch.is_tensor(v) else v for k,v in metrics.items()},
@@ -89,4 +107,5 @@ def main(run, step, output):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(); parser.add_argument('--run', required=True)
     parser.add_argument('--step', type=int, required=True); parser.add_argument('--output', required=True)
-    args = parser.parse_args(); main(args.run, args.step, args.output)
+    parser.add_argument('--reference-config')
+    args = parser.parse_args(); main(args.run, args.step, args.output,args.reference_config)
