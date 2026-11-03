@@ -21,10 +21,12 @@ def make_environment(task, seed, rand_vec=None):
     env = native_class(render_mode='rgb_array', camera_name='corner2')
     env.model.cam_pos[2] = [0.75, 0.075, 0.7]
     env.set_task(benchmark.train_tasks[0])
+    # Keep reset/settling history identical for discovery and bound replay.
+    # The 39D observation alone does not describe every rendered robot joint.
+    env._freeze_rand_vec = False
+    env.seeded_rand_vec = True
+    state, info = env.reset(seed=seed)
     if rand_vec is None:
-        env._freeze_rand_vec = False
-        env.seeded_rand_vec = True
-        state, info = env.reset(seed=seed)
         rand_vec = env._last_rand_vec.copy()
     binding = _encode_task(task, dict(rand_vec=np.asarray(rand_vec).copy(), env_cls=native_class,
                                       partially_observable=False))
