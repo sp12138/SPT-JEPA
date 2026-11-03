@@ -221,7 +221,8 @@ def finish(root):
         training_done=all(any((Path(r['run'])/n).exists() for n in ['complete.json','worker-failed.json']) for r in recipes)
         for j in jobs:
             run=Path(j['run']);work=Path(j['work'])
-            if (run/'worker-failed.json').exists() and not (run/f'audit-step{j["step"]}.json').exists():
+            required=run/f'audit-step{j["step"]}.json'
+            if (run/'worker-failed.json').exists() and (not required.exists() or not read(required)['passed']):
                 if not any((work/n).exists() for n in ['blocked.json','failed.json','complete.json']):save(work/'blocked.json',dict(executed=False,reason='Training failed',run=str(run)))
         if training_done and all(any((Path(j['work'])/n).exists() for n in ['complete.json','failed.json','blocked.json']) for j in jobs):break
         if (root/'STOP').exists():break
