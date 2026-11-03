@@ -23,6 +23,8 @@
 
 预先固定4组×2 seeds：temporal-forecast（rho=.8、forecast_fraction=.5）、原AS-JEPA（0/0）、forecast-render（0/.5）、native LeWM。前三组同一随机初始化、51.1M参数body和原sample-level目标，必须实际比较所有初始张量；native LeWM保留原生BN/SIGReg和optimizer，是不同容量的batch-coupled参照。全部随机初始化，不加载旧任务学习权重。
 
+最初配对门禁实际拒绝seed1的一项encoder projection权重（最大差1.49384e-6），其余549项一致；seed2全部550项一致，原因未定。原始8个技术训练和失败门禁保留。正式比较用plan-paired-v2：六个AS训练从头开始，统一通过现有native trainer加载原seed temporal-forecast在任何SGD前保存的全部随机encoder；pool/predictor/renderer和optimizer仍fresh。两个未改动的native控制复用完整2-step状态，不重复完成的SGD。必须再次逐张量验证配对后才能放行。这是比较初始化一致性修复，不使用学习过的权重，也不改变NN或目标。
+
 原生Lightning训练先到2 updates，必须实际恢复CPU model/AdamW/scheduler，并做真实held-out loss GPU反传。所有必要分组finite且有梯度、原生与portable权重一致、sample cursor正确，再通过小预算原生规划接口检查，才可放行短程训练。LR总horizon固定41200 updates（50轮），阶段为600、2472（3轮）、8240（10轮）；有限训练上限8240，不依照某一个任务的分数选择checkpoint。完整原生状态和所有结果保留。
 
 ## 环境与评估合同

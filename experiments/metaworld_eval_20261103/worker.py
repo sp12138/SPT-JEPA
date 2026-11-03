@@ -92,7 +92,10 @@ def main(args):
                      run/f'audit-step{step}.log',env,source,deadline,cap=1800)
             assert read(run/f'audit-step{step}.json')['passed'];archive(run,step)
         save(run/'complete.json',dict(passed=True,finished_utc=timestamp(),step=8240))
-        return
+        # A completed training slot joins the same finite MPC queue,so faster
+        # controls do not leave their GPU idle while other models finish.
+        args.mode='evaluate'
+        return main(args)
     jobs=read(root/'evaluation-plan.json')['jobs']
     while time.time()<deadline:
         if (root/'STOP').exists() or (root/'HOLD').exists():break
