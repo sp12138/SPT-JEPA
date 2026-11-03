@@ -1,5 +1,5 @@
 {
-  "status": "ACTIVE_FINITE_PRIMARY_QUEUE",
+  "status": "COMPLETE_HOLD",
   "user_priority": "Stop old unsuccessful roots; complete uploaded proposals by question coverage and stop clearly failed branches after evidence.",
   "old_goal": "paused; no recurring LLM monitor or next review",
   "machines": [
@@ -240,7 +240,8 @@
       "source_commit": "d1f5ed113eb177b113dc90e4d0662563c62ca4aa"
     },
     "worker_IO_binding": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_recovery_v4_20261102/SAVE_IO_RUNTIME.json",
-    "scope": "Same106jobs;12Cube inherited,31existingPushT no repeated first-stage SGD,63originalpending released. v8 dispatchers adopt existing workers and preserve original72h cutoff. NN0196 unchanged."
+    "scope": "Same106jobs;12Cube inherited,31existingPushT no repeated first-stage SGD,63originalpending released. v8 dispatchers adopt existing workers and preserve original72h cutoff. NN0196 unchanged.",
+    "status": "COMPLETE_HOLD"
   },
   "baselines": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/lingjing_fullspec_P1_20261102",
@@ -323,7 +324,7 @@
     "Physical probes use labels only to fit diagnostic readouts; learners/planners receive no optimal-action or physical labels.",
     "CubeK at12k has no continuation gate success; shared22degree pose readout is not a K-specific causal explanation. MatureL0 baseline required; do not compare only to early weak checkpoints."
   ],
-  "reviewed_utc": "2026-11-02T14:20:17.532339+00:00",
+  "reviewed_utc": "2026-11-03T06:19:16.256121+00:00",
   "retired_queues": [
     {
       "main": {
@@ -714,5 +715,33 @@
     "unfinished_started": 21,
     "unfinished_not_started": 27,
     "evidence": "../metaworld_transition_20261103/results/coverage-after-preparation.json"
+  },
+  "final_closeout": {
+    "sealed_utc": "2026-11-03T06:19:16.256121+00:00",
+    "root": "/efs/prescottsun/SPT-JEPA/reports/lingjing_fullspec_20261102/closeout-20261103",
+    "index": "final-v2/summary.json",
+    "primary_counts": {
+      "inherited_nominal_budget_complete": 12,
+      "nominal_budget_complete": 78,
+      "early_collapsed_at_first_epoch": 16,
+      "matched_baseline_nominal_complete": 3,
+      "gate_failed_stop_no_6000": 26
+    },
+    "nominal_complete": 93,
+    "gate_or_first_epoch_ended": 42,
+    "unfinished": 0,
+    "unresolved_effective_errors": 0,
+    "original_save_errors_preserved": 2,
+    "resources_checked_utc": "2026-11-03T06:18:20Z",
+    "all_owned_project_processes_exited": true,
+    "all24_gpu_empty_at_snapshot": true,
+    "collector_exited": true,
+    "helper_commit": "f654eb2",
+    "native_model_source_commit": "0196dc17bf1f6d3823a2edd5509e1508d19bb8e8",
+    "local_report": "CLOSEOUT_20261103.md",
+    "local_results": "results/closeout20261103",
+    "automatic_new_round": false,
+    "unexecuted_extensions": "P2c/new seeds/TwoRoom6000/Cube23342/Stage2/DFPhase2; latest user requests closure. Not counted as completed experiments.",
+    "scope": "Prior launches and active snapshots below retained as historical records; do not resume from stale PIDs/statuses. All old HOLD/STOP markers remain."
   }
 }

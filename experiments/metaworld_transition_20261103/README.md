@@ -2,24 +2,15 @@
 
 用户2026-11-03指定后续主攻Meta-World。本次做覆盖审计、公开协议核对和独立接口预检，不启动新世界模型长训，不恢复旧goal或LLM周期监控。
 
-## 旧实验是否已足够结束
+## 旧实验已完成收尾
 
-**最后核验：03:56北京时间，135主要配方87个已完成处置、48个未结束（21个已有worker、27个待启动），D组六条仍未开始，无执行错误终点。** 以下03:23表格与37个完整性能导出保留为原始快照，不冒充同一时刻；最终覆盖见 [coverage-after-preparation.json](results/coverage-after-preparation.json)。
+**2026-11-03 14:19北京时间正式COMPLETE/HOLD：135个主要配方全部处置，93个名义预算完成、16个首epoch停止、26个TwoRoom门槛结束；0未结束、0未解决的有效执行错误。** 三机14:18快照中旧项目进程均退出，24张GPU均无计算进程。这是过去快照，不保证将来空闲。
 
-还不能宣称提案已全部做完。19:23:06UTC / 北京时间11月3日03:23的快照中，135个主要配方已有85个完成处置，另50个未结束：
+最终报告、逐条覆盖、全部结果和历史三任务成功方案见[Lingjing收尾报告](../lingjing_fullspec_20261102/CLOSEOUT_20261103.md)。此前缺的D组sample-level window已经补齐：λ=0 primary/fresh4%/2%，λ=1双种子首epoch停止；A/B26个完整模型无一通过作者状态生成筛选。
 
-| 部分 | 已完成处置 | 尚未结束 |
-|---|---:|---:|
-| TwoRoom主要配方 | 26个门槛失败，停止 | 0 |
-| Cube K组 | 12个12000步完成，停止延长 | 0 |
-| 标准L0 P1 | 3个10epoch完成 | 0 |
-| PushT其余主要配方 | 37个名义完成、7个首epoch早停 | 50 |
+P2二epoch全部20条也已完成；F8相关噪声87.33/83%是有效的正向因素，但同24982步、精确匹配42/43案例时F8 88.5%对旧TF89%，fresh83%对86.33%，没有大幅超越。原提案的P2c、新种子、Stage2、DF Phase2在最新用户收尾指令下不再启动，不能当作已经完成。
 
-50个中21个已有worker记录，29个尚未开始；这不是当前SGD/GPU占用数。剩余为P2十五、P3十、P4一、DF B二/C四/D六/E二/G八/H二。**特别是D组sample-level window/pooled同域对照六条仍未开始，不能把此前pooled版本的失败代替这个问题。** 原有限队列继续完成这些已授权问题；不再增加PushT/Cube扩展网格，不触发P2c新种子、硬任务Stage2或DF Phase2。执行错误终点为空；两个旧保存故障已有独立补充结果。
-
-P2已有一条重要的正向分离：同为24982步，F7白噪声的双seed均值为8.00/7.33%，F8仅改时间相关系数ρ=.8后为87.33/83.00%（primary/fresh）。这说明当前forecast-scored并非全线无效，但不是超过旧TF的结论；旧TF三epoch94.00/92.33%的预算不同，必须另取同24982参照后比较。F8−F7的条件episode聚类95%区间为primary+79.33pp[73.70,84.33]、fresh+75.67pp[69.87,81.25]，条件于这两个固定模型、不覆盖训练seed总体或simulator-repeat方差。F7/F8及全部37个已完成模型均保留，不能只报F8。
-
-完整覆盖证据：[old-campaign-inventory.json](results/old-campaign-inventory.json)、[37个完整模型全部终点](results/completed-performance.json)、[F7/F8预设配对](results/F7-F8-paired.json)。其余原始检查点、各阶段评测和CORRECTIONS继续保留原EFS根目录。
+以下旧快照文件仍完整保留，不能当成当前48/50条未结束：[03:23库存](results/old-campaign-inventory.json)、[03:56覆盖](results/coverage-after-preparation.json)、[当时37个完整模型](results/completed-performance.json)、[F7/F8条件配对](results/F7-F8-paired.json)。大检查点、日志和CORRECTIONS继续保留EFS，旧goal/LLM周期监控不恢复。
 
 ## Meta-World选哪套数据
 

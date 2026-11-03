@@ -1,5 +1,7 @@
 # 执行与测量验证
 
+最终状态已由[2026-11-03收尾报告](CLOSEOUT_20261103.md)和[最终逐条覆盖](results/closeout20261103/coverage-final.json)更新；本文下方保留原时间范围的证据。
+
 ## 已通过
 
 - 固定NN源0196dc17的完整 `tests/as_jepa`：145 tests，144通过、1个依赖可选历史的skip。第一次源导出缺历史Git引用/运行时provenance而失败的日志保留；第二次在独立验证目录补checksum绑定的历史参考输入，测试与NN代码未改。见 [CPU证明](results/cpu-tests-v2.json)。
