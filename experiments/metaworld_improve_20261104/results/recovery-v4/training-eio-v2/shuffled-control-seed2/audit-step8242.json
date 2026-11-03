@@ -1,0 +1,141 @@
+{
+  "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/shuffled-control-seed2",
+  "step": 8242,
+  "config_sha256": "1d1df7700971a92edd100381085d4ea2cb402f32cd4d7d496aeb5da514d7ee80",
+  "checkpoint_sha256": "29e4552ed84296606fa9ca8476cc5a56660bf10f5b78018ad71e6ed42b5fa1d1",
+  "portable_sha256": "f50397e796724f3b5b1c5ed01fda507e7b57c3e885be286564678cf52f1a043c",
+  "checkpoint": {
+    "step": 8242,
+    "expected_step": 8242,
+    "checks": {
+      "exact_step": true,
+      "model_finite": true,
+      "portable_finite": true,
+      "optimizer_present": true,
+      "optimizer_finite": true,
+      "scheduler_present": true,
+      "scheduler_finite": true,
+      "rng_present": true,
+      "sample_cursor": true,
+      "portable_equal": true
+    },
+    "portable_missing": [],
+    "portable_different": [],
+    "campaign_samples": 1054976
+  },
+  "actual_cpu_restore": {
+    "model": true,
+    "optimizer": true,
+    "scheduler": true
+  },
+  "optimizer_parameter_names_equal": true,
+  "updated_tensors": 542,
+  "heldout_windows": {
+    "split": "test",
+    "indices": [
+      9738,
+      9322
+    ],
+    "original_episodes": [
+      1978,
+      2085
+    ],
+    "episode": [
+      10426,
+      9890
+    ],
+    "rows": [
+      [
+        167882,
+        167883,
+        167884,
+        167885,
+        167886,
+        167887,
+        167888,
+        167889
+      ],
+      [
+        159043,
+        159044,
+        159045,
+        159046,
+        159047,
+        159048,
+        159049,
+        159050
+      ]
+    ]
+  },
+  "loss": 0.006239078938961029,
+  "loss_finite": true,
+  "metrics": {
+    "loss": 0.006239078938961029,
+    "fm": 0.005136838648468256,
+    "rate": 0.004408960696309805,
+    "entry": 125.03533935546875,
+    "surprise": 36.315120697021484,
+    "rate_share": 0.21457558870315552,
+    "feature_std": 0.25958332419395447,
+    "active_dims": 64.0,
+    "temporal_noise_rho": 0.800000011920929,
+    "forecast_fraction": 0.5
+  },
+  "gradients": {
+    "encoder": {
+      "expectation": "active",
+      "parameters": 5501376,
+      "parameter_tensors": 198,
+      "trainable_parameters": 5501376,
+      "gradient_tensors": 198,
+      "gradient_norm": 0.22727157102186787,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "pool": {
+      "expectation": "active",
+      "parameters": 152464,
+      "parameter_tensors": 9,
+      "trainable_parameters": 152464,
+      "gradient_tensors": 9,
+      "gradient_norm": 0.10734830950616231,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "predictor": {
+      "expectation": "active",
+      "parameters": 10828544,
+      "parameter_tensors": 87,
+      "trainable_parameters": 10828544,
+      "gradient_tensors": 87,
+      "gradient_norm": 0.057534751296743014,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "renderer": {
+      "expectation": "active",
+      "parameters": 34595376,
+      "parameter_tensors": 242,
+      "trainable_parameters": 34595376,
+      "gradient_tensors": 241,
+      "gradient_norm": 0.29276530279634894,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "action_encoder": {
+      "expectation": "active",
+      "parameters": 22244,
+      "parameter_tensors": 6,
+      "trainable_parameters": 22244,
+      "gradient_tensors": 6,
+      "gradient_norm": 0.013630854633585026,
+      "gradients_finite": true,
+      "passed": true
+    }
+  },
+  "all_parameter_gradients_finite": true,
+  "eval_buffers_unchanged": true,
+  "passed": true,
+  "finished_utc": "2026-11-03T19:23:00.416059+00:00",
+  "scope": "Native full model/AdamW/scheduler CPU restores; actual held-out FP32 backward without optimizer step. No physical/optimal-action labels. Positive gradients are interface evidence,not task performance."
+}

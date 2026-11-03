@@ -1,0 +1,457 @@
+{
+  "passed": true,
+  "host": "dev15",
+  "checked_utc": "2026-11-03T20:24:47.442492+00:00",
+  "rows": [
+    {
+      "name": "tf-control-seed2",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2",
+      "gpu": 0,
+      "owner_pid": 2317752,
+      "step": 10800,
+      "state": "running",
+      "loss": 0.0048761614598333836,
+      "native_gradient_step": 10800,
+      "gradients": {
+        "encoder": 0.08390358090400696,
+        "pool": 0.04733980819582939,
+        "predictor": 0.014596717432141304,
+        "renderer": 0.15362054109573364,
+        "action_encoder": 0.005012309178709984
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/robust.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_tools/benchmark_data.py"
+        },
+        "sha256": {
+          "model": "51238531057042b71af54e5082687812063d13f037d1646bf21319dab837c4dc",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "4c925f356b2e5a0c225362eaecb17e7a7c36c98936fca78281a42a062603f215",
+          "dataset": "2924c5f42557ce92ded1867c65788a810ba1d08283e20ecaaa3beef2391c4dc5"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+        "CUDA_VISIBLE_DEVICES": "0",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/config.json",
+          "--resume"
+        ],
+        "step": 9889,
+        "target_step": 16480
+      },
+      "checks": {
+        "entry_full_restore": true,
+        "optimizer_associations": true,
+        "native_two_updates": true,
+        "planning_interface": true,
+        "planning_state_unchanged": true,
+        "actual_progress100": true,
+        "finite_loss": true,
+        "positive_finite_native_gradients": true,
+        "actual_GPU": true,
+        "actual_source": true,
+        "parent_alive": true,
+        "no_effective_failure": true
+      },
+      "passed": true
+    },
+    {
+      "name": "native-control-seed2",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/native-control-seed2",
+      "gpu": 1,
+      "owner_pid": 2317756,
+      "step": 16480,
+      "state": "finished",
+      "loss": 0.10657694190740585,
+      "native_gradient_step": 16400,
+      "gradients": {
+        "encoder": 0.7313809990882874,
+        "predictor": 0.007931198924779892,
+        "action_encoder": 0.0033197051379829645,
+        "projector": 0.3044845759868622,
+        "pred_proj": 0.04073293134570122
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/native_lewm.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_tools/benchmark_data.py"
+        },
+        "sha256": {
+          "model": "af198ae319e1a39e415ef8ed1440e7f8069b4831afa25cdb696b8dd011aea666",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "4c925f356b2e5a0c225362eaecb17e7a7c36c98936fca78281a42a062603f215",
+          "dataset": "2924c5f42557ce92ded1867c65788a810ba1d08283e20ecaaa3beef2391c4dc5"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+        "CUDA_VISIBLE_DEVICES": "1",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/native-control-seed2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/native-control-seed2/config.json",
+          "--resume"
+        ],
+        "step": 9889,
+        "target_step": 16480
+      },
+      "checks": {
+        "entry_full_restore": true,
+        "optimizer_associations": true,
+        "native_two_updates": true,
+        "planning_interface": true,
+        "planning_state_unchanged": true,
+        "actual_progress100": true,
+        "finite_loss": true,
+        "positive_finite_native_gradients": true,
+        "actual_GPU": true,
+        "actual_source": true,
+        "parent_alive": true,
+        "no_effective_failure": true
+      },
+      "passed": true
+    },
+    {
+      "name": "high-noise-seed2",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/high-noise-seed2",
+      "gpu": 2,
+      "owner_pid": 2317764,
+      "step": 10800,
+      "state": "running",
+      "loss": 0.004304653033614159,
+      "native_gradient_step": 10800,
+      "gradients": {
+        "encoder": 0.04161810502409935,
+        "pool": 0.02069813385605812,
+        "predictor": 0.012225328013300896,
+        "renderer": 0.19915762543678284,
+        "action_encoder": 0.002679405501112342
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/robust.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_tools/benchmark_data.py"
+        },
+        "sha256": {
+          "model": "51238531057042b71af54e5082687812063d13f037d1646bf21319dab837c4dc",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "4c925f356b2e5a0c225362eaecb17e7a7c36c98936fca78281a42a062603f215",
+          "dataset": "2924c5f42557ce92ded1867c65788a810ba1d08283e20ecaaa3beef2391c4dc5"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+        "CUDA_VISIBLE_DEVICES": "2",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/high-noise-seed2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/high-noise-seed2/config.json",
+          "--resume"
+        ],
+        "step": 9889,
+        "target_step": 16480
+      },
+      "checks": {
+        "entry_full_restore": true,
+        "optimizer_associations": true,
+        "native_two_updates": true,
+        "planning_interface": true,
+        "planning_state_unchanged": true,
+        "actual_progress100": true,
+        "finite_loss": true,
+        "positive_finite_native_gradients": true,
+        "actual_GPU": true,
+        "actual_source": true,
+        "parent_alive": true,
+        "no_effective_failure": true
+      },
+      "passed": true
+    },
+    {
+      "name": "zero-anchor-seed2",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/zero-anchor-seed2",
+      "gpu": 3,
+      "owner_pid": 2317768,
+      "step": 10800,
+      "state": "running",
+      "loss": 0.009363490156829357,
+      "native_gradient_step": 10800,
+      "gradients": {
+        "encoder": 0.10657577216625214,
+        "pool": 0.03748459741473198,
+        "predictor": 0.02298489212989807,
+        "renderer": 0.1099538654088974,
+        "action_encoder": 0.004756042268127203
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/robust.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_tools/benchmark_data.py"
+        },
+        "sha256": {
+          "model": "51238531057042b71af54e5082687812063d13f037d1646bf21319dab837c4dc",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "4c925f356b2e5a0c225362eaecb17e7a7c36c98936fca78281a42a062603f215",
+          "dataset": "2924c5f42557ce92ded1867c65788a810ba1d08283e20ecaaa3beef2391c4dc5"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+        "CUDA_VISIBLE_DEVICES": "3",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/zero-anchor-seed2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/zero-anchor-seed2/config.json",
+          "--resume"
+        ],
+        "step": 9889,
+        "target_step": 16480
+      },
+      "checks": {
+        "entry_full_restore": true,
+        "optimizer_associations": true,
+        "native_two_updates": true,
+        "planning_interface": true,
+        "planning_state_unchanged": true,
+        "actual_progress100": true,
+        "finite_loss": true,
+        "positive_finite_native_gradients": true,
+        "actual_GPU": true,
+        "actual_source": true,
+        "parent_alive": true,
+        "no_effective_failure": true
+      },
+      "passed": true
+    },
+    {
+      "name": "forecast-only-seed2",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/forecast-only-seed2",
+      "gpu": 4,
+      "owner_pid": 2317774,
+      "step": 10800,
+      "state": "running",
+      "loss": 0.004641897510737181,
+      "native_gradient_step": 10800,
+      "gradients": {
+        "encoder": 0.03968280553817749,
+        "pool": 0.018886374309659004,
+        "predictor": 0.02867892012000084,
+        "renderer": 0.03569580242037773,
+        "action_encoder": 0.009128546342253685
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/robust.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_tools/benchmark_data.py"
+        },
+        "sha256": {
+          "model": "51238531057042b71af54e5082687812063d13f037d1646bf21319dab837c4dc",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "4c925f356b2e5a0c225362eaecb17e7a7c36c98936fca78281a42a062603f215",
+          "dataset": "2924c5f42557ce92ded1867c65788a810ba1d08283e20ecaaa3beef2391c4dc5"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+        "CUDA_VISIBLE_DEVICES": "4",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/forecast-only-seed2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/forecast-only-seed2/config.json",
+          "--resume"
+        ],
+        "step": 9889,
+        "target_step": 16480
+      },
+      "checks": {
+        "entry_full_restore": true,
+        "optimizer_associations": true,
+        "native_two_updates": true,
+        "planning_interface": true,
+        "planning_state_unchanged": true,
+        "actual_progress100": true,
+        "finite_loss": true,
+        "positive_finite_native_gradients": true,
+        "actual_GPU": true,
+        "actual_source": true,
+        "parent_alive": true,
+        "no_effective_failure": true
+      },
+      "passed": true
+    },
+    {
+      "name": "quadrants-seed2",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/quadrants-seed2",
+      "gpu": 5,
+      "owner_pid": 2317778,
+      "step": 10800,
+      "state": "running",
+      "loss": 0.004975146148353815,
+      "native_gradient_step": 10800,
+      "gradients": {
+        "encoder": 0.09685217589139938,
+        "pool": 0.0419890470802784,
+        "predictor": 0.01772664487361908,
+        "renderer": 0.19292111694812775,
+        "action_encoder": 0.006468294188380241
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/robust.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_tools/benchmark_data.py"
+        },
+        "sha256": {
+          "model": "51238531057042b71af54e5082687812063d13f037d1646bf21319dab837c4dc",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "4c925f356b2e5a0c225362eaecb17e7a7c36c98936fca78281a42a062603f215",
+          "dataset": "2924c5f42557ce92ded1867c65788a810ba1d08283e20ecaaa3beef2391c4dc5"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+        "CUDA_VISIBLE_DEVICES": "5",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/quadrants-seed2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/quadrants-seed2/config.json",
+          "--resume"
+        ],
+        "step": 9889,
+        "target_step": 16480
+      },
+      "checks": {
+        "entry_full_restore": true,
+        "optimizer_associations": true,
+        "native_two_updates": true,
+        "planning_interface": true,
+        "planning_state_unchanged": true,
+        "actual_progress100": true,
+        "finite_loss": true,
+        "positive_finite_native_gradients": true,
+        "actual_GPU": true,
+        "actual_source": true,
+        "parent_alive": true,
+        "no_effective_failure": true
+      },
+      "passed": true
+    },
+    {
+      "name": "shuffled-control-seed2",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/shuffled-control-seed2",
+      "gpu": 6,
+      "owner_pid": 2317782,
+      "step": 10800,
+      "state": "running",
+      "loss": 0.004965744912624359,
+      "native_gradient_step": 10800,
+      "gradients": {
+        "encoder": 0.09679385274648666,
+        "pool": 0.043833378702402115,
+        "predictor": 0.013240988366305828,
+        "renderer": 0.18616344034671783,
+        "action_encoder": 0.004303848836570978
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/robust.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_tools/benchmark_data.py"
+        },
+        "sha256": {
+          "model": "51238531057042b71af54e5082687812063d13f037d1646bf21319dab837c4dc",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "4c925f356b2e5a0c225362eaecb17e7a7c36c98936fca78281a42a062603f215",
+          "dataset": "2924c5f42557ce92ded1867c65788a810ba1d08283e20ecaaa3beef2391c4dc5"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+        "CUDA_VISIBLE_DEVICES": "6",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/shuffled-control-seed2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/shuffled-control-seed2/config.json",
+          "--resume"
+        ],
+        "step": 9889,
+        "target_step": 16480
+      },
+      "checks": {
+        "entry_full_restore": true,
+        "optimizer_associations": true,
+        "native_two_updates": true,
+        "planning_interface": true,
+        "planning_state_unchanged": true,
+        "actual_progress100": true,
+        "finite_loss": true,
+        "positive_finite_native_gradients": true,
+        "actual_GPU": true,
+        "actual_source": true,
+        "parent_alive": true,
+        "no_effective_failure": true
+      },
+      "passed": true
+    },
+    {
+      "name": "innovation-seed2",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/innovation-seed2",
+      "gpu": 7,
+      "owner_pid": 2317786,
+      "step": 10800,
+      "state": "running",
+      "loss": 0.004939878825098276,
+      "native_gradient_step": 10800,
+      "gradients": {
+        "encoder": 0.04597850888967514,
+        "pool": 0.024675320833921432,
+        "predictor": 0.011661629192531109,
+        "renderer": 0.07723374664783478,
+        "action_encoder": 0.003085716161876917
+      },
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/innovation.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d/as_jepa_tools/benchmark_data.py"
+        },
+        "sha256": {
+          "model": "49c06d7170b28c309092425262f59b10668d143e730d6ce00cb154bd3e587ab0",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "4c925f356b2e5a0c225362eaecb17e7a7c36c98936fca78281a42a062603f215",
+          "dataset": "2924c5f42557ce92ded1867c65788a810ba1d08283e20ecaaa3beef2391c4dc5"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+        "CUDA_VISIBLE_DEVICES": "7",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/innovation-seed2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/innovation-seed2/config.json",
+          "--resume"
+        ],
+        "step": 9889,
+        "target_step": 16480
+      },
+      "checks": {
+        "entry_full_restore": true,
+        "optimizer_associations": true,
+        "native_two_updates": true,
+        "planning_interface": true,
+        "planning_state_unchanged": true,
+        "actual_progress100": true,
+        "finite_loss": true,
+        "positive_finite_native_gradients": true,
+        "actual_GPU": true,
+        "actual_source": true,
+        "parent_alive": true,
+        "no_effective_failure": true
+      },
+      "passed": true
+    }
+  ],
+  "gpu_state": "0, 134543, 100\n1, 1195, 60\n2, 134543, 95\n3, 134583, 100\n4, 134543, 100\n5, 134543, 100\n6, 134543, 76\n7, 134543, 100\n",
+  "scope": "Single startup validation. Earlier8 EIO failures retained separately;positive gradients are not control success."
+}

@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "finished_utc": "2026-11-03T19:29:41.225089+00:00",
+  "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/model-step0008244",
+  "weights_sha256": "d59f6db79a5124067e4ab904614f9b203bd7dfc72c92f202db624f5bae693b98",
+  "model_state_before": "98e9da7937de49458a8a8de4457c45a2276c9a8d29555e7b3766f69e2c02af1e",
+  "model_state_after": "98e9da7937de49458a8a8de4457c45a2276c9a8d29555e7b3766f69e2c02af1e",
+  "model_updates": 0,
+  "parameters": 51100004,
+  "renderer": {
+    "uniform_first_frame_warmup": true,
+    "explicit_mjr_context_cleanup": true,
+    "helper_environment_sha256": "5e8b0310d1caba36fe37cb2ec24a4e6bf9f801b50e9a0cc760e784e88ca8ba7c"
+  },
+  "data_card_sha256": "801268656ef3f981c4e65561a0aa7829bdc28445c5b254c0213acf95c9a2eddf",
+  "manifest_sha256": "fa69946e3f285248f1b97fd770dcd1dea94b988950e096a39f6de7d3cf8f1288",
+  "groups": {
+    "reach-wall-v3": {
+      "episodes": 1,
+      "success_rate": 0.0,
+      "goal_construction_failures": 0,
+      "goal_valid_episodes": 1,
+      "goal_valid_success_rate": 0.0
+    }
+  },
+  "episodes": [
+    {
+      "task": "reach-wall-v3",
+      "seed": 42,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 20,
+      "plan_calls": 2,
+      "expert_goal_success": true,
+      "case_sha256": "097bb60e5a34a39d3ec859d3344748d77cc56cca332468680eca20f150740fd0",
+      "first_bank_sha256": "7bde6cda98f8955bebebc7ba748c685ceb8a7497401b5ab6e16ec41af2110d65",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/planning-preflight/reach-wall-v3-seed42.npz",
+      "trace_sha256": "09b532fbcc1d91fb14506010d808912e4998ab7488b91f4f8f72024ff37b5365",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    }
+  ],
+  "budget": 20,
+  "success_mode": "any",
+  "controller": {
+    "samples": 300,
+    "iterations": 15,
+    "elites": 10,
+    "horizon_macro": 6,
+    "execute_macro": 3,
+    "max_context": 2,
+    "frameskip": 5,
+    "native_box_projection": true,
+    "warm_start": true
+  },
+  "seconds": 6.000911034992896,
+  "scope": "Independent LeRobot RGB-only image-goal extension. All cases including failed expert goals retained; 500-step any-success and100-step final-success are separate runs if requested. Not a published JEPA-WMs or canonical task-ID-conditionedMT50 score. No environment state,reward,success or optimal action enters learner or planner."
+}

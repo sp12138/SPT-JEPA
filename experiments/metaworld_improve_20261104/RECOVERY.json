@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-03T19:47:43.123442+00:00",
+  "updated_utc": "2026-11-03T20:26:55.422936+00:00",
   "objective": "High MetaWorld control success with sample-level candidate learning;current performance inadequate. Use only dev13/dev15 and useful full GPU utilization.",
   "hosts": [
     "dev13",
@@ -10,14 +10,17 @@
   ],
   "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104",
   "previous_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104",
-  "status": "All16 effective logical screening runs now pass actual entry/full-state/optimizer-association/native2update/FP32-backward/planning/100new-update/positive-native-gradient/source checks. Eight earlier dev15EIO errors preserved with corrected fresh attempts;no current effective execution failure atstartup snapshot. Control performance gains not yet established;medium and conditional long jobs run finitely in background.",
+  "status": "All16 effective runs pass actual entry CPU full restore/optimizer associations/native2 updates/FP32 backward/20-step MPC and100+ resumed updates with finite loss/required positive gradients. Snapshot2026-11-03T20:24:47-48Z: dev13 AS10200/native16200;dev15 AS10800/native16480. Bothhosts8 GPUs computing at health snapshot;checkpoint/load/audit utilization varies. No new algorithmperformance claim.",
   "source": {
     "screen_NN_commit": "b286906",
-    "dev13": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/source-b286906",
+    "dev13": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
     "dev15_recovery_and_long": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
     "IO_commit": "66650f4",
     "recovery_commit": "7b78f5d",
-    "scope": "All NN modules/trainers byte-identical across original/recovery;only Dataset boundedEIO retries differ. innovation.py adds parameter-free per-sample anchored pixel-innovation targets;factory mapping explicit."
+    "scope": "All NN modules/trainers byte-identical across original/recovery;only Dataset boundedEIO retries differ. innovation.py adds parameter-free per-sample anchored pixel-innovation targets;factory mapping explicit.",
+    "both_hosts_runtime": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
+    "dev13_recovery_helper": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/helper-698ae41",
+    "original_dev13_source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/source-b286906"
   },
   "baseline10": {
     "summary": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104/results/summary.json",
@@ -63,7 +66,7 @@
     "data_contract": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/EIO_DATA_CONTRACT.json",
     "new_runs": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2",
     "new_endpoint_paths": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/evaluation-eio-v2",
-    "affected_attempts": 8,
+    "affected_attempts": 16,
     "recovery_entry_step": 8242,
     "new_native_two_update_step": 8244,
     "model_data_batch_workers_LR_unchanged": true,
@@ -74,14 +77,36 @@
     "oom_events": 0,
     "shm_capacity_GiB": 512,
     "cause": "Observed simultaneous HDF5 EIO;underlying infrastructure cause unknown. Do not assert OOM/uniqueNFSrace or count as model-performance failure.",
-    "replay": "Original failed states reported8266 AS/8295native;recover8242. Unsaved24/53 updates replayed. Preserve all8 errors and original192 blocked/unfinished endpoint paths."
+    "replay": "Original failed states reported8266 AS/8295native;recover8242. Unsaved24/53 updates replayed. Preserve all8 errors and original192 blocked/unfinished endpoint paths.",
+    "dev13": {
+      "record": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/EIO_RECOVERY-dev13-v4.json",
+      "entry": {
+        "AS": 9888,
+        "native": 14832
+      },
+      "native_two_update_step": {
+        "AS": 9890,
+        "native": 14834
+      },
+      "replayed_unsaved_updates": {
+        "AS": 38,
+        "native": 271
+      },
+      "effective_future_endpoint_relocations": 128,
+      "valid_9888_endpoints": "Use original archived paths unchanged.",
+      "scope": "Entry archives are inherited saved native states with fresh actualrestore proofs,not newly executedtrainingstages. Original16 totalEIO failures retained.",
+      "effective_version": "v4",
+      "actual_entry_and_native_preflight_passed": true
+    },
+    "helper_packaging_failures": 8,
+    "helper_packaging_scope": "Eightdev13v3 attempts exited before audit/SGD;missing helper files. All errors retained,zero additional unsaved updates. v4 completehelper includes integrity assertions.",
+    "historical_operational_failures_retained": 24
   },
   "ownership": {
-    "dev13": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/launch-dev13.json",
+    "dev13": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/launch-eio-v4-dev13.json",
     "dev15": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/launch-eio-v2-dev15.json",
     "original_dev15_retained": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/launch-dev15.json",
-    "collector": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/completion-launch-v2.json",
-    "collector_pid": 2159767,
+    "collector": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/completion-launch-v4.json",
     "promoter": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/promotion-launch.json",
     "promoter_pid": 2159775,
     "resident_long_starters": {
@@ -111,13 +136,13 @@
   "deadline_utc": "2026-11-06T09:12:24.534503+00:00",
   "recovery_order": [
     "Only dev13/dev15;do not connect dev2.",
-    "Read EIO_RECOVERY/currentplan and currentownership;old8 failures are historical,not failed algorithms.",
+    "Read EIO_RECOVERY-dev13-v4/current plan and currentownership;all16 EIO plus8 packaging failures retained as historical operational errors,not24 method outcomes.",
     "Read latest startup health and actual nvidia-smi;assigned16slots do not prove instantaneous100% utilization.",
-    "Final effective screen index is root/results/summary.json from completion-launch-v2.",
+    "Final effective screen index is root/results/summary.json from completion-launch-v4.",
     "Promotion is one-shot:rules before outcomes;qualified only then50epochs16slots. Preserve parent/RNG ancestry.",
     "High-performance algorithm NOT yet established. Online taskcontrol8 only;50-task offline prediction diagnostics are not50-task control scores."
   ],
-  "startup": {
+  "startup_history": {
     "local": "experiments/metaworld_improve_20261104/results/startup",
     "remote": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/startup/health-verified-{dev13,dev15}.json",
     "passed": true,
@@ -143,6 +168,43 @@
         8500
       ]
     },
-    "scope": "Observed steps/source/gradients. Instantaneousutilization varies during checkpoint/audit/load stages;do not infer100% from allocated slots."
+    "scope": "Observed steps/source/gradients. Instantaneousutilization varies during checkpoint/audit/load stages;do not infer100% from allocated slots.",
+    "superseded_by_dev13_EIO": true
+  },
+  "startup": {
+    "local": "experiments/metaworld_improve_20261104/results/recovery-v4",
+    "remote": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/startup/health-final-v4-{dev13,dev15}.json",
+    "passed": true,
+    "checked_utc": {
+      "dev13": "2026-11-03T20:24:48.250674+00:00",
+      "dev15": "2026-11-03T20:24:47.442492+00:00"
+    },
+    "steps_at_snapshot": {
+      "dev13": [
+        10200,
+        16200,
+        10200,
+        10200,
+        10200,
+        10200,
+        10200,
+        10200
+      ],
+      "dev15": [
+        10800,
+        16480,
+        10800,
+        10800,
+        10800,
+        10800,
+        10800,
+        10800
+      ]
+    },
+    "gpu_state": {
+      "dev13": "0, 134543, 100\n1, 26475, 92\n2, 134543, 95\n3, 134583, 100\n4, 134543, 100\n5, 134543, 100\n6, 134543, 84\n7, 134543, 95\n",
+      "dev15": "0, 134543, 100\n1, 1195, 60\n2, 134543, 95\n3, 134583, 100\n4, 134543, 100\n5, 134543, 100\n6, 134543, 76\n7, 134543, 100\n"
+    },
+    "scope": "All16 effective actual startup checks pass;instantaneous hardware snapshots only,not constant100% utilization or task-success evidence.350 evidence files SHA256 verified locally."
   }
 }
