@@ -154,13 +154,11 @@ def main(args):
                 save(work/'complete.json',dict(passed=True,finished_utc=timestamp(),metrics_sha256=digest(work/'output/metrics.json')))
                 if job.get('original_work'):
                     original=Path(job['original_work'])
-                    assert not (original/'output/metrics.json').exists()
-                    os.symlink(work/'output/metrics.json',original/'output/metrics.json')
                     save(original/'CORRECTION.json',dict(passed=True,repair_work=str(work),
-                         original_failure_sha256=digest(original/'failed.json'),metrics_sha256=digest(work/'output/metrics.json'),
-                         scope='Uniform no-action render warmup;same weights,cases,planner,budget,seeds. Original failure retained.'))
-                    save(original/'complete.json',dict(passed=True,finished_utc=timestamp(),
-                         metrics_sha256=digest(work/'output/metrics.json'),supplement=str(work),original_failure_retained=True))
+                         original_failure_sha256=digest(original/'failed.json') if (original/'failed.json').exists() else None,
+                         original_complete_sha256=digest(original/'complete.json') if (original/'complete.json').exists() else None,
+                         metrics_sha256=digest(work/'output/metrics.json'),
+                         scope='Canonical uniform render warmup/ownedGL cleanup replay;same weights,cases,planner,budget,seeds. All original outcomes retained.'))
             except Exception:
                 save(work/'failed.json',dict(passed=False,finished_utc=timestamp(),traceback=traceback.format_exc()))
             break

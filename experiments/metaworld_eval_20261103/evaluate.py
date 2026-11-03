@@ -9,7 +9,7 @@ from types import SimpleNamespace
 import numpy as np
 
 from experiments.metaworld_eval_20261103.environment import (make_environment, pixels, physics_state,
-                                                           rgb_replay_check)
+                                                           rgb_replay_check, close_environment)
 
 
 def file_sha(path):
@@ -110,7 +110,7 @@ def main(checkpoint, data, manifest, output, task=None, bank=None, limit=None, b
                     if len(successes) >= budget or terminated or truncated or (success_mode == 'any' and successes[-1]):break
                     frames.append(pixels(env)); past_actions.append(((raw.reshape(-1)-mean)/std).astype(np.float32))
                 if terminated or truncated or (success_mode == 'any' and successes[-1]):break
-        finally:env.close()
+        finally:close_environment(env)
         success = any(successes) if success_mode == 'any' else successes[-1]
         trace = output / f"{case['task']}-seed{case['seed']}.npz"
         np.savez_compressed(trace, actions=np.asarray(executed), successes=np.asarray(successes))
@@ -132,6 +132,8 @@ def main(checkpoint, data, manifest, output, task=None, bank=None, limit=None, b
     report = dict(passed=True, finished_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), checkpoint=checkpoint,
                   weights_sha256=file_sha(Path(checkpoint) / 'weights.pt'), model_state_before=before, model_state_after=after,
                   model_updates=0, parameters=sum(p.numel() for p in model.parameters()),
+                  renderer=dict(uniform_first_frame_warmup=True, explicit_mjr_context_cleanup=True,
+                                helper_environment_sha256=file_sha(Path(__file__).with_name('environment.py'))),
                   data_card_sha256=file_sha(Path(data) / 'dataset_card.json'), manifest_sha256=file_sha(manifest),
                   groups=groups, episodes=results, budget=budget, success_mode=success_mode,
                   controller=dict(samples=300, iterations=15, elites=10, horizon_macro=6, execute_macro=3,

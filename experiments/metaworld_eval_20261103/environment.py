@@ -50,6 +50,19 @@ def pixels(env):
     return frame
 
 
+def close_environment(env):
+    # Gymnasium1.4's OffScreenViewer.free releases the GL context but leaves
+    # MjrContext alive. Release its GPU resources in its OWN current context,
+    # before a later viewer can reuse those GL resource IDs.
+    renderer = env.mujoco_renderer
+    for viewer in list(renderer._viewers.values()):
+        viewer.opengl_context.make_current()
+        viewer.con.free()
+    env.close()
+    renderer._viewers.clear()
+    renderer.viewer = None
+
+
 def physics_state(env):
     return {name: np.asarray(getattr(env.data, name)).copy()
             for name in ['qpos', 'qvel', 'mocap_pos', 'mocap_quat', 'ctrl']}

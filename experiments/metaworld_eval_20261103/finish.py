@@ -12,6 +12,8 @@ from experiments.metaworld_eval_20261103.worker import digest, read, save
 def main(root):
     root=Path(root);dispatch=read(root/'dispatch.json');jobs=read(root/'evaluation-plan.json')['jobs']
     recipes=read(dispatch['plan_path'])['recipes'];deadline=dispatch['deadline_unix']
+    repairs=read(root/'RENDERER_REPAIR_REQUESTS.json')['jobs'] if (root/'RENDERER_REPAIR_REQUESTS.json').exists() else {}
+    jobs=[dict(j,original_work=j['work'],work=repairs[j['name']]['work']) if j['name'] in repairs else j for j in jobs]
     while time.time()<deadline:
         training_disposed=all((Path(r['run'])/'complete.json').exists() or (Path(r['run'])/'worker-failed.json').exists() for r in recipes)
         for job in jobs:

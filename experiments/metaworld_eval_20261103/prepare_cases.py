@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 
 from experiments.metaworld_eval_20261103.environment import (make_environment, pixels, expert,
-                                                           physics_state, rgb_replay_check)
+                                                           physics_state, rgb_replay_check, close_environment)
 
 TASKS = ['reach-v3', 'reach-wall-v3', 'push-v3', 'pick-place-v3', 'drawer-open-v3',
          'door-open-v3', 'peg-insert-side-v3', 'bin-picking-v3']
@@ -30,12 +30,12 @@ def main(source, output, seeds, tasks):
                     success = bool(info['success']); any_success |= success
                     if success or terminated or truncated:break
                 goal = pixels(env)
-            finally:env.close()
+            finally:close_environment(env)
             replay, reconstructed, _ = make_environment(task, seed, vector)
             try:
                 reconstructed_pixels = pixels(replay)
                 replay_physics = physics_state(replay)
-            finally:replay.close()
+            finally:close_environment(replay)
             assert np.array_equal(initial_state, reconstructed), (task, seed, np.max(np.abs(initial_state - reconstructed)))
             assert all(np.array_equal(value, replay_physics[key]) for key, value in initial_physics.items()), (task, seed, 'physics reset differs')
             rgb_check = rgb_replay_check(initial, reconstructed_pixels)
