@@ -37,6 +37,14 @@
 
 共用原生CEM300×15、top10、H6宏步、每次执行3宏步、最多2图像context、warm start及合法Box域投影。主指标是500原生步any-success。2472阶段各任务primary前5个case；8240阶段primary/fresh各10个。100步final-success若另测必须单独标注，不能从早停500步的轨迹推断。公共JEPA/DINO成绩或权重仅作明确外部参考，尚非同数据重训结果。
 
-旧PushT/TwoRoom/Cube所有HOLD/STOP和paused goal保留；不重启旧队列或周期LLM监控。当前2-update技术检查已经开始，尚无Meta-World任务性能成绩。后续自动化仅限已固定的有限训练/评测队列，72h结束，不自动重试、扩参或开启下一轮研究。
+## 运行状态与数据读取修复
+
+全部门禁已通过，四个AS配对比较各550个初始张量完全一致。8个原生恢复训练均实际到达step3，原生恢复日志和runtime源文件校验通过；status.json在第100步前仍显示原2-step检查的finished，不能当作600训练完成。有限队列已启动，deadline=2026-11-06T09:12:24Z，尚无正式任务成功率。
+
+启动吞吐检查发现BenchmarkWindows每窗口临时打开HDF5 VDS Dataset，使句柄/源文件缓存反复释放。原生真实数据ABBA读取比较支持保留Dataset对象；这是读取耗时实验，不是端到端训练加速倍数。修复只延长句柄生命周期。64次真实窗口逐字段比较全部相等，24个NN模块及原生sampler/training源码逐字节不变；证据DATA_IO_APPROVED.json。
+
+固定runtime60c887e接续：8个旧训练父进程由新有限runner接管，实际native600子进程原样保留并验证存活。它们完成同一个600预算后，由新runner恢复/反传/归档，再以缓存读取继续2472/8240；不重复SGD，不修改config、NN、目标、优化器、LR、数据划分、scaler、planner、种子或预算。16个已有评测worker和有限collector不变。当前训练PID须查training-io-adoption-dev2/dev15.json；原launch文件保留已退休父进程的历史PID。
+
+旧PushT/TwoRoom/Cube所有HOLD/STOP和paused goal保留；不重启旧队列或周期LLM监控。自动化仅限已固定的有限训练/评测队列，72h结束，不自动重试、扩参或开启下一轮研究。
 
 公开来源：[数据](https://huggingface.co/datasets/lerobot/metaworld_mt50)、[作者环境与评测说明](https://github.com/huggingface/lerobot/blob/main/docs/source/metaworld.mdx)、[历史任务文本映射问题](https://github.com/huggingface/lerobot/issues/4409)。

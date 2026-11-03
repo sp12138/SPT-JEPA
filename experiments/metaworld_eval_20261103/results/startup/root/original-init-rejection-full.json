@@ -1,0 +1,35 @@
+{
+  "passed": false,
+  "checked_utc": "2026-11-03T08:59:44.742545+00:00",
+  "rows": [
+    {
+      "seed": 1,
+      "arm": "as-jepa",
+      "tensors": 550,
+      "different": {
+        "encoder.embeddings.patch_embeddings.projection.weight": 1.4938414096832275e-06
+      }
+    },
+    {
+      "seed": 1,
+      "arm": "forecast-render",
+      "tensors": 550,
+      "different": {
+        "encoder.embeddings.patch_embeddings.projection.weight": 1.4938414096832275e-06
+      }
+    },
+    {
+      "seed": 2,
+      "arm": "as-jepa",
+      "tensors": 550,
+      "different": {}
+    },
+    {
+      "seed": 2,
+      "arm": "forecast-render",
+      "tensors": 550,
+      "different": {}
+    }
+  ],
+  "cause": "Unassigned;uniform original RANDOM encoder load via existing trainer selected before long training."
+}

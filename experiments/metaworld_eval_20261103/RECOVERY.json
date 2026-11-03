@@ -1,0 +1,132 @@
+{
+  "updated_utc": "2026-11-03T09:42:23.970432+00:00",
+  "objective": "Evaluate temporal-forecast and matched controls on independently public MetaWorld data,as explicitly requested after gated data could not be accessed.",
+  "status": "Formal finite queue active. All8 actual paired native2-update/CPUrestore/backward audits and3planning smokes pass;all550 AS initialization tensors equal. All8 resumed native trainers reached actualstep3;periodic status remains2 until100. No formal task-success scores collected.8 owned training parents replaced by verified lossless adopters;existingstage600 native children untouched. Future stages use byte-identical IO cache fix.",
+  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103",
+  "hosts": [
+    "dev2",
+    "dev13",
+    "dev15"
+  ],
+  "dataset": {
+    "repo": "lerobot/metaworld_mt50",
+    "revision": "b46a1c185a2368660650a82ac5a5083a56722f48",
+    "gated": false,
+    "token": false,
+    "files": 497,
+    "bytes": 45864127230,
+    "episodes": 2500,
+    "frames": 204806,
+    "tasks": 50,
+    "raw": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18",
+    "packed": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+    "split_manifest_sha256": "3d6b54d2d3250b0ce5b0d49c9e7dcf3c56ccaab2d04a71468a716999dbc48511",
+    "scope": "Independent expert dataset;not the gated JEPA-WMs mixed-quality data."
+  },
+  "sources": {
+    "nn_commit": "b574b4f",
+    "nn": "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+    "helper_commit": "5bd93d0",
+    "helper": "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/helper-5bd93d0",
+    "environment_reference_commit": "f5c9bc02137c331b009eccd44ece6f11b62187a8",
+    "environment_reference": "/efs/prescottsun/SPT-JEPA/sources/lerobot-mw-f5c9bc02"
+  },
+  "environment": {
+    "metaworld": "3.1.1",
+    "mujoco": "3.3.0",
+    "gymnasium": "1.4.0",
+    "python": "3.12.3",
+    "prefix": "/efs/prescottsun/SPT-JEPA/environments/metaworld-sanity-20261103",
+    "training_python": "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+    "egl_lib": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/usr/lib/x86_64-linux-gnu",
+    "egl_vendor": "/efs/prescottsun/SPT-JEPA/environments/egl-lib/10_nvidia.json",
+    "rejected_prefix": "/efs/prescottsun/SPT-JEPA/environments/metaworld-lerobot-20261103",
+    "scope": "All methods share native version;not exact historical data-generator/official Python3.10 stack."
+  },
+  "contracts": {
+    "models": [
+      "temporal-forecast",
+      "as-jepa",
+      "forecast-render",
+      "native-lewm"
+    ],
+    "seeds": [
+      1,
+      2
+    ],
+    "stages": [
+      2,
+      600,
+      2472,
+      8240
+    ],
+    "lr_horizon": 41200,
+    "finite_cap_hours": 72,
+    "training_runs": 8,
+    "evaluation_endpoints": 192,
+    "evaluation_episodes": 1600,
+    "evaluation_tasks": 8,
+    "cases": 160,
+    "goal_construction_failures": 4
+  },
+  "recovery_order": [
+    "Read plan-paired-v2.json,TRAINING_APPROVED.json,dispatch.json,then training-io-adoption-{dev2,dev15}.json for CURRENT training launcher/native PIDs. Original launch files retain now-retired parent PIDs. Existing16 eval launchers and collector unchanged.",
+    "The original native600 children remain active in original source;newadopters wait for their exact600 endpoint without repeating SGD. Subsequent training uses runtime-60c887e (all24NN files byte-equal),validated DATA_IO_APPROVED.json. Do not relaunch the retired original training workers.",
+    "Read training/<recipe>/{status.json,complete.json,worker-failed.json,audit-step*.json,stage-runtime-source-*.json}. Do not treat a technical two-update score as task performance.",
+    "Read evaluation/<job>/{complete.json,failed.json,blocked.json,output/metrics.json};192 jobs are recipes,not executed outcomes.",
+    "Read results/summary.json and HOLD after the finite collector completes. Do not restart or extend automatically."
+  ],
+  "preserved_failures": [
+    "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/environment-preflight-v1.json",
+    "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/environment-preflight-v2.json",
+    "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/environment-preflight-v3.json",
+    "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/environment-preflight-v4.json",
+    "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/environment-preflight-v5.json",
+    "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/ml-import-check.log",
+    "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/ml-import-check-v2.log",
+    "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v1/push-v3.log",
+    "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/approval-gate.log"
+  ],
+  "constraints": [
+    "Old campaigns remain closed;no oldHOLD clearing or goal resume.",
+    "No recurring LLM monitoring or automatic next research round.",
+    "No privileged state,reward,success,language or optimal-action training/planning labels.",
+    "Report independent public data scope;no direct superiority over publishedJEPA/DINO scores.",
+    "Retain all seeds,cases,endpoints and failed goal constructions."
+  ],
+  "paired_plan": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/plan-paired-v2.json",
+  "original_pair_rejection": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/original-init-rejection-full.json",
+  "dispatch": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/dispatch.json",
+  "deadline_utc": "2026-11-06T09:12:24.534503+00:00",
+  "finite_completion_collector": {
+    "host": "dev2",
+    "pid": 1323068,
+    "launch": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/completion-launch.json"
+  },
+  "io_continuation": {
+    "source_commit": "60c887e",
+    "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/runtime-60c887e",
+    "approval": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/DATA_IO_APPROVED.json",
+    "data_benchmark": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/data-io-benchmark-v1.json",
+    "proof": "64paired real-data windows,all returned fields equal;all24 NN modules and native training/sampler code bytes unchanged.",
+    "scope": "Only HDF5 Dataset handle lifetime changes. Isolated repeated-read benchmark is not an end-to-end training speedup claim. Same current600-update native jobs finish unchanged;adopters thenaudit/archive andcontinue2472/8240. No SGD repeated,no config/caps/seeds changes.",
+    "adoption_records": [
+      "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training-io-adoption-dev2.json",
+      "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training-io-adoption-dev15.json"
+    ],
+    "adopter_launcher_pids": {
+      "dev2": [
+        1323258,
+        1323260,
+        1323262,
+        1323264
+      ],
+      "dev15": [
+        2313923,
+        2313925,
+        2313927,
+        2313929
+      ]
+    }
+  }
+}
