@@ -36,10 +36,12 @@ def main(checkpoint,data,output,windows=32,tasks=50):
     with torch.inference_mode():
         for task in sorted(eligible)[:tasks]:
             rng=np.random.default_rng(20261104+task*1009)
-            selected=rng.choice(eligible[task],size=windows,replace=False).tolist()
+            # Some short tasks have fewer than32 valid held-out windows.
+            # Use every available window once;never invent extra samples.
+            selected=rng.choice(eligible[task],size=min(windows,len(eligible[task])),replace=False).tolist()
             originals=[int(dataset.episode_ids[dataset.locate(i)[0]])//5 for i in selected]
-            assert len(set(originals))>=2
-            perm=[next(j for j in range(windows) if originals[j]!=originals[i]) for i in range(windows)]
+            cross_episode=len(set(originals))>=2
+            perm=[next((j for j in range(len(selected)) if originals[j]!=originals[i]),i) for i in range(len(selected))]
             features=[];actions=[];contexts=[];records=[]
             for batch in DataLoader(Subset(dataset,selected),batch_size=8,num_workers=0):
                 normalized=model.normalize(batch['pixels'].cuda())
@@ -67,14 +69,15 @@ def main(checkpoint,data,output,windows=32,tasks=50):
             effect=(pred[:,1:,-1]-pred[:,:1,-1]).square().mean(-1)
             centered=z.flatten(0,1)-z.flatten(0,1).mean(0)
             sv=torch.linalg.svdvals(centered.float());power=sv.square();p=power/power.sum().clamp_min(1e-30)
-            row=dict(task_id=task,windows=b,original_episodes=sorted(set(originals)),
+            row=dict(task_id=task,windows=b,requested_windows=windows,available_windows=len(eligible[task]),
+                     cross_episode_control_available=cross_episode,original_episodes=sorted(set(originals)),
                      latent_std=float(z.flatten(0,1).std(0).mean()),
                      effective_rank=float(torch.exp(-(p*p.clamp_min(1e-30).log()).sum())),
                      factual_mse_by_horizon=error.mean(0).tolist(),copy_mse_by_horizon=copy_error.mean(0).tolist(),
                      factual_to_copy_ratio_by_horizon=(error.mean(0)/copy_error.mean(0).clamp_min(1e-30)).tolist(),
-                     factual_goal_rank_win_rate=[float((goal_cost[:,0]<goal_cost[:,k]).float().mean()) for k in [1,2,3]],
-                     factual_goal_rank_tie_rate=[float((goal_cost[:,0]==goal_cost[:,k]).float().mean()) for k in [1,2,3]],
-                     action_effect_mse=effect.mean(0).tolist(),
+                     factual_goal_rank_win_rate=[float((goal_cost[:,0]<goal_cost[:,k]).float().mean()) if k!=2 or cross_episode else None for k in [1,2,3]],
+                     factual_goal_rank_tie_rate=[float((goal_cost[:,0]==goal_cost[:,k]).float().mean()) if k!=2 or cross_episode else None for k in [1,2,3]],
+                     action_effect_mse=[float(effect[:,k].mean()) if k!=1 or cross_episode else None for k in range(3)],
                      candidate_names=['factual','time_reverse','different_original_same_task','physical_zero'],
                      factual_endpoint_mse=float(goal_cost[:,0].mean()),
                      context_encoding_max_abs=float(context_error.max()),
@@ -86,12 +89,13 @@ def main(checkpoint,data,output,windows=32,tasks=50):
     report=dict(passed=True,finished_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 checkpoint=checkpoint,weights_sha256=file_sha(Path(checkpoint)/'weights.pt'),
                 model_state_before=before,model_state_after=after,model_updates=0,simulator_calls=0,
-                heldout_manifest_sha256=file_sha(manifest_path),tasks=len(rows),windows_per_task=windows,
+                heldout_manifest_sha256=file_sha(manifest_path),tasks=len(rows),max_windows_per_task=windows,
                 rows=rows,split='test',context=2,horizon=6,
                 scope='Observed future RGB is the diagnostic target. Executed actions are factual,not assumed optimal. '
                       'Alternative actions are not simulated;ranking does not establish actual counterfactual control. '
                       'Task IDs only stratify read-only reports and never enter learner or planner. '
-                      'Same fixed indices/alternatives across all models;no parameter or planner changes.')
+                      'Same fixed indices/alternatives across all models;no parameter or planner changes. '
+                      'Use all available windows if fewer than requested;unavailable cross-episode controls are null.')
     (output/'metrics.json').write_text(json.dumps(report,indent=2)+'\n')
 
 
