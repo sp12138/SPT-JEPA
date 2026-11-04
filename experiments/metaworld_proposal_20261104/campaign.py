@@ -87,6 +87,20 @@ def work(root, source, host, gpu):
     r = next(r for r in plan['recipes'] if r['host']==host and r['gpu']==gpu)
     work = Path(r['work'])
     try:
+        if r.get('wait_owner'):
+            owner = r['wait_owner']
+            while time.time() < plan['deadline_unix']:
+                try:
+                    p = psutil.Process(owner['pid'])
+                    alive = p.is_running() and p.status()!=psutil.STATUS_ZOMBIE
+                    owned = owner['work'] in p.cmdline()
+                    # The finite worker argv names its root,not the per-job work.
+                    owned |= owner['root'] in p.cmdline()
+                except psutil.NoSuchProcess:
+                    alive = owned = False
+                if not alive or not owned:
+                    break
+                time.sleep(10)
         diagnostic = next(j for j in read(root/f'diagnostic-launch-{host}.json')['jobs'] if j['gpu']==gpu)
         while time.time() < plan['deadline_unix']:
             try:
@@ -112,7 +126,7 @@ def work(root, source, host, gpu):
             args = [PYTHON,'-B','-u',str(source/'experiments/metaworld_proposal_20261104/evaluate.py'),
                     '--checkpoint',r['checkpoint'],'--data',plan['data'],'--manifest',plan['case_manifest'],
                     '--output',str(destination/'output'),'--task',task,'--bank',bank,'--limit',str(limit),
-                    '--budget',str(budget),'--proposal',r['proposal'],'--library',str(work/'library')]
+                    '--budget',str(budget),'--proposal',r['proposal'],'--library',r.get('library',str(work/'library'))]
             destination.mkdir()
             free_gpu(gpu)
             command(args,destination/'evaluate.log',env,RUNTIME,plan['deadline_unix'],cap=7200)

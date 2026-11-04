@@ -89,7 +89,7 @@ def main(checkpoint, data, manifest, output, task=None, bank=None, limit=None, b
     if bank:cases = [c for c in cases if (c['seed'] >= 1000) == (bank == 'fresh')]
     if limit:cases = cases[:limit]
     assert cases
-    results = []; started = time.monotonic()
+    results = []; started = time.monotonic(); audit_inputs = None
     for case in cases:
         assert file_sha(case['path']) == case['sha256']
         cached = np.load(case['path'])
@@ -122,13 +122,10 @@ def main(checkpoint, data, manifest, output, task=None, bank=None, limit=None, b
                 plan_calls += 1
                 plan = solution['actions'].numpy()[0]
                 if plan_calls == 1 and case == cases[0]:
-                    # A second environment realizes alternatives;the main environment
-                    # must retain its exact physical state and rendered observation.
-                    state_before = physics_state(env)
-                    audit = audit_plan(model, info, plan, case, cached, mean, std)
-                    assert all(np.array_equal(value,physics_state(env)[key]) for key,value in state_before.items())
-                    assert rgb_replay_check(frame,pixels(env))['passed']
-                    (output/'physical-audit.json').write_text(json.dumps(audit,indent=2)+'\n')
+                    # Defer simulation until EVERY online environment is closed.
+                    # Live MuJoCo viewers can interfere even with equal physics.
+                    audit_inputs = ({k:v.clone() for k,v in info.items()}, plan.copy(), dict(case),
+                                    {k:cached[k].copy() for k in ['initial','rand_vec']})
                 warm = solution['actions'][:,3:].clone()
                 for normalized in plan[:3]:
                     raw = np.clip(normalized * std + mean, -1, 1).reshape(5,4)
@@ -149,6 +146,11 @@ def main(checkpoint, data, manifest, output, task=None, bank=None, limit=None, b
                             first_bank_sha256=cost.first_bank_sha256, trace=str(trace), trace_sha256=file_sha(trace)))
         results[-1]['initial_rgb_replay'] = rgb_check
         print(json.dumps(results[-1]), flush=True)
+    assert audit_inputs is not None
+    audit_info,audit_actions,audit_case,audit_cache = audit_inputs
+    audit = audit_plan(model,audit_info,audit_actions,audit_case,audit_cache,mean,std)
+    audit['execution_order'] = 'After all online environments closed;never interrupts online controller.'
+    (output/'physical-audit.json').write_text(json.dumps(audit,indent=2)+'\n')
     after = model_sha(model); assert before == after
     groups = {}
     for name in sorted({r['task'] for r in results}):
