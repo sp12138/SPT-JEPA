@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-04T13:45:33.364172+00:00",
+  "updated_utc": "2026-11-04T13:54:10.212614+00:00",
   "objective": "High MetaWorld control success;sample-level worldmodel candidates;onlydev13/dev15. Highperformance NOT achieved.",
   "status": "ACTIVE finite frozen-proposal pilot. All16 actualpreflights pass. No effectivefailure at08:23UTC snapshot. Formal256endpoints/512episodes underway;no newalgorithm successclaim.",
   "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_proposal_20261104_v3",
@@ -574,6 +574,21 @@
       "PLDM with all auxiliary signals disclosed"
     ],
     "baseline_status": "Literature/code audit only. LpWM/PLDM not trained onourMetaWorldsetting;noSOTArank established.",
-    "document": "experiments/metaworld_proposal_20261104/BASELINES_SCRATCH.md"
+    "document": "experiments/metaworld_proposal_20261104/BASELINES_SCRATCH.md",
+    "MetaWorld_specific_evidence": {
+      "primary_to_add": [
+        "DreamerV3 worldmodel rewardfreeadaptation",
+        "TD-MPC2 worldmodel rewardfreeadaptation"
+      ],
+      "retain": "LeWM",
+      "optional": "IRIS rewardfreeadaptation",
+      "method_research_not_MetaWorld_rank": [
+        "LpWM",
+        "PLDM"
+      ],
+      "public_table": "https://arxiv.org/html/2610.27851v1#S4",
+      "scope": "OnlyReach/ReachWall;differentcontrolcorpus/protocol fromours;notcanonicalrewardRL scores. Needactualinit/loss audit beforetraining. No globalMT50bestverified.",
+      "new_GPU_training": false
+    }
   }
 }

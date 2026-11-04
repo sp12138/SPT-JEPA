@@ -6,7 +6,24 @@
 
 当前代码检查：as_jepa_lewm/model.py直接调用ViTModel(ViTConfig(...))；native_lewm.py调用vit_hf(...,pretrained=False)。现有MetaWorld原始训练从随机权重开始，新控制pilot仅冻结自身在同一数据训练至16480步的模型，没有新增外部教师/权重。20轮TF22.1875%/native15.625%等本地成绩不构成公开SOTA；AS与native容量/优化器不同仍需披露。
 
-优先基线：
+## MetaWorld实测证据优先
+
+用户再次强调问题是“在MetaWorld上”，因此不能把只有其他环境成绩的LpWM/PLDM说成MetaWorld已验证最强。当前可核验的相关公开表见[LaLa-World Table1及Section4](https://arxiv.org/html/2610.27851v1#S4)：
+
+| 论文中的无奖励世界模型对照 | MetaWorld Reach | MetaWorld ReachWall |
+|---|---:|---:|
+| DreamerV3适配 | 25.0% | 10.4% |
+| TD-MPC2适配 | 12.5% | 22.9% |
+| IRIS适配 | 20.8% | 6.2% |
+| LeWM | 16.7% | 16.7% |
+
+作者说明在DINO-WM/JEPA-WMs控制数据上用公开实现重训，无reward/task信息、无proprio，统一MPC设置。它们不是原生reward/value/actor训练的RL分数，不是当前LeRobot数据版本，也不是完整MT50或本地8任务均值。表中Dreamer在Reach、TD-MPC2在ReachWall点估计较高，不能据此确认全50任务冠军。真正重训时仍需核验各模块随机初始化、适配损失和完整训练预算，不能仅凭方法名通过scratch gate。
+
+因此，本项目应优先补齐有上述MetaWorld公开实测依据的DreamerV3/TD-MPC2无奖励适配对照，并保留已实现的LeWM；IRIS作为生成式补充。下面的LpWM/PLDM是方法研究候选，MetaWorld成绩待测，不等同于主基线排名。未启动新的基线GPU训练。
+
+如果允许环境奖励，则原生TD-MPC2、DreamerV3、R2-Dreamer是MetaWorld从头训练的强参考；R2-Dreamer实测的是50个独立训练的MT1任务，不是一个共享MT50模型，且保留reward/actor-critic，不能混入当前reward-free主表。[R2-Dreamer](https://arxiv.org/html/2603.18202v1#S4.SS3)。
+
+方法研究候选（不是MetaWorld实测排名）：
 
 | 方法 | 原生机制 | 适用性与边界 |
 |---|---|---|
