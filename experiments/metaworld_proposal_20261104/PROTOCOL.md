@@ -21,3 +21,6 @@ pilot使用与上一轮相同8任务、primary42/43和fresh1042/1043、500 nativ
 
 
 有效执行修复：当前root为runs/metaworld_proposal_20261104_v3、helper source-46e401b，NN仍为runtime-7b78f5d。v1同时存在online/audit viewer导致RGB gate失败；v2移到全部online环境关闭后，动作已经与旧脚本逐位一致，但末尾记录helper哈希的相对路径不存在。v3仅改为读取实际导入模块路径。前两次错误原样保留并STOP，未完成的旧工作不算算法失败；四份完整dev15轨迹库以模型/划分/文件hash验证后复用。08:23UTC16路实际预检全部通过、0有效错误；GPU在启动/加载/CPU仿真阶段会空闲，不把16个父进程说成持续16卡满算。证据results/startup-v3中99文件SHA256已核验。
+
+
+最新用户补充：整个学习/规划链路从随机初始化，不使用外部强预训练视觉/语言/分割/深度/光流教师。保留RGB/action与无奖励/无下一最优动作标签要求。现有模型是自身同数据续训，计完整预算。基线审核见BASELINES_SCRATCH.md；LpWM/PLDM未在本协议运行，不填写虚构成绩。当前有限pilot继续，本次未启动新的基线训练。
