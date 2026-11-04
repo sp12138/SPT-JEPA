@@ -18,3 +18,6 @@
 pilot使用与上一轮相同8任务、primary42/43和fresh1042/1043、500 native any-success，共256端点/512episodes。CEM/数据段方案每次都评估4500候选，但library查找和图像库编码增加额外开销，必须单列。每端点首案例另从相同初始physics执行当前方案的H6完整计划和physical-zero，比较预测目标距离与实际未来图像目标距离。只有两个反事实，不能冒称完成全候选排序验证；各模型latent-MSE单位不共享。
 
 对照复用相同20轮checkpoint的原standard CEM案例，保留model/parent/case/bank配对。所有父模型仅两个，不能把episode数量当成独立训练seed。若实际操作成功仍全0，需按诊断证据改表示/目标几何，不能把这轮pilot直接变成长期训练。此流程只运行一次，沿用2026-11-06T09:12:24UTC绝对deadline，无自动新研究轮/长期训练。
+
+
+有效执行修复：当前root为runs/metaworld_proposal_20261104_v3、helper source-46e401b，NN仍为runtime-7b78f5d。v1同时存在online/audit viewer导致RGB gate失败；v2移到全部online环境关闭后，动作已经与旧脚本逐位一致，但末尾记录helper哈希的相对路径不存在。v3仅改为读取实际导入模块路径。前两次错误原样保留并STOP，未完成的旧工作不算算法失败；四份完整dev15轨迹库以模型/划分/文件hash验证后复用。08:23UTC16路实际预检全部通过、0有效错误；GPU在启动/加载/CPU仿真阶段会空闲，不把16个父进程说成持续16卡满算。证据results/startup-v3中99文件SHA256已核验。

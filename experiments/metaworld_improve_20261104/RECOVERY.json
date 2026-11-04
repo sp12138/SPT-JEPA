@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-03T20:26:55.422936+00:00",
+  "updated_utc": "2026-11-04T08:27:27.961918+00:00",
   "objective": "High MetaWorld control success with sample-level candidate learning;current performance inadequate. Use only dev13/dev15 and useful full GPU utilization.",
   "hosts": [
     "dev13",
@@ -10,7 +10,7 @@
   ],
   "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104",
   "previous_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_twohost_20261104",
-  "status": "All16 effective runs pass actual entry CPU full restore/optimizer associations/native2 updates/FP32 backward/20-step MPC and100+ resumed updates with finite loss/required positive gradients. Snapshot2026-11-03T20:24:47-48Z: dev13 AS10200/native16200;dev15 AS10800/native16480. Bothhosts8 GPUs computing at health snapshot;checkpoint/load/audit utilization varies. No new algorithmperformance claim.",
+  "status": "COMPLETE/PASS16trainings/384endpoints/3200episodes;all6manipulationtasks0;NO_PROMOTION,50epochnotstarted. Newuser-authorized proposalpilot inexperiments/metaworld_proposal_20261104/RECOVERY.json.",
   "source": {
     "screen_NN_commit": "b286906",
     "dev13": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
@@ -59,7 +59,8 @@
     "lr_horizon": 41200,
     "primary_endpoints": 384,
     "episodes": 3200,
-    "scope": "Same trained parent per seed,not fresh/pretrained initialization. Native has BN/SIGReg;all AS candidates sample-level. No privileged state/reward/success/task-ID/optimal-action learner/planner inputs."
+    "scope": "Same trained parent per seed,not fresh/pretrained initialization. Native has BN/SIGReg;all AS candidates sample-level. No privileged state/reward/success/task-ID/optimal-action learner/planner inputs.",
+    "completed": true
   },
   "io_recovery": {
     "record": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/EIO_RECOVERY.json",
@@ -131,7 +132,9 @@
     "parent_warning": "Two original trained parents crossed with continuation RNG/sampler repeats;not16 independent from-scratch learners. CI must respect parent_seed hierarchy.",
     "no_qualified": "WritesNO_PROMOTION;does not spend long budget or launch arbitrary next research round.",
     "test": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/PROMOTION_RULE_TEST.json",
-    "scope": "One finite performance-gated continuation specifically authorized by latest user. No recurringLLM monitor/oldgoalresume/oldHOLD clearing. Long gate is promising evidence,not final highperformance/full50-task success."
+    "scope": "One finite performance-gated continuation specifically authorized by latest user. No recurringLLM monitor/oldgoalresume/oldHOLD clearing. Long gate is promising evidence,not final highperformance/full50-task success.",
+    "decision": "NO_PROMOTION",
+    "long_started": false
   },
   "deadline_utc": "2026-11-06T09:12:24.534503+00:00",
   "recovery_order": [
@@ -206,5 +209,6 @@
       "dev15": "0, 134543, 100\n1, 1195, 60\n2, 134543, 95\n3, 134583, 100\n4, 134543, 100\n5, 134543, 100\n6, 134543, 76\n7, 134543, 100\n"
     },
     "scope": "All16 effective actual startup checks pass;instantaneous hardware snapshots only,not constant100% utilization or task-success evidence.350 evidence files SHA256 verified locally."
-  }
+  },
+  "successor": "experiments/metaworld_proposal_20261104/RECOVERY.json"
 }
