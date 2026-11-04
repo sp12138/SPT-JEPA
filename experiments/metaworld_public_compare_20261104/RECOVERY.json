@@ -1,0 +1,30 @@
+{
+  "status": "awaiting_accessible_same_corpus",
+  "latest_request": "Find an independent no-verification same-corpus release, then compare fairly with public SOTA baselines.",
+  "allowed_hosts": ["dev13", "dev15"],
+  "official_repository": "facebook/jepa-wms",
+  "official_revision": "6116f042ae7ae4c8e3f1fd2f194f432615664182",
+  "source_repository": "https://github.com/junha1125/LaLa-World",
+  "source_revision": "33567871362aa9d5ed7832d3667b1ae122975c14",
+  "mirror_evidence": "results/mirror-audit-v1/summary.json",
+  "source_evidence": "results/public-source-audit.json",
+  "actual_repositories_inspected": 144,
+  "matching_official_shards": 0,
+  "effective_metadata_errors": 0,
+  "new_training_updates": 0,
+  "new_model_performance_episodes": 0,
+  "old_goals_or_monitors_resumed": false,
+  "new_background_launcher": false,
+  "next_required_work": [
+    "Verify an independently accessible same-corpus release or authorized official access.",
+    "Audit baseline adaptation code, random initialization and total budget.",
+    "Implement and physically verify the pinned evaluation entry; static audit is not execution proof.",
+    "Freeze split, budget, seeds and protocols before formal training on dev13/dev15."
+  ],
+  "constraints": [
+    "No dev2 connections or renewed credential requests after the user chose independent public data.",
+    "No gated-file workaround or silent substitution with LeRobot expert data.",
+    "From-scratch RGB/action-only candidate with sample-level loss.",
+    "Fingerprint search does not exclude repacked or undiscovered copies."
+  ]
+}
