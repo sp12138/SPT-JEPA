@@ -1,0 +1,30 @@
+{
+  "arm": "innovation",
+  "seed": 1,
+  "random_initialization": true,
+  "external_pretrained": false,
+  "parameters": 51096312,
+  "initial_state_sha256": "eb9eccaafc134c820426abe1dfa79e533e2d1288354dba0dd3ed1d45d176be0a",
+  "global_batch": 256,
+  "local_batch": 128,
+  "devices": 2,
+  "gpu": "NVIDIA H200",
+  "public_config": "droid_lewm",
+  "candidate_config": {
+    "mode": "L2",
+    "beta": 0.25,
+    "sigma0": 0.1,
+    "window": 8,
+    "anchor_gap": 0,
+    "renderer_width": 384,
+    "renderer_depth": 12,
+    "renderer_heads": 6,
+    "action_dim": 7,
+    "encoder_size": 256,
+    "rho": 0.8,
+    "forecast_fraction": 0.5,
+    "forecast_seed": 20361032
+  },
+  "precision": "bf16-mixed",
+  "preflight": false
+}

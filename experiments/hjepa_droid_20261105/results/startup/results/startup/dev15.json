@@ -1,0 +1,225 @@
+{
+  "passed": true,
+  "host": "dev15",
+  "utc": "2026-11-04T19:13:07.643656+00:00",
+  "runs": [
+    {
+      "arm": "temporal-forecast",
+      "seed": 1000,
+      "native_pid": 2328720,
+      "controller_pid": 875395,
+      "gpus": [
+        0,
+        1
+      ],
+      "native_command": "/tmp/prescottsun-hjepa-env-97054ec/bin/python -m torch.distributed.run --standalone --nnodes=1 --nproc-per-node=2 /efs/prescottsun/SPT-JEPA/runs/hjepa_droid_20261105/helper-v8/train.py --root /efs/prescottsun/SPT-JEPA/runs/hjepa_droid_20261105 --host dev15 --arm temporal-forecast --seed 1000 ",
+      "health": [
+        {
+          "step": 400,
+          "epoch": 1,
+          "loss": 0.07332243025302887,
+          "gradient_step": 399,
+          "gradients": {
+            "encoder": 0.013464112766087055,
+            "pool": 0.035278089344501495,
+            "predictor": 0.01379456091672182,
+            "action_encoder": 7.027982974250335e-06,
+            "renderer": 0.5241886973381042
+          },
+          "world_size": 2,
+          "utc": "2026-11-04T19:12:00Z",
+          "elapsed": 461.20313930511475,
+          "lr": [
+            4.999827806722776e-05,
+            9.999655613445551e-05
+          ],
+          "peak_gpu_bytes": 146007332864
+        },
+        {
+          "step": 400,
+          "epoch": 1,
+          "loss": 0.0797928124666214,
+          "gradient_step": 399,
+          "gradients": {
+            "encoder": 0.013464112766087055,
+            "pool": 0.035278089344501495,
+            "predictor": 0.01379456091672182,
+            "action_encoder": 7.027982974250335e-06,
+            "renderer": 0.5241886973381042
+          },
+          "world_size": 2,
+          "utc": "2026-11-04T19:12:00Z",
+          "elapsed": 461.1891915798187,
+          "lr": [
+            4.999827806722776e-05,
+            9.999655613445551e-05
+          ],
+          "peak_gpu_bytes": 146007332864
+        }
+      ]
+    },
+    {
+      "arm": "innovation",
+      "seed": 1000,
+      "native_pid": 2328721,
+      "controller_pid": 875493,
+      "gpus": [
+        2,
+        3
+      ],
+      "native_command": "/tmp/prescottsun-hjepa-env-97054ec/bin/python -m torch.distributed.run --standalone --nnodes=1 --nproc-per-node=2 /efs/prescottsun/SPT-JEPA/runs/hjepa_droid_20261105/helper-v8/train.py --root /efs/prescottsun/SPT-JEPA/runs/hjepa_droid_20261105 --host dev15 --arm innovation --seed 1000 ",
+      "health": [
+        {
+          "step": 400,
+          "epoch": 1,
+          "loss": 0.048683904111385345,
+          "gradient_step": 399,
+          "gradients": {
+            "encoder": 0.0018334771739318967,
+            "pool": 0.009291424416005611,
+            "predictor": 0.0018541772151365876,
+            "action_encoder": 5.30408215126954e-07,
+            "renderer": 0.24893373250961304
+          },
+          "world_size": 2,
+          "utc": "2026-11-04T19:12:02Z",
+          "elapsed": 462.2346758842468,
+          "lr": [
+            4.999827806722776e-05,
+            9.999655613445551e-05
+          ],
+          "peak_gpu_bytes": 146009745408
+        },
+        {
+          "step": 400,
+          "epoch": 1,
+          "loss": 0.059616927057504654,
+          "gradient_step": 399,
+          "gradients": {
+            "encoder": 0.0018334771739318967,
+            "pool": 0.009291424416005611,
+            "predictor": 0.0018541772151365876,
+            "action_encoder": 5.30408215126954e-07,
+            "renderer": 0.24893373250961304
+          },
+          "world_size": 2,
+          "utc": "2026-11-04T19:12:01Z",
+          "elapsed": 462.216956615448,
+          "lr": [
+            4.999827806722776e-05,
+            9.999655613445551e-05
+          ],
+          "peak_gpu_bytes": 146009745408
+        }
+      ]
+    },
+    {
+      "arm": "lewm",
+      "seed": 1000,
+      "native_pid": 2328722,
+      "controller_pid": 875583,
+      "gpus": [
+        4,
+        5
+      ],
+      "native_command": "/tmp/prescottsun-hjepa-env-97054ec/bin/python -m torch.distributed.run --standalone --nnodes=1 --nproc-per-node=2 /efs/prescottsun/SPT-JEPA/runs/hjepa_droid_20261105/helper-v8/train.py --root /efs/prescottsun/SPT-JEPA/runs/hjepa_droid_20261105 --host dev15 --arm lewm --seed 1000 ",
+      "health": [
+        {
+          "step": 1200,
+          "epoch": 4,
+          "loss": 110.60208129882812,
+          "gradient_step": 1199,
+          "gradients": {
+            "jepas.0.encoder": 0.6711438298225403,
+            "jepas.0.predictor": 6.313114863587543e-05,
+            "jepas.0.idm_loss_fn": 0.7413271069526672
+          },
+          "world_size": 2,
+          "utc": "2026-11-04T19:12:51Z",
+          "elapsed": 512.7282304763794,
+          "lr": [
+            0.0002054794520547945
+          ],
+          "peak_gpu_bytes": 54733484032
+        },
+        {
+          "step": 1200,
+          "epoch": 4,
+          "loss": 102.84651947021484,
+          "gradient_step": 1199,
+          "gradients": {
+            "jepas.0.encoder": 0.6711438298225403,
+            "jepas.0.predictor": 6.313114863587543e-05,
+            "jepas.0.idm_loss_fn": 0.7413271069526672
+          },
+          "world_size": 2,
+          "utc": "2026-11-04T19:12:51Z",
+          "elapsed": 512.7193608283997,
+          "lr": [
+            0.0002054794520547945
+          ],
+          "peak_gpu_bytes": 54731559936
+        }
+      ]
+    },
+    {
+      "arm": "h-jepa",
+      "seed": 1000,
+      "native_pid": 2328719,
+      "controller_pid": 875669,
+      "gpus": [
+        6,
+        7
+      ],
+      "native_command": "/tmp/prescottsun-hjepa-env-97054ec/bin/python -m torch.distributed.run --standalone --nnodes=1 --nproc-per-node=2 /efs/prescottsun/SPT-JEPA/runs/hjepa_droid_20261105/helper-v8/train.py --root /efs/prescottsun/SPT-JEPA/runs/hjepa_droid_20261105 --host dev15 --arm h-jepa --seed 1000 ",
+      "health": [
+        {
+          "step": 1100,
+          "epoch": 3,
+          "loss": 157.23460388183594,
+          "gradient_step": 1099,
+          "gradients": {
+            "jepas.0.encoder": 0.6306399703025818,
+            "jepas.0.predictor": 9.272133320337161e-05,
+            "jepas.0.idm_loss_fn": 0.7760753631591797,
+            "jepas.1.encoder": 0.40932101011276245,
+            "jepas.1.predictor": 0.0009868709603324533,
+            "jepas.1.idm_loss_fn": 0.747330367565155
+          },
+          "world_size": 2,
+          "utc": "2026-11-04T19:12:26Z",
+          "elapsed": 486.43484139442444,
+          "lr": [
+            0.00018835616438356165,
+            0.00018835616438356165
+          ],
+          "peak_gpu_bytes": 55074396160
+        },
+        {
+          "step": 1100,
+          "epoch": 3,
+          "loss": 139.54183959960938,
+          "gradient_step": 1099,
+          "gradients": {
+            "jepas.0.encoder": 0.6306399703025818,
+            "jepas.0.predictor": 9.272133320337161e-05,
+            "jepas.0.idm_loss_fn": 0.7760753631591797,
+            "jepas.1.encoder": 0.40932101011276245,
+            "jepas.1.predictor": 0.0009868709603324533,
+            "jepas.1.idm_loss_fn": 0.747330367565155
+          },
+          "world_size": 2,
+          "utc": "2026-11-04T19:12:26Z",
+          "elapsed": 486.4221625328064,
+          "lr": [
+            0.00018835616438356165,
+            0.00018835616438356165
+          ],
+          "peak_gpu_bytes": 53754082816
+        }
+      ]
+    }
+  ],
+  "gpu_snapshot": "0, NVIDIA H200, 143027 MiB, 100 %\n1, NVIDIA H200, 143027 MiB, 99 %\n2, NVIDIA H200, 142839 MiB, 35 %\n3, NVIDIA H200, 142839 MiB, 92 %\n4, NVIDIA H200, 55275 MiB, 86 %\n5, NVIDIA H200, 55757 MiB, 80 %\n6, NVIDIA H200, 56921 MiB, 14 %\n7, NVIDIA H200, 55665 MiB, 100 %\n",
+  "instantaneous_not_continuous": true
+}
