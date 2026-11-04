@@ -1,7 +1,7 @@
 {
-  "updated_utc": "2026-11-04T13:54:10.212614+00:00",
+  "updated_utc": "2026-11-04T14:13:59.787675+00:00",
   "objective": "High MetaWorld control success;sample-level worldmodel candidates;onlydev13/dev15. Highperformance NOT achieved.",
-  "status": "ACTIVE finite frozen-proposal pilot. All16 actualpreflights pass. No effectivefailure at08:23UTC snapshot. Formal256endpoints/512episodes underway;no newalgorithm successclaim.",
+  "status": "COMPLETE/PASS all16frozenpilot runs,256endpoints/512episodes at2026-11-04T08:50:44Z;HOLD. No newSGD/longtraining/baselineGPUruns. Highperformance acrossmanipulations NOTachieved.",
   "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_proposal_20261104_v3",
   "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_proposal_20261104/source-46e401b",
   "NN_runtime": "/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d",
@@ -77,7 +77,10 @@
     "success_mode": "any",
     "forecasts_per_plan": 4500,
     "controller": "H6/f5/execute3/context2;RGBgoal",
-    "scope": "held changes primitive temporal support;library adds factual train-memory access,not identicalinformation/compute. No optimal-action/state/reward/success/task-ID learner/planner inputs. These cases were already inspected;fresh bank is not untouchedconfirmation."
+    "scope": "held changes primitive temporal support;library adds factual train-memory access,not identicalinformation/compute. No optimal-action/state/reward/success/task-ID learner/planner inputs. These cases were already inspected;fresh bank is not untouchedconfirmation.",
+    "completed": true,
+    "closed_utc": "2026-11-04T08:50:44.983639+00:00",
+    "six_manipulation_tasks_all_zero": true
   },
   "preflights": {
     "passed": 16,
@@ -590,5 +593,46 @@
       "scope": "OnlyReach/ReachWall;differentcontrolcorpus/protocol fromours;notcanonicalrewardRL scores. Needactualinit/loss audit beforetraining. No globalMT50bestverified.",
       "new_GPU_training": false
     }
+  },
+  "authoritative_local_summary": "experiments/metaworld_proposal_20261104/results/final/summary.json",
+  "reaching_review": {
+    "local": "experiments/metaworld_proposal_20261104/results/final/reaching-review.json",
+    "trace_hashes_checked": 768,
+    "standard40": {
+      "tf-control": {
+        "Reach500": 87.5,
+        "ReachWall500": 90.0,
+        "Reach100": 65.0,
+        "ReachWall100": 70.0
+      },
+      "innovation": {
+        "Reach500": 90.0,
+        "ReachWall500": 100.0,
+        "Reach100": 80.0,
+        "ReachWall100": 72.5
+      },
+      "high-noise": {
+        "Reach500": 82.5,
+        "ReachWall500": 97.5,
+        "Reach100": 70.0,
+        "ReachWall100": 87.5
+      }
+    },
+    "pilot8_held": {
+      "tf-control": [
+        100.0,
+        100.0
+      ],
+      "innovation": [
+        100.0,
+        100.0
+      ],
+      "high-noise": [
+        100.0,
+        100.0
+      ],
+      "scope": "Both100and500any-success,8evals/task=2parentsx4samephysicalcases. Notaslarge/independentas40evalcohort."
+    },
+    "scope": "100stepany-success fromexistingtraceprefixes;notrerun/100stepfinal-success. Standard40eval/task=2trainedparentsx20physicalcases. Publicdata/goals/protocol differ;no SOTAclaim."
   }
 }
