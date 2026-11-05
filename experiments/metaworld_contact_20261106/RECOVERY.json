@@ -24,10 +24,11 @@
     "broad_repeats": "0e85869",
     "budget_and_collector": "0213955",
     "budget_NN_runtime": "7b78f5d originalunchanged",
-    "NoH_coverage_and_collector": "b65ede2"
+    "NoH_coverage_and_collector": "b65ede2",
+    "final_queued_controls": "505f6a8;baseline NN pinned7b78f5d"
   },
   "ownership": "Each root launch-dev13/dev15.json and actual live process identity;never infer GPU activity from slots.",
-  "active_plan": "Finite48 logicalrun targets across current_roots;old8learner screen complete,not the only active plan.",
+  "active_plan": "Finite56 logicalruns under current_roots;original24hdeadline and no automatic newresearch.",
   "repairs": [
     "Startup errors retained;completed2updates reused.",
     "IsolatedFP32 sample-independence audit disablesTF32;no trainingchange.",
@@ -51,19 +52,21 @@
     "broad-v1",
     "broad-repeat-v1",
     "budget-v1",
-    "broad-noh-v1"
+    "broad-noh-v1",
+    "budget-scratch-v1",
+    "simple-v1"
   ],
   "slot_chains": {
-    "gpu0_4": "CompletedNoH10k->40k -> broad-noh-v1 frozen400case50task coverage",
-    "gpu1_2": "broad-v1 CNN1/2 -> broad-repeat-v1 CNN3/4 -> budget-v1 TF/native16480->40k",
-    "gpu3_5": "broad-v1 original20epochTF/native400case frozen evaluation",
-    "gpu6_7": "history-v1 scratchCNN40k oneactionloss/no clock"
+    "gpu0_4": "NoH40k -> broad-noh-v1 -> budget-scratch-v1 originalTF/native randomseeds3/4,40k",
+    "gpu1_2": "budget-v1 originalTF/native full16480->40k seeds1/2",
+    "gpu3_5": "broad-v1 TF/native20epoch400case -> simple-v1 CNN/current+goal/oneactionloss/nohistory/noaux seeds1/2",
+    "gpu6_7": "history-v1 CNN40k"
   },
   "finite_collector": {
-    "pid_dev13": 3697224,
-    "launch": "finite-collector-launch-v8.json",
-    "source": "source-b65ede2",
-    "expected_logical_runs": 48,
+    "pid_dev13": 3697457,
+    "launch": "finite-collector-launch-v9.json",
+    "source": "source-505f6a8",
+    "expected_logical_runs": 56,
     "results": "review/summary.json and compact.json",
     "scope": "JSONonly every30seconds;no NN/simulator/LLM calls;originaldeadline->HOLD;no automatic newresearch."
   },
@@ -75,7 +78,7 @@
     "CaseCI conditional on trainedmodels,not initialization-population uncertainty.",
     "Reach/Wall regress;PickPlace seed-sensitive,Peg incomplete."
   ],
-  "latest_evidence": "results/latest/handoff-v4/INDEX.json:82SHAverifiedfiles;actual22:32UTC health and3200additional broadcoverage actiontraces verified",
+  "latest_evidence": "results/latest/handoff-v4/INDEX.json:82SHAverifiedfiles;actual22:32UTC health and3200additional broadcoverage actiontraces verified;queue-extension-505f6a8/INDEX.json verifies30 additional config/ownership files",
   "coverage_results": {
     "CNN_Flow4seeds_all50": 65.25,
     "CNN_MSE4seeds_all50": 65.1875,
@@ -83,5 +86,6 @@
     "MSE_nonreach48": 67.25260416666667,
     "physical_cases_per_task": 8,
     "baseline50task": "pending;no full50 performancegapclaim"
-  }
+  },
+  "queued_scope": "Four new independent scratchTF/native seeds3/4 start0,no parentNN/optimizer used;Native has actual2updates,remaining gates pending.Four minimalCNNs queued behind50task baselines;no performanceclaim."
 }

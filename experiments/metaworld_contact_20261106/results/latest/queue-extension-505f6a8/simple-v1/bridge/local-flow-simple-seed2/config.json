@@ -1,0 +1,38 @@
+{
+  "seed": 2,
+  "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/simple-v1/bridge/local-flow-simple-seed2",
+  "dataset_kind": "trajectory_pairs",
+  "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+  "trajectory_cache": "/tmp/prescottsun-mw-pairs-20261106",
+  "model_class": "temporal_bridge",
+  "model": {
+    "visual_source": "local",
+    "objective": "flow",
+    "chunk": 6,
+    "window": 2,
+    "width": 192,
+    "action_dim": 20,
+    "history_context": false,
+    "temporal_aux": false,
+    "condition_horizon": "none"
+  },
+  "batch_size": 128,
+  "workers": 4,
+  "max_steps": 40000,
+  "checkpoint_every": 1000,
+  "cpu_threads": 2,
+  "max_seconds": 72000,
+  "precision": "bf16-mixed",
+  "trace_batches": true,
+  "record_runtime_source": true,
+  "retain_steps": [
+    2,
+    600,
+    3000,
+    10000,
+    20000,
+    40000
+  ],
+  "float32_matmul_precision": "highest",
+  "record_initial_weights": true
+}
