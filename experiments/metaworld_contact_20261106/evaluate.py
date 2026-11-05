@@ -78,14 +78,15 @@ def run(a):
     output = Path(a.output); output.mkdir(parents=True, exist_ok=False)
     card = json.loads((Path(a.data)/'dataset_card.json').read_text())
     mean, std = np.asarray(card['action_mean'], np.float32), np.asarray(card['action_std'], np.float32)
-    parent = swm.wm.utils.load_pretrained(a.parent).cuda().eval().requires_grad_(False)
-    before = model_sha(parent)
     learner = None
     if a.run:
         cfg = json.loads((Path(a.run)/'config.json').read_text())
         learner = build_model(cfg).cuda().eval().requires_grad_(False)
         learner.load_state_dict(torch.load(Path(a.run)/f'model-step{a.step:07d}/weights.pt', map_location='cuda', weights_only=True))
         learner_before = model_sha(learner)
+    needs_parent = a.mode != 'bridge' or learner.visual_source != 'local'
+    parent = swm.wm.utils.load_pretrained(a.parent).cuda().eval().requires_grad_(False) if needs_parent else None
+    before = model_sha(parent) if parent is not None else None
     bank = ObservedTargets(a.feature_cache, local=a.mode == 'ap-local') if a.mode.startswith('ap-') else None
     lower = torch.tensor((-1-mean)/std, device='cuda'); upper = torch.tensor((1-mean)/std, device='cuda')
 
@@ -121,16 +122,16 @@ def run(a):
             solver.configure(action_space=gym.spaces.Box(-1., 1., shape=(1, 4), dtype=np.float32), n_envs=1,
                              config=SimpleNamespace(horizon=a.horizon, action_block=5))
         with torch.inference_mode():
-            goal = parent.encode(dict(pixels=parent.normalize(goal_rgb[None])))['emb'][0, 0]
+            goal = parent.encode(dict(pixels=parent.normalize(goal_rgb[None])))['emb'][0, 0] if needs_parent else None
             goal_key = patch_key(parent, parent.normalize(goal_rgb)) if a.mode == 'ap-local' else goal
             if a.mode == 'bridge' and learner.visual_source == 'patch':
                 goal_patches = parent.encoder(parent.normalize(goal_rgb), interpolate_pos_encoding=True).last_hidden_state[:, 1:].half()
             try:
                 while len(actions) < a.budget:
                     current_rgb = resize_tensor(frames[-1:]).cuda()
-                    current = parent.encode(dict(pixels=parent.normalize(current_rgb[None])))['emb'][0, 0]
+                    current = parent.encode(dict(pixels=parent.normalize(current_rgb[None])))['emb'][0, 0] if needs_parent else None
                     if a.mode == 'bridge':
-                        batch = dict(features=torch.stack([current, goal])[None])
+                        batch = dict(features=torch.stack([current, goal])[None]) if needs_parent else {}
                         if learner.visual_source in ['local', 'hybrid']:
                             batch['pixels'] = torch.stack([current_rgb[0], goal_rgb[0]])[None]
                         if learner.visual_source == 'patch':
@@ -174,11 +175,13 @@ def run(a):
                       trace=str(trace), trace_sha256=digest(trace), calls=calls, targets=targets)
         rows.append(result); save(output/'progress.json', dict(rows=rows))
         print(json.dumps({k:v for k, v in result.items() if k not in ['targets', 'initial_rgb']}), flush=True)
-    assert model_sha(parent) == before
+    if parent is not None:
+        assert model_sha(parent) == before
     if learner:
         assert model_sha(learner) == learner_before
     save(output/'summary.json', dict(passed=True, mode=a.mode, rows=rows, model_unchanged=True,
          parent_sha256=before, learner_sha256=learner_before if learner else None, step=a.step, execute=a.execute,
+         frozen_parent_used=needs_parent,
          finished_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
          scope='Independent LeRobot data,RGB-only factual-action method,500native any-success.Known cases,not officialJEPA-WMs or canonicalMT50.'))
 

@@ -60,7 +60,7 @@ def prepare(root, original, source):
                      scope='Actual own-data3000-step full state;no completedSGD repeats.New objective applies only afterentry.'))
                 recipe['entry_step'] = 3000
             else:
-                save(work/'ORIGIN.json', dict(random_cnn_and_readout=True, frozen_features=old[base]['parent'],
+                save(work/'ORIGIN.json', dict(random_patch_projection_and_readout=True, frozen_features=old[base]['parent'],
                      source='Ownsame-data20epochTFonly,noexternalteacher;fullparentcostmustcount.'))
             recipes.append(recipe)
     plan = dict(previous, source=str(source), recipes=recipes, stages=[2,600,3000,10000],
@@ -90,8 +90,8 @@ def work(root, source, host, gpu):
             break
         assert time.time() < plan['deadline_unix']
         time.sleep(5)
-    from experiments.metaworld_eval_20261103.worker import free_gpu
-    free_gpu(gpu)
+    from experiments.metaworld_contact_20261106.launch import wait_gpu_release
+    wait_gpu_release(gpu)
     for file in recipe.get('wait_cache', []):
         while not Path(file).exists():
             assert time.time() < plan['deadline_unix']

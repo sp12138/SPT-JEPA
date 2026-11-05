@@ -26,8 +26,8 @@ def run(a):
             break
         assert time.time() < plan['deadline_unix']
         time.sleep(5)
-    from experiments.metaworld_eval_20261103.worker import free_gpu
-    free_gpu(a.gpu)
+    from experiments.metaworld_contact_20261106.launch import wait_gpu_release
+    wait_gpu_release(a.gpu)
     output = Path(own['output'])
     env = environment(a.source, a.gpu)
     command([PYTHON, '-B', '-u', str(a.source/'experiments/metaworld_contact_20261106/cache.py'),

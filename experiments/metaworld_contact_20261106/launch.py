@@ -8,6 +8,19 @@ import subprocess
 import time
 
 
+def wait_gpu_release(gpu, seconds=120):
+    """Bounded driver/context teardown wait;never kill an unknown allocation."""
+    from experiments.metaworld_eval_20261103.worker import free_gpu
+    deadline = time.monotonic()+seconds
+    while True:
+        try:
+            return free_gpu(gpu)
+        except AssertionError:
+            if time.monotonic() >= deadline:
+                raise
+            time.sleep(2)
+
+
 BASE = Path('/efs/prescottsun/SPT-JEPA')
 PYTHON = '/efs/prescottsun/project_jepa/envs/lewm/bin/python'
 
