@@ -1,0 +1,156 @@
+{
+  "model_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/patch_token_source_20261031/source-v1",
+    "source_commit": "1018ebbe9beb3e5f9b7c91018f03ff8a4f17884d",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/patch_token_source_20261031/manifest.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/patch_token_source_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "helper_source": {
+    "source": "/efs/prescottsun/SPT-JEPA/runs/patch_token600_helpers_20261031/source-v1",
+    "source_commit": "d26df118325cf656e15b3d36fe0089c99f4b4dc2",
+    "manifest": "/efs/prescottsun/SPT-JEPA/runs/patch_token600_helpers_20261031/manifest.json",
+    "runtime_source": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1",
+    "runtime_manifest": "/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1.json",
+    "pythonpath": "/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/patch_token600_helpers_20261031/source-v1:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/sources/clear-lewm-20261030"
+  },
+  "runs": [
+    {
+      "id": "tworoom-patch-identity-seed1",
+      "task": "tworoom",
+      "training_seed": 1,
+      "arm": "identity",
+      "host": "dev2",
+      "gpu": 0,
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-tworoom-seed1/calibration.json",
+        "sha256": "c89b514e352db5c19cc982eb0a59c895f68ca71e1f16973ce9a7d155c808bad5"
+      },
+      "reviewed_preflight": "/efs/prescottsun/SPT-JEPA/runs/patch_token_preflight_20261031/tworoom-patch-identity-seed1",
+      "primary_manifest_sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94"
+    },
+    {
+      "id": "tworoom-patch-orthogonal-seed1",
+      "task": "tworoom",
+      "training_seed": 1,
+      "arm": "orthogonal",
+      "host": "dev2",
+      "gpu": 1,
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-tworoom-seed1/calibration.json",
+        "sha256": "c89b514e352db5c19cc982eb0a59c895f68ca71e1f16973ce9a7d155c808bad5"
+      },
+      "reviewed_preflight": "/efs/prescottsun/SPT-JEPA/runs/patch_token_preflight_20261031/tworoom-patch-orthogonal-seed1",
+      "primary_manifest_sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94"
+    },
+    {
+      "id": "tworoom-patch-identity-seed2",
+      "task": "tworoom",
+      "training_seed": 2,
+      "arm": "identity",
+      "host": "dev2",
+      "gpu": 2,
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-tworoom-seed2/calibration.json",
+        "sha256": "ae0fdfe0b2284d923f71195082fd4d69cc7fddf1f4b0dc7562a30c4fbb6ba78c"
+      },
+      "reviewed_preflight": "/efs/prescottsun/SPT-JEPA/runs/patch_token_preflight_20261031/tworoom-patch-identity-seed2",
+      "primary_manifest_sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94"
+    },
+    {
+      "id": "tworoom-patch-orthogonal-seed2",
+      "task": "tworoom",
+      "training_seed": 2,
+      "arm": "orthogonal",
+      "host": "dev13",
+      "gpu": 0,
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-tworoom-seed2/calibration.json",
+        "sha256": "ae0fdfe0b2284d923f71195082fd4d69cc7fddf1f4b0dc7562a30c4fbb6ba78c"
+      },
+      "reviewed_preflight": "/efs/prescottsun/SPT-JEPA/runs/patch_token_preflight_20261031/tworoom-patch-orthogonal-seed2",
+      "primary_manifest_sha256": "ed62eddb1d7f3d33bbf6b60726195c63ee27bdc73adbc6d6ec6c0308310b1e94"
+    },
+    {
+      "id": "cube-patch-identity-seed1",
+      "task": "cube",
+      "training_seed": 1,
+      "arm": "identity",
+      "host": "dev13",
+      "gpu": 1,
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-cube-seed1/calibration.json",
+        "sha256": "40b2c5859922f7c928044a79c33a2109fb759f3bc008322215cbd4ed835580e5"
+      },
+      "reviewed_preflight": "/efs/prescottsun/SPT-JEPA/runs/patch_token_preflight_20261031/cube-patch-identity-seed1",
+      "primary_manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+    },
+    {
+      "id": "cube-patch-orthogonal-seed1",
+      "task": "cube",
+      "training_seed": 1,
+      "arm": "orthogonal",
+      "host": "dev13",
+      "gpu": 2,
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-cube-seed1/calibration.json",
+        "sha256": "40b2c5859922f7c928044a79c33a2109fb759f3bc008322215cbd4ed835580e5"
+      },
+      "reviewed_preflight": "/efs/prescottsun/SPT-JEPA/runs/patch_token_preflight_20261031/cube-patch-orthogonal-seed1",
+      "primary_manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+    },
+    {
+      "id": "cube-patch-identity-seed2",
+      "task": "cube",
+      "training_seed": 2,
+      "arm": "identity",
+      "host": "dev15",
+      "gpu": 0,
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-cube-seed2/calibration.json",
+        "sha256": "957baca5fb7488ebf6a60aa1c5ef468db3b01598cc34a731c20ae81d7b7dd33b"
+      },
+      "reviewed_preflight": "/efs/prescottsun/SPT-JEPA/runs/patch_token_preflight_20261031/cube-patch-identity-seed2",
+      "primary_manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+    },
+    {
+      "id": "cube-patch-orthogonal-seed2",
+      "task": "cube",
+      "training_seed": 2,
+      "arm": "orthogonal",
+      "host": "dev15",
+      "gpu": 1,
+      "calibration": {
+        "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-cube-seed2/calibration.json",
+        "sha256": "957baca5fb7488ebf6a60aa1c5ef468db3b01598cc34a731c20ae81d7b7dd33b"
+      },
+      "reviewed_preflight": "/efs/prescottsun/SPT-JEPA/runs/patch_token_preflight_20261031/cube-patch-orthogonal-seed2",
+      "primary_manifest_sha256": "d9adb8d2e1d654b1388075b1c499a341bee0055dfb07fe214615251f8abb2ca7"
+    }
+  ],
+  "steps": 600,
+  "fresh_from_zero": true,
+  "preflight_summary_sha256": "357ae4e2b646182ab679f7bb600c3efafcb586d2ce101409e40a1fd2fabac5da",
+  "endpoints": 40,
+  "native_batch": 128,
+  "max_steps": 124910,
+  "stages": [
+    "train600",
+    "strictfullstate",
+    "nativehealth16",
+    "existingtransition64",
+    "originalCEMprimary50"
+  ],
+  "controls": "Two token arms same parameters/initialization, raw local1024/copy/zero coordinates. Historical flat models have different predictor capacity/compute.",
+  "not_in_scope": [
+    "resume2step",
+    "extra seeds",
+    "fresh cases",
+    "correlated controller",
+    "NGC",
+    "parameter grid",
+    "automatic2000"
+  ],
+  "stopping_rule": "All600 stages stop; inspect task/copy/zero/teacher/state-action-use and per-layer gradients before any further budget. Preserve old holds/failures."
+}

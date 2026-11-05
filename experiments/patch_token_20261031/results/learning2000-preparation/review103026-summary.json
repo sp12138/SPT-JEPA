@@ -1,0 +1,412 @@
+{
+  "completed": 64,
+  "total": 72,
+  "failed": 0,
+  "all8_training_finished2000": true,
+  "all16_archives_pass": true,
+  "review": "10:30:26 UTC",
+  "parts": [
+    {
+      "host": "dev2",
+      "at": 1793442657.07293,
+      "regular_review": "10:30:26 UTC",
+      "total": 27,
+      "completed": 27,
+      "failed": {},
+      "pending": [],
+      "worker": {
+        "state": "running",
+        "updated_at": 1793442653.30129,
+        "host": "prescottsun-dev2-2d-1030-worker-0",
+        "pid": 206382,
+        "running": {},
+        "queued": 27
+      },
+      "rows": [
+        {
+          "id": "tworoom-patch-identity-seed1",
+          "state": "finished",
+          "step": 2000,
+          "finite": true,
+          "metrics": {
+            "loss": 0.38613080978393555,
+            "fm": 0.006861335597932339,
+            "rate": 1.517077922821045,
+            "grad_norm_encoder": 0.0,
+            "grad_norm_pool": 0.0,
+            "grad_norm_predictor": 0.618077278137207,
+            "grad_norm_renderer": 0.3081592321395874,
+            "grad_norm_action_encoder": 0.033862534910440445,
+            "seconds_per_step": 2.560432195663452,
+            "peak_gib": 112.86026334762573
+          },
+          "archives": {
+            "1200": {
+              "passed": true,
+              "step": 1200,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/tworoom-patch-identity-seed1/checkpoint-step0001200.ckpt",
+              "frozen": 210
+            },
+            "2000": {
+              "passed": true,
+              "step": 2000,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/tworoom-patch-identity-seed1/checkpoint-step0002000.ckpt",
+              "frozen": 210
+            }
+          }
+        },
+        {
+          "id": "tworoom-patch-orthogonal-seed1",
+          "state": "finished",
+          "step": 2000,
+          "finite": true,
+          "metrics": {
+            "loss": 0.7109044790267944,
+            "fm": 0.006560429465025663,
+            "rate": 2.817376136779785,
+            "grad_norm_encoder": 0.0,
+            "grad_norm_pool": 0.0,
+            "grad_norm_predictor": 0.3110089600086212,
+            "grad_norm_renderer": 0.262614369392395,
+            "grad_norm_action_encoder": 0.018660802394151688,
+            "seconds_per_step": 3.1648499965667725,
+            "peak_gib": 112.97354459762573
+          },
+          "archives": {
+            "1200": {
+              "passed": true,
+              "step": 1200,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/tworoom-patch-orthogonal-seed1/checkpoint-step0001200.ckpt",
+              "frozen": 211
+            },
+            "2000": {
+              "passed": true,
+              "step": 2000,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/tworoom-patch-orthogonal-seed1/checkpoint-step0002000.ckpt",
+              "frozen": 211
+            }
+          }
+        },
+        {
+          "id": "tworoom-patch-identity-seed2",
+          "state": "finished",
+          "step": 2000,
+          "finite": true,
+          "metrics": {
+            "loss": 0.42511725425720215,
+            "fm": 0.0070293135941028595,
+            "rate": 1.6723517179489136,
+            "grad_norm_encoder": 0.0,
+            "grad_norm_pool": 0.0,
+            "grad_norm_predictor": 0.7682158350944519,
+            "grad_norm_renderer": 0.19530317187309265,
+            "grad_norm_action_encoder": 0.04875451326370239,
+            "seconds_per_step": 3.378721237182617,
+            "peak_gib": 112.86026334762573
+          },
+          "archives": {
+            "1200": {
+              "passed": true,
+              "step": 1200,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/tworoom-patch-identity-seed2/checkpoint-step0001200.ckpt",
+              "frozen": 210
+            },
+            "2000": {
+              "passed": true,
+              "step": 2000,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/tworoom-patch-identity-seed2/checkpoint-step0002000.ckpt",
+              "frozen": 210
+            }
+          }
+        }
+      ],
+      "gpu_snapshot": [
+        "0, GPU-6ed84194-c712-388f-2730-9a9d94eccf11, 0, 0",
+        "1, GPU-77277811-7523-3a04-78e5-1d8e15dc1800, 0, 0",
+        "2, GPU-bff74550-eee8-5c88-2fb1-b131200c106c, 0, 0"
+      ],
+      "owned_compute_apps": []
+    },
+    {
+      "host": "dev13",
+      "at": 1793442656.4876359,
+      "regular_review": "10:30:26 UTC",
+      "total": 27,
+      "completed": 23,
+      "failed": {},
+      "pending": [
+        "planning-cube-patch-identity-seed1",
+        "fresh-planning-cube-patch-identity-seed1",
+        "planning-cube-patch-orthogonal-seed1",
+        "fresh-planning-cube-patch-orthogonal-seed1"
+      ],
+      "worker": {
+        "state": "running",
+        "updated_at": 1793442652.638645,
+        "host": "prescottsun-dev13-2d-1027-worker-0",
+        "pid": 1158041,
+        "running": {
+          "1": {
+            "id": "planning-cube-patch-identity-seed1",
+            "pid": 1186807,
+            "started_at": 1793442481.6562176
+          },
+          "2": {
+            "id": "planning-cube-patch-orthogonal-seed1",
+            "pid": 1186811,
+            "started_at": 1793442482.0590892
+          }
+        },
+        "queued": 27
+      },
+      "rows": [
+        {
+          "id": "tworoom-patch-orthogonal-seed2",
+          "state": "finished",
+          "step": 2000,
+          "finite": true,
+          "metrics": {
+            "loss": 0.7421897053718567,
+            "fm": 0.007316040340811014,
+            "rate": 2.9394946098327637,
+            "grad_norm_encoder": 0.0,
+            "grad_norm_pool": 0.0,
+            "grad_norm_predictor": 0.39774060249328613,
+            "grad_norm_renderer": 0.3080255091190338,
+            "grad_norm_action_encoder": 0.01964435540139675,
+            "seconds_per_step": 2.803076982498169,
+            "peak_gib": 112.97354459762573
+          },
+          "archives": {
+            "1200": {
+              "passed": true,
+              "step": 1200,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/tworoom-patch-orthogonal-seed2/checkpoint-step0001200.ckpt",
+              "frozen": 211
+            },
+            "2000": {
+              "passed": true,
+              "step": 2000,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/tworoom-patch-orthogonal-seed2/checkpoint-step0002000.ckpt",
+              "frozen": 211
+            }
+          }
+        },
+        {
+          "id": "cube-patch-identity-seed1",
+          "state": "finished",
+          "step": 2000,
+          "finite": true,
+          "metrics": {
+            "loss": 0.6571532487869263,
+            "fm": 0.027639001607894897,
+            "rate": 2.518057107925415,
+            "grad_norm_encoder": 0.0,
+            "grad_norm_pool": 0.0,
+            "grad_norm_predictor": 0.7859966158866882,
+            "grad_norm_renderer": 0.28487545251846313,
+            "grad_norm_action_encoder": 0.013600390404462814,
+            "seconds_per_step": 2.3228237628936768,
+            "peak_gib": 112.86141633987427
+          },
+          "archives": {
+            "1200": {
+              "passed": true,
+              "step": 1200,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/cube-patch-identity-seed1/checkpoint-step0001200.ckpt",
+              "frozen": 210
+            },
+            "2000": {
+              "passed": true,
+              "step": 2000,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/cube-patch-identity-seed1/checkpoint-step0002000.ckpt",
+              "frozen": 210
+            }
+          }
+        },
+        {
+          "id": "cube-patch-orthogonal-seed1",
+          "state": "finished",
+          "step": 2000,
+          "finite": true,
+          "metrics": {
+            "loss": 0.7898712158203125,
+            "fm": 0.029004216194152832,
+            "rate": 3.0434679985046387,
+            "grad_norm_encoder": 0.0,
+            "grad_norm_pool": 0.0,
+            "grad_norm_predictor": 0.2629290223121643,
+            "grad_norm_renderer": 0.2831973135471344,
+            "grad_norm_action_encoder": 0.008874185383319855,
+            "seconds_per_step": 2.359442949295044,
+            "peak_gib": 112.97469758987427
+          },
+          "archives": {
+            "1200": {
+              "passed": true,
+              "step": 1200,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/cube-patch-orthogonal-seed1/checkpoint-step0001200.ckpt",
+              "frozen": 211
+            },
+            "2000": {
+              "passed": true,
+              "step": 2000,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/cube-patch-orthogonal-seed1/checkpoint-step0002000.ckpt",
+              "frozen": 211
+            }
+          }
+        }
+      ],
+      "gpu_snapshot": [
+        "0, GPU-170dcf84-3202-5179-c251-e6a13288bc31, 1, 0",
+        "1, GPU-8bedce53-4283-cf75-a8ee-53fb2762b518, 7899, 100",
+        "2, GPU-6f92808d-cf59-fb1a-305d-ebf327b63aab, 7903, 99"
+      ],
+      "owned_compute_apps": [
+        "1186807, GPU-8bedce53-4283-cf75-a8ee-53fb2762b518, 7880",
+        "1186811, GPU-6f92808d-cf59-fb1a-305d-ebf327b63aab, 7884"
+      ]
+    },
+    {
+      "host": "dev15",
+      "at": 1793442655.288412,
+      "regular_review": "10:30:26 UTC",
+      "total": 18,
+      "completed": 14,
+      "failed": {},
+      "pending": [
+        "planning-cube-patch-identity-seed2",
+        "fresh-planning-cube-patch-identity-seed2",
+        "planning-cube-patch-orthogonal-seed2",
+        "fresh-planning-cube-patch-orthogonal-seed2"
+      ],
+      "worker": {
+        "state": "running",
+        "updated_at": 1793442652.9246035,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "pid": 1368186,
+        "running": {
+          "0": {
+            "id": "planning-cube-patch-identity-seed2",
+            "pid": 1416817,
+            "started_at": 1793442391.1897905
+          },
+          "1": {
+            "id": "planning-cube-patch-orthogonal-seed2",
+            "pid": 1416826,
+            "started_at": 1793442401.7308242
+          }
+        },
+        "queued": 18
+      },
+      "rows": [
+        {
+          "id": "cube-patch-identity-seed2",
+          "state": "finished",
+          "step": 2000,
+          "finite": true,
+          "metrics": {
+            "loss": 0.6390377283096313,
+            "fm": 0.025811411440372467,
+            "rate": 2.4529051780700684,
+            "grad_norm_encoder": 0.0,
+            "grad_norm_pool": 0.0,
+            "grad_norm_predictor": 0.9040915369987488,
+            "grad_norm_renderer": 0.28870004415512085,
+            "grad_norm_action_encoder": 0.035876061767339706,
+            "seconds_per_step": 2.81131649017334,
+            "peak_gib": 112.86141633987427
+          },
+          "archives": {
+            "1200": {
+              "passed": true,
+              "step": 1200,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/cube-patch-identity-seed2/checkpoint-step0001200.ckpt",
+              "frozen": 210
+            },
+            "2000": {
+              "passed": true,
+              "step": 2000,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/cube-patch-identity-seed2/checkpoint-step0002000.ckpt",
+              "frozen": 210
+            }
+          }
+        },
+        {
+          "id": "cube-patch-orthogonal-seed2",
+          "state": "finished",
+          "step": 2000,
+          "finite": true,
+          "metrics": {
+            "loss": 0.7838813066482544,
+            "fm": 0.026871679350733757,
+            "rate": 3.028038501739502,
+            "grad_norm_encoder": 0.0,
+            "grad_norm_pool": 0.0,
+            "grad_norm_predictor": 0.18434260785579681,
+            "grad_norm_renderer": 0.22676831483840942,
+            "grad_norm_action_encoder": 0.012518493458628654,
+            "seconds_per_step": 2.745199680328369,
+            "peak_gib": 112.97469758987427
+          },
+          "archives": {
+            "1200": {
+              "passed": true,
+              "step": 1200,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/cube-patch-orthogonal-seed2/checkpoint-step0001200.ckpt",
+              "frozen": 211
+            },
+            "2000": {
+              "passed": true,
+              "step": 2000,
+              "all_checks": true,
+              "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/patch_token2000_20261031/cube-patch-orthogonal-seed2/checkpoint-step0002000.ckpt",
+              "frozen": 211
+            }
+          }
+        }
+      ],
+      "gpu_snapshot": [
+        "0, GPU-288d9f8d-a739-31fb-7aa0-99b293271a8e, 2235, 0",
+        "1, GPU-4cd621d7-0644-eac8-fc6e-69efe0e59c25, 2105, 0"
+      ],
+      "owned_compute_apps": [
+        "1416817, GPU-288d9f8d-a739-31fb-7aa0-99b293271a8e, 2216"
+      ]
+    }
+  ],
+  "prior600_cube_planning_durations": [
+    {
+      "id": "planning-cube-patch-identity-seed1",
+      "seconds": 271.4028751850128
+    },
+    {
+      "id": "planning-cube-patch-identity-seed2",
+      "seconds": 281.4906163215637
+    },
+    {
+      "id": "planning-cube-patch-orthogonal-seed1",
+      "seconds": 270.98929810523987
+    },
+    {
+      "id": "planning-cube-patch-orthogonal-seed2",
+      "seconds": 291.1536605358124
+    }
+  ],
+  "scope": "No partial planning outcomes read; no continuation."
+}
