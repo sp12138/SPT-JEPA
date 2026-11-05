@@ -61,15 +61,36 @@ def wait_owner(owner, deadline):
         time.sleep(5)
 
 
-def work(root, source, host, gpu):
-    out=root/'broad-v1';plan=json.loads((out/'plan.json').read_text())
+def prepare_repeats(root,source):
+    out=root/'broad-repeat-v1';out.mkdir()
+    original=json.loads((root/'broad-v1/plan.json').read_text())
+    trained=json.loads((root/'repeat-v1/bridge-plan.json').read_text())
+    approval=json.loads((root/'broad-v1/GOALS_APPROVED.json').read_text())
+    recipes=[]
+    for host,seed in [('dev13',3),('dev15',4)]:
+        owners=json.loads((root/'broad-v1'/f'launch-{host}.json').read_text())['jobs']
+        for gpu,arm in [(1,'local-flow'),(2,'local-mse')]:
+            model=next(r for r in trained['recipes'] if r['host']==host and r['arm']==arm)
+            run=Path(model['run']);assert json.loads((run/'audit-40000.json').read_text())['passed']
+            checkpoint=run/'model-step0040000'
+            recipes.append(dict(host=host,gpu=gpu,arm=arm,training_seed=seed,run=str(run),parent=model['parent'],
+                checkpoint=str(checkpoint),weights_sha256=digest(checkpoint/'weights.pt'),
+                wait_owner=next(r for r in owners if r['gpu']==gpu)))
+    save(out/'plan.json',dict(original,source=str(source),recipes=recipes,inherited_goal_approval=approval,
+         scope=original['scope']+' Independent randomtrainingseeds3/4,same400goals;not new physicalsamples.No SGD.'))
+    save(out/'GOALS_APPROVED.json',approval)
+
+
+def work(root, source, host, gpu, study='broad-v1'):
+    out=root/study;plan=json.loads((out/'plan.json').read_text())
     r=next(v for v in plan['recipes'] if v['host']==host and v['gpu']==gpu)
     wait_owner(r['wait_owner'],plan['deadline_unix']);wait_gpu_release(gpu)
     env=environment(source,gpu);directory=out/f'{host}-gpu{gpu}';directory.mkdir()
-    helper=BASE/'reports/metaworld_improve_20261104/helper-698ae41/experiments/metaworld_eval_20261103/prepare_cases.py'
-    command([PYTHON,'-B','-u',str(helper),'--source',plan['policy_source'],'--output',str(directory/'cases'),
-             '--seeds']+list(map(str,plan['seeds']))+['--tasks']+r['goal_tasks'],directory/'goals.log',env,source,plan['deadline_unix'])
-    if r['index']==0:
+    if study=='broad-v1':
+        helper=BASE/'reports/metaworld_improve_20261104/helper-698ae41/experiments/metaworld_eval_20261103/prepare_cases.py'
+        command([PYTHON,'-B','-u',str(helper),'--source',plan['policy_source'],'--output',str(directory/'cases'),
+                 '--seeds']+list(map(str,plan['seeds']))+['--tasks']+r['goal_tasks'],directory/'goals.log',env,source,plan['deadline_unix'])
+    if study=='broad-v1' and r['index']==0:
         files=[out/f'{x["host"]}-gpu{x["gpu"]}/cases/manifest.json' for x in plan['recipes']]
         while not all(p.exists() for p in files):
             assert time.time()<plan['deadline_unix'];time.sleep(5)
@@ -85,7 +106,7 @@ def work(root, source, host, gpu):
              cases=len(rows),expert_goal_valid=sum(row['expert_any_success'] for row in rows),all_failures_retained=True))
     while not (out/'GOALS_APPROVED.json').exists():
         assert time.time()<plan['deadline_unix'];time.sleep(5)
-    manifest=out/'cases-manifest.json'
+    manifest=Path(json.loads((out/'GOALS_APPROVED.json').read_text())['manifest'])
     assert digest(manifest)==json.loads((out/'GOALS_APPROVED.json').read_text())['sha256']
     assert digest(Path(r['checkpoint'])/'weights.pt')==r['weights_sha256']
     extra=['--run',r['run'],'--step','40000'] if r['run'] else []
@@ -100,7 +121,9 @@ def work(root, source, host, gpu):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--source',type=Path,required=True)
-    p.add_argument('--mode',choices=['prepare','work'],required=True);p.add_argument('--host');p.add_argument('--gpu',type=int)
+    p.add_argument('--mode',choices=['prepare','prepare-repeats','work'],required=True);p.add_argument('--host');p.add_argument('--gpu',type=int)
+    p.add_argument('--study',choices=['broad-v1','broad-repeat-v1'],default='broad-v1')
     a=p.parse_args()
     if a.mode=='prepare':prepare(a.root,a.source)
-    else:work(a.root,a.source,a.host,a.gpu)
+    elif a.mode=='prepare-repeats':prepare_repeats(a.root,a.source)
+    else:work(a.root,a.source,a.host,a.gpu,a.study)
