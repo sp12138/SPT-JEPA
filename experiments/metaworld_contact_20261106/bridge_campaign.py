@@ -85,8 +85,18 @@ def work(root, source, host, gpu):
     try:
         for step in plan['stages']:
             assert not (root/'STOP').exists() and not (run/'STOP').exists()
-            command(stage_command(source, run/'config.json', step, step != 2),
-                    run/f'train-{step}.log', env, source, plan['deadline_unix'])
+            existing = run/'last.ckpt'
+            completed = 0
+            if existing.exists():
+                import torch
+                completed = int(torch.load(existing, map_location='cpu', weights_only=False)['global_step'])
+            if completed == step:
+                save(run/f'REUSED-step{step}.json', dict(step=step, native_sha256=digest(existing),
+                     scope='Reuse actually completed native SGD;only failed independent audit repeats.No training updates replayed.'))
+            else:
+                assert completed < step
+                command(stage_command(source, run/'config.json', step, completed > 0),
+                        run/f'train-{step}.log', env, source, plan['deadline_unix'])
             command([PYTHON, '-B', '-u', str(source/'experiments/metaworld_contact_20261106/audit_bridge.py'),
                      '--run', str(run), '--step', str(step), '--output', str(run/f'audit-{step}.json')],
                     run/f'audit-{step}.log', env, source, plan['deadline_unix'])

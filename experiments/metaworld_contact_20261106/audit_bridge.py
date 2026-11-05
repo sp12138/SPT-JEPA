@@ -17,6 +17,10 @@ def run(a):
     from torch.utils.data import DataLoader, Subset
     initialize_ops(OpsConfig(backend='sdpa', allow_fallback=False), device=torch.device('cuda'), parallel_state=None)
     torch.set_num_threads(2); torch.set_float32_matmul_precision('highest')
+    # Training uses BF16; this independent FP32 audit must also disable
+    # cuDNN TF32,whose convolution rounding depends on batch shape.
+    torch.backends.cudnn.allow_tf32 = False
+    torch.backends.cuda.matmul.allow_tf32 = False
     root = Path(a.run); cfg = json.loads((root/'config.json').read_text())
     checkpoint = torch.load(root/'last.ckpt', map_location='cpu', weights_only=False)
     assert checkpoint['global_step'] == a.step
@@ -56,7 +60,9 @@ def run(a):
             single = model.memory(singleton); independent_memory.append(single); independent_duration.append(model.duration(single))
         memory_error = float((memory-torch.cat(independent_memory)).abs().max())
         duration_error = float((duration-torch.cat(independent_duration)).abs().max())
-        assert memory_error < 1e-4 and duration_error < 1e-4
+        save(root/f'independence-debug-{a.step}.json', dict(memory_max_abs=memory_error, duration_max_abs=duration_error,
+             fp32_cudnn_tf32=False, fp32_matmul_tf32=False))
+        assert memory_error < 1e-4 and duration_error < 1e-4, (memory_error, duration_error)
     save(a.output, dict(passed=True, step=a.step, actual_cpu_restore=restore,
          portable_exact=True, checkpoint_sha256=digest(root/'last.ckpt'),
          loss=float(loss.detach()), metrics={k:float(v.detach()) for k, v in metrics.items()}, gradients=gradients,

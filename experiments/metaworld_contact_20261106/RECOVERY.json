@@ -1,10 +1,35 @@
 {
   "objective": "Diagnose persistent MetaWorld manipulation0% and validate a practical sample-level improvement,using onlydev13/dev15.",
   "authorization": "Latest user2026-11-06 explicitly requests stopping old work,new two-host deep analysis and improvement.",
-  "status": "Preparing frozen causal diagnostics;no new SGD yet.",
+  "status": "ACTIVE new finite round:16 frozen diagnostic groups/64model-cases and16 feature shards COMPLETE;8 paired frozen planner controls running;8 new learners at actual2-update gates. No manipulation improvement claimed yet.",
   "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106",
-  "hosts": ["dev13", "dev15"],
+  "hosts": [
+    "dev13",
+    "dev15"
+  ],
   "old_jobs": "Actual initial read:both hosts all8GPUs0MiB/0util,no owned SPT-JEPA processes.Old campaigns remain complete/HOLD;no goal or recurring LLM monitor.",
-  "constraints": ["scratch origin", "RGB and factual actions only", "sample-level candidate loss", "no optimal-action labels", "no reward/state/success/taskID or external teacher in learner/planner"],
-  "diagnostic_scope": "Expert actions,physical states and rendered joint interventions are diagnostic only,never candidate inputs or new training data.Known cases;not untouched confirmation."
+  "constraints": [
+    "scratch origin",
+    "RGB and factual actions only",
+    "sample-level candidate loss",
+    "no optimal-action labels",
+    "no reward/state/success/taskID or external teacher in learner/planner"
+  ],
+  "diagnostic_scope": "Expert actions,physical states and rendered joint interventions are diagnostic only,never candidate inputs or new training data.Known cases;not untouched confirmation.",
+  "source": {
+    "diagnostics": "5e5addd",
+    "cache": "223ea4b",
+    "frozen_planners": "a9d2e99",
+    "new_trainers": "a5b304a"
+  },
+  "ownership": [
+    "stage2-launch-dev13.json",
+    "stage2-launch-dev15.json",
+    "train-recovery-v3-dev13.json",
+    "train-recovery-v3-dev15.json"
+  ],
+  "active_plan": "active-bridge-plan.json -> bridge-plan-v3.json",
+  "repairs": "Two startup interface failures before SGD retained in each learner startup-errors-v1/v2.Missing packaged entry point then trainer metadata interfaces;CPU forward/backward gates pass all4types.No completedSGD repeated.",
+  "gates": "All8 frozen CEM-H6 first20 action sequences exactly match archived TF parents.Scratch learner actual full-state/backward/independence/20step MPC gates still to read.16model-case diagnostics use originalparent1 only;not two training seeds.",
+  "evidence": "Valid46/46 manip30-step comparisons favor failed CEM endpoint over successful expert prefix in actual latent-goal MSE.Peg seed43 expert failed,2model records excluded from successful-route evidence,not dropped from evaluation."
 }
