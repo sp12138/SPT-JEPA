@@ -17,7 +17,9 @@ if __name__=='__main__':
     while time.time()<deadline:
         if (root/'HOLD').exists():
             break
-        completed=(OLD/'recovery-20261105/HOLD').exists()
+        marker=OLD/'recovery-20261105/HOLD'
+        record=json.loads(marker.read_text()) if marker.exists() else {}
+        completed=record.get('passed') is True and record.get('completed_episodes')==1584
         active=False
         for item in old_workers:
             proc=Path(f"/proc/{item['pid']}/cmdline")
