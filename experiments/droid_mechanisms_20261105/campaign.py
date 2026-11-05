@@ -179,6 +179,26 @@ def select(rows):
                 qualification='Exploratory, conditional on two learners and 16 reused physical clips; not a SOTA or independent confirmation claim.')
 
 
+def read_results(root):
+    """The released evaluator writes its result before our wrapper finalizes it.
+
+    A complete candidate result has an arm and stage added by the atomic wrapper
+    write. Ignore the earlier public result (or a JSON file still being written)
+    until that write completes; worker errors are handled separately.
+    """
+    records=[];pending=[]
+    for path in (Path(root)/'evaluations').glob('*/result.json'):
+        try:
+            row=json.loads(path.read_text())
+        except (FileNotFoundError,json.JSONDecodeError):
+            pending.append(str(path));continue
+        if row.get('passed') and row.get('stage') in ['screen','long'] and row.get('arm') in ARMS:
+            records.append(row)
+        else:
+            pending.append(str(path))
+    return records,pending
+
+
 def collect(a):
     root=Path(a.root);dump=bootstrap(arm_root(root,'tf'))
     while time.time()<a.deadline:
@@ -188,14 +208,11 @@ def collect(a):
         pending_recoveries=[name for name in corrections.get('retry_stages',[])
                             if not (root/'stages'/name).exists()]
         stages=list((root/'stages').glob('*-screen.json'))
-        records=[]
-        for p in (root/'evaluations').glob('*/result.json'):
-            row=json.loads(p.read_text())
-            if row.get('passed'):records.append(row)
+        records,pending_results=read_results(root)
         screen=[r for r in records if r['stage']=='screen']
         dump(root/'results/summary.json',dict(status='ACTIVE',screen_trainings=len(stages),screen_endpoints=len(screen),
              errors=len(errors),retained_original_errors=len(corrections.get('retained_original_errors',[])),
-             pending_recoveries=pending_recoveries,updated=time.time()))
+             pending_recoveries=pending_recoveries,incomplete_result_files=len(pending_results),updated=time.time()))
         if errors:
             dump(root/'HOLD',dict(status='EXECUTION_ERROR',files=[str(p) for p in errors],time=time.time()))
             return
