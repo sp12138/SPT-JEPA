@@ -47,6 +47,7 @@ def prepare(root, source):
                           model=dict(visual_source=visual, objective=objective, chunk=6, window=2, width=192, action_dim=20),
                           batch_size=128, workers=4, max_steps=40000, checkpoint_every=1000, cpu_threads=2,
                           max_seconds=20*3600, precision='bf16-mixed', export_initial=True, trace_batches=True,
+                          record_runtime_source=True,
                           retain_steps=[2, 600, 3000, 10000, 40000], float32_matmul_precision='highest')
             save(run/'config.json', config)
             recipes.append(dict(name=name, arm=arm, gpu=gpu, host=host, seed=seed, parent=parent, run=str(run), config_sha256=digest(run/'config.json')))
@@ -74,6 +75,7 @@ def work(root, source, host, gpu):
     run = Path(recipe['run']); env = environment(source, gpu)
     local = Path('/tmp/prescottsun-mw-pairs-20261106')
     while not (local/'COPIED.json').exists():
+        assert not (local/'COPY_ERROR.json').exists(), 'Local trajectory cache copy failed'
         assert time.time() < plan['deadline_unix']
         time.sleep(5)
     assert digest(run/'config.json') == recipe['config_sha256']

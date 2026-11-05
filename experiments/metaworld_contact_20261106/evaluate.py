@@ -29,12 +29,13 @@ class ObservedTargets:
             directory = Path(root)/str(shard)
             m = json.loads((directory/'manifest.json').read_text())
             f = torch.load(directory/'features.pt', map_location='cpu', weights_only=True)
-            self.features.append(f['embedding'])
-            self.visual.append(f['patches'].flatten(1).float() if local else f['embedding'])
             for r in m['records']:
                 if r['split'] == 'train':
-                    self.records.append(dict(start=offset+r['offset'], length=r['length'], episode=r['episode']))
-            offset += m['frames']
+                    selected = slice(r['offset'], r['offset']+r['length'])
+                    self.features.append(f['embedding'][selected])
+                    self.visual.append(f['patches'][selected].flatten(1).float() if local else f['embedding'][selected])
+                    self.records.append(dict(start=offset, length=r['length'], episode=r['episode']))
+                    offset += r['length']
         self.features = torch.cat(self.features).cuda()
         self.visual = torch.cat(self.visual).cuda()
         maximum = max(r['length'] for r in self.records)
