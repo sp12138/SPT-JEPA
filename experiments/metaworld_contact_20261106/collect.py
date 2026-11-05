@@ -18,9 +18,9 @@ def save(path, value):
     tmp=path.with_suffix(path.suffix+'.tmp');tmp.write_text(json.dumps(value,indent=2)+'\n');tmp.replace(path)
 
 
-def summary(rows):
+def summary(rows, tasks=TASKS):
     groups={}
-    for task in TASKS:
+    for task in tasks:
         selected=[r for r in rows if r['task']==task]
         valid=[r for r in selected if r['expert_goal_success']]
         if selected:
@@ -30,7 +30,10 @@ def summary(rows):
                 goal_valid_percent=100*sum(r['success'] for r in valid)/len(valid) if valid else None)
     complete=all(t in groups for t in MANIP)
     macro=float(np.mean([groups[t]['success_percent'] for t in MANIP])) if complete else None
-    return dict(tasks=groups,manip_macro_percent=macro,episodes=len(rows))
+    non_reach=[t for t in tasks if t not in ['reach-v3','reach-wall-v3']]
+    return dict(tasks=groups,manip_macro_percent=macro,episodes=len(rows),
+                alltask_macro_percent=float(np.mean([groups[t]['success_percent'] for t in tasks])) if all(t in groups for t in tasks) else None,
+                non_reach_macro_percent=float(np.mean([groups[t]['success_percent'] for t in non_reach])) if all(t in groups for t in non_reach) else None)
 
 
 def ci(rows):
@@ -57,7 +60,7 @@ def ci(rows):
 
 def collect(root):
     groups=[];identities=[]
-    def add(phase,arm,step,files):
+    def add(phase,arm,step,files,tasks=TASKS):
         rows=[];models=[]
         for seed,path in files:
             if not path.exists():continue
@@ -71,11 +74,11 @@ def collect(root):
             for r in value['rows']:
                 rows.append(dict(r,training_seed=seed))
         if rows:
-            groups.append(dict(phase=phase,arm=arm,step=step,models=models,**summary(rows),
+            groups.append(dict(phase=phase,arm=arm,step=step,models=models,**summary(rows,tasks),
                                case_cluster95=ci(rows) if len(models)>=2 else None,rows=rows))
     for arm in ['local-mse','local-flow']:
         add('confirmation10k',arm,10000,[(seed,root/'confirmation10k'/f'{arm}-seed{seed}'/'summary.json') for seed in [1,2]])
-    for phase in ['screen','adaptation-v1','long-v1','repeat-v1','vit-v1','vit-mse-v1']:
+    for phase in ['screen','adaptation-v1','long-v1','repeat-v1','vit-v1','vit-mse-v1','marginal-local-v1']:
         folder=root if phase=='screen' else root/phase
         pointer=folder/'active-bridge-plan.json'
         plan_file=Path(json.loads(pointer.read_text())['path']) if pointer.exists() else folder/'bridge-plan.json'
@@ -91,6 +94,21 @@ def collect(root):
                     status=json.loads(status.read_text()) if status.exists() else None,
                     complete=(run/'complete.json').exists(),
                     effective_error=json.loads(error.read_text()) if error.exists() else None))
+    for phase in ['fresh-v1','broad-v1']:
+        folder=root/phase;pointer=folder/'plan.json'
+        if not pointer.exists():continue
+        plan=json.loads(pointer.read_text());files={}
+        for r in plan['recipes']:
+            directory=folder/f'{r["host"]}-gpu{r["gpu"]}'
+            if phase=='fresh-v1':
+                names=[(r['arm'],40000),(r['baseline_arm'],16480)]
+                for arm,step in names:files.setdefault((arm,step),[]).append((r['training_seed'],directory/arm/'summary.json'))
+            else:
+                step=40000 if r['run'] else 16480
+                files.setdefault((r['arm'],step),[]).append((r['training_seed'],directory/'evaluation/summary.json'))
+            identities.append(dict(phase=phase,arm=r['arm'],seed=r['training_seed'],host=r['host'],gpu=r['gpu'],
+                run=str(directory),complete=(directory/'complete.json').exists(),status=None,effective_error=None))
+        for (arm,step),entries in sorted(files.items()):add(phase,arm,step,entries,plan['tasks'])
     # Baseline rows are from the original matched20epoch cohort,not a new run.
     previous=root.parent/'metaworld_improve_20261104/results/summary.json'
     old=json.loads(previous.read_text());baseline=[]
@@ -108,7 +126,7 @@ def collect(root):
                'Candidate explicitly adds factual action-reconstruction controller;not a claim that pureJEPAforecastloss alone improved. '
                'Knowncases;conditional2-4trainedmodels;differentarchitectures/optimizers/compute.Not officialJEPA-WMs/MT50/SOTA comparison.')
     save(root/'review/summary.json',result)
-    compact=[{k:g[k] for k in ['phase','arm','step','models','tasks','manip_macro_percent','episodes','case_cluster95']} for g in groups]
+    compact=[{k:g[k] for k in ['phase','arm','step','models','tasks','manip_macro_percent','alltask_macro_percent','non_reach_macro_percent','episodes','case_cluster95']} for g in groups]
     save(root/'review/compact.json',dict(created_utc=result['created_utc'],baseline=baseline,groups=compact,runs=identities,scope=result['scope']))
     return result
 
@@ -119,8 +137,8 @@ if __name__=='__main__':
     while True:
         value=collect(a.root)
         print(json.dumps(dict(utc=value['created_utc'],groups=len(value['groups']),active_runs=sum(not r['complete'] for r in value['runs']))),flush=True)
-        final=[r for r in value['runs'] if r['phase'] in ['long-v1','repeat-v1','vit-v1','vit-mse-v1']]
-        if not a.watch or (len(final)==16 and all(r['complete'] for r in final)) or time.time()>deadline:
-            if a.watch:save(a.root/'review/HOLD.json',dict(finalized=True,all16_complete=len(final)==16 and all(r['complete'] for r in final),no_automatic_next_round=True))
+        final=[r for r in value['runs'] if r['phase'] in ['long-v1','repeat-v1','vit-v1','vit-mse-v1','marginal-local-v1','fresh-v1','broad-v1']]
+        if not a.watch or (len(final)==32 and all(r['complete'] for r in final)) or time.time()>deadline:
+            if a.watch:save(a.root/'review/HOLD.json',dict(finalized=True,expected_runs=32,all_complete=len(final)==32 and all(r['complete'] for r in final),no_automatic_next_round=True))
             break
         time.sleep(30)
