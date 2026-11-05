@@ -1,3 +1,11 @@
+# 完成更新：2026-11-06
+
+原定12项100 epoch训练及1584项评测全部完成。H-JEPA第三个训练种子已补齐，最终三个种子、144个输出的平均Fréchet保真度为34.61%，xyz ATE为0.17773m。TF −2.15%、innovation −5.25%、LeWM+IDM33.93%的完整成绩不变。这些是离线轨迹指标，不是机器人成功率。
+
+新增48项结果已逐条核对身份、冻结模型哈希及状态未改变；原1536项审计继承。完整最终汇总位于[original-comparison-final.json](../droid_mechanisms_20261105/results/screen20/original-comparison-final.json)。原固定恢复已完成，未重训或重复评测已完成结果。下文为补跑前历史快照。
+
+---
+
 # DROID 结果与补跑，2026-11-05
 
 我们的两个候选在这轮DROID公开协议上明显落后。下面为100 epochs结果；均从随机权重训练，使用相同公开数据与评测任务。Fréchet保真度越高越好，xyz ATE越低越好。
