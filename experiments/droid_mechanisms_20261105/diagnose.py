@@ -56,11 +56,16 @@ def run(args):
                     values[f'{label}_{h}'] = float(model.get_cost(info, action[None, None, :h]))
             # teacher-forced one-step prediction versus copying the observed state.
             ae = model.action_embed(normalized[None])
-            pred = model.predict(z[:, :-1], ae)
+            # The candidate has seven learned temporal positions. Evaluate
+            # actual one-step windows, never feed a 36-step teacher-forced
+            # context into a model trained on seven positions.
+            pred = torch.cat([model.predict(z[:, max(0, t-6):t+1], ae[:, max(0, t-6):t+1])[:, -1:]
+                              for t in range(36)], 1)
             values['one_step_mse'] = float((pred-z[:, 1:]).square().mean())
             values['copy_mse'] = float((z[:, :-1]-z[:, 1:]).square().mean())
             values['one_step_over_copy'] = values['one_step_mse']/max(values['copy_mse'], 1e-30)
             rows.append(dict(clip=k, values=values,
+                             factual_action_outside_planner_bounds=float((normalized.abs()>2).float().mean()),
                              rgb_sha256=hashlib.sha256(obs['visual'].numpy().tobytes()).hexdigest(),
                              action_sha256=hashlib.sha256(actions.numpy().tobytes()).hexdigest()))
     z = torch.stack(all_z)
