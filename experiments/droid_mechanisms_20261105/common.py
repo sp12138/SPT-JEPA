@@ -7,6 +7,16 @@ OLD = Path('/efs/prescottsun/SPT-JEPA/runs/hjepa_droid_20261105')
 PYTHON = '/tmp/prescottsun-hjepa-env-97054ec/bin/python'
 
 
+def digest_state(model):
+    import hashlib
+    import torch
+    h = hashlib.sha256()
+    for name, value in sorted(model.state_dict().items()):
+        h.update(name.encode())
+        h.update(value.detach().cpu().contiguous().view(-1).view(torch.uint8).numpy().tobytes())
+    return h.hexdigest()
+
+
 def bootstrap(root):
     root = Path(root)
     sys.path.insert(0, str(OLD / 'helper-v8'))

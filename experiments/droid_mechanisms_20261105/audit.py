@@ -5,7 +5,7 @@ import json
 import math
 from pathlib import Path
 
-from common import arm_root, bootstrap, run_dir
+from common import arm_root, bootstrap, digest_state, run_dir
 
 
 def optimizer_for(model):
@@ -65,7 +65,6 @@ def restore(args):
     from omegaconf import OmegaConf
     from data import build_hdf5_dataset, Compose, get_column_normalizer
     from vforge.ops import OpsConfig, initialize_ops
-    from train import digest_state
     torch.set_num_threads(3)
     directory = Path(args.run) if args.run else run_dir(args.root, args.arm, args.seed)
     ready = json.loads((directory/f'{args.stage}-ready.json').read_text())
