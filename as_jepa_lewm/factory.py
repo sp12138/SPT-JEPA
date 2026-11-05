@@ -3,6 +3,7 @@ from importlib import import_module
 
 
 MODEL_TARGETS = {
+    "temporal_bridge": "as_jepa_lewm.temporal_bridge.TemporalBridge",
     "base": "as_jepa_lewm.model.ASJepaLeWM",
     "research": "as_jepa_lewm.research.ResearchLeWM",
     "robust": "as_jepa_lewm.robust.RobustLeWM",

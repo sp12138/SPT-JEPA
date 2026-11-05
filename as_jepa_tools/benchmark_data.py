@@ -10,6 +10,9 @@ from torch.utils.data import Dataset
 
 
 def make_training_dataset(cfg):
+    if cfg.get("dataset_kind") == "trajectory_pairs":
+        from as_jepa_tools.trajectory_pairs import TrajectoryPairs
+        return TrajectoryPairs(cfg)
     if cfg.get("dataset_kind") == "benchmark_hdf5":
         if cfg.get("benchmark_anchor_rule") == "past_gap":
             from as_jepa_tools.benchmark_gap import make_benchmark_dataset
