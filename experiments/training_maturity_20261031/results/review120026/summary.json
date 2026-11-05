@@ -1,0 +1,529 @@
+{
+  "label": "120026",
+  "at": 1793448338.5950017,
+  "checker_sha256": "cf9a3344a5081949c55caa6ad43da88925c37880426fd34e507a0e7373dea443",
+  "hosts": [
+    {
+      "at": 1793448093.764581,
+      "host": "dev2",
+      "rows": [
+        {
+          "id": "cube-native-lewm-seed1",
+          "family": "native",
+          "state": "running",
+          "step": 16400,
+          "loss": 0.14146699011325836,
+          "parts": {
+            "pred": 0.01549043320119381,
+            "sigreg": 1.3984375,
+            "feature_std": 0.9852721095085144
+          },
+          "gradients": {
+            "grad_norm_encoder": 0.25660932064056396,
+            "grad_norm_predictor": 0.03720550239086151,
+            "grad_norm_action_encoder": 0.04325645789504051,
+            "grad_norm_projector": 0.2859635651111603,
+            "grad_norm_pred_proj": 0.05315213277935982
+          },
+          "all_trace_finite": true,
+          "active_gradient_positive": true,
+          "seconds_per_step": 0.46347095966339114,
+          "peak_gib": 24.613683223724365,
+          "updated_at": 1793448086.7076733,
+          "trace_records": 44,
+          "error": null,
+          "remaining_training_hours": 0.893726500550906
+        },
+        {
+          "id": "cube-native-lewm-seed2",
+          "family": "native",
+          "state": "running",
+          "step": 16500,
+          "loss": 0.1337856650352478,
+          "parts": {
+            "pred": 0.014156755991280079,
+            "sigreg": 1.328125,
+            "feature_std": 0.9876202344894409
+          },
+          "gradients": {
+            "grad_norm_encoder": 0.3122546970844269,
+            "grad_norm_predictor": 0.03680228441953659,
+            "grad_norm_action_encoder": 0.03131704777479172,
+            "grad_norm_projector": 0.30969032645225525,
+            "grad_norm_pred_proj": 0.05673091858625412
+          },
+          "all_trace_finite": true,
+          "active_gradient_positive": true,
+          "seconds_per_step": 0.45642069816589353,
+          "peak_gib": 24.613683223724365,
+          "updated_at": 1793448079.1488676,
+          "trace_records": 45,
+          "error": null,
+          "remaining_training_hours": 0.8674528935697343
+        }
+      ],
+      "children": [
+        {
+          "gpu": 0,
+          "job": "learn18000-cube-native-lewm-seed1",
+          "phase": "learn18000",
+          "pid": 227698,
+          "exists": true,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-native-lewm-seed1/config.json",
+            "--stop-step",
+            "18000",
+            "--resume"
+          ],
+          "cwd": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+          "original_source_environment_exact": true
+        },
+        {
+          "gpu": 1,
+          "job": "learn18000-cube-native-lewm-seed2",
+          "phase": "learn18000",
+          "pid": 227701,
+          "exists": true,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-native-lewm-seed2/config.json",
+            "--stop-step",
+            "18000",
+            "--resume"
+          ],
+          "cwd": "/efs/prescottsun/SPT-JEPA/runs/native_lewm_source_20261031/source-v1",
+          "original_source_environment_exact": true
+        }
+      ],
+      "worker_pid": 227694,
+      "worker_stale": false,
+      "planned": 20,
+      "completed": 0,
+      "failed": {},
+      "archives": [],
+      "owned_gpus": [
+        "0, GPU-6ed84194-c712-388f-2730-9a9d94eccf11, 26475, 0",
+        "1, GPU-77277811-7523-3a04-78e5-1d8e15dc1800, 26473, 0"
+      ],
+      "owned_apps": [
+        "227698, GPU-6ed84194-c712-388f-2730-9a9d94eccf11, 26462",
+        "227701, GPU-77277811-7523-3a04-78e5-1d8e15dc1800, 26462"
+      ],
+      "errors": [],
+      "scope": "One scheduled read of owned6 training/exit/archive/process/resource state; no planning outcomes read."
+    },
+    {
+      "at": 1793448092.9965587,
+      "host": "dev13",
+      "rows": [
+        {
+          "id": "cube-temporal-forecast-seed1",
+          "family": "tf",
+          "state": "running",
+          "step": 14200,
+          "loss": 0.006283551920205355,
+          "parts": {
+            "fm": 0.005491563584655523,
+            "rate": 0.003167953575029969,
+            "feature_std": 0.8318074345588684
+          },
+          "gradients": {
+            "grad_norm_encoder": 0.08300499618053436,
+            "grad_norm_predictor": 0.03460736572742462,
+            "grad_norm_renderer": 0.22205811738967896
+          },
+          "all_trace_finite": true,
+          "active_gradient_positive": true,
+          "seconds_per_step": 0.9557331347465515,
+          "peak_gib": 129.47442388534546,
+          "updated_at": 1793448031.7311342,
+          "trace_records": 22,
+          "error": null,
+          "remaining_training_hours": 2.4270311994036042
+        },
+        {
+          "id": "cube-temporal-forecast-seed2",
+          "family": "tf",
+          "state": "running",
+          "step": 14200,
+          "loss": 0.006575442384928465,
+          "parts": {
+            "fm": 0.005768701434135437,
+            "rate": 0.003226964268833399,
+            "feature_std": 0.8219078779220581
+          },
+          "gradients": {
+            "grad_norm_encoder": 0.09658551961183548,
+            "grad_norm_predictor": 0.024872059002518654,
+            "grad_norm_renderer": 0.11152160167694092
+          },
+          "all_trace_finite": true,
+          "active_gradient_positive": true,
+          "seconds_per_step": 0.9590022277832031,
+          "peak_gib": 129.47442388534546,
+          "updated_at": 1793448036.5697038,
+          "trace_records": 22,
+          "error": null,
+          "remaining_training_hours": 2.4353328795539007
+        }
+      ],
+      "children": [
+        {
+          "gpu": 0,
+          "job": "learn18000-cube-temporal-forecast-seed1",
+          "phase": "learn18000",
+          "pid": 1203429,
+          "exists": true,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-temporal-forecast-seed1/config.json",
+            "--stop-step",
+            "18000",
+            "--resume"
+          ],
+          "cwd": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1",
+          "original_source_environment_exact": true
+        },
+        {
+          "gpu": 1,
+          "job": "learn18000-cube-temporal-forecast-seed2",
+          "phase": "learn18000",
+          "pid": 1203433,
+          "exists": true,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-temporal-forecast-seed2/config.json",
+            "--stop-step",
+            "18000",
+            "--resume"
+          ],
+          "cwd": "/efs/prescottsun/SPT-JEPA/runs/carrier_followup6000_20261031/source-v1",
+          "original_source_environment_exact": true
+        }
+      ],
+      "worker_pid": 1203425,
+      "worker_stale": false,
+      "planned": 22,
+      "completed": 0,
+      "failed": {},
+      "archives": [],
+      "owned_gpus": [
+        "0, GPU-170dcf84-3202-5179-c251-e6a13288bc31, 134623, 100",
+        "1, GPU-8bedce53-4283-cf75-a8ee-53fb2762b518, 134623, 100"
+      ],
+      "owned_apps": [
+        "1203429, GPU-170dcf84-3202-5179-c251-e6a13288bc31, 134608",
+        "1203433, GPU-8bedce53-4283-cf75-a8ee-53fb2762b518, 134608"
+      ],
+      "errors": [],
+      "scope": "One scheduled read of owned6 training/exit/archive/process/resource state; no planning outcomes read."
+    },
+    {
+      "at": 1793448092.0423281,
+      "host": "dev15",
+      "rows": [
+        {
+          "id": "cube-spatial-local-seed1",
+          "family": "local",
+          "state": "running",
+          "step": 8200,
+          "loss": 0.2718293368816376,
+          "parts": {
+            "fm": 0.007101913448423147,
+            "rate": 1.0589096546173096,
+            "feature_std": 0.7257130742073059
+          },
+          "gradients": {
+            "grad_norm_encoder": 0.0,
+            "grad_norm_pool": 0.0,
+            "grad_norm_predictor": 0.1290077120065689,
+            "grad_norm_renderer": 0.10854719579219818,
+            "grad_norm_action_encoder": 0.02708553709089756
+          },
+          "all_trace_finite": true,
+          "active_gradient_positive": true,
+          "seconds_per_step": 0.9436496639251709,
+          "peak_gib": 107.3281455039978,
+          "updated_at": 1793448023.7693985,
+          "trace_records": 22,
+          "error": null,
+          "remaining_training_hours": 3.9690953364319275
+        },
+        {
+          "id": "cube-spatial-local-seed2",
+          "family": "local",
+          "state": "running",
+          "step": 8200,
+          "loss": 0.2610674500465393,
+          "parts": {
+            "fm": 0.0075315372087061405,
+            "rate": 1.014143705368042,
+            "feature_std": 0.6998893022537231
+          },
+          "gradients": {
+            "grad_norm_encoder": 0.0,
+            "grad_norm_pool": 0.0,
+            "grad_norm_predictor": 0.12329553067684174,
+            "grad_norm_renderer": 0.4722309410572052,
+            "grad_norm_action_encoder": 0.06433089822530746
+          },
+          "all_trace_finite": true,
+          "active_gradient_positive": true,
+          "seconds_per_step": 0.9458450770378113,
+          "peak_gib": 107.3281455039978,
+          "updated_at": 1793448026.6559846,
+          "trace_records": 22,
+          "error": null,
+          "remaining_training_hours": 3.978329487918483
+        }
+      ],
+      "children": [
+        {
+          "gpu": 0,
+          "job": "learn11671-cube-spatial-local-seed1",
+          "phase": "learn11671",
+          "pid": 1432913,
+          "exists": true,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-spatial-local-seed1/config.json",
+            "--stop-step",
+            "11671",
+            "--resume"
+          ],
+          "cwd": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+          "original_source_environment_exact": true
+        },
+        {
+          "gpu": 1,
+          "job": "learn11671-cube-spatial-local-seed2",
+          "phase": "learn11671",
+          "pid": 1432917,
+          "exists": true,
+          "command": [
+            "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+            "-B",
+            "-u",
+            "-m",
+            "as_jepa_tools.train_stage",
+            "--config",
+            "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-spatial-local-seed2/config.json",
+            "--stop-step",
+            "11671",
+            "--resume"
+          ],
+          "cwd": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_source_20261031/source-v2",
+          "original_source_environment_exact": true
+        }
+      ],
+      "worker_pid": 1432909,
+      "worker_stale": false,
+      "planned": 26,
+      "completed": 0,
+      "failed": {},
+      "archives": [],
+      "owned_gpus": [
+        "0, GPU-288d9f8d-a739-31fb-7aa0-99b293271a8e, 111291, 100",
+        "1, GPU-4cd621d7-0644-eac8-fc6e-69efe0e59c25, 111291, 96"
+      ],
+      "owned_apps": [
+        "1432913, GPU-288d9f8d-a739-31fb-7aa0-99b293271a8e, 111278",
+        "1432917, GPU-4cd621d7-0644-eac8-fc6e-69efe0e59c25, 111278"
+      ],
+      "errors": [],
+      "scope": "One scheduled read of owned6 training/exit/archive/process/resource state; no planning outcomes read."
+    }
+  ],
+  "planned": 68,
+  "completed": 0,
+  "failed": 0,
+  "errors": [],
+  "rows": [
+    {
+      "id": "cube-native-lewm-seed1",
+      "family": "native",
+      "state": "running",
+      "step": 16400,
+      "loss": 0.14146699011325836,
+      "parts": {
+        "pred": 0.01549043320119381,
+        "sigreg": 1.3984375,
+        "feature_std": 0.9852721095085144
+      },
+      "gradients": {
+        "grad_norm_encoder": 0.25660932064056396,
+        "grad_norm_predictor": 0.03720550239086151,
+        "grad_norm_action_encoder": 0.04325645789504051,
+        "grad_norm_projector": 0.2859635651111603,
+        "grad_norm_pred_proj": 0.05315213277935982
+      },
+      "all_trace_finite": true,
+      "active_gradient_positive": true,
+      "seconds_per_step": 0.46347095966339114,
+      "peak_gib": 24.613683223724365,
+      "updated_at": 1793448086.7076733,
+      "trace_records": 44,
+      "error": null,
+      "remaining_training_hours": 0.893726500550906
+    },
+    {
+      "id": "cube-native-lewm-seed2",
+      "family": "native",
+      "state": "running",
+      "step": 16500,
+      "loss": 0.1337856650352478,
+      "parts": {
+        "pred": 0.014156755991280079,
+        "sigreg": 1.328125,
+        "feature_std": 0.9876202344894409
+      },
+      "gradients": {
+        "grad_norm_encoder": 0.3122546970844269,
+        "grad_norm_predictor": 0.03680228441953659,
+        "grad_norm_action_encoder": 0.03131704777479172,
+        "grad_norm_projector": 0.30969032645225525,
+        "grad_norm_pred_proj": 0.05673091858625412
+      },
+      "all_trace_finite": true,
+      "active_gradient_positive": true,
+      "seconds_per_step": 0.45642069816589353,
+      "peak_gib": 24.613683223724365,
+      "updated_at": 1793448079.1488676,
+      "trace_records": 45,
+      "error": null,
+      "remaining_training_hours": 0.8674528935697343
+    },
+    {
+      "id": "cube-temporal-forecast-seed1",
+      "family": "tf",
+      "state": "running",
+      "step": 14200,
+      "loss": 0.006283551920205355,
+      "parts": {
+        "fm": 0.005491563584655523,
+        "rate": 0.003167953575029969,
+        "feature_std": 0.8318074345588684
+      },
+      "gradients": {
+        "grad_norm_encoder": 0.08300499618053436,
+        "grad_norm_predictor": 0.03460736572742462,
+        "grad_norm_renderer": 0.22205811738967896
+      },
+      "all_trace_finite": true,
+      "active_gradient_positive": true,
+      "seconds_per_step": 0.9557331347465515,
+      "peak_gib": 129.47442388534546,
+      "updated_at": 1793448031.7311342,
+      "trace_records": 22,
+      "error": null,
+      "remaining_training_hours": 2.4270311994036042
+    },
+    {
+      "id": "cube-temporal-forecast-seed2",
+      "family": "tf",
+      "state": "running",
+      "step": 14200,
+      "loss": 0.006575442384928465,
+      "parts": {
+        "fm": 0.005768701434135437,
+        "rate": 0.003226964268833399,
+        "feature_std": 0.8219078779220581
+      },
+      "gradients": {
+        "grad_norm_encoder": 0.09658551961183548,
+        "grad_norm_predictor": 0.024872059002518654,
+        "grad_norm_renderer": 0.11152160167694092
+      },
+      "all_trace_finite": true,
+      "active_gradient_positive": true,
+      "seconds_per_step": 0.9590022277832031,
+      "peak_gib": 129.47442388534546,
+      "updated_at": 1793448036.5697038,
+      "trace_records": 22,
+      "error": null,
+      "remaining_training_hours": 2.4353328795539007
+    },
+    {
+      "id": "cube-spatial-local-seed1",
+      "family": "local",
+      "state": "running",
+      "step": 8200,
+      "loss": 0.2718293368816376,
+      "parts": {
+        "fm": 0.007101913448423147,
+        "rate": 1.0589096546173096,
+        "feature_std": 0.7257130742073059
+      },
+      "gradients": {
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.1290077120065689,
+        "grad_norm_renderer": 0.10854719579219818,
+        "grad_norm_action_encoder": 0.02708553709089756
+      },
+      "all_trace_finite": true,
+      "active_gradient_positive": true,
+      "seconds_per_step": 0.9436496639251709,
+      "peak_gib": 107.3281455039978,
+      "updated_at": 1793448023.7693985,
+      "trace_records": 22,
+      "error": null,
+      "remaining_training_hours": 3.9690953364319275
+    },
+    {
+      "id": "cube-spatial-local-seed2",
+      "family": "local",
+      "state": "running",
+      "step": 8200,
+      "loss": 0.2610674500465393,
+      "parts": {
+        "fm": 0.0075315372087061405,
+        "rate": 1.014143705368042,
+        "feature_std": 0.6998893022537231
+      },
+      "gradients": {
+        "grad_norm_encoder": 0.0,
+        "grad_norm_pool": 0.0,
+        "grad_norm_predictor": 0.12329553067684174,
+        "grad_norm_renderer": 0.4722309410572052,
+        "grad_norm_action_encoder": 0.06433089822530746
+      },
+      "all_trace_finite": true,
+      "active_gradient_positive": true,
+      "seconds_per_step": 0.9458450770378113,
+      "peak_gib": 107.3281455039978,
+      "updated_at": 1793448026.6559846,
+      "trace_records": 22,
+      "error": null,
+      "remaining_training_hours": 3.978329487918483
+    }
+  ],
+  "archives": [],
+  "scope": "All six fixed slots/root, one snapshot per host. No partial planning scores. ETA is recent throughput only, excluding archive/restart/evaluation overhead."
+}
