@@ -1,0 +1,979 @@
+{
+  "passed": true,
+  "name": "native-control-parent1-reach-v3",
+  "rows": [
+    {
+      "task": "reach-v3",
+      "seed": 42,
+      "case_sha256": "3fa8e27dfa32a276dd35b3f3fe9df233693ac08de08caeb9be97757a1d9fe973",
+      "original_trace_sha256": "855b55596bb06ae27ba3f89d9e3fd66f33112afafd9948a289d9c4061f0fa724",
+      "paths": {
+        "expert_diagnostic": {
+          "native_steps": 54,
+          "any_success": true,
+          "macro_goal_mse": [
+            1.7414226531982422,
+            1.5593451261520386,
+            1.2801517248153687,
+            0.779622495174408,
+            0.5571996569633484,
+            0.3363032042980194,
+            0.18426357209682465,
+            0.11806468665599823,
+            0.0841037854552269,
+            0.03638811409473419,
+            0.006014884915202856
+          ],
+          "min_gripper_object_distance": 0.1584540308305802,
+          "closest_native_step": 4,
+          "physical_initial": {
+            "object_xyz": [
+              [
+                0.052227940398070605,
+                0.6786064305276953,
+                0.02
+              ]
+            ],
+            "tcp_xyz": [
+              0.004303677595096163,
+              0.6014216472096363,
+              0.15014434178813843
+            ],
+            "gripper_object_distance": 0.15871917162249832,
+            "object_target_distance": 0.31218397547498067
+          },
+          "physical_final": {
+            "object_xyz": [
+              [
+                0.052216779143173096,
+                0.6786047140175906,
+                0.019410068591475423
+              ]
+            ],
+            "tcp_xyz": [
+              -0.01026912849259165,
+              0.8259297837179707,
+              0.23323218973235413
+            ],
+            "gripper_object_distance": 0.2670750162491276,
+            "object_target_distance": 0.312677308328543
+          },
+          "initial_rgb": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "forecast": {
+            "prefixes": [
+              {
+                "horizon_macro": 6,
+                "native_steps": 30,
+                "predicted_goal_mse": 0.22353625297546387,
+                "realized_goal_mse": 0.18426357209682465,
+                "forecast_mse": 0.0174429751932621,
+                "copy_mse": 1.143718957901001
+              },
+              {
+                "horizon_macro": 10,
+                "native_steps": 50,
+                "predicted_goal_mse": 0.0703950971364975,
+                "realized_goal_mse": 0.006014884915202856,
+                "forecast_mse": 0.022488746792078018,
+                "copy_mse": 1.383637547492981
+              }
+            ],
+            "segments": [
+              {
+                "start_native": 0,
+                "predicted_goal_mse": 0.22353625297546387,
+                "realized_goal_mse": 0.18426357209682465,
+                "forecast_mse": 0.0174429751932621,
+                "copy_mse": 1.1469204425811768
+              },
+              {
+                "start_native": 15,
+                "predicted_goal_mse": 0.07716552168130875,
+                "realized_goal_mse": 0.03638811409473419,
+                "forecast_mse": 0.01783628948032856,
+                "copy_mse": 0.31655454635620117
+              }
+            ]
+          },
+          "final_rgb_vs_cached_goal": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "factorial": {
+            "order": [
+              "initial_arm_initial_object",
+              "goal_arm_initial_object",
+              "initial_arm_goal_object",
+              "goal_arm_goal_object"
+            ],
+            "goal_mse": [
+              1.7414226531982422,
+              2.617959034978412e-05,
+              1.7412753105163574,
+              2.266238152515143e-05
+            ],
+            "joint_names": [
+              "right_j0",
+              "right_j1",
+              "right_j2",
+              "right_j3",
+              "right_j4",
+              "right_j5",
+              "right_j6",
+              "r_close",
+              "l_close",
+              "objjoint"
+            ],
+            "scope": "Rendered joint intervention,not guaranteed physically reachable;diagnostic only."
+          }
+        },
+        "recorded_cem": {
+          "native_steps": 44,
+          "any_success": true,
+          "macro_goal_mse": [
+            1.7414226531982422,
+            1.6807122230529785,
+            1.5459423065185547,
+            1.1648693084716797,
+            0.7029786109924316,
+            0.4387757480144501,
+            0.18902847170829773,
+            0.137782484292984,
+            0.09282969683408737
+          ],
+          "min_gripper_object_distance": 0.15685169241586597,
+          "closest_native_step": 9,
+          "physical_initial": {
+            "object_xyz": [
+              [
+                0.052227940398070605,
+                0.6786064305276953,
+                0.02
+              ]
+            ],
+            "tcp_xyz": [
+              0.004303677595096163,
+              0.6014216472096363,
+              0.15014434178813843
+            ],
+            "gripper_object_distance": 0.15871917162249832,
+            "object_target_distance": 0.31218397547498067
+          },
+          "physical_final": {
+            "object_xyz": [
+              [
+                0.05222918785987467,
+                0.6786007057703748,
+                0.019410483794521625
+              ]
+            ],
+            "tcp_xyz": [
+              -0.011827877857134487,
+              0.800743097141593,
+              0.2476657089381808
+            ],
+            "gripper_object_distance": 0.2666880560571388,
+            "object_target_distance": 0.31268145783488327
+          },
+          "initial_rgb": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "forecast": {
+            "prefixes": [
+              {
+                "horizon_macro": 6,
+                "native_steps": 30,
+                "predicted_goal_mse": 0.11122187227010727,
+                "realized_goal_mse": 0.18902847170829773,
+                "forecast_mse": 0.06702817231416702,
+                "copy_mse": 1.0365606546401978
+              },
+              {
+                "horizon_macro": 8,
+                "native_steps": 40,
+                "predicted_goal_mse": 0.06115283817052841,
+                "realized_goal_mse": 0.09282969683408737,
+                "forecast_mse": 0.07036206126213074,
+                "copy_mse": 1.2112016677856445
+              }
+            ],
+            "segments": [
+              {
+                "start_native": 0,
+                "predicted_goal_mse": 0.11122187227010727,
+                "realized_goal_mse": 0.18902847170829773,
+                "forecast_mse": 0.06702817231416702,
+                "copy_mse": 1.0395238399505615
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "task": "reach-v3",
+      "seed": 43,
+      "case_sha256": "4cf333aab7bf3ff8ba3b5b5f2e3a1d76297b8ce4fac02f2a865fb84dc8520a4e",
+      "original_trace_sha256": "b3d4a0d6cdfd49a08bf560e216c83dc359f22f9fff2f3678ab12de50d133c3ae",
+      "paths": {
+        "expert_diagnostic": {
+          "native_steps": 73,
+          "any_success": true,
+          "macro_goal_mse": [
+            1.4063928127288818,
+            1.3282066583633423,
+            1.2685799598693848,
+            1.0294251441955566,
+            0.8222565650939941,
+            0.6184338331222534,
+            0.549589991569519,
+            0.5030951499938965,
+            0.4442707896232605,
+            0.3846528232097626,
+            0.3093717098236084,
+            0.22345760464668274,
+            0.12399409711360931,
+            0.06462373584508896,
+            0.009244337677955627
+          ],
+          "min_gripper_object_distance": 0.14028889313920992,
+          "closest_native_step": 0,
+          "physical_initial": {
+            "object_xyz": [
+              [
+                0.050358454363723104,
+                0.6263692197478374,
+                0.02
+              ]
+            ],
+            "tcp_xyz": [
+              0.004303677595096163,
+              0.6014216472096363,
+              0.15014434178813843
+            ],
+            "gripper_object_distance": 0.14028889313920992,
+            "object_target_distance": 0.3742501257293093
+          },
+          "physical_final": {
+            "object_xyz": [
+              [
+                0.05033800071594751,
+                0.6263592482790752,
+                0.019418027137038905
+              ]
+            ],
+            "tcp_xyz": [
+              -0.010533235046102696,
+              0.886659967818941,
+              0.22392068777395577
+            ],
+            "gripper_object_distance": 0.33657556379474274,
+            "object_target_distance": 0.37464763805093254
+          },
+          "initial_rgb": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "forecast": {
+            "prefixes": [
+              {
+                "horizon_macro": 6,
+                "native_steps": 30,
+                "predicted_goal_mse": 0.5628243684768677,
+                "realized_goal_mse": 0.549589991569519,
+                "forecast_mse": 0.01850481517612934,
+                "copy_mse": 1.183576226234436
+              },
+              {
+                "horizon_macro": 12,
+                "native_steps": 60,
+                "predicted_goal_mse": 0.22290287911891937,
+                "realized_goal_mse": 0.12399409711360931,
+                "forecast_mse": 0.02599717117846012,
+                "copy_mse": 1.3770414590835571
+              },
+              {
+                "horizon_macro": 14,
+                "native_steps": 70,
+                "predicted_goal_mse": 0.1576431840658188,
+                "realized_goal_mse": 0.009244337677955627,
+                "forecast_mse": 0.03371015936136246,
+                "copy_mse": 1.3839446306228638
+              }
+            ],
+            "segments": [
+              {
+                "start_native": 0,
+                "predicted_goal_mse": 0.5628243684768677,
+                "realized_goal_mse": 0.549589991569519,
+                "forecast_mse": 0.01850481517612934,
+                "copy_mse": 1.1865565776824951
+              },
+              {
+                "start_native": 15,
+                "predicted_goal_mse": 0.3849230706691742,
+                "realized_goal_mse": 0.3846528232097626,
+                "forecast_mse": 0.01782262697815895,
+                "copy_mse": 0.45861169695854187
+              },
+              {
+                "start_native": 30,
+                "predicted_goal_mse": 0.21001482009887695,
+                "realized_goal_mse": 0.12399409711360931,
+                "forecast_mse": 0.020131796598434448,
+                "copy_mse": 0.15954220294952393
+              }
+            ]
+          },
+          "final_rgb_vs_cached_goal": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "factorial": {
+            "order": [
+              "initial_arm_initial_object",
+              "goal_arm_initial_object",
+              "initial_arm_goal_object",
+              "goal_arm_goal_object"
+            ],
+            "goal_mse": [
+              1.4063928127288818,
+              2.7618487365543842e-05,
+              1.4063737392425537,
+              2.8283884603297338e-05
+            ],
+            "joint_names": [
+              "right_j0",
+              "right_j1",
+              "right_j2",
+              "right_j3",
+              "right_j4",
+              "right_j5",
+              "right_j6",
+              "r_close",
+              "l_close",
+              "objjoint"
+            ],
+            "scope": "Rendered joint intervention,not guaranteed physically reachable;diagnostic only."
+          }
+        },
+        "recorded_cem": {
+          "native_steps": 96,
+          "any_success": true,
+          "macro_goal_mse": [
+            1.4063928127288818,
+            1.3710415363311768,
+            1.3190670013427734,
+            1.2228775024414062,
+            1.0994013547897339,
+            0.807621955871582,
+            0.5136396288871765,
+            0.40684741735458374,
+            0.2379956692457199,
+            0.1692558228969574,
+            0.09251009672880173,
+            0.05245637893676758,
+            0.026269908994436264,
+            0.050781603902578354,
+            0.06516963988542557,
+            0.22961384057998657,
+            0.7159794569015503,
+            0.8628494739532471,
+            0.7915677428245544,
+            0.7023813724517822
+          ],
+          "min_gripper_object_distance": 0.13987379580636725,
+          "closest_native_step": 2,
+          "physical_initial": {
+            "object_xyz": [
+              [
+                0.050358454363723104,
+                0.6263692197478374,
+                0.02
+              ]
+            ],
+            "tcp_xyz": [
+              0.004303677595096163,
+              0.6014216472096363,
+              0.15014434178813843
+            ],
+            "gripper_object_distance": 0.14028889313920992,
+            "object_target_distance": 0.3742501257293093
+          },
+          "physical_final": {
+            "object_xyz": [
+              [
+                0.05034771438843434,
+                0.6263495651353091,
+                0.019418360151651944
+              ]
+            ],
+            "tcp_xyz": [
+              0.027657519771654718,
+              0.9055860298174583,
+              0.24640189148062863
+            ],
+            "gripper_object_distance": 0.36056812343093364,
+            "object_target_distance": 0.3746559289199627
+          },
+          "initial_rgb": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "forecast": {
+            "prefixes": [
+              {
+                "horizon_macro": 6,
+                "native_steps": 30,
+                "predicted_goal_mse": 0.1530703753232956,
+                "realized_goal_mse": 0.5136396288871765,
+                "forecast_mse": 0.4076702296733856,
+                "copy_mse": 1.0654648542404175
+              },
+              {
+                "horizon_macro": 12,
+                "native_steps": 60,
+                "predicted_goal_mse": 0.6287713050842285,
+                "realized_goal_mse": 0.026269903406500816,
+                "forecast_mse": 0.5672562718391418,
+                "copy_mse": 1.3443154096603394
+              },
+              {
+                "horizon_macro": 19,
+                "native_steps": 95,
+                "predicted_goal_mse": 0.42725083231925964,
+                "realized_goal_mse": 0.7023813724517822,
+                "forecast_mse": 0.46324774622917175,
+                "copy_mse": 1.3596768379211426
+              }
+            ],
+            "segments": [
+              {
+                "start_native": 0,
+                "predicted_goal_mse": 0.1530703753232956,
+                "realized_goal_mse": 0.5136396288871765,
+                "forecast_mse": 0.4076702296733856,
+                "copy_mse": 1.068274974822998
+              },
+              {
+                "start_native": 15,
+                "predicted_goal_mse": 0.0842522382736206,
+                "realized_goal_mse": 0.1692558228969574,
+                "forecast_mse": 0.25292104482650757,
+                "copy_mse": 0.6022052764892578
+              },
+              {
+                "start_native": 30,
+                "predicted_goal_mse": 0.08025544136762619,
+                "realized_goal_mse": 0.026269908994436264,
+                "forecast_mse": 0.07474274188280106,
+                "copy_mse": 0.2410331517457962
+              },
+              {
+                "start_native": 45,
+                "predicted_goal_mse": 0.027445510029792786,
+                "realized_goal_mse": 0.22961384057998657,
+                "forecast_mse": 0.0670899823307991,
+                "copy_mse": 0.2311013787984848
+              },
+              {
+                "start_native": 60,
+                "predicted_goal_mse": 0.13091368973255157,
+                "realized_goal_mse": 0.7915677428245544,
+                "forecast_mse": 0.499601274728775,
+                "copy_mse": 0.4914620816707611
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "task": "reach-v3",
+      "seed": 1042,
+      "case_sha256": "8aabde3bb874fc8a89275edc8a315103eb0c2edb60da168aa6d925b6364e5987",
+      "original_trace_sha256": "86844d4c8fc9c3eeb8354f331e55d86f87c2ba7bce695f6c710a75c1b0a0585f",
+      "paths": {
+        "expert_diagnostic": {
+          "native_steps": 52,
+          "any_success": true,
+          "macro_goal_mse": [
+            1.6534500122070312,
+            1.572749137878418,
+            1.4040589332580566,
+            1.0318398475646973,
+            0.6402525901794434,
+            0.3636462390422821,
+            0.2214701622724533,
+            0.12429668754339218,
+            0.06325218081474304,
+            0.009909205138683319,
+            0.001208547386340797
+          ],
+          "min_gripper_object_distance": 0.1427631330734979,
+          "closest_native_step": 2,
+          "physical_initial": {
+            "object_xyz": [
+              [
+                0.0069544689356906,
+                0.6602492168566624,
+                0.02
+              ]
+            ],
+            "tcp_xyz": [
+              0.004303677595096163,
+              0.6014216472096363,
+              0.15014434178813843
+            ],
+            "gripper_object_distance": 0.1428469787737034,
+            "object_target_distance": 0.3178673822752236
+          },
+          "physical_final": {
+            "object_xyz": [
+              [
+                0.006956096665844701,
+                0.660245207879402,
+                0.019406732052129037
+              ]
+            ],
+            "tcp_xyz": [
+              -0.09287742300430216,
+              0.812347079855728,
+              0.22406225416989933
+            ],
+            "gripper_object_distance": 0.27383497556325676,
+            "object_target_distance": 0.3183411448085594
+          },
+          "initial_rgb": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "forecast": {
+            "prefixes": [
+              {
+                "horizon_macro": 6,
+                "native_steps": 30,
+                "predicted_goal_mse": 0.2525082230567932,
+                "realized_goal_mse": 0.2214701622724533,
+                "forecast_mse": 0.016151566058397293,
+                "copy_mse": 1.0233811140060425
+              },
+              {
+                "horizon_macro": 10,
+                "native_steps": 50,
+                "predicted_goal_mse": 0.04986715316772461,
+                "realized_goal_mse": 0.001208547386340797,
+                "forecast_mse": 0.019182544201612473,
+                "copy_mse": 1.2667509317398071
+              }
+            ],
+            "segments": [
+              {
+                "start_native": 0,
+                "predicted_goal_mse": 0.2525082230567932,
+                "realized_goal_mse": 0.2214701622724533,
+                "forecast_mse": 0.016151566058397293,
+                "copy_mse": 1.0266226530075073
+              },
+              {
+                "start_native": 15,
+                "predicted_goal_mse": 0.09078621119260788,
+                "realized_goal_mse": 0.009909205138683319,
+                "forecast_mse": 0.019583286717534065,
+                "copy_mse": 0.4942554831504822
+              }
+            ]
+          },
+          "final_rgb_vs_cached_goal": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "factorial": {
+            "order": [
+              "initial_arm_initial_object",
+              "goal_arm_initial_object",
+              "initial_arm_goal_object",
+              "goal_arm_goal_object"
+            ],
+            "goal_mse": [
+              1.6534502506256104,
+              1.867245191533584e-05,
+              1.6535332202911377,
+              1.892895670607686e-05
+            ],
+            "joint_names": [
+              "right_j0",
+              "right_j1",
+              "right_j2",
+              "right_j3",
+              "right_j4",
+              "right_j5",
+              "right_j6",
+              "r_close",
+              "l_close",
+              "objjoint"
+            ],
+            "scope": "Rendered joint intervention,not guaranteed physically reachable;diagnostic only."
+          }
+        },
+        "recorded_cem": {
+          "native_steps": 39,
+          "any_success": true,
+          "macro_goal_mse": [
+            1.6534500122070312,
+            1.5694172382354736,
+            1.3230983018875122,
+            0.8909451365470886,
+            0.622556209564209,
+            0.4077547490596771,
+            0.2764328122138977,
+            0.1761845350265503
+          ],
+          "min_gripper_object_distance": 0.1428469787737034,
+          "closest_native_step": 0,
+          "physical_initial": {
+            "object_xyz": [
+              [
+                0.0069544689356906,
+                0.6602492168566624,
+                0.02
+              ]
+            ],
+            "tcp_xyz": [
+              0.004303677595096163,
+              0.6014216472096363,
+              0.15014434178813843
+            ],
+            "gripper_object_distance": 0.1428469787737034,
+            "object_target_distance": 0.3178673822752236
+          },
+          "physical_final": {
+            "object_xyz": [
+              [
+                0.006943610108719687,
+                0.6602506846867505,
+                0.019408619971893838
+              ]
+            ],
+            "tcp_xyz": [
+              -0.06743292846374807,
+              0.7883307802894887,
+              0.2529378615532964
+            ],
+            "gripper_object_distance": 0.2765362309955305,
+            "object_target_distance": 0.31833276184802384
+          },
+          "initial_rgb": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "forecast": {
+            "prefixes": [
+              {
+                "horizon_macro": 6,
+                "native_steps": 30,
+                "predicted_goal_mse": 0.15592484176158905,
+                "realized_goal_mse": 0.2764328122138977,
+                "forecast_mse": 0.13608452677726746,
+                "copy_mse": 1.0455693006515503
+              },
+              {
+                "horizon_macro": 7,
+                "native_steps": 35,
+                "predicted_goal_mse": 0.11991916596889496,
+                "realized_goal_mse": 0.1761845350265503,
+                "forecast_mse": 0.1407291293144226,
+                "copy_mse": 1.1236494779586792
+              }
+            ],
+            "segments": [
+              {
+                "start_native": 0,
+                "predicted_goal_mse": 0.15592484176158905,
+                "realized_goal_mse": 0.2764328122138977,
+                "forecast_mse": 0.13608452677726746,
+                "copy_mse": 1.0486255884170532
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "task": "reach-v3",
+      "seed": 1043,
+      "case_sha256": "61ed0d2c5f372740a6536f880250294ceb23a3e09d6a8bfeb9fa437e3ef17d8d",
+      "original_trace_sha256": "97bc834f5e2da74020c627b4d191af7ac877214b7d3d8507b2309f73436ed933",
+      "paths": {
+        "expert_diagnostic": {
+          "native_steps": 49,
+          "any_success": true,
+          "macro_goal_mse": [
+            1.7750113010406494,
+            1.5746629238128662,
+            1.0512762069702148,
+            0.5957024097442627,
+            0.31971439719200134,
+            0.20141610503196716,
+            0.07945764064788818,
+            0.03444257006049156,
+            0.02317667007446289,
+            0.004020180553197861
+          ],
+          "min_gripper_object_distance": 0.15686448714301,
+          "closest_native_step": 7,
+          "physical_initial": {
+            "object_xyz": [
+              [
+                -0.03933676526631691,
+                0.6834565151459447,
+                0.02
+              ]
+            ],
+            "tcp_xyz": [
+              0.004303677595096163,
+              0.6014216472096363,
+              0.15014434178813843
+            ],
+            "gripper_object_distance": 0.15991171786312477,
+            "object_target_distance": 0.2877619531183061
+          },
+          "physical_final": {
+            "object_xyz": [
+              [
+                -0.03934160491009891,
+                0.6834379066455623,
+                0.01940681970274847
+              ]
+            ],
+            "tcp_xyz": [
+              0.04389817641665017,
+              0.8072153734868142,
+              0.20967949222259571
+            ],
+            "gripper_object_distance": 0.24177140525878418,
+            "object_target_distance": 0.28826241933574265
+          },
+          "initial_rgb": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "forecast": {
+            "prefixes": [
+              {
+                "horizon_macro": 6,
+                "native_steps": 30,
+                "predicted_goal_mse": 0.1342744082212448,
+                "realized_goal_mse": 0.07945764064788818,
+                "forecast_mse": 0.029923008754849434,
+                "copy_mse": 1.2367722988128662
+              },
+              {
+                "horizon_macro": 9,
+                "native_steps": 45,
+                "predicted_goal_mse": 0.049081623554229736,
+                "realized_goal_mse": 0.004020180553197861,
+                "forecast_mse": 0.02835974656045437,
+                "copy_mse": 1.4144682884216309
+              }
+            ],
+            "segments": [
+              {
+                "start_native": 0,
+                "predicted_goal_mse": 0.1342744082212448,
+                "realized_goal_mse": 0.07945764064788818,
+                "forecast_mse": 0.029923008754849434,
+                "copy_mse": 1.2394264936447144
+              },
+              {
+                "start_native": 15,
+                "predicted_goal_mse": 0.07586508989334106,
+                "realized_goal_mse": 0.004020180553197861,
+                "forecast_mse": 0.03135707601904869,
+                "copy_mse": 0.32870858907699585
+              }
+            ]
+          },
+          "final_rgb_vs_cached_goal": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "factorial": {
+            "order": [
+              "initial_arm_initial_object",
+              "goal_arm_initial_object",
+              "initial_arm_goal_object",
+              "goal_arm_goal_object"
+            ],
+            "goal_mse": [
+              1.7750110626220703,
+              3.3937983971554786e-05,
+              1.7750654220581055,
+              2.1135027054697275e-05
+            ],
+            "joint_names": [
+              "right_j0",
+              "right_j1",
+              "right_j2",
+              "right_j3",
+              "right_j4",
+              "right_j5",
+              "right_j6",
+              "r_close",
+              "l_close",
+              "objjoint"
+            ],
+            "scope": "Rendered joint intervention,not guaranteed physically reachable;diagnostic only."
+          }
+        },
+        "recorded_cem": {
+          "native_steps": 45,
+          "any_success": true,
+          "macro_goal_mse": [
+            1.7750113010406494,
+            1.7102030515670776,
+            1.3523039817810059,
+            0.8496724963188171,
+            0.49235934019088745,
+            0.24353724718093872,
+            0.19426195323467255,
+            0.15055757761001587,
+            0.09477269649505615,
+            0.05612185224890709
+          ],
+          "min_gripper_object_distance": 0.14245824568342924,
+          "closest_native_step": 10,
+          "physical_initial": {
+            "object_xyz": [
+              [
+                -0.03933676526631691,
+                0.6834565151459447,
+                0.02
+              ]
+            ],
+            "tcp_xyz": [
+              0.004303677595096163,
+              0.6014216472096363,
+              0.15014434178813843
+            ],
+            "gripper_object_distance": 0.15991171786312477,
+            "object_target_distance": 0.2877619531183061
+          },
+          "physical_final": {
+            "object_xyz": [
+              [
+                -0.0393387412967706,
+                0.6834428424955569,
+                0.019412727671892886
+              ]
+            ],
+            "tcp_xyz": [
+              0.03046061568793955,
+              0.7950458583689023,
+              0.22275456627766457
+            ],
+            "gripper_object_distance": 0.24222940926956185,
+            "object_target_distance": 0.2882543268427107
+          },
+          "initial_rgb": {
+            "exact": true,
+            "max_abs": 0,
+            "changed_pixels": 0,
+            "changed_fraction": 0.0,
+            "mse": 0.0,
+            "passed": true
+          },
+          "forecast": {
+            "prefixes": [
+              {
+                "horizon_macro": 6,
+                "native_steps": 30,
+                "predicted_goal_mse": 0.06089961156249046,
+                "realized_goal_mse": 0.19426195323467255,
+                "forecast_mse": 0.2835536599159241,
+                "copy_mse": 1.1310771703720093
+              },
+              {
+                "horizon_macro": 9,
+                "native_steps": 45,
+                "predicted_goal_mse": 0.24747340381145477,
+                "realized_goal_mse": 0.05612185224890709,
+                "forecast_mse": 0.320449560880661,
+                "copy_mse": 1.3565884828567505
+              }
+            ],
+            "segments": [
+              {
+                "start_native": 0,
+                "predicted_goal_mse": 0.06089961156249046,
+                "realized_goal_mse": 0.19426195323467255,
+                "forecast_mse": 0.2835536599159241,
+                "copy_mse": 1.1336848735809326
+              },
+              {
+                "start_native": 15,
+                "predicted_goal_mse": 0.06301787495613098,
+                "realized_goal_mse": 0.05612185224890709,
+                "forecast_mse": 0.07473498582839966,
+                "copy_mse": 0.47252121567726135
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "model_sha256": "85d18f83f38bcc1d36ce64b0f31dcc6fe08cdbce2e9582a751e90c18ebb8355c",
+  "model_unchanged": true,
+  "model_updates": 0,
+  "finished_utc": "2026-11-05T19:13:52.909170+00:00",
+  "scope": "Known cases,diagnostic expert controls and privileged posthoc factors;not a deployable policy or new benchmark score."
+}

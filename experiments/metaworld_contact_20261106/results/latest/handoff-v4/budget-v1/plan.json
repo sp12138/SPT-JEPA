@@ -1,0 +1,142 @@
+{
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-0213955",
+  "recipes": [
+    {
+      "name": "tf-control-seed1",
+      "arm": "tf-control",
+      "seed": 1,
+      "host": "dev13",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/budget-v1/training/tf-control-seed1",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1",
+      "config_sha256": "55a1aba085c7457a8fcbcb46ba383691366cd3e24bd6bc3308f966513bf90cc3",
+      "wait_owner": {
+        "gpu": 1,
+        "pid": 3696147,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-0e85869/experiments/metaworld_contact_20261106/broad.py",
+          "--mode",
+          "work",
+          "--study",
+          "broad-repeat-v1",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106",
+          "--source",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-0e85869",
+          "--host",
+          "dev13",
+          "--gpu",
+          "1"
+        ]
+      }
+    },
+    {
+      "name": "native-control-seed1",
+      "arm": "native-control",
+      "seed": 1,
+      "host": "dev13",
+      "gpu": 2,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/budget-v1/training/native-control-seed1",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/native-control-seed1",
+      "config_sha256": "ac40703adb899bd47c5342da38164f1dde8f18011772d0ba8811048c064f9ab8",
+      "wait_owner": {
+        "gpu": 2,
+        "pid": 3696148,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-0e85869/experiments/metaworld_contact_20261106/broad.py",
+          "--mode",
+          "work",
+          "--study",
+          "broad-repeat-v1",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106",
+          "--source",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-0e85869",
+          "--host",
+          "dev13",
+          "--gpu",
+          "2"
+        ]
+      }
+    },
+    {
+      "name": "tf-control-seed2",
+      "arm": "tf-control",
+      "seed": 2,
+      "host": "dev15",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/budget-v1/training/tf-control-seed2",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2",
+      "config_sha256": "59ed394d7c675efb5ce2cc4754b6ef93000c1445d933326fc3899e09cd32ca41",
+      "wait_owner": {
+        "gpu": 1,
+        "pid": 3240443,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-0e85869/experiments/metaworld_contact_20261106/broad.py",
+          "--mode",
+          "work",
+          "--study",
+          "broad-repeat-v1",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106",
+          "--source",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-0e85869",
+          "--host",
+          "dev15",
+          "--gpu",
+          "1"
+        ]
+      }
+    },
+    {
+      "name": "native-control-seed2",
+      "arm": "native-control",
+      "seed": 2,
+      "host": "dev15",
+      "gpu": 2,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/budget-v1/training/native-control-seed2",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/native-control-seed2",
+      "config_sha256": "69d1ef159453bd194351b56716e703542096f63f8b023246715474f38d104bab",
+      "wait_owner": {
+        "gpu": 2,
+        "pid": 3240444,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-0e85869/experiments/metaworld_contact_20261106/broad.py",
+          "--mode",
+          "work",
+          "--study",
+          "broad-repeat-v1",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106",
+          "--source",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-0e85869",
+          "--host",
+          "dev15",
+          "--gpu",
+          "2"
+        ]
+      }
+    }
+  ],
+  "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "deadline_unix": 1793993422.1383173,
+  "stages": [
+    16482,
+    24982,
+    40000
+  ],
+  "scope": "OriginalscratchTF/native continued20epoch->40k updates,batch128,original41200LRhorizon. No objective/data/sampler/optimizer changes;originalwindow8/all5phases,not CNNphase0/pairwindow. Matches total update/samplecount of40kCNNs,but not imageFLOPs,architecture or temporal sampling. Same20physicalcases/task,500native any-success;not publicSOTA or equalFLOPs."
+}

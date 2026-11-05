@@ -36,7 +36,8 @@ def font(size):
 def label_frame(actual,goal,arm,step,total,success):
     canvas=Image.new('RGB',(960,532),'#101827');draw=ImageDraw.Draw(canvas)
     canvas.paste(Image.fromarray(actual),(0,52));canvas.paste(Image.fromarray(goal),(480,52))
-    name='Temporal-forecast' if arm=='tf-control' else 'Native LeWM'
+    name={'tf-control':'Temporal-forecast','native-control':'Native LeWM',
+          'local-flow':'Scratch CNN + Flow','local-mse':'Scratch CNN + MSE'}.get(arm,arm)
     draw.text((12,7),f'{name} | step {step}/{total}',font=font(19),fill='white')
     draw.text((12,31),f'Replayed execution | success={int(success)}',font=font(13),fill='#8de6ad' if success else '#ffb599')
     draw.text((493,10),'Goal RGB (cached expert reference)',font=font(20),fill='white')

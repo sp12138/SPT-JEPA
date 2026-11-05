@@ -1,0 +1,183 @@
+{
+  "created_utc": "2026-11-05T19:07:27.499767+00:00",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-cf6321c",
+  "recipes": [
+    {
+      "name": "tf-control-parent1-bin-picking-v3",
+      "arm": "tf-control",
+      "host": "dev13",
+      "gpu": 0,
+      "task": "bin-picking-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/tf-control-parent1-bin-picking-v3"
+    },
+    {
+      "name": "tf-control-parent1-pick-place-v3",
+      "arm": "tf-control",
+      "host": "dev13",
+      "gpu": 1,
+      "task": "pick-place-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/tf-control-parent1-pick-place-v3"
+    },
+    {
+      "name": "tf-control-parent1-push-v3",
+      "arm": "tf-control",
+      "host": "dev13",
+      "gpu": 2,
+      "task": "push-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/tf-control-parent1-push-v3"
+    },
+    {
+      "name": "tf-control-parent1-drawer-open-v3",
+      "arm": "tf-control",
+      "host": "dev13",
+      "gpu": 3,
+      "task": "drawer-open-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/tf-control-parent1-drawer-open-v3"
+    },
+    {
+      "name": "tf-control-parent1-door-open-v3",
+      "arm": "tf-control",
+      "host": "dev13",
+      "gpu": 4,
+      "task": "door-open-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/tf-control-parent1-door-open-v3"
+    },
+    {
+      "name": "tf-control-parent1-peg-insert-side-v3",
+      "arm": "tf-control",
+      "host": "dev13",
+      "gpu": 5,
+      "task": "peg-insert-side-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/tf-control-parent1-peg-insert-side-v3"
+    },
+    {
+      "name": "tf-control-parent1-reach-v3",
+      "arm": "tf-control",
+      "host": "dev13",
+      "gpu": 6,
+      "task": "reach-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/tf-control-parent1-reach-v3"
+    },
+    {
+      "name": "tf-control-parent1-reach-wall-v3",
+      "arm": "tf-control",
+      "host": "dev13",
+      "gpu": 7,
+      "task": "reach-wall-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/tf-control-parent1-reach-wall-v3"
+    },
+    {
+      "name": "native-control-parent1-bin-picking-v3",
+      "arm": "native-control",
+      "host": "dev15",
+      "gpu": 0,
+      "task": "bin-picking-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/native-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/native-control-parent1-bin-picking-v3"
+    },
+    {
+      "name": "native-control-parent1-pick-place-v3",
+      "arm": "native-control",
+      "host": "dev15",
+      "gpu": 1,
+      "task": "pick-place-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/native-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/native-control-parent1-pick-place-v3"
+    },
+    {
+      "name": "native-control-parent1-push-v3",
+      "arm": "native-control",
+      "host": "dev15",
+      "gpu": 2,
+      "task": "push-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/native-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/native-control-parent1-push-v3"
+    },
+    {
+      "name": "native-control-parent1-drawer-open-v3",
+      "arm": "native-control",
+      "host": "dev15",
+      "gpu": 3,
+      "task": "drawer-open-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/native-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/native-control-parent1-drawer-open-v3"
+    },
+    {
+      "name": "native-control-parent1-door-open-v3",
+      "arm": "native-control",
+      "host": "dev15",
+      "gpu": 4,
+      "task": "door-open-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/native-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/native-control-parent1-door-open-v3"
+    },
+    {
+      "name": "native-control-parent1-peg-insert-side-v3",
+      "arm": "native-control",
+      "host": "dev15",
+      "gpu": 5,
+      "task": "peg-insert-side-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/native-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/native-control-parent1-peg-insert-side-v3"
+    },
+    {
+      "name": "native-control-parent1-reach-v3",
+      "arm": "native-control",
+      "host": "dev15",
+      "gpu": 6,
+      "task": "reach-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/native-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/native-control-parent1-reach-v3"
+    },
+    {
+      "name": "native-control-parent1-reach-wall-v3",
+      "arm": "native-control",
+      "host": "dev15",
+      "gpu": 7,
+      "task": "reach-wall-v3",
+      "parent_seed": 1,
+      "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/native-control-seed1/model-step0016480",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/diagnostics/native-control-parent1-reach-wall-v3"
+    }
+  ],
+  "hosts": [
+    "dev13",
+    "dev15"
+  ],
+  "case_seeds": [
+    42,
+    43,
+    1042,
+    1043
+  ],
+  "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "old_summary": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/results/summary.json",
+  "policy_source": "/efs/prescottsun/SPT-JEPA/sources/lerobot-mw-f5c9bc02",
+  "deadline_unix": 1793948847.4997997,
+  "model_updates": 0,
+  "scope": "User-authorized new manipulation investigation. Known cases;experts/states diagnostic only;old campaigns remain closed."
+}

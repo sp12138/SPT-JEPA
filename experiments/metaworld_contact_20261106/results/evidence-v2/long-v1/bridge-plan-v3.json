@@ -1,0 +1,118 @@
+{
+  "created_utc": "2026-11-05T19:30:22.138294+00:00",
+  "recipes": [
+    {
+      "name": "local-mse-seed1",
+      "arm": "local-mse",
+      "gpu": 2,
+      "host": "dev13",
+      "seed": 1,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/long-v1/bridge/local-mse-seed1",
+      "config_sha256": "10719f4872123bb8bd21125b129afe8dcf3650f5267c485b5f6060d5f7ebc658",
+      "entry_step": 10000,
+      "technical_step": 10002,
+      "stages": [
+        10002,
+        20000,
+        40000
+      ]
+    },
+    {
+      "name": "local-flow-seed1",
+      "arm": "local-flow",
+      "gpu": 3,
+      "host": "dev13",
+      "seed": 1,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/long-v1/bridge/local-flow-seed1",
+      "config_sha256": "a5a35fd2fdaa1dd0ddc1375c00bfa41b0690f18ba721ac10bd1bd661af595e73",
+      "entry_step": 10000,
+      "technical_step": 10002,
+      "stages": [
+        10002,
+        20000,
+        40000
+      ]
+    },
+    {
+      "name": "local-mse-seed2",
+      "arm": "local-mse",
+      "gpu": 2,
+      "host": "dev15",
+      "seed": 2,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/long-v1/bridge/local-mse-seed2",
+      "config_sha256": "97891dfbad1559564da7ac15304cdf8a4b029062c2adf2e5e15606201ddc2dea",
+      "entry_step": 10000,
+      "technical_step": 10002,
+      "stages": [
+        10002,
+        20000,
+        40000
+      ]
+    },
+    {
+      "name": "local-flow-seed2",
+      "arm": "local-flow",
+      "gpu": 3,
+      "host": "dev15",
+      "seed": 2,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/long-v1/bridge/local-flow-seed2",
+      "config_sha256": "e95c83b451655523606916c90572c829df6a6721fee04079bd0679ecd67a4833",
+      "entry_step": 10000,
+      "technical_step": 10002,
+      "stages": [
+        10002,
+        20000,
+        40000
+      ]
+    }
+  ],
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-1a7d0e3",
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+  "tasks": [
+    "bin-picking-v3",
+    "pick-place-v3",
+    "push-v3",
+    "drawer-open-v3",
+    "door-open-v3",
+    "peg-insert-side-v3",
+    "reach-v3",
+    "reach-wall-v3"
+  ],
+  "stages": [
+    10002,
+    20000,
+    40000
+  ],
+  "deadline_unix": 1793993422.1383173,
+  "scope": "Evidence-gated long continuations.Four local CNN models,2objectives x2seeds.Manipulation10k meanMSE60.42%/Flow61.46%,oldpairedTF/native0%.No strong/externalprior used by these standalone local policies;factualactions only,samplelevel.Continuation10000to40000,no LR reset.",
+  "recovery_scope": "Native metadata interface before any SGD;all8 initial constructor errors retained. No NN parameter/forward/loss/optimizer/sampling change. Pixel-only learners no longer read unused frozen embeddings.",
+  "case_seeds_by_step": {
+    "40000": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      1042,
+      1043,
+      1044,
+      1045,
+      1046,
+      1047,
+      1048,
+      1049,
+      1050,
+      1051
+    ]
+  }
+}

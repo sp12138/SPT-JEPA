@@ -1,0 +1,275 @@
+{
+  "created_utc": "2026-11-05T22:32:01.760001+00:00",
+  "host": "dev15",
+  "gpu_snapshot": "0, 41 %, 935 MiB\n1, 100 %, 134543 MiB\n2, 0 %, 26473 MiB\n3, 97 %, 1000 MiB\n4, 0 %, 786 MiB\n5, 75 %, 1039 MiB\n6, 78 %, 9831 MiB\n7, 62 %, 9831 MiB\n",
+  "jobs": [
+    {
+      "phase": "broad-noh-v1",
+      "gpu": 0,
+      "pid": 3241186,
+      "actual_live_owner": true
+    },
+    {
+      "phase": "broad-noh-v1",
+      "gpu": 4,
+      "pid": 3241187,
+      "actual_live_owner": true
+    },
+    {
+      "phase": "history-v1",
+      "gpu": 6,
+      "pid": 3240037,
+      "actual_live_owner": true
+    },
+    {
+      "phase": "history-v1",
+      "gpu": 7,
+      "pid": 3240038,
+      "actual_live_owner": true
+    },
+    {
+      "phase": "broad-v1",
+      "gpu": 1,
+      "pid": 3239902,
+      "actual_live_owner": false
+    },
+    {
+      "phase": "broad-v1",
+      "gpu": 2,
+      "pid": 3239903,
+      "actual_live_owner": false
+    },
+    {
+      "phase": "broad-v1",
+      "gpu": 3,
+      "pid": 3239904,
+      "actual_live_owner": true
+    },
+    {
+      "phase": "broad-v1",
+      "gpu": 5,
+      "pid": 3239905,
+      "actual_live_owner": true
+    },
+    {
+      "phase": "budget-v1",
+      "gpu": 1,
+      "pid": 3240563,
+      "actual_live_owner": true
+    },
+    {
+      "phase": "budget-v1",
+      "gpu": 2,
+      "pid": 3240564,
+      "actual_live_owner": true
+    }
+  ],
+  "training": [
+    {
+      "phase": "budget-v1",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/budget-v1/training/tf-control-seed2",
+      "status": {
+        "state": "running",
+        "step": 16600,
+        "elapsed_seconds": 160.8753936290741,
+        "updated_at": 1793917826.099889,
+        "pid": 3241052,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 0.003348065074533224,
+        "fm": 0.0026329830288887024,
+        "rate": 0.0028603284154087305,
+        "entry": 128.0805206298828,
+        "surprise": 16.850500106811523,
+        "rate_share": 0.2715862989425659,
+        "feature_std": 0.578099250793457,
+        "active_dims": 64.0,
+        "temporal_noise_rho": 0.800000011920929,
+        "forecast_fraction": 0.5,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.03284464403986931,
+        "grad_norm_predictor": 0.008279595524072647,
+        "grad_norm_renderer": 0.08794835209846497,
+        "grad_norm_pool": 0.017099697142839432,
+        "grad_norm_action_encoder": 0.0031067728996276855,
+        "seconds_per_step": 0.9755391383171081,
+        "peak_gib": 129.4743618965149,
+        "learning_rates": [
+          3.295799403526627e-05,
+          6.591598807053255e-05
+        ]
+      },
+      "audits": {
+        "16482": true,
+        "16480": true
+      },
+      "technical_physics_passed": true,
+      "error": null
+    },
+    {
+      "phase": "budget-v1",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/budget-v1/training/native-control-seed2",
+      "status": {
+        "state": "running",
+        "step": 17600,
+        "elapsed_seconds": 508.09341740608215,
+        "updated_at": 1793917914.6521127,
+        "pid": 3240820,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 0.09090425819158554,
+        "pred": 0.00691987993195653,
+        "sigreg": 0.93359375,
+        "feature_std": 0.9956523180007935,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.5186610817909241,
+        "grad_norm_predictor": 0.007487648166716099,
+        "grad_norm_action_encoder": 0.00468447944149375,
+        "grad_norm_projector": 0.2955290377140045,
+        "grad_norm_pred_proj": 0.04206441715359688,
+        "seconds_per_step": 0.22397743225097655,
+        "peak_gib": 24.613648414611816,
+        "learning_rates": [
+          3.1110804111149376e-05
+        ]
+      },
+      "audits": {
+        "16482": true,
+        "16480": true
+      },
+      "technical_physics_passed": true,
+      "error": null
+    },
+    {
+      "phase": "history-v1",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/history-v1/bridge/local-mse-history-seed2",
+      "status": {
+        "state": "running",
+        "step": 13100,
+        "elapsed_seconds": 269.1937355995178,
+        "updated_at": 1793917917.4216387,
+        "pid": 3240995,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 0.017418116331100464,
+        "action_reconstruction": 0.017418116331100464,
+        "temporal": 0.0,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.09156059473752975,
+        "grad_norm_predictor": 0.06392810493707657,
+        "grad_norm_action_readout": 0.06150784716010094,
+        "grad_norm_history_encoder": 0.014254393056035042,
+        "seconds_per_step": 0.08277717828750611,
+        "peak_gib": 8.569718837738037,
+        "learning_rates": [
+          0.00023009249177667542
+        ]
+      },
+      "audits": {
+        "600": true,
+        "2": true,
+        "10000": true,
+        "3000": true
+      },
+      "technical_physics_passed": true,
+      "error": null
+    },
+    {
+      "phase": "history-v1",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/history-v1/bridge/local-flow-history-seed2",
+      "status": {
+        "state": "running",
+        "step": 13100,
+        "elapsed_seconds": 265.682724237442,
+        "updated_at": 1793917913.9217622,
+        "pid": 3241019,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 0.108261339366436,
+        "action_reconstruction": 0.108261339366436,
+        "temporal": 0.0,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.2504391670227051,
+        "grad_norm_predictor": 0.4151492118835449,
+        "grad_norm_action_readout": 0.18027272820472717,
+        "grad_norm_history_encoder": 0.06357543170452118,
+        "seconds_per_step": 0.08273184061050415,
+        "peak_gib": 8.569718837738037,
+        "learning_rates": [
+          0.00023009249177667542
+        ]
+      },
+      "audits": {
+        "600": true,
+        "2": true,
+        "10000": true,
+        "3000": true
+      },
+      "technical_physics_passed": true,
+      "error": null
+    },
+    {
+      "phase": "marginal-local-v1",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/marginal-local-v1/bridge/local-mse-no-h-seed2",
+      "status": {
+        "state": "finished",
+        "step": 40000,
+        "elapsed_seconds": 1351.1015434265137,
+        "updated_at": 1793917552.6507258,
+        "pid": 3240054,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 0.0043466403149068356,
+        "action_reconstruction": 0.0040388330817222595,
+        "temporal": 0.00030780708766542375,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.0388043187558651,
+        "grad_norm_horizon_predictor": 0.011530053801834583,
+        "grad_norm_time_readout": 0.03237450495362282,
+        "grad_norm_predictor": 0.022728441283106804,
+        "grad_norm_action_readout": 0.016840999945998192,
+        "seconds_per_step": 1.3587226867675781,
+        "peak_gib": 5.9219770431518555,
+        "learning_rates": [
+          0.0
+        ]
+      },
+      "audits": {
+        "40000": true,
+        "20000": true,
+        "10002": true
+      },
+      "technical_physics_passed": null,
+      "error": null
+    },
+    {
+      "phase": "marginal-local-v1",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/marginal-local-v1/bridge/local-flow-no-h-seed2",
+      "status": {
+        "state": "finished",
+        "step": 40000,
+        "elapsed_seconds": 1334.6108462810516,
+        "updated_at": 1793917598.6279197,
+        "pid": 3240076,
+        "host": "prescottsun-dev15-2d-1027-worker-0",
+        "loss": 0.061221085488796234,
+        "action_reconstruction": 0.060574524104595184,
+        "temporal": 0.000646561267785728,
+        "encoder_frozen": 0.0,
+        "grad_norm_encoder": 0.2534157335758209,
+        "grad_norm_horizon_predictor": 0.012491423636674881,
+        "grad_norm_time_readout": 0.03218826279044151,
+        "grad_norm_predictor": 0.3693084418773651,
+        "grad_norm_action_readout": 0.08116937428712845,
+        "seconds_per_step": 1.6728174686431885,
+        "peak_gib": 5.9219770431518555,
+        "learning_rates": [
+          0.0
+        ]
+      },
+      "audits": {
+        "40000": true,
+        "20000": true,
+        "10002": true
+      },
+      "technical_physics_passed": null,
+      "error": null
+    }
+  ],
+  "scope": "One-time actual read;no constantutilization claim.No NN/physics calls."
+}

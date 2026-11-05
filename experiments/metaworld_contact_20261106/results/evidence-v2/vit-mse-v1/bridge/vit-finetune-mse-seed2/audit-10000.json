@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "step": 10000,
+  "actual_cpu_restore": {
+    "model": true,
+    "optimizer": true,
+    "scheduler": true
+  },
+  "portable_exact": true,
+  "checkpoint_sha256": "18b95c0ae85cf7f3273cd45e105426cc421c0ed81de1208a24641ab952498601",
+  "loss": 0.029145177453756332,
+  "metrics": {
+    "loss": 0.029145177453756332,
+    "action_reconstruction": 0.029145177453756332,
+    "temporal": 0.0
+  },
+  "gradients": {
+    "encoder": 1.344740072483915,
+    "predictor": 0.6267039405090052,
+    "action_readout": 0.31382470188316874,
+    "history_encoder": 0.14787044986578182
+  },
+  "sample_independence": {
+    "max_memory_difference": 4.0531158447265625e-06,
+    "max_duration_difference": 0.0
+  },
+  "heldout_original_episodes": [
+    8,
+    2265
+  ],
+  "heldout_rows": [
+    [
+      35,
+      53
+    ],
+    [
+      9837,
+      9848
+    ]
+  ],
+  "scope": "Actual model/optimizer/scheduler restore and held-out FP32 backward;not task performance."
+}

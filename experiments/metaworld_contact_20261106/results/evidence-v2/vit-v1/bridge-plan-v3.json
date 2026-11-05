@@ -1,0 +1,178 @@
+{
+  "created_utc": "2026-11-05T19:30:22.138294+00:00",
+  "recipes": [
+    {
+      "name": "vit-frozen-seed1",
+      "arm": "vit-frozen",
+      "seed": 1,
+      "host": "dev13",
+      "gpu": 0,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/vit-v1/bridge/vit-frozen-seed1",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "technical_step": 2,
+      "stages": [
+        2,
+        600,
+        3000,
+        10000
+      ],
+      "wait_owner": {
+        "name": "high-noise-flow-seed1",
+        "gpu": 0,
+        "pid": 3691115,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-905a1e5/experiments/metaworld_contact_20261106/adaptive.py",
+          "--mode",
+          "work",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/adaptation-v1",
+          "--source",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-905a1e5",
+          "--host",
+          "dev13",
+          "--gpu",
+          "0"
+        ]
+      },
+      "config_sha256": "d4e1f8bbe1c748b2464e488c2fe2e29609f8a73712b7762b3f75fc409083a810"
+    },
+    {
+      "name": "vit-finetune-seed1",
+      "arm": "vit-finetune",
+      "seed": 1,
+      "host": "dev13",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/vit-v1/bridge/vit-finetune-seed1",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "technical_step": 2,
+      "stages": [
+        2,
+        600,
+        3000,
+        10000
+      ],
+      "wait_owner": {
+        "name": "marginal-global-seed1",
+        "gpu": 1,
+        "pid": 3691116,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-905a1e5/experiments/metaworld_contact_20261106/adaptive.py",
+          "--mode",
+          "work",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/adaptation-v1",
+          "--source",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-905a1e5",
+          "--host",
+          "dev13",
+          "--gpu",
+          "1"
+        ]
+      },
+      "config_sha256": "dfa41c56d069c6111e1e12a5e52946aaf7d2e62f1979f656447b85dcf54a22a4"
+    },
+    {
+      "name": "vit-frozen-seed2",
+      "arm": "vit-frozen",
+      "seed": 2,
+      "host": "dev15",
+      "gpu": 0,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/vit-v1/bridge/vit-frozen-seed2",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/model-step0016480",
+      "technical_step": 2,
+      "stages": [
+        2,
+        600,
+        3000,
+        10000
+      ],
+      "wait_owner": {
+        "pid": 3236426,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-1a7d0e3/experiments/metaworld_contact_20261106/adaptive.py",
+          "--mode",
+          "work",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/adaptation-v1",
+          "--source",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-1a7d0e3",
+          "--host",
+          "dev15",
+          "--gpu",
+          "0"
+        ],
+        "scope": "GPU context teardown wait only;no previous newSGD."
+      },
+      "config_sha256": "0f000bb8aa5dc51834cb2ae22d86fef61e2eb75d60203467cee8f71a792fb2b5"
+    },
+    {
+      "name": "vit-finetune-seed2",
+      "arm": "vit-finetune",
+      "seed": 2,
+      "host": "dev15",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/vit-v1/bridge/vit-finetune-seed2",
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/model-step0016480",
+      "technical_step": 2,
+      "stages": [
+        2,
+        600,
+        3000,
+        10000
+      ],
+      "wait_owner": {
+        "name": "marginal-global-seed2",
+        "gpu": 1,
+        "pid": 3235908,
+        "command": [
+          "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+          "-B",
+          "-u",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-905a1e5/experiments/metaworld_contact_20261106/adaptive.py",
+          "--mode",
+          "work",
+          "--root",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/adaptation-v1",
+          "--source",
+          "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-905a1e5",
+          "--host",
+          "dev15",
+          "--gpu",
+          "1"
+        ]
+      },
+      "config_sha256": "e38d4642c3fa476c3f1bd544362c7aa742a768e1edc714628a373941a32a56ff"
+    }
+  ],
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-c13bd16",
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+  "tasks": [
+    "bin-picking-v3",
+    "pick-place-v3",
+    "push-v3",
+    "drawer-open-v3",
+    "door-open-v3",
+    "peg-insert-side-v3",
+    "reach-v3",
+    "reach-wall-v3"
+  ],
+  "stages": [
+    2,
+    600,
+    3000,
+    10000
+  ],
+  "deadline_unix": 1793993422.1383173,
+  "scope": "Unified oneencoder flow bridge:all257CLS+spatialtokens,past/current/goalRGB andone executedactionblock.Sameinformationasoriginalcontext2MPC.No clockteacher input,no temporalaux,no batchstats.Paired frozen-vs-finetune ownTFencoder.Head3e-4/encoder5e-5 sharedall50tasks.Ownpretrainingbudgetexplicit;no externalteacher/optimal-actionlabel.",
+  "recovery_scope": "Native metadata interface before any SGD;all8 initial constructor errors retained. No NN parameter/forward/loss/optimizer/sampling change. Pixel-only learners no longer read unused frozen embeddings."
+}

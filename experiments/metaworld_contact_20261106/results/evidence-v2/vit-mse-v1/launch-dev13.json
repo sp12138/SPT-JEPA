@@ -1,0 +1,48 @@
+{
+  "jobs": [
+    {
+      "gpu": 4,
+      "name": "vit-frozen-mse-seed1",
+      "pid": 3693373,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-c13bd16/experiments/metaworld_contact_20261106/adaptive.py",
+        "--mode",
+        "work",
+        "--root",
+        "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/vit-mse-v1",
+        "--source",
+        "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-c13bd16",
+        "--host",
+        "dev13",
+        "--gpu",
+        "4"
+      ]
+    },
+    {
+      "gpu": 5,
+      "name": "vit-finetune-mse-seed1",
+      "pid": 3693374,
+      "command": [
+        "/efs/prescottsun/project_jepa/envs/lewm/bin/python",
+        "-B",
+        "-u",
+        "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-c13bd16/experiments/metaworld_contact_20261106/adaptive.py",
+        "--mode",
+        "work",
+        "--root",
+        "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/vit-mse-v1",
+        "--source",
+        "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-c13bd16",
+        "--host",
+        "dev13",
+        "--gpu",
+        "5"
+      ]
+    }
+  ],
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-c13bd16",
+  "utc": "2026-11-05T20:59:19.242796+00:00"
+}

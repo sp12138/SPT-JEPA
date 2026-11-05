@@ -1,13 +1,13 @@
 {
   "objective": "Diagnose persistent MetaWorld manipulation0% and validate a practical sample-level improvement,using onlydev13/dev15.",
   "authorization": "Latest user2026-11-06 explicitly requests stopping old work,new two-host deep analysis and improvement.",
-  "status": "ACTIVE new finite round:16 frozen diagnostic groups/64model-cases and16 feature shards COMPLETE;8 paired frozen planner controls running;8 new learners at actual2-update gates. No manipulation improvement claimed yet.",
+  "status": "Validated real manipulation gains:4scratchCNNseeds Flow68.3333/MSE65.2083 percent;fresh2frozenmodels Flow67.5/MSE57.5;old20epochTF/native0. Not a pureforecast-only or universal alltask improvement.",
   "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106",
   "hosts": [
     "dev13",
     "dev15"
   ],
-  "old_jobs": "Actual initial read:both hosts all8GPUs0MiB/0util,no owned SPT-JEPA processes.Old campaigns remain complete/HOLD;no goal or recurring LLM monitor.",
+  "old_jobs": "All earlier campaigns remain closed/HOLD;oldgoal/recurringLLMmonitors off.",
   "constraints": [
     "scratch origin",
     "RGB and factual actions only",
@@ -17,19 +17,71 @@
   ],
   "diagnostic_scope": "Expert actions,physical states and rendered joint interventions are diagnostic only,never candidate inputs or new training data.Known cases;not untouched confirmation.",
   "source": {
-    "diagnostics": "5e5addd",
-    "cache": "223ea4b",
-    "frozen_planners": "a9d2e99",
-    "new_trainers": "a5b304a"
+    "main_CNN_evaluation": "31866cd/c13bd16 lineage",
+    "history": "188ff8f",
+    "NoH": "c13bd16",
+    "broad": "12732e8",
+    "broad_repeats": "0e85869",
+    "budget_and_collector": "0213955",
+    "budget_NN_runtime": "7b78f5d originalunchanged",
+    "NoH_coverage_and_collector": "b65ede2"
   },
-  "ownership": [
-    "stage2-launch-dev13.json",
-    "stage2-launch-dev15.json",
-    "train-recovery-v3-dev13.json",
-    "train-recovery-v3-dev15.json"
+  "ownership": "Each root launch-dev13/dev15.json and actual live process identity;never infer GPU activity from slots.",
+  "active_plan": "Finite48 logicalrun targets across current_roots;old8learner screen complete,not the only active plan.",
+  "repairs": [
+    "Startup errors retained;completed2updates reused.",
+    "IsolatedFP32 sample-independence audit disablesTF32;no trainingchange.",
+    "Bounded120second GPUcontext teardown wait;allocationerrorsretained.",
+    "Collectorwatcher collided with oneshot sharedtmp;reader-only failure.All NN/SGD/physics retained.Uniqueatomictemp+flock;60writes/88reads and duplicateowner refusal pass."
   ],
-  "active_plan": "active-bridge-plan.json -> bridge-plan-v3.json",
-  "repairs": "Two startup interface failures before SGD retained in each learner startup-errors-v1/v2.Missing packaged entry point then trainer metadata interfaces;CPU forward/backward gates pass all4types.No completedSGD repeated.",
-  "gates": "All8 frozen CEM-H6 first20 action sequences exactly match archived TF parents.Scratch learner actual full-state/backward/independence/20step MPC gates still to read.16model-case diagnostics use originalparent1 only;not two training seeds.",
-  "evidence": "Valid46/46 manip30-step comparisons favor failed CEM endpoint over successful expert prefix in actual latent-goal MSE.Peg seed43 expert failed,2model records excluded from successful-route evidence,not dropped from evaluation."
+  "gates": "All8 mainCNN40k fullstate/heldout/physics audits pass;4history actual2step/FP32/independence/20native pass;all4 budget entry+16482+20native pass and advance;see latest actual snapshots.",
+  "evidence": "Valid46/46 manip30-step comparisons favor failed CEM endpoint over successful expert prefix in actual latent-goal MSE.Peg seed43 expert failed,2model records excluded from successful-route evidence,not dropped from evaluation.",
+  "deadline_UTC": "2026-11-06T19:30:22.138317+00:00",
+  "primary_evidence": "results/evidence-v2/analysis.json",
+  "report": "RESULTS.md",
+  "trace_SHA_checks": 2560,
+  "current_roots": [
+    "long-v1",
+    "repeat-v1",
+    "vit-v1",
+    "vit-mse-v1",
+    "marginal-local-v1",
+    "history-v1",
+    "fresh-v1",
+    "broad-v1",
+    "broad-repeat-v1",
+    "budget-v1",
+    "broad-noh-v1"
+  ],
+  "slot_chains": {
+    "gpu0_4": "CompletedNoH10k->40k -> broad-noh-v1 frozen400case50task coverage",
+    "gpu1_2": "broad-v1 CNN1/2 -> broad-repeat-v1 CNN3/4 -> budget-v1 TF/native16480->40k",
+    "gpu3_5": "broad-v1 original20epochTF/native400case frozen evaluation",
+    "gpu6_7": "history-v1 scratchCNN40k oneactionloss/no clock"
+  },
+  "finite_collector": {
+    "pid_dev13": 3697224,
+    "launch": "finite-collector-launch-v8.json",
+    "source": "source-b65ede2",
+    "expected_logical_runs": 48,
+    "results": "review/summary.json and compact.json",
+    "scope": "JSONonly every30seconds;no NN/simulator/LLM calls;originaldeadline->HOLD;no automatic newresearch."
+  },
+  "method_boundary": "Explicit factual-action reconstruction/controller change.No optimalactionoracle,externalpretraining,state/reward/success/taskID inputs.MainlocalCNN loads no TF.Mainhas temporalaux;history-v1 oneactionloss.No GCBC/GC-IDM novelty or pureJEPAforecast win claimed.",
+  "comparison_limits": "SameLeRobotcorpus/split/physicalcase protocol,but original20epoch vs40kCNN and differentphase/window/models/FLOPs.New4budgetcontrols pending;not publicSOTA/canonicalMT50.",
+  "scientific_caveats": [
+    "Scriptedexpertcorpus;not arbitrary failedexploration evidence.",
+    "Main20physicalcases repeated4CNNs;fresh10cases repeated2CNNs;controls2trainedmodels.",
+    "CaseCI conditional on trainedmodels,not initialization-population uncertainty.",
+    "Reach/Wall regress;PickPlace seed-sensitive,Peg incomplete."
+  ],
+  "latest_evidence": "results/latest/handoff-v4/INDEX.json:82SHAverifiedfiles;actual22:32UTC health and3200additional broadcoverage actiontraces verified",
+  "coverage_results": {
+    "CNN_Flow4seeds_all50": 65.25,
+    "CNN_MSE4seeds_all50": 65.1875,
+    "Flow_nonreach48": 67.3828125,
+    "MSE_nonreach48": 67.25260416666667,
+    "physical_cases_per_task": 8,
+    "baseline50task": "pending;no full50 performancegapclaim"
+  }
 }

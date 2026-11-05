@@ -1,0 +1,107 @@
+{
+  "created_utc": "2026-11-05T19:30:22.138294+00:00",
+  "recipes": [
+    {
+      "name": "metric-seed1",
+      "arm": "metric",
+      "gpu": 0,
+      "host": "dev13",
+      "seed": 1,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/bridge/metric-seed1",
+      "config_sha256": "61406c2ce9b97db80eb516ae4b932b97dd01ec0d4d260216e1cb390d06744bdf"
+    },
+    {
+      "name": "global-mse-seed1",
+      "arm": "global-mse",
+      "gpu": 1,
+      "host": "dev13",
+      "seed": 1,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/bridge/global-mse-seed1",
+      "config_sha256": "d6cd5239393b58882943be82a78ac1147d63764ed2a8e21777ae93e1d090901b"
+    },
+    {
+      "name": "local-mse-seed1",
+      "arm": "local-mse",
+      "gpu": 2,
+      "host": "dev13",
+      "seed": 1,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/bridge/local-mse-seed1",
+      "config_sha256": "ae6e37c13a5397ec809fb138975cc96df16d8e83248ed10043908f60bc7569ec"
+    },
+    {
+      "name": "local-flow-seed1",
+      "arm": "local-flow",
+      "gpu": 3,
+      "host": "dev13",
+      "seed": 1,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/tf-control-seed1/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/bridge/local-flow-seed1",
+      "config_sha256": "06f7915c12cf77dd27ee5c0e3c823682c59edff7a94124a070e012f5cbf1422f"
+    },
+    {
+      "name": "metric-seed2",
+      "arm": "metric",
+      "gpu": 0,
+      "host": "dev15",
+      "seed": 2,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/bridge/metric-seed2",
+      "config_sha256": "40d64ad2d09fd21a2ec7c5e8f13c5c28a2b1ae184e2f7aad054ea80e363afc54"
+    },
+    {
+      "name": "global-mse-seed2",
+      "arm": "global-mse",
+      "gpu": 1,
+      "host": "dev15",
+      "seed": 2,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/bridge/global-mse-seed2",
+      "config_sha256": "2b91c9a2dbbd730ba469045cfccabdae79580b99bd5032172f82b7b38a5e8e75"
+    },
+    {
+      "name": "local-mse-seed2",
+      "arm": "local-mse",
+      "gpu": 2,
+      "host": "dev15",
+      "seed": 2,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/bridge/local-mse-seed2",
+      "config_sha256": "1f5b469cc4d295c050dc9cfc53732a7393a1a3894fd1a3024d56a658df66064f"
+    },
+    {
+      "name": "local-flow-seed2",
+      "arm": "local-flow",
+      "gpu": 3,
+      "host": "dev15",
+      "seed": 2,
+      "parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/tf-control-seed2/model-step0016480",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/bridge/local-flow-seed2",
+      "config_sha256": "9b934ba755a81336f18176135fb56d9a9c0365af8c51917049294ecfaad95778"
+    }
+  ],
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_contact_20261106/source-a5b304a",
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+  "tasks": [
+    "bin-picking-v3",
+    "pick-place-v3",
+    "push-v3",
+    "drawer-open-v3",
+    "door-open-v3",
+    "peg-insert-side-v3",
+    "reach-v3",
+    "reach-wall-v3"
+  ],
+  "stages": [
+    2,
+    600,
+    3000,
+    10000
+  ],
+  "deadline_unix": 1793993422.1383173,
+  "scope": "Eight scratch auxiliary learners;global arms also use own same-data20epoch TF encoder whose cost must count. All50tasks/phase0 only;factual actions and temporal offsets,no optimal-action labels.Candidate sample-level. Native Lightning SGD/checkpointing retained.Finite10000-update screen,not automatic long training or monitor.",
+  "recovery_scope": "Native metadata interface before any SGD;all8 initial constructor errors retained. No NN parameter/forward/loss/optimizer/sampling change. Pixel-only learners no longer read unused frozen embeddings."
+}

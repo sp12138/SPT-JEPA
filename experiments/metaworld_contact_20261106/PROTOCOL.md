@@ -13,3 +13,5 @@
 每个学习器复用原Lightning训练、优化器、完整状态checkpoint和样本/RNG游标，batch128，stage2/600/3000/10000，统一40000学习率horizon。数据仅同一原划分的phase0完整轨迹，所有50任务；每样本一半随机后续、一半未标注成功的终帧。无新模拟数据训练、奖励、taskID输入、最优动作标签或外部教师。仅先执行有限10000步screen；2步后必须实际全状态恢复、FP32反传、样本独立性和20步真实环境接口通过。中间/最终stage都做真实8任务闭环，执行3个macro、预算500native any-success。
 
 另外8张卡各自运行冻结TF parent1/2的AP-global/AP-local、H12/H24 CEM控制。AP是已知的observed-target机制对照，不主张原创；比旧只按start检索动作库增加了当前/目标双端点路径及中间目标，额外训练记忆访问明确披露。H12/H24使用更多预测计算。所有冻结新MPC先与原标准H6前20个实际动作逐元素完全一致才允许正式评测。
+
+Current extension/result authority:RESULTS.md and RECOVERY.json. Four scratchCNNseeds give six-manip Flow68.33/MSE65.21 percent;this is explicitly a factual-action controller,not pureforecast-only improvement. Finite50task frozen coverage/repeats,NoH forks,one-action-loss CNNhistory and originalTF/native40k updatecontrols use newroots and original24hdeadline. OldHOLD/NO_PROMOTION remain unchanged. Disclose phase/window/compute differences and every negative.
