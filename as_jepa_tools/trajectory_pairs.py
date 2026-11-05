@@ -21,7 +21,8 @@ class TrajectoryPairs(Dataset):
             directory = self.root/str(shard)
             manifest = json.loads((directory/'manifest.json').read_text())
             assert manifest['passed'] and manifest['model_unchanged']
-            feature = torch.load(feature_root/str(shard)/'features.pt', map_location='cpu', weights_only=True)['embedding'].numpy()
+            feature = (torch.load(feature_root/str(shard)/'features.pt', map_location='cpu', weights_only=True)['embedding'].numpy()
+                       if self.source == 'global' else None)
             actions = np.load(directory/'actions.npy', mmap_mode='r')
             self.shards.append(dict(directory=directory, feature=feature, actions=actions))
             for r in manifest['records']:
@@ -58,9 +59,11 @@ class TrajectoryPairs(Dataset):
         n = min(self.chunk, end-start)
         actions[:n] = (data['actions'][offset+start:offset+start+n]-self.mean)/self.std
         mask[:n] = 1
-        value = dict(features=torch.from_numpy(data['feature'][rows].copy()), action=torch.from_numpy(actions),
+        value = dict(action=torch.from_numpy(actions),
                      action_mask=torch.from_numpy(mask), horizon=np.int64(end-start),
                      episode=record['episode'], start=start, rows=torch.from_numpy(rows))
+        if self.source == 'global':
+            value['features'] = torch.from_numpy(data['feature'][rows].copy())
         if self.source == 'local':
             if shard not in self.images:
                 self.images[shard] = np.load(data['directory']/'pixels.npy', mmap_mode='r')

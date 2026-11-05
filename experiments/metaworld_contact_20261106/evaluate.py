@@ -102,6 +102,7 @@ def run(a):
 
     cases = json.loads(Path(a.manifest).read_text())['rows']
     cases = [c for c in cases if c['task'] in a.tasks and c['seed'] in a.seeds]
+    cases.sort(key=lambda c:(a.tasks.index(c['task']), a.seeds.index(c['seed'])))
     assert len(cases) == len(a.tasks)*len(a.seeds)
     rows = []
     for case in cases:

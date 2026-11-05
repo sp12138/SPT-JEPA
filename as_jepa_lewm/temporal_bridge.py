@@ -45,6 +45,9 @@ class TemporalBridge(nn.Module):
         self.visual_source = visual_source; self.objective = objective
         self.width = width; self.chunk = chunk; self.window = window; self.action_dim = action_dim
         self.noise_odds = noise_odds
+        # Native trainer metadata expects these interfaces. They carry no
+        # parameters and do not alter this model's loss or optimizer groups.
+        self.renderer = None
         self.encoder = SpatialEncoder(width) if visual_source == 'local' else nn.Sequential(nn.LayerNorm(feature_dim), nn.Linear(feature_dim, width))
         self.kind = nn.Parameter(torch.zeros(2, width))
         self.position = nn.Parameter(torch.randn(1, 196 if visual_source == 'local' else 1, width)*.02)
@@ -59,6 +62,8 @@ class TemporalBridge(nn.Module):
             self.predictor = nn.TransformerDecoder(nn.TransformerDecoderLayer(width, 3, width*4, dropout=0.,
                                                     activation='gelu', batch_first=True, norm_first=True), 3)
             self.action_readout = nn.Sequential(nn.LayerNorm(width), nn.Linear(width, action_dim))
+        else:
+            self.predictor = nn.Identity()
 
     def memory(self, batch):
         if self.visual_source == 'local':

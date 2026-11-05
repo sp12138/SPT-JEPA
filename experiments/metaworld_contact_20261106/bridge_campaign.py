@@ -46,7 +46,7 @@ def prepare(root, source):
                           feature_cache=str(views/f'tf-control-seed{seed}'), model_class='temporal_bridge',
                           model=dict(visual_source=visual, objective=objective, chunk=6, window=2, width=192, action_dim=20),
                           batch_size=128, workers=4, max_steps=40000, checkpoint_every=1000, cpu_threads=2,
-                          max_seconds=20*3600, precision='bf16-mixed', export_initial=True, trace_batches=True,
+                          max_seconds=20*3600, precision='bf16-mixed', record_initial_weights=True, trace_batches=True,
                           record_runtime_source=True,
                           retain_steps=[2, 600, 3000, 10000, 40000], float32_matmul_precision='highest')
             save(run/'config.json', config)
@@ -71,7 +71,9 @@ def stage_command(source, config, step, resume):
 
 def work(root, source, host, gpu):
     assert host in ['dev13', 'dev15']
-    plan = json.loads((root/'bridge-plan.json').read_text())
+    pointer = root/'active-bridge-plan.json'
+    path = Path(json.loads(pointer.read_text())['path']) if pointer.exists() else root/'bridge-plan.json'
+    plan = json.loads(path.read_text())
     recipe = next(r for r in plan['recipes'] if r['host'] == host and r['gpu'] == gpu)
     run = Path(recipe['run']); env = environment(source, gpu)
     local = Path('/tmp/prescottsun-mw-pairs-20261106')
