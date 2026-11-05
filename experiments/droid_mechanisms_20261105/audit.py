@@ -62,6 +62,7 @@ def restore(args):
     root = arm_root(args.root, args.arm); dump = bootstrap(root)
     import torch
     from bridge import candidate_batch, cost_adapter
+    import main_hjepa  # registers the public OmegaConf resolvers
     from omegaconf import OmegaConf
     from data import build_hdf5_dataset, Compose, get_column_normalizer
     from vforge.ops import OpsConfig, initialize_ops

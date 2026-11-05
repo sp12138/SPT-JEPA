@@ -46,8 +46,10 @@ def arm_root(root, arm):
     path = Path(root) / 'arms' / arm
     path.mkdir(parents=True, exist_ok=True)
     for key in ['public', 'candidate', 'compat_wm']:
-        if not (path / key).exists():
+        try:
             (path / key).symlink_to(OLD / key, target_is_directory=True)
+        except FileExistsError:
+            assert (path / key).resolve() == (OLD / key).resolve()
     return path
 
 
