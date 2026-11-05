@@ -1,6 +1,6 @@
 {
-  "status": "ACTIVE_SINGLE_SEED_RECOVERY",
-  "last_verified_utc": "2026-11-05T14:56:14Z",
+  "status": "COMPLETE_PASS",
+  "last_verified_utc": "2026-11-05T18:45:03Z",
   "allowed_hosts": [
     "dev13",
     "dev15"
@@ -38,7 +38,7 @@
       10000
     ],
     "formal_runs": 12,
-    "active_runs_at_snapshot": 1,
+    "active_runs_at_snapshot": 0,
     "queued_runs": 0,
     "devices_per_run": 2,
     "global_batch": 256,
@@ -56,7 +56,7 @@
     "clips": 16,
     "logical_reference_episodes": 432,
     "logical_trained_episodes": 1152,
-    "completed_runs": 11
+    "completed_runs": 12
   },
   "ownership": {
     "resumed_training_host": "dev15",
@@ -81,7 +81,7 @@
   "complete_marker": "recovery-20261105/HOLD",
   "stop_marker": "STOP",
   "snapshot_steps": {
-    "h-jepa-seed10000": 21900
+    "h-jepa-seed10000": 29200
   },
   "startup_proofs": {
     "native_gates": 8,
@@ -93,6 +93,7 @@
     "local_sha256_verified_files": 122
   },
   "recovery_notes": [
+    "Original finite recovery completed successfully. Remaining48 endpoints identity/hash/state checks pass; old summary final12/1584. Both old GPU0/1 workers exited and the pair joined/completed the new finite screen; its actor is now also exited. No old benchmark retraining or extension.",
     "Do not launch another copy of a live native child. Check /proc command/start identity and both rank health files before intervention.",
     "Four future seeds are claimed atomically across both hosts; original preferred pair fields in plan.json are historical preferences, not current ownership.",
     "Public sampler uses unseeded random windows and native resume does not exactly replay its data order. Do not claim bitwise restart or zero replay.",
@@ -108,7 +109,7 @@
     "The six-hour recovery ends after the same 48 missing planned episodes. No extra seed, training extension, new method, or recurring LLM monitor.",
     "2026-11-05 new research authorization: 14 idle eval waiters retired after verifying no active child. Two replacement waiters on dev15 GPUs0/1 keep the same 48 missing endpoints; collector and original neural recovery remain unchanged. Ownership is recorded in runs/droid_mechanisms_20261105/old-evaluation-launch-dev15.json. New finite research uses the other 14 GPUs."
   ],
-  "performance_status": "100epoch TF -2.1470%, innovation -5.2477%, nativeLeWM+IDM33.9313% (3seeds each); nativeHJEPA33.6915% (2seeds provisional). Candidates substantially worse; offline fidelity, not task success.",
+  "performance_status": "100epoch3seed144outputs each:TF-2.1470%,innovation-5.2477%,LeWM+IDM33.9313%,HJEPA34.6126%;all1584 endpoints complete. Offline fidelity, not physical success.",
   "historical_hold": "Original HOLD retained; it recorded 1536/1584 and is not the recovery completion marker.",
   "recovery_scope": {
     "original_step": 5800,
