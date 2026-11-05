@@ -40,26 +40,39 @@ def export(root, output):
             if group['step'] not in [16480,40000]:continue
             assert len(group['rows'])==(320 if cohort=='main' else 160)
             groups[cohort,group['arm']]=group
+    for arm in ['tf-control','native-control']:
+        groups['main4',arm]=groups['main',arm]
+    for arm in ['local-mse','local-flow']:
+        extra=next(g for g in value['groups'] if g['phase']=='repeat-v1' and g['arm']==arm and g['step']==40000)
+        assert len(extra['rows'])==320
+        rows=groups['main',arm]['rows']+extra['rows']
+        assert {r['training_seed'] for r in rows}=={1,2,3,4}
+        groups['main4',arm]=dict(rows=rows,**summary(rows))
     arms=['tf-control','native-control','local-mse','local-flow']
     trace_checks={};tables={}
-    for cohort in ['main','fresh']:
+    for cohort in ['main','main4','fresh']:
         expected=None;tables[cohort]={}
         for arm in arms:
             group=groups[cohort,arm]
             identity={(r['task'],r['seed'],r['training_seed']):r['case_sha256'] for r in group['rows']}
             assert len(identity)==len(group['rows'])
             if expected is None:expected=identity
-            assert identity==expected,(cohort,arm,'physicalcase mismatch')
+            if cohort=='main4':
+                # Controls have two trained models;candidate repeats3/4 share
+                # exactly the same physical cases,not new physical samples.
+                physical={(t,s):h for (t,s,_),h in identity.items()}
+                assert physical=={(t,s):h for (t,s,_),h in expected.items()},(cohort,arm)
+            else:assert identity==expected,(cohort,arm,'physicalcase mismatch')
             for row in group['rows']:
                 path=row['trace']
                 if path not in trace_checks:
                     assert digest(path)==row['trace_sha256'],path
                     trace_checks[path]=row['trace_sha256']
             tables[cohort][arm]=dict(**summary(group['rows']),case_cluster95=ci(group['rows']),
-                per_training_seed={seed:summary([r for r in group['rows'] if r['training_seed']==seed]) for seed in [1,2]})
+                per_training_seed={seed:summary([r for r in group['rows'] if r['training_seed']==seed]) for seed in sorted({r['training_seed'] for r in group['rows']})})
     write('trace-checks.json',dict(passed=True,traces=len(trace_checks),sha256_by_path=trace_checks,
         common_case_hashes_across_all4_methods=True,main_cases_per_task=20,fresh_cases_per_task=10,
-        trained_models_per_method=2))
+        candidate_trained_models=4,baseline_trained_models=2))
     diagnostic=[];factorials={}
     for path in sorted((root/'diagnostics').glob('*/summary.json')):
         v=json.loads(path.read_text());assert v['passed'] and v['model_unchanged'] and v['model_updates']==0
@@ -75,7 +88,7 @@ def export(root, output):
             if v['name'].startswith('tf-control'):
                 f=expert['factorial']['goal_mse'];factorials.setdefault(row['task'],[]).append(f[1]/f[0])
     assert len(diagnostic)==46 and all(r['failed_cem_preferred_at30'] and r['cem_failed'] for r in diagnostic)
-    for phase in ['', 'long-v1','repeat-v1','vit-v1','vit-mse-v1','marginal-local-v1','fresh-v1','broad-v1']:
+    for phase in ['', 'long-v1','repeat-v1','vit-v1','vit-mse-v1','marginal-local-v1','history-v1','fresh-v1','broad-v1']:
         folder=root/phase
         for pattern in ['*plan*.json','launch-*.json','GOALS_APPROVED.json']:
             for path in folder.glob(pattern):copy(path)
@@ -90,7 +103,7 @@ def export(root, output):
             rows=diagnostic,tf_goal_arm_wrong_object_cost_fraction={k:dict(min=min(v),max=max(v)) for k,v in factorials.items()}),
         scope=value['scope'],traces_checked=len(trace_checks),
         cautions=['Main20 physicalcases/task were used in the exploratory investigation;fresh10 were fixed after freezing these CNNs.',
-            'Case intervals condition on two trainedmodels and do not measure initialization uncertainty.',
+            'Case intervals condition on the trainedmodels and do not measure initialization uncertainty;main4 candidates have4 models,controls2.',
             'Same corpus/trajectorysplit/evaluation but different phase sampling,models,objectives,training and inferencecompute.',
             'Action reconstruction uses factual loggedactions,no oracle optimal-action labels;this is a goal-conditioned inverse controller,not a pureforecastloss win.',
             'PickPlace is trainingseed-sensitive and Reach/ReachWall regress;no unified alltask solution or novelty/SOTA claim.']))

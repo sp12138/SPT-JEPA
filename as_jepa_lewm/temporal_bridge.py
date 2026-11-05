@@ -44,7 +44,7 @@ class TemporalBridge(nn.Module):
         assert visual_source in ['local', 'global', 'hybrid', 'patch', 'vit'] and objective in ['flow', 'mse', 'metric']
         assert condition_horizon in ['teacher', 'none']
         assert temporal_aux or (condition_horizon == 'none' and objective != 'metric')
-        assert not history_context or visual_source == 'vit'
+        assert not history_context or visual_source in ['local', 'vit']
         assert objective != 'metric' or visual_source == 'global'
         self.visual_source = visual_source; self.objective = objective
         self.width = width; self.chunk = chunk; self.window = window; self.action_dim = action_dim
