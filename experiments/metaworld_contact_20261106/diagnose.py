@@ -169,7 +169,8 @@ def run(args):
     import stable_worldmodel as swm
     from experiments.metaworld_eval_20261103.evaluate import model_sha
     from vforge.ops import OpsConfig, initialize_ops
-    initialize_ops(OpsConfig())
+    initialize_ops(OpsConfig(backend='sdpa', allow_fallback=False),
+                   device=torch.device('cuda'), parallel_state=None)
     torch.set_num_threads(2)
     torch.set_float32_matmul_precision('highest')
     output = Path(args.output); output.mkdir(parents=True, exist_ok=False)
