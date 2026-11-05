@@ -1,6 +1,6 @@
 {
   "status": "ACTIVE_SINGLE_SEED_RECOVERY",
-  "last_verified_utc": "2026-11-05T13:04:21Z",
+  "last_verified_utc": "2026-11-05T14:56:14Z",
   "allowed_hosts": [
     "dev13",
     "dev15"
@@ -66,18 +66,22 @@
     ],
     "resumed_torchrun_pid": 633367,
     "training_launch": "recovery-20261105/training-launch.json",
-    "eval_dev13": "recovery-20261105/launch-dev13-v2.json",
-    "eval_dev15": "recovery-20261105/launch-dev15-v2.json",
+    "eval_dev13": "retired; idle GPU waiters replaced for new research",
+    "eval_dev15": "/efs/prescottsun/SPT-JEPA/runs/droid_mechanisms_20261105/old-evaluation-launch-dev15.json",
     "collector": "recovery-20261105/collector-launch-v2.json",
     "collector_pid": 101370,
-    "supervisor_pid": 928600
+    "supervisor_pid": 928600,
+    "eval_gpus": [
+      0,
+      1
+    ]
   },
   "deadline_utc": "2026-11-05T18:56:18.590794+00:00",
   "canonical_results": "results/summary.json",
   "complete_marker": "recovery-20261105/HOLD",
   "stop_marker": "STOP",
   "snapshot_steps": {
-    "h-jepa-seed10000": 6800
+    "h-jepa-seed10000": 21900
   },
   "startup_proofs": {
     "native_gates": 8,
@@ -101,7 +105,8 @@
     "The failure began in health JSON temporary-file rename, followed by NCCL timeout. Unique tempfile/bounded retry fixes telemetry; neural model/loss/data/optimizer unchanged.",
     "Original entry/error/HOLD/checkpoint copied under recovery-20261105/original and input-last-step5800.ckpt. New entry-state hash exactly matches original full model on GPU.",
     "First recovery eval waiters started before the missing-job manifest and exited; all were replaced after manifest creation, with earlier errors preserved. Current ownership files have -v2 suffix.",
-    "The six-hour recovery ends after the same 48 missing planned episodes. No extra seed, training extension, new method, or recurring LLM monitor."
+    "The six-hour recovery ends after the same 48 missing planned episodes. No extra seed, training extension, new method, or recurring LLM monitor.",
+    "2026-11-05 new research authorization: 14 idle eval waiters retired after verifying no active child. Two replacement waiters on dev15 GPUs0/1 keep the same 48 missing endpoints; collector and original neural recovery remain unchanged. Ownership is recorded in runs/droid_mechanisms_20261105/old-evaluation-launch-dev15.json. New finite research uses the other 14 GPUs."
   ],
   "performance_status": "100epoch TF -2.1470%, innovation -5.2477%, nativeLeWM+IDM33.9313% (3seeds each); nativeHJEPA33.6915% (2seeds provisional). Candidates substantially worse; offline fidelity, not task success.",
   "historical_hold": "Original HOLD retained; it recorded 1536/1584 and is not the recovery completion marker.",
