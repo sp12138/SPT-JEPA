@@ -123,6 +123,8 @@ def run(a):
         with torch.inference_mode():
             goal = parent.encode(dict(pixels=parent.normalize(goal_rgb[None])))['emb'][0, 0]
             goal_key = patch_key(parent, parent.normalize(goal_rgb)) if a.mode == 'ap-local' else goal
+            if a.mode == 'bridge' and learner.visual_source == 'patch':
+                goal_patches = parent.encoder(parent.normalize(goal_rgb), interpolate_pos_encoding=True).last_hidden_state[:, 1:].half()
             try:
                 while len(actions) < a.budget:
                     current_rgb = resize_tensor(frames[-1:]).cuda()
@@ -131,6 +133,9 @@ def run(a):
                         batch = dict(features=torch.stack([current, goal])[None])
                         if learner.visual_source in ['local', 'hybrid']:
                             batch['pixels'] = torch.stack([current_rgb[0], goal_rgb[0]])[None]
+                        if learner.visual_source == 'patch':
+                            current_patches = parent.encoder(parent.normalize(current_rgb), interpolate_pos_encoding=True).last_hidden_state[:, 1:].half()
+                            batch['patches'] = torch.stack([current_patches[0], goal_patches[0]])[None]
                         plan = learner.propose(batch, generator=generator)[0].float().cpu().numpy()
                     else:
                         cost.goal = goal

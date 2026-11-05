@@ -29,6 +29,7 @@ def run(a):
     before = model_sha(model)
     total = int(lengths[eligible].sum())
     images = np.lib.format.open_memmap(output/'pixels.npy', mode='w+', dtype=np.uint8, shape=(total, 224, 224, 3)) if a.rgb else None
+    dense = np.lib.format.open_memmap(output/'patches.npy', mode='w+', dtype=np.float16, shape=(total, 256, 192)) if a.dense else None
     embeddings, patches, actions, records = [], [], [], []
     cursor = 0; start_time = time.monotonic()
     with h5py.File(card['h5_path'], 'r', rdcc_nbytes=64*1024*1024) as file, torch.inference_mode():
@@ -48,6 +49,9 @@ def run(a):
                 tokens = model.encoder(inp[:, 0], interpolate_pos_encoding=True).last_hidden_state[:, 1:]
                 side = int(tokens.shape[1]**.5)
                 assert side*side == tokens.shape[1]
+                if dense is not None:
+                    assert tokens.shape[1:] == (256, 192)
+                    dense[cursor+j:cursor+j+len(tokens)] = tokens.half().cpu().numpy()
                 local = torch.nn.functional.adaptive_avg_pool2d(tokens.transpose(1, 2).reshape(len(tokens), -1, side, side), (4, 4))
                 patches.append(local.flatten(2).transpose(1, 2).half().cpu())
             actions.append(control)
@@ -62,12 +66,15 @@ def run(a):
     assert cursor == total
     if images is not None:
         images.flush(); del images
+    if dense is not None:
+        dense.flush(); del dense
     torch.save(dict(embedding=torch.cat(embeddings), patches=torch.cat(patches)), output/'features.pt')
     np.save(output/'actions.npy', np.concatenate(actions))
     after = model_sha(model); assert after == before
     save(output/'manifest.json', dict(passed=True, checkpoint=a.checkpoint, model_sha256=before,
          model_unchanged=True, model_updates=0, records=records, frames=total,
-         shard=a.shard, shards=a.shards, rgb=a.rgb, input_fields=['pixels', 'action'],
+         shard=a.shard, shards=a.shards, rgb=a.rgb, dense=a.dense,
+         dense_sha256=digest(output/'patches.npy') if a.dense else None, input_fields=['pixels', 'action'],
          features_sha256=digest(output/'features.pt'), actions_sha256=digest(output/'actions.npy'),
          split_sha256=digest(data/'split-manifest.json'),
          scope='All50tasks,phase0 only,trajectory-disjoint train/test.Factual controls,not optimal labels.No reward/state/success/taskID in features.'))
@@ -80,4 +87,5 @@ if __name__ == '__main__':
     p.add_argument('--shard', type=int, required=True)
     p.add_argument('--shards', type=int, default=4)
     p.add_argument('--rgb', action='store_true')
+    p.add_argument('--dense', action='store_true')
     run(p.parse_args())

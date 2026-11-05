@@ -25,6 +25,8 @@ class TrajectoryPairs(Dataset):
                        if self.source in ['global', 'hybrid'] else None)
             actions = np.load(directory/'actions.npy', mmap_mode='r')
             self.shards.append(dict(directory=directory, feature=feature, actions=actions))
+            if self.source == 'patch':
+                self.shards[-1]['patches'] = np.load(feature_root/str(shard)/'patches.npy', mmap_mode='r')
             for r in manifest['records']:
                 if r['split'] == split:
                     self.records.append(dict(shard=shard, **r))
@@ -64,6 +66,8 @@ class TrajectoryPairs(Dataset):
                      episode=record['episode'], start=start, rows=torch.from_numpy(rows))
         if self.source in ['global', 'hybrid']:
             value['features'] = torch.from_numpy(data['feature'][rows].copy())
+        if self.source == 'patch':
+            value['patches'] = torch.from_numpy(data['patches'][rows].copy())
         if self.source in ['local', 'hybrid']:
             if shard not in self.images:
                 self.images[shard] = np.load(data['directory']/'pixels.npy', mmap_mode='r')

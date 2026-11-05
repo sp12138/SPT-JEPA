@@ -40,7 +40,7 @@ class TemporalBridge(nn.Module):
     def __init__(self, visual_source='local', objective='flow', width=192, chunk=6,
                  action_dim=20, window=2, feature_dim=64, noise_odds=1., condition_horizon='teacher'):
         super().__init__()
-        assert visual_source in ['local', 'global', 'hybrid'] and objective in ['flow', 'mse', 'metric']
+        assert visual_source in ['local', 'global', 'hybrid', 'patch'] and objective in ['flow', 'mse', 'metric']
         assert condition_horizon in ['teacher', 'none']
         assert objective != 'metric' or visual_source == 'global'
         self.visual_source = visual_source; self.objective = objective
@@ -51,8 +51,11 @@ class TemporalBridge(nn.Module):
         # parameters and do not alter this model's loss or optimizer groups.
         self.renderer = None
         self.encoder = SpatialEncoder(width) if visual_source in ['local', 'hybrid'] else nn.Sequential(nn.LayerNorm(feature_dim), nn.Linear(feature_dim, width))
+        if visual_source == 'patch':
+            self.encoder = nn.Sequential(nn.LayerNorm(192), nn.Linear(192, width))
         self.kind = nn.Parameter(torch.zeros(2, width))
-        self.position = nn.Parameter(torch.randn(1, 196 if visual_source in ['local', 'hybrid'] else 1, width)*.02)
+        positions = 256 if visual_source == 'patch' else 196 if visual_source in ['local', 'hybrid'] else 1
+        self.position = nn.Parameter(torch.randn(1, positions, width)*.02)
         self.time_query = nn.Parameter(torch.randn(1, 1, width)*.02)
         self.horizon_predictor = nn.TransformerDecoder(nn.TransformerDecoderLayer(width, 3, width*4, dropout=0.,
                                                        activation='gelu', batch_first=True, norm_first=True), 2)
@@ -72,7 +75,9 @@ class TemporalBridge(nn.Module):
             self.global_encoder = nn.Sequential(nn.LayerNorm(feature_dim), nn.Linear(feature_dim, width), nn.LayerNorm(width))
 
     def memory(self, batch):
-        if self.visual_source in ['local', 'hybrid']:
+        if self.visual_source == 'patch':
+            tokens = self.encoder(batch['patches'].float())
+        elif self.visual_source in ['local', 'hybrid']:
             x = batch['pixels'].float()/127.5-1.
             b, t = x.shape[:2]
             tokens = self.encoder(x.flatten(0, 1)).unflatten(0, (b, t))
