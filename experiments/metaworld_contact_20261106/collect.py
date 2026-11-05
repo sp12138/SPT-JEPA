@@ -82,10 +82,10 @@ def collect(root):
                                case_cluster95=ci(rows) if len(models)>=2 else None,rows=rows))
     for arm in ['local-mse','local-flow']:
         add('confirmation10k',arm,10000,[(seed,root/'confirmation10k'/f'{arm}-seed{seed}'/'summary.json') for seed in [1,2]])
-    for phase in ['screen','adaptation-v1','long-v1','repeat-v1','vit-v1','vit-mse-v1','marginal-local-v1','history-v1']:
+    for phase in ['screen','adaptation-v1','long-v1','repeat-v1','vit-v1','vit-mse-v1','marginal-local-v1','history-v1','budget-v1']:
         folder=root if phase=='screen' else root/phase
         pointer=folder/'active-bridge-plan.json'
-        plan_file=Path(json.loads(pointer.read_text())['path']) if pointer.exists() else folder/'bridge-plan.json'
+        plan_file=Path(json.loads(pointer.read_text())['path']) if pointer.exists() else folder/('plan.json' if phase=='budget-v1' else 'bridge-plan.json')
         if not plan_file.exists():continue
         plan=json.loads(plan_file.read_text());recipes=plan['recipes']
         for arm in sorted({r['arm'] for r in recipes}):
@@ -145,8 +145,8 @@ if __name__=='__main__':
     while True:
         value=collect(a.root)
         print(json.dumps(dict(utc=value['created_utc'],groups=len(value['groups']),active_runs=sum(not r['complete'] for r in value['runs']))),flush=True)
-        final=[r for r in value['runs'] if r['phase'] in ['long-v1','repeat-v1','vit-v1','vit-mse-v1','marginal-local-v1','history-v1','fresh-v1','broad-v1','broad-repeat-v1']]
-        if not a.watch or (len(final)==40 and all(r['complete'] for r in final)) or time.time()>deadline:
-            if a.watch:save(a.root/'review/HOLD.json',dict(finalized=True,expected_runs=40,all_complete=len(final)==40 and all(r['complete'] for r in final),no_automatic_next_round=True))
+        final=[r for r in value['runs'] if r['phase'] in ['long-v1','repeat-v1','vit-v1','vit-mse-v1','marginal-local-v1','history-v1','budget-v1','fresh-v1','broad-v1','broad-repeat-v1']]
+        if not a.watch or (len(final)==44 and all(r['complete'] for r in final)) or time.time()>deadline:
+            if a.watch:save(a.root/'review/HOLD.json',dict(finalized=True,expected_runs=44,all_complete=len(final)==44 and all(r['complete'] for r in final),no_automatic_next_round=True))
             break
         time.sleep(30)
