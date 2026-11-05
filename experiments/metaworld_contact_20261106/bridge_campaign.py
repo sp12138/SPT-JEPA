@@ -61,7 +61,8 @@ def prepare(root, source):
 
 
 def stage_command(source, config, step, resume):
-    helper = BASE/'reports/metaworld_improve_20261104/helper-698ae41/experiments/lingjing_fullspec_20261102/safe_train_stage.py'
+    helper = source/'experiments/lingjing_fullspec_20261102/safe_train_stage.py'
+    assert helper.is_file(), helper
     cmd = [PYTHON, '-B', '-u', str(helper), '--config', str(config), '--stop-step', str(step)]
     if resume:
         cmd.append('--resume')
