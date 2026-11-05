@@ -34,8 +34,10 @@ def run(a):
             noise = torch.randn_like(target)
             # Counterfactual goal is the current observation,not another label.
             changed = dict(b)
-            key = 'pixels' if model.visual_source == 'local' else 'features'
+            key = 'pixels' if model.visual_source in ['local', 'hybrid'] else 'features'
             changed[key] = b[key].clone(); changed[key][:, 1] = b[key][:, 0]
+            if model.visual_source == 'hybrid':
+                changed['features'] = b['features'].clone(); changed['features'][:, 1] = b['features'][:, 0]
             wrong_memory = model.memory(changed)
             for timestep in ([0.] if model.objective == 'mse' else [.1, .5, 1.]):
                 t = target.new_full((len(target),), timestep)

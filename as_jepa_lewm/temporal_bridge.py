@@ -38,19 +38,21 @@ class SpatialEncoder(nn.Module):
 
 class TemporalBridge(nn.Module):
     def __init__(self, visual_source='local', objective='flow', width=192, chunk=6,
-                 action_dim=20, window=2, feature_dim=64, noise_odds=1.):
+                 action_dim=20, window=2, feature_dim=64, noise_odds=1., condition_horizon='teacher'):
         super().__init__()
-        assert visual_source in ['local', 'global'] and objective in ['flow', 'mse', 'metric']
+        assert visual_source in ['local', 'global', 'hybrid'] and objective in ['flow', 'mse', 'metric']
+        assert condition_horizon in ['teacher', 'none']
         assert objective != 'metric' or visual_source == 'global'
         self.visual_source = visual_source; self.objective = objective
         self.width = width; self.chunk = chunk; self.window = window; self.action_dim = action_dim
         self.noise_odds = noise_odds
+        self.condition_horizon = condition_horizon
         # Native trainer metadata expects these interfaces. They carry no
         # parameters and do not alter this model's loss or optimizer groups.
         self.renderer = None
-        self.encoder = SpatialEncoder(width) if visual_source == 'local' else nn.Sequential(nn.LayerNorm(feature_dim), nn.Linear(feature_dim, width))
+        self.encoder = SpatialEncoder(width) if visual_source in ['local', 'hybrid'] else nn.Sequential(nn.LayerNorm(feature_dim), nn.Linear(feature_dim, width))
         self.kind = nn.Parameter(torch.zeros(2, width))
-        self.position = nn.Parameter(torch.randn(1, 196 if visual_source == 'local' else 1, width)*.02)
+        self.position = nn.Parameter(torch.randn(1, 196 if visual_source in ['local', 'hybrid'] else 1, width)*.02)
         self.time_query = nn.Parameter(torch.randn(1, 1, width)*.02)
         self.horizon_predictor = nn.TransformerDecoder(nn.TransformerDecoderLayer(width, 3, width*4, dropout=0.,
                                                        activation='gelu', batch_first=True, norm_first=True), 2)
@@ -64,21 +66,33 @@ class TemporalBridge(nn.Module):
             self.action_readout = nn.Sequential(nn.LayerNorm(width), nn.Linear(width, action_dim))
         else:
             self.predictor = nn.Identity()
+        # Append after the original modules so paired local/hybrid arms keep
+        # every original initial tensor identical for a common random seed.
+        if visual_source == 'hybrid':
+            self.global_encoder = nn.Sequential(nn.LayerNorm(feature_dim), nn.Linear(feature_dim, width), nn.LayerNorm(width))
 
     def memory(self, batch):
-        if self.visual_source == 'local':
+        if self.visual_source in ['local', 'hybrid']:
             x = batch['pixels'].float()/127.5-1.
             b, t = x.shape[:2]
             tokens = self.encoder(x.flatten(0, 1)).unflatten(0, (b, t))
         else:
             tokens = self.encoder(batch['features']).unsqueeze(2)
-        return (tokens+self.position[:, None]+self.kind[None, :, None]).flatten(1, 2)
+        memory = (tokens+self.position[:, None]+self.kind[None, :, None]).flatten(1, 2)
+        if self.visual_source == 'hybrid':
+            global_tokens = self.global_encoder(batch['features'])+self.kind[None]
+            memory = torch.cat([memory, global_tokens], 1)
+        return memory
 
     def duration(self, memory):
         out = self.horizon_predictor(self.time_query.expand(len(memory), -1, -1), memory)
         return F.softplus(self.time_readout(out[:, 0]).squeeze(-1))
 
     def action_field(self, x, time, horizon, memory):
+        if self.condition_horizon == 'none':
+            # Integrate out the unknown logged horizon rather than substitute
+            # a point estimate for a training-only known temporal offset.
+            horizon = torch.zeros_like(horizon)
         frequencies = (2.**torch.arange(8, device=x.device))*math.pi
         angles = time[:, None]*frequencies
         values = torch.cat([angles.sin(), angles.cos(), time[:, None], horizon[:, None]], -1)
@@ -138,4 +152,6 @@ class TemporalBridge(nn.Module):
         result = dict(encoder='active', horizon_predictor='active', time_readout='active')
         if self.objective != 'metric':
             result.update(predictor='active', action_readout='active')
+        if self.visual_source == 'hybrid':
+            result['global_encoder'] = 'active'
         return result

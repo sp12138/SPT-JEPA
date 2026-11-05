@@ -129,7 +129,7 @@ def run(a):
                     current = parent.encode(dict(pixels=parent.normalize(current_rgb[None])))['emb'][0, 0]
                     if a.mode == 'bridge':
                         batch = dict(features=torch.stack([current, goal])[None])
-                        if learner.visual_source == 'local':
+                        if learner.visual_source in ['local', 'hybrid']:
                             batch['pixels'] = torch.stack([current_rgb[0], goal_rgb[0]])[None]
                         plan = learner.propose(batch, generator=generator)[0].float().cpu().numpy()
                     else:

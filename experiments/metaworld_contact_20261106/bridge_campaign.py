@@ -83,7 +83,15 @@ def work(root, source, host, gpu):
         time.sleep(5)
     assert digest(run/'config.json') == recipe['config_sha256']
     try:
-        for step in plan['stages']:
+        if recipe.get('entry_step') is not None:
+            entry_step = recipe['entry_step']
+            command([PYTHON, '-B', '-u', str(source/'experiments/metaworld_contact_20261106/audit_bridge.py'),
+                     '--run', str(run), '--step', str(entry_step), '--output', str(run/f'entry-audit-{entry_step}.json')],
+                    run/f'entry-audit-{entry_step}.log', env, source, plan['deadline_unix'])
+            assert json.loads((run/f'entry-audit-{entry_step}.json').read_text())['passed']
+        stages = recipe.get('stages', plan['stages'])
+        entry = recipe.get('technical_step', 2)
+        for step in stages:
             assert not (root/'STOP').exists() and not (run/'STOP').exists()
             existing = run/'last.ckpt'
             completed = 0
@@ -104,13 +112,13 @@ def work(root, source, host, gpu):
             archive = run/f'archive-step{step:07d}'; archive.mkdir()
             shutil.copyfile(run/'last.ckpt', archive/'native.ckpt')
             save(archive/'manifest.json', dict(step=step, native_sha256=digest(archive/'native.ckpt')))
-            seeds = [42] if step == 2 else [42, 1042] if step == 600 else [42, 43, 1042, 1043] if step == 3000 else [42, 43, 44, 45, 1042, 1043, 1044, 1045]
-            tasks = ['reach-v3'] if step == 2 else TASKS
+            seeds = [42] if step == entry else [42, 1042] if step == 600 else [42, 43, 1042, 1043] if step in [3000, 6000] else [42, 43, 44, 45, 1042, 1043, 1044, 1045]
+            tasks = ['reach-v3'] if step == entry else TASKS
             out = run/f'eval-step{step:07d}'
             cmd = [PYTHON, '-B', '-u', str(source/'experiments/metaworld_contact_20261106/evaluate.py'),
                    '--mode', 'metric' if recipe['arm'] == 'metric' else 'bridge', '--run', str(run), '--step', str(step),
                    '--parent', recipe['parent'], '--data', plan['data'], '--manifest', plan['manifest'],
-                   '--output', str(out), '--budget', '20' if step == 2 else '500', '--seeds']+list(map(str, seeds))+['--tasks']+tasks
+                   '--output', str(out), '--budget', '20' if step == entry else '500', '--seeds']+list(map(str, seeds))+['--tasks']+tasks
             command(cmd, run/f'eval-{step}.log', env, source, plan['deadline_unix'])
             assert json.loads((out/'summary.json').read_text())['passed']
             save(run/'progress.json', dict(step=step, state='stage-complete', updated_utc=datetime.datetime.now(datetime.timezone.utc).isoformat()))
