@@ -35,17 +35,24 @@ def summary(rows):
 
 def ci(rows):
     """Resample physicalcases within task,keeping all trained-seed repeats."""
-    values=[];generator=np.random.default_rng(20261106)
+    values=[];generator=np.random.default_rng(20261106);common_cases=None
     for task in MANIP:
         selected=[r for r in rows if r['task']==task]
         cases=sorted({r['seed'] for r in selected});seeds=sorted({r['training_seed'] for r in selected})
-        if not cases or len(selected)!=len(cases)*len(seeds):return None
+        if len(cases)<20 or len(selected)!=len(cases)*len(seeds):return None
+        if common_cases is None:common_cases=cases
+        if common_cases!=cases:return None
         matrix=np.asarray([[next(r['success'] for r in selected if r['seed']==case and r['training_seed']==s) for s in seeds] for case in cases],np.float64)
-        ids=generator.integers(0,len(cases),size=(5000,len(cases)))
-        values.append(matrix[ids].mean((1,2)))
-    low,high=np.percentile(np.mean(values,axis=0)*100,[2.5,97.5])
+        values.append(matrix)
+    # Reuse the same resampled physical seed across tasks,retaining any
+    # common-random-number correlation and all trained-model repetitions.
+    banks=[[i for i,s in enumerate(common_cases) if (s>=1000)==fresh] for fresh in [False,True]]
+    draws=[generator.choice(bank,size=(5000,len(bank)),replace=True) for bank in banks if bank]
+    ids=np.concatenate(draws,axis=1)
+    sampled=np.stack(values)[:,ids].mean((0,2,3))*100
+    low,high=np.percentile(sampled,[2.5,97.5])
     return dict(lower=float(low),upper=float(high),conditional_on_trained_models=True,
-                bootstrap='5000stratified resamples of physicalcase(task,seed),not each repeated model-case independently')
+                bootstrap='5000shared-physical-seed blocks across all tasks/models,stratifiedbyprimary/freshbank;not repeated model-cases independently')
 
 
 def collect(root):
