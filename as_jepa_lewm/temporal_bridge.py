@@ -38,28 +38,44 @@ class SpatialEncoder(nn.Module):
 
 class TemporalBridge(nn.Module):
     def __init__(self, visual_source='local', objective='flow', width=192, chunk=6,
-                 action_dim=20, window=2, feature_dim=64, noise_odds=1., condition_horizon='teacher'):
+                 action_dim=20, window=2, feature_dim=64, noise_odds=1., condition_horizon='teacher',
+                 temporal_aux=True, history_context=False, freeze_visual_encoder=False, encoder_lr=None):
         super().__init__()
-        assert visual_source in ['local', 'global', 'hybrid', 'patch'] and objective in ['flow', 'mse', 'metric']
+        assert visual_source in ['local', 'global', 'hybrid', 'patch', 'vit'] and objective in ['flow', 'mse', 'metric']
         assert condition_horizon in ['teacher', 'none']
+        assert temporal_aux or (condition_horizon == 'none' and objective != 'metric')
+        assert not history_context or visual_source == 'vit'
         assert objective != 'metric' or visual_source == 'global'
         self.visual_source = visual_source; self.objective = objective
         self.width = width; self.chunk = chunk; self.window = window; self.action_dim = action_dim
         self.noise_odds = noise_odds
         self.condition_horizon = condition_horizon
+        self.temporal_aux = temporal_aux; self.history_context = history_context
+        self.freeze_visual_encoder = freeze_visual_encoder; self.encoder_lr = encoder_lr
         # Native trainer metadata expects these interfaces. They carry no
         # parameters and do not alter this model's loss or optimizer groups.
         self.renderer = None
         self.encoder = SpatialEncoder(width) if visual_source in ['local', 'hybrid'] else nn.Sequential(nn.LayerNorm(feature_dim), nn.Linear(feature_dim, width))
         if visual_source == 'patch':
             self.encoder = nn.Sequential(nn.LayerNorm(192), nn.Linear(192, width))
-        self.kind = nn.Parameter(torch.zeros(2, width))
-        positions = 256 if visual_source == 'patch' else 196 if visual_source in ['local', 'hybrid'] else 1
+        if visual_source == 'vit':
+            from transformers import ViTConfig, ViTModel
+            assert width == 192
+            self.encoder = ViTModel(ViTConfig(hidden_size=192, num_hidden_layers=12, num_attention_heads=3,
+                                    intermediate_size=768, image_size=224, patch_size=14),
+                                    add_pooling_layer=False, use_mask_token=False)
+            if hasattr(self.encoder, 'set_attn_implementation'):
+                self.encoder.set_attn_implementation('sdpa')
+            self.register_buffer('pixel_mean', torch.tensor([.485,.456,.406])[None,:,None,None], persistent=False)
+            self.register_buffer('pixel_std', torch.tensor([.229,.224,.225])[None,:,None,None], persistent=False)
+        self.kind = nn.Parameter(torch.zeros(3 if history_context else 2, width))
+        positions = 257 if visual_source == 'vit' else 256 if visual_source == 'patch' else 196 if visual_source in ['local', 'hybrid'] else 1
         self.position = nn.Parameter(torch.randn(1, positions, width)*.02)
-        self.time_query = nn.Parameter(torch.randn(1, 1, width)*.02)
-        self.horizon_predictor = nn.TransformerDecoder(nn.TransformerDecoderLayer(width, 3, width*4, dropout=0.,
-                                                       activation='gelu', batch_first=True, norm_first=True), 2)
-        self.time_readout = nn.Sequential(nn.LayerNorm(width), nn.Linear(width, 1))
+        if temporal_aux:
+            self.time_query = nn.Parameter(torch.randn(1, 1, width)*.02)
+            self.horizon_predictor = nn.TransformerDecoder(nn.TransformerDecoderLayer(width, 3, width*4, dropout=0.,
+                                                           activation='gelu', batch_first=True, norm_first=True), 2)
+            self.time_readout = nn.Sequential(nn.LayerNorm(width), nn.Linear(width, 1))
         if objective != 'metric':
             self.action_input = nn.Linear(action_dim, width)
             self.action_position = nn.Parameter(torch.randn(1, chunk, width)*.02)
@@ -73,9 +89,18 @@ class TemporalBridge(nn.Module):
         # every original initial tensor identical for a common random seed.
         if visual_source == 'hybrid':
             self.global_encoder = nn.Sequential(nn.LayerNorm(feature_dim), nn.Linear(feature_dim, width), nn.LayerNorm(width))
+        if history_context:
+            self.history_encoder = nn.Sequential(nn.Linear(action_dim+1, width), nn.LayerNorm(width))
+        if freeze_visual_encoder:
+            self.encoder.requires_grad_(False)
 
     def memory(self, batch):
-        if self.visual_source == 'patch':
+        if self.visual_source == 'vit':
+            images = batch['pixels'].float(); b,t = images.shape[:2]
+            value = (images.flatten(0,1)/255.-self.pixel_mean)/self.pixel_std
+            # Keep BOTH the globalCLS and all256local contextual tokens.
+            tokens = self.encoder(value, interpolate_pos_encoding=True).last_hidden_state.unflatten(0,(b,t))
+        elif self.visual_source == 'patch':
             tokens = self.encoder(batch['patches'].float())
         elif self.visual_source in ['local', 'hybrid']:
             x = batch['pixels'].float()/127.5-1.
@@ -87,9 +112,14 @@ class TemporalBridge(nn.Module):
         if self.visual_source == 'hybrid':
             global_tokens = self.global_encoder(batch['features'])+self.kind[None]
             memory = torch.cat([memory, global_tokens], 1)
+        if self.history_context:
+            previous = torch.cat([batch['previous_action'].float(), batch['history_valid'].float()[:,None]], -1)
+            memory = torch.cat([memory, self.history_encoder(previous)[:,None]], 1)
         return memory
 
     def duration(self, memory):
+        if not self.temporal_aux:
+            return memory.new_zeros(len(memory))
         out = self.horizon_predictor(self.time_query.expand(len(memory), -1, -1), memory)
         return F.softplus(self.time_readout(out[:, 0]).squeeze(-1))
 
@@ -109,7 +139,7 @@ class TemporalBridge(nn.Module):
         memory = self.memory(batch)
         target_horizon = torch.log1p(batch['horizon'].float())
         duration = self.duration(memory)
-        time_loss = (duration-target_horizon).square().mean()
+        time_loss = (duration-target_horizon).square().mean() if self.temporal_aux else duration.new_zeros(())
         if self.objective == 'metric':
             return time_loss, dict(loss=time_loss, temporal=time_loss)
         target = batch['action'].float()
@@ -144,7 +174,14 @@ class TemporalBridge(nn.Module):
         return value
 
     def training_optimizer_config(self, max_steps):
-        optimizer = torch.optim.AdamW(self.parameters(), lr=3e-4, weight_decay=1e-3)
+        parameters = [p for p in self.parameters() if p.requires_grad]
+        if self.encoder_lr is not None and not self.freeze_visual_encoder:
+            visual = {id(p) for p in self.encoder.parameters()}
+            groups = [dict(params=[p for p in parameters if id(p) in visual], lr=self.encoder_lr),
+                      dict(params=[p for p in parameters if id(p) not in visual], lr=3e-4)]
+            optimizer = torch.optim.AdamW(groups, lr=3e-4, weight_decay=1e-3)
+        else:
+            optimizer = torch.optim.AdamW(parameters, lr=3e-4, weight_decay=1e-3)
         warmup = max(1, int(.01*max_steps))
         def schedule(step):
             if step < warmup:
@@ -154,9 +191,13 @@ class TemporalBridge(nn.Module):
         return dict(optimizer=optimizer, lr_scheduler=dict(scheduler=scheduler, interval='step'))
 
     def audit_expected_gradients(self):
-        result = dict(encoder='active', horizon_predictor='active', time_readout='active')
+        result = dict(encoder='frozen' if self.freeze_visual_encoder else 'active')
+        if self.temporal_aux:
+            result.update(horizon_predictor='active', time_readout='active')
         if self.objective != 'metric':
             result.update(predictor='active', action_readout='active')
         if self.visual_source == 'hybrid':
             result['global_encoder'] = 'active'
+        if self.history_context:
+            result['history_encoder'] = 'active'
         return result

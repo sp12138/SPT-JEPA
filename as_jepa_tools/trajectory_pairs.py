@@ -13,6 +13,7 @@ class TrajectoryPairs(Dataset):
         self.seed = config['seed']; self.chunk = config['model'].get('chunk', 6)
         self.source = config['model'].get('visual_source', 'local')
         self.metric = config['model'].get('objective') == 'metric'
+        self.history = config['model'].get('history_context', False)
         self.encode_epoch_index = True
         self.shards = []
         self.records = []
@@ -68,8 +69,13 @@ class TrajectoryPairs(Dataset):
             value['features'] = torch.from_numpy(data['feature'][rows].copy())
         if self.source == 'patch':
             value['patches'] = torch.from_numpy(data['patches'][rows].copy())
-        if self.source in ['local', 'hybrid']:
+        if self.source in ['local', 'hybrid', 'vit']:
             if shard not in self.images:
                 self.images[shard] = np.load(data['directory']/'pixels.npy', mmap_mode='r')
-            value['pixels'] = torch.from_numpy(self.images[shard][rows].copy()).permute(0, 3, 1, 2)
+            image_rows = [offset+max(0,start-1), *rows] if self.history else rows
+            value['pixels'] = torch.from_numpy(self.images[shard][image_rows].copy()).permute(0, 3, 1, 2)
+        if self.history:
+            prior = (data['actions'][offset+start-1]-self.mean)/self.std if start else np.zeros(20,np.float32)
+            value['previous_action'] = torch.from_numpy(np.asarray(prior,np.float32).copy())
+            value['history_valid'] = np.float32(start > 0)
         return value

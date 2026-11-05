@@ -47,10 +47,13 @@ def run(a):
     assert torch.isfinite(loss)
     loss.backward()
     gradients = {}
-    for prefix in model.audit_expected_gradients():
+    for prefix, expectation in model.audit_expected_gradients().items():
         grads = [p.grad.detach().float() for n, p in model.named_parameters() if n.startswith(prefix+'.') and p.grad is not None]
         norm = sum(float(g.square().sum()) for g in grads)**.5
-        assert grads and all(bool(torch.isfinite(g).all()) for g in grads) and norm > 0, prefix
+        if expectation == 'frozen':
+            assert not grads and all(not p.requires_grad for n,p in model.named_parameters() if n.startswith(prefix+'.')), prefix
+        else:
+            assert grads and all(bool(torch.isfinite(g).all()) for g in grads) and norm > 0, prefix
         gradients[prefix] = norm
     with torch.no_grad():
         memory = model.memory(moved); duration = model.duration(memory)

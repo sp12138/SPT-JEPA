@@ -84,7 +84,7 @@ def run(a):
         learner = build_model(cfg).cuda().eval().requires_grad_(False)
         learner.load_state_dict(torch.load(Path(a.run)/f'model-step{a.step:07d}/weights.pt', map_location='cuda', weights_only=True))
         learner_before = model_sha(learner)
-    needs_parent = a.mode != 'bridge' or learner.visual_source != 'local'
+    needs_parent = a.mode != 'bridge' or learner.visual_source not in ['local', 'vit']
     parent = swm.wm.utils.load_pretrained(a.parent).cuda().eval().requires_grad_(False) if needs_parent else None
     before = model_sha(parent) if parent is not None else None
     bank = ObservedTargets(a.feature_cache, local=a.mode == 'ap-local') if a.mode.startswith('ap-') else None
@@ -132,8 +132,14 @@ def run(a):
                     current = parent.encode(dict(pixels=parent.normalize(current_rgb[None])))['emb'][0, 0] if needs_parent else None
                     if a.mode == 'bridge':
                         batch = dict(features=torch.stack([current, goal])[None]) if needs_parent else {}
-                        if learner.visual_source in ['local', 'hybrid']:
-                            batch['pixels'] = torch.stack([current_rgb[0], goal_rgb[0]])[None]
+                        if learner.visual_source in ['local', 'hybrid', 'vit']:
+                            if learner.history_context:
+                                previous_rgb = resize_tensor(frames[-2:-1] if len(frames)>1 else frames[-1:]).cuda()[0]
+                                batch['pixels'] = torch.stack([previous_rgb, current_rgb[0], goal_rgb[0]])[None]
+                                batch['previous_action'] = torch.from_numpy(history[-1] if history else np.zeros(20,np.float32))[None].cuda()
+                                batch['history_valid'] = torch.tensor([bool(history)], device='cuda')
+                            else:
+                                batch['pixels'] = torch.stack([current_rgb[0], goal_rgb[0]])[None]
                         if learner.visual_source == 'patch':
                             current_patches = parent.encoder(parent.normalize(current_rgb), interpolate_pos_encoding=True).last_hidden_state[:, 1:].half()
                             batch['patches'] = torch.stack([current_patches[0], goal_patches[0]])[None]
