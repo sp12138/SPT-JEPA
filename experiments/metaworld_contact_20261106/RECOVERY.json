@@ -25,10 +25,11 @@
     "budget_and_collector": "0213955",
     "budget_NN_runtime": "7b78f5d originalunchanged",
     "NoH_coverage_and_collector": "b65ede2",
-    "final_queued_controls": "505f6a8;baseline NN pinned7b78f5d"
+    "final_queued_controls": "505f6a8;baseline NN pinned7b78f5d",
+    "cold_and_minimal_controls": "505f6a8;worldmodelNNruntime7b78f5d unchanged"
   },
   "ownership": "Each root launch-dev13/dev15.json and actual live process identity;never infer GPU activity from slots.",
-  "active_plan": "Finite56 logicalruns under current_roots;original24hdeadline and no automatic newresearch.",
+  "active_plan": "Finite56logicalruns across current_roots;original24hdeadline thenHOLD,no automaticnextresearch.",
   "repairs": [
     "Startup errors retained;completed2updates reused.",
     "IsolatedFP32 sample-independence audit disablesTF32;no trainingchange.",
@@ -57,10 +58,10 @@
     "simple-v1"
   ],
   "slot_chains": {
-    "gpu0_4": "NoH40k -> broad-noh-v1 -> budget-scratch-v1 originalTF/native randomseeds3/4,40k",
-    "gpu1_2": "budget-v1 originalTF/native full16480->40k seeds1/2",
-    "gpu3_5": "broad-v1 TF/native20epoch400case -> simple-v1 CNN/current+goal/oneactionloss/nohistory/noaux seeds1/2",
-    "gpu6_7": "history-v1 CNN40k"
+    "gpu0_4": "NoH40k -> NoH50task coverage -> budget-scratch-v1 independentTF/native seeds3/4 from0->40k",
+    "gpu1_2": "budget-v1 originalTF/native seeds1/2 full16480->40k",
+    "gpu3_5": "broad-v1 original20epoch50task -> simple-v1 freshminimalCNN oneactionloss/nohistory/clock/aux,40k",
+    "gpu6_7": "history-v1 oneactionlossCNN40k"
   },
   "finite_collector": {
     "pid_dev13": 3697457,
@@ -87,5 +88,7 @@
     "physical_cases_per_task": 8,
     "baseline50task": "pending;no full50 performancegapclaim"
   },
-  "queued_scope": "Four new independent scratchTF/native seeds3/4 start0,no parentNN/optimizer used;Native has actual2updates,remaining gates pending.Four minimalCNNs queued behind50task baselines;no performanceclaim."
+  "queued_scope": "Four new independent scratchTF/native seeds3/4 start0,no parentNN/optimizer used;Native has actual2updates,remaining gates pending.Four minimalCNNs queued behind50task baselines;no performanceclaim.",
+  "queued_controls": "Four coldTF/native seeds3/4 reuse configurationtemplates ONLY,no parentNN/optimizer;Native3/4 actual2updates,other gates pending.Four minimalCNNs queued behind frozen50task baselines.No newperformanceclaim.",
+  "latest_queue_evidence": "results/latest/queue-extension-505f6a8/INDEX.json:30 config/ownership SHAchecks PASS;bothhost actualPIDidentities PASS."
 }
