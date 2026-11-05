@@ -181,13 +181,17 @@ def collect(a):
         errors=list((root/'errors').glob('*.json'))+list((root/'evaluations').glob('*/error.json'))
         corrections=json.loads((root/'recovery-v2/CORRECTIONS.json').read_text()) if (root/'recovery-v2/CORRECTIONS.json').exists() else {}
         errors=[p for p in errors if p.name not in corrections.get('retained_original_errors',[])]
+        pending_recoveries=[name for name in corrections.get('retry_stages',[])
+                            if not (root/'stages'/name).exists()]
         stages=list((root/'stages').glob('*-screen.json'))
         records=[]
         for p in (root/'evaluations').glob('*/result.json'):
             row=json.loads(p.read_text())
             if row.get('passed'):records.append(row)
         screen=[r for r in records if r['stage']=='screen']
-        dump(root/'results/summary.json',dict(status='ACTIVE',screen_trainings=len(stages),screen_endpoints=len(screen),errors=len(errors),updated=time.time()))
+        dump(root/'results/summary.json',dict(status='ACTIVE',screen_trainings=len(stages),screen_endpoints=len(screen),
+             errors=len(errors),retained_original_errors=len(corrections.get('retained_original_errors',[])),
+             pending_recoveries=pending_recoveries,updated=time.time()))
         if errors:
             dump(root/'HOLD',dict(status='EXECUTION_ERROR',files=[str(p) for p in errors],time=time.time()))
             return
