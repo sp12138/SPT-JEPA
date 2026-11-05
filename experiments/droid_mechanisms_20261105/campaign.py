@@ -51,6 +51,10 @@ def archive(root,arm,seed,stage):
     target.mkdir(parents=True,exist_ok=False)
     for name,path in [('model.ckpt',Path(ready['checkpoint'])),('full.ckpt',source/'lightning_resume/last.ckpt')]:
         shutil.copyfile(path,target/name)
+    # DROID's released scorer loads this adjacent file even when the model
+    # object already carries the same normalization artifact.
+    from data import NORMALIZER_ARTIFACT_FILENAME
+    shutil.copyfile(source/NORMALIZER_ARTIFACT_FILENAME,target/NORMALIZER_ARTIFACT_FILENAME)
     ready.update(checkpoint=str(target/'model.ckpt'),full_checkpoint=str(target/'full.ckpt'))
     dump(target/'ready.json',ready)
     return target/'ready.json'
