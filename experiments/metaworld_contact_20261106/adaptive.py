@@ -85,6 +85,8 @@ def work(root, source, host, gpu):
             break
         assert time.time() < plan['deadline_unix']
         time.sleep(5)
+    from experiments.metaworld_eval_20261103.worker import free_gpu
+    free_gpu(gpu)
     from experiments.metaworld_contact_20261106.bridge_campaign import work as train
     train(root, source, host, gpu)
 
