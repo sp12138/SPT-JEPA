@@ -35,7 +35,8 @@ def environment(gpus):
     env = dict(os.environ, CUDA_VISIBLE_DEVICES=','.join(map(str, gpus)),
                HJEPA_HOME='/tmp/prescottsun-hjepa-droid-cc05cb8d', OMP_NUM_THREADS='4',
                OPENBLAS_NUM_THREADS='1', TOKENIZERS_PARALLELISM='false',
-               HF_HUB_OFFLINE='1', HYDRA_FULL_ERROR='1')
+               HF_HUB_OFFLINE='1', HYDRA_FULL_ERROR='1',
+               PYTORCH_CUDA_ALLOC_CONF='expandable_segments:True')
     for key in list(env):
         if key.startswith('SLURM_'):
             del env[key]

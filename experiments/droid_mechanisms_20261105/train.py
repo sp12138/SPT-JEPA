@@ -39,7 +39,16 @@ def run(args):
         return reader._mechanism_rng
 
     DROIDClipReader._rng = paired_rng
-    original.build_candidate = lambda arm, seed: build(args.arm, seed)
+    built = {}
+    def make_model(arm, seed):
+        built['model'] = build(args.arm, seed)
+        return built['model']
+    original.build_candidate = make_model
+    original.candidate_config = lambda seed: {
+        key:getattr(built['model'], key) for key in
+        ['mode','beta','sigma0','state_dim','state_slots','state_width','encoder_size',
+         'rho','forecast_fraction','lam','horizon','forecast_noise','idm_weight','learn_p','learn_q']
+        if hasattr(built['model'], key)}
     original_dump = dump
     output = root / 'training' / f'temporal-forecast-seed{args.seed}'
     if args.stage == 'preflight':

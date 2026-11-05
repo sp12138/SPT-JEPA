@@ -56,18 +56,39 @@ def archive(root,arm,seed,stage):
     return target/'ready.json'
 
 
-def train_job(a,arm,seed,stage):
+def wait_adopted(active,deadline):
+    path=Path(f"/proc/{active['pid']}")
+    while time.time()<deadline:
+        try:
+            command=(path/'cmdline').read_bytes()
+            if not command: return
+            start=(path/'stat').read_text().rsplit(')',1)[1].split()[19]
+            if start != active['start_ticks']:return
+        except FileNotFoundError:return
+        time.sleep(5)
+    raise TimeoutError('Adopted native worker exceeded finite deadline')
+
+
+def train_job(a,arm,seed,stage,active=None):
     root=Path(a.root);dump=bootstrap(arm_root(root,arm))
     name=f'{arm}-seed{seed}'
-    out=root/'workers'/name
+    out=root/'workers'/name/'v2'
     if stage=='screen':
         stages=['health','screen']
     else:
         stages=['long']
     for part in stages:
+        if part=='health' and (root/'stages'/f'{name}-health.json').exists():
+            continue
         command=[PYTHON,'-m','torch.distributed.run','--standalone','--nnodes=1','--nproc-per-node=2',str(HELPER/'train.py'),
                  '--root',str(root),'--host',a.host,'--arm',arm,'--seed',str(seed),'--stage',part]
-        execute(root,command,a.gpus,out/part,a.deadline)
+        if active and active['stage']==part:
+            wait_adopted(active,a.deadline)
+            ready_path=run_dir(root,arm,seed)/f'{part}-ready.json'
+            ready_data=json.loads(ready_path.read_text())
+            assert ready_data['passed'] and ready_data['step']==dict(health=600,screen=5840,long=29200)[part]
+        else:
+            execute(root,command,a.gpus,out/part,a.deadline)
         if part=='health':
             audit=[PYTHON,'-u',str(HELPER/'audit.py'),'restore','--root',str(root),'--arm',arm,'--seed',str(seed),'--stage','health']
             execute(root,audit,a.gpus[:1],out/'health-audit',a.deadline)
@@ -97,6 +118,12 @@ def eval_loop(a,gpu):
 
 def actor(a):
     root=Path(a.root);dump=bootstrap(arm_root(root,'tf'))
+    if a.adopt:
+        active=json.loads(Path(a.adopt).read_text())
+        try:train_job(a,active['arm'],active['seed'],'screen',active=active)
+        except Exception:
+            dump(root/'errors'/f'v2-screen-{active["arm"]}-seed{active["seed"]}.json',
+                 dict(passed=False,adopted=active,traceback=traceback.format_exc()))
     while time.time()<a.deadline:
         if (root/'HOLD').exists() or (root/'STOP').exists():break
         selection=json.loads((root/'selection.json').read_text()) if (root/'selection.json').exists() else None
@@ -109,7 +136,7 @@ def actor(a):
             work=True
             try:train_job(a,arm,seed,stage)
             except Exception:
-                dump(root/'errors'/f'{stage}-{arm}-seed{seed}.json',dict(passed=False,arm=arm,seed=seed,stage=stage,traceback=traceback.format_exc()))
+                dump(root/'errors'/f'v2-{stage}-{arm}-seed{seed}.json',dict(passed=False,arm=arm,seed=seed,stage=stage,traceback=traceback.format_exc()))
             break
         if work:continue
         with ThreadPoolExecutor(max_workers=2) as pool:
@@ -152,6 +179,8 @@ def collect(a):
     root=Path(a.root);dump=bootstrap(arm_root(root,'tf'))
     while time.time()<a.deadline:
         errors=list((root/'errors').glob('*.json'))+list((root/'evaluations').glob('*/error.json'))
+        corrections=json.loads((root/'recovery-v2/CORRECTIONS.json').read_text()) if (root/'recovery-v2/CORRECTIONS.json').exists() else {}
+        errors=[p for p in errors if p.name not in corrections.get('retained_original_errors',[])]
         stages=list((root/'stages').glob('*-screen.json'))
         records=[]
         for p in (root/'evaluations').glob('*/result.json'):
@@ -189,4 +218,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('mode',choices=['actor','collect'])
     p.add_argument('--root',required=True);p.add_argument('--host');p.add_argument('--gpus',type=int,nargs=2)
     p.add_argument('--deadline',type=float,required=True)
+    p.add_argument('--adopt')
     a=p.parse_args();actor(a) if a.mode=='actor' else collect(a)
