@@ -98,7 +98,7 @@ def collect(root):
                     status=json.loads(status.read_text()) if status.exists() else None,
                     complete=(run/'complete.json').exists(),
                     effective_error=json.loads(error.read_text()) if error.exists() else None))
-    for phase in ['fresh-v1','broad-v1','broad-repeat-v1']:
+    for phase in ['fresh-v1','broad-v1','broad-repeat-v1','broad-noh-v1']:
         folder=root/phase;pointer=folder/'plan.json'
         if not pointer.exists():continue
         plan=json.loads(pointer.read_text());files={}
@@ -145,8 +145,8 @@ if __name__=='__main__':
     while True:
         value=collect(a.root)
         print(json.dumps(dict(utc=value['created_utc'],groups=len(value['groups']),active_runs=sum(not r['complete'] for r in value['runs']))),flush=True)
-        final=[r for r in value['runs'] if r['phase'] in ['long-v1','repeat-v1','vit-v1','vit-mse-v1','marginal-local-v1','history-v1','budget-v1','fresh-v1','broad-v1','broad-repeat-v1']]
-        if not a.watch or (len(final)==44 and all(r['complete'] for r in final)) or time.time()>deadline:
-            if a.watch:save(a.root/'review/HOLD.json',dict(finalized=True,expected_runs=44,all_complete=len(final)==44 and all(r['complete'] for r in final),no_automatic_next_round=True))
+        final=[r for r in value['runs'] if r['phase'] in ['long-v1','repeat-v1','vit-v1','vit-mse-v1','marginal-local-v1','history-v1','budget-v1','fresh-v1','broad-v1','broad-repeat-v1','broad-noh-v1']]
+        if not a.watch or (len(final)==48 and all(r['complete'] for r in final)) or time.time()>deadline:
+            if a.watch:save(a.root/'review/HOLD.json',dict(finalized=True,expected_runs=48,all_complete=len(final)==48 and all(r['complete'] for r in final),no_automatic_next_round=True))
             break
         time.sleep(30)

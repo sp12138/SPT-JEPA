@@ -61,15 +61,17 @@ def wait_owner(owner, deadline):
         time.sleep(5)
 
 
-def prepare_repeats(root,source):
-    out=root/'broad-repeat-v1';out.mkdir()
+def prepare_repeats(root,source,study='broad-repeat-v1'):
+    out=root/study;out.mkdir()
     original=json.loads((root/'broad-v1/plan.json').read_text())
-    trained=json.loads((root/'repeat-v1/bridge-plan.json').read_text())
+    noh=study=='broad-noh-v1'
+    trained_root=root/('marginal-local-v1' if noh else 'repeat-v1')
+    trained=json.loads((trained_root/'bridge-plan.json').read_text())
     approval=json.loads((root/'broad-v1/GOALS_APPROVED.json').read_text())
     recipes=[]
-    for host,seed in [('dev13',3),('dev15',4)]:
-        owners=json.loads((root/'broad-v1'/f'launch-{host}.json').read_text())['jobs']
-        for gpu,arm in [(1,'local-flow'),(2,'local-mse')]:
+    for host,seed in [('dev13',1 if noh else 3),('dev15',2 if noh else 4)]:
+        owners=json.loads(((trained_root if noh else root/'broad-v1')/f'launch-{host}.json').read_text())['jobs']
+        for gpu,arm in ([(0,'local-flow-no-h'),(4,'local-mse-no-h')] if noh else [(1,'local-flow'),(2,'local-mse')]):
             model=next(r for r in trained['recipes'] if r['host']==host and r['arm']==arm)
             run=Path(model['run']);assert json.loads((run/'audit-40000.json').read_text())['passed']
             checkpoint=run/'model-step0040000'
@@ -77,7 +79,7 @@ def prepare_repeats(root,source):
                 checkpoint=str(checkpoint),weights_sha256=digest(checkpoint/'weights.pt'),
                 wait_owner=next(r for r in owners if r['gpu']==gpu)))
     save(out/'plan.json',dict(original,source=str(source),recipes=recipes,inherited_goal_approval=approval,
-         scope=original['scope']+' Independent randomtrainingseeds3/4,same400goals;not new physicalsamples.No SGD.'))
+         scope=original['scope']+(' Paired horizonmarginalization40k,trainingseeds1/2.' if noh else ' Independent randomtrainingseeds3/4.')+' Same400goals,not new physicalsamples.No SGD.'))
     save(out/'GOALS_APPROVED.json',approval)
 
 
@@ -121,9 +123,10 @@ def work(root, source, host, gpu, study='broad-v1'):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--source',type=Path,required=True)
-    p.add_argument('--mode',choices=['prepare','prepare-repeats','work'],required=True);p.add_argument('--host');p.add_argument('--gpu',type=int)
-    p.add_argument('--study',choices=['broad-v1','broad-repeat-v1'],default='broad-v1')
+    p.add_argument('--mode',choices=['prepare','prepare-repeats','prepare-noh','work'],required=True);p.add_argument('--host');p.add_argument('--gpu',type=int)
+    p.add_argument('--study',choices=['broad-v1','broad-repeat-v1','broad-noh-v1'],default='broad-v1')
     a=p.parse_args()
     if a.mode=='prepare':prepare(a.root,a.source)
     elif a.mode=='prepare-repeats':prepare_repeats(a.root,a.source)
+    elif a.mode=='prepare-noh':prepare_repeats(a.root,a.source,'broad-noh-v1')
     else:work(a.root,a.source,a.host,a.gpu,a.study)
