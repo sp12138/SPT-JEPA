@@ -113,6 +113,7 @@ def work(root, source, host, gpu):
             shutil.copyfile(run/'last.ckpt', archive/'native.ckpt')
             save(archive/'manifest.json', dict(step=step, native_sha256=digest(archive/'native.ckpt')))
             seeds = [42] if step == entry else [42, 1042] if step == 600 else [42, 43, 1042, 1043] if step in [3000, 6000] else [42, 43, 44, 45, 1042, 1043, 1044, 1045]
+            seeds = plan.get('case_seeds_by_step', {}).get(str(step), seeds)
             tasks = ['reach-v3'] if step == entry else TASKS
             out = run/f'eval-step{step:07d}'
             cmd = [PYTHON, '-B', '-u', str(source/'experiments/metaworld_contact_20261106/evaluate.py'),
@@ -122,7 +123,7 @@ def work(root, source, host, gpu):
             command(cmd, run/f'eval-{step}.log', env, source, plan['deadline_unix'])
             assert json.loads((out/'summary.json').read_text())['passed']
             save(run/'progress.json', dict(step=step, state='stage-complete', updated_utc=datetime.datetime.now(datetime.timezone.utc).isoformat()))
-        save(run/'complete.json', dict(passed=True, step=10000, scope='Finite screen complete;do not infer successful manipulation without actual evaluation rows.'))
+        save(run/'complete.json', dict(passed=True, step=stages[-1], scope='Finite stage queue complete;performance requires actual evaluation rows.'))
     except BaseException as error:
         save(run/'execution-error.json', dict(error=repr(error), updated_utc=datetime.datetime.now(datetime.timezone.utc).isoformat()))
         raise
