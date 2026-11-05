@@ -21,3 +21,14 @@
 MP4位于本地 `artifacts/manipulation_visuals_20261106/replay-v2/<arm>-<task>/replay.mp4`，远端完整素材位于 `/efs/prescottsun/SPT-JEPA/reports/manipulation_visuals_20261106/replay-v2/`。每5个原始动作采一帧，视频以10fps展示；GIF末帧为便于阅读有额外停留。媒体核对索引见[MEDIA_INDEX.json](results/MEDIA_INDEX.json)，完整重放证明见[replay-summary.json](results/replay-summary.json)。视频与完整帧素材不进入Git，三张轻量展示图随报告保存。
 
 重放脚本在dev13使用原封存的环境helper及MetaWorld/MuJoCo版本，EGL只用于渲染。首个展示尝试因系统字体路径缺失而停止，原错误保留；v2使用已安装的绘图字体完成全部五条重放。没有改动旧实验记录或当前DROID训练。
+
+后续原因分析（只读）：按每个执行动作后的物理坐标计算，TF取盒的夹爪中心距物体最近仍为15.4 cm，抓放为15.9 cm；执行结束夹爪距放置目标分别为8.2/5.8 cm。原生夹爪中心定义是左右EndEffector site位置的平均。夹爪第四维指令有变化，不能把现象简化成“程序没有输出夹爪命令”。完整坐标结果见[trajectory-analysis.json](results/trajectory-analysis.json)。这些案例的失败发生在有效接近阶段之前，不能据此认定接触后摩擦或夹紧力度是主因。
+
+进一步使用同一TF检查点在CPU上编码已有初始、失败终点与目标RGB，模型哈希与原评测完全一致，分析前后参数不变，无训练：
+
+| 场景 | 初始至目标的latent MSE | 失败终点至目标的latent MSE | 剩余比例 |
+| --- | --- | --- | --- |
+| bin-picking | 0.92908 | 0.02455 | 2.64% |
+| pick-place | 1.00153 | 0.17081 | 17.06% |
+
+见[encoder-goal-analysis.json](results/encoder-goal-analysis.json)。此处是**真实画面的编码距离**，不是预测的距离或物理成功分数。物体几乎未动时，移动手臂已使这个距离大幅下降，支持优先检验目标距离与有限规划horizon是否诱导空手靠近终点。它不证明编码器完全不含物体信息，也不能单凭代价下降比例判定度量、动力学或搜索中的唯一根因。需要将相同候选轨迹的实际编码距离、模型预测距离与搜索选择作受控对照；这些视频本身没有提供“模型想象物体已被抓住”的证据。
