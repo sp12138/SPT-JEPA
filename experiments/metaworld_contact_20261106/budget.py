@@ -40,15 +40,16 @@ def prepare(root,source,cold=False):
                 os.link(archive/'native.ckpt',run/'last.ckpt')
                 shutil.copytree(parent/'initial-model',run/'initial-model',copy_function=os.link)
                 shutil.copytree(parent/'model-step0016480',run/'model-step0016480',copy_function=os.link)
-            save(run/'FORK.json',dict(parent=str(parent),entry_step=16480,native_sha256=expected,
-                parent_config=str(parent/'config.json'),full_optimizer_scheduler_rng_sample_cursor=True,
+            save(run/'FORK.json',dict(parent=str(parent),entry_step=0 if cold else 16480,native_sha256=expected,
+                parent_config=str(parent/'config.json'),parent_archive_reference_only=cold,
+                full_optimizer_scheduler_rng_sample_cursor=not cold,parent_weights_loaded=not cold,
                 objective_unchanged=True,NN_runtime='7b78f5d',completed_SGD_repeated=False,
-                scope='New root only.Old campaigns/HOLD untouched;no new teacher/policylabels.'))
+                scope=('Configuration template only;no parentNN/optimizer used.Fresh scratchinitialization.' if cold else 'Full16480-state fork.')+' Newroot only.OldHOLD untouched;no teacher/policylabels.'))
             recipes.append(dict(name=name,arm=arm,seed=seed,host=host,gpu=gpu,run=str(run),parent=str(parent),
                 cold=cold,config_sha256=digest(run/'config.json'),wait_owner=next(r for r in owners if r['gpu']==gpu)))
     save(out/'plan.json',dict(source=str(source),recipes=recipes,data=old['data'],manifest=old['case_manifest'],
         deadline_unix=parent_plan['deadline_unix'],stages=[2,600,10000,24982,40000] if cold else [16482,24982,40000],
-        scope='OriginalscratchTF/native continued20epoch->40k updates,batch128,original41200LRhorizon. '
+        scope=('OriginalscratchTF/native continued20epoch->40k updates.' if not cold else 'Independent originalTF/native scratchseeds3/4,start0->40k.')+' Batch128,original41200LRhorizon. '
               'No objective/data/sampler/optimizer changes;originalwindow8/all5phases,not CNNphase0/pairwindow. '
               'Matches total update/samplecount of40kCNNs,but not imageFLOPs,architecture or temporal sampling. '
               'Same20physicalcases/task,500native any-success;not publicSOTA or equalFLOPs.',
