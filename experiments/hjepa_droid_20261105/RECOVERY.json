@@ -1,6 +1,6 @@
 {
-  "status": "ACTIVE_FINITE_DROID",
-  "last_verified_utc": "2026-11-04T19:13:07.643656+00:00",
+  "status": "ACTIVE_SINGLE_SEED_RECOVERY",
+  "last_verified_utc": "2026-11-05T13:04:21Z",
   "allowed_hosts": [
     "dev13",
     "dev15"
@@ -14,7 +14,7 @@
     "public_models": "08fc8a21208671a87741f2960aeba9b5db4420e0",
     "candidate": "256e7b5e9d13d201c8734bbd43864b400c0138d9",
     "neural_trainer": "helper-v8/train.py",
-    "operational_queue": "helper-v10/campaign.py"
+    "operational_queue": "recovery-finish-20261105-v1.py eval; v2 collect"
   },
   "constraints": {
     "train_from_scratch": true,
@@ -38,8 +38,8 @@
       10000
     ],
     "formal_runs": 12,
-    "active_runs_at_snapshot": 8,
-    "queued_runs": 4,
+    "active_runs_at_snapshot": 1,
+    "queued_runs": 0,
     "devices_per_run": 2,
     "global_batch": 256,
     "epochs": 100,
@@ -55,32 +55,29 @@
     ],
     "clips": 16,
     "logical_reference_episodes": 432,
-    "logical_trained_episodes": 1152
+    "logical_trained_episodes": 1152,
+    "completed_runs": 11
   },
   "ownership": {
-    "dev13": "queue-adoption-dev13.json",
-    "dev15": "queue-adoption-dev15.json",
-    "collector": "collector-launch.json",
-    "collector_pid": 2171274,
-    "old_launches": "launch-dev13/dev15.json retained as historical parents; all torchrun children unchanged"
+    "resumed_training_host": "dev15",
+    "gpus": [
+      0,
+      1
+    ],
+    "resumed_torchrun_pid": 633367,
+    "training_launch": "recovery-20261105/training-launch.json",
+    "eval_dev13": "recovery-20261105/launch-dev13-v2.json",
+    "eval_dev15": "recovery-20261105/launch-dev15-v2.json",
+    "collector": "recovery-20261105/collector-launch-v2.json",
+    "collector_pid": 101370,
+    "supervisor_pid": 928600
   },
-  "deadline_utc": "2026-11-07T19:03:48.503120+00:00",
+  "deadline_utc": "2026-11-05T18:56:18.590794+00:00",
   "canonical_results": "results/summary.json",
-  "complete_marker": "HOLD",
+  "complete_marker": "recovery-20261105/HOLD",
   "stop_marker": "STOP",
   "snapshot_steps": {
-    "dev13": {
-      "temporal_forecast": 400,
-      "innovation": 400,
-      "lewm": 1200,
-      "hjepa": 1100
-    },
-    "dev15": {
-      "temporal_forecast": 400,
-      "innovation": 400,
-      "lewm": 1200,
-      "hjepa": 1100
-    }
+    "h-jepa-seed10000": 6800
   },
   "startup_proofs": {
     "native_gates": 8,
@@ -99,7 +96,20 @@
     "All old campaigns/HOLDs and paused goals remain unchanged. No automatic next research round after this finite queue.",
     "Preflight-v8 is authoritative. Earlier Hydra/import/batch-key/pickle compatibility failures remain on EFS; none are method-performance scores.",
     "Disposable startup optimization totals 60 logical updates across v2/v4/v8; formal runs start fresh and inherit none of these models.",
-    "Dataset has 382 missing training paths and validation overlaps training by 62/64; native retry/splits and public whole-corpus normalization are retained."
+    "Dataset has 382 missing training paths and validation overlaps training by 62/64; native retry/splits and public whole-corpus normalization are retained.",
+    "Only one model was interrupted; all six candidate and three nativeLeWM final results are complete. Do not rerun completed models to fill idle GPUs.",
+    "The failure began in health JSON temporary-file rename, followed by NCCL timeout. Unique tempfile/bounded retry fixes telemetry; neural model/loss/data/optimizer unchanged.",
+    "Original entry/error/HOLD/checkpoint copied under recovery-20261105/original and input-last-step5800.ckpt. New entry-state hash exactly matches original full model on GPU.",
+    "First recovery eval waiters started before the missing-job manifest and exited; all were replaced after manifest creation, with earlier errors preserved. Current ownership files have -v2 suffix.",
+    "The six-hour recovery ends after the same 48 missing planned episodes. No extra seed, training extension, new method, or recurring LLM monitor."
   ],
-  "performance_status": "No mature candidate DROID performance result yet. Preflight scores are not mature comparisons; offline Frechet fidelity is not physical robot success."
+  "performance_status": "100epoch TF -2.1470%, innovation -5.2477%, nativeLeWM+IDM33.9313% (3seeds each); nativeHJEPA33.6915% (2seeds provisional). Candidates substantially worse; offline fidelity, not task success.",
+  "historical_hold": "Original HOLD retained; it recorded 1536/1584 and is not the recovery completion marker.",
+  "recovery_scope": {
+    "original_step": 5800,
+    "target_step": 29200,
+    "remaining_at_restart": 23400,
+    "missing_evaluations": 48,
+    "completed_evaluations_preserved": 1536
+  }
 }
