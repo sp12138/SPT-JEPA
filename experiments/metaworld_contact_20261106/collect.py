@@ -1,10 +1,12 @@
 """Read-only finite result collection;never launches training or simulation."""
 import argparse
 import datetime
+import fcntl
 import hashlib
 import json
 from pathlib import Path
 import time
+import tempfile
 
 import numpy as np
 
@@ -15,7 +17,9 @@ TASKS = MANIP+['reach-v3','reach-wall-v3']
 
 def save(path, value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
-    tmp=path.with_suffix(path.suffix+'.tmp');tmp.write_text(json.dumps(value,indent=2)+'\n');tmp.replace(path)
+    with tempfile.NamedTemporaryFile(mode='w',dir=path.parent,prefix='.'+path.name+'.',suffix='.tmp',delete=False) as stream:
+        tmp=Path(stream.name);stream.write(json.dumps(value,indent=2)+'\n')
+    tmp.replace(path)
 
 
 def summary(rows, tasks=TASKS):
@@ -37,7 +41,7 @@ def summary(rows, tasks=TASKS):
 
 
 def ci(rows):
-    """Resample physicalcases within task,keeping all trained-seed repeats."""
+    """Resample shared physicalseeds across tasks,keeping model repeats."""
     values=[];generator=np.random.default_rng(20261106);common_cases=None
     for task in MANIP:
         selected=[r for r in rows if r['task']==task]
@@ -133,6 +137,10 @@ def collect(root):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--watch',action='store_true');a=p.parse_args()
+    (a.root/'review').mkdir(exist_ok=True)
+    ownership=(a.root/'review/.collector.lock').open('a')
+    # A one-shot invocation must not compete with the finite watcher.
+    fcntl.flock(ownership.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
     deadline=json.loads((a.root/'bridge-plan-v3.json').read_text())['deadline_unix']
     while True:
         value=collect(a.root)

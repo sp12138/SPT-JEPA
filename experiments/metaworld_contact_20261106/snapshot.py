@@ -96,7 +96,7 @@ def export(root, output):
                         'bridge/*/ORIGIN.json','bridge/*/audit-*.json','bridge/*/eval-step0040000/summary.json']:
             for path in folder.glob(pattern):copy(path)
     for pattern in ['confirmation10k/*/summary.json','confirmation10k/*/parent-removal-proof.json',
-                    'fresh-v1/*/*/summary.json','fresh-v1/*/complete.json','finite-collector-launch-v3.json']:
+                    'fresh-v1/*/*/summary.json','fresh-v1/*/complete.json','finite-collector-launch*.json']:
         for path in root.glob(pattern):copy(path)
     write('analysis.json',dict(created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),tables=tables,
         frozen_diagnosis=dict(valid_model_cases=len(diagnostic),failed_cem_preferred_at30=sum(r['failed_cem_preferred_at30'] for r in diagnostic),
