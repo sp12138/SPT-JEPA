@@ -28,7 +28,9 @@ def render_checked(env):
 
 
 def font(size):
-    return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',size)
+    import matplotlib
+    path=Path(matplotlib.get_data_path())/'fonts/ttf/DejaVuSans.ttf'
+    return ImageFont.truetype(str(path),size)
 
 
 def label_frame(actual,goal,arm,step,total,success):
