@@ -16,9 +16,10 @@ def run(a):
     cfg=json.loads((a.run/'config.json').read_text());model=build_model(cfg).cuda().eval().requires_grad_(False)
     assert model.visual_source=='local'and not model.temporal_aux and model.condition_horizon=='none'
     assert not model.history_context or(model.chunk==1 and a.execute==1)
+    assert model.action_dim in[4,20]and(model.action_dim==20 or not model.history_context)
     assert a.execute<=model.chunk
     model.load_state_dict(torch.load(a.run/f'model-step{a.step:07d}/weights.pt',map_location='cuda',weights_only=True));before=model_sha(model)
-    card=json.loads((Path(cfg['data'])/'dataset_card.json').read_text());mean=np.asarray(card['action_mean'],np.float32);std=np.asarray(card['action_std'],np.float32)
+    card=json.loads((Path(cfg['data'])/'dataset_card.json').read_text());mean=np.asarray(card['action_mean'][:model.action_dim],np.float32);std=np.asarray(card['action_std'][:model.action_dim],np.float32)
     cases=[r for r in json.loads(a.manifest.read_text())['rows']if r['task']in a.tasks and r['seed']in a.seeds]
     cases.sort(key=lambda r:(a.tasks.index(r['task']),a.seeds.index(r['seed'])));assert len(cases)==len(a.tasks)*len(a.seeds);rows=[]
     with torch.inference_mode():
@@ -39,6 +40,7 @@ def run(a):
                     old_image=image
                     proposed=model.propose(batch,generator=generator,steps=12)[0,:a.execute].float().cpu().numpy()
                     native=np.clip(proposed*std+mean,-1,1).reshape(-1,4);assert np.isfinite(native).all();calls+=1
+                    if model.action_dim==4:native=np.repeat(native,5,axis=0)
                     for j,command in enumerate(native):
                         _,_,terminated,truncated,info=env.step(command.astype(np.float32));actions.append(command.copy());successes.append(bool(info['success']))
                         if successes[-1]or terminated or truncated or len(actions)>=a.budget:break
@@ -53,7 +55,8 @@ def run(a):
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     assert before==model_sha(model)
     save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before,step=a.step,execute=a.execute,
-        training_action_blocks=model.chunk,noise_policy=a.noise_policy,own_past_history=model.history_context,new_updates=0,no_future_demonstrated_command_reference_in_controller=True,
+        training_action_blocks=model.chunk,training_current_native_actions=model.action_dim//4,native_hold=5 if model.action_dim==4 else 1,
+        noise_policy=a.noise_policy,own_past_history=model.history_context,new_updates=0,no_future_demonstrated_command_reference_in_controller=True,
         scope='OriginalLeRobotcorpus,commonRGBgoals/resetstates,500nativeanysuccess/sensor5,12ownflowintegrationsteps.'
               'OnlyRGBcurrent/goalplusdeclaredpastRGB/OWNexecutedcontrolhistory;no clock/taskID/proprio/reward/successinputs.EachcommandcomesfromownGaussianproposal.'
               'Chunk6modelsarelabelledfuture-targetBASELINESONLY;newcurrent-onlycandidatechunk1.'))
