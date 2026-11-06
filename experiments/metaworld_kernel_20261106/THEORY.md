@@ -88,6 +88,90 @@ remote read-only comparison report is current-comparison-confirm.json under
 reports/metaworld_kernel_20261106. All earlier experiments and failures remain
 preserved; the following sections describe the earlier strict no-inverse phase.
 
+### Completed native-time feedback evidence
+
+The full current-a_t-only feedback comparison has now finished. All six
+manipulation scores below contain 240 episodes: 20 common physical cases/task
+crossed with two trained actors. Every method observes the real camera only
+every five native steps and uses the same 500-step any-success budget.
+
+| Deployment of the SAME frozen 4D flow actor | Six manipulations | All eight tasks |
+|---|---:|---:|
+| Hold one sampled action for five steps | 176/240 = 73.33% | 245/320 = 76.56% |
+| Five action samples, unchanged actual 224px image | 179/240 = 74.58% | 246/320 = 76.88% |
+| Five samples, copied intermediate 128→224px images | 176/240 = 73.33% | 245/320 = 76.56% |
+| Predict images using zero imagined controls | 196/240 = 81.67% | 259/320 = 80.94% |
+| Predict images using negated imagined controls | 199/240 = 82.92% | 250/320 = 78.13% |
+| Predict images using the actor's OWN controls | 214/240 = 89.17% | 277/320 = 86.56% |
+
+Versus five samples on the unchanged image, the manipulation gain is +14.58pp,
+physical-case cluster CI [10.00, 19.17], conditional on two trained actors. The
+50-task screen also finishes at 357/400 = 89.25% versus 301/400 = 75.25%, with
+individual trained-seed gains +15pp and +13pp. Four cases/task is a screen;
+evaluation on the existing 1,000-case comparison cohort is still running.
+
+The zero-control diagnostic does NOT imply a frozen or zero-flow image: the
+stencil world model still reads known past controls and can predict their
+transient/release effect. Negation also preserves the absolute-value action
+features. Thus these negatives are narrower than disabling all dynamics.
+They establish that correct current-action conditioning adds value, while the
+remaining gains require more care than a claim of perfect physical fidelity.
+The copied-image control separately excludes simple image resizing as the
+complete explanation.
+
+A deterministic one-current-action MSE actor with the same world model reaches
+208/240 = 86.67%, versus 161/240 = 67.08% when held for five steps. It uses one
+action-field pass per policy call, compared with twelve flow integration passes.
+Both execute five policy calls between real observations. No Gaussian action
+draws occur in the MSE actor. Its copied-image and broad evaluations are pending;
+do not attribute the gain uniquely to generative action modeling.
+
+The best existing 20D five-control model still has 217/240 = 90.42% manipulation
+success. The stricter 4D feedback method is comparable, not a demonstrated
+improvement over that score: the difference is -1.25pp, CI [-4.58, 2.08]. Its
+advantage is recovering high performance without supervising subsequent native
+controls. The 20k forward-model pretraining and additional inference cost remain
+explicit. Four fresh paired native-action learners are now running to 120k,
+with actual native2/600 full-state restores and physical entry checks passed.
+
+### What the inverse target supplies, beyond a terminal image metric
+
+An elementary conditioning argument helps separate desirability from local
+physics. In an ideal fully observed Markov system with behavior policy pi,
+define h_T(s) as the probability of reaching a specified goal neighborhood G
+after T steps under that behavior. Where h_T(s)>0, Bayes' rule gives
+
+    q_T(a | s, S_T in G)
+      = pi(a | s) * E_{s' ~ P(.|s,a)}[h_(T-1)(s')] / h_T(s).
+
+The first recorded action from a hindsight trajectory is a sample from this
+goal-conditioned behavior distribution. It is not an assertion that the action
+is optimal. A preparatory grip can be valuable because it raises future goal
+probability, even if its immediate pixel displacement or terminal-image-distance
+gradient is tiny. Inverse learning directly fits that control-coordinate
+marginal; a short-range forward model instead fits local state propagation.
+Replacing h with an arbitrary Euclidean latent distance need not preserve this
+ordering. The formula is explanatory, not a new theorem or an exact derivation
+of our horizon-mixture, partially observed pixel actor. In stochastic dynamics,
+conditioning on a later goal also changes transition-noise probabilities.
+
+This suggests the useful abstraction supported by the experiments: a learned
+goal-conditioned actuation distribution carries long-range desirability, while
+a short observation-predictive operator maintains the local feedback state.
+The same 20k world model scored only 6.67% when paired with its old global
+projection controller, yet is useful in this different role. That cross-controller
+comparison is not matched inference compute and does not isolate a single cause.
+The stronger causal evidence is the SAME-actor/SAME-camera frozen comparison
+above, including unchanged, copied, zero-control, and reversed-control images.
+
+The camera interval and native actuator interval were different clocks. Holding
+q(o,g) for five steps substitutes constant actuation for q(F(o,a),g) at the
+intermediate states. Repeated sampling on stale observations barely repairs
+this mismatch. Four locally predicted states permit an approximate internal
+feedback loop without using an actual intermediate observation or a future
+demonstrated control as a reference. This is a practical mechanism with evidence;
+novelty and superiority to public methods under matching data remain unproved.
+
 ## Historical mechanism test before inverse learning was permitted
 
 The objective is still unmet. The old action-supervised score is only a scalar

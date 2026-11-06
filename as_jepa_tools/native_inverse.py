@@ -19,6 +19,8 @@ class NativeInversePairs(Dataset):
         self.history=cfg['model']['history_context']
         assert not self.history or self.action_dim==20
         self.seed=cfg['seed'];self.phase=cfg.get('inverse_anchors','all');self.balance=cfg.get('inverse_balance','frames');self.goal_mode=cfg.get('inverse_goals','phase_mixture')
+        self.goal_stride=cfg.get('inverse_goal_stride',5)
+        assert self.goal_stride in[1,5]
         assert self.goal_mode in['phase_mixture','terminal']
         assert self.phase in['all','phase0']and self.balance in['frames','episodes']
         assert self.balance!='episodes'or self.phase=='all'
@@ -41,10 +43,10 @@ class NativeInversePairs(Dataset):
         else:
             episode=int(np.searchsorted(self.ends,row,side='right'));t=row-(int(self.ends[episode-1])if episode else 0)
             if self.phase=='phase0':t*=5
-        record=self.records[episode];available=(record['length']-1-t)//5
+        record=self.records[episode];available=(record['length']-1-t)//self.goal_stride
         if self.goal_mode=='terminal'or available==0:goal=record['length']-1
         else:
-            delta=available if rng.random()<.5 else int(rng.integers(1,available+1));goal=t+delta*5
+            delta=available if rng.random()<.5 else int(rng.integers(1,available+1));goal=t+delta*self.goal_stride
         data=self.shards[record['shard']];offset=record['offset'];rows=np.array([offset+t,offset+goal])
         image_rows=np.r_[offset+max(0,t-5),rows]if self.history else rows
         image=torch.from_numpy(np.asarray(data['pixels'][image_rows]).copy()).permute(0,3,1,2)

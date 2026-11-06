@@ -69,6 +69,8 @@ def contract(a):
             try:assert equal(value,test[int(i)])
             finally:shard['controls']=original
         torch.manual_seed(cfg['seed']);model=build_model(cfg)
+        if r.get('random_initial_reference'):
+            assert equal(model.state_dict(),torch.load(r['random_initial_reference'],map_location='cpu',weights_only=True))
         shared={k:v.clone()for k,v in model.state_dict().items()if k!='kind'and not k.startswith('goal_fusion.')}
         if cfg['seed']in states:assert equal(states[cfg['seed']],shared)
         else:states[cfg['seed']]=shared
@@ -78,6 +80,18 @@ def contract(a):
 
 
 def gate(root,plan):
+    if plan.get('promotion_kind')=='simpler_mse':
+        full_path=Path(plan['mse_full'])/'results/summary.json';fifty_path=Path(plan['mse_fifty'])/'results/summary.json'
+        if not full_path.exists()or not fifty_path.exists():return None
+        full=json.loads(full_path.read_text());fifty=json.loads(fifty_path.read_text())
+        assert not full['errors']and not fifty['errors']
+        if fifty['complete']!=2:return None
+        f=next((s for s in full['scores']if s['arm']=='mse-world-native4'and s['episodes']==320),None)
+        if f is None:return None
+        s=next(s for s in fifty['scores']if s['arm']=='mse-world-native4');assert s['episodes']==400
+        percent=100*sum(v['successes']for v in s['task_scores'].values())/s['episodes']
+        return dict(passed=percent>=86.25 and f['manipulation_percent']>=85,mse_fifty_percent=percent,mse_full6_percent=f['manipulation_percent'],
+            new_updates=0,scope='Simpler1fieldpassMSE:50screen>=85%andwithin3ppofcompletedFlow89.25%;full6>=85%. OnlyCURRENTa_t4Dlabels,sameown20kworld;no per-task tuning.')
     for name in plan['gate_roots']:
         p=Path(name)/'results/summary.json'
         if not p.exists():return None
@@ -103,7 +117,7 @@ def gate(root,plan):
 
 
 def work(a):
-    plan=json.loads((a.root/'training-plan.json').read_text());r=next(v for v in plan['recipes']if v['gpu']==a.gpu);run=Path(r['run']);source=Path(plan['source']);deadline=plan['deadline_unix']
+    plan=json.loads((a.root/'training-plan.json').read_text());r=next(v for v in plan['recipes']if v['gpu']==a.gpu and v['host']==a.host);run=Path(r['run']);source=Path(plan['source']);deadline=plan['deadline_unix']
     try:
         while not(Path(r['wait_output'])/'complete.json').exists():
             assert not(Path(r['wait_output'])/'execution-error.json').exists();assert time.time()<deadline;time.sleep(5)
@@ -132,7 +146,7 @@ def work(a):
             save(run/'progress.json',dict(step=step,phase='stage_complete'))
         confirmation=plan['confirmation'];endpoint=run/'confirm-final'
         command([PYTHON,'-B','-u',plan['evaluator'],'--run',str(run),'--step',str(step),'--mode','world','--world',r['world'],'--manifest',confirmation['manifest'],'--output',str(endpoint),'--tasks']+confirmation['tasks']+['--seeds']+list(map(str,confirmation['seeds'])),run/'confirm-final.log',env,source,deadline)
-        proof=json.loads((endpoint/'summary.json').read_text());assert proof['passed']and proof['model_unchanged']and len(proof['rows'])==1000
+        proof=json.loads((endpoint/'summary.json').read_text());assert proof['passed']and proof['model_unchanged']and len(proof['rows'])==confirmation.get('episodes',1000)
         save(run/'complete.json',dict(passed=True,trained=True,step=step,current_native_action_only=True,world_pretrain_steps=20000,confirmation=True))
     except BaseException as e:save(run/'execution-error.json',dict(error=repr(e)));raise
 
@@ -140,4 +154,4 @@ def work(a):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--mode',choices=['prepare','contract','work'],required=True)
     for k in ['root','source','evaluator','parent','wait-parent']:p.add_argument('--'+k,type=Path)
-    p.add_argument('--gpu',type=int);a=p.parse_args();globals()[a.mode](a)
+    p.add_argument('--gpu',type=int);p.add_argument('--host',default='dev6');a=p.parse_args();globals()[a.mode](a)
