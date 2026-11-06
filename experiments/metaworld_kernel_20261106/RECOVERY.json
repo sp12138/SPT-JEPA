@@ -1,20 +1,55 @@
 {
-  "status": "ACTIVE_FORWARD_ONLY_NO_QUALIFIED_GAIN",
+  "status": "ACTIVE_NATIVE_TRANSPORT_NO_QUALIFIED_GAIN",
   "objective": "Find an elegant manipulation algorithm substantially exceeding the old action-supervised 78.75% six-task comparator, without INVERSE ACTION reconstruction or future-action references.",
-  "hosts": ["dev13", "dev15"],
-  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_controlspan_20261106_v2",
-  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-ea060dd",
+  "hosts": [
+    "dev13",
+    "dev15"
+  ],
+  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-db8afbb",
   "training_plan": "training-plan.json",
-  "ownership": ["launch-dev13.json", "launch-dev15.json", "collector-launch.json"],
-  "technical_gates": "12 pure forward learners passed native2/fullrestore/backward/sample independence/actual20-native control;all at least2500. Read current scores. Four learned control-coordinate runs STOPPED/excluded at500 after inverse-action clarification;states preserved,never reuse weights/outputs.",
-  "native_stages": [2, 500, 2500, 10000],
-  "arms": ["fullseq-free", "fullseq-zero", "fullseq-stencil"],
+  "ownership": [
+    "launch-dev13.json",
+    "launch-dev15.json",
+    "collector-launch.json"
+  ],
+  "technical_gates": "Actual integration passed all4 modes:exact paired random parameters,positive required FP32 gradients,sample-level independence,identity warp,and own-force retention without image evidence.0SGD.16native learners launched,initially waiting node-local raw RGB copy;read actual audit-2/eval2 before claiming native entry passed.",
+  "native_stages": [
+    2,
+    1000,
+    5000,
+    20000
+  ],
+  "arms": [
+    "free",
+    "linear",
+    "signed",
+    "stencil"
+  ],
   "latest_user_clarification": "Forbidden reconstruction means INVERSE ACTION. No inverse/control-coordinate training,pseudolabels,or future demonstrated action references. Pure forward targets only. Image prediction was not banned by this clarification.",
   "excluded_branch": "Four span-incremental heads saved500;STOP+SUPERSEDED_BY_CONSTRAINT.json. Original plan retained,head recipes retired from main summaries. Metadata-only pre-SGD errors retained. Never reuse excluded weights or traces.",
-  "physical_response_probes": "Four idle GPUs run0-update own nine-command interventions on32commoninitialcases/model;ownership physical-response-launch-dev13/dev15.json. Diagnostic only,not trainingdata or success score.",
-  "first_phase": {"root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_kernel_20261106", "trained_models": 16, "trained_updates_each": 10000, "fully_evaluated_at_0851UTC": 12, "point_manipulation_successes": 17, "point_manipulation_episodes": 480, "point_manipulation_percent": 3.5416666666666665, "status": "NO_QUALIFIED_GAIN;four nonlinear final evaluations pending"},
-  "independent_training_seeds": [1, 2, 3, 4],
-  "feature_contract": {"batch_vs_single_max": 0.0, "cache_vs_live_single_max": 0.0, "cache_vs_live_batch_max": 0.0},
+  "physical_response_probes": "Four own-command probes completed32 common physicalcases each;288interventions/model,0SGD.5-native random-feature forward MSE near copy;gripper odd response poorly predicted;true even/odd response near1. Shared cases,not128 independent cases.",
+  "first_phase": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_kernel_20261106",
+    "trained_models": 16,
+    "trained_updates_each": 10000,
+    "point_manipulation_successes": 17,
+    "point_manipulation_episodes": 480,
+    "point_manipulation_percent": 3.5416666666666665,
+    "status": "COMPLETE_NO_QUALIFIED_GAIN;all16evaluated/errors0",
+    "fully_evaluated_at_0911UTC": 16
+  },
+  "independent_training_seeds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "feature_contract": {
+    "batch_vs_single_max": 0.0,
+    "cache_vs_live_single_max": 0.0,
+    "cache_vs_live_batch_max": 0.0
+  },
   "strict_constraints": [
     "No inverse-action reconstruction,including learned control-coordinate fitting as a proxy",
     "No action labels, future-action reference sequences/options or retrieval",
@@ -27,7 +62,57 @@
     "collector_retired": 3697457,
     "tf_cold_seed3_graceful_stop": 30126,
     "tf_cold_seed4_graceful_stop": 29962,
-    "reason": "Old TF has an RGB64 generative decoder; strict request supersedes its remaining work. Full states and errors retained."
+    "reason": "Historical stop followed our overbroad interpretation of reconstruction. Latest user explicitly forbids inverse ACTION;image prediction is permitted. Old states remain closed,not reused."
   },
-  "limits": "Fixed random features may be inadequate and expert action coverage may not identify causal effects. No factual-prediction metric substitutes for physical success. Screening cohorts are not confirmation. No SOTA/novelty claim. Old goal/LLM monitors remain off."
+  "limits": "Fixed random features may be inadequate and expert action coverage may not identify causal effects. No factual-prediction metric substitutes for physical success. Screening cohorts are not confirmation. No SOTA/novelty claim. Old goal/LLM monitors remain off.",
+  "forward_phase3": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_controlspan_20261106_v2",
+    "trained_models": 12,
+    "steps_each": 10000,
+    "complete": true,
+    "manipulation_percent": {
+      "fullseq-free": 0,
+      "fullseq-zero": 0.4166666666666667,
+      "fullseq-stencil": 0.8333333333333334
+    }
+  },
+  "signed_fields": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_signedfields_20261106",
+    "complete": true,
+    "trained_models": 4,
+    "steps_each": 10000,
+    "manipulation_successes": 0,
+    "manipulation_episodes": 480,
+    "effective_errors": 0
+  },
+  "native_transport": {
+    "source": "db8afbb",
+    "learners": 16,
+    "all_scratch": true,
+    "node_copy_required": true,
+    "dev13_pids": [
+      3707692,
+      3707693,
+      3707694,
+      3707695,
+      3707696,
+      3707697,
+      3707698,
+      3707699
+    ],
+    "dev15_pids": [
+      3250473,
+      3250474,
+      3250475,
+      3250476,
+      3250477,
+      3250478,
+      3250479,
+      3250480
+    ],
+    "collector": 3707712,
+    "labels": "Future native RGB only",
+    "input_data": "Same2500 original trajectories/204806frames/202306nativepairs;no extra trainingdata;45/5trajectorysplit",
+    "planner": "Goal-conditioned next-image motion projected onto forward image warp fields.No learned action head.Future commands never a reference.15native generated sequentially;own previous control prior;compose displacement maps before rendering."
+  }
 }
