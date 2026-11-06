@@ -14,7 +14,8 @@ def run(a):
     from as_jepa_lewm.factory import build_model
     torch.set_num_threads(2);torch.set_float32_matmul_precision('highest');a.output.mkdir(parents=True,exist_ok=False)
     cfg=json.loads((a.run/'config.json').read_text());model=build_model(cfg).cuda().eval().requires_grad_(False)
-    assert model.visual_source=='local'and not model.temporal_aux and not model.history_context and model.condition_horizon=='none'
+    assert model.visual_source=='local'and not model.temporal_aux and model.condition_horizon=='none'
+    assert not model.history_context or(model.chunk==1 and a.execute==1)
     assert a.execute<=model.chunk
     model.load_state_dict(torch.load(a.run/f'model-step{a.step:07d}/weights.pt',map_location='cuda',weights_only=True));before=model_sha(model)
     card=json.loads((Path(cfg['data'])/'dataset_card.json').read_text());mean=np.asarray(card['action_mean'],np.float32);std=np.asarray(card['action_std'],np.float32)
@@ -26,18 +27,24 @@ def run(a):
             assert np.array_equal(state,cached['initial_state'])
             assert all(np.array_equal(v,cached['initial_physics_'+k])for k,v in physics_state(env).items())
             gate=rgb_replay_check(cached['initial'],pixels(env));assert gate['passed'],gate
-            image=cached['initial'];goal=resize_tensor([cached['goal']]).cuda();actions=[];successes=[];calls=0
+            image=cached['initial'];past=image;previous_action=torch.zeros(1,20,device='cuda');history_valid=torch.zeros(1,device='cuda')
+            goal=resize_tensor([cached['goal']]).cuda();actions=[];successes=[];calls=0
             generator=torch.Generator(device='cuda').manual_seed(778000+case['seed'])
             try:
                 while len(actions)<a.budget:
                     if a.noise_policy=='fixed':generator.manual_seed(778000+case['seed'])
                     current=resize_tensor([image]).cuda();batch=dict(pixels=torch.stack([current,goal],1))
+                    if model.history_context:
+                        batch.update(pixels=torch.stack([resize_tensor([past]).cuda(),current,goal],1),previous_action=previous_action,history_valid=history_valid)
+                    old_image=image
                     proposed=model.propose(batch,generator=generator,steps=12)[0,:a.execute].float().cpu().numpy()
                     native=np.clip(proposed*std+mean,-1,1).reshape(-1,4);assert np.isfinite(native).all();calls+=1
                     for j,command in enumerate(native):
                         _,_,terminated,truncated,info=env.step(command.astype(np.float32));actions.append(command.copy());successes.append(bool(info['success']))
                         if successes[-1]or terminated or truncated or len(actions)>=a.budget:break
                         if(j+1)%5==0:image=pixels(env)
+                    if model.history_context and len(actions)>=5:
+                        actual=np.asarray(actions[-5:]).reshape(20);previous_action=torch.from_numpy(((actual-mean)/std)[None]).cuda();history_valid.fill_(1);past=old_image
                     if successes[-1]or terminated or truncated:break
             finally:close_environment(env)
             trace=a.output/f'{case["task"]}-seed{case["seed"]}.npz';np.savez_compressed(trace,actions=np.stack(actions),successes=np.asarray(successes))
@@ -46,9 +53,9 @@ def run(a):
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     assert before==model_sha(model)
     save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before,step=a.step,execute=a.execute,
-        training_action_blocks=model.chunk,noise_policy=a.noise_policy,new_updates=0,no_future_demonstrated_command_reference_in_controller=True,
+        training_action_blocks=model.chunk,noise_policy=a.noise_policy,own_past_history=model.history_context,new_updates=0,no_future_demonstrated_command_reference_in_controller=True,
         scope='OriginalLeRobotcorpus,commonRGBgoals/resetstates,500nativeanysuccess/sensor5,12ownflowintegrationsteps.'
-              'OnlyRGBcurrent/goalinput;no clock/history/taskID/proprio/reward/successinputs.EachcommandcomesfromownGaussianproposal.'
+              'OnlyRGBcurrent/goalplusdeclaredpastRGB/OWNexecutedcontrolhistory;no clock/taskID/proprio/reward/successinputs.EachcommandcomesfromownGaussianproposal.'
               'Chunk6modelsarelabelledfuture-targetBASELINESONLY;newcurrent-onlycandidatechunk1.'))
 
 

@@ -13,7 +13,8 @@ from torch.utils.data import Dataset
 class NativeInversePairs(Dataset):
     def __init__(self,cfg,split='train'):
         assert cfg['model']['chunk']==1 and cfg['model']['action_dim']==20
-        assert cfg['model']['visual_source']=='local'and not cfg['model']['temporal_aux']and not cfg['model']['history_context']and cfg['model']['condition_horizon']=='none'
+        assert cfg['model']['visual_source']=='local'and not cfg['model']['temporal_aux']and cfg['model']['condition_horizon']=='none'
+        self.history=cfg['model']['history_context']
         self.seed=cfg['seed'];self.phase=cfg.get('inverse_anchors','all');self.balance=cfg.get('inverse_balance','frames');self.goal_mode=cfg.get('inverse_goals','phase_mixture')
         assert self.goal_mode in['phase_mixture','terminal']
         assert self.phase in['all','phase0']and self.balance in['frames','episodes']
@@ -42,10 +43,16 @@ class NativeInversePairs(Dataset):
         else:
             delta=available if rng.random()<.5 else int(rng.integers(1,available+1));goal=t+delta*5
         data=self.shards[record['shard']];offset=record['offset'];rows=np.array([offset+t,offset+goal])
-        image=torch.from_numpy(np.asarray(data['pixels'][rows]).copy()).permute(0,3,1,2)
+        image_rows=np.r_[offset+max(0,t-5),rows]if self.history else rows
+        image=torch.from_numpy(np.asarray(data['pixels'][image_rows]).copy()).permute(0,3,1,2)
         # The ONLY supervised command is the already-executedCURRENT interval.
         # No command at t+5 or any later time is indexed here.
         current=np.asarray(data['controls'][offset+t:offset+t+5]).reshape(20).copy()
         action=(current-self.mean)/self.std
-        return dict(pixels=image,action=torch.from_numpy(action[None]),action_mask=torch.ones(1),horizon=np.int64(0),
+        value=dict(pixels=image,action=torch.from_numpy(action[None]),action_mask=torch.ones(1),horizon=np.int64(0),
             episode=record['episode']*5,start=t,rows=torch.from_numpy(rows),current_interval_start=offset+t,current_interval_stop=offset+t+5)
+        if self.history:
+            previous=np.zeros(20,np.float32);n=min(t,5)
+            if n:previous[-n*4:]=(np.asarray(data['controls'][offset+t-n:offset+t]).reshape(-1)-self.mean[-n*4:])/self.std[-n*4:]
+            value.update(previous_action=torch.from_numpy(previous),history_valid=np.float32(n/5))
+        return value
