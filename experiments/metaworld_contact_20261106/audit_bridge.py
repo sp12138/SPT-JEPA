@@ -72,11 +72,13 @@ def run(a):
         save(root/f'independence-debug-{a.step}.json', dict(memory_max_abs=memory_error, duration_max_abs=duration_error,
              fp32_cudnn_tf32=False, fp32_matmul_tf32=False))
         assert memory_error < 1e-4 and duration_error < 1e-4, (memory_error, duration_error)
-        target=moved['action'].float();t=target.new_tensor([.3,.9]);noise=torch.randn_like(target)
-        value=target*(1-t[:,None,None])+noise*t[:,None,None];h=target.new_zeros(2)
-        field=model.action_field(value,t,h,memory)
-        singles=torch.cat([model.action_field(value[j:j+1],t[j:j+1],h[j:j+1],independent_memory[j])for j in range(2)])
-        field_error=float((field-singles).abs().max());assert field_error<1e-4,field_error
+        field_error=None
+        if model.objective!='metric':
+            target=moved['action'].float();t=target.new_tensor([.3,.9]);noise=torch.randn_like(target)
+            value=target*(1-t[:,None,None])+noise*t[:,None,None];h=target.new_zeros(2)
+            field=model.action_field(value,t,h,memory)
+            singles=torch.cat([model.action_field(value[j:j+1],t[j:j+1],h[j:j+1],independent_memory[j])for j in range(2)])
+            field_error=float((field-singles).abs().max());assert field_error<1e-4,field_error
     save(a.output, dict(passed=True, step=a.step, actual_cpu_restore=restore,
          portable_exact=True, checkpoint_sha256=digest(root/'last.ckpt'),
          loss=float(loss.detach()), metrics={k:float(v.detach()) for k, v in metrics.items()}, gradients=gradients,

@@ -30,6 +30,7 @@ def run(a):
             generator=torch.Generator(device='cuda').manual_seed(778000+case['seed'])
             try:
                 while len(actions)<a.budget:
+                    if a.noise_policy=='fixed':generator.manual_seed(778000+case['seed'])
                     current=resize_tensor([image]).cuda();batch=dict(pixels=torch.stack([current,goal],1))
                     proposed=model.propose(batch,generator=generator,steps=12)[0,:a.execute].float().cpu().numpy()
                     native=np.clip(proposed*std+mean,-1,1).reshape(-1,4);assert np.isfinite(native).all();calls+=1
@@ -45,7 +46,7 @@ def run(a):
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     assert before==model_sha(model)
     save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before,step=a.step,execute=a.execute,
-        training_action_blocks=model.chunk,new_updates=0,no_future_demonstrated_command_reference_in_controller=True,
+        training_action_blocks=model.chunk,noise_policy=a.noise_policy,new_updates=0,no_future_demonstrated_command_reference_in_controller=True,
         scope='OriginalLeRobotcorpus,commonRGBgoals/resetstates,500nativeanysuccess/sensor5,12ownflowintegrationsteps.'
               'OnlyRGBcurrent/goalinput;no clock/history/taskID/proprio/reward/successinputs.EachcommandcomesfromownGaussianproposal.'
               'Chunk6modelsarelabelledfuture-targetBASELINESONLY;newcurrent-onlycandidatechunk1.'))
@@ -55,4 +56,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser()
     for key in['run','manifest','output']:p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--step',type=int,required=True);p.add_argument('--execute',type=int,choices=[1,3],default=1);p.add_argument('--budget',type=int,default=500)
+    p.add_argument('--noise-policy',choices=['fresh','fixed'],default='fresh')
     p.add_argument('--tasks',nargs='+',default=TASKS);p.add_argument('--seeds',nargs='+',type=int,default=[42,1042]);run(p.parse_args())
