@@ -38,7 +38,8 @@ def work(root,source,host,gpu):
     plan=json.loads((root/'training-plan.json').read_text());r=next(x for x in plan['recipes']if x['host']==host and x['gpu']==gpu);run=Path(r['run']);deadline=plan['deadline_unix']
     try:
         owner=Path(f'/proc/{r["resource_pid"]}/cmdline')
-        while owner.exists()and b'goal_campaign.py'in owner.read_bytes():assert time.time()<deadline;time.sleep(10)
+        marker=r.get('resource_marker','goal_campaign.py').encode()
+        while owner.exists()and marker in owner.read_bytes():assert time.time()<deadline;time.sleep(10)
         wait_gpu_release(gpu);env=environment(source,gpu);assert digest(run/'config.json')==r['config_sha256']
         for step in plan['stages']:
             assert not(root/'STOP').exists()and not(run/'STOP').exists();wait_gpu_release(gpu)
@@ -48,10 +49,10 @@ def work(root,source,host,gpu):
                 '--output',str(run/f'audit-{step}.json')],run/f'audit-{step}.log',env,source,deadline)
             assert json.loads((run/f'audit-{step}.json').read_text())['passed']
             archive=run/f'archive-step{step:07d}';archive.mkdir();shutil.copy2(run/'last.ckpt',archive/'native.ckpt');save(archive/'manifest.json',dict(step=step,native_sha256=digest(archive/'native.ckpt')))
-            seeds=[42,1042]if step==500 else[42,43,1042,1043]if step<10000 else list(range(42,52))+list(range(1042,1052))
+            seeds=list(range(42,52))+list(range(1042,1052))if step==max(plan['stages'])else[42,1042]if step==500 else[42,43,1042,1043]
             evaluation(source,run,step,plan['manifest'],run/f'eval-projection-step{step:07d}',env,deadline,technical=step==2,seeds=seeds)
             save(run/'progress.json',dict(step=step,phase='stage_complete'))
-        save(run/'complete.json',dict(passed=True,step=10000,forward_observation_targets_only=True))
+        save(run/'complete.json',dict(passed=True,step=max(plan['stages']),forward_observation_targets_only=True))
     except BaseException as error:save(run/'execution-error.json',dict(error=repr(error)));raise
 
 
