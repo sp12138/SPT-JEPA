@@ -3,6 +3,7 @@ from importlib import import_module
 
 
 MODEL_TARGETS = {
+    "predictive_kernel": "as_jepa_lewm.predictive_kernel.PredictiveKernel",
     "temporal_bridge": "as_jepa_lewm.temporal_bridge.TemporalBridge",
     "base": "as_jepa_lewm.model.ASJepaLeWM",
     "research": "as_jepa_lewm.research.ResearchLeWM",
