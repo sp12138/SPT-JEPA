@@ -14,16 +14,18 @@ from experiments.metaworld_kernel_20261106.campaign import save,digest
 
 def run(a):
     torch.set_num_threads(2);torch.set_float32_matmul_precision('highest');a.output.mkdir(parents=True,exist_ok=False)
-    cfg=json.loads((a.run/'config.json').read_text());assert cfg['model']['action_dim']==4 and not cfg['model']['history_context']and cfg['model']['chunk']==1
-    assert cfg.get('inverse_tail_reserve')==1
+    cfg=json.loads((a.run/'config.json').read_text());assert cfg['model']['action_dim']in[4,20]and not cfg['model']['history_context']and cfg['model']['chunk']==1
+    assert cfg['model']['action_dim']==20 or cfg.get('inverse_tail_reserve')==1
     controller=build_model(cfg).cuda().eval().requires_grad_(False)
     controller.load_state_dict(torch.load(a.run/'model-step0040000/weights.pt',map_location='cuda',weights_only=True))
     assert json.loads((a.run/'audit-40000.json').read_text())['passed']
-    wc=json.loads((a.world/'config.json').read_text());assert wc['model_class']=='causal_transport'and wc['model']['mode']=='stencil'
-    assert not wc.get('initial_checkpoint')and not wc.get('initial_encoder_checkpoint')
-    world=build_model(wc).cuda().eval().requires_grad_(False)
-    world.load_state_dict(torch.load(a.world/'model-step0020000/weights.pt',map_location='cuda',weights_only=True))
-    before=dict(controller=model_sha(controller),world=model_sha(world));card=json.loads((Path(cfg['data'])/'dataset_card.json').read_text())
+    world=None
+    if a.mode!='static':
+        wc=json.loads((a.world/'config.json').read_text());assert wc['model_class']=='causal_transport'and wc['model']['mode']=='stencil'
+        assert not wc.get('initial_checkpoint')and not wc.get('initial_encoder_checkpoint')
+        world=build_model(wc).cuda().eval().requires_grad_(False)
+        world.load_state_dict(torch.load(a.world/'model-step0020000/weights.pt',map_location='cuda',weights_only=True))
+    before=dict(controller=model_sha(controller),world=model_sha(world)if world is not None else None);card=json.loads((Path(cfg['data'])/'dataset_card.json').read_text())
     mean=np.asarray(card['action_mean'][:4],np.float32);std=np.asarray(card['action_std'][:4],np.float32)
     cases=[r for r in json.loads(a.manifest.read_text())['rows']if r['task']in a.tasks and r['seed']in a.seeds]
     cases.sort(key=lambda r:(a.tasks.index(r['task']),a.seeds.index(r['seed'])));assert len(cases)==len(a.tasks)*len(a.seeds);rows=[]
@@ -36,10 +38,10 @@ def run(a):
             past=goal.new_zeros((1,4),dtype=torch.float32);valid=goal.new_zeros((1,),dtype=torch.float32);generator=torch.Generator(device='cuda').manual_seed(778000+case['seed'])
             try:
                 while len(actions)<a.budget:
-                    actual=resize_tensor([image]).cuda();belief=world.encoder(actual);commands=[]
+                    actual=resize_tensor([image]).cuda();belief=world.encoder(actual)if world is not None else None;commands=[]
                     for j in range(5):
-                        current=actual if j==0 else F.interpolate(belief*255,(224,224),mode='bilinear',align_corners=False,antialias=True).round().clamp(0,255).byte()
-                        proposed=controller.propose(dict(pixels=torch.stack([current,goal],1)),generator=generator,steps=12)[0,0].float().cpu().numpy();calls+=1
+                        current=actual if j==0 or a.mode=='static'else F.interpolate(belief*255,(224,224),mode='bilinear',align_corners=False,antialias=True).round().clamp(0,255).byte()
+                        proposed=controller.propose(dict(pixels=torch.stack([current,goal],1)),generator=generator,steps=12)[0,0,:4].float().cpu().numpy();calls+=1
                         command=np.clip(proposed*std+mean,-1,1).astype(np.float32);assert np.isfinite(command).all();commands.append(command)
                         control=torch.from_numpy(command[None]).cuda()
                         if a.mode=='world'and j<4:
@@ -58,17 +60,19 @@ def run(a):
             row=dict(task=case['task'],seed=case['seed'],success=bool(any(successes)),steps=len(actions),calls=calls,plans=plans,world_forecasts=forecasts,
                 case_sha256=case['sha256'],expert_goal_success=case['expert_any_success'],initial_rgb=gate,trace=str(trace),trace_sha256=digest(trace))
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
-    after=dict(controller=model_sha(controller),world=model_sha(world));assert before==after
+    after=dict(controller=model_sha(controller),world=model_sha(world)if world is not None else None);assert before==after
     save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=40000,mode=a.mode,
-        feedback_native=5,action_native=1,training_action_native=1,new_updates=0,current_action_only=True,
+        feedback_native=5,action_native=1,training_action_native=controller.action_dim//4,new_updates=0,current_action_only=controller.action_dim==4,
         scope='CurrentONEa_t4Dcontrollertrained40k+ownstrictforwardRGBworld20k,bothscratchoriginaldata;no futureactionlabels/externalteacher.'
               'RealRGBONLYevery5native;fourintermediateobservationsareOWNforecast,neveractualfutureframes/states/actions.'
               'CopycontrolgetsSAME128->224intermediateimageprocessingandSAMEown5Gaussianactiondraws;onlyforwardevolutiondisabled.'
-              'Extra5xpolicycallsandworldpretrainingcostexplicit;notan equalFLOPs claim.No newSGD,smallpilotnotconfirmation.'))
+              'StaticmodeusesONLYoriginalactual224RGBthroughoutthe5nativeslot;noworldloaded/resize/proxyimage.'
+              'Macro20modelsarelabelledcurrent5-controlTARGETcomparators,onlytheirFIRSTnativecomponentusedforthisstochasticclocktest.'
+              'Extra5xpolicycallsandworldpretrainingcost(ifworldmode)explicit;notan equalFLOPs claim.No newSGD,smallpilotnotconfirmation.'))
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser()
-    for k in['run','world','manifest','output']:p.add_argument('--'+k,type=Path,required=True)
-    p.add_argument('--mode',choices=['copy','world'],required=True);p.add_argument('--budget',type=int,default=500)
+    for k in['run','manifest','output']:p.add_argument('--'+k,type=Path,required=True)
+    p.add_argument('--world',type=Path);p.add_argument('--mode',choices=['copy','world','static'],required=True);p.add_argument('--budget',type=int,default=500)
     p.add_argument('--tasks',nargs='+',default=TASKS);p.add_argument('--seeds',type=int,nargs='+',default=[42,1042]);run(p.parse_args())
