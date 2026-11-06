@@ -54,7 +54,7 @@ def run(a):
         assert action.abs().max()<=1 and torch.isfinite(future).all()
     report=dict(passed=True,step=a.step,actual_cpu_restore=restored,portable_exact=True,gradients=gradients,
         sample_loss_independence_max_abs=independent,sample_loss_independence_relative=relative,identity_warp_max_abs=identity,loss=float(loss.detach()),metrics={k:float(v.detach())for k,v in metrics.items()},
-        balanced_heldout_query_indices=chosen,no_inverse_or_control_coordinate_objective=True,no_future_action_reference=True,model_updates=0,
+        heldout_query_indices=chosen,no_inverse_or_control_coordinate_objective=True,no_future_action_reference=True,model_updates=0,
         scope='Only observed future RGB is the target.Known current command inputs forward prediction only;goal query commands zeroed.'
               'Planning is never called in the training loss.No external pretrained model/state/reward/success/taskID input.')
     a.output.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(dict(passed=True,step=a.step,loss=float(loss.detach()))),flush=True)

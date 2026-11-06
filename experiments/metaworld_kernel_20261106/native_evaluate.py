@@ -73,7 +73,7 @@ def run(a):
     assert model_sha(model)==before
     save(a.output/'summary.json',dict(passed=True,model_unchanged=True,model_sha256=before,rows=rows,step=a.step,
         no_inverse_action_objective_or_future_action_reference=True,from_scratch=True,planner=a.planner,replan_native=a.replan_native,
-        scope='Same original LeRobot corpus/split,RGBgoals/physicalcases,500native any-success.Replan15native,imagesat5native.'
+        scope=f'Same original LeRobot corpus/split,RGBgoals/physicalcases,500native any-success.Replan{a.replan_native}native,imagesat5native.'
               'Native training and ordered control word,different compute.No extra control labels/state/reward/teacher.'))
 
 
