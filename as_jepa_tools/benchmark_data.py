@@ -10,6 +10,9 @@ from torch.utils.data import Dataset
 
 
 def make_training_dataset(cfg):
+    if cfg.get("dataset_kind") == "native_rgb_pairs":
+        from as_jepa_tools.native_rgb_pairs import NativeRGBPairs
+        return NativeRGBPairs(cfg)
     if cfg.get("dataset_kind") == "attainable_pairs":
         from as_jepa_tools.attainable_pairs import AttainablePairs
         return AttainablePairs(cfg)
