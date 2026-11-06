@@ -35,8 +35,14 @@ def run(a):
     portable = torch.load(root/f'model-step{a.step:07d}/weights.pt', map_location='cpu', weights_only=True)
     assert equal(module.model.state_dict(), portable)
     assert 'campaign_rng' in checkpoint and len(checkpoint['campaign_rng']['cuda']) == 1
-    data = TrajectoryPairs(cfg, 'test'); train = TrajectoryPairs(cfg, 'train')
-    assert not {r['episode']//5 for r in train.records} & {r['episode']//5 for r in data.records}
+    if cfg['dataset_kind']=='native_inverse_pairs':
+        from as_jepa_tools.native_inverse import NativeInversePairs
+        data=NativeInversePairs(cfg,'test');train=NativeInversePairs(cfg,'train')
+        assert not {r['episode']for r in train.records}&{r['episode']for r in data.records}
+        assert cfg['model']['chunk']==1
+    else:
+        data = TrajectoryPairs(cfg, 'test'); train = TrajectoryPairs(cfg, 'train')
+        assert not {r['episode']//5 for r in train.records} & {r['episode']//5 for r in data.records}
     batch = next(iter(DataLoader(Subset(data, [0, data.natural_length//2]), batch_size=2, num_workers=0)))
     model = module.model.cuda().eval()
     assert not any(isinstance(m, torch.nn.modules.batchnorm._BatchNorm) for m in model.modules())
@@ -66,10 +72,15 @@ def run(a):
         save(root/f'independence-debug-{a.step}.json', dict(memory_max_abs=memory_error, duration_max_abs=duration_error,
              fp32_cudnn_tf32=False, fp32_matmul_tf32=False))
         assert memory_error < 1e-4 and duration_error < 1e-4, (memory_error, duration_error)
+        target=moved['action'].float();t=target.new_tensor([.3,.9]);noise=torch.randn_like(target)
+        value=target*(1-t[:,None,None])+noise*t[:,None,None];h=target.new_zeros(2)
+        field=model.action_field(value,t,h,memory)
+        singles=torch.cat([model.action_field(value[j:j+1],t[j:j+1],h[j:j+1],independent_memory[j])for j in range(2)])
+        field_error=float((field-singles).abs().max());assert field_error<1e-4,field_error
     save(a.output, dict(passed=True, step=a.step, actual_cpu_restore=restore,
          portable_exact=True, checkpoint_sha256=digest(root/'last.ckpt'),
          loss=float(loss.detach()), metrics={k:float(v.detach()) for k, v in metrics.items()}, gradients=gradients,
-         sample_independence=dict(max_memory_difference=memory_error, max_duration_difference=duration_error),
+         sample_independence=dict(max_memory_difference=memory_error, max_duration_difference=duration_error,max_action_field_difference=field_error),
          heldout_original_episodes=(batch['episode']//5).tolist(), heldout_rows=batch['rows'].tolist(),
          scope='Actual model/optimizer/scheduler restore and held-out FP32 backward;not task performance.'))
 

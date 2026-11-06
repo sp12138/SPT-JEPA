@@ -35,7 +35,7 @@ def collect(root):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);a=p.parse_args();plan=json.loads((a.root/'plan.json').read_text())
     while True:
-        value=collect(a.root);save(a.root/'results/summary.json',value)
+        value=collect(a.root);(a.root/'results').mkdir(exist_ok=True);save(a.root/'results/summary.json',value)
         if value['complete']+value['errors']==8 or time.time()>plan['deadline_unix']:break
         time.sleep(15)
     print(json.dumps(dict(complete=value['complete'],errors=value['errors'],scores=value['scores'])),flush=True)
