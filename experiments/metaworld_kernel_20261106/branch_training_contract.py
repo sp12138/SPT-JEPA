@@ -38,7 +38,7 @@ def run(a):
         natural_union_length=len(data),same_observation_label_per_branch=True,actual_suffix_alignment_checks=64,original_prefix_checks=16,
         sample_loss_independence_relative=relative,loss=float(loss.detach()),updates=0,
         scope='Extracorpusonly;actualowncontrolsforwardINPUTonly.GgoalRGBstrictlyafterallfivefuturelabels;allGcontrols/pastcontrolszero.'
-              'Noprivilegedarrays/reward/success/taskIDmodelinput;parentgroupssplit.Dataaugmentationstudy,notsame-corpusmethodsuperiority.'))
+              'Noprivilegedarrays/reward/success/taskIDmodelinput;parentgroupssplit.Dataaugmentationstudy,notsame-corpusmethodsuperiority.')
     a.output.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
 
 
