@@ -10,6 +10,9 @@ from torch.utils.data import Dataset
 
 
 def make_training_dataset(cfg):
+    if cfg.get("dataset_kind") == "query_rgb_paths":
+        from as_jepa_tools.query_rgb_paths import QueryRGBPaths
+        return QueryRGBPaths(cfg)
     if cfg.get("dataset_kind") == "goal_rgb_paths":
         from as_jepa_tools.goal_rgb_paths import GoalRGBPaths
         return GoalRGBPaths(cfg)

@@ -27,7 +27,11 @@ def run(a):
         data=GoalRGBPaths(cfg,'test');chosen=np.linspace(0,len(data)-1,8,dtype=int).tolist()
         assert equal(module.model.world.state_dict(),torch.load(cfg['model']['world_checkpoint'],map_location='cpu',weights_only=True))
     else:
-        data=NativeRGBPairs(cfg,'test');indices={0:[],1:[]}
+        if cfg['dataset_kind']=='query_rgb_paths':
+            from as_jepa_tools.query_rgb_paths import QueryRGBPaths
+            data=QueryRGBPaths(cfg,'test')
+        else:data=NativeRGBPairs(cfg,'test')
+        indices={0:[],1:[]}
         for index in np.linspace(0,len(data)-1,min(256,len(data)),dtype=int):
             role=int(data[int(index)]['boundary'])
             if len(indices[role])<4:indices[role].append(int(index))
@@ -49,7 +53,9 @@ def run(a):
         single=[model.loss({k:v[j:j+1]if torch.is_tensor(v)else v for k,v in batch.items()})[0]for j in range(8)]
         independent=float((torch.stack(single).mean()-loss.detach()).abs())
         relative=independent/(1+abs(float(loss.detach())));assert relative<2e-5,(independent,relative)
-        image=model.encoder(batch['current_pixels'][:1]);identity=float((model.warp(image,torch.zeros(1,2,128,128,device='cuda'))-image).abs().max());assert identity<1e-6,identity
+        image=model.encoder(batch['current_pixels'][:1]);identity=None
+        if hasattr(model,'warp'):
+            identity=float((model.warp(image,torch.zeros(1,2,128,128,device='cuda'))-image).abs().max());assert identity<1e-6,identity
         action,future=model.command(image,image,model.encoder(batch['goal_pixels'][:1]),image.new_ones(1),'projection',batch['previous_control'][:1])
         assert action.abs().max()<=1 and torch.isfinite(future).all()
     report=dict(passed=True,step=a.step,actual_cpu_restore=restored,portable_exact=True,gradients=gradients,

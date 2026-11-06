@@ -59,8 +59,12 @@ def run(a):
                     past=torch.as_tensor(actions[-1],device=current.device).reshape(1,4)if actions else current.new_zeros(1,4)
                     valid=current.new_tensor([bool(actions)])
                     if a.planner=='path':
-                        from as_jepa_lewm.path_projection import path_projection
-                        commands,word,detail=path_projection(model,current,goal,valid,past,generator,warm,particles=a.path_particles,iterations=a.path_iterations)
+                        if hasattr(model,'plan_controls'):
+                            previous=model.encoder(resize_tensor(frames[-2:-1]if len(frames)>1 else frames[-1:]).cuda())
+                            commands,word,detail=model.plan_controls(current,previous,goal,valid,past,generator,warm,particles=a.path_particles,iterations=a.path_iterations)
+                        else:
+                            from as_jepa_lewm.path_projection import path_projection
+                            commands,word,detail=path_projection(model,current,goal,valid,past,generator,warm,particles=a.path_particles,iterations=a.path_iterations)
                         commands=commands[:a.replan_native];shift=a.replan_native//5
                         warm=torch.cat([word[shift:],word[-1:].expand(shift,-1)],0);planning.append(detail)
                     else:commands=plan(model,current,goal,past,valid,a.replan_native,a.planner)
