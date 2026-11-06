@@ -33,7 +33,7 @@ def run(a):
             assert np.array_equal(state,cached['initial_state'])and all(np.array_equal(v,cached['initial_physics_'+k])for k,v in physics_state(env).items())
             gate=rgb_replay_check(cached['initial'],pixels(env));assert gate['passed'],gate
             image=cached['initial'];goal=resize_tensor([cached['goal']]).cuda();actions=[];successes=[];plans=0;forecasts=0;calls=0
-            past=goal.new_zeros(1,4,dtype=torch.float32);valid=goal.new_zeros(1,dtype=torch.float32);generator=torch.Generator(device='cuda').manual_seed(778000+case['seed'])
+            past=goal.new_zeros((1,4),dtype=torch.float32);valid=goal.new_zeros((1,),dtype=torch.float32);generator=torch.Generator(device='cuda').manual_seed(778000+case['seed'])
             try:
                 while len(actions)<a.budget:
                     actual=resize_tensor([image]).cuda();belief=world.encoder(actual);commands=[]
