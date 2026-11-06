@@ -19,6 +19,8 @@ def run(a):
     batch=next(iter(DataLoader(Subset(data,indices[0]+indices[1]),batch_size=4)));mask=batch['boundary'].bool()
     assert(batch['executed_sequence'][mask]==0).all()and(batch['previous_control_sequence'][mask]==0).all()
     assert(batch['target_row'][mask]<batch['goal_row'][mask]).all()
+    if data.horizon>5:
+        assert (batch['future_valid'].sum(1)>=5).all()and(batch['future_valid'].sum(1)<=data.horizon).all()
     initial=None;reports={}
     for mode in ['teacher','rollout']:
         cfg['model']['training_mode']=mode;torch.manual_seed(cfg['seed']);model=build_model(cfg).eval()
@@ -37,7 +39,8 @@ def run(a):
         reports[mode]=dict(loss=float(loss.detach()),rgb_head_gradient=head,sample_loss_independence_relative=independent)
     a.output.write_text(json.dumps(dict(passed=True,models=reports,paired_initial_weights=True,model_updates=0,
         zero_residual_initialization='OnlyRGBhead has first-update gradient;allrequiredgradients mustbepositiveafteractualnative2updates.',
-        same_actual_future_RGB_targets=True,forecast_horizon=data.horizon,no_inverse_or_future_action_reference=True),indent=2)+'\n')
+        same_actual_future_RGB_targets=True,forecast_horizon=data.horizon,short_trajectories='Retained;sameH5starts,onlyobservedfutureframesinlikelihood;paddedtailmaskzero',
+        no_inverse_or_future_action_reference=True),indent=2)+'\n')
     print(json.dumps(dict(passed=True)),flush=True)
 
 

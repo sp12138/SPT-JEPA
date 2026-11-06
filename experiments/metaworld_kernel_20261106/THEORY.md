@@ -1,5 +1,82 @@
 # What the successful action target may actually supply
 
+## Updated mechanism test, November 7 Beijing time
+
+The objective is still unmet. The old action-supervised score is only a scalar
+comparison; no inverse learner,its weights,outputs,or traces enter this study.
+The following separates mathematical statements from empirical hypotheses.
+
+Let a known executed control word `u` produce an observed image path
+`Y_H = F_H(h,u)`,where `h` includes information inferred from observation and
+own-control history. Near a reference word,an image prediction error induces
+the control-space quadratic form
+
+`delta_u^T G_H delta_u`,with
+`G_H = sum_k J_k^T Sigma_k^{-1} J_k`,
+
+where `J_k` is the derivative of the k-th future observation with respect to
+the control word. This is a local statement,not a claim that image MSE is an
+action loss. If `G_H` has a small eigenvalue,excellent image prediction gives
+a weak bound on a control error in that direction. An action target instead
+measures errors directly in the logged actuator coordinates. It also trains
+a goal-conditioned controller,so its gain cannot be attributed solely to
+representation quality. Logged demonstrations need not be optimal actions.
+
+A preparation action can principally change *which later transitions are
+possible*. It need not change the immediate image substantially. Increasing
+the horizon can reveal that effect,but is not sufficient in general: for a
+bilinear delayed effect `y_next = y + hidden_force * later_motion`,the local
+derivative at the all-zero word can remain zero. Ordered,finite interventions
+can distinguish these systems even when a zero-control linearization cannot.
+This motivates latent memory,compositional observation likelihood,and symmetric
+experiments over all control axes. It does not motivate a hand-coded gripper
+rule,an action decoder,or pseudo-action labels.
+
+There is a separate identification problem. If the demonstrations satisfy
+`u = pi(h)`,then every model
+
+`F_tilde(h,u) = F(h,u) + A(h,u) * (u - pi(h))`
+
+has the same factual predictions on that support. A state-only predictor may
+therefore fit well while exposing no useful control dependence. This does not
+prove imitation through a forward model impossible: the demonstrated control
+can remain a valid solution. It shows why fitting the observations alone need
+not make the planning solution unique or make its derivatives physically right.
+Same-context interventions constrain this otherwise unconstrained family.
+
+The present evidence is narrower than this interpretation:
+
+- Native image forecasting improved substantially over copying,yet the best
+  native20k arm achieved only32/480=6.67% manipulation success.
+- A CPU physical diagnostic of eligible own-forward trajectories found42/576
+  signed control-order pairs differing by more than1cm at nearest-TCP contexts,
+  versus0/576 at initial contexts. These are repeated pairs within shared
+  physical contexts,not576 independent environments. Some failures occur before
+  contact;some include contact/lift without completion. No unique failure cause
+  follows from these observations.
+- A matched original-data recurrent experiment,with the same five future RGB
+  targets and paired initial weights,scored9/48=18.75% on six manipulation tasks
+  at2500 updates when belief was composed. Resetting it on each observed
+  transition scored0/48. The gain was door4/8 and drawer5/8;the other four tasks
+  remained0. This is a screening result on four shared physical cases/task and
+  two trained parents,not confirmation or an all-task solution.
+- Frozen original-data models are now tested on exactly50 common,previously
+  unseen own-intervention contexts. This audit separately measures factual
+  forward error,odd control-response agreement,and whether a correct achieved
+  RGB goal predicts better than a different branch goal from the same context.
+  No audit optimizes a learner or predicts an action label.
+
+The new corpus contains11600 own-command branches from400 contexts across50
+tasks. All commands were self-generated experimental inputs;no expert command
+was read/replayed,and no reward/state/success/task-ID tensor is a learner input.
+Simulator state is used only to restore a branch and for separate diagnostics.
+All branches of each exploration parent share one train/validation split and
+benchmark physical cases are excluded. It is a separate extra-data track.
+Original-data experiments never silently consume it. A comparison using it must
+give the same corpus to its baselines and count collection/full pretraining
+cost. Neither the data nor these results are equivalent to the gated official
+JEPA-WMs public setting.
+
 The previous 78.75% result used an action prediction target. It did not establish that image reconstruction is necessary, or that action labels are the only route to its useful information. The current strict experiment tests a different explanation: a distant goal needs to specify a *local transition*, while a forward model needs to specify how controls can realize that transition.
 
 ## A population equivalence, with explicit assumptions

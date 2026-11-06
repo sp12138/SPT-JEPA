@@ -76,7 +76,12 @@ class QueryRecurrent(nn.Module):
 
     def loss(self,batch,step=0,ramp_steps=0):
         prediction=self.distribution(batch);target=self.encoder(batch['future_pixels'].flatten(0,1)).unflatten(0,(len(prediction),self.forecast_horizon))
-        per_sample=((prediction-target)*255).square().mean((1,2,3,4));loss=.5*per_sample.mean()
+        error=((prediction-target)*255).square()
+        if 'future_valid'in batch:
+            mask=batch['future_valid'].float();assert(mask.sum(1)>=5).all()
+            per_sample=(error.mean((2,3,4))*mask).sum(1)/mask.sum(1)
+        else:per_sample=error.mean((1,2,3,4))
+        loss=.5*per_sample.mean()
         return loss,dict(loss=loss,future_mse=per_sample.mean()/(255**2),future_rgb8_mse=per_sample.mean())
 
     @torch.no_grad()
