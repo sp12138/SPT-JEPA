@@ -3,6 +3,7 @@ from importlib import import_module
 
 
 MODEL_TARGETS = {
+    "goal_transport": "as_jepa_lewm.goal_transport.GoalTransport",
     "causal_transport": "as_jepa_lewm.causal_transport.CausalTransport",
     "signed_density": "as_jepa_lewm.signed_density.SignedDensity",
     "predictive_density": "as_jepa_lewm.predictive_density.PredictiveDensity",

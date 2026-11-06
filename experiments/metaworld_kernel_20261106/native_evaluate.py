@@ -21,10 +21,13 @@ def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 @torch.no_grad()
-def plan(model,current,goal,past,valid,native_steps=15):
+def plan(model,current,goal,past,valid,native_steps=15,planner='tangent'):
     base=current;mapping=model.grid.permute(0,3,1,2).expand(len(current),-1,-1,-1).clone();commands=[]
     for _ in range(native_steps):
-        action,flow=model.choose_control(current,goal,valid,past)
+        if planner=='observation':
+            from as_jepa_lewm.observation_projection import observation_projection
+            action,flow=observation_projection(model,current,goal,valid,past)
+        else:action,flow=model.choose_control(current,goal,valid,past)
         assert torch.isfinite(action).all()and action.abs().max()<=1
         commands.append(action[0].cpu().numpy());past=action;valid=valid.new_ones(len(valid))
         mapping=model.warp(mapping,flow)
@@ -53,7 +56,7 @@ def run(a):
                 while len(actions)<a.budget:
                     current=model.encoder(resize_tensor(frames[-1:]).cuda())
                     past=torch.as_tensor(actions[-1],device=current.device).reshape(1,4)if actions else current.new_zeros(1,4)
-                    commands=plan(model,current,goal,past,current.new_tensor([bool(actions)]),15);calls+=1
+                    commands=plan(model,current,goal,past,current.new_tensor([bool(actions)]),a.replan_native,a.planner);calls+=1
                     for j,command in enumerate(commands):
                         _,_,terminated,truncated,info=env.step(command.astype(np.float32))
                         actions.append(command.copy());successes.append(bool(info['success']))
@@ -69,13 +72,14 @@ def run(a):
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     assert model_sha(model)==before
     save(a.output/'summary.json',dict(passed=True,model_unchanged=True,model_sha256=before,rows=rows,step=a.step,
-        no_inverse_action_objective_or_future_action_reference=True,from_scratch=True,
+        no_inverse_action_objective_or_future_action_reference=True,from_scratch=True,planner=a.planner,replan_native=a.replan_native,
         scope='Same original LeRobot corpus/split,RGBgoals/physicalcases,500native any-success.Replan15native,imagesat5native.'
-              'Native one-step training and ordered native control word,different compute.No extra control labels/state/reward/teacher.'))
+              'Native training and ordered control word,different compute.No extra control labels/state/reward/teacher.'))
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser()
     for key in['run','manifest','output']:p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--step',type=int,required=True);p.add_argument('--budget',type=int,default=500)
+    p.add_argument('--planner',choices=['tangent','observation'],default='tangent');p.add_argument('--replan-native',type=int,choices=[5,15],default=15)
     p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--seeds',type=int,nargs='+',required=True);run(p.parse_args())
