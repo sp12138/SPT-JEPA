@@ -26,8 +26,10 @@ def collect(root):
     scores=[]
     for(arm,step),rows in sorted(groups.items()):
         tasks=sorted(set(r['task']for r in rows));manip=[r for r in rows if r['task']not in['reach-v3','reach-wall-v3']]
+        valid=[r for r in rows if r['expert_goal_success']]
         scores.append(dict(arm=arm,step=step,trained_seeds=sorted(set(r['training_seed']for r in rows)),episodes=len(rows),
             manipulation_successes=sum(r['success']for r in manip),manipulation_episodes=len(manip),manipulation_percent=100*sum(r['success']for r in manip)/len(manip),
+            goal_valid_episodes=len(valid),goal_valid_percent=100*sum(r['success']for r in valid)/len(valid)if valid else None,
             task_scores={t:dict(successes=sum(r['success']for r in rows if r['task']==t),episodes=sum(r['task']==t for r in rows))for t in tasks}))
     return dict(runs=runs,scores=scores,complete=sum(r['complete']for r in runs),errors=sum(r['error']is not None for r in runs),training=training,
         performance_goal_achieved=False,scope='Current-onlycandidateorlabelledfuturechunkbaseline;originalcorpus/commonphysicalcases,notpublicSOTA/equalFLOPs.Noclock/oraclefuturecommandsat inference.')
