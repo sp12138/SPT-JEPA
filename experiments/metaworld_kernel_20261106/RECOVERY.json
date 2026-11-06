@@ -1,5 +1,5 @@
 {
-  "status": "ACTIVE_RECURRENT_AND_CAUSAL_IDENTIFICATION_NOT_SOLVED",
+  "status": "ACTIVE_IDENTIFICATION_AND_H15_NOT_SOLVED",
   "objective": "Find an elegant manipulation algorithm substantially exceeding the old action-supervised 78.75% six-task comparator, without INVERSE ACTION reconstruction or future-action references.",
   "hosts": [
     "dev13",
@@ -164,7 +164,7 @@
       "launch-generator-v3-dev13.json",
       "launch-generator-v3-dev15.json"
     ],
-    "current_phase": "All16nativeG10000updates/auditsPASS.12/16finalevaluationscomplete;compose15finishing.No high performance.500 allzero;2500 best2/96;10000 jump5=12/480=2.5%,compose5=13/480=2.7083%.Readlatestcollectorforpoint1/compose15.",
+    "current_phase": "COMPLETEall16/all10000/allfinal640episodesperarm/errors0.Finalsixmanip point111/480=2.2917,jump512/480=2.5,compose513/480=2.7083,compose1519/480=3.9583%.Noimprovementqualified.",
     "search_budget": {
       "technical_particles": 128,
       "technical_iterations": 8,
@@ -217,7 +217,7 @@
     "seconds_BF16": 0.03149591013789177,
     "scope": "SharedownedGPU0probe,noEGL;no measuredspeedbenefit,soBF16inferenceNOTadopted."
   },
-  "updated_utc": "2026-11-06T15:56Z",
+  "updated_utc": "2026-11-06T16:33Z",
   "recurrent": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_recurrent_20261106",
     "source": "4365e0d",
@@ -235,7 +235,7 @@
       3254898
     ],
     "collector": 3713003,
-    "phase": "All4native2500auditsPASS.2parentrolloutcomplete64episodes:9/48=18.75%sixmanip(door4/8,drawer5/8,others0);teacherPARTIALoneparent32episodes0/24.Originalcorpus,notbroadconfirmedgain;remainingteacherand10000running."
+    "phase": "All4originalH5native10000trained/auditsPASS;formal10000evaluationsongoing.2500rollout9/48=18.75% vs teacher0/48 on4sharedphysicalcases/task x2parents;notlong-training orgraspingsuccess."
   },
   "warm_cpu_probe": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_warm_cpu_20261106",
@@ -248,7 +248,7 @@
     "copy_mse": 0.00333392,
     "interpretation": "MatchedsmallCPUlearningefficiencyonly,nocontrolgain;statesnotparentsprimaryGPUlearners."
   },
-  "next_source": "f86a0e0 deployed on sharedEFS;eligible own-intervention pilots all4 PASS29branches/reset/RGB/NNunchanged.400contexts/11600branches finitecollectionACTIVE;0learnerupdates,newcorpusNOTinprimarymodels.",
+  "next_source": "192f49e compiled/archivecreated,scp pending;NOT deployed/launched.6fine-tunes plannedpairedrollout2500parents(causal/causal-and-goal/original)xseeds1/2,max5000,freshmatchedAdamW,fullorigin/searchcost.Separateextra data track;no equal-data/SOTAclaim.Beforelaunchbranchinput/label alignment+sampleindependenceandnodecacheSHArequired.Baselinesmustsharecorpusbeforeclaimingalgorithmwin.",
   "intervention_collection": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_interventions_20261106",
     "source": "f86a0e0",
@@ -264,7 +264,9 @@
     "goalbank": "/efs/prescottsun/SPT-JEPA/data/metaworld-train-observation-quartiles-20261106-v1",
     "goalbank_train_RGB_only": 9000,
     "training_updates": 0,
-    "scope": "50tasks x2ownexplorationparents x4timecontexts x29ownwords;simulatorstateONLYrestore/diagnostics.Allparentbranchesgroupedsplit,benchmarkphysicalcasesexcluded.Separateaugmentedtrack.Anycomparisonmustshareextra corpuswithbaselines."
+    "scope": "50tasks x2ownexplorationparents x4timecontexts x29ownwords;simulatorstateONLYrestore/diagnostics.Allparentbranchesgroupedsplit,benchmarkphysicalcasesexcluded.Separateaugmentedtrack.Anycomparisonmustshareextra corpuswithbaselines.",
+    "status": "COMPLETEall4pilotsandmain11600branches/400contexts,98000branchframes+100parents100nativesteps=108000physicalsteps(excludes1140pilotsteps),0learnerupdates.All4packed128RGBshardsPASSsource0765ce5.",
+    "cache": "/efs/prescottsun/SPT-JEPA/data/metaworld-intervention-rgb128-20261107-v1"
   },
   "warm_original_data": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_warm_query_20261106",
@@ -285,5 +287,36 @@
       10000
     ],
     "scope": "point1/compose5 x2matchingoriginalseeds,all4actualnative2saved.Audits/physicsreadactualfiles.OWNforward20k initialization/costcounted;originaldataonly,noextra data."
+  },
+  "branch_diagnostics": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107",
+    "at2500": "original-model-branch-audits",
+    "at10000": "original-model-branch-audits10000",
+    "complete_reports": 8,
+    "common_physical_contexts": 50,
+    "updates": 0,
+    "results": "F/copy2500rollout.634/.639,teacher1.197/5.149;10000rollout.715/.770,teacher1.209/12.862.RawRGBoddcosXYZ~.4-.55,gripmedian.0-.055.Goalmatchadvantageversusotherbranchgoal~.05%-1.53%;notcontrolsuccess."
+  },
+  "h15": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107_v2",
+    "source": "bd33e7c",
+    "dev13_g3_g7_pids": [
+      3714487,
+      3714488
+    ],
+    "dev15_g3_g7_pids": [
+      3255944,
+      3255945
+    ],
+    "collector": 3714489,
+    "stages": [
+      2,
+      500,
+      2500,
+      10000
+    ],
+    "scope": "Originalcorpusonly,teacher/rolloutx2parents,sameoriginalH5startindices/up to15OBSERVEDfutureRGBlabels.ShortruncatedtailLOSSMASKZERO,nosyntheticlabels.Noinverse.",
+    "recovery": "Oldrootmetaworld_query_h15_20261107CLOSED_PRE_SGD/STOP,0SGD.All4train-shorttrajectoryerrorsretained;first2missinglogdirectoryerrorsalsoarchived.All8completedfrozenbranchdiagnosticsreusednotrerun.",
+    "contract": "PASSbothsplits:2250/250episodes,170358/19448starts,3trainlength<=16(min14);allretained.2314train/314testactualwindowchecks;paddedtargetpoisoninglossinvariant,pairedinitialweights/FP32backward/sampleindependencePASS0SGD."
   }
 }
