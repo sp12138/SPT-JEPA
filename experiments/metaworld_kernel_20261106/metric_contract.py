@@ -40,9 +40,19 @@ def run(a):
             assert np.isfinite(np.stack(result[0])).all()and np.abs(result[0]).max()<=1
             assert all(x>=y for x,y in zip(result[2]['cost_history'],result[2]['cost_history'][1:]))
             measurements[metric]=dict(seconds=elapsed,detail=result[2])
+    from experiments.metaworld_eval_20261103.environment import make_environment,pixels,physics_state,rgb_replay_check,close_environment
+    env,state,_=make_environment(case['task'],case['seed'],data['rand_vec'])
+    try:
+        assert np.array_equal(state,data['initial_state'])
+        assert all(np.array_equal(v,data['initial_physics_'+k])for k,v in physics_state(env).items())
+        gate=rgb_replay_check(data['initial'],pixels(env));assert gate['passed'],gate
+        for index in range(20):env.step(np.asarray(raw[0][min(index,14)],dtype=np.float32))
+        frame=pixels(env);assert frame.shape==(480,480,3)and frame.max()>0
+    finally:close_environment(env)
     assert model_sha(model)==before
     a.output.write_text(json.dumps(dict(passed=True,woodbury_vs_explicit_max_abs=discrepancy,linear_control_geometry_relative_error=relative,
         raw_controller_actions_and_costs_exact=True,model_unchanged=True,model_sha256=before,new_updates=0,measurements=measurements,
+        actual_model_loaded_RGB_gate=gate,actual_own_control_physics_steps=20,
         scope='Only own hypothetical controls.No inverse head/actionlabels/future-action references.ModelscoringcoupleseachsinglecaseownCEMpopulation;traininglossunchanged/samplelevel.'),indent=2)+'\n');print(json.dumps(dict(passed=True,measurements=measurements)),flush=True)
 
 
