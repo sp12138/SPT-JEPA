@@ -1,31 +1,35 @@
 {
-  "status": "ACTIVE_IDENTIFICATION_AND_H15_NOT_SOLVED",
+  "status": "ACTIVE_CURRENT_ONLY_GOAL_CONTROL_NOT_SOLVED",
   "objective": "Performance is mandatory;seek elegance,latest user permits inverse if necessary.Only observed/executed CURRENT interval may supervise inverse;no future-demonstrated-command references in planner.",
   "hosts": [
     "dev13",
     "dev15",
     "dev6"
   ],
-  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_paths_20261106_v2",
-  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-90e3d78",
+  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_goal_20261107",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-25157e5",
   "training_plan": "training-plan.json",
   "ownership": [
-    "launch-generator-v3-dev13.json",
-    "launch-generator-v3-dev15.json",
+    "launch-dev13.json",
+    "launch-dev15.json",
     "collector-launch.json"
   ],
-  "technical_gates": "All16full128x8/H15frozencontrolGPU/20nativephysicsentrygatespassed.16freshGnative2checkpointsnowactuallywrittenby13:03UTC;FP32restore/backward/physicsauditsreadactualfiles,notyetallconfirmed.",
+  "technical_gates": "All12scratchgoalvariantsnative2actualrestore/FP32backward/20nativephysicsPASS;all12saved600at19:03read;readcurrentstagefilesbeforeclaimingnewperformance.",
   "native_stages": [
     2,
-    500,
-    2500,
-    10000
+    600,
+    3000,
+    10000,
+    20000,
+    40000
   ],
   "arms": [
-    "point1",
-    "jump5",
-    "compose5",
-    "compose15"
+    "terminal-flow",
+    "terminal-mse",
+    "directed-flow",
+    "directed-mse",
+    "terminal-directed-flow",
+    "terminal-directed-mse"
   ],
   "latest_user_clarification": "LATEST user expands hosts todev13/dev15/dev6 and RELAXES inverse ban if elegance proves hard.Performance must become very good.Retain scratch/RGB/rewardfree/samplelevel/no externalstrongmodels/nofuture-demo-commandreferences.Pureprediction branches retaintheirstricterobjectives.NewinversebranchwillbeCURRENTfactualintervalonly,fromscratch.",
   "excluded_branch": "Four span-incremental heads saved500;STOP+SUPERSEDED_BY_CONSTRAINT.json. Original plan retained,head recipes retired from main summaries. Metadata-only pre-SGD errors retained. Never reuse excluded weights or traces.",
@@ -52,12 +56,12 @@
     "cache_vs_live_batch_max": 0.0
   },
   "strict_constraints": [
-    "No inverse-action reconstruction,including learned control-coordinate fitting as a proxy",
-    "No action labels, future-action reference sequences/options or retrieval",
-    "No inverse-action ancestry/teachers or external pretrained strong models;any own same-data forward pretraining must prove eligible ancestry and count its full cost",
-    "Known current executed command is a dynamics input only",
-    "Only future observations supervise the sample-level predictor",
-    "No privileged state/reward/success/taskID inputs"
+    "Latest user ALLOWS inverse if needed;keep one sample-level current-interval loss in new inverse candidates",
+    "ONLY already executed CURRENT5native20D interval is a target;no subsequent demonstrated control block or optimal action reference",
+    "All candidateCNN/decoder weights random originally;no external pretrained teacher/model;no old chunk6 ancestry",
+    "RGB current/goal only for current branches;no environmental state/proprio/reward/success/taskID inputs",
+    "Extra own-intervention corpus is a SEPARATE DATA TRACK;share exact corpus with baselines before algorithm-superiority claims",
+    "No dev2,old goal/LLM monitors remain off;old closed campaigns/HOLDs stay closed"
   ],
   "old_campaign": {
     "collector_retired": 3697457,
@@ -218,7 +222,7 @@
     "seconds_BF16": 0.03149591013789177,
     "scope": "SharedownedGPU0probe,noEGL;no measuredspeedbenefit,soBF16inferenceNOTadopted."
   },
-  "updated_utc": "2026-11-06T17:08Z",
+  "updated_utc": "2026-11-06T19:05Z",
   "recurrent": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_recurrent_20261106",
     "source": "4365e0d",
@@ -236,7 +240,9 @@
       3254898
     ],
     "collector": 3713003,
-    "phase": "All4originalH5native10000trained/auditsPASS;formal10000evaluationsongoing.2500rollout9/48=18.75% vs teacher0/48 on4sharedphysicalcases/task x2parents;notlong-training orgraspingsuccess."
+    "phase": "COMPLETE;latestcanonicalresults/summary.json,notolderactivePIDstate.",
+    "complete": true,
+    "effective_errors": 0
   },
   "warm_cpu_probe": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_warm_cpu_20261106",
@@ -320,14 +326,21 @@
     ],
     "scope": "Originalcorpusonly,teacher/rolloutx2parents,sameoriginalH5startindices/up to15OBSERVEDfutureRGBlabels.ShortruncatedtailLOSSMASKZERO,nosyntheticlabels.Noinverse.",
     "recovery": "Oldrootmetaworld_query_h15_20261107CLOSED_PRE_SGD/STOP,0SGD.All4train-shorttrajectoryerrorsretained;first2missinglogdirectoryerrorsalsoarchived.All8completedfrozenbranchdiagnosticsreusednotrerun.",
-    "contract": "PASSbothsplits:2250/250episodes,170358/19448starts,3trainlength<=16(min14);allretained.2314train/314testactualwindowchecks;paddedtargetpoisoninglossinvariant,pairedinitialweights/FP32backward/sampleindependencePASS0SGD."
+    "contract": "PASSbothsplits:2250/250episodes,170358/19448starts,3trainlength<=16(min14);allretained.2314train/314testactualwindowchecks;paddedtargetpoisoninglossinvariant,pairedinitialweights/FP32backward/sampleindependencePASS0SGD.",
+    "complete": true,
+    "effective_errors": 0,
+    "phase": "COMPLETE;latestcanonicalresults/summary.json,notolderactivePIDstate.",
+    "final_manipulation_percent": {
+      "rollout": 25.0,
+      "teacher": 0.0
+    }
   },
   "inverse_audit": {
     "old_best_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_contact_20261106/simple-v1",
     "actual": "simplelocalflow40k:78.75%(189/240)sixmanip,2parents x20cases;Reach20%,Wall27.5% aggregate.Notall-tasksolution.",
     "important_correction": "ONE loss,NOToneactionblock.Originalconfigchunk6supervisesupto6macrowords.NEVERlabelitcurrent-action-only.",
-    "new_branch_plan": "DoNOTreusechunk6weightswhilefuture-commandrestrictionpersists;trainCURRENT5nativeintervalonly(chunk1/20D)fromrandom.LocalCNN/current+goal,oneFMloss,nohistory/clock/aux.Planphase0vsallnativeanchors,episodeuniformvsframeuniform,andglobalhighnoise;needsassets/contractsbeforelaunch.",
-    "sgd_started": false
+    "new_branch_plan": "COMPLETE8scratchCURRENT-onlyflow40k;NOoldchunk6weights.Nowscratchgoal-semantic12/currentMSE4/extra-data4continuations;readnewrecords.",
+    "sgd_started": true
   },
   "metric": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_reachable_metric_20261107",
@@ -350,7 +363,17 @@
       "rgb": 0.1236901283,
       "reachable": 0.1352987289
     },
-    "hardware_snapshot": "dev6had8H200143771MiBfreeatconnection;now8workerslaunched.ReadactualstatebeforeGPUclaim."
+    "hardware_snapshot": "dev6had8H200143771MiBfreeatconnection;now8workerslaunched.ReadactualstatebeforeGPUclaim.",
+    "complete": true,
+    "effective_errors": 0,
+    "phase": "COMPLETE;latestcanonicalresults/summary.json,notolderactivePIDstate.",
+    "final_manipulation_percent": {
+      "rgb-increment": 25.0,
+      "rgb-uniform": 25.0,
+      "reachable-increment": 8.333333333333334,
+      "reachable-uniform": 16.666666666666668
+    },
+    "collector_correction": "OriginalModuleNotFoundErrorlog retained;one-shotreadonlycollection withcorrectsourcepath andresultsparent.FULLactualtrace/case/NNhashesverified,0SGD/no simrerun."
   },
   "replicas": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_recurrent_replicas_20261107",
@@ -358,7 +381,11 @@
     "dev13_g6_pid": 3715633,
     "dev15_g6_pid": 3256941,
     "collector": 3715634,
-    "scope": "2independentOWNfree20kparentsseeds3/4,freshGRU/context/head,originaldataonly,H5rollout.Nativestages2/500/2500,LRhorizon10000matchesoriginal;not10000SGD."
+    "scope": "2independentOWNfree20kparentsseeds3/4,freshGRU/context/head,originaldataonly,H5rollout.Nativestages2/500/2500,LRhorizon10000matchesoriginal;not10000SGD.",
+    "complete": true,
+    "effective_errors": 0,
+    "phase": "COMPLETE;latestcanonicalresults/summary.json,notolderactivePIDstate.",
+    "final_manipulation_percent": 7.083333333333333
   },
   "finetune": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_intervention_finetune_20261107",
@@ -376,6 +403,126 @@
     "collector": 3714925,
     "scope": "2eligibleRNN2500parents xcausal/causal-and-goal/original,stages2/500/2500/5000,freshmatchedAdamW.All6actualnative2saved;restore/backward/physicsreadactualfiles.",
     "contract": "PASSinitialNNparentexact,64actualbranchsuffix/controlalignment,16originalprefixmatches,sampleindependence6.92e-8.Naturaltrainunion170358+25800windows.No tunedmixweight.Bothnodesall16cachefilesSHAverified.",
-    "limits": "Separateextra-data study,no same-data/SOTAalgorithmwinclaimuntilidenticalcorpusavailabletobaselines."
+    "limits": "Separateextra-data study,no same-data/SOTAalgorithmwinclaimuntilidenticalcorpusavailabletobaselines.",
+    "complete": true,
+    "effective_errors": 0,
+    "phase": "COMPLETE;latestcanonicalresults/summary.json,notolderactivePIDstate.",
+    "final_manipulation_percent": {
+      "causal": 19.583333333333332,
+      "causal-and-goal": 8.75,
+      "original": 10.833333333333334
+    },
+    "causal_goal_reach_reachwall_percent": [
+      95.0,
+      92.5
+    ]
+  },
+  "closed_previous_primary": {
+    "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_paths_20261106_v2",
+    "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-90e3d78",
+    "training_plan": "training-plan.json",
+    "ownership": [
+      "launch-generator-v3-dev13.json",
+      "launch-generator-v3-dev15.json",
+      "collector-launch.json"
+    ],
+    "technical_gates": "All16full128x8/H15frozencontrolGPU/20nativephysicsentrygatespassed.16freshGnative2checkpointsnowactuallywrittenby13:03UTC;FP32restore/backward/physicsauditsreadactualfiles,notyetallconfirmed.",
+    "native_stages": [
+      2,
+      500,
+      2500,
+      10000
+    ],
+    "arms": [
+      "point1",
+      "jump5",
+      "compose5",
+      "compose15"
+    ]
+  },
+  "current_inverse": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107",
+    "source": "9c2c26f",
+    "complete": 8,
+    "effective_errors": 0,
+    "all_steps": 40000,
+    "scratch": true,
+    "future_action_blocks": false,
+    "loss": "one current-interval flow loss",
+    "manipulation_percent": {
+      "phase0": 54.583333333333336,
+      "native": 75.41666666666667,
+      "episodes": 77.91666666666667,
+      "highnoise": 72.91666666666667
+    },
+    "episodes_arm": 320,
+    "manipulation_episodes_arm": 240,
+    "physical_cases_task": 20,
+    "independent_trained_seeds": 2,
+    "episode_model_task_successes_of40": {
+      "bin": 22,
+      "door": 40,
+      "drawer": 40,
+      "peg": 26,
+      "pick": 22,
+      "push": 37,
+      "reach": 12,
+      "reachwall": 36
+    },
+    "limitations": "77.9 close to oldchunk6 78.75;does NOT establish superior manipulation.Currentexecute1 vs oldsimpleexecute3,notmatchedcontroller.Small earlier20000screens notfinalcohorts.NoSOTA/novelty claim."
+  },
+  "current_mse": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107",
+    "source": "0767dbe",
+    "workers": {
+      "dev13_g1_g5": [
+        3716349,
+        3716350
+      ],
+      "dev15_g1_g5": [
+        3257425,
+        3257426
+      ]
+    },
+    "collector": 3716351,
+    "phase": "4scratchcurrent-onlycontrols;at19:03all34800-36000,notfinalresults."
+  },
+  "goal_semantics": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_goal_20261107",
+    "source": "25157e5",
+    "dev13_g0_g2_g3_g4_g6_g7": [
+      3717294,
+      3717295,
+      3717296,
+      3717297,
+      3717298,
+      3717299
+    ],
+    "dev15_g0_g2_g3_g4_g6_g7": [
+      3258126,
+      3258127,
+      3258128,
+      3258129,
+      3258130,
+      3258131
+    ],
+    "independent_initial_seeds": 2,
+    "scratch_trainings": 12,
+    "objective": "current-only FM/MSE;terminalactualLASTnativeRGBvsphase-mixture,orderedCNNtokenfusionvsabsoluteinput,threecellsplusalreadytrainedbaselinecell",
+    "initial_contract": "PASSall12:current-commandguard32/model,pairedsharedCNN/decoderinit,goalframeparity,pixelsonly,gradient/sampleindependence.Initialabsoluteinputswapinvariance<1e-5;directednonzero.ClaimisINITIALstructuralbias,NOTtrainedabsoluteignoresdirection."
+  },
+  "current_local": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_local_20261107",
+    "source": "480ba8a",
+    "intended_host_gpus": "dev6g0..3",
+    "phase": "Activationv1importpatherrorBEFOREanySGD/prepare;allraw224cache16filesSHAverifiedandreused.V2freshsubprocessactivationstarted;readactualcontract/launch beforeclaimingtraining.",
+    "parents": "Current-onlyepisodesflow/MSEseed1/2 immutable20000nativefullstate;continueonlynew20000 to40000 withoptimizer/scheduler/RNG/cursorretained",
+    "new_data": "Original+25800own-currenttrainpairs;localgoalACTUALt+5RGB,labelonlyowncurrent5executedcontrols.2250/250originaltrajectorysplit+parent-groupedextratrain/validation.108000simsteps extra,not same-data gain."
+  },
+  "current_feedback": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_feedback_20261107",
+    "source": "480ba8a",
+    "host_gpus": "dev6g4..7",
+    "phase": "4frozenCURRENT-onlyflowepisodes/nativeseed1/2;full20sharedcases/task;0SGD,persistentownGaussianlatentonlychange;freshcontrolscompletedmainroot."
   }
 }
