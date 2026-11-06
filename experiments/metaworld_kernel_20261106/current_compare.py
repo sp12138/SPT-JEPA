@@ -43,6 +43,10 @@ def compare(left,right,scope):
 
 def run(a):
     comparisons=[
+        ('directed_vs_absolute_40k',('metaworld_current_goal_20261107','directed-flow',40000),('metaworld_current_inverse_20261107','episodes',40000),'Same320episodes/20physicalcasespertaskx2learners,CNN/decoderinitialstates/labels/sampler/budget;earlyorderedpairingplusfusion/halfdecoder-memorytokens.Not equalFLOPs.'),
+        ('directed_vs_absolute_fifty40k',('metaworld_goal40_fifty_20261107','directed-flow',40000),('metaworld_current50_20261107','flow',40000),'Same400episodes/50tasks/4NEWphysicalcasespertaskx2learners;40kexactdata/label/sampler/initialCNN-decoderbudget.Matchedcontroller/sensor5/500native.NotcanonicalMT50/publicJEPA-WMs.'),
+        ('ordered_equivalent_vs_directed40k',('metaworld_current_roles_20261107','ordered-equivalent',40000),('metaworld_current_goal_20261107','directed-flow',40000),'EXACTsamecapacity/initialfunction/currenttargets/sampler/budget.OnlylinearfeatureparameterizationandresultingAdamWcoordinatesdiffer;notdifferentfunctionclasses.'),
+        ('native4_full_vs_truncated',('metaworld_one_native_20261107','all-executed',40000),('metaworld_one_native_20261107','exclude-last4',40000),'ONLYsingleCURRENTa_t4Dtarget;pairedallinitialtensors/dataexceptlast4knowncurrentstates.Bothholdowncommand5native,sensor5/500budget;no fasterfeedback/fakepadding/futurecommandlabels.'),
         ('current_flow_vs_mse',('metaworld_current_inverse_20261107','episodes',40000),('metaworld_current_inverse_mse_20261107','episodes',40000),'Sameoriginaldata/currenttargets/architecture/physicalcases,budget;flowvsregression.'),
         ('current_fresh_vs_fixed',('metaworld_current_inverse_20261107','episodes',40000),('metaworld_current_feedback_20261107','episodes-fixed',40000),'EXACTsameNNs,currentintervaltargets,feedback5;onlyownnoiseconsistencychanges.'),
         ('current_vs_future_chunk',('metaworld_current_inverse_20261107','episodes',40000),('metaworld_chunk_feedback_full_20261107','chunk6-execute1-fresh',40000),'SamephysicalRGBcase/feedback/noiseprotocol;differentanchor/sampling/labels/querychunk.Notpairedinitialweights/equalFLOPs.Nofuturechunkancestry.'),

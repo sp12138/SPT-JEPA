@@ -112,7 +112,7 @@ def prepare_long(a):
     old=json.loads((a.parent/'training-plan.json').read_text())
     save(a.root/'training-plan.json',dict(source=str(a.source),recipes=recipes,stages=[2,600,10000,40000,80000,120000],manifest=old['manifest'],deadline_unix=time.time()+36*3600,
         confirmation=dict(manifest=confirm['manifest'],tasks=confirm['tasks'],seeds=confirm['seeds']),
-        scope='Eightindependentfreshscratchtrainings=4NEWseedsx2representations;120ksharedLRhorizon/pairedweights.Within-seedabsolute/directedcontrast.'
+        scope='Eightfreshscratchtrainingruns=4NEWindependentseedPAIRSx2representations;120ksharedLRhorizon/pairedweights.Within-seedabsolute/directedcontrast.'
               'OnecurrentintervalFMloss,originaldata,sensor5/500native,RGBonly.No publicSOTA/equalFLOPclaim.Longworkersfinishformal8taskstages+fresh50taskconfirmationandexit.'))
 
 

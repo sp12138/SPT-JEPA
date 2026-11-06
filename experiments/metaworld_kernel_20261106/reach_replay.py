@@ -39,14 +39,15 @@ def run(a):
                 target=env._target_pos.copy();hand=[];tcp=[];successes=[];radial=[]
                 try:
                     for action in trace['actions']:
-                        error=target-state[:3];radial.append(float(np.dot(error,action[:3])/max(1e-12,np.linalg.norm(error)*np.linalg.norm(action[:3]))))
+                        error=target-env.tcp_center;radial.append(float(np.dot(error,action[:3])/max(1e-12,np.linalg.norm(error)*np.linalg.norm(action[:3]))))
                         state,_,_,_,info=env.step(action.astype(np.float32));hand.append(state[:3].copy());tcp.append(env.tcp_center.copy());successes.append(bool(info['success']))
                     assert np.array_equal(successes,trace['successes'])
                 finally:close_environment(env)
-                hand=np.asarray(hand);tcp=np.asarray(tcp);distance=np.linalg.norm(hand-target,axis=1);tail=trace['actions'][-100:,:3]
+                hand=np.asarray(hand);tcp=np.asarray(tcp);distance=np.linalg.norm(hand-target,axis=1);tcp_distance=np.linalg.norm(tcp-target,axis=1);tail=trace['actions'][-100:,:3]
                 physical=a.output/f'{method}-model{model_seed}-case{key[1]}.npz';np.savez_compressed(physical,hand=hand,tcp=tcp,target=target,distance=distance,action=trace['actions'],radial_cosine=radial)
                 value=dict(method=method,model_seed=model_seed,case_seed=key[1],success=bool(any(successes)),steps=len(distance),
                     min_hand_target_distance=float(distance.min()),final_hand_target_distance=float(distance[-1]),final_error_xyz=(target-hand[-1]).tolist(),
+                    min_TCP_target_distance=float(tcp_distance.min()),final_TCP_target_distance=float(tcp_distance[-1]),
                     tail_command_mean=tail.mean(0).tolist(),tail_command_std=tail.std(0).tolist(),last100_radial_cosine=float(np.mean(radial[-100:])),
                     saved_trace_successes_exact=True,geometry_file=str(physical),trace_sha256=row['trace_sha256'])
                 rows.append(value);print(json.dumps(value),flush=True)
