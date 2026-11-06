@@ -63,7 +63,8 @@ def run(a):
     after=dict(controller=model_sha(controller),world=model_sha(world)if world is not None else None);assert before==after
     save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=40000,mode=a.mode,
         feedback_native=5,action_native=1,training_action_native=controller.action_dim//4,new_updates=0,current_action_only=controller.action_dim==4,
-        scope='CurrentONEa_t4Dcontrollertrained40k+ownstrictforwardRGBworld20k,bothscratchoriginaldata;no futureactionlabels/externalteacher.'
+        scope='Frozen40kcontroller,declaredtraining_action_native1or5.Allscratchoriginaldata;noexternalteacher.'
+              'The4DcontrollerusesONLYcurrentnativea_tlabels;20Dmodelsareexplicit5-control-targetcomparators.World20kloadedONLYforcopy/worldmodes.'
               'RealRGBONLYevery5native;fourintermediateobservationsareOWNforecast,neveractualfutureframes/states/actions.'
               'CopycontrolgetsSAME128->224intermediateimageprocessingandSAMEown5Gaussianactiondraws;onlyforwardevolutiondisabled.'
               'StaticmodeusesONLYoriginalactual224RGBthroughoutthe5nativeslot;noworldloaded/resize/proxyimage.'
