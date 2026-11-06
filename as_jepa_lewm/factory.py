@@ -3,7 +3,7 @@ from importlib import import_module
 
 
 MODEL_TARGETS = {
-    "attainable_forecast": "as_jepa_lewm.attainable_forecast.AttainableForecast",
+    "signed_density": "as_jepa_lewm.signed_density.SignedDensity",
     "predictive_density": "as_jepa_lewm.predictive_density.PredictiveDensity",
     "predictive_kernel": "as_jepa_lewm.predictive_kernel.PredictiveKernel",
     "temporal_bridge": "as_jepa_lewm.temporal_bridge.TemporalBridge",

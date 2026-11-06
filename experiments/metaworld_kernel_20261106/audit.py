@@ -32,7 +32,7 @@ def run(a):
     del saved,optim,weights,initial
     model=module.model.cuda().eval();model.requires_grad_(True);model.encoder.requires_grad_(False)
     if not model.gaussian:model.variance_head.requires_grad_(False)
-    density=cfg['model_class']=='predictive_density'
+    density=cfg['model_class']in['predictive_density','signed_density']
     data=(DensityTransitions if density else KernelTransitions)(cfg,'test');indices=np.linspace(0,len(data)-1,8,dtype=int).tolist()
     batch=next(iter(DataLoader(Subset(data,indices),batch_size=8)))
     assert 'action_target'not in batch and 'future_actions'not in batch

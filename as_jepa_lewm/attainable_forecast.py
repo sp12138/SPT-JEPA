@@ -1,4 +1,6 @@
-"""A goal forecast restricted to the learned forward model's control span.
+"""RETIRED after explicit inverse-action clarification;historical record only.
+
+A goal forecast restricted to the learned forward model's control span.
 
 The only fitting target is an observed NEXT feature. The goal branch never
 reads a current/future demonstrated command or an inferred action label.

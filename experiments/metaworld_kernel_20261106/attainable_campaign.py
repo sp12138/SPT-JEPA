@@ -90,6 +90,7 @@ def work(root,source,host,gpu):
 
 
 if __name__=='__main__':
+    raise RuntimeError('RETIRED:latest user excludes learned inverse/control-coordinate fitting;use forward-only campaigns.')
     p=argparse.ArgumentParser();p.add_argument('--mode',choices=['prepare','work'],required=True)
     for key in['root','source']:p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--parent',type=Path);p.add_argument('--host');p.add_argument('--gpu',type=int);a=p.parse_args()
