@@ -1,30 +1,30 @@
 {
-  "status": "ACTIVE_NATIVE_TRANSPORT_NO_QUALIFIED_GAIN",
+  "status": "ACTIVE_FULL_OBSERVATION_PATH_PROJECTION_NOT_SOLVED",
   "objective": "Find an elegant manipulation algorithm substantially exceeding the old action-supervised 78.75% six-task comparator, without INVERSE ACTION reconstruction or future-action references.",
   "hosts": [
     "dev13",
     "dev15"
   ],
-  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106",
-  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-db8afbb",
+  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_paths_20261106_v2",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-7bc26ac",
   "training_plan": "training-plan.json",
   "ownership": [
     "launch-dev13.json",
     "launch-dev15.json",
     "collector-launch.json"
   ],
-  "technical_gates": "Actual integration passed all4 modes:exact paired random parameters,positive required FP32 gradients,sample-level independence,identity warp,and own-force retention without image evidence.0SGD.16native learners launched,initially waiting node-local raw RGB copy;read actual audit-2/eval2 before claiming native entry passed.",
+  "technical_gates": "0-update actual4-modeGinitial-state/FP32backward/sample-level/15-stepgradient and frozenworld gate passed;0-updateCPU plannedhistory and batchcost gate passed.All16actual128x8/H15GPU/20-nativephysics frozen-control entrygates passed by12:30UTC.New generatorSGDnotstarted at that read.",
   "native_stages": [
     2,
-    1000,
-    5000,
-    20000
+    500,
+    2500,
+    10000
   ],
   "arms": [
-    "free",
-    "linear",
-    "signed",
-    "stencil"
+    "point1",
+    "jump5",
+    "compose5",
+    "compose15"
   ],
   "latest_user_clarification": "Forbidden reconstruction means INVERSE ACTION. No inverse/control-coordinate training,pseudolabels,or future demonstrated action references. Pure forward targets only. Image prediction was not banned by this clarification.",
   "excluded_branch": "Four span-incremental heads saved500;STOP+SUPERSEDED_BY_CONSTRAINT.json. Original plan retained,head recipes retired from main summaries. Metadata-only pre-SGD errors retained. Never reuse excluded weights or traces.",
@@ -114,5 +114,75 @@
     "labels": "Future native RGB only",
     "input_data": "Same2500 original trajectories/204806frames/202306nativepairs;no extra trainingdata;45/5trajectorysplit",
     "planner": "Goal-conditioned next-image motion projected onto forward image warp fields.No learned action head.Future commands never a reference.15native generated sequentially;own previous control prior;compose displacement maps before rendering."
+  },
+  "native_transport_final": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106",
+    "complete": true,
+    "all16_steps": 20000,
+    "complete_utc": "2026-11-06T12:23:59Z",
+    "effective_errors": 0,
+    "manipulation_percent": {
+      "free": 3.75,
+      "linear": 2.5,
+      "signed": 3.125,
+      "stencil": 6.666666666666667
+    },
+    "per_arm_episodes": 640,
+    "per_arm_manipulation_episodes": 480,
+    "conditional_trained_seeds": 4,
+    "physical_cases_per_task": 20
+  },
+  "path_projection": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_paths_20261106_v2",
+    "dev13_pids": [
+      3710295,
+      3710296,
+      3710297,
+      3710298,
+      3710299,
+      3710300,
+      3710301,
+      3710302
+    ],
+    "dev15_pids": [
+      3252708,
+      3252709,
+      3252710,
+      3252711,
+      3252712,
+      3252713,
+      3252714,
+      3252715
+    ],
+    "collector": 3710331,
+    "first_phase": "Frozen original20kmodels/path-CEM128x8/nativeH15/replan5,2sharedphysicalcases/task;first20native technical gates all16passed.0newSGD.",
+    "then": "Four observation-only Gvariants x4seeds;frozenownsame-data scratchstencil20k plus freshG10000 budget.Labelsstrictinterior futureRGB only;generator data neveropenscommands.Allpretrainingcostcounted.",
+    "path_objective": "Aligncontrollednext-image andgoalconditionednext-image transitions overfullown15-nativeword.OnlyownGaussianCEMsamples/warmplans,unit8bitRGB likelihood+unitown-commandincrementprior.No learnedactionhead/futureactionreference.",
+    "limits": "Different compute/planner/decisionperiod;needsmatched frozencontrols before attributing gain.Controllability delay is a hypothesis,not established solecause."
+  },
+  "retired_goal_v1": {
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_transport_20261106",
+    "state": "HOLD_CONTROLS_COMPLETE_GENERATORS_RETIRED",
+    "complete_controls": 16,
+    "retired_generators": 16,
+    "new_sgd_updates": 0,
+    "effective_errors": 0,
+    "frozen_observation_projection_replan5_manipulation_percent": {
+      "free": 6.25,
+      "linear": 0,
+      "signed": 0,
+      "stencil": 2.0833333333333335
+    },
+    "episodes_per_arm": 64,
+    "physical_cases_per_task": 2,
+    "note": "IntentionalSTOP assertions retained,noNNtrainingstarted,not16algorithm failures.New finite readonlycollector3710223 replaces3709965."
+  },
+  "physics_operator_audit": {
+    "pid": 3710483,
+    "host": "dev13",
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/physics-operators",
+    "new_updates": 0,
+    "render_calls": 0,
+    "scope": "Only own eligible forward20ktrajectories,privilegedstateforanalysisofoperatorordering only,notmodel/planner input or newtrainingdata."
   }
 }

@@ -23,7 +23,7 @@ def run(a):
     spec=mujoco.mjtState.mjSTATE_INTEGRATION
     def snapshot(env,observation):
         value=np.empty(mujoco.mj_stateSize(env.model,spec));mujoco.mj_getState(env.model,env.data,value,spec)
-        return dict(integration=value,observation=observation.copy(),previous=env._prev_obs.copy(),
+        return dict(integration=value,observation=observation.copy(),tcp=env.tcp_center.copy(),previous=env._prev_obs.copy(),
             count=env.curr_path_length,rng=copy.deepcopy(env.np_random.bit_generator.state))
     def restore(env,saved):
         mujoco.mj_setState(env.model,env.data,saved['integration'],spec);mujoco.mj_forward(env.model,env.data)
@@ -44,9 +44,15 @@ def run(a):
             try:
                 assert np.array_equal(state,cached['initial_state'])
                 assert all(np.array_equal(v,cached['initial_physics_'+k])for k,v in physics_state(env).items())
-                initial=snapshot(env,state);nearest=initial;distance=float(np.linalg.norm(state[:3]-state[4:7]));closest_step=0
+                initial=snapshot(env,state);nearest=initial;distance=float(np.linalg.norm(env.tcp_center-state[4:7]));closest_step=0
+                contact_steps=[];max_object_delta=0.;max_object_lift=0.
                 for index,command in enumerate(actions):
-                    state,*_=env.step(command);d=float(np.linalg.norm(state[:3]-state[4:7]))
+                    state,*_=env.step(command);d=float(np.linalg.norm(env.tcp_center-state[4:7]))
+                    try:
+                        if env.touching_main_object:contact_steps.append(index+1)
+                    except NotImplementedError:pass
+                    max_object_delta=max(max_object_delta,float(np.linalg.norm(state[4:7]-initial['observation'][4:7])))
+                    max_object_lift=max(max_object_lift,float(state[6]-initial['observation'][6]))
                     if d<distance:distance=d;nearest=snapshot(env,state);closest_step=index+1
                 stages={}
                 for label,saved in [('initial',initial),('own_nearest',nearest)]:
@@ -61,11 +67,11 @@ def run(a):
                             pairs.append(dict(axes=[i,j],signs=[si,sj],object_commutator=float(np.linalg.norm(ab[4:7]-ba[4:7])),
                                 hand_commutator=float(np.linalg.norm(ab[:3]-ba[:3])),
                                 object_delta_ab=(ab[4:7]-base[4:7]).tolist(),object_delta_ba=(ba[4:7]-base[4:7]).tolist()))
-                    stages[label]=dict(object_position=base[4:7].tolist(),hand_position=base[:3].tolist(),pairs=pairs)
+                    stages[label]=dict(object_position=base[4:7].tolist(),hand_position=base[:3].tolist(),tcp_position=saved['tcp'].tolist(),pairs=pairs)
                 rows.append(dict(arm=arm,seed=seed,task=task,source_trace_sha256=trace['trace_sha256'],closest_own_step=closest_step,
-                    closest_hand_object_distance=distance,stages=stages))
+                    closest_tcp_object_distance=distance,contact_steps=contact_steps,max_object_delta=max_object_delta,max_object_lift=max_object_lift,stages=stages))
                 (a.output/'progress.json').write_text(json.dumps(dict(rows=rows),indent=2)+'\n')
-                print(json.dumps(dict(arm=arm,task=task,seed=seed,closest_distance=distance,step=closest_step)),flush=True)
+                print(json.dumps(dict(arm=arm,task=task,seed=seed,closest_tcp_distance=distance,step=closest_step,contact_steps=len(contact_steps),object_lift=max_object_lift)),flush=True)
             finally:close_environment(env)
     report=dict(passed=True,rows=rows,model_updates=0,neural_models_loaded=0,render_calls=0,
         scope='State-only diagnostic of signed-axis intervention ordering on initial and nearest-object states reached by our own forward20k controllers.'
