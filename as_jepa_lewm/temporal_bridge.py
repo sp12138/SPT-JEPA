@@ -39,13 +39,16 @@ class SpatialEncoder(nn.Module):
 class TemporalBridge(nn.Module):
     def __init__(self, visual_source='local', objective='flow', width=192, chunk=6,
                  action_dim=20, window=2, feature_dim=64, noise_odds=1., condition_horizon='teacher',
-                 temporal_aux=True, history_context=False, freeze_visual_encoder=False, encoder_lr=None):
+                 temporal_aux=True, history_context=False, freeze_visual_encoder=False, encoder_lr=None,goal_representation='absolute'):
         super().__init__()
         assert visual_source in ['local', 'global', 'hybrid', 'patch', 'vit'] and objective in ['flow', 'mse', 'metric']
         assert condition_horizon in ['teacher', 'none']
         assert temporal_aux or (condition_horizon == 'none' and objective != 'metric')
         assert not history_context or visual_source in ['local', 'vit']
         assert objective != 'metric' or visual_source == 'global'
+        assert goal_representation in['absolute','directed']
+        assert goal_representation=='absolute'or(visual_source=='local'and not history_context)
+        self.goal_representation=goal_representation
         self.visual_source = visual_source; self.objective = objective
         self.width = width; self.chunk = chunk; self.window = window; self.action_dim = action_dim
         self.noise_odds = noise_odds
@@ -68,7 +71,7 @@ class TemporalBridge(nn.Module):
                 self.encoder.set_attn_implementation('sdpa')
             self.register_buffer('pixel_mean', torch.tensor([.485,.456,.406])[None,:,None,None], persistent=False)
             self.register_buffer('pixel_std', torch.tensor([.229,.224,.225])[None,:,None,None], persistent=False)
-        self.kind = nn.Parameter(torch.zeros(3 if history_context else 2, width))
+        self.kind = nn.Parameter(torch.zeros(1 if goal_representation=='directed'else 3 if history_context else 2, width))
         positions = 257 if visual_source == 'vit' else 256 if visual_source == 'patch' else 196 if visual_source in ['local', 'hybrid'] else 1
         self.position = nn.Parameter(torch.randn(1, positions, width)*.02)
         if temporal_aux:
@@ -93,6 +96,9 @@ class TemporalBridge(nn.Module):
             self.history_encoder = nn.Sequential(nn.Linear(action_dim+1, width), nn.LayerNorm(width))
         if freeze_visual_encoder:
             self.encoder.requires_grad_(False)
+        # Appended after the original modules:all shared initial CNN/decoder
+        # tensors remain identical for a common seed.No pretrained weights.
+        self.goal_fusion=nn.Sequential(nn.Linear(width*2,width),nn.LayerNorm(width))if goal_representation=='directed'else None
 
     def memory(self, batch):
         if self.visual_source == 'vit':
@@ -108,6 +114,10 @@ class TemporalBridge(nn.Module):
             tokens = self.encoder(x.flatten(0, 1)).unflatten(0, (b, t))
         else:
             tokens = self.encoder(batch['features']).unsqueeze(2)
+        if self.goal_representation=='directed':
+            assert tokens.shape[1]==2
+            directed=torch.cat([tokens[:,0],tokens[:,1]-tokens[:,0]],-1)
+            return self.goal_fusion(directed)+self.position+self.kind[0]
         memory = (tokens+self.position[:, None]+self.kind[None, :, None]).flatten(1, 2)
         if self.visual_source == 'hybrid':
             global_tokens = self.global_encoder(batch['features'])+self.kind[None]
@@ -200,4 +210,6 @@ class TemporalBridge(nn.Module):
             result['global_encoder'] = 'active'
         if self.history_context:
             result['history_encoder'] = 'active'
+        if self.goal_fusion is not None:
+            result['goal_fusion']='active'
         return result

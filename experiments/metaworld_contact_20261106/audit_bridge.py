@@ -35,9 +35,12 @@ def run(a):
     portable = torch.load(root/f'model-step{a.step:07d}/weights.pt', map_location='cpu', weights_only=True)
     assert equal(module.model.state_dict(), portable)
     assert 'campaign_rng' in checkpoint and len(checkpoint['campaign_rng']['cuda']) == 1
-    if cfg['dataset_kind']=='native_inverse_pairs':
-        from as_jepa_tools.native_inverse import NativeInversePairs
-        data=NativeInversePairs(cfg,'test');train=NativeInversePairs(cfg,'train')
+    if cfg['dataset_kind']in['native_inverse_pairs','local_inverse_mix']:
+        if cfg['dataset_kind']=='local_inverse_mix':
+            from as_jepa_tools.local_inverse_mix import LocalInverseMix as PairData
+        else:
+            from as_jepa_tools.native_inverse import NativeInversePairs as PairData
+        data=PairData(cfg,'test');train=PairData(cfg,'train')
         assert not {r['episode']for r in train.records}&{r['episode']for r in data.records}
         assert cfg['model']['chunk']==1
     else:

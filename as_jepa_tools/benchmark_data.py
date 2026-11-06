@@ -10,6 +10,9 @@ from torch.utils.data import Dataset
 
 
 def make_training_dataset(cfg):
+    if cfg.get("dataset_kind") == "local_inverse_mix":
+        from as_jepa_tools.local_inverse_mix import LocalInverseMix
+        return LocalInverseMix(cfg)
     if cfg.get("dataset_kind") == "native_inverse_pairs":
         from as_jepa_tools.native_inverse import NativeInversePairs
         return NativeInversePairs(cfg)

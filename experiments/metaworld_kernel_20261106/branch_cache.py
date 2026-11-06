@@ -19,13 +19,14 @@ def pack(a):
     torch.set_num_threads(2);source=a.root/f'tile{a.tile}/manifest.json';manifest=json.loads(source.read_text());assert manifest['passed']and manifest['policy_unchanged']
     records=manifest['records'];a.output.mkdir(parents=True,exist_ok=False);contexts={}
     for r in records:contexts.setdefault(r['context'],[]).append(r)
-    n=sum(r['native_frames']-36 for r in records)
-    pixels=np.lib.format.open_memmap(a.output/'pixels.npy',mode='w+',dtype=np.uint8,shape=(n,128,128,3))
+    n=sum(r['native_frames']-36 for r in records);resolution=a.resolution
+    pixels=np.lib.format.open_memmap(a.output/'pixels.npy',mode='w+',dtype=np.uint8,shape=(n,resolution,resolution,3))
     inputs=np.lib.format.open_memmap(a.output/'inputs.npy',mode='w+',dtype=np.float32,shape=(n,4))
-    prefixes=np.lib.format.open_memmap(a.output/'prefix_pixels.npy',mode='w+',dtype=np.uint8,shape=(len(contexts),6,128,128,3))
+    prefixes=np.lib.format.open_memmap(a.output/'prefix_pixels.npy',mode='w+',dtype=np.uint8,shape=(len(contexts),6,resolution,resolution,3))
     past=np.lib.format.open_memmap(a.output/'prefix_controls.npy',mode='w+',dtype=np.float32,shape=(len(contexts),5,4))
     def resize(x):
-        return F.interpolate(torch.from_numpy(x.copy()).permute(0,3,1,2).float(),(128,128),mode='bilinear',align_corners=False,antialias=True).round().clamp(0,255).byte().permute(0,2,3,1).numpy()
+        if resolution==224:assert x.shape[1:]==(224,224,3);return x.copy()
+        return F.interpolate(torch.from_numpy(x.copy()).permute(0,3,1,2).float(),(resolution,resolution),mode='bilinear',align_corners=False,antialias=True).round().clamp(0,255).byte().permute(0,2,3,1).numpy()
     offset=0;rows=[];parents={}
     for context_index,(key,branches)in enumerate(sorted(contexts.items())):
         assert len(branches)==29 and len({b['parent']for b in branches})==1 and len({b['split']for b in branches})==1
@@ -41,13 +42,14 @@ def pack(a):
         print(json.dumps(dict(context=key,packed_frames=offset)),flush=True)
     assert offset==n
     for x in[pixels,inputs,prefixes,past]:x.flush()
-    report=dict(passed=True,tile=a.tile,records=rows,frames=n,contexts=len(contexts),parent_sha256=parents,source_manifest_sha256=digest(source),
+    report=dict(passed=True,tile=a.tile,resolution=resolution,records=rows,frames=n,contexts=len(contexts),parent_sha256=parents,source_manifest_sha256=digest(source),
         files={name:digest(a.output/name)for name in['pixels.npy','inputs.npy','prefix_pixels.npy','prefix_controls.npy']},
         learner_fields=['pixels','known_executed_controls'],state_reward_success_or_taskID_arrays=False,
         scope='Separateextra corpusonly;neverautomaticallyinoriginalmodels.Prefix6frames+5ownpastcommands fromsamephysicalparent,branchcontrolappliedBEFOREcorrespondingnextRGB.'
-              'Norelabeling,expertcommands,pseudolabels,actiontargets,orprivilegedlearnerfields.Allbranchesofeachparentshareone split.')
+              'Norelabeling,expertcommands,pseudolabels,optimalitylabels,orprivilegedlearnerfields.Allbranchesofeachparentshareone split.')
     (a.output/'manifest.json').write_text(json.dumps(report,indent=2)+'\n')
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--tile',type=int,required=True);p.add_argument('--output',type=Path,required=True);pack(p.parse_args())
+    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--tile',type=int,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--resolution',type=int,choices=[128,224],default=128);pack(p.parse_args())
