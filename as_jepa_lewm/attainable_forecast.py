@@ -34,6 +34,9 @@ class AttainableForecast(nn.Module):
     @property
     def encoder(self):return self.world.encoder
 
+    @property
+    def predictor(self):return self.goal_body
+
     def coefficients(self,previous,current,goal,valid,past):
         x=self.goal_body(torch.cat([previous,current,goal-current],1))
         context=torch.cat([past if self.world.actuation_history else torch.zeros_like(past),valid.new_ones(len(valid),1),valid[:,None]],-1)
