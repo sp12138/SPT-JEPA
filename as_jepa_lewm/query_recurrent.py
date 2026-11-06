@@ -24,7 +24,7 @@ class ConvGRU(nn.Module):
 
 
 class QueryRecurrent(nn.Module):
-    def __init__(self,init_checkpoint,training_mode='rollout',width=128,blocks=4,window=2,forecast_horizon=5):
+    def __init__(self,init_checkpoint,training_mode='rollout',width=128,blocks=4,window=2,forecast_horizon=5,warm_start_checkpoint=None,warm_start_audit=None):
         super().__init__();assert training_mode in['teacher','rollout'];assert forecast_horizon in[5,15]
         self.forecast_horizon=forecast_horizon;self.training_mode=training_mode;self.window=window;self.renderer=None;self.encoder=ImageState()
         self.vision=nn.Sequential(nn.Conv2d(3,32,5,2,2),nn.GroupNorm(8,32),nn.SiLU(),nn.Conv2d(32,64,3,2,1),nn.GroupNorm(8,64),nn.SiLU(),nn.Conv2d(64,96,3,2,1),nn.GroupNorm(8,96),nn.SiLU())
@@ -37,6 +37,11 @@ class QueryRecurrent(nn.Module):
         for name,dest in [('vision',self.vision),('predictor',self.initial),('decoder',self.decoder)]:
             dest.load_state_dict({k[len(name)+1:]:v for k,v in parent.items()if k.startswith(name+'.')},strict=True)
         self.parent_sha256=hashlib.sha256(Path(init_checkpoint).read_bytes()).hexdigest()
+        if warm_start_checkpoint is not None:
+            import json
+            assert warm_start_audit is not None and json.loads(Path(warm_start_audit).read_text())['passed']
+            self.load_state_dict(torch.load(warm_start_checkpoint,map_location='cpu',weights_only=True),strict=True)
+            self.warm_start_sha256=hashlib.sha256(Path(warm_start_checkpoint).read_bytes()).hexdigest()
 
     def prepare(self,current,previous,goal,past,valid,role):
         c=self.vision(current);p=self.vision(previous);g=self.vision(goal);flag=role[:,None,None,None]

@@ -10,6 +10,9 @@ from torch.utils.data import Dataset
 
 
 def make_training_dataset(cfg):
+    if cfg.get("dataset_kind") == "query_rgb_paths_aug":
+        from as_jepa_tools.query_branch_mix import QueryBranchMix
+        return QueryBranchMix(cfg)
     if cfg.get("dataset_kind") == "query_rgb_paths":
         from as_jepa_tools.query_rgb_paths import QueryRGBPaths
         return QueryRGBPaths(cfg)

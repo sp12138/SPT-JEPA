@@ -27,9 +27,13 @@ def run(a):
         data=GoalRGBPaths(cfg,'test');chosen=np.linspace(0,len(data)-1,8,dtype=int).tolist()
         assert equal(module.model.world.state_dict(),torch.load(cfg['model']['world_checkpoint'],map_location='cpu',weights_only=True))
     else:
-        if cfg['dataset_kind']=='query_rgb_paths':
-            from as_jepa_tools.query_rgb_paths import QueryRGBPaths
-            data=QueryRGBPaths(cfg,'test')
+        if cfg['dataset_kind']in['query_rgb_paths','query_rgb_paths_aug']:
+            if cfg['dataset_kind']=='query_rgb_paths_aug':
+                from as_jepa_tools.query_branch_mix import QueryBranchMix
+                data=QueryBranchMix(cfg,'test')
+            else:
+                from as_jepa_tools.query_rgb_paths import QueryRGBPaths
+                data=QueryRGBPaths(cfg,'test')
         else:data=NativeRGBPairs(cfg,'test')
         indices={0:[],1:[]}
         for index in np.linspace(0,len(data)-1,min(256,len(data)),dtype=int):

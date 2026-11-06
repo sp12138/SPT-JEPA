@@ -19,6 +19,7 @@ def work(a):
         assert json.loads(a.manifest.read_text())['passed']and json.loads((a.root/'initial-contract.json').read_text())['passed']
         original=a.root.parent/'metaworld_query_recurrent_20261106/training'/f'{r["arm"]}-seed{r["seed"]}'
         proof=a.root/'original-model-branch-audits'/f'{r["arm"]}-seed{r["seed"]}.json'
+        proof.parent.mkdir(parents=True,exist_ok=True)
         command([PYTHON,'-B','-u',str(source/'experiments/metaworld_kernel_20261106/branch_audit.py'),'--mode','audit','--manifest',str(a.manifest),
             '--run',str(original),'--step','2500','--output',str(proof)],proof.with_suffix('.log'),env,source,deadline)
         assert json.loads(proof.read_text())['passed'];wait_gpu_release(a.gpu)
