@@ -39,13 +39,16 @@ def quadratic_box(matrix, linear, center=None):
 class PredictiveDensity(PredictiveKernel):
     def __init__(self, variance='point', passive='free', actuation_history=True, **kwargs):
         assert variance in ['point', 'scalar', 'diagonal']
-        assert passive in ['free','zero','velocity','transport']
+        assert passive in ['free','zero','velocity','transport','stencil']
         kwargs.update(boundary=True, affine=True, gaussian=variance != 'point')
         super().__init__(**kwargs)
         self.variance, self.passive, self.actuation_history = variance, passive, actuation_history
         if passive=='transport':
             self.transport_head=nn.Conv2d(self.mean_head.in_channels,self.mean_head.out_channels*9,1)
             nn.init.zeros_(self.transport_head.weight);nn.init.zeros_(self.transport_head.bias)
+        if passive=='stencil':
+            self.transient_head=nn.Conv2d(self.mean_head.in_channels,self.mean_head.out_channels*4,1)
+            nn.init.zeros_(self.transient_head.weight);nn.init.zeros_(self.transient_head.bias)
         if variance == 'scalar':
             self.variance_head = nn.Conv2d(self.mean_head.in_channels, 1, 1)
 
@@ -61,13 +64,18 @@ class PredictiveDensity(PredictiveKernel):
         mean = self.mean_head(x).float()
         if self.passive!='free':
             velocity=(current-previous)*history_valid[:,None,None,None]
-            passive=torch.zeros_like(mean)if self.passive=='zero'else velocity
+            passive=torch.zeros_like(mean)if self.passive in['zero','stencil']else velocity
             if self.passive=='transport':
                 neighbors=F.unfold(velocity.float(),3,padding=1).reshape(len(mean),mean.shape[1],9,*mean.shape[-2:])
                 weights=self.transport_head(x).float().unflatten(1,(mean.shape[1],9))
                 passive=velocity+(weights*neighbors).sum(2)
             mean=torch.where((role==0)[:,None,None,None],passive,mean)
         effect = self.effect_head(x).float().unflatten(1, (4, current.shape[1]))
+        if self.passive=='stencil':
+            transient=self.transient_head(x).float().unflatten(1,(4,current.shape[1]))
+            passive=-torch.einsum('na,nachw->nchw',previous_control,transient)
+            mean=torch.where((role==0)[:,None,None,None],passive,mean)
+            effect=effect+transient
         if self.variance == 'point':
             variance = torch.ones_like(mean)
         else:
@@ -106,7 +114,7 @@ class PredictiveDensity(PredictiveKernel):
         desired, _, goal_variance = self.fields(previous, current, goal, zero,flag-1 if objective=='marginal'else flag+1, valid,previous_control)
         incremental=self.passive in ['velocity','transport']
         if incremental:drift=drift-torch.einsum('na,nachw->nchw',previous_control,effect)
-        center=previous_control if incremental else zero
+        center=previous_control if self.passive in['zero','stencil','velocity','transport'] else zero
         if objective in ['projection','marginal']:
             basis=effect.flatten(2).transpose(1,2).double();weight=(forward_variance+goal_variance).flatten(1).double().reciprocal()
             matrix=torch.einsum('npi,np,npj->nij',basis,weight,basis)
@@ -129,4 +137,5 @@ class PredictiveDensity(PredictiveKernel):
     def audit_expected_gradients(self):
         result=super().audit_expected_gradients()
         if self.passive=='transport':result['transport_head']='active'
+        if self.passive=='stencil':result['transient_head']='active'
         return result

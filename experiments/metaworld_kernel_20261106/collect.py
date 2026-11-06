@@ -26,7 +26,7 @@ def collect(root):
             if path.exists():
                 row[name] = json.loads(path.read_text())
         row['stages'] = []
-        for step in plan['stages']:
+        for step in recipe.get('stages',plan['stages']):
             objectives=plan.get('objectives',['default']);completed=0
             for objective in objectives:
                 path=run/(f'eval-step{step:07d}'if objective=='default'else f'eval-{objective}-step{step:07d}')/'summary.json'
