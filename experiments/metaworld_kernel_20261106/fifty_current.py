@@ -38,9 +38,9 @@ def merge(root,plan):
     for r in rows:
         assert digest(Path(r['path']))==r['sha256'];v=np.load(r['path'])['rand_vec']
         assert not any(np.array_equal(v,x)for x in oldvectors.get(r['task'],[]))
-    out=root/'cases';out.mkdir(exist_ok=True);save(out/'manifest.json',dict(passed=True,rows=rows,seeds=plan['case_seeds'],tasks=plan['tasks'],
+    out=root/'cases';out.mkdir(exist_ok=True);save(out/'manifest.tmp',dict(passed=True,rows=rows,seeds=plan['case_seeds'],tasks=plan['tasks'],
         all_case_vectors_disjoint_old_160=True,expert_any_success_count=sum(r['expert_any_success']for r in rows),new_model_updates=0,
-        scope=plan['scope']));return True
+        scope=plan['scope']));(out/'manifest.tmp').replace(out/'manifest.json');return True
 
 
 def work(a):
