@@ -35,7 +35,7 @@ def prepare(a):
 
 
 def work(a):
-    plan=json.loads((a.root/'training-plan.json').read_text());r=next(x for x in plan['recipes']if x['gpu']==a.gpu);run=Path(r['run']);source=Path(plan['source']);deadline=plan['deadline_unix']
+    plan=json.loads((a.root/'training-plan.json').read_text());r=next(x for x in plan['recipes']if x['gpu']==a.gpu and x['host']==a.host);run=Path(r['run']);source=Path(plan['source']);deadline=plan['deadline_unix']
     try:
         owner=Path(f'/proc/{r["resource_pid"]}/cmdline')
         while owner.exists()and r['resource_marker'].encode()in owner.read_bytes():assert time.time()<deadline;time.sleep(10)
@@ -62,9 +62,28 @@ def work(a):
     except BaseException as error:save(run/'execution-error.json',dict(error=repr(error)));raise
 
 
+def prepare_mse(a):
+    a.root.mkdir(parents=True,exist_ok=False);recipes=[]
+    for host,seed in[('dev13',1),('dev15',2)]:
+        owners=json.loads((a.wait_parent/f'launch-{host}.json').read_text())['workers']
+        for gpu,arm,anchors,balance in[(1,'phase0','phase0','frames'),(5,'episodes','all','episodes')]:
+            cfg=json.loads((a.flow_parent/'training'/f'{arm}-seed{seed}'/'config.json').read_text());run=a.root/'training'/f'{arm}-seed{seed}';run.mkdir(parents=True)
+            cfg.update(output=str(run),inverse_anchors=anchors,inverse_balance=balance);cfg['model'].update(objective='mse',noise_odds=1.)
+            save(run/'config.json',cfg);save(run/'ORIGIN.json',dict(all_weights_random=True,model_class='CURRENTintervalinversecontroller',
+                loss='Onecurrent20Dregressionloss;no diffusion/noiseiterationsneeded.Noactiontargetat/aftert+5.',
+                no_pretrained_or_teacher_or_future_chunk_weights=True,scope='Sameoriginalcorpus/architecture/currenttargets/pairedinitialseedasflowstudy;noextraselfcollectedcorpus.'))
+            owner=next(x for x in owners if x['gpu']==gpu)
+            recipes.append(dict(arm=arm,seed=seed,host=host,gpu=gpu,run=str(run),resource_pid=owner['pid'],resource_marker='recurrent_campaign.py',config_sha256=digest(run/'config.json')))
+    old=json.loads((a.flow_parent/'training-plan.json').read_text())
+    save(a.root/'training-plan.json',dict(source=str(a.source),recipes=recipes,stages=old['stages'],manifest=old['manifest'],deadline_unix=time.time()+36*3600,
+        scope='ScratchCURRENT-onlyMSEversusflow;phase0andepisodebalancednativeanchors,twoindependentseeds.Same40000LRhorizon/batch/architecture/data.'
+              'Singlecurrentintervaltarget,no futureactiontrajectory/clock/history/teacher.Thisiscontrollertraining,notpureJEPAforecastloss.'))
+
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--mode',choices=['prepare','work'],required=True)
-    for key in['root','source','reference']:p.add_argument('--'+key,type=Path)
-    p.add_argument('--gpu',type=int);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--mode',choices=['prepare','prepare-mse','work'],required=True)
+    for key in['root','source','reference','flow-parent','wait-parent']:p.add_argument('--'+key,type=Path)
+    p.add_argument('--gpu',type=int);p.add_argument('--host',default='dev6');a=p.parse_args()
     if a.mode=='prepare':prepare(a)
+    elif a.mode=='prepare-mse':prepare_mse(a)
     else:work(a)

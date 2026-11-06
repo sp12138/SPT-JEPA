@@ -44,10 +44,10 @@ def run(a):
                 full=model.propose(batch,generator=generator());minimal=model.propose(dict(pixels=batch['pixels']),generator=generator());assert torch.equal(full,minimal)
                 assert equal(state,model.state_dict())
         reports.append(dict(arm=recipe['arm'],seed=cfg['seed'],train_episodes=len(data.records),test_episodes=len(test.records),train_windows=len(data),test_windows=len(test),current_only_guard_checks=32))
-    a.output.write_text(json.dumps(dict(passed=True,models=reports,paired_initial_weights_within_seed=True,all_weights_random=True,model_updates=0,
+    a.output.write_text(json.dumps(dict(passed=True,models=reports,objectives=sorted({json.loads((Path(r['run'])/'config.json').read_text())['model']['objective']for r in plan['recipes']}),paired_initial_weights_within_seed=True,all_weights_random=True,model_updates=0,
         only_current_interval_label=True,clock_perturbation_exact=True,inference_pixels_only_exact=True,
         scope='No sourcecheckpoint/features/teacher.FactualalreadyexecutedCURRENT5native20Dtargetonly;no reading nextintervalcommands.'
-              'FutureRGBisdesiredgoal,notfutureactionreference.Oneflowmatchingloss,sampleseparable.Allphase/sampler/noisechoicesglobal.'),indent=2)+'\n');print('PASS',flush=True)
+              'FutureRGBisdesiredgoal,notfutureactionreference.Onesampleseparablecurrent-inverseloss.Allphase/sampler/noisechoicesglobal.'),indent=2)+'\n');print('PASS',flush=True)
 
 
 if __name__=='__main__':
