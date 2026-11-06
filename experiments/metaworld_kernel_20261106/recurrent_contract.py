@@ -25,7 +25,7 @@ def run(a):
         state={k:v.clone()for k,v in model.state_dict().items()}
         if initial is None:initial=state
         else:assert equal(initial,state)
-        predicted=model.distribution(batch);assert predicted.shape==(4,5,3,128,128)and torch.isfinite(predicted).all()
+        predicted=model.distribution(batch);assert predicted.shape==(4,data.horizon,3,128,128)and torch.isfinite(predicted).all()
         loss,_=model.loss(batch);loss.backward();head=sum(float(p.grad.square().sum())for p in model.rgb_head.parameters()if p.grad is not None)**.5
         assert torch.isfinite(loss)and head>0
         with torch.no_grad():
@@ -37,7 +37,7 @@ def run(a):
         reports[mode]=dict(loss=float(loss.detach()),rgb_head_gradient=head,sample_loss_independence_relative=independent)
     a.output.write_text(json.dumps(dict(passed=True,models=reports,paired_initial_weights=True,model_updates=0,
         zero_residual_initialization='OnlyRGBhead has first-update gradient;allrequiredgradients mustbepositiveafteractualnative2updates.',
-        same_five_actual_future_RGB_targets=True,no_inverse_or_future_action_reference=True),indent=2)+'\n')
+        same_actual_future_RGB_targets=True,forecast_horizon=data.horizon,no_inverse_or_future_action_reference=True),indent=2)+'\n')
     print(json.dumps(dict(passed=True)),flush=True)
 
 

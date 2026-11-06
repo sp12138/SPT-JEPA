@@ -24,8 +24,9 @@ class ConvGRU(nn.Module):
 
 
 class QueryRecurrent(nn.Module):
-    def __init__(self,init_checkpoint,training_mode='rollout',width=128,blocks=4,window=2):
-        super().__init__();assert training_mode in['teacher','rollout'];self.training_mode=training_mode;self.window=window;self.renderer=None;self.encoder=ImageState()
+    def __init__(self,init_checkpoint,training_mode='rollout',width=128,blocks=4,window=2,forecast_horizon=5):
+        super().__init__();assert training_mode in['teacher','rollout'];assert forecast_horizon in[5,15]
+        self.forecast_horizon=forecast_horizon;self.training_mode=training_mode;self.window=window;self.renderer=None;self.encoder=ImageState()
         self.vision=nn.Sequential(nn.Conv2d(3,32,5,2,2),nn.GroupNorm(8,32),nn.SiLU(),nn.Conv2d(32,64,3,2,1),nn.GroupNorm(8,64),nn.SiLU(),nn.Conv2d(64,96,3,2,1),nn.GroupNorm(8,96),nn.SiLU())
         self.initial=nn.Sequential(nn.Conv2d(192,width,1),*[Block(width)for _ in range(blocks)],nn.GroupNorm(8,width),nn.SiLU())
         self.past_control=nn.Linear(4,width);self.control=nn.Linear(4,96);self.goal=nn.Conv2d(96,96,1);self.role=nn.Embedding(2,96)
@@ -52,23 +53,24 @@ class QueryRecurrent(nn.Module):
         return hidden,(image+delta).clamp(0,1)
 
     def distribution(self,batch):
-        role=batch['boundary'].float();assert not torch.any(batch['executed_sequence'][role.bool()]!=0)
+        role=batch['boundary'].float();horizon=self.forecast_horizon;assert batch['executed_sequence'].shape[1]==horizon
+        assert not torch.any(batch['executed_sequence'][role.bool()]!=0)
         assert not torch.any(batch['previous_control'][role.bool()]!=0)
         goal=self.encoder(batch['goal_pixels']);controls=batch['executed_sequence'].float()
         if self.training_mode=='teacher':
             current=self.encoder(batch['current_sequence_pixels'].flatten(0,1));previous=self.encoder(batch['previous_sequence_pixels'].flatten(0,1))
-            roles=role[:,None].expand(-1,5).flatten();goals=goal[:,None].expand(-1,5,-1,-1,-1).flatten(0,1)
+            roles=role[:,None].expand(-1,horizon).flatten();goals=goal[:,None].expand(-1,horizon,-1,-1,-1).flatten(0,1)
             hidden,context=self.prepare(current,previous,goals,batch['previous_control_sequence'].flatten(0,1).float(),batch['history_valid_sequence'].flatten(),roles)
             _,future=self.step(hidden,current,context,controls.flatten(0,1),roles)
-            return future.unflatten(0,(len(role),5))
+            return future.unflatten(0,(len(role),horizon))
         image=self.encoder(batch['current_pixels']);previous=self.encoder(batch['previous_pixels'])
         hidden,context=self.prepare(image,previous,goal,batch['previous_control'].float(),batch['history_valid'].float(),role);futures=[]
-        for index in range(5):
+        for index in range(horizon):
             hidden,image=self.step(hidden,image,context,controls[:,index],role);futures.append(image)
         return torch.stack(futures,1)
 
     def loss(self,batch,step=0,ramp_steps=0):
-        prediction=self.distribution(batch);target=self.encoder(batch['future_pixels'].flatten(0,1)).unflatten(0,(len(prediction),5))
+        prediction=self.distribution(batch);target=self.encoder(batch['future_pixels'].flatten(0,1)).unflatten(0,(len(prediction),self.forecast_horizon))
         per_sample=((prediction-target)*255).square().mean((1,2,3,4));loss=.5*per_sample.mean()
         return loss,dict(loss=loss,future_mse=per_sample.mean()/(255**2),future_rgb8_mse=per_sample.mean())
 
