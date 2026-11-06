@@ -1,0 +1,60 @@
+"""Read-only actual-trace verification and paired physical-case bootstrap."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import numpy as np
+
+BASE=Path('/efs/prescottsun/SPT-JEPA/runs')
+
+
+def load(name,arm,step=40000):
+    root=BASE/name;training=(root/'training-plan.json').exists();plan=json.loads((root/('training-plan.json'if training else'plan.json')).read_text());rows={};evidence=[]
+    for r in plan['recipes']:
+        if r['arm']!=arm:continue
+        path=Path(r['run']if training else r['output'])/(f'eval-step{step:07d}'if training else'pilot')/'summary.json'
+        if not path.exists():return None
+        value=json.loads(path.read_text());assert value['passed']and value['model_unchanged']
+        evidence.append(dict(path=str(path),sha256=hashlib.sha256(path.read_bytes()).hexdigest(),model_sha256=value['model_sha256']))
+        for row in value['rows']:
+            assert hashlib.sha256(Path(row['trace']).read_bytes()).hexdigest()==row['trace_sha256']
+            key=(r['seed'],row['task'],row['seed']);assert key not in rows;rows[key]=row
+    assert rows
+    return rows,evidence
+
+
+def compare(left,right,scope):
+    a,ae=left;b,be=right;assert a.keys()==b.keys()
+    assert all(a[k]['case_sha256']==b[k]['case_sha256']for k in a)
+    results={};rng=np.random.default_rng(20261107)
+    for label,tasks in [('all_tasks',sorted({k[1]for k in a})),('manipulation',sorted({k[1]for k in a}-{'reach-v3','reach-wall-v3'}))]:
+        delta=[];bootstrap=np.zeros(10000);table={};keys=[k for k in a if k[1]in tasks]
+        for task in tasks:
+            case_seeds=sorted({k[2]for k in keys if k[1]==task});models=sorted({k[0]for k in keys})
+            diff=np.array([np.mean([int(a[(m,task,s)]['success'])-int(b[(m,task,s)]['success'])for m in models])for s in case_seeds])
+            delta.append(float(diff.mean()));bootstrap+=diff[rng.integers(len(diff),size=(10000,len(diff)))].mean(1)/len(tasks)
+            table[task]=dict(left_successes=sum(a[k]['success']for k in keys if k[1]==task),right_successes=sum(b[k]['success']for k in keys if k[1]==task),episodes=len(case_seeds)*len(models),physical_cases=len(case_seeds))
+        results[label]=dict(left_percent=100*np.mean([a[k]['success']for k in keys]),right_percent=100*np.mean([b[k]['success']for k in keys]),
+            delta_pp=100*np.mean(delta),physical_case_cluster_ci95_pp=(100*np.quantile(bootstrap,[.025,.975])).tolist(),episodes=len(keys),
+            trained_seeds=sorted({k[0]for k in keys}),training_seed_delta_pp={str(m):100*np.mean([int(a[k]['success'])-int(b[k]['success'])for k in keys if k[0]==m])for m in sorted({k[0]for k in keys})},tasks=table)
+    return dict(scope=scope,paired_case_and_trace_hashes_pass=True,results=results,evidence_left=ae,evidence_right=be,
+        limitation='CIconditionsonTWOtrainedlearners;resamplesphysicalcasesWITHINtask,keepsbothlearnersinonecasecluster.Doesnotestimatepopulationtrainingvariance.Tasksspecified,notrandomtaskdraws.')
+
+
+def run(a):
+    comparisons=[
+        ('current_flow_vs_mse',('metaworld_current_inverse_20261107','episodes',40000),('metaworld_current_inverse_mse_20261107','episodes',40000),'Sameoriginaldata/currenttargets/architecture/physicalcases,budget;flowvsregression.'),
+        ('current_fresh_vs_fixed',('metaworld_current_inverse_20261107','episodes',40000),('metaworld_current_feedback_20261107','episodes-fixed',40000),'EXACTsameNNs,currentintervaltargets,feedback5;onlyownnoiseconsistencychanges.'),
+        ('current_vs_future_chunk',('metaworld_current_inverse_20261107','episodes',40000),('metaworld_chunk_feedback_full_20261107','chunk6-execute1-fresh',40000),'SamephysicalRGBcase/feedback/noiseprotocol;differentanchor/sampling/labels/querychunk.Notpairedinitialweights/equalFLOPs.Nofuturechunkancestry.'),
+        ('directed_vs_absolute_10k',('metaworld_current_goal_20261107','directed-flow',10000),('metaworld_current_inverse_20261107','episodes',10000),'SAME64-episode10kscreen,4physicalcases/taskx2learners;matchedCNN/decoderinitialization/labels/anchors/budget,extraorderedfusion/halfdecoder-memorytokens.Notmatureconfirmation/equalFLOPs.'),
+        ('fifty_flow_vs_mse',('metaworld_current50_20261107','flow',40000),('metaworld_current50_20261107','mse',40000),'50-taskimage-goal4NEWphysicalcases/taskx2learners;notcanonicalMT50/publicJEPA-WMs.')]
+    results={}
+    for name,left,right,scope in comparisons:
+        l=load(*left);r=load(*right)
+        if l is not None and r is not None:results[name]=compare(l,r,scope)
+    a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(dict(passed=True,comparisons=results,new_model_updates=0,new_simulator_runs=0),indent=2)+'\n')
+    print(json.dumps({k:{s:{f:v for f,v in x.items()if f!='tasks'}for s,x in r['results'].items()}for k,r in results.items()}),flush=True)
+
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);run(p.parse_args())
