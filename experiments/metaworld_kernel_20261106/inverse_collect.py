@@ -14,7 +14,7 @@ def collect(root):
         locations=[(s,out/f'eval-step{s:07d}'/'summary.json','standard8')for s in plan['stages']]if training else[(40000,out/'pilot/summary.json','frozen')]
         if training:
             locations += [(s,out/f'hold-step{s:07d}'/'summary.json','hold5')for s in plan['stages']]
-        if training and plan.get('confirmation'):locations.append((plan['stages'][-1],out/'confirm-final/summary.json','confirmation50'))
+        if training and plan.get('confirmation'):locations.append((plan['stages'][-1],out/'confirm-final/summary.json',plan['confirmation'].get('cohort','confirmation50')))
         for step,path,cohort in locations:
             if not path.exists():continue
             value=json.loads(path.read_text());assert value['passed']and value['model_unchanged']

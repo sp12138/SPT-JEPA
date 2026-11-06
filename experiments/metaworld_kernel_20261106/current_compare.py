@@ -8,11 +8,13 @@ import numpy as np
 BASE=Path('/efs/prescottsun/SPT-JEPA/runs')
 
 
-def load(name,arm,step=40000):
+def load(name,arm,step=40000,seeds=None,cohort='standard'):
     root=BASE/name;training=(root/'training-plan.json').exists();plan=json.loads((root/('training-plan.json'if training else'plan.json')).read_text());rows={};evidence=[]
     for r in plan['recipes']:
         if r['arm']!=arm:continue
-        path=Path(r['run']if training else r['output'])/(f'eval-step{step:07d}'if training else'pilot')/'summary.json'
+        if seeds is not None and r['seed']not in seeds:continue
+        location={'final':'confirm-final','hold5':f'hold-step{step:07d}'}.get(cohort,f'eval-step{step:07d}')
+        path=Path(r['run']if training else r['output'])/(location if training else'pilot')/'summary.json'
         if not path.exists():return None
         value=json.loads(path.read_text());assert value['passed']and value['model_unchanged']
         evidence.append(dict(path=str(path),sha256=hashlib.sha256(path.read_bytes()).hexdigest(),model_sha256=value['model_sha256']))
@@ -20,6 +22,14 @@ def load(name,arm,step=40000):
             assert hashlib.sha256(Path(row['trace']).read_bytes()).hexdigest()==row['trace_sha256']
             key=(r['seed'],row['task'],row['seed']);assert key not in rows;rows[key]=row
     assert rows
+    return rows,evidence
+
+
+def combine(*values):
+    if any(v is None for v in values):return None
+    rows={};evidence=[]
+    for r,e in values:
+        assert not rows.keys()&r.keys();rows.update(r);evidence.extend(e)
     return rows,evidence
 
 
@@ -43,6 +53,10 @@ def compare(left,right,scope):
 
 def run(a):
     comparisons=[
+        ('factor_coupled_vs_native_oldactors',('metaworld_native_feedback_factor_20261107','coupled-oldactor',40000),('metaworld_current_control_full_20261107','world-native4',40000),'SAMEq1/2andF1/2NNs/cases/realcam5/5policycalls/4F/noisevariance1. Onlycouplingchanges:ONEownlatentperREALimagevs5independentnative-latents. No temporalhyperparameter;notfixedwholetrajectory.0SGD.'),
+        ('factor_coupled_vs_native_newactors',('metaworld_native_feedback_factor_20261107','coupled-newactor',40000),('metaworld_native_feedback_long_20261107','directed',40000),'SAMEq3/4at40kof120kLR/F3/4/physicalcases/sensor5/inferencecalls.OnlyONEownlatentperreal-observationintervalvsnativeIID. Notcompareold40kLRschedule/seedalone.'),
+        ('factor_worldswap_oldactors',('metaworld_native_feedback_factor_20261107','cross-oldactor-newworld',40000),('metaworld_current_control_full_20261107','world-native4',40000),'SAMEq1/2andownGaussianstreams/cases/realsensor5;ONLYF1/2replacedbyF3/4(ownsameoriginaldata/scratch20karchitecture). Isolatesworld-weightvariation,notnewdata/teacher.'),
+        ('factor_worldswap_newactors',('metaworld_native_feedback_factor_20261107','cross-newactor-oldworld',40000),('metaworld_native_feedback_long_20261107','directed',40000),'SAMEq3/4at40kof120kLR/cases/noise/realsensor5;ONLYF3/4replacedbyF1/2. Actor-groupdifferencesalsocontainLRscheduleandseeddifferences;notuniquelyaseedcausaltest.'),
         ('native_world_vs_static_1000',('metaworld_native_control1000_20261107','world-native4',40000),('metaworld_native_control1000_20261107','static-native4',40000),'ExpandedEXISTING1000physicalcases/50tasks,2trainedactors;notuntouchedconfirmationforthenewmethod.Same4DNNs/5policycalls/realsensor5,own20kFcostextra.'),
         ('native_mseworld_vs_flowworld_full8',('metaworld_native_clock_controls_20261107','mse-world-native4',40000),('metaworld_current_control_full_20261107','world-native4',40000),'SAMEown20kworldNNs/originaldata/currenta_t4Dtargets/40kactorbudget/realsensor5/physicalcases. Deterministicregressionvs12stepflow,inferencecomputeDIFFERENT;noGaussianactiondrawsinMSE.'),
         ('native_mseworld_vs_mseheld_full8',('metaworld_native_clock_controls_20261107','mse-world-native4',40000),('metaworld_one_native_mse_20261107','all-executed',40000),'EXACTsame4DMSEactorNNs/goals/physicalcases/realsensor5. Modelfeedbackaddsown20kworld/4forecasts/5policycallsversus1.Noa_t+1labels;noGaussianactiondrawsinMSE.'),
@@ -70,7 +84,20 @@ def run(a):
     for name,left,right,scope in comparisons:
         l=load(*left);r=load(*right)
         if l is not None and r is not None:results[name]=compare(l,r,scope)
-    a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(dict(passed=True,comparisons=results,new_model_updates=0,new_simulator_runs=0),indent=2)+'\n')
+    native=load('metaworld_native_goalclock_20261107','native-goal')if(BASE/'metaworld_native_goalclock_20261107/training-plan.json').exists()else None
+    if native is not None:
+        macro=combine(load('metaworld_native_goalclock_20261107','macro-goal'),load('metaworld_native_feedback_long_20261107','directed'))
+        if macro is not None:results['goalclock_native_vs_macro_full8']=compare(native,macro,'Fourpairedactorseeds3..6 ONLYhindsightgoalRGBgrid1vs5changes;EXACTa_t4Dtargets/currentanchors/sampler/architecture/init/budget/120kLRhorizon/ownFwithinpair/sensor5. ReuseALREADYtrained3/4macrogoalcontrols;noSGDrepeat.World1/2reusedfor5/6explicit.40kCAP,note120kfinalperformance.')
+        left=load('metaworld_native_goalclock_20261107','native-goal',40000,[5,6],'final');right=load('metaworld_native_goalclock_20261107','macro-goal',40000,[5,6],'final')
+        if left is not None and right is not None:results['goalclock_native_vs_macro_fifty']=compare(left,right,'50task4caseSCREEN,ONLYnewpairedactorseeds5/6;matchedcase/initialNN/currenta_t/40kbudget/LR120k/ownF/sensor5.3/4nativegoalbroadrowsnotmixedwithunmatchedcontrols.No publicSOTA/equalFLOPclaim.')
+    replica='metaworld_native_feedback_replicas_20261107'
+    if(BASE/replica/'training-plan.json').exists():
+        for step in [40000,80000,120000]:
+            left=load(replica,'directed',step);right=load(replica,'directed',step,None,'hold5')
+            if left is not None and right is not None:results[f'eight_native_replicas_world_vs_hold_{step}']=compare(left,right,'EightNEWactorseeds7..14,ownF1..4reusedtwice(CORRELATEDworldpretraining). SAMEactorweights/cases/realsensor5;world5calls/4forecastsversushold1draw. CIconditionalonlistedactorsand4frozenworlds;not8independentfullpipelinepretrainings/equalFLOPs.')
+    diagnostics={};goal=BASE/'metaworld_goal_input_diagnostic_20261107/results/goal-input-dependency.json'
+    if goal.exists():diagnostics['goal_input_dependency']=dict(path=str(goal),sha256=hashlib.sha256(goal.read_bytes()).hexdigest(),scope='InconsistentRGBgoal diagnosticONLY,notbenchmarkperformance. Physicalcontext/NN/RNGsame;propergoalrefsandfirst-commanddifferencesverifiedseparately.')
+    a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(dict(passed=True,comparisons=results,diagnostics=diagnostics,new_model_updates=0,new_simulator_runs=0),indent=2)+'\n')
     print(json.dumps({k:{s:{f:v for f,v in x.items()if f!='tasks'}for s,x in r['results'].items()}for k,r in results.items()}),flush=True)
 
 

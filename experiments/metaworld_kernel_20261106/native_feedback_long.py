@@ -80,6 +80,22 @@ def contract(a):
 
 
 def gate(root,plan):
+    if plan.get('promotion_kind')=='replicated_flow':
+        parent=Path(plan['replication_parent']);deltas=[];world_scores=[];all_scores=[]
+        for seed in [3,4]:
+            run=parent/'training'/f'directed-seed{seed}';paths=[run/'eval-step0040000/summary.json',run/'hold-step0040000/summary.json']
+            if not all(p.exists()for p in paths):return None
+            world,hold=[json.loads(p.read_text())for p in paths]
+            assert world['passed']and hold['passed']and world['model_unchanged']and hold['model_unchanged']
+            assert world['model_sha256']==hold['model_sha256']
+            x={(r['task'],r['seed']):r for r in world['rows']};y={(r['task'],r['seed']):r for r in hold['rows']};assert x.keys()==y.keys()and len(x)==160
+            assert all(x[k]['case_sha256']==y[k]['case_sha256']for k in x)
+            keys=[k for k in x if k[0]not in ['reach-v3','reach-wall-v3']]
+            world_scores.append(sum(x[k]['success']for k in keys)/len(keys));all_scores.append(sum(r['success']for r in x.values())/len(x))
+            deltas.append(sum(int(x[k]['success'])-int(y[k]['success'])for k in keys)/len(keys))
+        passed=sum(world_scores)/2>=.85 and min(world_scores)>=.8 and sum(deltas)/2>=.08 and min(deltas)>0
+        return dict(passed=passed,new_updates=0,independent_replication_actor_seeds=[3,4],world_six_percent=[100*x for x in world_scores],world_all8_percent=[100*x for x in all_scores],same_actor_hold_gain_pp=[100*x for x in deltas],
+            scope='Eightfurther120kactorreplicasONLYifnew3/4sixmean>=85%,each>=80%,sameactorworld-v-holdmeangain>=8pp,bothpositive. Original2seed89.25%50screenisadditionalpre-existingbasis;notanewmethodsearch.')
     if plan.get('promotion_kind')=='simpler_mse':
         full_path=Path(plan['mse_full'])/'results/summary.json';fifty_path=Path(plan['mse_fifty'])/'results/summary.json'
         if not full_path.exists()or not fifty_path.exists():return None

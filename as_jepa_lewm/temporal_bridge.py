@@ -39,7 +39,7 @@ class SpatialEncoder(nn.Module):
 class TemporalBridge(nn.Module):
     def __init__(self, visual_source='local', objective='flow', width=192, chunk=6,
                  action_dim=20, window=2, feature_dim=64, noise_odds=1., condition_horizon='teacher',
-                 temporal_aux=True, history_context=False, freeze_visual_encoder=False, encoder_lr=None,goal_representation='absolute',role_initialization='zero',fusion_initialization='default'):
+                 temporal_aux=True, history_context=False, freeze_visual_encoder=False, encoder_lr=None,goal_representation='absolute',role_initialization='zero',fusion_initialization='default',goal_information='provided'):
         super().__init__()
         assert visual_source in ['local', 'global', 'hybrid', 'patch', 'vit'] and objective in ['flow', 'mse', 'metric']
         assert condition_horizon in ['teacher', 'none']
@@ -51,6 +51,9 @@ class TemporalBridge(nn.Module):
         assert fusion_initialization in['default','directed_equivalent']
         assert fusion_initialization=='default'or goal_representation=='ordered'
         assert goal_representation=='absolute'or(visual_source=='local'and not history_context)
+        assert goal_information in ['provided','current_only']
+        assert goal_information=='provided'or(visual_source=='local'and goal_representation=='directed'and not history_context)
+        self.goal_information=goal_information
         self.goal_representation=goal_representation
         self.visual_source = visual_source; self.objective = objective
         self.width = width; self.chunk = chunk; self.window = window; self.action_dim = action_dim
@@ -111,6 +114,11 @@ class TemporalBridge(nn.Module):
             with torch.no_grad():self.goal_fusion[0].weight[:,:width].sub_(self.goal_fusion[0].weight[:,width:])
 
     def memory(self, batch):
+        if self.goal_information=='current_only':
+            assert batch['pixels'].shape[1]==2
+            # Capacity/initialization/compute-matched information ablation.
+            # The provided future goal is never encoded; both slots see current RGB.
+            batch=dict(batch,pixels=batch['pixels'][:,:1].expand(-1,2,-1,-1,-1).contiguous())
         if self.visual_source == 'vit':
             images = batch['pixels'].float(); b,t = images.shape[:2]
             value = (images.flatten(0,1)/255.-self.pixel_mean)/self.pixel_std

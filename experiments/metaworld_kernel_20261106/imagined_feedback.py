@@ -12,6 +12,18 @@ from experiments.metaworld_contact_20261106.bridge_campaign import TASKS
 from experiments.metaworld_kernel_20261106.campaign import save,digest
 
 
+def sample_policy(model,batch,generator,steps,solver):
+    if solver=='euler'or model.objective=='mse':return model.propose(batch,generator=generator,steps=steps)
+    memory=model.memory(batch);horizon=model.duration(memory)
+    value=torch.randn(len(memory),model.chunk,model.action_dim,device=memory.device,generator=generator)
+    for i in range(steps):
+        time=value.new_full((len(value),),1-i/steps)
+        velocity=model.action_field(value,time,horizon,memory)
+        velocity=model.action_field(value-velocity/(2*steps),time-1/(2*steps),horizon,memory)
+        value=value-velocity/steps
+    return value
+
+
 def run(a):
     torch.set_num_threads(2);torch.set_float32_matmul_precision('highest');a.output.mkdir(parents=True,exist_ok=False)
     assert a.world_action=='own'or a.mode=='world'
@@ -41,9 +53,11 @@ def run(a):
                 while len(actions)<a.budget:
                     actual=resize_tensor([image]).cuda();belief=world.encoder(actual)if world is not None else None;commands=[]
                     predicted_past=past
+                    slot_noise=generator.get_state()if a.noise_coupling=='observation'else None
                     for j in range(5):
+                        if slot_noise is not None:generator.set_state(slot_noise)
                         current=actual if j==0 or a.mode=='static'else F.interpolate(belief*255,(224,224),mode='bilinear',align_corners=False,antialias=True).round().clamp(0,255).byte()
-                        proposed=controller.propose(dict(pixels=torch.stack([current,goal],1)),generator=generator,steps=12)[0,0,:4].float().cpu().numpy();calls+=1
+                        proposed=sample_policy(controller,dict(pixels=torch.stack([current,goal],1)),generator,a.policy_steps,a.policy_solver)[0,0,:4].float().cpu().numpy();calls+=1
                         command=np.clip(proposed*std+mean,-1,1).astype(np.float32);assert np.isfinite(command).all();commands.append(command)
                         control=torch.from_numpy(command[None]).cuda()
                         if a.mode=='world'and j<4:
@@ -65,12 +79,15 @@ def run(a):
                 case_sha256=case['sha256'],expert_goal_success=case['expert_any_success'],initial_rgb=gate,trace=str(trace),trace_sha256=digest(trace))
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     after=dict(controller=model_sha(controller),world=model_sha(world)if world is not None else None);assert before==after
-    save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=a.step,mode=a.mode,world_action=a.world_action,
+    save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=a.step,mode=a.mode,world_action=a.world_action,noise_coupling=a.noise_coupling,
+        policy_objective=controller.objective,policy_solver=a.policy_solver,policy_steps=a.policy_steps,policy_field_passes_per_call=a.policy_steps*(2 if a.policy_solver=='midpoint'else 1)if controller.objective=='flow'else 1,
+        independent_action_latents_per_sensor_interval=(1 if a.noise_coupling=='observation'else 5)if controller.objective=='flow'else 0,
         feedback_native=5,action_native=1,training_action_native=controller.action_dim//4,new_updates=0,current_action_only=controller.action_dim==4,
         scope='Frozencontrolleratdeclaredstep,declaredtraining_action_native1or5.Allscratchoriginaldata;noexternalteacher.'
               'The4DcontrollerusesONLYcurrentnativea_tlabels;20Dmodelsareexplicit5-control-targetcomparators.World20kloadedONLYforcopy/worldmodes.'
               'RealRGBONLYevery5native;fourintermediateobservationsareOWNforecast,neveractualfutureframes/states/actions.'
-              'CopycontrolgetsSAME128->224intermediateimageprocessingandSAMEown5Gaussianactiondraws;onlyforwardevolutiondisabled.'
+              'CopycontrolgetsSAME128->224intermediateimageprocessinganddeclaredown-noisecouplingasworld;onlyforwardevolutiondisabled.'
+              'ObservationcouplingreusesONEownGaussianlatentthrough5imagineddecisions,resamplesaftereachREALcameraimage;nativemoderesamplesperdecision.Noadditionaltuningparameter.'
               'StaticmodeusesONLYoriginalactual224RGBthroughoutthe5nativeslot;noworldloaded/resize/proxyimage.'
               'World-actionzero/negateareexplicitNEGATIVEdiagnostics:onlyimagineddynamicsusesfalseowncontrol;actualphysicalcontrolsarenotchanged.'
               'Macro20modelsarelabelledcurrent5-controlTARGETcomparators,onlytheirFIRSTnativecomponentusedforthisstochasticclocktest.'
@@ -83,4 +100,6 @@ if __name__=='__main__':
     p.add_argument('--world',type=Path);p.add_argument('--mode',choices=['copy','world','static'],required=True);p.add_argument('--budget',type=int,default=500)
     p.add_argument('--world-action',choices=['own','zero','negate'],default='own')
     p.add_argument('--step',type=int,default=40000)
+    p.add_argument('--noise-coupling',choices=['native','observation'],default='native')
+    p.add_argument('--policy-solver',choices=['euler','midpoint'],default='euler');p.add_argument('--policy-steps',type=int,default=12)
     p.add_argument('--tasks',nargs='+',default=TASKS);p.add_argument('--seeds',type=int,nargs='+',default=[42,1042]);run(p.parse_args())
