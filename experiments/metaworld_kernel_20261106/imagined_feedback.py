@@ -18,8 +18,8 @@ def run(a):
     cfg=json.loads((a.run/'config.json').read_text());assert cfg['model']['action_dim']in[4,20]and not cfg['model']['history_context']and cfg['model']['chunk']==1
     assert cfg['model']['action_dim']==20 or cfg.get('inverse_tail_reserve')==1
     controller=build_model(cfg).cuda().eval().requires_grad_(False)
-    controller.load_state_dict(torch.load(a.run/'model-step0040000/weights.pt',map_location='cuda',weights_only=True))
-    assert json.loads((a.run/'audit-40000.json').read_text())['passed']
+    controller.load_state_dict(torch.load(a.run/f'model-step{a.step:07d}/weights.pt',map_location='cuda',weights_only=True))
+    assert json.loads((a.run/f'audit-{a.step}.json').read_text())['passed']
     world=None
     if a.mode!='static':
         wc=json.loads((a.world/'config.json').read_text());assert wc['model_class']=='causal_transport'and wc['model']['mode']=='stencil'
@@ -65,9 +65,9 @@ def run(a):
                 case_sha256=case['sha256'],expert_goal_success=case['expert_any_success'],initial_rgb=gate,trace=str(trace),trace_sha256=digest(trace))
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     after=dict(controller=model_sha(controller),world=model_sha(world)if world is not None else None);assert before==after
-    save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=40000,mode=a.mode,world_action=a.world_action,
+    save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=a.step,mode=a.mode,world_action=a.world_action,
         feedback_native=5,action_native=1,training_action_native=controller.action_dim//4,new_updates=0,current_action_only=controller.action_dim==4,
-        scope='Frozen40kcontroller,declaredtraining_action_native1or5.Allscratchoriginaldata;noexternalteacher.'
+        scope='Frozencontrolleratdeclaredstep,declaredtraining_action_native1or5.Allscratchoriginaldata;noexternalteacher.'
               'The4DcontrollerusesONLYcurrentnativea_tlabels;20Dmodelsareexplicit5-control-targetcomparators.World20kloadedONLYforcopy/worldmodes.'
               'RealRGBONLYevery5native;fourintermediateobservationsareOWNforecast,neveractualfutureframes/states/actions.'
               'CopycontrolgetsSAME128->224intermediateimageprocessingandSAMEown5Gaussianactiondraws;onlyforwardevolutiondisabled.'
@@ -82,4 +82,5 @@ if __name__=='__main__':
     for k in['run','manifest','output']:p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--world',type=Path);p.add_argument('--mode',choices=['copy','world','static'],required=True);p.add_argument('--budget',type=int,default=500)
     p.add_argument('--world-action',choices=['own','zero','negate'],default='own')
+    p.add_argument('--step',type=int,default=40000)
     p.add_argument('--tasks',nargs='+',default=TASKS);p.add_argument('--seeds',type=int,nargs='+',default=[42,1042]);run(p.parse_args())

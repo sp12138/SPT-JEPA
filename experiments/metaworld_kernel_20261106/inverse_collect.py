@@ -12,6 +12,8 @@ def collect(root):
     for recipe in plan['recipes']:
         out=Path(recipe['run']if training else recipe['output']);entry=dict(recipe);entry['complete']=(out/'complete.json').exists();entry['error']=json.loads((out/'execution-error.json').read_text())if(out/'execution-error.json').exists()else None
         locations=[(s,out/f'eval-step{s:07d}'/'summary.json','standard8')for s in plan['stages']]if training else[(40000,out/'pilot/summary.json','frozen')]
+        if training:
+            locations += [(s,out/f'hold-step{s:07d}'/'summary.json','hold5')for s in plan['stages']]
         if training and plan.get('confirmation'):locations.append((plan['stages'][-1],out/'confirm-final/summary.json','confirmation50'))
         for step,path,cohort in locations:
             if not path.exists():continue
