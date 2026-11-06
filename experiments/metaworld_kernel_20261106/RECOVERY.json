@@ -1,0 +1,29 @@
+{
+  "status": "ACTIVE_FIRST_PHASE_NO_QUALIFIED_GAIN",
+  "objective": "Find an elegant manipulation algorithm substantially exceeding the old action-supervised 78.75% six-task comparator, without reconstruction or future-action references.",
+  "hosts": ["dev13", "dev15"],
+  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_kernel_20261106",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-c96eeda",
+  "training_plan": "training-plan.json",
+  "ownership": ["training-launch-dev13.json", "training-launch-dev15.json"],
+  "technical_gates": "PENDING at launch; inspect actual audit-2.json and eval-step0000002/summary.json",
+  "native_stages": [2, 250, 1000, 2500, 10000],
+  "arms": ["forward-gaussian", "boundary-point", "boundary-gaussian", "boundary-nonlinear"],
+  "independent_training_seeds": [1, 2, 3, 4],
+  "feature_contract": {"batch_vs_single_max": 0.0, "cache_vs_live_single_max": 0.0, "cache_vs_live_batch_max": 0.0},
+  "strict_constraints": [
+    "No image/current-observation/action reconstruction",
+    "No action labels, future-action reference sequences/options or retrieval",
+    "No old model weights, distillation or external pretrained models",
+    "Known current executed command is a dynamics input only",
+    "Only future observations supervise the sample-level predictor",
+    "No privileged state/reward/success/taskID inputs"
+  ],
+  "old_campaign": {
+    "collector_retired": 3697457,
+    "tf_cold_seed3_graceful_stop": 30126,
+    "tf_cold_seed4_graceful_stop": 29962,
+    "reason": "Old TF has an RGB64 generative decoder; strict request supersedes its remaining work. Full states and errors retained."
+  },
+  "limits": "Fixed random features may be inadequate and expert action coverage may not identify causal effects. No factual-prediction metric substitutes for physical success. Screening cohorts are not confirmation. No SOTA/novelty claim. Old goal/LLM monitors remain off."
+}
