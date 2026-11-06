@@ -1,0 +1,96 @@
+{
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-9c2c26f",
+  "recipes": [
+    {
+      "arm": "phase0",
+      "seed": 1,
+      "host": "dev6",
+      "gpu": 0,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/phase0-seed1",
+      "resource_pid": 1781,
+      "resource_marker": "inverse_reference.py",
+      "config_sha256": "39987aa93d994f33682c5a248777b5a11ee5a9b855c949da2ced882539c50389"
+    },
+    {
+      "arm": "native",
+      "seed": 1,
+      "host": "dev6",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/native-seed1",
+      "resource_pid": 1782,
+      "resource_marker": "inverse_reference.py",
+      "config_sha256": "7c77d3149a952b8b5feb745826de019728315ba3a22eedfcfe5ae724907b9391"
+    },
+    {
+      "arm": "episodes",
+      "seed": 1,
+      "host": "dev6",
+      "gpu": 2,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/episodes-seed1",
+      "resource_pid": 1783,
+      "resource_marker": "inverse_reference.py",
+      "config_sha256": "ca898f20580ec4b25cc45ee9ba61dbbf3a670a26957a62239d55a6ad5c903d1c"
+    },
+    {
+      "arm": "highnoise",
+      "seed": 1,
+      "host": "dev6",
+      "gpu": 3,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/highnoise-seed1",
+      "resource_pid": 1784,
+      "resource_marker": "inverse_reference.py",
+      "config_sha256": "5b24ba9ee26047c9bee3225638cbbfe6eaf18e08b2fd1101fb2c10910757d194"
+    },
+    {
+      "arm": "phase0",
+      "seed": 2,
+      "host": "dev6",
+      "gpu": 4,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/phase0-seed2",
+      "resource_pid": 1785,
+      "resource_marker": "inverse_reference.py",
+      "config_sha256": "93f5afe0ec0506ee5afc20fe3aade7f984348feb308f8ed6f7df5ab681756f73"
+    },
+    {
+      "arm": "native",
+      "seed": 2,
+      "host": "dev6",
+      "gpu": 5,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/native-seed2",
+      "resource_pid": 1786,
+      "resource_marker": "inverse_reference.py",
+      "config_sha256": "f98229005f698b228f9ffb24504e1c2f60cb6aa583befe26fc7cc3b6639fbef2"
+    },
+    {
+      "arm": "episodes",
+      "seed": 2,
+      "host": "dev6",
+      "gpu": 6,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/episodes-seed2",
+      "resource_pid": 1787,
+      "resource_marker": "inverse_reference.py",
+      "config_sha256": "d52382f198898bc16ddae7ee7842f6a7fc2f0c06be6bbf45ba8b735224fb37f3"
+    },
+    {
+      "arm": "highnoise",
+      "seed": 2,
+      "host": "dev6",
+      "gpu": 7,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/highnoise-seed2",
+      "resource_pid": 1788,
+      "resource_marker": "inverse_reference.py",
+      "config_sha256": "2ae1a22c47e8f2d5329408b81f9df04675d0a9bbbe80b35c4188b62568043347"
+    }
+  ],
+  "stages": [
+    2,
+    600,
+    3000,
+    10000,
+    20000,
+    40000
+  ],
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "deadline_unix": 1794116030.9885986,
+  "scope": "Latestuserpermitsinverse,performancepriority.ScratchCURRENTinterval-only flow,8independenttrainingswithpairedinitialstateswithinseed.Originalcorpusonly,nocollectedextra data/pretrainedmodules/futurecommandlabels,one sample-level loss.NativeSGD2/600/3000entrygatesprecedematuretraining;allcontrolsuse40000LRhorizon.NopublicSOTA/equalFLOPclaim."
+}

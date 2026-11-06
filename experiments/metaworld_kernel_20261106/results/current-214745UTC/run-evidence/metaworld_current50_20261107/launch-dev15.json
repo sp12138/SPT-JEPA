@@ -1,0 +1,54 @@
+{
+  "workers": [
+    {
+      "pid": 3259526,
+      "host": "dev15",
+      "gpu": 1,
+      "seed": 2,
+      "arm": "flow",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/episodes-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/flow-seed2",
+      "wait_run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/phase0-seed2",
+      "case_tasks": [
+        "bin-picking-v3",
+        "button-press-v3",
+        "coffee-push-v3",
+        "door-lock-v3",
+        "drawer-open-v3",
+        "hand-insert-v3",
+        "handle-pull-v3",
+        "pick-out-of-hole-v3",
+        "plate-slide-back-v3",
+        "push-v3",
+        "shelf-place-v3",
+        "sweep-into-v3"
+      ],
+      "case_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/cases-slot2"
+    },
+    {
+      "pid": 3259527,
+      "host": "dev15",
+      "gpu": 5,
+      "seed": 2,
+      "arm": "mse",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/episodes-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/mse-seed2",
+      "wait_run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/episodes-seed2",
+      "case_tasks": [
+        "box-close-v3",
+        "button-press-wall-v3",
+        "dial-turn-v3",
+        "door-open-v3",
+        "faucet-close-v3",
+        "handle-press-side-v3",
+        "lever-pull-v3",
+        "pick-place-v3",
+        "plate-slide-side-v3",
+        "push-wall-v3",
+        "soccer-v3",
+        "sweep-v3"
+      ],
+      "case_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/cases-slot3"
+    }
+  ]
+}

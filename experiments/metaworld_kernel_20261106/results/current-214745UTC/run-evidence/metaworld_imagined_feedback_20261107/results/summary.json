@@ -1,0 +1,153 @@
+{
+  "runs": [
+    {
+      "host": "dev6",
+      "gpu": 4,
+      "arm": "copy",
+      "seed": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/all-executed-seed1",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_imagined_feedback_20261107/copy-seed1",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev6",
+      "gpu": 5,
+      "arm": "copy",
+      "seed": 2,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/all-executed-seed2",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_imagined_feedback_20261107/copy-seed2",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev6",
+      "gpu": 6,
+      "arm": "world",
+      "seed": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/all-executed-seed1",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_imagined_feedback_20261107/world-seed1",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev6",
+      "gpu": 7,
+      "arm": "world",
+      "seed": 2,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/all-executed-seed2",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_imagined_feedback_20261107/world-seed2",
+      "complete": true,
+      "error": null
+    }
+  ],
+  "scores": [
+    {
+      "arm": "copy",
+      "step": 40000,
+      "cohort": "frozen",
+      "trained_seeds": [
+        1,
+        2
+      ],
+      "episodes": 32,
+      "manipulation_successes": 20,
+      "manipulation_episodes": 24,
+      "manipulation_percent": 83.33333333333333,
+      "goal_valid_episodes": 32,
+      "goal_valid_percent": 81.25,
+      "task_scores": {
+        "bin-picking-v3": {
+          "successes": 0,
+          "episodes": 4
+        },
+        "door-open-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "drawer-open-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "peg-insert-side-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "pick-place-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "push-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "reach-v3": {
+          "successes": 2,
+          "episodes": 4
+        },
+        "reach-wall-v3": {
+          "successes": 4,
+          "episodes": 4
+        }
+      }
+    },
+    {
+      "arm": "world",
+      "step": 40000,
+      "cohort": "frozen",
+      "trained_seeds": [
+        1,
+        2
+      ],
+      "episodes": 32,
+      "manipulation_successes": 24,
+      "manipulation_episodes": 24,
+      "manipulation_percent": 100.0,
+      "goal_valid_episodes": 32,
+      "goal_valid_percent": 84.375,
+      "task_scores": {
+        "bin-picking-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "door-open-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "drawer-open-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "peg-insert-side-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "pick-place-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "push-v3": {
+          "successes": 4,
+          "episodes": 4
+        },
+        "reach-v3": {
+          "successes": 0,
+          "episodes": 4
+        },
+        "reach-wall-v3": {
+          "successes": 3,
+          "episodes": 4
+        }
+      }
+    }
+  ],
+  "complete": 4,
+  "errors": 0,
+  "training": false,
+  "performance_goal_achieved": false,
+  "scope": "Current-onlycandidateorlabelledfuturechunkbaseline;originalcorpus/commonphysicalcases,notpublicSOTA/equalFLOPs.Noclock/oraclefuturecommandsat inference."
+}

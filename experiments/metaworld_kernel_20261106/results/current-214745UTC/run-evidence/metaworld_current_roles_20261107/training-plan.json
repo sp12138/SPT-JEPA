@@ -1,0 +1,56 @@
+{
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-e868569",
+  "recipes": [
+    {
+      "arm": "ordered-equivalent",
+      "seed": 1,
+      "host": "dev13",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_roles_20261107/training/ordered-equivalent-seed1",
+      "resource_pid": 3718731,
+      "resource_marker": "fifty_current.py",
+      "config_sha256": "0d472e73051090637275a9ef669ad3c06c166ed1f7ac366f3943857ecc09697d"
+    },
+    {
+      "arm": "distinct-roles",
+      "seed": 1,
+      "host": "dev13",
+      "gpu": 5,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_roles_20261107/training/distinct-roles-seed1",
+      "resource_pid": 3718732,
+      "resource_marker": "fifty_current.py",
+      "config_sha256": "10a1d6fb4fc3aca45a87734700660b8013d1ffed69bf8122c223c5d7cb8c1215"
+    },
+    {
+      "arm": "ordered-equivalent",
+      "seed": 2,
+      "host": "dev15",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_roles_20261107/training/ordered-equivalent-seed2",
+      "resource_pid": 3259526,
+      "resource_marker": "fifty_current.py",
+      "config_sha256": "6510df67dc1009ab93d9b2ecdbfa83d80ed1122141fd9cc60480df63a6f4f0f2"
+    },
+    {
+      "arm": "distinct-roles",
+      "seed": 2,
+      "host": "dev15",
+      "gpu": 5,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_roles_20261107/training/distinct-roles-seed2",
+      "resource_pid": 3259527,
+      "resource_marker": "fifty_current.py",
+      "config_sha256": "fd8bbe1a9c04842cc5e9cedfa8197f3056dcc5e9f2b2855d5dffb14b03696971"
+    }
+  ],
+  "stages": [
+    2,
+    600,
+    3000,
+    10000,
+    20000,
+    40000
+  ],
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "deadline_unix": 1794122644.0916572,
+  "scope": "Representationmechanismcontrols;twoindependentseeds,current-onlyoneFMloss,originaldata.Equivalentconcatvsdifferencefunctionclassandinitialfunctionsareexplicitlyaudited."
+}

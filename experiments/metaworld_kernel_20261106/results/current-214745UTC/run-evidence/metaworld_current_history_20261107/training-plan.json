@@ -1,0 +1,56 @@
+{
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-a826f2e",
+  "recipes": [
+    {
+      "host": "dev6",
+      "gpu": 4,
+      "seed": 1,
+      "arm": "flow",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_history_20261107/training/flow-seed1",
+      "resource_pid": 5712,
+      "resource_marker": "frozen-reference-worker.py",
+      "config_sha256": "32ae03d59c3edb33d80cc9ee3bfa7bbb5ee2d8c712d8d3d23e3acb86aab2b0c7"
+    },
+    {
+      "host": "dev6",
+      "gpu": 5,
+      "seed": 1,
+      "arm": "mse",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_history_20261107/training/mse-seed1",
+      "resource_pid": 5713,
+      "resource_marker": "frozen-reference-worker.py",
+      "config_sha256": "72b62d278932c14df771a2a22e7bf862ce30a4100e8a1190cacc94f73db5c85e"
+    },
+    {
+      "host": "dev6",
+      "gpu": 6,
+      "seed": 2,
+      "arm": "flow",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_history_20261107/training/flow-seed2",
+      "resource_pid": 5714,
+      "resource_marker": "frozen-reference-worker.py",
+      "config_sha256": "4058f6fe85ed4bda7204cacd595ef049f84f535a2d49d9262846cf26a6b57b7d"
+    },
+    {
+      "host": "dev6",
+      "gpu": 7,
+      "seed": 2,
+      "arm": "mse",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_history_20261107/training/mse-seed2",
+      "resource_pid": 5715,
+      "resource_marker": "frozen-reference-worker.py",
+      "config_sha256": "0c139f50fe30e0b1197e0cf2accfada22ab4bd206287c8c3454178793a2b7c11"
+    }
+  ],
+  "stages": [
+    2,
+    600,
+    3000,
+    10000,
+    20000,
+    40000
+  ],
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "deadline_unix": 1794122202.7095418,
+  "scope": "Fourrandomcurrent-onlyhistorycontrollers,one sample-level loss.Pastownexecutedcontrolsareinputs,neverfuturelabels.Originalcorpusonly;twoindependentinitialseeds.NoSOTA/equalFLOPclaim."
+}

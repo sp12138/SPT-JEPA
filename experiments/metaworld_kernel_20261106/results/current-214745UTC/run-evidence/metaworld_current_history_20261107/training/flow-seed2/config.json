@@ -1,0 +1,40 @@
+{
+  "seed": 2,
+  "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_history_20261107/training/flow-seed2",
+  "dataset_kind": "native_inverse_pairs",
+  "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+  "native_inverse_cache": "/tmp/prescottsun-native-rgb224-20261107-v1",
+  "inverse_anchors": "all",
+  "inverse_balance": "episodes",
+  "model_class": "temporal_bridge",
+  "model": {
+    "visual_source": "local",
+    "objective": "flow",
+    "chunk": 1,
+    "window": 2,
+    "width": 192,
+    "action_dim": 20,
+    "history_context": true,
+    "temporal_aux": false,
+    "condition_horizon": "none",
+    "noise_odds": 1.0
+  },
+  "batch_size": 128,
+  "workers": 2,
+  "max_steps": 40000,
+  "checkpoint_every": 1000,
+  "cpu_threads": 2,
+  "max_seconds": 86400,
+  "precision": "bf16-mixed",
+  "record_runtime_source": true,
+  "record_initial_weights": true,
+  "retain_steps": [
+    2,
+    600,
+    3000,
+    10000,
+    20000,
+    40000
+  ],
+  "float32_matmul_precision": "highest"
+}

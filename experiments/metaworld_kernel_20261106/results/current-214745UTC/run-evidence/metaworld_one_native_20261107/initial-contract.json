@@ -1,0 +1,70 @@
+{
+  "passed": true,
+  "reports": [
+    {
+      "arm": "exclude-last4",
+      "seed": 1,
+      "train_starts": 172608,
+      "test_starts": 19698,
+      "one_current_native_guards": 64,
+      "actual_near_terminal_checks": 0,
+      "independent_sample_max": 2.384185791015625e-07,
+      "gradients": {
+        "encoder": 14.244952071379943,
+        "predictor": 9.9942583239934,
+        "action_readout": 10.632343341797057,
+        "goal_fusion": 5.64961037900539
+      }
+    },
+    {
+      "arm": "exclude-last4",
+      "seed": 2,
+      "train_starts": 172608,
+      "test_starts": 19698,
+      "one_current_native_guards": 64,
+      "actual_near_terminal_checks": 0,
+      "independent_sample_max": 3.5762786865234375e-07,
+      "gradients": {
+        "encoder": 40.094266950829265,
+        "predictor": 20.400713086647688,
+        "action_readout": 24.00888140080531,
+        "goal_fusion": 13.947333044709968
+      }
+    },
+    {
+      "arm": "all-executed",
+      "seed": 1,
+      "train_starts": 181608,
+      "test_starts": 20698,
+      "one_current_native_guards": 64,
+      "actual_near_terminal_checks": 1000,
+      "independent_sample_max": 2.384185791015625e-07,
+      "gradients": {
+        "encoder": 35.51344103812365,
+        "predictor": 18.421755561416965,
+        "action_readout": 18.119892574759227,
+        "goal_fusion": 13.506753755912017
+      }
+    },
+    {
+      "arm": "all-executed",
+      "seed": 2,
+      "train_starts": 181608,
+      "test_starts": 20698,
+      "one_current_native_guards": 64,
+      "actual_near_terminal_checks": 1000,
+      "independent_sample_max": 1.7881393432617188e-07,
+      "gradients": {
+        "encoder": 42.1614904033763,
+        "predictor": 20.29841817883943,
+        "action_readout": 24.051626529185842,
+        "goal_fusion": 14.43546189180055
+      }
+    }
+  ],
+  "paired_initial_weights_within_seed": true,
+  "all_weights_random": true,
+  "new_model_updates": 0,
+  "no_future_or_fake_current_action_labels": true,
+  "scope": "Sameone4Dlabel,onlylegitimateterminalstatecoveragechanges;unknownlastframeactionneverinvented.No newepisodes/extradata."
+}

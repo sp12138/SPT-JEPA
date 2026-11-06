@@ -1,0 +1,70 @@
+{
+  "passed": true,
+  "reports": [
+    {
+      "arm": "exclude-last4",
+      "seed": 1,
+      "train_starts": 172608,
+      "test_starts": 19698,
+      "one_current_native_guards": 64,
+      "actual_near_terminal_checks": 0,
+      "independent_sample_max": 2.384185791015625e-07,
+      "gradients": {
+        "encoder": 39.16460471981895,
+        "predictor": 23.995239714627704,
+        "action_readout": 18.040079888573448,
+        "goal_fusion": 14.863312173578123
+      }
+    },
+    {
+      "arm": "all-executed",
+      "seed": 1,
+      "train_starts": 181608,
+      "test_starts": 20698,
+      "one_current_native_guards": 64,
+      "actual_near_terminal_checks": 1000,
+      "independent_sample_max": 2.384185791015625e-07,
+      "gradients": {
+        "encoder": 20.513373520836033,
+        "predictor": 14.441795976219574,
+        "action_readout": 12.064574897649313,
+        "goal_fusion": 8.434354224379069
+      }
+    },
+    {
+      "arm": "exclude-last4",
+      "seed": 2,
+      "train_starts": 172608,
+      "test_starts": 19698,
+      "one_current_native_guards": 64,
+      "actual_near_terminal_checks": 0,
+      "independent_sample_max": 3.5762786865234375e-07,
+      "gradients": {
+        "encoder": 30.382177181748542,
+        "predictor": 16.055375483227667,
+        "action_readout": 13.892611519247694,
+        "goal_fusion": 10.231799889694217
+      }
+    },
+    {
+      "arm": "all-executed",
+      "seed": 2,
+      "train_starts": 181608,
+      "test_starts": 20698,
+      "one_current_native_guards": 64,
+      "actual_near_terminal_checks": 1000,
+      "independent_sample_max": 1.7881393432617188e-07,
+      "gradients": {
+        "encoder": 29.020363670127477,
+        "predictor": 14.71929366326715,
+        "action_readout": 12.614252556916917,
+        "goal_fusion": 9.936417175024703
+      }
+    }
+  ],
+  "paired_initial_weights_within_seed": true,
+  "all_weights_random": true,
+  "new_model_updates": 0,
+  "no_future_or_fake_current_action_labels": true,
+  "scope": "Sameone4Dlabel,onlylegitimateterminalstatecoveragechanges;unknownlastframeactionneverinvented.No newepisodes/extradata."
+}

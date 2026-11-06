@@ -1,0 +1,549 @@
+{
+  "runs": [
+    {
+      "host": "dev13",
+      "gpu": 1,
+      "seed": 1,
+      "arm": "flow",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/episodes-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/flow-seed1",
+      "wait_run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/phase0-seed1",
+      "case_tasks": [
+        "assembly-v3",
+        "button-press-topdown-v3",
+        "coffee-button-v3",
+        "disassemble-v3",
+        "door-unlock-v3",
+        "faucet-open-v3",
+        "handle-press-v3",
+        "peg-insert-side-v3",
+        "pick-place-wall-v3",
+        "plate-slide-v3",
+        "reach-v3",
+        "stick-pull-v3",
+        "window-close-v3"
+      ],
+      "case_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/cases-slot0",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev13",
+      "gpu": 5,
+      "seed": 1,
+      "arm": "mse",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/episodes-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/mse-seed1",
+      "wait_run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/episodes-seed1",
+      "case_tasks": [
+        "basketball-v3",
+        "button-press-topdown-wall-v3",
+        "coffee-pull-v3",
+        "door-close-v3",
+        "drawer-close-v3",
+        "hammer-v3",
+        "handle-pull-side-v3",
+        "peg-unplug-side-v3",
+        "plate-slide-back-side-v3",
+        "push-back-v3",
+        "reach-wall-v3",
+        "stick-push-v3",
+        "window-open-v3"
+      ],
+      "case_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/cases-slot1",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev15",
+      "gpu": 1,
+      "seed": 2,
+      "arm": "flow",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/episodes-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/flow-seed2",
+      "wait_run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/phase0-seed2",
+      "case_tasks": [
+        "bin-picking-v3",
+        "button-press-v3",
+        "coffee-push-v3",
+        "door-lock-v3",
+        "drawer-open-v3",
+        "hand-insert-v3",
+        "handle-pull-v3",
+        "pick-out-of-hole-v3",
+        "plate-slide-back-v3",
+        "push-v3",
+        "shelf-place-v3",
+        "sweep-into-v3"
+      ],
+      "case_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/cases-slot2",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev15",
+      "gpu": 5,
+      "seed": 2,
+      "arm": "mse",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/episodes-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/mse-seed2",
+      "wait_run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/episodes-seed2",
+      "case_tasks": [
+        "box-close-v3",
+        "button-press-wall-v3",
+        "dial-turn-v3",
+        "door-open-v3",
+        "faucet-close-v3",
+        "handle-press-side-v3",
+        "lever-pull-v3",
+        "pick-place-v3",
+        "plate-slide-side-v3",
+        "push-wall-v3",
+        "soccer-v3",
+        "sweep-v3"
+      ],
+      "case_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current50_20261107/cases-slot3",
+      "complete": true,
+      "error": null
+    }
+  ],
+  "scores": [
+    {
+      "arm": "flow",
+      "step": 40000,
+      "trained_seeds": [
+        1,
+        2
+      ],
+      "episodes": 400,
+      "manipulation_successes": 325,
+      "manipulation_episodes": 384,
+      "manipulation_percent": 84.63541666666667,
+      "goal_valid_episodes": 396,
+      "goal_valid_percent": 84.0909090909091,
+      "task_scores": {
+        "assembly-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "basketball-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "bin-picking-v3": {
+          "successes": 2,
+          "episodes": 8
+        },
+        "box-close-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-topdown-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-topdown-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "coffee-button-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "coffee-pull-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "coffee-push-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "dial-turn-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "disassemble-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-close-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "door-lock-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-unlock-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "drawer-close-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "drawer-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "faucet-close-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "faucet-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "hammer-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "hand-insert-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-press-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-press-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-pull-side-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "handle-pull-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "lever-pull-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "peg-insert-side-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "peg-unplug-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "pick-out-of-hole-v3": {
+          "successes": 2,
+          "episodes": 8
+        },
+        "pick-place-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "pick-place-wall-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "plate-slide-back-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "plate-slide-back-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "plate-slide-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "plate-slide-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "push-back-v3": {
+          "successes": 3,
+          "episodes": 8
+        },
+        "push-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "push-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "reach-v3": {
+          "successes": 3,
+          "episodes": 8
+        },
+        "reach-wall-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "shelf-place-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "soccer-v3": {
+          "successes": 1,
+          "episodes": 8
+        },
+        "stick-pull-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "stick-push-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "sweep-into-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "sweep-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "window-close-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "window-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        }
+      }
+    },
+    {
+      "arm": "mse",
+      "step": 40000,
+      "trained_seeds": [
+        1,
+        2
+      ],
+      "episodes": 400,
+      "manipulation_successes": 320,
+      "manipulation_episodes": 384,
+      "manipulation_percent": 83.33333333333333,
+      "goal_valid_episodes": 396,
+      "goal_valid_percent": 82.32323232323232,
+      "task_scores": {
+        "assembly-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "basketball-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "bin-picking-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "box-close-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "button-press-topdown-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-topdown-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "coffee-button-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "coffee-pull-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "coffee-push-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "dial-turn-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "disassemble-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "door-close-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-lock-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-open-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "door-unlock-v3": {
+          "successes": 3,
+          "episodes": 8
+        },
+        "drawer-close-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "drawer-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "faucet-close-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "faucet-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "hammer-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "hand-insert-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-press-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-press-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-pull-side-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "handle-pull-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "lever-pull-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "peg-insert-side-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "peg-unplug-side-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "pick-out-of-hole-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "pick-place-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "pick-place-wall-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "plate-slide-back-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "plate-slide-back-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "plate-slide-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "plate-slide-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "push-back-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "push-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "push-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "reach-v3": {
+          "successes": 2,
+          "episodes": 8
+        },
+        "reach-wall-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "shelf-place-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "soccer-v3": {
+          "successes": 2,
+          "episodes": 8
+        },
+        "stick-pull-v3": {
+          "successes": 0,
+          "episodes": 8
+        },
+        "stick-push-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "sweep-into-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "sweep-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "window-close-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "window-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        }
+      }
+    }
+  ],
+  "complete": 4,
+  "errors": 0,
+  "training": false,
+  "performance_goal_achieved": false,
+  "scope": "Current-onlycandidateorlabelledfuturechunkbaseline;originalcorpus/commonphysicalcases,notpublicSOTA/equalFLOPs.Noclock/oraclefuturecommandsat inference."
+}

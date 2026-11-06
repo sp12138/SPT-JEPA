@@ -14,6 +14,7 @@ from experiments.metaworld_kernel_20261106.campaign import save,digest
 
 def run(a):
     torch.set_num_threads(2);torch.set_float32_matmul_precision('highest');a.output.mkdir(parents=True,exist_ok=False)
+    assert a.world_action=='own'or a.mode=='world'
     cfg=json.loads((a.run/'config.json').read_text());assert cfg['model']['action_dim']in[4,20]and not cfg['model']['history_context']and cfg['model']['chunk']==1
     assert cfg['model']['action_dim']==20 or cfg.get('inverse_tail_reserve')==1
     controller=build_model(cfg).cuda().eval().requires_grad_(False)
@@ -39,15 +40,18 @@ def run(a):
             try:
                 while len(actions)<a.budget:
                     actual=resize_tensor([image]).cuda();belief=world.encoder(actual)if world is not None else None;commands=[]
+                    predicted_past=past
                     for j in range(5):
                         current=actual if j==0 or a.mode=='static'else F.interpolate(belief*255,(224,224),mode='bilinear',align_corners=False,antialias=True).round().clamp(0,255).byte()
                         proposed=controller.propose(dict(pixels=torch.stack([current,goal],1)),generator=generator,steps=12)[0,0,:4].float().cpu().numpy();calls+=1
                         command=np.clip(proposed*std+mean,-1,1).astype(np.float32);assert np.isfinite(command).all();commands.append(command)
                         control=torch.from_numpy(command[None]).cuda()
                         if a.mode=='world'and j<4:
-                            drift,effect,_,_=world.fields(belief,torch.zeros_like(belief),valid*0,past,valid)
-                            displacement=drift+torch.einsum('na,nachw->nchw',torch.cat([control,control.abs()],-1),effect)
+                            forecast_control=control if a.world_action=='own'else torch.zeros_like(control)if a.world_action=='zero'else-control
+                            drift,effect,_,_=world.fields(belief,torch.zeros_like(belief),valid*0,predicted_past,valid)
+                            displacement=drift+torch.einsum('na,nachw->nchw',torch.cat([forecast_control,forecast_control.abs()],-1),effect)
                             belief=world.warp(belief,displacement);assert torch.isfinite(belief).all();forecasts+=1
+                            predicted_past=forecast_control
                         past=control;valid.fill_(1)
                     plans+=1
                     for command in commands:
@@ -61,13 +65,14 @@ def run(a):
                 case_sha256=case['sha256'],expert_goal_success=case['expert_any_success'],initial_rgb=gate,trace=str(trace),trace_sha256=digest(trace))
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     after=dict(controller=model_sha(controller),world=model_sha(world)if world is not None else None);assert before==after
-    save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=40000,mode=a.mode,
+    save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=40000,mode=a.mode,world_action=a.world_action,
         feedback_native=5,action_native=1,training_action_native=controller.action_dim//4,new_updates=0,current_action_only=controller.action_dim==4,
         scope='Frozen40kcontroller,declaredtraining_action_native1or5.Allscratchoriginaldata;noexternalteacher.'
               'The4DcontrollerusesONLYcurrentnativea_tlabels;20Dmodelsareexplicit5-control-targetcomparators.World20kloadedONLYforcopy/worldmodes.'
               'RealRGBONLYevery5native;fourintermediateobservationsareOWNforecast,neveractualfutureframes/states/actions.'
               'CopycontrolgetsSAME128->224intermediateimageprocessingandSAMEown5Gaussianactiondraws;onlyforwardevolutiondisabled.'
               'StaticmodeusesONLYoriginalactual224RGBthroughoutthe5nativeslot;noworldloaded/resize/proxyimage.'
+              'World-actionzero/negateareexplicitNEGATIVEdiagnostics:onlyimagineddynamicsusesfalseowncontrol;actualphysicalcontrolsarenotchanged.'
               'Macro20modelsarelabelledcurrent5-controlTARGETcomparators,onlytheirFIRSTnativecomponentusedforthisstochasticclocktest.'
               'Extra5xpolicycallsandworldpretrainingcost(ifworldmode)explicit;notan equalFLOPs claim.No newSGD,smallpilotnotconfirmation.'))
 
@@ -76,4 +81,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser()
     for k in['run','manifest','output']:p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--world',type=Path);p.add_argument('--mode',choices=['copy','world','static'],required=True);p.add_argument('--budget',type=int,default=500)
+    p.add_argument('--world-action',choices=['own','zero','negate'],default='own')
     p.add_argument('--tasks',nargs='+',default=TASKS);p.add_argument('--seeds',type=int,nargs='+',default=[42,1042]);run(p.parse_args())

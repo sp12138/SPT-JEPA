@@ -1,35 +1,32 @@
 {
-  "status": "ACTIVE_CURRENT_ONLY_GOAL_CONTROL_NOT_SOLVED",
-  "objective": "Performance is mandatory;seek elegance,latest user permits inverse if necessary.Only observed/executed CURRENT interval may supervise inverse;no future-demonstrated-command references in planner.",
+  "status": "ACTIVE_MATCHED_REPRESENTATION_GAIN_AND_NATIVE_CURRENT_ONLY_VALIDATION",
+  "objective": "Elegant high-performance manipulation with sample-level scratch learning. Latest user permits inverse fallback. Distinguish current native a_t4D from current f5 transition word20D; NEVER call the latter one native action. No future demonstrated/optimal-action references.",
   "hosts": [
     "dev13",
     "dev15",
     "dev6"
   ],
-  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_goal_20261107",
-  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-25157e5",
+  "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_relation_long_20261107",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-413fee7",
   "training_plan": "training-plan.json",
   "ownership": [
     "launch-dev13.json",
     "launch-dev15.json",
-    "collector-launch.json"
+    "collector-launch.json",
+    "PROVENANCE_CLARIFICATION.json"
   ],
-  "technical_gates": "All12scratchgoalvariantsnative2actualrestore/FP32backward/20nativephysicsPASS;all12saved600at19:03read;readcurrentstagefilesbeforeclaimingnewperformance.",
+  "technical_gates": "All8 long learners actual native2/fullmodel-optimizer-scheduler restore/heldoutFP32backward/20nativephysics PASS;all passed80000restore. At2026-11-06T21:44:39Z all8 training102000..105700,finite losses. This is a snapshot,not final convergence.",
   "native_stages": [
     2,
     600,
-    3000,
     10000,
-    20000,
-    40000
+    40000,
+    80000,
+    120000
   ],
   "arms": [
-    "terminal-flow",
-    "terminal-mse",
-    "directed-flow",
-    "directed-mse",
-    "terminal-directed-flow",
-    "terminal-directed-mse"
+    "absolute",
+    "directed"
   ],
   "latest_user_clarification": "LATEST user expands hosts todev13/dev15/dev6 and RELAXES inverse ban if elegance proves hard.Performance must become very good.Retain scratch/RGB/rewardfree/samplelevel/no externalstrongmodels/nofuture-demo-commandreferences.Pureprediction branches retaintheirstricterobjectives.NewinversebranchwillbeCURRENTfactualintervalonly,fromscratch.",
   "excluded_branch": "Four span-incremental heads saved500;STOP+SUPERSEDED_BY_CONSTRAINT.json. Original plan retained,head recipes retired from main summaries. Metadata-only pre-SGD errors retained. Never reuse excluded weights or traces.",
@@ -485,7 +482,7 @@
       ]
     },
     "collector": 3716351,
-    "phase": "4scratchcurrent-onlycontrols;at19:03all34800-36000,notfinalresults."
+    "phase": "COMPLETEall4/all40k/errors0;episodebalanced73.333%mani,phase057.917%."
   },
   "goal_semantics": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_goal_20261107",
@@ -509,7 +506,8 @@
     "independent_initial_seeds": 2,
     "scratch_trainings": 12,
     "objective": "current-only FM/MSE;terminalactualLASTnativeRGBvsphase-mixture,orderedCNNtokenfusionvsabsoluteinput,threecellsplusalreadytrainedbaselinecell",
-    "initial_contract": "PASSall12:current-commandguard32/model,pairedsharedCNN/decoderinit,goalframeparity,pixelsonly,gradient/sampleindependence.Initialabsoluteinputswapinvariance<1e-5;directednonzero.ClaimisINITIALstructuralbias,NOTtrainedabsoluteignoresdirection."
+    "initial_contract": "PASSall12:current-commandguard32/model,pairedsharedCNN/decoderinit,goalframeparity,pixelsonly,gradient/sampleindependence.Initialabsoluteinputswapinvariance<1e-5;directednonzero.ClaimisINITIALstructuralbias,NOTtrainedabsoluteignoresdirection.",
+    "phase": "COMPLETEall12/all40k/errors0;frozen50taskmatrixall12complete. DirectedFlowbestbroad;terminal-directed40k90.833%6mani alone not broadwinner."
   },
   "current_local": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_local_20261107",
@@ -524,5 +522,265 @@
     "source": "480ba8a",
     "host_gpus": "dev6g4..7",
     "phase": "4frozenCURRENT-onlyflowepisodes/nativeseed1/2;full20sharedcases/task;0SGD,persistentownGaussianlatentonlychange;freshcontrolscompletedmainroot."
-  }
+  },
+  "previous_primary_snapshot_1903UTC": {
+    "status": "ACTIVE_CURRENT_ONLY_GOAL_CONTROL_NOT_SOLVED",
+    "objective": "Performance is mandatory;seek elegance,latest user permits inverse if necessary.Only observed/executed CURRENT interval may supervise inverse;no future-demonstrated-command references in planner.",
+    "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_goal_20261107",
+    "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-25157e5",
+    "training_plan": "training-plan.json",
+    "ownership": [
+      "launch-dev13.json",
+      "launch-dev15.json",
+      "collector-launch.json"
+    ],
+    "technical_gates": "All12scratchgoalvariantsnative2actualrestore/FP32backward/20nativephysicsPASS;all12saved600at19:03read;readcurrentstagefilesbeforeclaimingnewperformance.",
+    "native_stages": [
+      2,
+      600,
+      3000,
+      10000,
+      20000,
+      40000
+    ],
+    "arms": [
+      "terminal-flow",
+      "terminal-mse",
+      "directed-flow",
+      "directed-mse",
+      "terminal-directed-flow",
+      "terminal-directed-mse"
+    ]
+  },
+  "latest_verified_results": {
+    "stronger_confirmation50": {
+      "root": "metaworld_confirm50_20261107",
+      "complete": 4,
+      "errors": 0,
+      "new_SGD": 0,
+      "tasks": 50,
+      "physical_cases": 1000,
+      "trained_learners_per_arm": 2,
+      "episodes_per_arm": 2000,
+      "absolute_successes": 1623,
+      "directed_successes": 1738,
+      "absolute_percent": 81.15,
+      "directed_percent": 86.9,
+      "delta_pp": 5.75,
+      "paired_physical_case_cluster_ci95_pp": [
+        4.1,
+        7.35
+      ],
+      "trained_seed_delta_pp": [
+        4.2,
+        7.3
+      ],
+      "limitation": "CI conditional on2trainedlearners. Original independent expert LeRobotcorpus/RGBgoal/sensor5/500any-success,not public JEPA-WMs/canonicalMT50/SOTA."
+    },
+    "original_full8_40k": {
+      "absolute_manip_successes": 187,
+      "directed_manip_successes": 217,
+      "manip_episodes": 240,
+      "absolute_percent": 77.91666666666667,
+      "directed_percent": 90.41666666666667,
+      "delta_ci95_pp": [
+        7.5,
+        17.5104166667
+      ],
+      "all8_directed_percent": 85.0,
+      "all8_absolute_percent": 73.4375
+    },
+    "fifty_screen": {
+      "tasks": 50,
+      "physical_cases_per_task": 4,
+      "episodes_per_arm": 400,
+      "absolute_percent": 83.75,
+      "directed_percent": 92.0,
+      "note": "Earlier screening result;report86.9% on1000-caseconfirmation as stronger broad result,not92% as confirmation."
+    },
+    "four_new_seed_pairs_40k": {
+      "seeds": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "learners": 8,
+      "independent_seed_pairs": 4,
+      "trained_learners_per_arm": 4,
+      "absolute_manip_percent": 76.04166666666666,
+      "directed_manip_percent": 88.75,
+      "manip_episodes_per_arm": 480,
+      "delta_ci95_pp": [
+        8.958333333333334,
+        16.458333333333332
+      ],
+      "all8_absolute_percent": 70.46875,
+      "all8_directed_percent": 85.3125,
+      "limits": "Withinlongpairmatched120kLRhorizon;notold40kLRhorizon. CI conditionson4learners/arm."
+    },
+    "four_new_seed_pairs_80k": {
+      "absolute_manip_successes": 380,
+      "directed_manip_successes": 419,
+      "manip_episodes": 480,
+      "absolute_all8_successes": 464,
+      "directed_all8_successes": 539,
+      "all8_episodes": 640,
+      "note": "No monotonic improvement guarantee;120k and confirmation pending."
+    }
+  },
+  "mechanism_evidence": {
+    "supported": "Early ordered CURRENT/GOAL local feature pairing before aggregation,not subtraction itself. Equiv-initialized concatenation89.583% vsdifference90.417% sixmani;CI difference includes0. Same function class/capacity/initialfunction. Distinct-role-only baseline77.917%,so zero role init alone does not explain gain.",
+    "negative_controls": "Highnoiseodds4 72.917<77.917%;fixedlatent72.5<77.917%;extra owninterventiondata74.583<77.917%;historyFlow63.333%,MSE45.417%;no promotion. Native4terminal-tail expansion73.333vs72.5%,CI includes0;terminal-data hypothesis NOT confirmed.",
+    "inverse_interpretation": "Logged CURRENT control is an actuator-coordinate target,not an optimal-action oracle. Goal-relabelled expert corpus still gives behavioral prior;these are goal-conditioned controllers,not pureJEPA-forecast-only wins. Early paired fusion adds module/reduces memorytokens,not equalFLOPs."
+  },
+  "native_current4": {
+    "root": "metaworld_one_native_20261107",
+    "complete": 4,
+    "errors": 0,
+    "source": "6145f64",
+    "target": "ONLYa_t4D,NOa_t+1/later labels.No chunk6 ancestry.",
+    "full_tail_full8_manip_percent": 73.33333333333333,
+    "truncated_full8_manip_percent": 72.5,
+    "full_tail_fifty_percent": 72.25,
+    "truncated_fifty_percent": 72.75,
+    "full_tail_reach_wall_percent": [
+      72.5,
+      100
+    ],
+    "MSE_root": "metaworld_one_native_mse_20261107",
+    "MSE_complete": 4,
+    "MSE_full_tail_manip_percent": 67.08333333333333,
+    "MSE_truncated_manip_percent": 69.16666666666667,
+    "important": "Original deployedsinglea_theld5native caused controlclockmismatch. Need frozencontrols below before claiming a_t-onlyhighperformance."
+  },
+  "imagined_feedback": {
+    "pilot_root": "metaworld_imagined_feedback_20261107",
+    "pilot_complete": 4,
+    "errors": 0,
+    "new_SGD": 0,
+    "real_sensor_native": 5,
+    "policy_calls_per_slot": 5,
+    "labels": "ONLYcurrenta_t4D",
+    "own_world_pretrain_steps": 20000,
+    "own_controller_steps": 40000,
+    "pilot_six_manip": {
+      "world": [
+        24,
+        24
+      ],
+      "copy": [
+        20,
+        24
+      ],
+      "static224": [
+        20,
+        24
+      ]
+    },
+    "pilot_bin": {
+      "world": [
+        4,
+        4
+      ],
+      "copy": [
+        0,
+        4
+      ],
+      "static": [
+        0,
+        4
+      ]
+    },
+    "pilot_reach_wall": {
+      "world": [
+        0,
+        3
+      ],
+      "copy": [
+        2,
+        4
+      ]
+    },
+    "limits": "2trainedparentsx2sharedphysicalcases/task,NOTconfirmation/no reachingwin. Both worlds own scratchoriginaldata futureRGBonly.No futureactionlabels,strongprior,actualintermediateRGB/proprio/state/oraclecommands. Additionalworld20kpretrain+5xpolicycalls disclosed,not equalFLOPs.",
+    "full8_root": "metaworld_current_control_full_20261107",
+    "full8_arms": [
+      "static-native4",
+      "static-macro20",
+      "copy-native4",
+      "world-native4"
+    ],
+    "full8_episodes_per_arm": 320,
+    "full8_host": "dev6",
+    "full8_workers": [
+      9953,
+      9954,
+      9955,
+      9956,
+      9957,
+      9958,
+      9959,
+      9960
+    ],
+    "full8_collector": 9961,
+    "fifty_root": "metaworld_current_control50_20261107",
+    "fifty_workers": {
+      "dev13_g1_g5": [
+        3722953,
+        3722954
+      ],
+      "dev15_g1_g5": [
+        3263551,
+        3263552
+      ]
+    },
+    "fifty_collector": 3722955,
+    "negative_diagnostic_root": "metaworld_world_action_diagnostic_20261107",
+    "negative_diagnostic": "Only imagined dynamics currentcontrolZERO/NEGATE,actualcommands unchanged;checks whether action-conditioned state evolution matters beyond arbitrary image perturbation.",
+    "negative_workers": {
+      "dev13_g6_g7": [
+        3723095,
+        3723096
+      ],
+      "dev15_g6_g7": [
+        3263603,
+        3263604
+      ]
+    },
+    "negative_collector": 3723097,
+    "default_v4_v5_parity": "Actual20native/samemodel-GPU-case-RNG actions exactlyequal(maxabs0),successesequal;newmodelupdates0.",
+    "active_state_at_2144UTC": "All12 expandedfrozenentry20PASS/noeffectiveerrors;formalepisodesinprogress;4negative diagnostics just started,defaultparityPASS.Readactualsummariesbeforeclaimingcompletion."
+  },
+  "long_training": {
+    "root": "metaworld_relation_long_20261107",
+    "source": "413fee7",
+    "max_steps": 120000,
+    "learners": 8,
+    "independent_seed_pairs": 4,
+    "seeds": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "target": "CURRENT5native20DwordONLY,not single native label;NOsubsequentmacrotargets/oldchunk6ancestry",
+    "workers": {
+      "dev13_g0_g2_g3_g4": [
+        3720737,
+        3720738,
+        3720739,
+        3720740
+      ],
+      "dev15_g0_g2_g3_g4": [
+        3261311,
+        3261312,
+        3261313,
+        3261314
+      ]
+    },
+    "current_status": "All8running102000..105700at2026-11-06T21:44:39Z;finitepositivegradients/noeffectiveerrors.80kstagecompletefull640episodes/arm.",
+    "automatic_finite_completion": "Each120knativefullrestore+full20case8taskvalidation,then frozen1000case/50taskcomparison usingcommittedconfirmationbank.Collect/exit;noLLMmonitor/oldgoalresume."
+  },
+  "evidence_report_remote": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/current-comparison-confirm.json",
+  "updated_at": "2026-11-06T21:44:39Z"
 }

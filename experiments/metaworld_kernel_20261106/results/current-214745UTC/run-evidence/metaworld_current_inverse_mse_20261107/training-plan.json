@@ -1,0 +1,56 @@
+{
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-0767dbe",
+  "recipes": [
+    {
+      "arm": "phase0",
+      "seed": 1,
+      "host": "dev13",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/phase0-seed1",
+      "resource_pid": 3712979,
+      "resource_marker": "recurrent_campaign.py",
+      "config_sha256": "67c9770b4e532a0b9a66de0761db7ccecf430f6c8a45cefd72ed74b79e4c69cd"
+    },
+    {
+      "arm": "episodes",
+      "seed": 1,
+      "host": "dev13",
+      "gpu": 5,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/episodes-seed1",
+      "resource_pid": 3712980,
+      "resource_marker": "recurrent_campaign.py",
+      "config_sha256": "dadee825890e5b844969e72480f2892e880b86e2acbba2712d4bd061777ad5e7"
+    },
+    {
+      "arm": "phase0",
+      "seed": 2,
+      "host": "dev15",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/phase0-seed2",
+      "resource_pid": 3254897,
+      "resource_marker": "recurrent_campaign.py",
+      "config_sha256": "fa024da985e0ed7b01cf1bc7cffb86f2523b67d35b822ead4b5269356faef5e7"
+    },
+    {
+      "arm": "episodes",
+      "seed": 2,
+      "host": "dev15",
+      "gpu": 5,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_mse_20261107/training/episodes-seed2",
+      "resource_pid": 3254898,
+      "resource_marker": "recurrent_campaign.py",
+      "config_sha256": "2647d9628bb9b167a25294af0de876a2257a4e57dd319ea814e48be52535bfe1"
+    }
+  ],
+  "stages": [
+    2,
+    600,
+    3000,
+    10000,
+    20000,
+    40000
+  ],
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "deadline_unix": 1794117074.3169405,
+  "scope": "ScratchCURRENT-onlyMSEversusflow;phase0andepisodebalancednativeanchors,twoindependentseeds.Same40000LRhorizon/batch/architecture/data.Singlecurrentintervaltarget,no futureactiontrajectory/clock/history/teacher.Thisiscontrollertraining,notpureJEPAforecastloss."
+}

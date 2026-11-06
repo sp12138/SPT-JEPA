@@ -1,6 +1,94 @@
 # What the successful action target may actually supply
 
-## Updated mechanism test, November 7 Beijing time
+## Current evidence, November 7, 05:44 Beijing time
+
+The user now permits inverse learning when necessary. A useful matched gain
+exists, although a broadly successful purely observation-supervised controller
+has not been found. All numbers below use our independent LeRobot expert corpus,
+RGB goals, and 500-native-step any-success evaluation. They are not public
+JEPA-WMs scores or a canonical MetaWorld MT50 comparison.
+
+At the original 40k budget, pairing current/goal local features before aggregation
+improves six manipulation tasks from 187/240 (77.92%) to 217/240 (90.42%). On the
+stronger 50-task confirmation, there are 1,000 new physical cases, each evaluated
+with two trained learners: 1,738/2,000 (86.90%) versus 1,623/2,000 (81.15%). The
+paired physical-case bootstrap interval for the +5.75 percentage-point difference
+is [4.10, 7.35], conditional on these two trained learners. An earlier four-case
+per task screen gave 92.0% versus 83.75%; use the larger confirmation as the main
+broad result. Four new scratch seed pairs also improve manipulation at 40k:
+88.75% versus 76.04%. Their 120k schedule differs from the original 40k schedule;
+only the within-pair comparison is matched.
+
+These actors supervise a CURRENT f5 transition word: five known executed native
+controls, 20 dimensions. They do not predict later macro-action labels. This is
+not the same as supervising only the single native action a_t. A separate strict
+4D actor supervises ONLY a_t, including no a_(t+1) label, and currently reaches
+73.33% manipulation and 72.25% on the 50-task screen when its output is held for
+five native steps. The distinction is material and must remain visible.
+
+The inverse loss anchors learning in actuator coordinates. A small image change
+from maintaining a grip may be cheap in observation space while a wrong grip
+command remains costly in action space. It also learns a goal-conditioned
+behavioral prior from an expert corpus. Thus the inverse gain does not establish
+that a better world representation alone was learned, nor that the same method
+will work with arbitrary failed exploration. Logged current controls are known
+observations, not labels asserting the next optimal action.
+
+The architecture ablations isolate a narrower, useful mechanism. For paired
+patches c and g, the successful module applies a linear map to [c, g-c] before
+global aggregation. [c, g] is an EXACT alternative parameterization:
+
+    W_c c + W_d (g-c) = (W_c-W_d)c + W_d g.
+
+Converting the initial linear weights makes the complete initial functions
+equal. This concatenation control scores 89.58% versus 90.42%; the difference
+interval includes zero. Merely giving the original separate token sets distinct
+role initializations scores 77.92%. Evidence supports early ordered local
+correspondence, not subtraction as a new function class. The paired module adds
+parameters and halves decoder memory tokens, so the comparison is not equal
+FLOPs. High-noise training, fixed sampling noise, extra own-intervention data,
+and unstructured history inputs did not improve the completed full comparisons.
+Adding the last four available a_t training states also produced no clear gain.
+
+There is now a separate control-clock experiment. The strict 4D actor was trained
+at native action time but originally deployed by holding one sample for five
+steps. Instead, within each five-step real-camera interval, generate controls
+sequentially with its OWN scratch observation-predictive world model:
+
+    a_j ~ q(a | predicted_image_j, goal),
+    predicted_image_(j+1) = F(predicted_image_j, a_j, own_past_control).
+
+Only the first image is actually observed. Execute the five self-generated
+controls, refresh the real camera, and repeat. No demonstrated future control,
+actual intermediate future image, privileged state, or external teacher enters
+this procedure. The actor's only action target remains the current native a_t.
+The 20k world model uses future RGB targets and known current controls as inputs;
+its own-data pretraining cost must be counted along with the 40k actor.
+
+The conceptual separation is useful: the inverse actor supplies goal-conditioned
+actuation on the behavioral support; the forward model supplies short-time
+feedback between real observations. This avoids asking a terminal latent metric
+to encode preparatory contacts, while also avoiding a multi-action label head.
+It does not by itself establish novelty or equal-compute superiority: there are
+five policy calls per camera interval plus four world predictions.
+
+The small pilot is encouraging but insufficient: world feedback succeeds on
+24/24 manipulation episodes versus 20/24 with copied images and 20/24 with the
+original 224px image held constant. Both controls take the same five own action
+draws. BinPicking is 4/4 versus 0/4. Reach is still 0/4, and all numbers reuse
+only two physical cases per task crossed with two learners. Full 20-case eight
+task and four-case 50-task evaluations are running. Setting only the imagined
+forward controls to zero or their negatives is a separate negative diagnostic;
+it tests whether correct action-conditioned prediction matters beyond arbitrary
+image perturbation. No high-performance single-native-label claim is justified
+until these expanded evaluations finish.
+
+Machine-readable provenance and active ownership are in RECOVERY.json. The
+remote read-only comparison report is current-comparison-confirm.json under
+reports/metaworld_kernel_20261106. All earlier experiments and failures remain
+preserved; the following sections describe the earlier strict no-inverse phase.
+
+## Historical mechanism test before inverse learning was permitted
 
 The objective is still unmet. The old action-supervised score is only a scalar
 comparison; no inverse learner,its weights,outputs,or traces enter this study.

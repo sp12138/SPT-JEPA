@@ -38,11 +38,13 @@ def compare(left,right,scope):
             delta_pp=100*np.mean(delta),physical_case_cluster_ci95_pp=(100*np.quantile(bootstrap,[.025,.975])).tolist(),episodes=len(keys),
             trained_seeds=sorted({k[0]for k in keys}),training_seed_delta_pp={str(m):100*np.mean([int(a[k]['success'])-int(b[k]['success'])for k in keys if k[0]==m])for m in sorted({k[0]for k in keys})},tasks=table)
     return dict(scope=scope,paired_case_and_trace_hashes_pass=True,results=results,evidence_left=ae,evidence_right=be,
-        limitation='CIconditionsonTWOtrainedlearners;resamplesphysicalcasesWITHINtask,keepsbothlearnersinonecasecluster.Doesnotestimatepopulationtrainingvariance.Tasksspecified,notrandomtaskdraws.')
+        limitation='CIconditionsonthelistedtrainedlearners;resamplesphysicalcasesWITHINtask,keepsalllearnersinonecasecluster.Doesnotestimatepopulationtrainingvariance.Tasksspecified,notrandomtaskdraws.')
 
 
 def run(a):
     comparisons=[
+        ('directed_vs_absolute_confirm1000',('metaworld_confirm50_20261107','directed',40000),('metaworld_confirm50_20261107','absolute',40000),'Same2000episodes/50tasks/20NEWphysicalcasespertaskx2learners;newcasebankcommittedbeforeconfirmationoutcomes.Original40kpairedlearners/sensor5/500native.No newSGD;notpublicJEPA-WMs/MT50setting.'),
+        ('directed_vs_absolute_newseeds40k',('metaworld_relation_long_20261107','directed',40000),('metaworld_relation_long_20261107','absolute',40000),'FourNEWindependentscratchseedpairs3..6,8tasksx20physicalcases;withineachpairoriginaldata/current5-native20Dtargets/sampler/initialCNN-decoder/budgetmatch.120kLRhorizon,notold40khorizon;all4learnerskeptineachphysicalcasebootstrapcluster.'),
         ('directed_vs_absolute_40k',('metaworld_current_goal_20261107','directed-flow',40000),('metaworld_current_inverse_20261107','episodes',40000),'Same320episodes/20physicalcasespertaskx2learners,CNN/decoderinitialstates/labels/sampler/budget;earlyorderedpairingplusfusion/halfdecoder-memorytokens.Not equalFLOPs.'),
         ('directed_vs_absolute_fifty40k',('metaworld_goal40_fifty_20261107','directed-flow',40000),('metaworld_current50_20261107','flow',40000),'Same400episodes/50tasks/4NEWphysicalcasespertaskx2learners;40kexactdata/label/sampler/initialCNN-decoderbudget.Matchedcontroller/sensor5/500native.NotcanonicalMT50/publicJEPA-WMs.'),
         ('ordered_equivalent_vs_directed40k',('metaworld_current_roles_20261107','ordered-equivalent',40000),('metaworld_current_goal_20261107','directed-flow',40000),'EXACTsamecapacity/initialfunction/currenttargets/sampler/budget.OnlylinearfeatureparameterizationandresultingAdamWcoordinatesdiffer;notdifferentfunctionclasses.'),

@@ -1,0 +1,60 @@
+{
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-480ba8a",
+  "recipes": [
+    {
+      "arm": "flow",
+      "seed": 1,
+      "host": "dev6",
+      "gpu": 0,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_local_20261107/training/flow-seed1",
+      "initial_step": 20000,
+      "resource_pid": 0,
+      "resource_marker": "unallocated",
+      "config_sha256": "f325b131b95367377ce65d68fa0790a450c007329e8aab64e25150bdc493728b"
+    },
+    {
+      "arm": "flow",
+      "seed": 2,
+      "host": "dev6",
+      "gpu": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_local_20261107/training/flow-seed2",
+      "initial_step": 20000,
+      "resource_pid": 0,
+      "resource_marker": "unallocated",
+      "config_sha256": "284d810fca9d847be87c95d5b0f9795953dc5dc052e125a0b6732643b9ac3297"
+    },
+    {
+      "arm": "mse",
+      "seed": 1,
+      "host": "dev6",
+      "gpu": 2,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_local_20261107/training/mse-seed1",
+      "initial_step": 20000,
+      "resource_pid": 0,
+      "resource_marker": "unallocated",
+      "config_sha256": "8e617451a5dd460961eb67e65aeba04ed3d19b7137384ff6a6e2ccf0911a02cb"
+    },
+    {
+      "arm": "mse",
+      "seed": 2,
+      "host": "dev6",
+      "gpu": 3,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_local_20261107/training/mse-seed2",
+      "initial_step": 20000,
+      "resource_pid": 0,
+      "resource_marker": "unallocated",
+      "config_sha256": "7d8512880e9a0203565d80405904f92abd0c30e3826427e29546594bb5e12b21"
+    }
+  ],
+  "stages": [
+    20000,
+    20002,
+    24000,
+    30000,
+    40000
+  ],
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "deadline_unix": 1794121431.3693445,
+  "separate_extra_data_track": true,
+  "scope": "Fourcontinuationsfromtwoseedsxflow/MSE;current-onlyeligibleancestry.One sample-levelinverseobjective.Noextrafuture-actionreferences."
+}

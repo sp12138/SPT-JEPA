@@ -1,0 +1,45 @@
+{
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-480ba8a",
+  "recipes": [
+    {
+      "arm": "episodes-fixed",
+      "seed": 1,
+      "host": "dev6",
+      "gpu": 4,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/episodes-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_feedback_20261107/episodes-seed1",
+      "weights_sha256": "85d3922b0083651479e7508f88ccef7be8385aee7174569d7d33b3f564fce1bc"
+    },
+    {
+      "arm": "episodes-fixed",
+      "seed": 2,
+      "host": "dev6",
+      "gpu": 5,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/episodes-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_feedback_20261107/episodes-seed2",
+      "weights_sha256": "8484ab8e4e5f23cd8dfac2d311d00db87b21840ac8e60fb5436b891d99ba40ef"
+    },
+    {
+      "arm": "native-fixed",
+      "seed": 1,
+      "host": "dev6",
+      "gpu": 6,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/native-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_feedback_20261107/native-seed1",
+      "weights_sha256": "607f8a27b103dbb00fb8fa80ab8956d4bf885a4eb30aea832859f6df2253e812"
+    },
+    {
+      "arm": "native-fixed",
+      "seed": 2,
+      "host": "dev6",
+      "gpu": 7,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_inverse_20261107/training/native-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_feedback_20261107/native-seed2",
+      "weights_sha256": "f8381c328968261fef00ae6831236a499fc42603be5d2b45a4a18a4d1c1c951c"
+    }
+  ],
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "deadline_unix": 1794034880.7376773,
+  "new_model_updates": 0,
+  "scope": "FourfrozenCURRENT-onlyflowmodels;full20sharedphysicalcases/task.TheonlychangeisreuseofowninitialGaussianlatentateachfeedbackstep.Matchedfresh-latentcontrolscompletedinparentroot.No newteacher/actionreference/clock/history/taskrule."
+}

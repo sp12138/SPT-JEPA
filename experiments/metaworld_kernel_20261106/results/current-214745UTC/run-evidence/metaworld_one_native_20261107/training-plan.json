@@ -1,0 +1,56 @@
+{
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-6145f64",
+  "recipes": [
+    {
+      "host": "dev6",
+      "gpu": 0,
+      "arm": "exclude-last4",
+      "seed": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/exclude-last4-seed1",
+      "resource_pid": 7301,
+      "resource_marker": "frozen-worker.py",
+      "config_sha256": "4f1d72c8df6db87e264555da3bc38c1744862d3fae7b8acbf00caf7ee8b99bdb"
+    },
+    {
+      "host": "dev6",
+      "gpu": 1,
+      "arm": "exclude-last4",
+      "seed": 2,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/exclude-last4-seed2",
+      "resource_pid": 7302,
+      "resource_marker": "frozen-worker.py",
+      "config_sha256": "1c40a49152329b2c2130e084fd4f0d39ba0f928c6405635b96b9aed5ef049a01"
+    },
+    {
+      "host": "dev6",
+      "gpu": 2,
+      "arm": "all-executed",
+      "seed": 1,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/all-executed-seed1",
+      "resource_pid": 7303,
+      "resource_marker": "frozen-worker.py",
+      "config_sha256": "86daaeb002cbe21c56a8310e802d9063f0dd39e9a11c29b3213037f86dec1ef7"
+    },
+    {
+      "host": "dev6",
+      "gpu": 3,
+      "arm": "all-executed",
+      "seed": 2,
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/all-executed-seed2",
+      "resource_pid": 7304,
+      "resource_marker": "frozen-worker.py",
+      "config_sha256": "77c6b263ce84754c1e172d6a4b91a5c262f30a5fda43dd915a4c9e378f8e0645"
+    }
+  ],
+  "stages": [
+    2,
+    600,
+    3000,
+    10000,
+    20000,
+    40000
+  ],
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/cases-v2/manifest.json",
+  "deadline_unix": 1794123636.6099849,
+  "scope": "SingleCURRENTnativeactiononly,twoindependentseedsxlast-statecoverage.Original2250/250trajectories;noextradata/pretraining/futureactionlabels.Evaluationkeeps5-nativeRGBcadence.Nohiddenstoprule."
+}
