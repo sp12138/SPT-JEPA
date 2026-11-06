@@ -17,6 +17,8 @@ def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def run(a):
     import h5py
     import hdf5plugin
+    from experiments.metaworld_contact_20261106.launch import wait_gpu_release
+    wait_gpu_release(a.gpu)
     out=a.output;out.mkdir(parents=True,exist_ok=False)
     data=a.data;card=json.loads((data/'dataset_card.json').read_text())
     ids,offsets,lengths=[np.load(data/(x+'.npy'))for x in['episode_ids','offsets','lengths']]
@@ -53,4 +55,4 @@ def run(a):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--data',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--seed',type=int,required=True);p.add_argument('--shard',type=int,required=True);run(p.parse_args())
+    p.add_argument('--seed',type=int,required=True);p.add_argument('--shard',type=int,required=True);p.add_argument('--gpu',type=int,required=True);run(p.parse_args())
