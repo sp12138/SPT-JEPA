@@ -11,8 +11,9 @@ def collect(root):
     training=(root/'training-plan.json').exists();plan=json.loads((root/('training-plan.json'if training else'plan.json')).read_text());runs=[];groups={};cases={};models={}
     for recipe in plan['recipes']:
         out=Path(recipe['run']if training else recipe['output']);entry=dict(recipe);entry['complete']=(out/'complete.json').exists();entry['error']=json.loads((out/'execution-error.json').read_text())if(out/'execution-error.json').exists()else None
-        for step in(plan['stages']if training else[40000]):
-            path=out/(f'eval-step{step:07d}'if training else'pilot')/'summary.json'
+        locations=[(s,out/f'eval-step{s:07d}'/'summary.json','standard8')for s in plan['stages']]if training else[(40000,out/'pilot/summary.json','frozen')]
+        if training and plan.get('confirmation'):locations.append((plan['stages'][-1],out/'confirm-final/summary.json','confirmation50'))
+        for step,path,cohort in locations:
             if not path.exists():continue
             value=json.loads(path.read_text());assert value['passed']and value['model_unchanged']
             assert models.setdefault((recipe['run'],step),value['model_sha256'])==value['model_sha256']
@@ -21,13 +22,13 @@ def collect(root):
                 assert cases.setdefault((row['task'],row['seed']),row['case_sha256'])==row['case_sha256']
                 assert digest(Path(row['trace']))==row['trace_sha256']
             if step in[2,recipe.get('initial_step',0),recipe.get('initial_step',0)+2]:continue
-            groups.setdefault((recipe['arm'],step),[]).extend(dict(training_seed=recipe['seed'],**r)for r in value['rows'])
+            groups.setdefault((recipe['arm'],step,cohort),[]).extend(dict(training_seed=recipe['seed'],**r)for r in value['rows'])
         runs.append(entry)
     scores=[]
-    for(arm,step),rows in sorted(groups.items()):
+    for(arm,step,cohort),rows in sorted(groups.items()):
         tasks=sorted(set(r['task']for r in rows));manip=[r for r in rows if r['task']not in['reach-v3','reach-wall-v3']]
         valid=[r for r in rows if r['expert_goal_success']]
-        scores.append(dict(arm=arm,step=step,trained_seeds=sorted(set(r['training_seed']for r in rows)),episodes=len(rows),
+        scores.append(dict(arm=arm,step=step,cohort=cohort,trained_seeds=sorted(set(r['training_seed']for r in rows)),episodes=len(rows),
             manipulation_successes=sum(r['success']for r in manip),manipulation_episodes=len(manip),manipulation_percent=100*sum(r['success']for r in manip)/len(manip),
             goal_valid_episodes=len(valid),goal_valid_percent=100*sum(r['success']for r in valid)/len(valid)if valid else None,
             task_scores={t:dict(successes=sum(r['success']for r in rows if r['task']==t),episodes=sum(r['task']==t for r in rows))for t in tasks}))

@@ -61,7 +61,15 @@ def work(a):
                 '--manifest',plan['manifest'],'--output',str(endpoint),'--execute','1','--budget','20'if entry else'500']+
                 (['--tasks','bin-picking-v3']if entry else[])+['--seeds']+list(map(str,seeds)),endpoint.with_suffix('.log'),env,source,deadline)
             assert json.loads((endpoint/'summary.json').read_text())['passed'];save(run/'progress.json',dict(step=step,phase='stage_complete'))
-        save(run/'complete.json',dict(passed=True,step=40000,current_interval_only=True))
+        if plan.get('confirmation'):
+            confirmation=plan['confirmation'];manifest=Path(confirmation['manifest'])
+            while not manifest.exists():assert time.time()<deadline;time.sleep(10)
+            final=plan['stages'][-1];endpoint=run/'confirm-final'
+            command([PYTHON,'-B','-u',str(source/'experiments/metaworld_kernel_20261106/inverse_evaluate.py'),'--run',str(run),'--step',str(final),
+                '--manifest',str(manifest),'--output',str(endpoint),'--execute','1','--budget','500','--tasks']+confirmation['tasks']+['--seeds']+
+                list(map(str,confirmation['seeds'])),run/'confirm-final.log',env,source,deadline)
+            proof=json.loads((endpoint/'summary.json').read_text());assert proof['passed']and proof['model_unchanged']and len(proof['rows'])==1000
+        save(run/'complete.json',dict(passed=True,step=plan['stages'][-1],current_interval_only=True,confirmation=bool(plan.get('confirmation'))))
     except BaseException as error:save(run/'execution-error.json',dict(error=repr(error)));raise
 
 
@@ -83,10 +91,36 @@ def prepare_mse(a):
               'Singlecurrentintervaltarget,no futureactiontrajectory/clock/history/teacher.Thisiscontrollertraining,notpureJEPAforecastloss.'))
 
 
+def prepare_long(a):
+    a.root.mkdir(parents=True,exist_ok=False);(a.root/'results').mkdir();recipes=[]
+    confirm=json.loads((a.confirm_root/'plan.json').read_text())
+    for host,seeds in[('dev13',[3,4]),('dev15',[5,6])]:
+        owners=json.loads((a.wait_parent/f'launch-{host}.json').read_text())['workers']
+        for index,seed in enumerate(seeds):
+            for j,representation in enumerate(['absolute','directed']):
+                gpu=[0,2,3,4][index*2+j];run=a.root/'training'/f'{representation}-seed{seed}';run.mkdir(parents=True)
+                cfg=json.loads((a.parent/'training/episodes-seed1/config.json').read_text())
+                cfg.update(seed=seed,output=str(run),max_steps=120000,retain_steps=[2,600,10000,40000,80000,120000],inverse_goals='phase_mixture')
+                cfg['model']['goal_representation']=representation;assert cfg['model']['chunk']==1 and cfg['model']['action_dim']==20
+                save(run/'config.json',cfg);save(run/'ORIGIN.json',dict(all_weights_random=True,independent_new_seeds=[3,4,5,6],no_initial_checkpoint=True,
+                    loss='OneCURRENT5native20Dflowloss,originalcorpusonly.Noaux/teacher/futurecommandblock.',
+                    comparison='Pairedabsolute/directedsameCNN/decoderinitialseedand120kLRhorizon.Budget120kfromscratch,not40kresume/cosinerestart.',
+                    promotion_basis='Pre-existingtwo-seed20case/task40k6manip90.4167%vs77.9167%currentbaseline;independent50-task20kscreen87.5%.Notall-taskperformancegoalachieved.',
+                    confirmation='Pre-registered1000NEWphysicalcases/50tasks/seeds4042..4051and5042..5051;allcasesandexpertgoalfailuresretained.No taskID/state/reward/actionoracleinput.'))
+                owner=next(o for o in owners if o['gpu']==gpu)
+                recipes.append(dict(arm=representation,seed=seed,host=host,gpu=gpu,run=str(run),resource_pid=owner['pid'],resource_marker='frozen_goal_matrix-commit.py',config_sha256=digest(run/'config.json')))
+    old=json.loads((a.parent/'training-plan.json').read_text())
+    save(a.root/'training-plan.json',dict(source=str(a.source),recipes=recipes,stages=[2,600,10000,40000,80000,120000],manifest=old['manifest'],deadline_unix=time.time()+36*3600,
+        confirmation=dict(manifest=confirm['manifest'],tasks=confirm['tasks'],seeds=confirm['seeds']),
+        scope='Eightindependentfreshscratchtrainings=4NEWseedsx2representations;120ksharedLRhorizon/pairedweights.Within-seedabsolute/directedcontrast.'
+              'OnecurrentintervalFMloss,originaldata,sensor5/500native,RGBonly.No publicSOTA/equalFLOPclaim.Longworkersfinishformal8taskstages+fresh50taskconfirmationandexit.'))
+
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--mode',choices=['prepare','prepare-mse','work'],required=True)
-    for key in['root','source','reference','flow-parent','wait-parent']:p.add_argument('--'+key,type=Path)
+    p=argparse.ArgumentParser();p.add_argument('--mode',choices=['prepare','prepare-mse','prepare-long','work'],required=True)
+    for key in['root','source','reference','flow-parent','wait-parent','parent','confirm-root']:p.add_argument('--'+key,type=Path)
     p.add_argument('--gpu',type=int);p.add_argument('--host',default='dev6');a=p.parse_args()
     if a.mode=='prepare':prepare(a)
     elif a.mode=='prepare-mse':prepare_mse(a)
+    elif a.mode=='prepare-long':prepare_long(a)
     else:work(a)
