@@ -60,7 +60,7 @@ def run(a):
                     valid=current.new_tensor([bool(actions)])
                     if a.planner=='path':
                         from as_jepa_lewm.path_projection import path_projection
-                        commands,word,detail=path_projection(model,current,goal,valid,past,generator,warm)
+                        commands,word,detail=path_projection(model,current,goal,valid,past,generator,warm,particles=a.path_particles,iterations=a.path_iterations)
                         commands=commands[:a.replan_native];shift=a.replan_native//5
                         warm=torch.cat([word[shift:],word[-1:].expand(shift,-1)],0);planning.append(detail)
                     else:commands=plan(model,current,goal,past,valid,a.replan_native,a.planner)
@@ -90,4 +90,5 @@ if __name__=='__main__':
     for key in['run','manifest','output']:p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--step',type=int,required=True);p.add_argument('--budget',type=int,default=500)
     p.add_argument('--planner',choices=['tangent','observation','path'],default='tangent');p.add_argument('--replan-native',type=int,choices=[5,15],default=15)
+    p.add_argument('--path-particles',type=int,default=128);p.add_argument('--path-iterations',type=int,default=8)
     p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--seeds',type=int,nargs='+',required=True);run(p.parse_args())

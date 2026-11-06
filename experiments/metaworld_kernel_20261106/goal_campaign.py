@@ -43,12 +43,13 @@ def prepare(root,source,parent):
 def evaluation(source,run,step,manifest,output,env,deadline,technical=False,seeds=None):
     command([PYTHON,'-B','-u',str(source/'experiments/metaworld_kernel_20261106/native_evaluate.py'),
         '--run',str(run),'--step',str(step),'--manifest',manifest,'--output',str(output),'--planner','path','--replan-native','5',
+        '--path-particles','128'if technical else'32','--path-iterations','8'if technical else'4',
         '--budget','20'if technical else'500','--tasks']+(['reach-v3']if technical else TASKS)+['--seeds']+
         list(map(str,[42]if technical else seeds)),output.with_suffix('.log'),env,source,deadline)
     assert json.loads((output/'summary.json').read_text())['passed']
 
 
-def work(root,source,host,gpu):
+def work(root,source,host,gpu,resume_after_controls=False):
     plan=json.loads((root/'training-plan.json').read_text());r=next(x for x in plan['recipes']if x['host']==host and x['gpu']==gpu)
     run=Path(r['run']);deadline=plan['deadline_unix'];env=environment(source,gpu)
     try:
@@ -59,9 +60,16 @@ def work(root,source,host,gpu):
             assert time.time()<deadline;time.sleep(10)
         assert json.loads((Path(r['world_run'])/'audit-20000.json').read_text())['passed']
         wait_gpu_release(gpu)
-        control=root/'controls'/f'{r["control_arm"]}-seed{r["seed"]}';control.mkdir(parents=True)
-        evaluation(source,Path(r['control_run']),20000,plan['manifest'],control/'entry20',env,deadline,technical=True)
-        evaluation(source,Path(r['control_run']),20000,plan['manifest'],control/'pilot',env,deadline,seeds=[42,1042])
+        if resume_after_controls:
+            gate=json.loads((root/'CONTROL_PILOT_EARLY_STOP.json').read_text())
+            assert gate['passed']and gate['new_generator_updates']==0
+            assert not(run/'last.ckpt').exists(),'This adoption is only for unstarted generator SGD'
+            inherited=next(x for x in gate['controls']if x['arm']==r['control_arm']and x['seed']==r['seed'])
+            assert len(inherited['grasping_cases'])==4 and not any(x['success']for x in inherited['grasping_cases'])
+        else:
+            control=root/'controls'/f'{r["control_arm"]}-seed{r["seed"]}';control.mkdir(parents=True)
+            evaluation(source,Path(r['control_run']),20000,plan['manifest'],control/'entry20',env,deadline,technical=True)
+            evaluation(source,Path(r['control_run']),20000,plan['manifest'],control/'pilot',env,deadline,seeds=[42,1042])
         cfg=json.loads((run/'config.json').read_text());assert digest(run/'config.json')==r['config_sha256']
         save(run/'WORLD_BOUND.json',dict(checkpoint=cfg['model']['world_checkpoint'],sha256=digest(Path(cfg['model']['world_checkpoint'])),
             world_native_updates=20000,inverse_action_ancestry=False))
@@ -84,6 +92,7 @@ def work(root,source,host,gpu):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--mode',choices=['prepare','work'],required=True)
     for key in ['root','source']:p.add_argument('--'+key,type=Path,required=True)
-    p.add_argument('--parent',type=Path);p.add_argument('--host');p.add_argument('--gpu',type=int);a=p.parse_args()
+    p.add_argument('--parent',type=Path);p.add_argument('--host');p.add_argument('--gpu',type=int)
+    p.add_argument('--resume-after-controls',action='store_true');a=p.parse_args()
     if a.mode=='prepare':prepare(a.root,a.source,a.parent)
-    else:work(a.root,a.source,a.host,a.gpu)
+    else:work(a.root,a.source,a.host,a.gpu,a.resume_after_controls)

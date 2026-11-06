@@ -21,6 +21,38 @@ def run(a):
     a.output.mkdir(parents=True,exist_ok=False);manifest=json.loads(a.manifest.read_text());rows=[]
     tasks=['bin-picking-v3','pick-place-v3','push-v3','drawer-open-v3','door-open-v3','peg-insert-side-v3']
     spec=mujoco.mjtState.mjSTATE_INTEGRATION
+    def contacts(env):
+        # Generic active finger/external-movable-body contact avoids an unused
+        # MetaWorld diagnostic's removed geom_name2id alias/stale object names.
+        # No model,simulator class,or physical state is modified.
+        roots=[mujoco.mj_name2id(env.model,mujoco.mjtObj.mjOBJ_BODY,name)for name in ['leftclaw','rightclaw']];assert min(roots)>=0
+        def top(body):
+            while env.model.body_parentid[body]:body=int(env.model.body_parentid[body])
+            return body
+        robot=top(roots[0]);assert robot==top(roots[1])
+        def finger(geom):
+            body=int(env.model.geom_bodyid[geom])
+            while body:
+                if body in roots:return roots.index(body)
+                body=int(env.model.body_parentid[body])
+            return None
+        def external_dynamic(geom):
+            body=int(env.model.geom_bodyid[geom]);root=top(body)
+            if root==robot:return None
+            while body:
+                if env.model.body_jntnum[body]:return root
+                body=int(env.model.body_parentid[body])
+            return None
+        touched=[set(),set()]
+        for index,contact in enumerate(env.data.contact):
+            for left,right in [(int(contact.geom1),int(contact.geom2)),(int(contact.geom2),int(contact.geom1))]:
+                side=finger(left)
+                if side is None:continue
+                external=external_dynamic(right)
+                if external is None:continue
+                force=np.zeros(6);mujoco.mj_contactForce(env.model,env.data,index,force)
+                if force[0]>0:touched[side].add(external)
+        return bool(touched[0]or touched[1]),bool(touched[0]&touched[1])
     def snapshot(env,observation):
         value=np.empty(mujoco.mj_stateSize(env.model,spec));mujoco.mj_getState(env.model,env.data,value,spec)
         return dict(integration=value,observation=observation.copy(),tcp=env.tcp_center.copy(),previous=env._prev_obs.copy(),
@@ -45,12 +77,14 @@ def run(a):
                 assert np.array_equal(state,cached['initial_state'])
                 assert all(np.array_equal(v,cached['initial_physics_'+k])for k,v in physics_state(env).items())
                 initial=snapshot(env,state);nearest=initial;distance=float(np.linalg.norm(env.tcp_center-state[4:7]));closest_step=0
-                contact_steps=[];max_object_delta=0.;max_object_lift=0.
+                contact_steps=[];dual_contact_steps=[];contact_metric_supported=True;max_object_delta=0.;max_object_lift=0.
                 for index,command in enumerate(actions):
                     state,*_=env.step(command);d=float(np.linalg.norm(env.tcp_center-state[4:7]))
                     try:
-                        if env.touching_main_object:contact_steps.append(index+1)
-                    except NotImplementedError:pass
+                        any_contact,dual_contact=contacts(env)
+                        if any_contact:contact_steps.append(index+1)
+                        if dual_contact:dual_contact_steps.append(index+1)
+                    except NotImplementedError:contact_metric_supported=False
                     max_object_delta=max(max_object_delta,float(np.linalg.norm(state[4:7]-initial['observation'][4:7])))
                     max_object_lift=max(max_object_lift,float(state[6]-initial['observation'][6]))
                     if d<distance:distance=d;nearest=snapshot(env,state);closest_step=index+1
@@ -69,11 +103,12 @@ def run(a):
                                 object_delta_ab=(ab[4:7]-base[4:7]).tolist(),object_delta_ba=(ba[4:7]-base[4:7]).tolist()))
                     stages[label]=dict(object_position=base[4:7].tolist(),hand_position=base[:3].tolist(),tcp_position=saved['tcp'].tolist(),pairs=pairs)
                 rows.append(dict(arm=arm,seed=seed,task=task,source_trace_sha256=trace['trace_sha256'],closest_own_step=closest_step,
-                    closest_tcp_object_distance=distance,contact_steps=contact_steps,max_object_delta=max_object_delta,max_object_lift=max_object_lift,stages=stages))
+                    closest_tcp_object_distance=distance,contact_steps=contact_steps,dual_contact_steps=dual_contact_steps,contact_metric_supported=contact_metric_supported,max_object_delta=max_object_delta,max_object_lift=max_object_lift,stages=stages))
                 (a.output/'progress.json').write_text(json.dumps(dict(rows=rows),indent=2)+'\n')
                 print(json.dumps(dict(arm=arm,task=task,seed=seed,closest_tcp_distance=distance,step=closest_step,contact_steps=len(contact_steps),object_lift=max_object_lift)),flush=True)
             finally:close_environment(env)
     report=dict(passed=True,rows=rows,model_updates=0,neural_models_loaded=0,render_calls=0,
+        contact_metric='Positive normal-force contact between either finger and any external movable-body tree;dual means both fingers touch the same external tree.Not the broken optional native main-object helper.',
         scope='State-only diagnostic of signed-axis intervention ordering on initial and nearest-object states reached by our own forward20k controllers.'
               'State selected for diagnosis only,not model/planner input or new trainingdata.No demonstration/future-action reference or inverse model.')
     (a.output/'summary.json').write_text(json.dumps(report,indent=2)+'\n')
