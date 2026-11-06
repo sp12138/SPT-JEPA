@@ -1,0 +1,74 @@
+"""Frozen current-only controller with causal imagined feedback inside sensor gaps."""
+import argparse
+import json
+from pathlib import Path
+import numpy as np
+import torch
+from torch.nn import functional as F
+from as_jepa_lewm.factory import build_model
+from experiments.metaworld_eval_20261103.environment import make_environment,pixels,physics_state,rgb_replay_check,close_environment
+from experiments.metaworld_eval_20261103.evaluate import resize_tensor,model_sha
+from experiments.metaworld_contact_20261106.bridge_campaign import TASKS
+from experiments.metaworld_kernel_20261106.campaign import save,digest
+
+
+def run(a):
+    torch.set_num_threads(2);torch.set_float32_matmul_precision('highest');a.output.mkdir(parents=True,exist_ok=False)
+    cfg=json.loads((a.run/'config.json').read_text());assert cfg['model']['action_dim']==4 and not cfg['model']['history_context']and cfg['model']['chunk']==1
+    assert cfg.get('inverse_tail_reserve')==1
+    controller=build_model(cfg).cuda().eval().requires_grad_(False)
+    controller.load_state_dict(torch.load(a.run/'model-step0040000/weights.pt',map_location='cuda',weights_only=True))
+    assert json.loads((a.run/'audit-40000.json').read_text())['passed']
+    wc=json.loads((a.world/'config.json').read_text());assert wc['model_class']=='causal_transport'and wc['model']['mode']=='stencil'
+    assert not wc.get('initial_checkpoint')and not wc.get('initial_encoder_checkpoint')
+    world=build_model(wc).cuda().eval().requires_grad_(False)
+    world.load_state_dict(torch.load(a.world/'model-step0020000/weights.pt',map_location='cuda',weights_only=True))
+    before=dict(controller=model_sha(controller),world=model_sha(world));card=json.loads((Path(cfg['data'])/'dataset_card.json').read_text())
+    mean=np.asarray(card['action_mean'][:4],np.float32);std=np.asarray(card['action_std'][:4],np.float32)
+    cases=[r for r in json.loads(a.manifest.read_text())['rows']if r['task']in a.tasks and r['seed']in a.seeds]
+    cases.sort(key=lambda r:(a.tasks.index(r['task']),a.seeds.index(r['seed'])));assert len(cases)==len(a.tasks)*len(a.seeds);rows=[]
+    with torch.inference_mode():
+        for case in cases:
+            assert digest(Path(case['path']))==case['sha256'];cached=np.load(case['path']);env,state,_=make_environment(case['task'],case['seed'],cached['rand_vec'])
+            assert np.array_equal(state,cached['initial_state'])and all(np.array_equal(v,cached['initial_physics_'+k])for k,v in physics_state(env).items())
+            gate=rgb_replay_check(cached['initial'],pixels(env));assert gate['passed'],gate
+            image=cached['initial'];goal=resize_tensor([cached['goal']]).cuda();actions=[];successes=[];plans=0;forecasts=0;calls=0
+            past=goal.new_zeros(1,4,dtype=torch.float32);valid=goal.new_zeros(1,dtype=torch.float32);generator=torch.Generator(device='cuda').manual_seed(778000+case['seed'])
+            try:
+                while len(actions)<a.budget:
+                    actual=resize_tensor([image]).cuda();belief=world.encoder(actual);commands=[]
+                    for j in range(5):
+                        current=actual if j==0 else F.interpolate(belief*255,(224,224),mode='bilinear',align_corners=False,antialias=True).round().clamp(0,255).byte()
+                        proposed=controller.propose(dict(pixels=torch.stack([current,goal],1)),generator=generator,steps=12)[0,0].float().cpu().numpy();calls+=1
+                        command=np.clip(proposed*std+mean,-1,1).astype(np.float32);assert np.isfinite(command).all();commands.append(command)
+                        control=torch.from_numpy(command[None]).cuda()
+                        if a.mode=='world'and j<4:
+                            drift,effect,_,_=world.fields(belief,torch.zeros_like(belief),valid*0,past,valid)
+                            displacement=drift+torch.einsum('na,nachw->nchw',torch.cat([control,control.abs()],-1),effect)
+                            belief=world.warp(belief,displacement);assert torch.isfinite(belief).all();forecasts+=1
+                        past=control;valid.fill_(1)
+                    plans+=1
+                    for command in commands:
+                        _,_,terminated,truncated,info=env.step(command);actions.append(command.copy());successes.append(bool(info['success']))
+                        if successes[-1]or terminated or truncated or len(actions)>=a.budget:break
+                    if successes[-1]or terminated or truncated:break
+                    image=pixels(env)
+            finally:close_environment(env)
+            trace=a.output/f'{case["task"]}-seed{case["seed"]}.npz';np.savez_compressed(trace,actions=np.stack(actions),successes=np.asarray(successes))
+            row=dict(task=case['task'],seed=case['seed'],success=bool(any(successes)),steps=len(actions),calls=calls,plans=plans,world_forecasts=forecasts,
+                case_sha256=case['sha256'],expert_goal_success=case['expert_any_success'],initial_rgb=gate,trace=str(trace),trace_sha256=digest(trace))
+            rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
+    after=dict(controller=model_sha(controller),world=model_sha(world));assert before==after
+    save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=40000,mode=a.mode,
+        feedback_native=5,action_native=1,training_action_native=1,new_updates=0,current_action_only=True,
+        scope='CurrentONEa_t4Dcontrollertrained40k+ownstrictforwardRGBworld20k,bothscratchoriginaldata;no futureactionlabels/externalteacher.'
+              'RealRGBONLYevery5native;fourintermediateobservationsareOWNforecast,neveractualfutureframes/states/actions.'
+              'CopycontrolgetsSAME128->224intermediateimageprocessingandSAMEown5Gaussianactiondraws;onlyforwardevolutiondisabled.'
+              'Extra5xpolicycallsandworldpretrainingcostexplicit;notan equalFLOPs claim.No newSGD,smallpilotnotconfirmation.'))
+
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser()
+    for k in['run','world','manifest','output']:p.add_argument('--'+k,type=Path,required=True)
+    p.add_argument('--mode',choices=['copy','world'],required=True);p.add_argument('--budget',type=int,default=500)
+    p.add_argument('--tasks',nargs='+',default=TASKS);p.add_argument('--seeds',type=int,nargs='+',default=[42,1042]);run(p.parse_args())
