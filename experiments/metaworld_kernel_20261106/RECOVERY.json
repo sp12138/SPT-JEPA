@@ -6,14 +6,14 @@
     "dev15"
   ],
   "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_paths_20261106_v2",
-  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-7bc26ac",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-90e3d78",
   "training_plan": "training-plan.json",
   "ownership": [
-    "launch-dev13.json",
-    "launch-dev15.json",
+    "launch-generator-v3-dev13.json",
+    "launch-generator-v3-dev15.json",
     "collector-launch.json"
   ],
-  "technical_gates": "0-update actual4-modeGinitial-state/FP32backward/sample-level/15-stepgradient and frozenworld gate passed;0-updateCPU plannedhistory and batchcost gate passed.All16actual128x8/H15GPU/20-nativephysics frozen-control entrygates passed by12:30UTC.New generatorSGDnotstarted at that read.",
+  "technical_gates": "All16full128x8/H15frozencontrolGPU/20nativephysicsentrygatespassed.16freshGnative2checkpointsnowactuallywrittenby13:03UTC;FP32restore/backward/physicsauditsreadactualfiles,notyetallconfirmed.",
   "native_stages": [
     2,
     500,
@@ -135,30 +135,47 @@
   "path_projection": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_paths_20261106_v2",
     "dev13_pids": [
-      3710295,
-      3710296,
-      3710297,
-      3710298,
-      3710299,
-      3710300,
-      3710301,
-      3710302
+      3710828,
+      3710829,
+      3710830,
+      3710831,
+      3710832,
+      3710833,
+      3710834,
+      3710835
     ],
     "dev15_pids": [
-      3252708,
-      3252709,
-      3252710,
-      3252711,
-      3252712,
-      3252713,
-      3252714,
-      3252715
+      3252909,
+      3252910,
+      3252911,
+      3252912,
+      3252913,
+      3252914,
+      3252915,
+      3252916
     ],
     "collector": 3710331,
-    "first_phase": "Frozen original20kmodels/path-CEM128x8/nativeH15/replan5,2sharedphysicalcases/task;first20native technical gates all16passed.0newSGD.",
+    "first_phase": "FrozenFP32pathpilotearly-stoppedafterALL16modelsfailBinPicking/PickPlace x2commoncases:0/64episodes,4sharedphysicalcasescrossed16models.CompletedextraPushcasesretained;up to16currentphysicalepisodesinterrupted.NoGSGDhadstartedandnonewasreplayed.",
     "then": "Four observation-only Gvariants x4seeds;frozenownsame-data scratchstencil20k plus freshG10000 budget.Labelsstrictinterior futureRGB only;generator data neveropenscommands.Allpretrainingcostcounted.",
     "path_objective": "Aligncontrollednext-image andgoalconditionednext-image transitions overfullown15-nativeword.OnlyownGaussianCEMsamples/warmplans,unit8bitRGB likelihood+unitown-commandincrementprior.No learnedactionhead/futureactionreference.",
-    "limits": "Different compute/planner/decisionperiod;needsmatched frozencontrols before attributing gain.Controllability delay is a hypothesis,not established solecause."
+    "limits": "Different compute/planner/decisionperiod;needsmatched frozencontrols before attributing gain.Controllability delay is a hypothesis,not established solecause.",
+    "source": "90e3d78",
+    "ownership": [
+      "launch-generator-v3-dev13.json",
+      "launch-generator-v3-dev15.json"
+    ],
+    "current_phase": "All16freshGnative2checkpointswritten;GSGDnowstarted,entryauditspending/readfiles.Then500/2500/10000updates.",
+    "search_budget": {
+      "technical_particles": 128,
+      "technical_iterations": 8,
+      "screen_particles": 32,
+      "screen_iterations": 4,
+      "native_horizon": 15,
+      "replan_native": 5,
+      "precision": "FP32unchanged"
+    },
+    "runtime_adoption": "Existing16parents3710295..3710302/3252708..3252715andtheirfrozenNNonlychildrenretiredexactPID;newmodel/dataset/loss/optimizerconfigsbyteidentical.Alloldpartialcontrols/tracespreserved.CONTROL_PILOT_EARLY_STOP.json+control-earlystop-host.json+GENERATOR_RUNTIME_ADOPTION.json.",
+    "comparison_limit": "Oldpartialfrozencontrols128x8;newGscreens32x4.Changedsearchcompute,notmatchedcausalcomparison.Expandmatchingcontrolsandfreshcasesifpromisingbeforeclaimingwin."
   },
   "retired_goal_v1": {
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_transport_20261106",
@@ -178,11 +195,24 @@
     "note": "IntentionalSTOP assertions retained,noNNtrainingstarted,not16algorithm failures.New finite readonlycollector3710223 replaces3709965."
   },
   "physics_operator_audit": {
-    "pid": 3710483,
+    "pid": 3710920,
     "host": "dev13",
-    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/physics-operators",
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/physics-operators-v4",
     "new_updates": 0,
     "render_calls": 0,
-    "scope": "Only own eligible forward20ktrajectories,privilegedstateforanalysisofoperatorordering only,notmodel/planner input or newtrainingdata."
+    "scope": "CPUonlyowneligibleforward20ktrajectories;actualTCPgeometry+positive-forcefinger/externaldynamicbodycontacts;privilegedstateDIAGNOSTIC ONLY.NoNNtraining/render or actionteacher.",
+    "source": "90e3d78",
+    "older": "v1complete48butusedwristproxy,retainnotcontactproof;v2legacygeom_name2idAPIerror,v3staleobjectgeomnameerror,0NNupdatesbothretained.Notalgorithmfailures.",
+    "partial": "By13:03UTCv4all48logrowswritten;readsummaryforcompletion.Stencilseed2Bin1042lift~.098mwith136anyfingercontacts;notbyitselfproofstablegrasp/success. PickPlacecases~.09-.10mTCPdistance/nocontact.Separateapproach/transportfailures;doNOTclaimallfailurescausedbygriporone-stepdelay."
+  },
+  "precision_probe": {
+    "file": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/precision-probe-v1.json",
+    "updates": 0,
+    "normalized_RGB_mse_difference": 1.6754977849586794e-08,
+    "rank_spearman": 0.9981671554252198,
+    "same_best_word": true,
+    "seconds_FP32": 0.03074286226183176,
+    "seconds_BF16": 0.03149591013789177,
+    "scope": "SharedownedGPU0probe,noEGL;no measuredspeedbenefit,soBF16inferenceNOTadopted."
   }
 }
