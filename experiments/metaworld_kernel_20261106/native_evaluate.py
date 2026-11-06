@@ -50,13 +50,21 @@ def run(a):
             assert np.array_equal(state,cached['initial_state'])
             assert all(np.array_equal(v,cached['initial_physics_'+k])for k,v in physics_state(env).items())
             gate=rgb_replay_check(cached['initial'],pixels(env));assert gate['passed'],gate
-            frames=[cached['initial']];actions=[];successes=[];calls=0
+            frames=[cached['initial']];actions=[];successes=[];calls=0;warm=None;planning=[]
+            generator=torch.Generator(device='cuda').manual_seed(610000+case['seed'])
             goal=model.encoder(resize_tensor([cached['goal']]).cuda())
             try:
                 while len(actions)<a.budget:
                     current=model.encoder(resize_tensor(frames[-1:]).cuda())
                     past=torch.as_tensor(actions[-1],device=current.device).reshape(1,4)if actions else current.new_zeros(1,4)
-                    commands=plan(model,current,goal,past,current.new_tensor([bool(actions)]),a.replan_native,a.planner);calls+=1
+                    valid=current.new_tensor([bool(actions)])
+                    if a.planner=='path':
+                        from as_jepa_lewm.path_projection import path_projection
+                        commands,word,detail=path_projection(model,current,goal,valid,past,generator,warm)
+                        commands=commands[:a.replan_native];shift=a.replan_native//5
+                        warm=torch.cat([word[shift:],word[-1:].expand(shift,-1)],0);planning.append(detail)
+                    else:commands=plan(model,current,goal,past,valid,a.replan_native,a.planner)
+                    calls+=1
                     for j,command in enumerate(commands):
                         _,_,terminated,truncated,info=env.step(command.astype(np.float32))
                         actions.append(command.copy());successes.append(bool(info['success']))
@@ -68,7 +76,7 @@ def run(a):
             np.savez_compressed(trace,actions=np.asarray(actions),successes=np.asarray(successes))
             row=dict(task=case['task'],seed=case['seed'],success=bool(any(successes)),steps=len(actions),calls=calls,
                 case_sha256=case['sha256'],expert_goal_success=case['expert_any_success'],initial_rgb=gate,
-                trace=str(trace),trace_sha256=digest(trace))
+                trace=str(trace),trace_sha256=digest(trace),planning=planning)
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     assert model_sha(model)==before
     save(a.output/'summary.json',dict(passed=True,model_unchanged=True,model_sha256=before,rows=rows,step=a.step,
@@ -81,5 +89,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser()
     for key in['run','manifest','output']:p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--step',type=int,required=True);p.add_argument('--budget',type=int,default=500)
-    p.add_argument('--planner',choices=['tangent','observation'],default='tangent');p.add_argument('--replan-native',type=int,choices=[5,15],default=15)
+    p.add_argument('--planner',choices=['tangent','observation','path'],default='tangent');p.add_argument('--replan-native',type=int,choices=[5,15],default=15)
     p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--seeds',type=int,nargs='+',required=True);run(p.parse_args())

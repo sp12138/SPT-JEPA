@@ -42,7 +42,7 @@ def prepare(root,source,parent):
 
 def evaluation(source,run,step,manifest,output,env,deadline,technical=False,seeds=None):
     command([PYTHON,'-B','-u',str(source/'experiments/metaworld_kernel_20261106/native_evaluate.py'),
-        '--run',str(run),'--step',str(step),'--manifest',manifest,'--output',str(output),'--planner','observation','--replan-native','5',
+        '--run',str(run),'--step',str(step),'--manifest',manifest,'--output',str(output),'--planner','path','--replan-native','5',
         '--budget','20'if technical else'500','--tasks']+(['reach-v3']if technical else TASKS)+['--seeds']+
         list(map(str,[42]if technical else seeds)),output.with_suffix('.log'),env,source,deadline)
     assert json.loads((output/'summary.json').read_text())['passed']
@@ -54,7 +54,8 @@ def work(root,source,host,gpu):
     try:
         process=Path(f'/proc/{r["resource_pid"]}/cmdline')
         while process.exists():
-            if b'transport_campaign.py'not in process.read_bytes():break
+            command_line=process.read_bytes()
+            if b'transport_campaign.py'not in command_line and b'goal_campaign.py'not in command_line:break
             assert time.time()<deadline;time.sleep(10)
         assert json.loads((Path(r['world_run'])/'audit-20000.json').read_text())['passed']
         wait_gpu_release(gpu)
