@@ -44,19 +44,22 @@ def work(a):
         while not ready.exists():assert time.time()<deadline;time.sleep(10)
         assert json.loads(ready.read_text())['passed']and json.loads((a.root/'initial-contract.json').read_text())['passed']
         assert digest(run/'config.json')==r['config_sha256'];env=environment(source,a.gpu)
+        initial_step=r.get('initial_step',0)
         for step in plan['stages']:
             assert not(a.root/'STOP').exists()and not(run/'STOP').exists();wait_gpu_release(a.gpu)
-            command([PYTHON,'-B','-u',str(source/'experiments/lingjing_fullspec_20261102/safe_train_stage.py'),'--config',str(run/'config.json'),
-                '--stop-step',str(step)]+(['--resume']if step>2 else[]),run/f'train-{step}.log',env,source,deadline)
+            if step!=initial_step:
+                command([PYTHON,'-B','-u',str(source/'experiments/lingjing_fullspec_20261102/safe_train_stage.py'),'--config',str(run/'config.json'),
+                    '--stop-step',str(step)]+(['--resume']if step>2 else[]),run/f'train-{step}.log',env,source,deadline)
             command([PYTHON,'-B','-u',str(source/'experiments/metaworld_contact_20261106/audit_bridge.py'),'--run',str(run),'--step',str(step),
                 '--output',str(run/f'audit-{step}.json')],run/f'audit-{step}.log',env,source,deadline)
             assert json.loads((run/f'audit-{step}.json').read_text())['passed']
             archive=run/f'archive-step{step:07d}';archive.mkdir();shutil.copy2(run/'last.ckpt',archive/'native.ckpt');save(archive/'manifest.json',dict(step=step,native_sha256=digest(archive/'native.ckpt')))
-            seeds=[42]if step==2 else[42,1042]if step<10000 else[42,43,1042,1043]if step<40000 else list(range(42,52))+list(range(1042,1052))
+            entry=step in[2,initial_step,initial_step+2]
+            seeds=[42]if entry else[42,1042]if step<10000 else[42,43,1042,1043]if step<40000 else list(range(42,52))+list(range(1042,1052))
             endpoint=run/f'eval-step{step:07d}'
             command([PYTHON,'-B','-u',str(source/'experiments/metaworld_kernel_20261106/inverse_evaluate.py'),'--run',str(run),'--step',str(step),
-                '--manifest',plan['manifest'],'--output',str(endpoint),'--execute','1','--budget','20'if step==2 else'500']+
-                (['--tasks','bin-picking-v3']if step==2 else[])+['--seeds']+list(map(str,seeds)),endpoint.with_suffix('.log'),env,source,deadline)
+                '--manifest',plan['manifest'],'--output',str(endpoint),'--execute','1','--budget','20'if entry else'500']+
+                (['--tasks','bin-picking-v3']if entry else[])+['--seeds']+list(map(str,seeds)),endpoint.with_suffix('.log'),env,source,deadline)
             assert json.loads((endpoint/'summary.json').read_text())['passed'];save(run/'progress.json',dict(step=step,phase='stage_complete'))
         save(run/'complete.json',dict(passed=True,step=40000,current_interval_only=True))
     except BaseException as error:save(run/'execution-error.json',dict(error=repr(error)));raise

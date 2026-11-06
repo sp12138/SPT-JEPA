@@ -20,7 +20,7 @@ def collect(root):
             for row in value['rows']:
                 assert cases.setdefault((row['task'],row['seed']),row['case_sha256'])==row['case_sha256']
                 assert digest(Path(row['trace']))==row['trace_sha256']
-            if step==2:continue
+            if step in[2,recipe.get('initial_step',0),recipe.get('initial_step',0)+2]:continue
             groups.setdefault((recipe['arm'],step),[]).extend(dict(training_seed=recipe['seed'],**r)for r in value['rows'])
         runs.append(entry)
     scores=[]
