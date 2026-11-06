@@ -59,10 +59,12 @@ def collect(root):
             selected = [r for r in manipulation if r['training_seed'] in seeds]
             cohorts[name] = dict(episodes=len(selected), successes=sum(r['success'] for r in selected),
                                   percent=100 * sum(r['success'] for r in selected) / len(selected) if selected else None)
-        scores.append(dict(arm=arm,objective=objective, step=step, trained_seeds=sorted(set(r['training_seed'] for r in rows)),
+        expected_seeds={r['seed']for r in plan['recipes']if r['arm']==arm}
+        observed_seeds={r['training_seed']for r in rows}
+        scores.append(dict(arm=arm,objective=objective, step=step, trained_seeds=sorted(observed_seeds),
                            episodes=len(rows), task_scores=table, cohorts=cohorts,
                            manipulation_percent=100 * sum(r['success'] for r in manipulation) / len(manipulation),
-                           complete_training_seed_cohort=len(set(r['training_seed']for r in rows))==4))
+                           expected_training_seeds=sorted(expected_seeds),complete_training_seed_cohort=observed_seeds==expected_seeds))
     return dict(utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), runs=runs, scores=scores,
                 complete_runs=sum('complete' in r for r in runs), effective_errors=sum('execution-error' in r for r in runs),
                 strict_constraint_candidate=True, performance_objective_achieved=False,
