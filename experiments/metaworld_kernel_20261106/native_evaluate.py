@@ -61,7 +61,11 @@ def run(a):
                     if a.planner=='path':
                         if hasattr(model,'plan_controls'):
                             previous=model.encoder(resize_tensor(frames[-2:-1]if len(frames)>1 else frames[-1:]).cuda())
-                            commands,word,detail=model.plan_controls(current,previous,goal,valid,past,generator,warm,particles=a.path_particles,iterations=a.path_iterations)
+                            if a.path_metric=='rgb'and a.control_prior=='increment':
+                                commands,word,detail=model.plan_controls(current,previous,goal,valid,past,generator,warm,particles=a.path_particles,iterations=a.path_iterations)
+                            else:
+                                from as_jepa_lewm.reachable_projection import project
+                                commands,word,detail=project(model,current,previous,goal,valid,past,generator,warm,particles=a.path_particles,iterations=a.path_iterations,metric=a.path_metric,control_prior=a.control_prior)
                         else:
                             from as_jepa_lewm.path_projection import path_projection
                             commands,word,detail=path_projection(model,current,goal,valid,past,generator,warm,particles=a.path_particles,iterations=a.path_iterations)
@@ -84,7 +88,7 @@ def run(a):
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     assert model_sha(model)==before
     save(a.output/'summary.json',dict(passed=True,model_unchanged=True,model_sha256=before,rows=rows,step=a.step,
-        no_inverse_action_objective_or_future_action_reference=True,from_scratch=True,planner=a.planner,replan_native=a.replan_native,
+        no_inverse_action_objective_or_future_action_reference=True,from_scratch=True,planner=a.planner,replan_native=a.replan_native,path_metric=a.path_metric,control_prior=a.control_prior,
         scope=f'Same original LeRobot corpus/split,RGBgoals/physicalcases,500native any-success.Replan{a.replan_native}native,imagesat5native.'
               'Native training and ordered control word,different compute.No extra control labels/state/reward/teacher.'))
 
@@ -95,4 +99,5 @@ if __name__=='__main__':
     p.add_argument('--step',type=int,required=True);p.add_argument('--budget',type=int,default=500)
     p.add_argument('--planner',choices=['tangent','observation','path'],default='tangent');p.add_argument('--replan-native',type=int,choices=[5,15],default=15)
     p.add_argument('--path-particles',type=int,default=128);p.add_argument('--path-iterations',type=int,default=8)
+    p.add_argument('--path-metric',choices=['rgb','reachable'],default='rgb');p.add_argument('--control-prior',choices=['increment','uniform'],default='increment')
     p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--seeds',type=int,nargs='+',required=True);run(p.parse_args())
