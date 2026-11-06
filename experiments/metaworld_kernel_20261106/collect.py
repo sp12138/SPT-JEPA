@@ -27,25 +27,26 @@ def collect(root):
                 row[name] = json.loads(path.read_text())
         row['stages'] = []
         for step in plan['stages']:
-            path = run / f'eval-step{step:07d}/summary.json'
-            if not path.exists():
-                continue
-            result = json.loads(path.read_text())
-            audit = json.loads((run / f'audit-{step}.json').read_text())
-            assert result['passed'] and result['model_unchanged'] and audit['passed']
-            for case in result['rows']:
-                key = (case['task'], case['seed'])
-                assert identities.setdefault(key, case['case_sha256']) == case['case_sha256']
-                trace = Path(case['trace'])
-                assert hashlib.sha256(trace.read_bytes()).hexdigest() == case['trace_sha256']
-            row['stages'].append(step)
-            if step == 2:
-                continue  # The 20-step technical check is not a performance score.
-            group = groups.setdefault((recipe['arm'], step), [])
-            group.extend(dict(training_seed=recipe['seed'], **case) for case in result['rows'])
+            objectives=plan.get('objectives',['default']);completed=0
+            for objective in objectives:
+                path=run/(f'eval-step{step:07d}'if objective=='default'else f'eval-{objective}-step{step:07d}')/'summary.json'
+                if not path.exists():continue
+                result = json.loads(path.read_text())
+                audit = json.loads((run / f'audit-{step}.json').read_text())
+                assert result['passed'] and result['model_unchanged'] and audit['passed']
+                for case in result['rows']:
+                    key = (case['task'], case['seed'])
+                    assert identities.setdefault(key, case['case_sha256']) == case['case_sha256']
+                    trace = Path(case['trace'])
+                    assert hashlib.sha256(trace.read_bytes()).hexdigest() == case['trace_sha256']
+                completed+=1
+                if step==2:continue
+                group=groups.setdefault((recipe['arm'],objective,step),[])
+                group.extend(dict(training_seed=recipe['seed'],**case)for case in result['rows'])
+            if completed==len(objectives):row['stages'].append(step)
         runs.append(row)
     scores = []
-    for (arm, step), rows in sorted(groups.items()):
+    for (arm, objective,step), rows in sorted(groups.items()):
         tasks = sorted(set(r['task'] for r in rows))
         table = {}
         for task in tasks:
@@ -58,10 +59,10 @@ def collect(root):
             selected = [r for r in manipulation if r['training_seed'] in seeds]
             cohorts[name] = dict(episodes=len(selected), successes=sum(r['success'] for r in selected),
                                   percent=100 * sum(r['success'] for r in selected) / len(selected) if selected else None)
-        scores.append(dict(arm=arm, step=step, trained_seeds=sorted(set(r['training_seed'] for r in rows)),
+        scores.append(dict(arm=arm,objective=objective, step=step, trained_seeds=sorted(set(r['training_seed'] for r in rows)),
                            episodes=len(rows), task_scores=table, cohorts=cohorts,
                            manipulation_percent=100 * sum(r['success'] for r in manipulation) / len(manipulation),
-                           incomplete_until_all_four_training_seeds=True))
+                           complete_training_seed_cohort=len(set(r['training_seed']for r in rows))==4))
     return dict(utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), runs=runs, scores=scores,
                 complete_runs=sum('complete' in r for r in runs), effective_errors=sum('execution-error' in r for r in runs),
                 strict_constraint_candidate=True, performance_objective_achieved=False,

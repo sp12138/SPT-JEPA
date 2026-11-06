@@ -17,9 +17,14 @@ def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 @torch.no_grad()
-def plan(model,previous,current,goal,valid,execute,seed):
+def plan(model,previous,current,goal,valid,execute,seed,objective='projection',previous_control=None):
     commands=[]
     for j in range(execute):
+        if hasattr(model,'command'):
+            command,future=model.command(previous,current,goal,valid,objective,previous_control)
+            assert torch.isfinite(command).all()and command.abs().max()<=1
+            commands.append(command[0].cpu().numpy());previous,current=current,future;valid=valid.new_ones(1);previous_control=command
+            continue
         zero=current.new_zeros(1,4);flag=current.new_zeros(1)
         if model.boundary:
             desired,_,target_var=model.fields(previous,current,goal,zero,flag+1,valid)
@@ -73,7 +78,8 @@ def run(a):
                     current=model.encoder(resize_tensor(frames[-1:]).cuda())
                     previous=model.encoder(resize_tensor(frames[-2:-1]if len(frames)>1 else frames[-1:]).cuda())
                     commands=plan(model,previous,current,goal,current.new_tensor([len(frames)>1]),a.execute,
-                        20261106+case['seed']*1009+len(actions)*31)
+                        20261106+case['seed']*1009+len(actions)*31,a.objective,
+                        torch.as_tensor(actions[-1],device=current.device).reshape(1,4)if actions else current.new_zeros(1,4))
                     calls+=1
                     for command in commands:
                         for _ in range(5):
@@ -91,7 +97,7 @@ def run(a):
                 trace=str(trace),trace_sha256=digest(trace))
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     assert model_sha(model)==before
-    save(a.output/'summary.json',dict(passed=True,model_unchanged=True,model_sha256=before,rows=rows,step=a.step,
+    save(a.output/'summary.json',dict(passed=True,model_unchanged=True,model_sha256=before,rows=rows,step=a.step,objective=a.objective,
         no_reconstruction=True,no_action_targets_or_references=True,random_features_only=True,
         scope='IndependentLeRobot50task training corpus;sharedRGBgoals/cases,500native any-success.RGBobservations only. '
               'Commands solved from learned future-observation dynamics,not predicted from actionlabels.No oldweights/teacher.'))
@@ -101,4 +107,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser()
     for key in['run','manifest','output']:p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--step',type=int,required=True);p.add_argument('--budget',type=int,default=500);p.add_argument('--execute',type=int,default=3)
+    p.add_argument('--objective',choices=['projection','ratio','marginal'],default='projection')
     p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--seeds',type=int,nargs='+',required=True);run(p.parse_args())
