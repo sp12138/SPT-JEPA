@@ -16,17 +16,19 @@ def prepare(root,source,parent):
     launches={host:json.loads((parent/f'launch-{host}.json').read_text())for host in['dev13','dev15']};recipes=[]
     for r in plan['recipes']:
         slot=r['gpu']%4
-        arm=['span-incremental','zero-field','stencil-field','span-free'][slot]
-        head=slot in[0,3];steps=[2,500,2000,5000]if head else[2,500,2500,10000]
-        world=next(x for x in plan['recipes']if x['seed']==r['seed']and x['arm']==('incremental-point'if slot==0 else'free-actuation'))if head else None
+        arm=['fullseq-free','fullseq-zero','fullseq-stencil','span-incremental'][slot]
+        head=slot==3;steps=[2,500,2000,5000]if head else[2,500,2500,10000]
+        world=next(x for x in plan['recipes']if x['seed']==r['seed']and x['arm']=='incremental-point')if head else None
         run=root/'training'/f'{arm}-seed{r["seed"]}';run.mkdir(parents=True)
         model=dict(parent=world['run'],feature_seed=r['seed'],boundary=True,window=2)if head else dict(
-            feature_seed=r['seed'],channels=32,width=128,blocks=6,variance='point',passive='zero'if slot==1 else'stencil',actuation_history=True,boundary=True,window=2)
+            feature_seed=r['seed'],channels=32,width=128,blocks=6,variance='point',passive=['free','zero','stencil'][slot],
+            actuation_history=True,control_steps=5,boundary=True,window=2)
         cfg=dict(output=str(run),data=plan['data'],dataset_kind='attainable_pairs'if head else'density_transitions',
             model_class='attainable_forecast'if head else'predictive_density',feature_cache=r['feature_cache'],
             seed=r['seed'],batch_size=512 if head else 256,workers=2,cpu_threads=2,max_steps=steps[-1],
             checkpoint_every=500,retain_steps=steps,precision='bf16-mixed',max_seconds=20*3600,
             record_initial_weights=True,record_runtime_source=True,model=model)
+        if not head:cfg['native_input_cache']='/tmp/prescottsun-mw-native-inputs-20261106'
         save(run/'config.json',cfg);owner=next(x for x in launches[r['host']]['workers']if x['gpu']==r['gpu'])
         recipes.append(dict(arm=arm,kind='head'if head else'world',seed=r['seed'],host=r['host'],gpu=r['gpu'],run=str(run),
             parent=world['run']if head else None,resource_parent=r['run'],stages=steps,join_pid=owner['pid'],config_sha256=digest(run/'config.json')))
@@ -35,6 +37,7 @@ def prepare(root,source,parent):
             new_updates=steps[-1],new_batch_size=cfg['batch_size'],total_training_windows=5120000 if head else 2560000,
             not_equal_image_FLOPs=True,no_reconstruction=True,no_action_targets_or_references=True,
             current_executed_input_present=not head,only_past_own_control_input=head,
+            full_five_known_native_commands=not head,past_native_last_exact=not head,
             target='Observed NEXT random feature;current executed control is an INPUT only to world-model training',
             weights='Own strict same-data world and new4Dcoordinate head;entire parent cost counts'if head else'ALL random,0parent learned tensors'))
     save(root/'training-plan.json',dict(source=str(source),parent=str(parent),data=plan['data'],manifest=plan['manifest'],recipes=recipes,

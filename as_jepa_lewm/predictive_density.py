@@ -37,22 +37,25 @@ def quadratic_box(matrix, linear, center=None):
 
 
 class PredictiveDensity(PredictiveKernel):
-    def __init__(self, variance='point', passive='free', actuation_history=True, **kwargs):
+    def __init__(self, variance='point', passive='free', actuation_history=True, control_steps=1, **kwargs):
         assert variance in ['point', 'scalar', 'diagonal']
         assert passive in ['free','zero','velocity','transport','stencil']
         kwargs.update(boundary=True, affine=True, gaussian=variance != 'point')
         super().__init__(**kwargs)
         self.variance, self.passive, self.actuation_history = variance, passive, actuation_history
+        assert control_steps in[1,5];self.control_steps=control_steps
+        assert control_steps==1 or passive in['free','zero','stencil']
+        if control_steps>1:self.effect_head=nn.Conv2d(self.mean_head.in_channels,self.mean_head.out_channels*4*control_steps,1)
         if passive=='transport':
             self.transport_head=nn.Conv2d(self.mean_head.in_channels,self.mean_head.out_channels*9,1)
             nn.init.zeros_(self.transport_head.weight);nn.init.zeros_(self.transport_head.bias)
         if passive=='stencil':
-            self.transient_head=nn.Conv2d(self.mean_head.in_channels,self.mean_head.out_channels*4,1)
+            self.transient_head=nn.Conv2d(self.mean_head.in_channels,self.mean_head.out_channels*4*control_steps,1)
             nn.init.zeros_(self.transient_head.weight);nn.init.zeros_(self.transient_head.bias)
         if variance == 'scalar':
             self.variance_head = nn.Conv2d(self.mean_head.in_channels, 1, 1)
 
-    def fields(self, previous, current, goal, control, role, history_valid, previous_control=None):
+    def fields(self, previous, current, goal, control, role, history_valid, previous_control=None,sequence=False):
         # role -1: unknown-control marginal;0: known current control;1: future goal.
         boundary = (role == 1).float().reshape(-1, 1, 1, 1)
         x = self.predictor(torch.cat([previous, current, (goal-current)*boundary], 1))
@@ -70,12 +73,14 @@ class PredictiveDensity(PredictiveKernel):
                 weights=self.transport_head(x).float().unflatten(1,(mean.shape[1],9))
                 passive=velocity+(weights*neighbors).sum(2)
             mean=torch.where((role==0)[:,None,None,None],passive,mean)
-        effect = self.effect_head(x).float().unflatten(1, (4, current.shape[1]))
+        effect = self.effect_head(x).float().unflatten(1, (self.control_steps,4, current.shape[1]))
         if self.passive=='stencil':
-            transient=self.transient_head(x).float().unflatten(1,(4,current.shape[1]))
-            passive=-torch.einsum('na,nachw->nchw',previous_control,transient)
+            transient=self.transient_head(x).float().unflatten(1,(self.control_steps,4,current.shape[1]))
+            passive=-torch.einsum('na,nachw->nchw',previous_control,transient[:,0])
             mean=torch.where((role==0)[:,None,None,None],passive,mean)
-            effect=effect+transient
+            following=torch.cat([transient[:,1:],torch.zeros_like(transient[:,:1])],1)
+            effect=effect+transient-following
+        if not sequence:effect=effect.sum(1)
         if self.variance == 'point':
             variance = torch.ones_like(mean)
         else:
@@ -92,10 +97,13 @@ class PredictiveDensity(PredictiveKernel):
         for role, name in [(0, 'control'), (-1, 'marginal'), (1, 'goal')]:
             flag = current.new_full((len(current),), role)
             command = control if role == 0 else torch.zeros_like(control)
-            drift, effect, variance = self.fields(batch['previous_z'], current, batch['goal_z'], command, flag, valid,batch['previous_control'])
+            drift, effect, variance = self.fields(batch['previous_z'], current, batch['goal_z'], command, flag, valid,batch['previous_control'],sequence=self.control_steps>1)
             if role == 0:
-                if self.passive in ['velocity','transport']:command=command-batch['previous_control']
-                drift = drift + torch.einsum('na,nachw->nchw', command, effect)
+                if self.control_steps>1:
+                    drift=drift+torch.einsum('nta,ntachw->nchw',batch['executed_sequence'],effect)
+                else:
+                    if self.passive in ['velocity','transport']:command=command-batch['previous_control']
+                    drift=drift+torch.einsum('na,nachw->nchw',command,effect)
             error = (current+drift-target).square()
             score = (.5*(error/variance+variance.log())).flatten(1).mean(1)
             mask = batch['goal_valid'].float() if role == 1 else torch.ones_like(score)
