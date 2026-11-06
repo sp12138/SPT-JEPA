@@ -10,6 +10,9 @@ from torch.utils.data import Dataset
 
 
 def make_training_dataset(cfg):
+    if cfg.get("dataset_kind") == "attainable_pairs":
+        from as_jepa_tools.attainable_pairs import AttainablePairs
+        return AttainablePairs(cfg)
     if cfg.get("dataset_kind") == "density_transitions":
         from as_jepa_tools.predictive_density_data import DensityTransitions
         return DensityTransitions(cfg)
