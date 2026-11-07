@@ -1,6 +1,6 @@
 # What the successful action target may actually supply
 
-## Current evidence, November 7, 09:06 Beijing time
+## Current evidence, November 7, 09:39 Beijing time
 
 The user now permits inverse learning when necessary. A useful matched gain
 exists, although a broadly successful purely observation-supervised controller
@@ -308,6 +308,35 @@ remain pending. This does not support a universal censoring advantage or a
 large improvement over Flow. The single-component model uses one action-field
 pass instead of twelve; comparable performance could be an efficiency result,
 but requires the full broad comparison. Do not select architectures per task.
+
+### Completed broad negative tests and a targeted information repair
+
+The50-task screens now reject a universal actuator-likelihood improvement:
+censored4/point4/censored1/point1 score82.25/83.50/81.25/79.50%, respectively,
+versus the matched Flow86.50%. Highest-component-median decisions give
+82.00/81.75/82.75/79.00%; none fixes the gap. Each arm has400episodes/two
+trained actors. One-pass computation is cheaper, but the physical performance
+requirement is not met. All models and negatives are retained; none is promoted.
+
+Replacing the fixed-chart goal features by soft matched features also scores
+only71.25% over six manipulations, versus85.83% for the matched control. This
+suggests a different failure to investigate: motion relative to a fixed camera
+is useful control information. Making appearances align can discard that motion
+before actuation is decided. The existing model also computes matches before
+including image positions. Optimization and extra capacity remain alternative
+explanations; the result does not uniquely establish information loss.
+
+The targeted repair retains[c,g-c]AND[aligned_goal-c,coordinate_displacement]
+through one fusion layer, and supplies the existing learned image-position
+embeddings to the matcher. Its function class includes the original fixed-chart
+model by setting additional feature weights to zero, although initialization
+is not that exact function. There is one current-action Flow loss, no new data,
+external teacher, state, future command or per-task rule. Two new seed3/4actors
+have a fixed40k budget and the same oldF3/4. Actual old/default functions are
+byte-identical on saved weights and real image pairs; both new CPU gradient and
+current-action guards pass. Native2/physics gates await their owned GPU leases.
+No repair performance has yet been measured. The same-frame and composed-state
+operators remain separate tests, preserving their distinct mechanisms.
 
 ## Historical mechanism test before inverse learning was permitted
 
