@@ -144,24 +144,74 @@
     "recorded_utc": "2026-11-07T21:29:45.205120+00:00"
   },
   "latest_direct_hourly_review": {
-    "utc": "2026-11-07T21:04:00+00:00",
-    "scope": "First completed direct in-session hourly review after actual1hour waiting;no external scheduled delivery.",
-    "original100_complete": 2,
+    "utc": "2026-11-07T22:04:35.023590+00:00",
+    "original100_complete": 7,
     "original100_errors": 0,
-    "new_scaling_claims": 0,
+    "formal_scaling_claims": 1,
     "native_controller_completed_shards": 0,
-    "smwm100_macro50_by_seed": {
-      "1": 12.6,
-      "2": 14.1
+    "scores100": {
+      "lewm-idm-seed2": {
+        "macro50": 11.1,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "lewm-seed1": {
+        "macro50": 10.3,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "smwm-seed1": {
+        "macro50": 12.6,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "ac-mtm-seed1": {
+        "macro50": 11.4,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "lpwm-seed1": {
+        "macro50": 7.7,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "lewm-seed2": {
+        "macro50": 11.5,
+        "episodes": 1000,
+        "hard6success": 2,
+        "hard6episodes": 120
+      },
+      "smwm-seed2": {
+        "macro50": 14.1,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      }
     },
-    "hard6_successes": 0,
-    "hard6_model_case_outcomes": 240,
-    "hard6_unique_physical_cases": 120,
-    "matched100case_mean20_50_100": [
-      12.0,
-      14.0,
-      14.5
-    ],
-    "decision": "Continue100epoch originals then armed100+200continuations;do not infer robust scaling or declare a winning method. Investigate controller support mismatch before attributing hard-task failure torepresentation."
+    "first_scaling": "lewm-idm-seed2 actual100+3DDP/fullCPUrestore/FP32backward/padding/20nativeMPC passed;actual100newupdates plusCPUaudit pass. Sampler/AdamW retained. No performance claim beyond100epoch yet.",
+    "physical_hard_positive": "lewm-seed2 DrawerOpen2/20;other hard5zero. Bothselected traces and3blind controls/case replayed exactly. Objects moved16.35/16.00cm;floors fail atbothcases. Outcome-conditioned2case attribution,not a generalization test.",
+    "resources": "22GPUcomputeprocesses at22:04snapshot;dev13pair6/7incontinuationCPUaudit/interstage. Remaining22used by originaltraining/eval. Notconstant100percent utilization.",
+    "decision": "Continue original100+armed300. No technical failure or new candidate SGD. All14nonexternal originalrecipes now claimed;releasedpairs may take continuations."
+  },
+  "positive_replay": {
+    "status": "COMPLETE/PASS",
+    "root": "positive-replay-v3",
+    "episodes": 8,
+    "unique_physical_cases": 2,
+    "selected_lewm100_successes": 2,
+    "blind_controls_per_case": 3,
+    "all_blind_controls_failed": true,
+    "exact_success_sequences": true,
+    "scope": "Outcome-selected positive attribution;not independent confirmation or goal-conditioning proof. Fingercontact taxonomy omits palm/arm;one successfuldrawertrace has0countedfingercontact. No task-independent contact requirement.",
+    "prior_failures": "v1missingmoduleoverlay;v2missingEGLimport;bothbeforephysics/NN. v3MUJOCO_GL=disable succeeds. Originalplansretained.",
+    "model_updates": 0,
+    "neural_models_loaded": 0,
+    "render_calls": 0,
+    "local_evidence": "results-positive-replay/summary.json"
   }
 }
