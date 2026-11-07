@@ -13,7 +13,7 @@ from experiments.metaworld_kernel_20261106.campaign import save,digest
 
 
 def sample_policy(model,batch,generator,steps,solver):
-    if solver=='euler'or model.objective=='mse':return model.propose(batch,generator=generator,steps=steps)
+    if solver=='euler'or model.objective!='flow':return model.propose(batch,generator=generator,steps=steps)
     memory=model.memory(batch);horizon=model.duration(memory)
     value=torch.randn(len(memory),model.chunk,model.action_dim,device=memory.device,generator=generator)
     for i in range(steps):
@@ -82,6 +82,7 @@ def run(a):
     save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=a.step,mode=a.mode,world_action=a.world_action,noise_coupling=a.noise_coupling,
         policy_objective=controller.objective,policy_solver=a.policy_solver,policy_steps=a.policy_steps,policy_field_passes_per_call=a.policy_steps*(2 if a.policy_solver=='midpoint'else 1)if controller.objective=='flow'else 1,
         independent_action_latents_per_sensor_interval=(1 if a.noise_coupling=='observation'else 5)if controller.objective=='flow'else 0,
+        categorical_logistic_draws_per_sensor_interval=5 if controller.objective=='mixture'else 0,
         feedback_native=5,action_native=1,training_action_native=controller.action_dim//4,new_updates=0,current_action_only=controller.action_dim==4,
         scope='Frozencontrolleratdeclaredstep,declaredtraining_action_native1or5.Allscratchoriginaldata;noexternalteacher.'
               'The4DcontrollerusesONLYcurrentnativea_tlabels;20Dmodelsareexplicit5-control-targetcomparators.World20kloadedONLYforcopy/worldmodes.'

@@ -3,6 +3,8 @@ from importlib import import_module
 
 
 MODEL_TARGETS = {
+    "censored_action_bridge": "as_jepa_lewm.censored_action.CensoredActionBridge",
+    "correspondence_bridge": "as_jepa_lewm.correspondence_bridge.CorrespondenceBridge",
     "query_recurrent": "as_jepa_lewm.query_recurrent.QueryRecurrent",
     "goal_transport_warm": "as_jepa_lewm.goal_transport_warm.WarmGoalTransport",
     "goal_transport": "as_jepa_lewm.goal_transport.GoalTransport",

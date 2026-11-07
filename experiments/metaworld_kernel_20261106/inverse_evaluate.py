@@ -60,8 +60,10 @@ def run(a):
     save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before,step=a.step,execute=a.execute,
         training_action_blocks=model.chunk,training_current_native_actions=model.action_dim//4,native_hold=a.feedback_native if model.action_dim==4 else 1,feedback_native=a.feedback_native,
         noise_policy=a.noise_policy,own_past_history=model.history_context,new_updates=0,no_future_demonstrated_command_reference_in_controller=True,
+        policy_objective=model.objective,
+        action_generation='categorical/logistic'if model.objective=='mixture'else'deterministic'if model.objective=='mse'else'Gaussian/flow',
         scope='OriginalLeRobotcorpus,commonRGBgoals/resetstates,500nativeanysuccess,DECLAREDfeedback_native1or5,12ownflowintegrationsteps.'
-              'OnlyRGBcurrent/goalplusdeclaredpastRGB/OWNexecutedcontrolhistory;no clock/taskID/proprio/reward/successinputs.EachcommandcomesfromownGaussianproposal.'
+              'OnlyRGBcurrent/goalplusdeclaredpastRGB/OWNexecutedcontrolhistory;no clock/taskID/proprio/reward/successinputs.Actiongenerationdeclaredabove.'
               'Chunk6modelsarelabelledfuture-targetBASELINESONLY;newcurrent-onlycandidatechunk1.'))
 
 

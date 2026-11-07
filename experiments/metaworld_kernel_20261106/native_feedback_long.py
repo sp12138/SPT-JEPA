@@ -80,6 +80,9 @@ def contract(a):
 
 
 def gate(root,plan):
+    if plan.get('promotion_kind')=='bounded_mechanism_test':
+        return dict(passed=True,new_updates=0,
+            scope='Authorized fixed-cap mechanism test after actual initial technical contract;not performance promotion. No automatic long continuation.')
     if plan.get('promotion_kind')=='replicated_flow':
         parent=Path(plan['replication_parent']);deltas=[];world_scores=[];all_scores=[]
         for seed in [3,4]:
