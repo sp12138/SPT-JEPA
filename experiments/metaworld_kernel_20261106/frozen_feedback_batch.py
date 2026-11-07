@@ -15,6 +15,10 @@ def work(a):
     out = Path(r['output']); out.mkdir()
     source = Path(plan['source']); deadline = plan['deadline_unix']
     try:
+        if r.get('wait_output'):
+            while not (Path(r['wait_output'])/'complete.json').exists():
+                assert not (Path(r['wait_output'])/'execution-error.json').exists() and time.time()<deadline
+                time.sleep(5)
         while not (Path(r['run'])/'complete.json').exists():
             assert not (Path(r['run'])/'execution-error.json').exists()
             assert time.time() < deadline
@@ -28,6 +32,7 @@ def work(a):
         else:
             base = [PYTHON, '-B', '-u', plan['evaluator']]+common+['--mode', r['mode'], '--world', r['world']]
             if 'policy_draw' in r: base += ['--policy-draw', r['policy_draw']]
+            if 'render_state' in r: base += ['--render-state', r['render_state']]
         command(base+['--output', str(out/'entry20'), '--budget', '20', '--tasks', 'bin-picking-v3',
                       '--seeds', str(plan['seeds'][0])], out/'entry20.log', env, source, deadline)
         command(base+['--output', str(out/'pilot'), '--tasks']+plan['tasks']+

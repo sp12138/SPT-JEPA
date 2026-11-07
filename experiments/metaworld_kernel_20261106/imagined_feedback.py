@@ -12,6 +12,20 @@ from experiments.metaworld_contact_20261106.bridge_campaign import TASKS
 from experiments.metaworld_kernel_20261106.campaign import save,digest
 
 
+def composed_image(reference,coordinates,original_grid):
+    """Render the composed backward map once, preserving the source resolution."""
+    h,w=reference.shape[-2:]
+    if (h,w)==(128,128):grid=coordinates.permute(0,2,3,1)
+    else:
+        y=(torch.arange(h,device=reference.device,dtype=torch.float32)+.5)*(2/h)-1
+        x=(torch.arange(w,device=reference.device,dtype=torch.float32)+.5)*(2/w)-1
+        yy,xx=torch.meshgrid(y,x,indexing='ij')
+        identity=torch.stack([xx,yy],-1)[None]
+        offset=coordinates-original_grid.permute(0,3,1,2)
+        grid=identity+F.interpolate(offset,(h,w),mode='bilinear',align_corners=False).permute(0,2,3,1)
+    return F.grid_sample(reference.float(),grid,mode='bilinear',padding_mode='border',align_corners=False)
+
+
 def sample_policy(model,batch,generator,steps,solver,draw='stochastic'):
     if draw=='component-median':
         assert model.objective=='mixture'
@@ -35,6 +49,7 @@ def sample_policy(model,batch,generator,steps,solver,draw='stochastic'):
 def run(a):
     torch.set_num_threads(2);torch.set_float32_matmul_precision('highest');a.output.mkdir(parents=True,exist_ok=False)
     assert a.world_action=='own'or a.mode=='world'
+    assert a.render_state=='sequential'or a.mode=='world'
     cfg=json.loads((a.run/'config.json').read_text());assert cfg['model']['action_dim']in[4,20]and not cfg['model']['history_context']and cfg['model']['chunk']==1
     assert cfg['model']['action_dim']==20 or cfg.get('inverse_tail_reserve')==1
     controller=build_model(cfg).cuda().eval().requires_grad_(False)
@@ -60,11 +75,17 @@ def run(a):
             try:
                 while len(actions)<a.budget:
                     actual=resize_tensor([image]).cuda();belief=world.encoder(actual)if world is not None else None;commands=[]
+                    if a.render_state!='sequential':
+                        coordinates=world.grid.permute(0,3,1,2).clone()
+                        reference=belief if a.render_state=='composed128'else actual.float()/255.
+                        actor_belief=None
                     predicted_past=past
                     slot_noise=generator.get_state()if a.noise_coupling=='observation'else None
                     for j in range(5):
                         if slot_noise is not None:generator.set_state(slot_noise)
-                        current=actual if j==0 or a.mode=='static'else F.interpolate(belief*255,(224,224),mode='bilinear',align_corners=False,antialias=True).round().clamp(0,255).byte()
+                        if j==0 or a.mode=='static':current=actual
+                        elif a.render_state=='composed224':current=(actor_belief*255).round().clamp(0,255).byte()
+                        else:current=F.interpolate(belief*255,(224,224),mode='bilinear',align_corners=False,antialias=True).round().clamp(0,255).byte()
                         proposed=sample_policy(controller,dict(pixels=torch.stack([current,goal],1)),generator,a.policy_steps,a.policy_solver,a.policy_draw)[0,0,:4].float().cpu().numpy();calls+=1
                         command=np.clip(proposed*std+mean,-1,1).astype(np.float32);assert np.isfinite(command).all();commands.append(command)
                         control=torch.from_numpy(command[None]).cuda()
@@ -72,7 +93,15 @@ def run(a):
                             forecast_control=control if a.world_action=='own'else torch.zeros_like(control)if a.world_action=='zero'else-control
                             drift,effect,_,_=world.fields(belief,torch.zeros_like(belief),valid*0,predicted_past,valid)
                             displacement=drift+torch.einsum('na,nachw->nchw',torch.cat([forecast_control,forecast_control.abs()],-1),effect)
-                            belief=world.warp(belief,displacement);assert torch.isfinite(belief).all();forecasts+=1
+                            if a.render_state=='sequential':belief=world.warp(belief,displacement)
+                            else:
+                                # Compose coordinate maps, not repeatedly resampled RGB.
+                                # The SAME learned field now reads this once-rendered
+                                # state at the next step; no new NN/label is introduced.
+                                coordinates=world.warp(coordinates,displacement)
+                                actor_belief=composed_image(reference,coordinates,world.grid)
+                                belief=actor_belief if a.render_state=='composed128'else F.interpolate(actor_belief,(128,128),mode='bilinear',align_corners=False,antialias=True)
+                            assert torch.isfinite(belief).all();forecasts+=1
                             predicted_past=forecast_control
                         past=control;valid.fill_(1)
                     plans+=1
@@ -88,7 +117,7 @@ def run(a):
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     after=dict(controller=model_sha(controller),world=model_sha(world)if world is not None else None);assert before==after
     save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=a.step,mode=a.mode,world_action=a.world_action,noise_coupling=a.noise_coupling,
-        policy_objective=controller.objective,policy_solver=a.policy_solver,policy_steps=a.policy_steps,policy_draw=a.policy_draw,policy_field_passes_per_call=a.policy_steps*(2 if a.policy_solver=='midpoint'else 1)if controller.objective=='flow'else 1,
+        render_state=a.render_state,policy_objective=controller.objective,policy_solver=a.policy_solver,policy_steps=a.policy_steps,policy_draw=a.policy_draw,policy_field_passes_per_call=a.policy_steps*(2 if a.policy_solver=='midpoint'else 1)if controller.objective=='flow'else 1,
         independent_action_latents_per_sensor_interval=(1 if a.noise_coupling=='observation'else 5)if controller.objective=='flow'else 0,
         categorical_logistic_draws_per_sensor_interval=5 if controller.objective=='mixture'and a.policy_draw=='stochastic'else 0,
         feedback_native=5,action_native=1,training_action_native=controller.action_dim//4,new_updates=0,current_action_only=controller.action_dim==4,
@@ -111,5 +140,6 @@ if __name__=='__main__':
     p.add_argument('--step',type=int,default=40000)
     p.add_argument('--noise-coupling',choices=['native','observation'],default='native')
     p.add_argument('--policy-draw',choices=['stochastic','component-median'],default='stochastic')
+    p.add_argument('--render-state',choices=['sequential','composed128','composed224'],default='sequential')
     p.add_argument('--policy-solver',choices=['euler','midpoint'],default='euler');p.add_argument('--policy-steps',type=int,default=12)
     p.add_argument('--tasks',nargs='+',default=TASKS);p.add_argument('--seeds',type=int,nargs='+',default=[42,1042]);run(p.parse_args())
