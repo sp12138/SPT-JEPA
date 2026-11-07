@@ -86,11 +86,13 @@ def run(a):
         if l is not None and r is not None:results[name]=compare(l,r,scope)
     mature1000='metaworld_native_mature1000_20261107'
     if (BASE/mature1000/'plan.json').exists():
-        for right in ['static','actual']:
+        for right in ['static','actual','current-only']:
             l=load(mature1000,'world');r=load(mature1000,right)
             if l is not None and r is not None:results['mature_native_world_vs_'+right+'_1000']=compare(l,r,
                 'TwoNEWtrainedactorseeds3/4,40kbudget/LR40k/ownF3/4. Existing1000-case50taskexpandedcomparison,notuntouchedconfirmation. SAMEa_t4DNNs/5nativepolicycalls/500budget. '+
-                ('Static5drawsusesSAMEactualcamera5;worldadds4ownforecasts/20kFpretrain.'if right=='static'else'EXTRAactualRGBEVERYnativecontrol,explicitdifferentinformationtrack/diagnosticONLY;notfairfixedsensor5baseline.'))
+                ('Static5drawsusesSAMEactualcamera5;worldadds4ownforecasts/20kFpretrain.'if right=='static'else
+                 'EXTRAactualRGBEVERYnativecontrol,explicitdifferentinformationtrack/diagnosticONLY;notfairfixedsensor5baseline.'if right=='actual'else
+                 'Capacity/initialization/data/sampler/40kLR40k/worldmatchedCURRENT-ONLYinformationbaseline: futuregoalneverencoded. NotSAMEtrainedactorNNs inthisinformationablation.'))
     extra=[
         ('mature_schedule_vs_120k_schedule_at40k',('metaworld_native_maturity40_20261107','directed'),('metaworld_native_feedback_long_20261107','directed'),
          'SAMEactorseeds3/4/allrandominitialtensors/data/currenta_t-onlytargets/40kactualupdates/F3/4/cases/sensor5. ONLYmax_stepsschedulehorizon40kvs120k(andderived1%warmup)changes;notaseedonlytest.'),
