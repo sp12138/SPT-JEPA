@@ -88,6 +88,7 @@ def contract(a):
         base_cfg['model_class'] = 'temporal_bridge'
         for key in ['components', 'observation_model', 'action_lower', 'action_upper']:
             base_cfg['model'].pop(key, None)
+        base_cfg['model'].pop('retain_goal_chart', None)
         base_cfg['model']['objective'] = 'flow'
         torch.manual_seed(cfg['seed']); baseline = build_model(base_cfg)
         common = ['encoder.', 'predictor.', 'action_input.', 'condition.']
@@ -113,7 +114,7 @@ def contract(a):
         reports.append(dict(arm=r['arm'], seed=r['seed'], shared_initial_tensors=len(shared), loss=float(loss), gradients=gradients,
             current_action_guards=16, proposal_shape=list(proposal.shape)))
     save(a.root/'initial-contract.json', dict(passed=True, new_updates=0, shared_CNN_decoder_initial_exact=True,
-        point_censored_entire_initial_state_exact=True, current_native_action_only=True, reports=reports,
+        point_censored_entire_initial_state_exact=True if pairs else None, current_native_action_only=True, reports=reports,
         scope='Actual real-window CPU gradients/proposals/current-action guards. Actual native2 full optimizer restore/GPU backward/20physics gates still mandatory.'))
 
 

@@ -11,16 +11,17 @@ from .temporal_bridge import TemporalBridge
 
 
 class CorrespondenceBridge(TemporalBridge):
-    def __init__(self, **kwargs):
+    def __init__(self, retain_goal_chart=False, **kwargs):
         assert kwargs.get('visual_source', 'local') == 'local'
         assert kwargs.get('goal_representation') == 'directed'
         assert not kwargs.get('history_context', False)
         assert kwargs.get('goal_information', 'provided') == 'provided'
         super().__init__(**kwargs)
+        self.retain_goal_chart = retain_goal_chart
         self.match_query = nn.Linear(self.width, self.width, bias=False)
         self.match_key = nn.Linear(self.width, self.width, bias=False)
         previous = self.goal_fusion[0]
-        self.goal_fusion[0] = nn.Linear(self.width*2+2, self.width)
+        self.goal_fusion[0] = nn.Linear(self.width*(3 if retain_goal_chart else 2)+2, self.width)
         with torch.no_grad():
             self.goal_fusion[0].weight[:, :self.width*2].copy_(previous.weight)
             self.goal_fusion[0].bias.copy_(previous.bias)
@@ -33,12 +34,16 @@ class CorrespondenceBridge(TemporalBridge):
         b, t = images.shape[:2]
         assert t == 2
         current, goal = self.encoder(images.flatten(0, 1)).unflatten(0, (b, t)).unbind(1)
-        q = F.normalize(self.match_query(current).float(), dim=-1)
-        k = F.normalize(self.match_key(goal).float(), dim=-1)
+        q = F.normalize(self.match_query(current+self.position if self.retain_goal_chart else current).float(), dim=-1)
+        k = F.normalize(self.match_key(goal+self.position if self.retain_goal_chart else goal).float(), dim=-1)
         correspondence = (q@k.transpose(-1, -2)*self.width**.5).softmax(-1)
         aligned = correspondence@goal.float()
         displacement = correspondence@self.image_coordinates-self.image_coordinates
-        value = torch.cat([current, aligned-current, displacement], -1)
+        # Goal displacement is a control signal, not a nuisance to quotient out.
+        # Retain the complete fixed-chart features; matching becomes additional
+        # evidence rather than the only compressed route from the goal image.
+        parts = [current, goal-current, aligned-current, displacement] if self.retain_goal_chart else [current, aligned-current, displacement]
+        value = torch.cat(parts, -1)
         return self.goal_fusion(value)+self.position+self.kind[0]
 
     def audit_expected_gradients(self):
