@@ -1,5 +1,19 @@
 # What the successful action target may actually supply
 
+## Action-target terminology correction
+
+The86.8% actor trains `(o_t, o_{t+k}) -> a_t`, with
+`o_t --a_t--> o_{t+1} ... o_{t+k}`. The label is a recorded action between
+the supplied start and hindsight-goal images. Relative to the start/current
+image, it is the next action to execute. It is not a label for an action after
+the goal image, and no subsequent action sequence is supervised. Nevertheless,
+this IS action-target supervision. Calling it a current or already-executed
+action does not make it an observation-only world-model objective. This result
+belongs to the permitted inverse fallback, not evidence of86.8% without
+next-to-execute action targets. Forward-model pretraining separately uses the
+known action as INPUT and the next RGB as TARGET. No result or run configuration
+changes with this terminology correction.
+
 ## Current evidence, November 7, 09:39 Beijing time
 
 The user now permits inverse learning when necessary. A useful matched gain
