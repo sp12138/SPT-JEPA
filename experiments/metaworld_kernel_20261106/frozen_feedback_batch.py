@@ -22,8 +22,11 @@ def work(a):
         assert json.loads((Path(r['run'])/f"audit-{plan['step']}.json").read_text())['passed']
         assert digest(Path(plan['evaluator'])) == plan['evaluator_sha256']
         wait_gpu_release(a.gpu); env = environment(source, a.gpu)
-        base = [PYTHON, '-B', '-u', plan['evaluator'], '--run', r['run'], '--step', str(plan['step']),
-                '--mode', r['mode'], '--world', r['world'], '--manifest', plan['manifest']]
+        common = ['--run', r['run'], '--step', str(plan['step']), '--manifest', plan['manifest']]
+        if r['mode'] == 'actual':
+            base = [PYTHON, '-B', '-u', str(source/'experiments/metaworld_kernel_20261106/inverse_evaluate.py')]+common+['--feedback-native', '1']
+        else:
+            base = [PYTHON, '-B', '-u', plan['evaluator']]+common+['--mode', r['mode'], '--world', r['world']]
         command(base+['--output', str(out/'entry20'), '--budget', '20', '--tasks', 'bin-picking-v3',
                       '--seeds', str(plan['seeds'][0])], out/'entry20.log', env, source, deadline)
         command(base+['--output', str(out/'pilot'), '--tasks']+plan['tasks']+
