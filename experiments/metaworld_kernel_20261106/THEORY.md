@@ -1,6 +1,6 @@
 # What the successful action target may actually supply
 
-## Current evidence, November 7, 08:50 Beijing time
+## Current evidence, November 7, 09:06 Beijing time
 
 The user now permits inverse learning when necessary. A useful matched gain
 exists, although a broadly successful purely observation-supervised controller
@@ -260,6 +260,54 @@ policy calls; no new label, threshold, teacher or task rule is added. Default
 proposal/RNG parity and deterministic bounded median behavior pass on actual
 saved weights and held-out image pairs. These are queued zero-SGD50-task screens;
 no performance benefit has yet been measured.
+
+### The remaining failure is not uniform across tasks
+
+The matched current-only information control has now completed50tasks:
+293/400=73.25% versus346/400=86.50% with a proper future goal image.
+The +13.25pp case-cluster interval is[10.00,16.50], conditional on these two
+trained actor pairs; both per-actor gains are positive(+20.5pp,+6.0pp). Both actors
+use the same40k schedule, data, initial architecture and ownF. The aggregate
+supports useful goal conditioning; it does not establish arbitrary new-goal
+transfer or purely observation-supervised control.
+
+Inside the ongoing1,000-case comparison, three tasks have fully completed40
+matched episodes/arm with trace/caseSHA verification. World versus EXTRAactual
+RGB every native step scores24/31 Basketball,31/30 BinPicking,1/15 SideHandlePull.
+These are task-local diagnostics, not the final50-task score; extra observations
+are a different information track. The world-feedback gap is task-dependent,
+and the good six-task mean cannot justify assuming F is adequate everywhere.
+Neither the gap nor a global pixelMSE uniquely identifies image blur as its cause.
+
+A zero-SGD experiment therefore tests a general state-update operator. If
+image_j(x)=image_0(C_j(x)) and a predicted backward map is w_j(x), then
+C_(j+1)=C_j composed with w_j. Store the composed coordinate map and render the
+source image once, rather than resampling its RGB repeatedly. Both the policy
+and next forward-field query consume this once-rendered image. A128-source
+control isolates repeated resampling, and a224-source arm also preserves original
+image detail. The weights, goals, own noise, real camera5, five policy calls and
+four F queries remain fixed. Additional coordinate-map sampling/render compute
+is disclosed. Zero-motion224 identity is byte-exact; four half-pixel checkerboard
+warps lose all contrast sequentially but preserve variance.25 when composed.
+This synthetic fact is not evidence of a manipulation gain. Eight frozen50-task
+screens on actors1..4 are queued with physical entry checks before formal scoring.
+
+All twelve new actor variants have also completed40k and passed actual native
+checkpoint/optimizer restores, held-out gradients and sample-independence checks.
+Early completed BinPicking/PickPlace cases do not show a consistent censoring
+benefit. Their complete physical comparisons and component-median controls are
+still pending; none is promoted on training likelihood or selected tasks.
+
+The next completed full-eight-task endpoints give six-manipulation success
+85.42% for one censored logistic versus80.00% for its exact-initialized ordinary
+point-likelihood control. Four-component censoring scores82.08% versus82.92%
+for ordinary point likelihood. The same-seed mature Flow control is85.83%,
+and additional Flow seeds5/6 score86.67%. Each listed arm has240 manipulation
+episodes/320 total; the new50-task screens and deterministic-decision controls
+remain pending. This does not support a universal censoring advantage or a
+large improvement over Flow. The single-component model uses one action-field
+pass instead of twelve; comparable performance could be an efficiency result,
+but requires the full broad comparison. Do not select architectures per task.
 
 ## Historical mechanism test before inverse learning was permitted
 

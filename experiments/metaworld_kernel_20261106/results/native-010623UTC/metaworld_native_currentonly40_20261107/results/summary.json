@@ -1,0 +1,352 @@
+{
+  "runs": [
+    {
+      "host": "dev13",
+      "gpu": 6,
+      "seed": 3,
+      "arm": "current-only",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_currentonly40_20261107/training/current-only-seed3",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed3",
+      "wait_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_mse_control1000_20261107/mse-world-native4-seed1",
+      "random_initial_reference": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_feedback_long_20261107/training/directed-seed3/initial-model/weights.pt",
+      "config_sha256": "2101064ae883624addbc4f550ca7e51b23a7f7d18d1cb5525262841b7ac0ca10",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev15",
+      "gpu": 6,
+      "seed": 4,
+      "arm": "current-only",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_currentonly40_20261107/training/current-only-seed4",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed4",
+      "wait_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_mse_control1000_20261107/mse-world-native4-seed2",
+      "random_initial_reference": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_feedback_long_20261107/training/directed-seed4/initial-model/weights.pt",
+      "config_sha256": "1c1b3db3cc77c013a29f84313407507713fa2b3a50c870ef0a43d24ee1a26d37",
+      "complete": true,
+      "error": null
+    }
+  ],
+  "scores": [
+    {
+      "arm": "current-only",
+      "step": 40000,
+      "cohort": "hold5",
+      "trained_seeds": [
+        3,
+        4
+      ],
+      "episodes": 320,
+      "manipulation_successes": 130,
+      "manipulation_episodes": 240,
+      "manipulation_percent": 54.166666666666664,
+      "goal_valid_episodes": 312,
+      "goal_valid_percent": 59.61538461538461,
+      "task_scores": {
+        "bin-picking-v3": {
+          "successes": 6,
+          "episodes": 40
+        },
+        "door-open-v3": {
+          "successes": 33,
+          "episodes": 40
+        },
+        "drawer-open-v3": {
+          "successes": 40,
+          "episodes": 40
+        },
+        "peg-insert-side-v3": {
+          "successes": 21,
+          "episodes": 40
+        },
+        "pick-place-v3": {
+          "successes": 2,
+          "episodes": 40
+        },
+        "push-v3": {
+          "successes": 28,
+          "episodes": 40
+        },
+        "reach-v3": {
+          "successes": 17,
+          "episodes": 40
+        },
+        "reach-wall-v3": {
+          "successes": 39,
+          "episodes": 40
+        }
+      }
+    },
+    {
+      "arm": "current-only",
+      "step": 40000,
+      "cohort": "screen50",
+      "trained_seeds": [
+        3,
+        4
+      ],
+      "episodes": 400,
+      "manipulation_successes": 285,
+      "manipulation_episodes": 384,
+      "manipulation_percent": 74.21875,
+      "goal_valid_episodes": 396,
+      "goal_valid_percent": 73.48484848484848,
+      "task_scores": {
+        "assembly-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "basketball-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "bin-picking-v3": {
+          "successes": 3,
+          "episodes": 8
+        },
+        "box-close-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "button-press-topdown-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-topdown-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "coffee-button-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "coffee-pull-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "coffee-push-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "dial-turn-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "disassemble-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-close-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-lock-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-unlock-v3": {
+          "successes": 2,
+          "episodes": 8
+        },
+        "drawer-close-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "drawer-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "faucet-close-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "faucet-open-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "hammer-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "hand-insert-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-press-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-press-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-pull-side-v3": {
+          "successes": 1,
+          "episodes": 8
+        },
+        "handle-pull-v3": {
+          "successes": 0,
+          "episodes": 8
+        },
+        "lever-pull-v3": {
+          "successes": 2,
+          "episodes": 8
+        },
+        "peg-insert-side-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "peg-unplug-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "pick-out-of-hole-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "pick-place-v3": {
+          "successes": 2,
+          "episodes": 8
+        },
+        "pick-place-wall-v3": {
+          "successes": 3,
+          "episodes": 8
+        },
+        "plate-slide-back-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "plate-slide-back-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "plate-slide-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "plate-slide-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "push-back-v3": {
+          "successes": 2,
+          "episodes": 8
+        },
+        "push-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "push-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "reach-v3": {
+          "successes": 2,
+          "episodes": 8
+        },
+        "reach-wall-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "shelf-place-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "soccer-v3": {
+          "successes": 1,
+          "episodes": 8
+        },
+        "stick-pull-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "stick-push-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "sweep-into-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "sweep-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "window-close-v3": {
+          "successes": 0,
+          "episodes": 8
+        },
+        "window-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        }
+      }
+    },
+    {
+      "arm": "current-only",
+      "step": 40000,
+      "cohort": "standard8",
+      "trained_seeds": [
+        3,
+        4
+      ],
+      "episodes": 320,
+      "manipulation_successes": 172,
+      "manipulation_episodes": 240,
+      "manipulation_percent": 71.66666666666667,
+      "goal_valid_episodes": 312,
+      "goal_valid_percent": 71.7948717948718,
+      "task_scores": {
+        "bin-picking-v3": {
+          "successes": 25,
+          "episodes": 40
+        },
+        "door-open-v3": {
+          "successes": 40,
+          "episodes": 40
+        },
+        "drawer-open-v3": {
+          "successes": 40,
+          "episodes": 40
+        },
+        "peg-insert-side-v3": {
+          "successes": 26,
+          "episodes": 40
+        },
+        "pick-place-v3": {
+          "successes": 6,
+          "episodes": 40
+        },
+        "push-v3": {
+          "successes": 35,
+          "episodes": 40
+        },
+        "reach-v3": {
+          "successes": 15,
+          "episodes": 40
+        },
+        "reach-wall-v3": {
+          "successes": 37,
+          "episodes": 40
+        }
+      }
+    }
+  ],
+  "complete": 2,
+  "errors": 0,
+  "training": true,
+  "performance_goal_achieved": false,
+  "scope": "Current-onlycandidateorlabelledfuturechunkbaseline;originalcorpus/commonphysicalcases,notpublicSOTA/equalFLOPs.Noclock/oraclefuturecommandsat inference."
+}

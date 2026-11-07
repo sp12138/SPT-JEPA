@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-07T00:50:02Z",
+  "updated_utc": "2026-11-07T01:06:23.891497Z",
   "validated_native_current_method": {
     "actor_steps": 40000,
     "world_steps": 20000,
@@ -93,7 +93,7 @@
     "seed_pairs": "3/4 for all method comparisons; baseline replicas5/6. OwnF3/4 each shared6times, not12 independent pipeline pretrainings.",
     "target": "ONLYcurrenta_t4D",
     "all12_actual_native2_600_restore_gradient_independence_physics_pass": true,
-    "latest": "Actual00:42:57UTCsteps15400..16300,allfinite/noerrors; all12native2/600actualrestore/FP32grad/independence/20physicsPASS. Actualsavedinitialsverified. Laterstatusreadremote;nofinished40kperformanceclaim.",
+    "latest": "All12completed40000nativeSGD+actualfullCPUrestore/heldoutFP32backward/sampleindependenceaudits PASS by01:03:55UTC. Formalfull8WORLD/hold/50screen stillinprogress. EarlycompletedBin/Pick tasksdonotshowconsistentcensoringgain;notpromoted. No executionerrors. NOautolong.",
     "dev13_g0_g5": [
       3725945,
       3725948,
@@ -111,7 +111,17 @@
       3265160
     ],
     "performance": "PENDING; probability normalization and initial technical gates are NOT physical improvement. No automatic long continuation.",
-    "actual_saved_initial_parity": "Actualinitial-model/weights.pt:wholepoint/censoredstateexact forbothK1/K4andseeds3/4;117baselineinitialtensorsshared. Correspondence117commoninitialtensorsalsoexact;newQ/K/expandedfusionextra."
+    "actual_saved_initial_parity": "Actualinitial-model/weights.pt:wholepoint/censoredstateexact forbothK1/K4andseeds3/4;117baselineinitialtensorsshared. Correspondence117commoninitialtensorsalsoexact;newQ/K/expandedfusionextra.",
+    "completed_full8_snapshot_011247UTC": {
+      "baseline_replicas5_6_full6": 86.66666666666667,
+      "censored_K4_full6": 82.08333333333333,
+      "point_K4_full6": 82.91666666666667,
+      "censored_K1_full6": 85.41666666666667,
+      "point_K1_full6": 80.0,
+      "episodes_per_arm": 320,
+      "manipulation_episodes_per_arm": 240,
+      "scope": "Complete2parentfull8endpoints for these arms only;50screens/mediancontrols/correspondence pending. No universalcensoringwin/no promotion. Same-seedFlow3/4 comparator85.833;extraFlow5/6not paired3/4. One-passmixturesvs12fieldpassFlow DIFFERENTinferencecompute."
+    }
   },
   "mature_expanded50": {
     "root": "metaworld_native_mature1000_20261107",
@@ -160,10 +170,60 @@
     "decision": "Highest-weightlatentcomponentmedianthenSAMEactuatorclip; not claimedfullmixtureMAP/optimalaction. Replacesowncategorical/logisticdrawsonly, samefrozenq/F/camera5/5calls.",
     "technical": "Actualsavedweights/realwindows/defaultstochasticproposals EXACT vsbcdc forflowandmixture. Medianfinite/bounded/generatorindependent. Actualphysicalentry20 pending untilNNtrained. NO advertisedperformancegain."
   },
+  "completed_task_clock_diagnostic": {
+    "source": "reports/metaworld_kernel_20261106/completed-task-clock-diagnostics.json",
+    "scope": "ONLY3fullycompletedmatchedtasksinsideONGOING1000-casecohort,notfinal50performance. ACTUALRGBnative1getsEXTRAinformation. NNafterhashpendingfull1000;case/actualtraceSHAverified.",
+    "actor_seeds": [
+      3,
+      4
+    ],
+    "episodes_per_arm_per_task": 40,
+    "world_actual_counts": {
+      "basketball": [
+        24,
+        31
+      ],
+      "bin-picking": [
+        31,
+        30
+      ],
+      "handle-pull-side": [
+        1,
+        15
+      ]
+    },
+    "implication": "Predictionfeedbackhasatask-specificgap;NOTuniquelyblur/contact-root-causeproof. Motivatesparameter-freeimage-mapcompositiontest."
+  },
+  "composed_render_control": {
+    "root": "metaworld_native_composed50_20261107",
+    "new_sgd": 0,
+    "recipes": 8,
+    "source_NN": "bcdc472",
+    "worker": "reports/metaworld_kernel_20261106/frozen-feedback-batch-v4.py",
+    "evaluator": "reports/metaworld_kernel_20261106/imagined_feedback-frozen-v12.py",
+    "actors": "Old1/2 plusNEWmature3/4,4existing40kcurrent-a_t4Dactors,ownF20k1..4.",
+    "controls": "Same50task4caseSCREEN/camera5/ownnoise/fivepolicycalls/fourF. Composed128/224coordinate-mapstatevsstandardsequentialRGB. One-source-renderedstatefeedsBOTHpolicyandnextF;extra2channelcoordinatewarps/rendercomputedisclosed.",
+    "technical": "Zero-flow224identityuint8EXACT;fourhalf-pixelwarpcheckerboardvariance0sequentialvs.25composed. SYNTHETICgeometryonly,actualphysicalentry20pendingqueues;NOperformancegainclaimed.",
+    "dev13_g2_g3": [
+      3727549,
+      3727550
+    ],
+    "dev15_g2_g3": [
+      3266318,
+      3266319
+    ],
+    "dev6_g4_g7": [
+      12427,
+      12428,
+      12429,
+      12430
+    ],
+    "dependency": "WaitOWNpredecessorNNworker.complete beforeGPUlease;no NNinterruption/concurrentGPUjobs. Dev13/15aftercorrespondence/base-replica;dev6afternative-long120kfinal1000. No futureactualimages/actionreferences/newdata/teacher/taskrules."
+  },
   "finite_synthesis": {
     "root": "metaworld_native_feedback_synthesis_20261107",
     "host": "dev13",
-    "pid": 3727220,
+    "pid": 3727559,
     "new_updates": 0,
     "new_simulator_runs": 0,
     "purpose": "WaitONLYalreadyauthorizedboundedroots,thenread-onlyactualtrace/NN/case verification +pairedphysical-casebootstrap. Exit;noautomaticresearchround/LLMmonitor/notifications/oldgoalresume.",
@@ -172,7 +232,7 @@
       "results/paired-comparisons.json"
     ],
     "comparison_source": "reports/metaworld_kernel_20261106/current_compare-all-v7.py pinnedSHA; completed snapshot results/paired-snapshot-0030UTC.json. Final runs once after20 disposed roots or originaldeadline. No new SGD/sim/LLM monitor.",
-    "latest_owner": "launch-adoption-v6.json / plan-v5.json21explicitroots / bounded-feedback-collect-v3.py / current_compare-all-v8.py pinnedSHA; retired3726473exactcmdlineverified,NNworkersunchanged. Read-onlyfinal after21disposed or originaldeadline. No newSGD/sim/LLMmonitor."
+    "latest_owner": "launch-adoption-v7.json / plan-v6.json22explicitroots / bounded-feedback-collect-v3.py / current_compare-all-v9.py pinnedSHA. Retired3727220exactcmdlineverified,allNNworkersunchanged. Final22-rootread-onlycollect/exit,0newSGD/sim."
   },
   "current_host_allocation": {
     "snapshot_UTC": "2026-11-07T00:34:00Z",
@@ -180,7 +240,7 @@
     "dev15": "g0..5 twelve-study second6;g6current-only40 thenqueuedcurrent-only1000;g7frozenmatureworld1000.",
     "dev6": "g0/1staticmature1000;g2/3EXTRAactualRGBnative1diagnostic1000;g4..7strictnative4longfinaleval/1000.",
     "caution": "24usefulslots assigned; NOT continuous100%GPU claim. Finite jobs mayfinish/import/runCPUphysics. No oldgoal or recurringLLMmonitor.",
-    "queued_followup": "Median50zero-SGDcontrols8waitOWNactorcompleteondev13/dev15g0/1/4/5; sameNN/world/case, no concurrent NN withtraining."
+    "queued_followup": "Median50zeroSGD8after respectiveactor.completeondev13/15g0/1/4/5. Composed50zeroSGD8aftercorrespondence/base-replicacompleteondev13/15g2/3 andaftermain120kfinal1000ondev6g4..7. No concurrentNNs perlease."
   },
   "local_evidence": {
     "native-003703UTC": {
@@ -195,6 +255,33 @@
       "manifest_SHA_verified": true,
       "captured_utc": "2026-11-07T00:50:02.216808Z",
       "includes": "Final21-rootcollectorownership,queued8frozenmediancontrols,CPUparityproofs/resources. Physicalperformanceofnew12/median8pending."
+    },
+    "native-010623UTC": {
+      "files": 48,
+      "manifest_SHA_verified": true,
+      "captured_utc": "2026-11-07T01:06:23.891497Z",
+      "includes": "Actualall12audit40k/status;current-only50complete;completed3-taskextraRGB1diagnostic;queuedcomposition8+final22-rootcollectorplans/ownership;syntheticblurproof."
     }
+  },
+  "goal_information_fifty": {
+    "proper_goal_percent": 86.5,
+    "current_only_percent": 73.25,
+    "episodes_per_arm": 400,
+    "trained_seeds": [
+      3,
+      4
+    ],
+    "delta_pp": 13.25,
+    "physical_case_cluster_ci95_pp": [
+      10.0,
+      16.5
+    ],
+    "per_seed_delta_pp": [
+      20.5,
+      6.0
+    ],
+    "trace_case_hashes_verified": true,
+    "scope": "Completed50-task4caseSCREEN,not1000-caseconfirmation;conditional2trainedpairs. No newSGD/physicsepisodes.",
+    "report": "results/goal-information-fifty-paired.json"
   }
 }
