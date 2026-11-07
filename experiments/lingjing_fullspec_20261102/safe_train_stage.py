@@ -7,6 +7,18 @@ import sys
 import torch
 
 
+def prune_export(path):
+    """An obsolete export already absent needs no further cleanup."""
+    import shutil
+    try:
+        shutil.rmtree(path)
+    except FileNotFoundError:
+        # Do not hide a missing child inside a still-existing directory, or
+        # permission/storage errors. The observed failure was the root itself.
+        if Path(path).exists():
+            raise
+
+
 def safe_save(progress, trainer, module):
     from lightning.pytorch.plugins.io.async_plugin import AsyncCheckpointIO
     from lightning.pytorch.plugins.io.torch_plugin import TorchCheckpointIO
@@ -23,9 +35,8 @@ def safe_save(progress, trainer, module):
     checkpoint.mkdir(exist_ok=True)
     torch.save(module.model.state_dict(), checkpoint / 'weights.pt')
     (checkpoint / 'config.json').write_text(json.dumps(dict(_target_=model_target(progress.cfg), **progress.cfg['model']), indent=2))
-    import shutil
     for older in sorted(progress.root.glob('model-step*'))[:-2]:
-        if int(older.name.split('step')[1]) not in progress.cfg.get('retain_steps', []):shutil.rmtree(older)
+        if int(older.name.split('step')[1]) not in progress.cfg.get('retain_steps', []):prune_export(older)
     record = progress.root / f'safe-checkpoint-io-{trainer.global_step:07d}.json'
     value = dict(step=int(trainer.global_step), checkpoint_io=type(io).__module__ + '.' + type(io).__name__,
         async_completion_waited=isinstance(io, AsyncCheckpointIO), atomic_backend=True,

@@ -1,0 +1,93 @@
+{
+  "passed": true,
+  "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_input_inverse_20261107_v1/training/observed-s4-w10-seed2",
+  "step": 5000,
+  "weights_sha256": "b31362b29b6ab57ad1ebf33af3a471453bf5fbb1737579d3940dc76491fb8294",
+  "audit_sha256": "3fe493f6c6dbe3b3251ae935e428c1839e9dfa63764cdc0f69123d5f30aa2ec3",
+  "actual_model_source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_input_inverse_20261107/source-faf40148/as_jepa_lewm/executed_inverse.py",
+  "actual_model_source_sha256": "437a5b67e7fcabc3b81ac83369b4663c7a54ffe1c6779714972623921c97d407",
+  "heldout_windows": {
+    "split": "test",
+    "indices": [
+      9738,
+      9322
+    ],
+    "original_episodes": [
+      1978,
+      2085
+    ],
+    "episode": [
+      10426,
+      9890
+    ],
+    "rows": [
+      [
+        167882,
+        167883,
+        167884,
+        167885,
+        167886,
+        167887,
+        167888,
+        167889
+      ],
+      [
+        159043,
+        159044,
+        159045,
+        159046,
+        159047,
+        159048,
+        159049,
+        159050
+      ]
+    ]
+  },
+  "model_state_before": "973972d91589bbd2f71d855bbdc5a680117a16da66625cf93332fc111706bca7",
+  "model_state_after": "973972d91589bbd2f71d855bbdc5a680117a16da66625cf93332fc111706bca7",
+  "model_unchanged": true,
+  "model_updates": 0,
+  "main_loss": 0.011844892054796219,
+  "weighted_inverse_loss": 1.3202482461929321,
+  "inverse_observed": 0.1320248246192932,
+  "inverse_predicted": null,
+  "groups": {
+    "encoder": {
+      "main_norm": 0.6754213208812785,
+      "inverse_norm": 115.32215562573835,
+      "inverse_over_main": 170.74106496263386,
+      "cosine": 0.4907205157622625
+    },
+    "predictor": {
+      "main_norm": 0.05297720345121337,
+      "inverse_norm": 0.0,
+      "inverse_over_main": 0.0,
+      "cosine": null
+    },
+    "action_encoder": {
+      "main_norm": 0.011995607263760505,
+      "inverse_norm": 0.0,
+      "inverse_over_main": 0.0,
+      "cosine": null
+    },
+    "pool": {
+      "main_norm": 0.06866059863034918,
+      "inverse_norm": 12.620740498343384,
+      "inverse_over_main": 183.81343521763,
+      "cosine": 0.3570259631927974
+    },
+    "renderer": {
+      "main_norm": 0.13222535483631057,
+      "inverse_norm": 0.0,
+      "inverse_over_main": 0.0,
+      "cosine": null
+    },
+    "inverse_head": {
+      "main_norm": 0.0,
+      "inverse_norm": 12.683797206360609,
+      "inverse_over_main": null,
+      "cosine": null
+    }
+  },
+  "scope": "Read-only decomposition on two actual heldout windows,permodel/pergroup. No optimizer step,simulator,baseline evaluation or additional training. Norm/cosine are not control performance or causal proof."
+}

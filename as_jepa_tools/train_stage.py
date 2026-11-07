@@ -7,6 +7,22 @@ from pathlib import Path
 import torch
 
 
+def write_runtime_source(root, target_step, initial_step, record):
+    """Preserve every attempt's provenance without reusing an exclusive name."""
+    import uuid
+    base = Path(root)/f'stage-runtime-source-{target_step:07d}.json'
+    for attempt in range(16):
+        path = base if attempt == 0 else Path(root)/(
+            f'stage-runtime-source-{target_step:07d}-resume{initial_step:07d}-{uuid.uuid4().hex}.json')
+        try:
+            with path.open('x') as handle:
+                json.dump(record, handle, indent=2)
+        except FileExistsError:
+            continue
+        return path
+    raise FileExistsError('Could not allocate a unique runtime-source record')
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--config", required=True)
@@ -36,8 +52,9 @@ def main():
     import as_jepa_lewm.train as entry
     original = entry.PersistentProgress.on_train_batch_end
     runtime_recorded = False
+    runtime_record_path = None
     def capped(progress, trainer, module, outputs, batch, batch_idx):
-        nonlocal runtime_recorded
+        nonlocal runtime_recorded, runtime_record_path
         if cfg.get('record_runtime_source',False) and not runtime_recorded:
             import inspect,os
             from as_jepa_lewm.factory import build_model
@@ -46,7 +63,7 @@ def main():
             record=dict(paths=paths,sha256={k:hashlib.sha256(Path(v).read_bytes()).hexdigest() for k,v in paths.items()},
                         cwd=os.getcwd(),PYTHONPATH=os.environ.get('PYTHONPATH'),CUDA_VISIBLE_DEVICES=os.environ.get('CUDA_VISIBLE_DEVICES'),
                         command=sys.argv,step=int(trainer.global_step),target_step=a.stop_step)
-            with (root/f'stage-runtime-source-{a.stop_step:07d}.json').open('x') as handle:json.dump(record,handle,indent=2)
+            runtime_record_path = write_runtime_source(root, a.stop_step, initial_step, record)
             runtime_recorded=True
         original(progress, trainer, module, outputs, batch, batch_idx)
         if int(trainer.global_step) >= a.stop_step:
@@ -64,6 +81,7 @@ def main():
         raise RuntimeError("Stage failed to reach its exact update budget: " + str(status))
     record = dict(stage_complete=True, initial_step=initial_step, stop_step=a.stop_step,
                   scheduler_total_steps=cfg["max_steps"], config_sha256=hashlib.sha256(config_path.read_bytes()).hexdigest(),
+                  runtime_source_record=str(runtime_record_path) if runtime_record_path else None,
                   scope="Existing Lightning Trainer and checkpoint code; only an operational exact-step stop callback is added.")
     (root / "stage-complete.json").write_text(json.dumps(record, indent=2) + "\n")
     print(json.dumps(record))
