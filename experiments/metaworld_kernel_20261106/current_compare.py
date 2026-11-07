@@ -114,6 +114,13 @@ def run(a):
             l=load(median,arm);r=load('metaworld_action_measure_20261107',arm,cohort='final')
             if l is not None and r is not None:results[f'mixture_componentmedian_vs_stochastic_{arm}_screen50']=compare(l,r,
                 'EXACTSAMEfrozen40kactor/F3/4NNs/cases/camera5/5policycalls/4F. Onlydecisionrulechanges: highest-weightlatentcomponentmedianthenclipvsowncategorical/logisticsampling. No newSGD/threshold/taskrule. NotclaimedfullmixtureMAP/optimalaction;50task4caseSCREEN.')
+    composed='metaworld_native_composed50_20261107'
+    if (BASE/composed/'plan.json').exists():
+        for group,parent,parent_arm in [('old','metaworld_current_control50_20261107','world-native4'),('new','metaworld_native_maturity40_20261107','directed')]:
+            for mode in ['composed128','composed224']:
+                l=load(composed,mode+'-'+group);r=load(parent,parent_arm,cohort='final')
+                if l is not None and r is not None:results[f'{mode}_vs_sequential_{group}_screen50']=compare(l,r,
+                    'EXACTSAMEfrozena_t4Dq40k/F20kNNs/cases/camera5/ownnoise/5policycalls/4F. RGBstatepropagationreplacedbycoordinatecompositionandone-source rendering,128or224;oncere-renderedstatefeedsBOTHpolicyandnextFfields. Extra2channelmapwarps/rendercomputeexplicit. No newSGD/futureexpertcommands/actualfutureimage/taskprior.50task4caseSCREEN,notsyntheticgeometryperformance.')
     for name,left,right,scope in extra:
         if not all((BASE/x[0]/'training-plan.json').exists()for x in [left,right]):continue
         for cohort in ['standard','final']:
