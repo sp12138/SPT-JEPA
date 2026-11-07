@@ -3,6 +3,7 @@ from importlib import import_module
 
 
 MODEL_TARGETS = {
+    "executed_inverse": "as_jepa_lewm.executed_inverse.ExecutedInverseLeWM",
     "censored_action_bridge": "as_jepa_lewm.censored_action.CensoredActionBridge",
     "correspondence_bridge": "as_jepa_lewm.correspondence_bridge.CorrespondenceBridge",
     "query_recurrent": "as_jepa_lewm.query_recurrent.QueryRecurrent",

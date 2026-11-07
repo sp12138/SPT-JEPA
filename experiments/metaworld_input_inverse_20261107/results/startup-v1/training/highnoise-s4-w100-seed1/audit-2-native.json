@@ -1,0 +1,153 @@
+{
+  "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_input_inverse_20261107_v1/training/highnoise-s4-w100-seed1",
+  "step": 2,
+  "config_sha256": "be3ee34bab410286b2f4dfc828a24f35fbb86ade2cc407a6667e50d5f716f7fd",
+  "checkpoint_sha256": "274de514c0b437182d52008fc33742d19ccfe1ffa39771f2ef925e564d74aaa3",
+  "portable_sha256": "0e8b2e8471c60cf487dd78e8fe59e2ce7ae5fb057bcdd4bbe2d640c2b28464cb",
+  "checkpoint": {
+    "step": 2,
+    "expected_step": 2,
+    "checks": {
+      "exact_step": true,
+      "model_finite": true,
+      "portable_finite": true,
+      "optimizer_present": true,
+      "optimizer_finite": true,
+      "scheduler_present": true,
+      "scheduler_finite": true,
+      "rng_present": true,
+      "sample_cursor": true,
+      "portable_equal": true
+    },
+    "portable_missing": [],
+    "portable_different": [],
+    "campaign_samples": 256
+  },
+  "actual_cpu_restore": {
+    "model": true,
+    "optimizer": true,
+    "scheduler": true
+  },
+  "updated_tensors": 292,
+  "heldout_windows": {
+    "split": "test",
+    "indices": [
+      9385,
+      8670
+    ],
+    "original_episodes": [
+      1897,
+      1990
+    ],
+    "episode": [
+      9950,
+      9487
+    ],
+    "rows": [
+      [
+        160621,
+        160622,
+        160623,
+        160624,
+        160625,
+        160626,
+        160627,
+        160628
+      ],
+      [
+        151853,
+        151854,
+        151855,
+        151856,
+        151857,
+        151858,
+        151859,
+        151860
+      ]
+    ]
+  },
+  "loss": 100.66970825195312,
+  "loss_finite": true,
+  "metrics": {
+    "loss": 100.66970825195312,
+    "fm": 1.1468846797943115,
+    "rate": 0.0025763569865375757,
+    "entry": 118.65465545654297,
+    "surprise": 14.707609176635742,
+    "rate_share": 0.0005615989794023335,
+    "feature_std": 0.02444664016366005,
+    "active_dims": 62.0,
+    "temporal_noise_rho": 0.800000011920929,
+    "forecast_fraction": 0.5,
+    "inverse_observed": 0.9952217936515808,
+    "inverse": 0.9952217936515808,
+    "inverse_weight": 100.0
+  },
+  "gradients": {
+    "encoder": {
+      "expectation": "active",
+      "parameters": 5501376,
+      "parameter_tensors": 198,
+      "trainable_parameters": 5501376,
+      "gradient_tensors": 198,
+      "gradient_norm": 47.316139363809675,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "pool": {
+      "expectation": "active",
+      "parameters": 152464,
+      "parameter_tensors": 9,
+      "trainable_parameters": 152464,
+      "gradient_tensors": 9,
+      "gradient_norm": 17.78588961629289,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "predictor": {
+      "expectation": "active",
+      "parameters": 10828544,
+      "parameter_tensors": 87,
+      "trainable_parameters": 10828544,
+      "gradient_tensors": 87,
+      "gradient_norm": 0.0017758182635094336,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "action_encoder": {
+      "expectation": "active",
+      "parameters": 22244,
+      "parameter_tensors": 6,
+      "trainable_parameters": 22244,
+      "gradient_tensors": 6,
+      "gradient_norm": 4.463748573764087e-21,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "renderer": {
+      "expectation": "active",
+      "parameters": 34595376,
+      "parameter_tensors": 242,
+      "trainable_parameters": 34595376,
+      "gradient_tensors": 241,
+      "gradient_norm": 0.8412448303199164,
+      "gradients_finite": true,
+      "passed": true
+    },
+    "inverse_head": {
+      "expectation": "active",
+      "parameters": 103956,
+      "parameter_tensors": 6,
+      "trainable_parameters": 103956,
+      "gradient_tensors": 6,
+      "gradient_norm": 28.1663102182103,
+      "gradients_finite": true,
+      "passed": true
+    }
+  },
+  "all_parameter_gradients_finite": true,
+  "eval_buffers_unchanged": true,
+  "passed": true,
+  "finished_utc": "2026-11-07T11:18:54.192435+00:00",
+  "scope": "Native full model/AdamW/scheduler CPU restores; actual held-out FP32 backward without optimizer step. No physical/optimal-action labels. Positive gradients are interface evidence,not task performance."
+}

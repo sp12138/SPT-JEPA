@@ -1,0 +1,76 @@
+{
+  "status": "ACTIVE_32_CANDIDATE_SCREEN_TRAINING",
+  "objective": "Improve our world-model learning with an auxiliary inverse of actual forward inputs; published baseline numbers only, no baseline retraining.",
+  "hosts": [
+    "dev6",
+    "dev6-2c",
+    "dev13",
+    "dev15"
+  ],
+  "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_input_inverse_20261107_v1",
+  "nn_source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_input_inverse_20261107/source-faf40148",
+  "helper": "/efs/prescottsun/SPT-JEPA/reports/metaworld_input_inverse_20261107/helper-io-v2",
+  "finite_followup_helper": "/efs/prescottsun/SPT-JEPA/reports/metaworld_input_inverse_20261107/helper-followup-8d76f32b",
+  "canonical_screen_collector": "collector-launch-io-v2.json",
+  "canonical_final_collector": "followup/launch-dev13.json controller;followup/results/summary.json",
+  "candidates": 32,
+  "independent_training_seeds": [
+    1,
+    2
+  ],
+  "variants": "4inverse families x2state widths x2globalweights;all16configs x2seeds",
+  "native_stages": [
+    2,
+    1000,
+    5000
+  ],
+  "eligible_long_stages": [
+    20000,
+    41200
+  ],
+  "selected_extra_scratch_seeds": [3, 4, 5, 6, 7, 8],
+  "extra_scratch_max": 24,
+  "new_final_case_bank": "followup/cases/manifest.json;50tasks x20newphysicalcases;all1000constructed/exactphysics+strictRGBgates passed;no candidate outcomes yet",
+  "final_evaluation": "All eight trained seeds per selected configuration;41200steps;1000cases/model;initial selected and fresh replicas separately reported",
+  "technical_entry_proof": {
+    "native_two_update_checkpoint_restores": 32,
+    "heldout_fp32_backward_and_positive_required_gradients": 32,
+    "padding_target_poison_and_cross_sample_and_deployment_removal_checks": 32,
+    "actual_20_native_step_mpc_checks": 32,
+    "first100_actual_updates": 32,
+    "native1000_full_state_backward_audits": 32,
+    "restore_audit_scope": "Actual CPU model/optimizer/scheduler equality;serializedRNGpresence+samplecursor consistency;nativecontinuations restoreRNG/cursor;no bitwise uninterrupted-trajectory proof",
+    "snapshot_utc": "2026-11-07T11:25:33Z",
+    "gpu_snapshot": "All32computing;84..100percent at that instant,notcontinuous utilization"
+  },
+  "latest_runtime_snapshot": {
+    "utc": "2026-11-07T11:51:11Z",
+    "steps": "dev15 all1400;dev13/dev6/dev6-2c all1500",
+    "all32_native1000_audits_passed": true,
+    "all32_losses_finite_and_required_live_gradients_positive_finite": true,
+    "effective_execution_errors": 0,
+    "gpu_instant": "All32computing,86..100percent;notcontinuous utilization",
+    "evidence": "health/screen-v2-{dev13,dev15,dev6,dev6-2c}.json"
+  },
+  "long_gate": {
+    "both_seeds_manipulation_min": 35,
+    "both_seeds_hard4_min": 20,
+    "max_configs": 4
+  },
+  "old_goal_monitors": "off",
+  "old_disqualified_policy_branches": "remain quarantined; no ancestry used",
+  "supervision": {
+    "inputs": "Observed RGB and actual corresponding forward actions",
+    "auxiliary_target": "Exactly those same forward input actions, from adjacent observed latent pairs;optional forward-predicted outcome pairs",
+    "forbidden": "Goal/current -> unknown next action policy target or later demonstrated action sequence",
+    "deployment": "Forward model + CEM; inverse head discarded"
+  },
+  "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+  "metric": "8task development screen;6manipulation primary,4non-door/drawer tasks separately;500native anysuccess",
+  "published_comparison": "References recorded in public_baselines.json. Dataset/input/budget differences prevent direct SOTA claims.",
+  "known_startup_issues": [
+    "Four pre-prepare launch commands saw missing plan.json before any worker/SGD;corrected after prepare completion.",
+    "Shared EFS I/O bottleneck. All4hosts'250shard local caches pass byte SHA +64actual window checks. All32stage-boundary adoptions preserve completed SGD;native1000fullstate audits allPASS."
+  ],
+  "high_performance_achieved": false
+}
