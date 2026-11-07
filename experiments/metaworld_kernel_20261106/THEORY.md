@@ -1,3 +1,47 @@
+# Qualified MetaWorld results and supervision correction
+
+The original no-future-action-target constraint was violated by the goal-conditioned
+action-policy branch. This was my implementation/interpretation error, not a
+change in the user's requirement. Allowing inverse reconstruction did not authorize
+training `(current RGB, desired future goal) -> next-to-execute action`.
+The86.8%,87.75% and related policy scores are WITHDRAWN as compliant achievements.
+The original measured numbers remain in the historical analysis below for audit;
+none of those policy models, encoders, outputs or traces may initialize, teach or
+provide action references to the compliant line.
+
+The allowed inverse auxiliary reconstructs an already supplied dynamics-action
+input / executed completed transition. Known controls may condition a forward
+model; future RGB may be its target. Renaming an unknown next-action target as
+currenta_t, or supplying an unused action input, does not satisfy this rule.
+
+The strongest VERIFIED original-data compliant six-manipulation result is
+**25.0% (60/240)** from QueryRecurrentH15-rollout. Per task: DoorOpen65%,
+DrawerOpen67.5%,BinPicking0%,PickPlace5%,PegInsertSide5%,Push7.5%.
+Each task uses20physical cases crossed with2trained learners,40episodes/task,
+500native-stepany-success. The same model scoresReach57.5%,ReachWall37.5%;
+all eight tasks98/320=30.625%. It predicts futureRGB only and plans its own
+controls. Its own scratch20k forward parent plus10kRNN training cost is explicit.
+All320 actual traces/cases, imported source hashes and random-forward ancestry
+were reverified. No qualified50-task/2000episode result exists.
+A different EXTRA-self-collected-data RGB-only model reaches95/92.5 on Reach/Wall,
+but only8.75% on six manipulation tasks; these cannot be merged into one model.
+This does not meet the high-performance manipulation objective.
+
+All wrong-supervision tasks had naturally finished. Actual06:12:47UTC snapshots
+show no project Python processes or GPU compute ondev13/dev15/dev6.135 output
+paths have STOP+quarantine records; all original artifacts are retained. New
+training/controller entry guards reject known policy-target paths and forbidden
+weight/feature/proposal ancestry. Read-only forensic loading remains possible;
+new architectures still require a temporal/data-flow audit before any SGD.
+
+Evidence: `results/supervision-correction/VALID_SUPERVISION_BEST_20261107.json`,
+`results/supervision-correction/SUPERVISION_RETRACTION.json`,
+`results/SUPERVISION_GUARD_CHECK.json`.
+
+---
+
+# Archived noncompliant policy analysis — not valid achievements under the requested setting
+
 # What the successful action target may actually supply
 
 ## Action-target terminology correction

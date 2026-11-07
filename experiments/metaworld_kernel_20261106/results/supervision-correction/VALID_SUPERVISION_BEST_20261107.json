@@ -1,0 +1,198 @@
+{
+  "verified_utc": "2026-11-07T05:57:48.186055+00:00",
+  "candidate": "QueryRecurrentH15-rollout",
+  "source": "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107_v2",
+  "target": "FutureRGB ONLY. Known corresponding transition controls INPUTS,not prediction targets. Planner samples owncontrols;no demonstratedfuturecontrolproposals.",
+  "forward_only_parent_steps": 20000,
+  "new_RNN_steps": 10000,
+  "task_scores": {
+    "bin-picking-v3": {
+      "successes": 0,
+      "episodes": 40
+    },
+    "door-open-v3": {
+      "successes": 26,
+      "episodes": 40
+    },
+    "drawer-open-v3": {
+      "successes": 27,
+      "episodes": 40
+    },
+    "peg-insert-side-v3": {
+      "successes": 2,
+      "episodes": 40
+    },
+    "pick-place-v3": {
+      "successes": 2,
+      "episodes": 40
+    },
+    "push-v3": {
+      "successes": 3,
+      "episodes": 40
+    },
+    "reach-v3": {
+      "successes": 23,
+      "episodes": 40
+    },
+    "reach-wall-v3": {
+      "successes": 15,
+      "episodes": 40
+    }
+  },
+  "manipulation_successes": 60,
+  "manipulation_episodes": 240,
+  "manipulation_percent": 25.0,
+  "all8_successes": 98,
+  "all8_episodes": 320,
+  "all8_percent": 30.625,
+  "trace_case_source_hashes_pass": true,
+  "proofs": [
+    {
+      "seed": 1,
+      "endpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107_v2/training/rollout-seed1/eval-projection-step0010000/summary.json",
+      "endpoint_sha256": "265492b841452f068807b447bc965bb3620d48d2f7dbead68763123d18059b52",
+      "config": {
+        "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107_v2/training/rollout-seed1",
+        "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-native-rgb128-20261106-v1",
+        "native_rgb_cache": "/tmp/prescottsun-native-rgb128-20261106-v1",
+        "dataset_kind": "query_rgb_paths",
+        "model_class": "query_recurrent",
+        "seed": 1,
+        "batch_size": 128,
+        "workers": 2,
+        "cpu_threads": 2,
+        "max_steps": 10000,
+        "max_seconds": 86400,
+        "checkpoint_every": 500,
+        "retain_steps": [
+          2,
+          500,
+          2500,
+          10000
+        ],
+        "precision": "bf16-mixed",
+        "record_initial_weights": true,
+        "record_runtime_source": true,
+        "model": {
+          "init_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/free-seed1/model-step0020000/weights.pt",
+          "training_mode": "rollout",
+          "width": 128,
+          "blocks": 4,
+          "window": 2,
+          "forecast_horizon": 15
+        }
+      },
+      "model_sha256": "72d5a88e010ffdb3500c693bb5c68f5d44d0c5c6001df6d5782c6467888a62fd",
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c/as_jepa_lewm/query_recurrent.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c/as_jepa_tools/query_rgb_paths.py"
+        },
+        "sha256": {
+          "model": "faa4411f3fa49029d58377035ffa42b4696e3a27b503fb0fe5b2f6696b4d5b94",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "d594556fe6811a66e7b39df299725ff627d26b0a3ad5fdcca055c494287d2b96",
+          "dataset": "abf35d01b07f197814a72e6119c9b47179d0ab3d376d07f007498bbfa5f1c8d9"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c:/efs/prescottsun/SPT-JEPA/reports/metaworld_proposal_20261104/source-46e401b:/efs/prescottsun/SPT-JEPA/environments/metaworld-sanity-20261103/lib/python3.12/site-packages:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/helper-698ae41:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+        "CUDA_VISIBLE_DEVICES": "7",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107_v2/training/rollout-seed1/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107_v2/training/rollout-seed1/config.json",
+          "--resume"
+        ],
+        "step": 2501,
+        "target_step": 10000
+      },
+      "actual_loss_source": "def loss(self,batch,step=0,ramp_steps=0):\n        prediction=self.distribution(batch);target=self.encoder(batch['future_pixels'].flatten(0,1)).unflatten(0,(len(prediction),self.forecast_horizon))\n        error=((prediction-target)*255).square()\n        if 'future_valid'in batch:\n            mask=batch['future_valid'].float();assert(mask.sum(1)>=5).all()\n            per_sample=(error.mean((2,3,4))*mask).sum(1)/mask.sum(1)\n        else:per_sample=error.mean((1,2,3,4))\n        loss=.5*per_sample.mean()\n        return loss,dict(loss=loss,future_mse=per_sample.mean()/(255**2),future_rgb8_mse=per_sample.mean())",
+      "own_scratch_parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/free-seed1",
+      "parent_origin": {
+        "all_weights_random": true,
+        "external_pretraining": false,
+        "no_inverse_action_ancestry_or_objective": true,
+        "no_action_labels_pseudolabels_or_future_references": true,
+        "known_current_action_forward_input_only": true,
+        "targets": "Native NEXT RGB;goal-query target strictly between observed endpoints",
+        "image_information": "Observed image copied through a learned forward warp;no target-image corruption shortcut",
+        "source_corpus": "Same original LeRobot2500trajectories,all5phases interleaved;45/5split.No extra trainingdata."
+      }
+    },
+    {
+      "seed": 2,
+      "endpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107_v2/training/rollout-seed2/eval-projection-step0010000/summary.json",
+      "endpoint_sha256": "88a19019deca28cbac9af86574e6b6b51d63a6ed553b97a7c4d736e6e2c44b4c",
+      "config": {
+        "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107_v2/training/rollout-seed2",
+        "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-native-rgb128-20261106-v1",
+        "native_rgb_cache": "/tmp/prescottsun-native-rgb128-20261106-v1",
+        "dataset_kind": "query_rgb_paths",
+        "model_class": "query_recurrent",
+        "seed": 2,
+        "batch_size": 128,
+        "workers": 2,
+        "cpu_threads": 2,
+        "max_steps": 10000,
+        "max_seconds": 86400,
+        "checkpoint_every": 500,
+        "retain_steps": [
+          2,
+          500,
+          2500,
+          10000
+        ],
+        "precision": "bf16-mixed",
+        "record_initial_weights": true,
+        "record_runtime_source": true,
+        "model": {
+          "init_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/free-seed2/model-step0020000/weights.pt",
+          "training_mode": "rollout",
+          "width": 128,
+          "blocks": 4,
+          "window": 2,
+          "forecast_horizon": 15
+        }
+      },
+      "model_sha256": "d4f32704c6549db6e1e40f2ff1148a505bcd4a23ec5add9bdb885daaae551191",
+      "runtime": {
+        "paths": {
+          "model": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c/as_jepa_lewm/query_recurrent.py",
+          "trainer": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c/as_jepa_lewm/train.py",
+          "factory": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c/as_jepa_lewm/factory.py",
+          "dataset": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c/as_jepa_tools/query_rgb_paths.py"
+        },
+        "sha256": {
+          "model": "faa4411f3fa49029d58377035ffa42b4696e3a27b503fb0fe5b2f6696b4d5b94",
+          "trainer": "ef10a553c0e63daa0b88724fb3f3097698cf47c6749acaaea9d9ffd05eea71a0",
+          "factory": "d594556fe6811a66e7b39df299725ff627d26b0a3ad5fdcca055c494287d2b96",
+          "dataset": "abf35d01b07f197814a72e6119c9b47179d0ab3d376d07f007498bbfa5f1c8d9"
+        },
+        "cwd": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c",
+        "PYTHONPATH": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-bd33e7c:/efs/prescottsun/SPT-JEPA/reports/metaworld_proposal_20261104/source-46e401b:/efs/prescottsun/SPT-JEPA/environments/metaworld-sanity-20261103/lib/python3.12/site-packages:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/helper-698ae41:/efs/prescottsun/SPT-JEPA/reports/metaworld_improve_20261104/runtime-7b78f5d:/efs/prescottsun/SPT-JEPA/environments/completion-overlay:/efs/prescottsun/SPT-JEPA/environments/overlay:/efs/prescottsun/SPT-JEPA/runs/mechanism_cubeaudit_20261030/source-v1/runtime:/efs/prescottsun/SPT-JEPA/sources/stable-worldmodel:/efs/prescottsun/SPT-JEPA/reports/metaworld_eval_20261103/source-b574b4f",
+        "CUDA_VISIBLE_DEVICES": "7",
+        "command": [
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107_v2/training/rollout-seed2/config.json",
+          "/efs/prescottsun/SPT-JEPA/runs/metaworld_query_h15_20261107_v2/training/rollout-seed2/config.json",
+          "--resume"
+        ],
+        "step": 2501,
+        "target_step": 10000
+      },
+      "actual_loss_source": "def loss(self,batch,step=0,ramp_steps=0):\n        prediction=self.distribution(batch);target=self.encoder(batch['future_pixels'].flatten(0,1)).unflatten(0,(len(prediction),self.forecast_horizon))\n        error=((prediction-target)*255).square()\n        if 'future_valid'in batch:\n            mask=batch['future_valid'].float();assert(mask.sum(1)>=5).all()\n            per_sample=(error.mean((2,3,4))*mask).sum(1)/mask.sum(1)\n        else:per_sample=error.mean((1,2,3,4))\n        loss=.5*per_sample.mean()\n        return loss,dict(loss=loss,future_mse=per_sample.mean()/(255**2),future_rgb8_mse=per_sample.mean())",
+      "own_scratch_parent": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/free-seed2",
+      "parent_origin": {
+        "all_weights_random": true,
+        "external_pretraining": false,
+        "no_inverse_action_ancestry_or_objective": true,
+        "no_action_labels_pseudolabels_or_future_references": true,
+        "known_current_action_forward_input_only": true,
+        "targets": "Native NEXT RGB;goal-query target strictly between observed endpoints",
+        "image_information": "Observed image copied through a learned forward warp;no target-image corruption shortcut",
+        "source_corpus": "Same original LeRobot2500trajectories,all5phases interleaved;45/5split.No extra trainingdata."
+      }
+    }
+  ],
+  "scope": "OriginalungatedLeRobotexpertcorpus/internalRGBgoal500nativeanysuccess;2trainedlearnersx20commonphysicalcases/task. NotpublicJEPA-WMs/MT50/SOTA/50taskscore. Rawfutureactionpolicy86.8%andrelatedscoreswithdrawnfromcompliantclaims."
+}

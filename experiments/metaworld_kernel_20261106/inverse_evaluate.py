@@ -8,13 +8,15 @@ from experiments.metaworld_eval_20261103.environment import make_environment,pix
 from experiments.metaworld_eval_20261103.evaluate import resize_tensor,model_sha
 from experiments.metaworld_contact_20261106.bridge_campaign import TASKS
 from experiments.metaworld_kernel_20261106.campaign import save,digest
+from as_jepa_tools.supervision_contract import validate_training_supervision
 
 
 def run(a):
+    cfg=json.loads((a.run/'config.json').read_text());validate_training_supervision(cfg)
     from as_jepa_lewm.factory import build_model
     a.feedback_native=getattr(a,'feedback_native',5)
     torch.set_num_threads(2);torch.set_float32_matmul_precision('highest');a.output.mkdir(parents=True,exist_ok=False)
-    cfg=json.loads((a.run/'config.json').read_text());model=build_model(cfg).cuda().eval().requires_grad_(False)
+    model=build_model(cfg).cuda().eval().requires_grad_(False)
     assert model.visual_source=='local'and not model.temporal_aux and model.condition_horizon=='none'
     assert not model.history_context or(model.chunk==1 and a.execute==1)
     assert model.action_dim in[4,20]and(model.action_dim==20 or not model.history_context)

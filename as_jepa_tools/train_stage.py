@@ -15,6 +15,8 @@ def main():
     a = p.parse_args()
     config_path = Path(a.config)
     cfg = json.loads(config_path.read_text())
+    from as_jepa_tools.supervision_contract import validate_training_supervision
+    validate_training_supervision(cfg)
     if not 0 < a.stop_step <= cfg["max_steps"]:
         raise ValueError("Stage limit must fall within the unchanged scheduler horizon")
     root = Path(cfg["output"])

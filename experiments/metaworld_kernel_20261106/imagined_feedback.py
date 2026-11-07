@@ -10,6 +10,7 @@ from experiments.metaworld_eval_20261103.environment import make_environment,pix
 from experiments.metaworld_eval_20261103.evaluate import resize_tensor,model_sha
 from experiments.metaworld_contact_20261106.bridge_campaign import TASKS
 from experiments.metaworld_kernel_20261106.campaign import save,digest
+from as_jepa_tools.supervision_contract import validate_training_supervision
 
 
 def composed_image(reference,coordinates,original_grid):
@@ -47,10 +48,11 @@ def sample_policy(model,batch,generator,steps,solver,draw='stochastic'):
 
 
 def run(a):
+    cfg=json.loads((a.run/'config.json').read_text());validate_training_supervision(cfg)
     torch.set_num_threads(2);torch.set_float32_matmul_precision('highest');a.output.mkdir(parents=True,exist_ok=False)
     assert a.world_action=='own'or a.mode=='world'
     assert a.render_state=='sequential'or a.mode=='world'
-    cfg=json.loads((a.run/'config.json').read_text());assert cfg['model']['action_dim']in[4,20]and not cfg['model']['history_context']and cfg['model']['chunk']==1
+    assert cfg['model']['action_dim']in[4,20]and not cfg['model']['history_context']and cfg['model']['chunk']==1
     assert cfg['model']['action_dim']==20 or cfg.get('inverse_tail_reserve')==1
     controller=build_model(cfg).cuda().eval().requires_grad_(False)
     controller.load_state_dict(torch.load(a.run/f'model-step{a.step:07d}/weights.pt',map_location='cuda',weights_only=True))

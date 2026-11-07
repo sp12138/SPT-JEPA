@@ -12,6 +12,7 @@ import time
 from experiments.metaworld_contact_20261106.launch import environment, PYTHON, wait_gpu_release
 from experiments.metaworld_contact_20261106.bridge_campaign import command
 from experiments.metaworld_kernel_20261106.campaign import save, digest
+from as_jepa_tools.supervision_contract import validate_training_supervision
 
 BASE = Path('/efs/prescottsun/SPT-JEPA')
 
@@ -137,6 +138,7 @@ def gate(root,plan):
 
 def work(a):
     plan=json.loads((a.root/'training-plan.json').read_text());r=next(v for v in plan['recipes']if v['gpu']==a.gpu and v['host']==a.host);run=Path(r['run']);source=Path(plan['source']);deadline=plan['deadline_unix']
+    validate_training_supervision(json.loads((run/'config.json').read_text()))
     try:
         while not(Path(r['wait_output'])/'complete.json').exists():
             assert not(Path(r['wait_output'])/'execution-error.json').exists();assert time.time()<deadline;time.sleep(5)

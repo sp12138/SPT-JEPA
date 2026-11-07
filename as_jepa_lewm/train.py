@@ -10,6 +10,7 @@ from as_jepa_tools.data import PushTWindows,FullPushTWindows,seed_worker
 from as_jepa_lewm.model import ASJepaLeWM
 from as_jepa_lewm.factory import build_model, model_target, gradient_expectations
 from as_jepa_tools.benchmark_data import make_training_dataset
+from as_jepa_tools.supervision_contract import validate_training_supervision
 from vforge.ops import OpsConfig,initialize_ops
 
 
@@ -94,6 +95,7 @@ class TrainModule(pl.LightningModule):
         scheduler=torch.optim.lr_scheduler.LambdaLR(optimizer,schedule)
         return dict(optimizer=optimizer,lr_scheduler=dict(scheduler=scheduler,interval="step"))
     def on_fit_start(self):
+        validate_training_supervision(self.cfg)
         if self.cfg.get("calibrate_state_std") is None or self.cfg.get("is_resuming",False):return
         # One-time affine head initialization. No per-batch normalization is added to AS-JEPA.
         dataset=make_training_dataset(self.cfg)
@@ -162,7 +164,8 @@ class PersistentProgress(Callback):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument("config");parser.add_argument("--resume",action="store_true");args=parser.parse_args()
-    cfg=json.loads(Path(args.config).read_text());cfg["is_resuming"]=args.resume;root=Path(cfg["output"]);root.mkdir(parents=True,exist_ok=True)
+    cfg=json.loads(Path(args.config).read_text());validate_training_supervision(cfg)
+    cfg["is_resuming"]=args.resume;root=Path(cfg["output"]);root.mkdir(parents=True,exist_ok=True)
     torch.set_num_threads(cfg.get("cpu_threads",2));pl.seed_everything(cfg["seed"],workers=True)
     torch.backends.cuda.matmul.allow_tf32=True;torch.set_float32_matmul_precision(cfg.get("float32_matmul_precision","high"))
     use_cpu=cfg.get("device")=="cpu"

@@ -7,11 +7,13 @@ import time
 from experiments.metaworld_contact_20261106.launch import environment, PYTHON, wait_gpu_release
 from experiments.metaworld_contact_20261106.bridge_campaign import command
 from experiments.metaworld_kernel_20261106.campaign import save, digest
+from as_jepa_tools.supervision_contract import validate_training_supervision
 
 
 def work(a):
     plan = json.loads((a.root/'plan.json').read_text())
     r = next(v for v in plan['recipes'] if v['host'] == a.host and v['gpu'] == a.gpu)
+    validate_training_supervision(json.loads((Path(r['run'])/'config.json').read_text()))
     out = Path(r['output']); out.mkdir()
     source = Path(plan['source']); deadline = plan['deadline_unix']
     try:
