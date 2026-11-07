@@ -89,7 +89,7 @@ def run(a):
         for right in ['static','actual','current-only']:
             l=load(mature1000,'world');r=load(mature1000,right)
             if l is not None and r is not None:results['mature_native_world_vs_'+right+'_1000']=compare(l,r,
-                'TwoNEWtrainedactorseeds3/4,40kbudget/LR40k/ownF3/4. Existing1000-case50taskexpandedcomparison,notuntouchedconfirmation. SAMEa_t4DNNs/5nativepolicycalls/500budget. '+
+                'TwoNEWtrainedactorseeds3/4,40kbudget/LR40k/ownF3/4. Existing1000-case50taskexpandedcomparison,notuntouchedconfirmation. Matcheda_t4Dtargets/5nativepolicycalls/500budget;world/static/actualuseSAMEactorNNs,current-onlyisaseparatelytrainedinformationablation. '+
                 ('Static5drawsusesSAMEactualcamera5;worldadds4ownforecasts/20kFpretrain.'if right=='static'else
                  'EXTRAactualRGBEVERYnativecontrol,explicitdifferentinformationtrack/diagnosticONLY;notfairfixedsensor5baseline.'if right=='actual'else
                  'Capacity/initialization/data/sampler/40kLR40k/worldmatchedCURRENT-ONLYinformationbaseline: futuregoalneverencoded. NotSAMEtrainedactorNNs inthisinformationablation.'))
