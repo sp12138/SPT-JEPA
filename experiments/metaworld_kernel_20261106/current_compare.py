@@ -94,6 +94,10 @@ def run(a):
                  'EXTRAactualRGBEVERYnativecontrol,explicitdifferentinformationtrack/diagnosticONLY;notfairfixedsensor5baseline.'if right=='actual'else
                  'Capacity/initialization/data/sampler/40kLR40k/worldmatchedCURRENT-ONLYinformationbaseline: futuregoalneverencoded. NotSAMEtrainedactorNNs inthisinformationablation.'))
     extra=[
+        ('retained_chart_vs_replacement_correspondence',('metaworld_goalchart_repair_20261107','correspondence'),('metaworld_action_measure_20261107','correspondence'),
+         'Sameactorseeds3/4/sharedCNN-decoderinitials/currenta_tlabels/sampler/40kLR40k/F3/4/cases. Retainrawfixed-chartgoalfeaturesPLUSlearnedmatching;matcheralsoreadslearnedimagepositions. Expandedfusionparameters/compute/initialfunctiondiffer,not equalFLOPs orunique-bottleneckcausalproof.'),
+        ('retained_chart_vs_fixed_pairing',('metaworld_goalchart_repair_20261107','correspondence'),('metaworld_native_maturity40_20261107','directed'),
+         'SameNNcommoninitialtensors/a_t4D/originaldata/sampler/40kLR40k/F3/4/camera5/cases. FixedgoalchartfeaturesretainedANDadditionallearnedcorrespondence. ExtraQK/fusionparameters,notexactinitialfunction/equalFLOPs. Goal-motionmustnotbeassumedanuisance;physicalgainpending.'),
         ('mature_schedule_vs_120k_schedule_at40k',('metaworld_native_maturity40_20261107','directed'),('metaworld_native_feedback_long_20261107','directed'),
          'SAMEactorseeds3/4/allrandominitialtensors/data/currenta_t-onlytargets/40kactualupdates/F3/4/cases/sensor5. ONLYmax_stepsschedulehorizon40kvs120k(andderived1%warmup)changes;notaseedonlytest.'),
         ('goal_information_vs_current_only',('metaworld_native_maturity40_20261107','directed'),('metaworld_native_currentonly40_20261107','current-only'),
