@@ -108,6 +108,12 @@ def run(a):
          'SameCNN/decoder/fusioninitialtensors/currenta_tlabels/originaldata/sampler/40kLR40k/ownF3/4/cases/sensor5. One-passcensoredlogisticmixturevs12-passflow;finalhead/loss/ownrandomdrawsdiffer,not equalinferenceFLOPs.'),
         ('correspondence_vs_fixed_pairing',('metaworld_action_measure_20261107','correspondence'),('metaworld_native_maturity40_20261107','directed'),
          'SameCNN/decoderinitialtensors/a_t4DFlowobjective/originaldata/sampler/40kLR40k/F3/4/realcam5/cases. Learnedsample-levelpatchcorrespondence+imagecoordinateoffsetvsfixedsame-locationpairing;extraQ/K/fusionparameters/computeexplicit,not equalFLOPs.')]
+    median='metaworld_action_measure_median50_20261107'
+    if (BASE/median/'plan.json').exists():
+        for arm in ['censored','point','censored-single','point-single']:
+            l=load(median,arm);r=load('metaworld_action_measure_20261107',arm,cohort='final')
+            if l is not None and r is not None:results[f'mixture_componentmedian_vs_stochastic_{arm}_screen50']=compare(l,r,
+                'EXACTSAMEfrozen40kactor/F3/4NNs/cases/camera5/5policycalls/4F. Onlydecisionrulechanges: highest-weightlatentcomponentmedianthenclipvsowncategorical/logisticsampling. No newSGD/threshold/taskrule. NotclaimedfullmixtureMAP/optimalaction;50task4caseSCREEN.')
     for name,left,right,scope in extra:
         if not all((BASE/x[0]/'training-plan.json').exists()for x in [left,right]):continue
         for cohort in ['standard','final']:

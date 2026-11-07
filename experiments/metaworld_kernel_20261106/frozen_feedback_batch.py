@@ -27,6 +27,7 @@ def work(a):
             base = [PYTHON, '-B', '-u', str(source/'experiments/metaworld_kernel_20261106/inverse_evaluate.py')]+common+['--feedback-native', '1']
         else:
             base = [PYTHON, '-B', '-u', plan['evaluator']]+common+['--mode', r['mode'], '--world', r['world']]
+            if 'policy_draw' in r: base += ['--policy-draw', r['policy_draw']]
         command(base+['--output', str(out/'entry20'), '--budget', '20', '--tasks', 'bin-picking-v3',
                       '--seeds', str(plan['seeds'][0])], out/'entry20.log', env, source, deadline)
         command(base+['--output', str(out/'pilot'), '--tasks']+plan['tasks']+

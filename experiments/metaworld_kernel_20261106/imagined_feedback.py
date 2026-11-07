@@ -12,7 +12,15 @@ from experiments.metaworld_contact_20261106.bridge_campaign import TASKS
 from experiments.metaworld_kernel_20261106.campaign import save,digest
 
 
-def sample_policy(model,batch,generator,steps,solver):
+def sample_policy(model,batch,generator,steps,solver,draw='stochastic'):
+    if draw=='component-median':
+        assert model.objective=='mixture'
+        logits,location,_=model.distribution(model.memory(batch))
+        index=logits.argmax(-1)[...,None,None].expand(-1,-1,1,model.action_dim)
+        # Median of the highest-weight latent component, then the SAME actuator
+        # clip map. This is not claimed to be the MAP of a mixed discrete/
+        # continuous output measure, or an optimal physical action.
+        return location.gather(2,index).squeeze(2).maximum(model.action_lower).minimum(model.action_upper)
     if solver=='euler'or model.objective!='flow':return model.propose(batch,generator=generator,steps=steps)
     memory=model.memory(batch);horizon=model.duration(memory)
     value=torch.randn(len(memory),model.chunk,model.action_dim,device=memory.device,generator=generator)
@@ -57,7 +65,7 @@ def run(a):
                     for j in range(5):
                         if slot_noise is not None:generator.set_state(slot_noise)
                         current=actual if j==0 or a.mode=='static'else F.interpolate(belief*255,(224,224),mode='bilinear',align_corners=False,antialias=True).round().clamp(0,255).byte()
-                        proposed=sample_policy(controller,dict(pixels=torch.stack([current,goal],1)),generator,a.policy_steps,a.policy_solver)[0,0,:4].float().cpu().numpy();calls+=1
+                        proposed=sample_policy(controller,dict(pixels=torch.stack([current,goal],1)),generator,a.policy_steps,a.policy_solver,a.policy_draw)[0,0,:4].float().cpu().numpy();calls+=1
                         command=np.clip(proposed*std+mean,-1,1).astype(np.float32);assert np.isfinite(command).all();commands.append(command)
                         control=torch.from_numpy(command[None]).cuda()
                         if a.mode=='world'and j<4:
@@ -80,9 +88,9 @@ def run(a):
             rows.append(row);save(a.output/'progress.json',dict(rows=rows));print(json.dumps(row),flush=True)
     after=dict(controller=model_sha(controller),world=model_sha(world)if world is not None else None);assert before==after
     save(a.output/'summary.json',dict(passed=True,rows=rows,model_unchanged=True,model_sha256=before['controller'],world_sha256=before['world'],step=a.step,mode=a.mode,world_action=a.world_action,noise_coupling=a.noise_coupling,
-        policy_objective=controller.objective,policy_solver=a.policy_solver,policy_steps=a.policy_steps,policy_field_passes_per_call=a.policy_steps*(2 if a.policy_solver=='midpoint'else 1)if controller.objective=='flow'else 1,
+        policy_objective=controller.objective,policy_solver=a.policy_solver,policy_steps=a.policy_steps,policy_draw=a.policy_draw,policy_field_passes_per_call=a.policy_steps*(2 if a.policy_solver=='midpoint'else 1)if controller.objective=='flow'else 1,
         independent_action_latents_per_sensor_interval=(1 if a.noise_coupling=='observation'else 5)if controller.objective=='flow'else 0,
-        categorical_logistic_draws_per_sensor_interval=5 if controller.objective=='mixture'else 0,
+        categorical_logistic_draws_per_sensor_interval=5 if controller.objective=='mixture'and a.policy_draw=='stochastic'else 0,
         feedback_native=5,action_native=1,training_action_native=controller.action_dim//4,new_updates=0,current_action_only=controller.action_dim==4,
         scope='Frozencontrolleratdeclaredstep,declaredtraining_action_native1or5.Allscratchoriginaldata;noexternalteacher.'
               'The4DcontrollerusesONLYcurrentnativea_tlabels;20Dmodelsareexplicit5-control-targetcomparators.World20kloadedONLYforcopy/worldmodes.'
@@ -102,5 +110,6 @@ if __name__=='__main__':
     p.add_argument('--world-action',choices=['own','zero','negate'],default='own')
     p.add_argument('--step',type=int,default=40000)
     p.add_argument('--noise-coupling',choices=['native','observation'],default='native')
+    p.add_argument('--policy-draw',choices=['stochastic','component-median'],default='stochastic')
     p.add_argument('--policy-solver',choices=['euler','midpoint'],default='euler');p.add_argument('--policy-steps',type=int,default=12)
     p.add_argument('--tasks',nargs='+',default=TASKS);p.add_argument('--seeds',type=int,nargs='+',default=[42,1042]);run(p.parse_args())
