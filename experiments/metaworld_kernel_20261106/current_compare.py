@@ -84,6 +84,32 @@ def run(a):
     for name,left,right,scope in comparisons:
         l=load(*left);r=load(*right)
         if l is not None and r is not None:results[name]=compare(l,r,scope)
+    extra=[
+        ('mature_schedule_vs_120k_schedule_at40k',('metaworld_native_maturity40_20261107','directed'),('metaworld_native_feedback_long_20261107','directed'),
+         'SAMEactorseeds3/4/allrandominitialtensors/data/currenta_t-onlytargets/40kactualupdates/F3/4/cases/sensor5. ONLYmax_stepsschedulehorizon40kvs120k(andderived1%warmup)changes;notaseedonlytest.'),
+        ('goal_information_vs_current_only',('metaworld_native_maturity40_20261107','directed'),('metaworld_native_currentonly40_20261107','current-only'),
+         'Samecapacity/allinitialtensors/seeds3/4/currentactionlabels/40kbudget/LR40k/ownF3/4/cases. Current-onlycontrolduplicatesCURRENTbeforeCNN,neverencodesfuturegoal. GoalRGBmaycarrytaskinformation;notgeneralgoalreachabilityproof.'),
+        ('censored_vs_point_four_components',('metaworld_action_measure_20261107','censored'),('metaworld_action_measure_20261107','point'),
+         'Exactsamewholeinitialnetwork/seeds3/4/data/a_t4D/40k/LR40k/ownF/cases/sensor5/one-passsampling. ONLYtrainlikelihoodtreatsactuatorboundaryvaluesasCDFmassvsinteriordensity. Standardcensoring/mixturestatistics;notclaimednovel.'),
+        ('censored_vs_point_single_component',('metaworld_action_measure_20261107','censored-single'),('metaworld_action_measure_20261107','point-single'),
+         'Matchedsingle-logisticjoint4Dhead;entireinitialstates/labels/budget/world/casesmatch. ONLYsaturated-actionlikelihoodchanges. Bothsamplelatentthenclip.'),
+        ('censored_mixture_vs_single',('metaworld_action_measure_20261107','censored'),('metaworld_action_measure_20261107','censored-single'),
+         'SameCNN/decoder/fusioninitials/labels/data/40kLR40k/ownF/cases. Fourmixturecomponentsvsone:headcapacityandconditionalmultimodalitydiffer. No per-taskselection.'),
+        ('censored_vs_flow',('metaworld_action_measure_20261107','censored'),('metaworld_native_maturity40_20261107','directed'),
+         'SameCNN/decoder/fusioninitialtensors/currenta_tlabels/originaldata/sampler/40kLR40k/ownF3/4/cases/sensor5. One-passcensoredlogisticmixturevs12-passflow;finalhead/loss/ownrandomdrawsdiffer,not equalinferenceFLOPs.'),
+        ('correspondence_vs_fixed_pairing',('metaworld_action_measure_20261107','correspondence'),('metaworld_native_maturity40_20261107','directed'),
+         'SameCNN/decoderinitialtensors/a_t4DFlowobjective/originaldata/sampler/40kLR40k/F3/4/realcam5/cases. Learnedsample-levelpatchcorrespondence+imagecoordinateoffsetvsfixedsame-locationpairing;extraQ/K/fusionparameters/computeexplicit,not equalFLOPs.')]
+    for name,left,right,scope in extra:
+        if not all((BASE/x[0]/'training-plan.json').exists()for x in [left,right]):continue
+        for cohort in ['standard','final']:
+            l=load(*left,cohort=cohort);r=load(*right,cohort=cohort)
+            if l is not None and r is not None:results[name+('_screen50'if cohort=='final'else'_full8')]=compare(l,r,scope+(' 50task4caseSCREEN.'if cohort=='final'else' Full8task20physicalcases.'))
+    solver='metaworld_native_solver_control_20261107'
+    if (BASE/solver/'plan.json').exists():
+        for arm,parent,parent_arm in [('old','metaworld_current_control_full_20261107','world-native4'),('new','metaworld_native_feedback_long_20261107','directed')]:
+            for kind in ['euler24','midpoint12']:
+                l=load(solver,f'{kind}-{arm}');r=load(parent,parent_arm)
+                if l is not None and r is not None:results[f'{kind}_vs_euler12_{arm}']=compare(l,r,'SAMEfrozenactors/worlds/cases/sensor5/ownnoise;24vs12actionfieldpassesONLY.Euler768ODEaccuracyreferenceisnotphysicaltruth.0SGD.')
     native=load('metaworld_native_goalclock_20261107','native-goal')if(BASE/'metaworld_native_goalclock_20261107/training-plan.json').exists()else None
     if native is not None:
         macro=combine(load('metaworld_native_goalclock_20261107','macro-goal'),load('metaworld_native_feedback_long_20261107','directed'))
