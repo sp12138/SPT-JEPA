@@ -1,0 +1,93 @@
+{
+  "passed": true,
+  "method": "h-jepa",
+  "seed": 3,
+  "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-device-v4/h-jepa-seed3/model-step0008240",
+  "windows": 128,
+  "completed_transitions": 896,
+  "unique_original_episodes": 105,
+  "mean_mse_by_axis": {
+    "factual": [
+      0.065114370644892,
+      0.08919469531724644,
+      0.07541802019022725,
+      0.012070185994957683
+    ],
+    "future_copy": [
+      0.2984485156134724,
+      0.2745163871445584,
+      0.5655991439691661,
+      0.04749463606681559
+    ],
+    "future_zero": [
+      0.8719868575790315,
+      0.7153587050852366,
+      1.056749396782834,
+      0.21820427523471153
+    ],
+    "future_other_window": [
+      1.3030385986357942,
+      0.8236951103563115,
+      1.365708768537388,
+      0.28867831957603585
+    ],
+    "current_other_window": [
+      1.6602351570036262,
+      0.7801746082668615,
+      1.3271859297306037,
+      0.5681914241942536
+    ],
+    "reverse": [
+      0.9446079978896478,
+      0.8792684408260811,
+      2.0049314260509163,
+      0.15830701456953022
+    ]
+  },
+  "normalized_train_mean_action_baseline_mse_by_axis": [
+    0.8011507710107253,
+    0.799395634731809,
+    1.053471247680136,
+    0.8570655410148902
+  ],
+  "future_copy_over_factual_by_axis": [
+    4.583450821341612,
+    3.0777210031175324,
+    7.499522561617933,
+    3.9348719304455178
+  ],
+  "model_state_before": "dc53dfe562343ad93bfa901adf95e3356182c6f3a9bf2b2cc8189491d78fb970",
+  "model_state_after": "dc53dfe562343ad93bfa901adf95e3356182c6f3a9bf2b2cc8189491d78fb970",
+  "model_updates": 0,
+  "gpu_context_created": false,
+  "seconds": 79.9100851318799,
+  "scope": "Frozen fine-level native inverse-head ablation on common heldout window8s. Axes average the5 executed controls in each20D forward input. Copy/masking/swapping are input-sensitivity interventions,may be off-manifold,not a retrained current-only Bayes predictor or causal proof. Current-only action predictability and object sufficiency are different questions. No action targets from goals,policy learning,SGD,or latent-unit cross-model physical error claims.",
+  "metadata_correction": {
+    "original_report": "summary.json",
+    "reason": "Packed episode IDs encode5 phases per physical trajectory. Prior128count was phase-episode count,not unique original trajectories.",
+    "old_npz_array_original_episode_ids_contains": "phase_episode_ids;divide by5 for original IDs",
+    "new_neural_computations": 0,
+    "new_sgd": 0
+  },
+  "source_report": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baseline_insights_20261108/inverse-cpu-v1/h-jepa-seed3/summary-v2.json",
+  "source_report_sha256": "27970a5202e62d4ac8eec7e7f4a0fbef9136d8486b6c959ccdebb14046b8306b",
+  "frozen_features_sha256": "5e76c7e32201551f866e40d473db6c8aa5929300ef10f2273adc51c77708c7bf",
+  "stored_feature_shapes": {
+    "latent": [
+      128,
+      8,
+      384
+    ],
+    "action": [
+      128,
+      8,
+      20
+    ],
+    "indices": [
+      128
+    ],
+    "original_episode_ids": [
+      128
+    ]
+  }
+}

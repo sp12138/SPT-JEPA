@@ -1,0 +1,113 @@
+{
+  "status": "BASELINES_RUNNING_1100_PHYSICAL_REPLAYS_AND6_FROZEN_INVERSE_AUDITS_COMPLETE",
+  "latest_authorization": "Understand baseline strengths/weaknesses first,then improve our method using the same three hosts fully;promising evidence-backed methods may receive long training. Supersedes prior no-candidate-exploration restriction for the next phase.",
+  "hosts": [
+    "dev13",
+    "dev15",
+    "dev6"
+  ],
+  "excluded_hosts": [
+    "dev6-2c",
+    "dev2"
+  ],
+  "baseline_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_native_20261108",
+  "insight_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baseline_insights_20261108",
+  "baseline_deadline_utc": "2026-11-12T16:02:48.085628+00:00",
+  "baseline_deadline_extended": false,
+  "old_goal_and_recurring_llm_monitors": "off",
+  "candidate_training_started": false,
+  "candidate_long_training_started": false,
+  "primary_resource_use": "All12paired baseline slots remain primary;6formal learners queued;released pairs take existing frozen native hierarchy/GD comparisons.",
+  "constraints": "Scratch;RGB+actual completed-transition forward controls;reward/state/taskID/language/externalteachers forbidden in learner/planner. Candidates sample-level;native baseline batchregs allowed. Inverse only same already-executed forward input;no goal->unknown next-action targets or disqualified lineage.",
+  "cpu_diagnostics": {
+    "physical_replay": {
+      "effective_root": "replay-v2",
+      "episodes": 900,
+      "unique_physical_cases": 100,
+      "controller_sources": 9,
+      "exact_initial_physics_and_all_success_sequences": true,
+      "neural_models_loaded": 0,
+      "rendering_calls": 0,
+      "model_updates": 0,
+      "hard_six_tasks": {
+        "model_case_evaluations": 72,
+        "trained_parents": 6,
+        "unique_physical_cases": 12,
+        "successes": 0,
+        "finger_external_contact_episodes": 3,
+        "dual_finger_contact_episodes": 1,
+        "invalid_expert_goal_model_cases": 0
+      },
+      "interpretation": "Contact taxonomy is positive-force finger/external-movable-body;not every possible robot contact andnot a universal task requirement. Drift/lift alone isnot controlled manipulation."
+    },
+    "inverse_head": {
+      "root": "inverse-cpu-v1",
+      "models": 4,
+      "native_epoch": 20,
+      "windows_per_model": 128,
+      "transitions_per_model": 896,
+      "unique_original_trajectories": 105,
+      "same_window_indices_all_models": true,
+      "effective_reports": "summary-v2.json",
+      "weights_unchanged_all": true,
+      "gpu_context_created": false,
+      "model_updates": 0,
+      "finding": "Copying start latent over future latent increases input-action reconstruction error2.94..8.13x acrossxyz/gripper. Strong endpoint use;doesnot support a claim that these heads simply ignore the future. XYZfactual error7.16..12.76percent ofglobal train-mean control error;gripper1.08..1.65percent. Not optimal-action prediction or physical forward sufficiency."
+    }
+  },
+  "operational_history": {
+    "original_cpu_missing_overlay_failures": 6,
+    "physical_steps_before_those_failures": 0,
+    "initial_smoke_quoting_failure": "Before physics/NN;corrected launch uses structured subprocess input and shell quoting",
+    "successful_actual_smoke": "3episodes/1500native steps;exactsuccess replay",
+    "phase_metadata_fix": "128 packed phase episodes correspond to105 unique original trajectories. Old reports/feature arrays retained;summary-v2 corrects fields with0newNN/SGD."
+  },
+  "research_gate": "Do not select a winning baseline from early100case/20epoch results. Obtain native convergence, seed-level behavior and native-vs-common controller evidence;then test structural candidates with paired controls/independent seeds and actual manipulation gains before long training.",
+  "new_method_selection": "Not yet selected. No claim that inverse is useless,allJEPAfails,object features are definitely absent,or a novel/high-performance method has already been found.",
+  "evidence": "results/MANIFEST.json;10filesSHAverified;large raw reports/features and900trace identities retained onEFS",
+  "supplemental_smwm20": {
+    "status": "COMPLETE/PASS",
+    "actual_cpu_replayed_episodes": 200,
+    "same_physical_cases": 100,
+    "native_model_parents": 2,
+    "source_methods": "SMWMseeds1/2native20epochs",
+    "inverse_common_heldout_windows_per_model": 128,
+    "unique_original_trajectories": 105,
+    "zero_new_sgd": true,
+    "weights_unchanged": true,
+    "inverse_endpoint_use": "futurecopy increasesMSE1.67..6.77x;factualXYZ11.1..17.1percent ofconstanttrainmean-action MSE,gripper4.0..5.2percent",
+    "local_evidence": "results-smwm20/MANIFEST.json;5SHAverifiedfiles"
+  },
+  "combined_completed_diagnostics": {
+    "actual_physical_replays": 1100,
+    "physical_cases": 100,
+    "controller_sources": 11,
+    "frozen_inverse_models": 6,
+    "common_heldout_windows": 128,
+    "unique_original_trajectories": 105,
+    "hard_six_model_cases": 96,
+    "hard_six_unique_physical_cases": 12,
+    "trained_model_parents_for_hard_six": 8,
+    "hard_six_successes": 0,
+    "hard_six_finger_external_movable_contact_episodes": 4,
+    "hard_six_dual_finger_same_tree_contact_episodes": 1,
+    "model_updates": 0,
+    "gpu_neural_or_render_work": 0
+  },
+  "latest_primary_snapshot": {
+    "utc": "2026-11-07T18:40:24.909575+00:00",
+    "baseline_summary": {
+      "utc": "2026-11-07T18:40:15.522218+00:00",
+      "complete": 0,
+      "errors": 0,
+      "preflights": 6
+    },
+    "owned_baseline_cuda_processes": 24,
+    "hosts_each_with8_owned_cuda_processes": [
+      "dev13",
+      "dev15",
+      "dev6"
+    ],
+    "scope": "Training or common evaluation,not constant100percent utilization;6moreformal learnersqueued. NewcandidateSGD notstarted."
+  }
+}

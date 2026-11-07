@@ -1,8 +1,12 @@
 # MetaWorld scratch baseline comparison
 
 The current finite study runs baseline training, evaluation, and mechanism analysis
-only on dev13, dev15, and dev6. No dev6-2c/dev2 connections or scheduling, candidate
-search, automatic promotion, old goal, or recurring LLM monitor are authorized.
+only on dev13, dev15, and dev6. No dev6-2c/dev2 connections or scheduling, old goal, or recurring LLM monitor are
+authorized. The latest user additionally authorizes evidence-led candidate research
+after baseline mechanisms are understood, and long runs for promising methods.
+Current baseline jobs/finite caps remain unchanged; no new candidate training has
+started. The separate mechanism evidence is indexed in
+`../metaworld_baseline_insights_20261108/RECOVERY.json`.
 The canonical root is `runs/metaworld_baselines_native_20261108`, with immutable
 `runtime-native-v7`. Its collector and launch records are indexed in RECOVERY.json.
 The original deadline remains 2026-11-12 16:02:48 UTC; it has not been extended.
