@@ -62,7 +62,7 @@
   "entry_gates": {
     "cpu_real_models": "All6native20epoch copies pass exact full model/AdamW/scheduler restores,positiveFP32backward,weightsunchanged,sampler100epochboundarycontinuity.0model optimizer updates/0GPUcontexts. Technical mechanics only,not actual100epoch continuations.",
     "scalar_schedule": "Native warm fractions.01/.1:100->300counts correct,nonzero tailLR,finalLRzero,resumeat103exactlymatchesuninterruptedremaining197updates. Synthetic scalar optimizer,not NNperformance.",
-    "gpu_per_continuation": "First actual100parent lewm-idm-seed2passes100+3DDP/fullCPUrestore/FP32backward/paddingpoison/20nativeMPC and100newupdates/fullCPUaudit. Additional200epochsnowarmed/active;not a300epochperformance result.",
+    "gpu_per_continuation": "All4claimedH-JEPA/LeWM+IDMseed2/3continuations actualentrygatePASS;steps48500..56500,positiveallrequiredgradients/nativeLRs. No actual150/200/300controlscoreyet.",
     "queue_contracts": "10syntheticpriority/ownershipchecksPASS;newunclaimedscalingandassignedunfinishedpairsprotected;originalwavepriority;CUDAprocessprotection.",
     "public_model_wrapper_sha256": "5faee4b5b9957d2e5fb22df9f97f9f90524df3397bb3a5d01d6e08c88d23e9bb",
     "prelaunch_dispatch_fix": "Parent-error skipcannotlaterreclaimanactivepairwithout explicit recovery. Oldprepare source archived;0formalclaims/0newSGD whenpatched."
@@ -100,7 +100,7 @@
     "label": "com.spt-jepa.metaworld-hourly-01a18941",
     "plist": "/Users/pengsun/Library/LaunchAgents/com.spt-jepa.metaworld-hourly-01a18941.plist",
     "interval_seconds": 3600,
-    "next_expected_utc": "2026-11-07T23:04:35+00:00",
+    "next_expected_utc": "2026-11-08T00:05:28.140561+00:00",
     "stop_file": "/Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/STOP",
     "instructions": "hourly-prompt.txt",
     "implementation": "Direct interruptible waiting in this conversation;no system scheduled delivery.",
@@ -112,62 +112,30 @@
     "system_delivery_stopped_utc": "2026-11-07T20:01:39.744956+00:00",
     "user_latest": "Use sleep/wait directly in this session,checking everyhour. OldLaunchAgentunloaded anditsloginplistarchived/removed. Training/evaluation queuesunchanged.",
     "mode": "DIRECT_IN_SESSION_WAIT",
-    "last_actual_review_utc": "2026-11-07T22:04:35.023590+00:00",
+    "last_actual_review_utc": "2026-11-07T23:05:28.140561+00:00",
     "external_stop_file_only": true,
     "last_actual_review": {
-      "utc": "2026-11-07T22:04:35.023590+00:00",
-      "original100_complete": 7,
+      "utc": "2026-11-07T23:05:28.140561+00:00",
+      "original100_complete": 10,
       "original100_errors": 0,
-      "formal_scaling_claims": 1,
-      "native_controller_completed_shards": 0,
-      "scores100": {
-        "lewm-idm-seed2": {
-          "macro50": 11.1,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "lewm-seed1": {
-          "macro50": 10.3,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "smwm-seed1": {
-          "macro50": 12.6,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "ac-mtm-seed1": {
-          "macro50": 11.4,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "lpwm-seed1": {
-          "macro50": 7.7,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "lewm-seed2": {
-          "macro50": 11.5,
-          "episodes": 1000,
-          "hard6success": 2,
-          "hard6episodes": 120
-        },
-        "smwm-seed2": {
-          "macro50": 14.1,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        }
+      "scaling_claims": 4,
+      "scaling_errors": 0,
+      "scaling_steps": {
+        "lewm-idm-seed2": 56500,
+        "h-jepa-seed2": 48500,
+        "lewm-idm-seed3": 54500,
+        "h-jepa-seed3": 48700
       },
-      "first_scaling": "lewm-idm-seed2 actual100+3DDP/fullCPUrestore/FP32backward/padding/20nativeMPC passed;actual100newupdates plusCPUaudit pass. Sampler/AdamW retained. No performance claim beyond100epoch yet.",
-      "physical_hard_positive": "lewm-seed2 DrawerOpen2/20;other hard5zero. Bothselected traces and3blind controls/case replayed exactly. Objects moved16.35/16.00cm;floors fail atbothcases. Outcome-conditioned2case attribution,not a generalization test.",
-      "resources": "22GPUcomputeprocesses at22:04snapshot;dev13pair6/7incontinuationCPUaudit/interstage. Remaining22used by originaltraining/eval. Notconstant100percent utilization.",
-      "decision": "Continue original100+armed300. No technical failure or new candidate SGD. All14nonexternal originalrecipes now claimed;releasedpairs may take continuations."
+      "scaling_all4_actual_entry_gate_passed": true,
+      "scaling_all_required_gradients_and_lrs_positive": true,
+      "new100_scores": {
+        "h-jepa-seed2": 10.8,
+        "h-jepa-seed3": 11.1,
+        "lewm-idm-seed3": 10.8
+      },
+      "native_completed_shards": 0,
+      "resources": "Originalandcontinuationjobscover24assignedGPUs;22CUDAprocessesatinstantread. LpWM3evaluatorsstarted1minago/importphaseondev6g4/5;not an executionfailure. OriginalIDM1/H1finaltracescontinuefreshly,~797/~777of1000.",
+      "decision": "Continue original100and100+200continuations. No source/loss/NN/cases changes,no candidateSGD. Need remainingseeds,matchedcohort learningcurves,andnativecontrollertrackbefore strongranking/causalclaims."
     }
   },
   "research": "No new candidate SGD launched yet. Continue evidence-led improvements when baseline convergence/physical diagnostics justify it;require paired matched-budgetcontrols,reproducible realmanipulationgainsandfreshconfirmation beforeclaims/longpromotion. Existing1100CPUreplays/6inverseablations remainvalid;they donot prove missingobjectfeatures uniquely.",
@@ -178,58 +146,26 @@
   },
   "performance_claim": "7native100epoch models complete at22:04,full1000cases/model. LeWMseed2DrawerOpen2/20,other hardtasksscope mostlyzero. First100+200continuationhas100actualnewupdates/gatepass;no>100epochcontrolscoreyet.",
   "latest_direct_hourly_review": {
-    "utc": "2026-11-07T22:04:35.023590+00:00",
-    "original100_complete": 7,
+    "utc": "2026-11-07T23:05:28.140561+00:00",
+    "original100_complete": 10,
     "original100_errors": 0,
-    "formal_scaling_claims": 1,
-    "native_controller_completed_shards": 0,
-    "scores100": {
-      "lewm-idm-seed2": {
-        "macro50": 11.1,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "lewm-seed1": {
-        "macro50": 10.3,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "smwm-seed1": {
-        "macro50": 12.6,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "ac-mtm-seed1": {
-        "macro50": 11.4,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "lpwm-seed1": {
-        "macro50": 7.7,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "lewm-seed2": {
-        "macro50": 11.5,
-        "episodes": 1000,
-        "hard6success": 2,
-        "hard6episodes": 120
-      },
-      "smwm-seed2": {
-        "macro50": 14.1,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      }
+    "scaling_claims": 4,
+    "scaling_errors": 0,
+    "scaling_steps": {
+      "lewm-idm-seed2": 56500,
+      "h-jepa-seed2": 48500,
+      "lewm-idm-seed3": 54500,
+      "h-jepa-seed3": 48700
     },
-    "first_scaling": "lewm-idm-seed2 actual100+3DDP/fullCPUrestore/FP32backward/padding/20nativeMPC passed;actual100newupdates plusCPUaudit pass. Sampler/AdamW retained. No performance claim beyond100epoch yet.",
-    "physical_hard_positive": "lewm-seed2 DrawerOpen2/20;other hard5zero. Bothselected traces and3blind controls/case replayed exactly. Objects moved16.35/16.00cm;floors fail atbothcases. Outcome-conditioned2case attribution,not a generalization test.",
-    "resources": "22GPUcomputeprocesses at22:04snapshot;dev13pair6/7incontinuationCPUaudit/interstage. Remaining22used by originaltraining/eval. Notconstant100percent utilization.",
-    "decision": "Continue original100+armed300. No technical failure or new candidate SGD. All14nonexternal originalrecipes now claimed;releasedpairs may take continuations."
+    "scaling_all4_actual_entry_gate_passed": true,
+    "scaling_all_required_gradients_and_lrs_positive": true,
+    "new100_scores": {
+      "h-jepa-seed2": 10.8,
+      "h-jepa-seed3": 11.1,
+      "lewm-idm-seed3": 10.8
+    },
+    "native_completed_shards": 0,
+    "resources": "Originalandcontinuationjobscover24assignedGPUs;22CUDAprocessesatinstantread. LpWM3evaluatorsstarted1minago/importphaseondev6g4/5;not an executionfailure. OriginalIDM1/H1finaltracescontinuefreshly,~797/~777of1000.",
+    "decision": "Continue original100and100+200continuations. No source/loss/NN/cases changes,no candidateSGD. Need remainingseeds,matchedcohort learningcurves,andnativecontrollertrackbefore strongranking/causalclaims."
   }
 }

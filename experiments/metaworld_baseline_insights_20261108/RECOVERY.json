@@ -144,59 +144,27 @@
     "recorded_utc": "2026-11-07T21:29:45.205120+00:00"
   },
   "latest_direct_hourly_review": {
-    "utc": "2026-11-07T22:04:35.023590+00:00",
-    "original100_complete": 7,
+    "utc": "2026-11-07T23:05:28.140561+00:00",
+    "original100_complete": 10,
     "original100_errors": 0,
-    "formal_scaling_claims": 1,
-    "native_controller_completed_shards": 0,
-    "scores100": {
-      "lewm-idm-seed2": {
-        "macro50": 11.1,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "lewm-seed1": {
-        "macro50": 10.3,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "smwm-seed1": {
-        "macro50": 12.6,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "ac-mtm-seed1": {
-        "macro50": 11.4,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "lpwm-seed1": {
-        "macro50": 7.7,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "lewm-seed2": {
-        "macro50": 11.5,
-        "episodes": 1000,
-        "hard6success": 2,
-        "hard6episodes": 120
-      },
-      "smwm-seed2": {
-        "macro50": 14.1,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      }
+    "scaling_claims": 4,
+    "scaling_errors": 0,
+    "scaling_steps": {
+      "lewm-idm-seed2": 56500,
+      "h-jepa-seed2": 48500,
+      "lewm-idm-seed3": 54500,
+      "h-jepa-seed3": 48700
     },
-    "first_scaling": "lewm-idm-seed2 actual100+3DDP/fullCPUrestore/FP32backward/padding/20nativeMPC passed;actual100newupdates plusCPUaudit pass. Sampler/AdamW retained. No performance claim beyond100epoch yet.",
-    "physical_hard_positive": "lewm-seed2 DrawerOpen2/20;other hard5zero. Bothselected traces and3blind controls/case replayed exactly. Objects moved16.35/16.00cm;floors fail atbothcases. Outcome-conditioned2case attribution,not a generalization test.",
-    "resources": "22GPUcomputeprocesses at22:04snapshot;dev13pair6/7incontinuationCPUaudit/interstage. Remaining22used by originaltraining/eval. Notconstant100percent utilization.",
-    "decision": "Continue original100+armed300. No technical failure or new candidate SGD. All14nonexternal originalrecipes now claimed;releasedpairs may take continuations."
+    "scaling_all4_actual_entry_gate_passed": true,
+    "scaling_all_required_gradients_and_lrs_positive": true,
+    "new100_scores": {
+      "h-jepa-seed2": 10.8,
+      "h-jepa-seed3": 11.1,
+      "lewm-idm-seed3": 10.8
+    },
+    "native_completed_shards": 0,
+    "resources": "Originalandcontinuationjobscover24assignedGPUs;22CUDAprocessesatinstantread. LpWM3evaluatorsstarted1minago/importphaseondev6g4/5;not an executionfailure. OriginalIDM1/H1finaltracescontinuefreshly,~797/~777of1000.",
+    "decision": "Continue original100and100+200continuations. No source/loss/NN/cases changes,no candidateSGD. Need remainingseeds,matchedcohort learningcurves,andnativecontrollertrackbefore strongranking/causalclaims."
   },
   "positive_replay": {
     "status": "COMPLETE/PASS",
