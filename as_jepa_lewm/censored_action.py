@@ -15,6 +15,10 @@ from .temporal_bridge import TemporalBridge
 class CensoredActionBridge(TemporalBridge):
     def __init__(self, components=4, action_lower=None, action_upper=None,
                  observation_model='censored', **kwargs):
+        for key, value in dict(visual_source='local', objective='mse', chunk=1,
+                               action_dim=4, temporal_aux=False, condition_horizon='none',
+                               history_context=False, goal_representation='directed').items():
+            kwargs.setdefault(key, value)
         assert kwargs.get('objective', 'mse') == 'mse'
         assert kwargs.get('chunk', 1) == 1 and kwargs.get('action_dim', 4) == 4
         assert kwargs.get('temporal_aux', False) is False
