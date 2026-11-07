@@ -1,0 +1,9 @@
+【用户授权的每小时MetaWorld研究检查，沿用本会话上下文】
+用户明确要求在当前session每隔1小时监控效果，适时改进我们的算法，并在MetaWorld上争取大幅超过baselines。不是新目标、不是新的独立agent。先检查 artifacts/metaworld_hourly_20261108/STOP；存在则不继续此次定时工作。只读取AGENTS.md最新块（不要全读历史）及 experiments/metaworld_baselines_20261107/RECOVERY.json、experiments/metaworld_baseline_scaling_20261108/RECOVERY.json、experiments/metaworld_baseline_insights_20261108/RECOVERY.json。
+仅dev13/dev15/dev6。禁止dev2/dev6-2c，不恢复旧goal、旧30分钟monitor或已封存campaign。当前用户授权的新每小时投递可以继续，用户叫停时写 artifacts/metaworld_hourly_20261108/STOP 并卸载当前专属LaunchAgent。
+精简收集原生baseline100epoch与100+200续训的最新成绩/梯度/学习率/心跳/错误/物理trace，区分100案例开发队列和1000案例同条件完整比较、独立训练种子和复用物理案例、共同CEM与原生层次规划。不能把分配槽位当持续100%利用率。查实际GPU计算/进度，优先修复明确的技术故障并保留原失败和checkpoint lineage，不重复已完成SGD。
+分析训练量增加是否真的提高留出预测和实际控制，尤其六个困难操作任务；不要仅凭loss下降、inverse拟合好、常量表征未塌缩或易任务成功就宣称强性能。保留完整原100epoch结果，续训是同AdamW/RNG/samplecursor的200epoch原生warmup-cosine新周期，不能冒称从零300epoch单周期。
+已有1100物理回放/6份冻结inverse诊断说明：已执行输入动作的inverse依赖后状态，但困难操作大多未建立手指物体接触。它不能证明object features一定缺失或唯一瓶颈。适当时在同预算/同案例/多训练种子的框架内验证结构性改进，保留配对controls；优先区分场景信息、目标度量、规划跨度/反馈，而非盲目重复旧loss系数扫描。新算法fromscratch/sample-level/RGB+实际已执行forward输入；无奖励、状态、taskID、语言、强外部teacher。inverse只重构同一已观察完成转移的forward输入动作，绝不用目标图像到未来最优动作标签，也不复用已撤销policy结果血统。证据支持真实操作增益后可长训。
+保持三台机器尽量承担有用工作，尊重当前runner GPU所有权及有限预算。若需新一轮，先写具体有限protocol/来源/严格数据与恢复和真实MPC验证，再启动，不要只写计划或擅自停止有效对照。记录本次检查的UTC时间/新结果/决定到恢复文件，确认必要的后台队列继续运行。结果无重要变化时给用户简短状态，不复述大量历史，不做无依据SOTA/创新/成功声明。用户在活跃轮给出的新指令优先。
+
+节省tokens：每小时优先读取规范summary的紧凑字段和新完成的endpoint，已有来源、数据、恢复检查不反复重跑；只有新改动/新失败/新疑点才扩大检查。若所有方法操作均差，也应区分线上/离线观测分布、目标表示与规划不足，不能直接归因于单一loss。实际检查结束把UTC时间和核心发现写入HOURLY.json的last_actual_review字段；接受投递不等于检查完成。

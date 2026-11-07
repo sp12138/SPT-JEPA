@@ -107,6 +107,35 @@ def optimizer(model,total):
     return opt,sch
 
 
+def extended_config(parent, output):
+    """Keep the completed100epoch experiment intact; add one200epoch cycle."""
+    base=parent['steps'];per=base//100
+    assert base==per*100
+    result=dict(parent,output=str(output),steps=base*3,epochs=300,
+        milestones=sorted(set(parent['milestones']+[base+3,base+100,*[per*e for e in [150,200,250,300]]])),
+        scaling_schedule=dict(start_step=base,additional_steps=2*base,
+            kind='native_warmup_cosine_restart',peak_lr_scale=1.,version=1))
+    return result
+
+
+def extension_optimizer(model,state,cfg):
+    """Restore AdamW exactly, then restart only the native LR schedule."""
+    from stable_pretraining.optim.lr_scheduler import LinearWarmupCosineAnnealingLR
+    opt,old=optimizer(model,state['config']['steps'])
+    opt.load_state_dict(state['optimizer']);old.load_state_dict(state['scheduler'])
+    assert equal(cpu(opt.state_dict()),state['optimizer']) and equal(old.state_dict(),state['scheduler'])
+    before=[g['lr'] for g in opt.param_groups]
+    pointers=[v.data_ptr() for s in opt.state.values() for v in s.values() if torch.is_tensor(v)]
+    _,_,warm=model.optimizer_spec();duration=cfg['scaling_schedule']['additional_steps']
+    for group,peak in zip(opt.param_groups,old.base_lrs):
+        group['lr']=peak;group['initial_lr']=peak
+    sch=LinearWarmupCosineAnnealingLR(opt,warmup_steps=max(1,int(warm*duration)),max_steps=duration)
+    assert pointers==[v.data_ptr() for s in opt.state.values() for v in s.values() if torch.is_tensor(v)]
+    return opt,sch,dict(parent_lrs=before,restart_lrs=[g['lr'] for g in opt.param_groups],
+        native_peak_lrs=list(sch.base_lrs),native_warmup_fraction=warm,additional_steps=duration,
+        actual_parent_adamw_and_scheduler_restore=True,adamw_moment_tensor_storage_preserved=True)
+
+
 def checkpoint(model,opt,sch,step,out,cfg,rank,world):
     rng=dict(torch=torch.get_rng_state(),cuda=torch.cuda.get_rng_state(),numpy=np.random.get_state(),python=random.getstate())
     rngs=[None]*world
@@ -142,11 +171,17 @@ def run(args):
     random.seed(cfg['seed']);np.random.seed(cfg['seed']);torch.manual_seed(cfg['seed']);torch.cuda.manual_seed_all(cfg['seed'])
     model=PublicBaseline(cfg['method'],cfg['sources'])
     out=Path(cfg['output']);out.mkdir(parents=True,exist_ok=True)
-    start=0;state=None
+    start=0;state=None;extension=None
     if args.resume:
         state=torch.load(args.resume,map_location='cpu',weights_only=False)
         expected=dict(state['config'])
-        if args.allow_output_transfer:
+        if args.allow_budget_extension:
+            fork=json.loads((out/'FORK.json').read_text())
+            assert Path(args.resume)==Path(fork['parent_checkpoint'])
+            assert hashlib.sha256(Path(args.resume).read_bytes()).hexdigest()==fork['parent_checkpoint_sha256']
+            assert state['step']==state['config']['steps']
+            expected=extended_config(state['config'],cfg['output'])
+        elif args.allow_output_transfer:
             fork=json.loads((out/'FORK.json').read_text())
             assert Path(args.resume)==Path(fork['parent_checkpoint'])
             assert hashlib.sha256(Path(args.resume).read_bytes()).hexdigest()==fork['parent_checkpoint_sha256']
@@ -159,8 +194,11 @@ def run(args):
     # to CUDA; otherwise its queue remains on CPU and NCCL rejects DDP restore.
     model=model.cuda()
     assert all(t.device.type=='cuda' for t in list(model.parameters())+list(model.buffers()))
-    opt,sch=optimizer(model,cfg['steps'])
-    if state is not None:
+    if args.allow_budget_extension:
+        assert state is not None
+        opt,sch,extension=extension_optimizer(model,state,cfg)
+    else:opt,sch=optimizer(model,cfg['steps'])
+    if state is not None and not args.allow_budget_extension:
         opt.load_state_dict(state['optimizer']);sch.load_state_dict(state['scheduler'])
     if rank==0:
         entry=out/f'entry-{start:07d}.json'
@@ -171,6 +209,9 @@ def run(args):
             input_keys=['pixels','action'],source_config=OmegaPlain(model.cfg),
             runtime_train_file=str(Path(__file__).resolve()),runtime_train_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             all_model_buffers_cuda=True,utc=now()))
+        if extension is not None:
+            save(out/'BUDGET_EXTENSION_ENTRY.json',dict(extension,parent_step=start,sample_cursor=state['samples'],
+                parent_checkpoint=args.resume,model_state_sha256=digest(model),completed_sgd_repeated=0,utc=now()))
     dataset=Windows(cfg['data'],model.frames,cfg['seed'])
     assert len(dataset)==cfg.get('natural_windows',105486)
     batches=Batches(len(dataset),cfg['seed'],start,args.stop,rank,world,128)
@@ -190,7 +231,8 @@ def run(args):
         assert torch.isfinite(loss),('nonfinite',step,float(loss))
         loss.backward()
         g=None
-        if step<=3 or step%100==0:
+        entry_probe=bool(cfg.get('scaling_schedule')) and step<=start+3
+        if step<=3 or step%100==0 or entry_probe:
             g=gradients(model)
             assert all(math.isfinite(x) for x in g.values()),(step,g)
             if step>=3:assert all(x>0 for x in g.values()),(step,'required gradient missing',g)
@@ -200,7 +242,7 @@ def run(args):
         else:norms=[torch.nn.utils.clip_grad_norm_(model.parameters(),1.)]
         assert all(torch.isfinite(n) for n in norms)
         opt.step();sch.step()
-        if step<=3 or step%100==0:
+        if step<=3 or step%100==0 or entry_probe:
             row=dict(step=step,epoch_exposure=step/batches.per_epoch,loss=float(loss.detach()),
                 metrics={k:float(v) for k,v in metrics.items()},gradients=g,rank=rank,world_size=world,
                 lrs=[p['lr'] for p in opt.param_groups],elapsed_seconds=time.monotonic()-started,
@@ -253,6 +295,7 @@ def audit(args):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--config',required=True);p.add_argument('--stop',type=int)
     p.add_argument('--resume');p.add_argument('--audit',action='store_true')
-    p.add_argument('--allow-output-transfer',action='store_true');args=p.parse_args()
+    p.add_argument('--allow-output-transfer',action='store_true')
+    p.add_argument('--allow-budget-extension',action='store_true');args=p.parse_args()
     if args.audit:audit(args)
     else:run(args)

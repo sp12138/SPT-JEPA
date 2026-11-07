@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "method": "h-jepa",
+  "source_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/h-jepa-seed1/checkpoint-0008240.pt",
+  "source_step": 8240,
+  "probe_scope": "Actualnative20epoch copy,not a formal100->300continuation or new training result",
+  "cpu_full_model_adamw_scheduler_restore": true,
+  "required_positive_fp32_gradients": {
+    "core.jepas.0.encoder": 18.095523834228516,
+    "core.jepas.0.predictor": 0.05869924649596214,
+    "core.jepas.0.idm_loss_fn": 7.932095527648926,
+    "core.jepas.1.encoder": 11.682371139526367,
+    "core.jepas.1.predictor": 0.08464301377534866,
+    "core.jepas.1.idm_loss_fn": 27.87244987487793
+  },
+  "loss": 1.0724353790283203,
+  "schedule_entry": {
+    "parent_lrs": [
+      0.0004849231551964771,
+      0.0004849231551964771
+    ],
+    "restart_lrs": [
+      0.0,
+      0.0
+    ],
+    "native_peak_lrs": [
+      0.0005,
+      0.0005
+    ],
+    "native_warmup_fraction": 0.1,
+    "additional_steps": 82400,
+    "actual_parent_adamw_and_scheduler_restore": true,
+    "adamw_moment_tensor_storage_preserved": true
+  },
+  "model_weights_unchanged": true,
+  "new_model_optimizer_updates": 0,
+  "gpu_context_created": false,
+  "cumulative100epoch_sample_cursor_continuity": true,
+  "original_checkpoint_not_modified": true
+}

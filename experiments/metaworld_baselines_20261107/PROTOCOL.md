@@ -102,3 +102,37 @@ traces were checked. New100epoch baseline ranking is pending. Operational errors
 including packaging/resolver, custom H-JEPA CPU queue placement, collector ESTALE,
 and native-queue launch environment failures, are retained separately from measured
 method performance. Bounded metadata retries propagate persistent errors.
+
+
+The latest user requests longer baseline training to test optimization-budget
+scaling, and hourly review in this same session. The original100epoch study and
+all its checkpoints/results remain intact. New root
+`runs/metaworld_baseline_scaling_20261108` schedules all18 lineages for200additional
+native epochs after their completed100epoch parent. AdamW moments, model buffers,
+rank RNG and cumulative sample cursor are preserved. Only LR starts a new200epoch
+native warmup/cosine cycle at each method's original peak and warmup fraction.
+This is a100+200 continuation,not a random-init300epoch single-cosine run.
+
+Total native updates at300epochs are202200(SMWM),175800(4frame methods),123600
+(H-JEPA family). Data/split/architecture/loss are unchanged. Original100epoch
+completion and wave scheduling retain priority; new pairworkers wait for finished
+parents and GPU ownership. The original deadline remains unchanged. Each new
+continuation requires actual3DDPupdates/CPUfullrestore/held-outbackward/padding
+invariance/20native-step MPC before proceeding. Six real20epoch CPU-copy
+restoration/backward checks pass without optimizer updates. Scalar LR/AdamW
+100->300 and resumeat103 parity tests pass;these are technical,not performance.
+
+Use the same1000 physical cases at100(inherited),200,and300epochs;150/250use the
+same100case development subset. The native GD/hierarchy track now evaluates the
+same six lineages at100and300,12checkpoints/192shards/12000episodes. Budgets and
+feedback differ fromcommonCEM and stay separate. Standby workers protect original
+and scaling training owners and only use released pairs. No native-controller
+formal episodes or actual >100epoch scaling results exist at launch.
+
+A user-scoped launchd task delivers the approved hourly prompt through supported
+CodexCLI `queue --resume` to this exact existing thread,without creating a new
+agent/model or reviving the old goal/monitors. It requires the local computer and
+daemon to remain available. Stop instructions,first expected delivery,CLIprobe
+outcome,and32SHAverified startup records are indexed in
+`../metaworld_baseline_scaling_20261108/RECOVERY.json`. Only the new hourly delivery
+is enabled;the old closed campaigns and timers stay closed.

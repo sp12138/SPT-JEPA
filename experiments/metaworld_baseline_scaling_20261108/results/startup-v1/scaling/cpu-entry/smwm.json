@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "method": "smwm",
+  "source_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_native_20261108/training/smwm-seed1/checkpoint-0013480.pt",
+  "source_step": 13480,
+  "probe_scope": "Actualnative20epoch copy,not a formal100->300continuation or new training result",
+  "cpu_full_model_adamw_scheduler_restore": true,
+  "required_positive_fp32_gradients": {
+    "core.encoder": 14.821558952331543,
+    "core.predictor": 0.02174685150384903,
+    "core.action_encoder": 0.01775447651743889,
+    "core.projector": 8.061814308166504,
+    "core.pred_proj": 0.16342635452747345,
+    "core.inverse_model": 1.494271159172058
+  },
+  "loss": 0.08824121206998825,
+  "schedule_entry": {
+    "parent_lrs": [
+      9.118382907149165e-05
+    ],
+    "restart_lrs": [
+      0.0
+    ],
+    "native_peak_lrs": [
+      0.0001
+    ],
+    "native_warmup_fraction": 0.01,
+    "additional_steps": 134800,
+    "actual_parent_adamw_and_scheduler_restore": true,
+    "adamw_moment_tensor_storage_preserved": true
+  },
+  "model_weights_unchanged": true,
+  "new_model_optimizer_updates": 0,
+  "gpu_context_created": false,
+  "cumulative100epoch_sample_cursor_continuity": true,
+  "original_checkpoint_not_modified": true
+}

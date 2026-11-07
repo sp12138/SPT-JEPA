@@ -13,20 +13,21 @@ from experiments.metaworld_baselines_20261107.safe_metadata import read
 def prepare(helper):
     main=read(ROOT/'plan.json');jobs=[]
     bank=read(BASE/'runs/metaworld_input_inverse_20261107_v1/followup/cases/manifest.json')
-    for method in ['lewm-idm','h-jepa']:
-        for seed in [1,2,3]:
-            for shard in range(16):
-                name=f'{method}-seed{seed}-shard{shard:02}'
-                manifest=ROOT/'native-controller/manifests'/(name+'.json')
-                save(manifest,dict(bank,rows=bank['rows'][shard::16]))
-                jobs.append(dict(name=name,method=method,seed=seed,manifest=str(manifest)))
+    for epoch in [100,300]:
+        for method in ['lewm-idm','h-jepa']:
+            for seed in [1,2,3]:
+                for shard in range(16):
+                    name=('' if epoch==100 else 'epoch300-')+f'{method}-seed{seed}-shard{shard:02}'
+                    manifest=ROOT/'native-controller/manifests'/(name+'.json')
+                    save(manifest,dict(bank,rows=bank['rows'][shard::16]))
+                    jobs.append(dict(name=name,method=method,seed=seed,manifest=str(manifest),training_epochs=epoch))
     native=BASE/'runs/hjepa_droid_20261105/public/stable_worldmodel/solver'
     evaluator=BASE/'reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py'
     if (ROOT/'native-controller/plan.json').exists():
-        assert not (ROOT/'native-controller/claims').exists()
-        save(ROOT/'native-controller/plan-v1-before-flat-interface-fix.json',read(ROOT/'native-controller/plan.json'))
+        assert not list((ROOT/'native-controller/claims').glob('*.json'))
+        save(ROOT/f'native-controller/plan-before-scaling-{os.getpid()}.json',read(ROOT/'native-controller/plan.json'))
     save(ROOT/'native-controller/plan.json',dict(helper=str(helper),evaluator=str(evaluator),jobs=jobs,deadline=main['deadline'],
-        models=6,episodes=6000,source_hashes={str(p):sha(p) for p in [native/'solver.py',native/'gd.py',
+        trained_lineages=6,model_checkpoints=12,training_budgets=[100,300],episodes=12000,source_hashes={str(p):sha(p) for p in [native/'solver.py',native/'gd.py',
             BASE/'sources/metaworld-baselines-20261107/hjepa/h_jepa/hierarchical_solver.py',
             evaluator]},
         scope='Full native DROID GD/hierarchy transfer,36macro/180native open-loop blocks,then replan,500nativeanysuccess. '
@@ -41,6 +42,17 @@ def owned_alive(pid):
 
 def primary_busy(host,gpu):
     pair=gpu//2
+    scaling=BASE/'runs/metaworld_baseline_scaling_20261108/plan.json'
+    if scaling.exists():
+        plan=read(scaling);root=scaling.parent
+        for job in plan['jobs']:
+            out=Path(job['output']);claim=root/'claims'/(job['name']+'.json')
+            disposed=any((out/n).exists() for n in ['complete.json','error.json','SKIPPED_PARENT_ERROR.json'])
+            if not claim.exists():
+                if not disposed:return True
+                continue
+            owner=read(claim)
+            if owner['host']==host and owner['pair']==pair and not disposed:return True
     formal=BASE/'runs/metaworld_baselines_native_20261108/plan.json'
     if formal.exists():
         plan=read(formal);formal_root=formal.parent
@@ -86,7 +98,10 @@ def primary_busy(host,gpu):
 def claim():
     main=read(ROOT/'plan.json');plan=read(ROOT/'native-controller/plan.json')
     for job in plan['jobs']:
-        parent=next(j for j in main['jobs'] if j['method']==job['method'] and j['seed']==job['seed'])
+        if job.get('training_epochs',100)==300:
+            source=read(BASE/'runs/metaworld_baseline_scaling_20261108/plan.json')['jobs']
+        else:source=main['jobs']
+        parent=next(j for j in source if j['method']==job['method'] and j['seed']==job['seed'])
         if not (Path(parent['output'])/'complete.json').exists():continue
         path=ROOT/'native-controller/claims'/(job['name']+'.json');path.parent.mkdir(exist_ok=True)
         try:
@@ -110,7 +125,7 @@ def work(host,gpu):
         job,parent=selected;out=ROOT/'native-controller/results'/job['name'];out.parent.mkdir(exist_ok=True)
         try:
             execute([PYTHON,plan['evaluator'],
-                '--config',parent['config'],'--checkpoint',str(Path(parent['output'])/'model-step0041200'),
+                '--config',parent['config'],'--checkpoint',str(Path(parent['output'])/f'model-step{read(parent["config"])["steps"]:07d}'),
                 '--manifest',job['manifest'],'--output',str(out),'--budget','500'],out.parent/(job['name']+'.log'),
                 env(helper,[gpu]),helper,plan['deadline'])
             report=read(out/'metrics.json')
@@ -155,7 +170,7 @@ def collect():
             if e.exists():errors.append(str(e))
         models={}
         for result in cached.values():
-            j=result['job'];key=f"{j['method']}-seed{j['seed']}"
+            j=result['job'];key=f"{j['method']}-seed{j['seed']}-epoch{j.get('training_epochs',100)}"
             models.setdefault(key,[]).extend(result['episodes'])
         reports={}
         for name,rows in models.items():

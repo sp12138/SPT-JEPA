@@ -1,0 +1,117 @@
+{
+  "status": "ARMED_100PLUS200_CONTINUATIONS_WAIT_FOR_ORIGINAL100_PARENTS",
+  "latest_user": "Extend training to test baseline compute scaling. In this same session check effects every1hour,then improve our sample-level algorithm when evidence justifies it and aim for large gains over baselines.",
+  "hosts": [
+    "dev13",
+    "dev15",
+    "dev6"
+  ],
+  "excluded_hosts": [
+    "dev2",
+    "dev6-2c"
+  ],
+  "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baseline_scaling_20261108",
+  "parent_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_native_20261108",
+  "runtime": "/efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/runtime-scaling-v1",
+  "methods": [
+    "lewm",
+    "lewm-idm",
+    "h-jepa",
+    "smwm",
+    "ac-mtm",
+    "lpwm"
+  ],
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "model_lineages": 18,
+  "concurrent_pairs": 12,
+  "gpus_per_model": 2,
+  "global_batch": 256,
+  "original_native_epochs": 100,
+  "new_native_epochs": 200,
+  "total_native_epochs": 300,
+  "total_updates_by_frames": {
+    "2": 202200,
+    "4": 175800,
+    "8": 123600
+  },
+  "additional_updates_by_frames": {
+    "2": 134800,
+    "4": 117200,
+    "8": 82400
+  },
+  "scheduler": "Original100epoch optimizer/LR trajectory and outputs unchanged. Restore full AdamW/RNG/cursor;restart ONLY the native warmup-cosine scheduler for200extra epochs at original native peak/fraction. No model/optimizer reset. This is100+200continuation,not random-init300epoch single cosine.",
+  "data_scaling": "Same fixed corpus and split;optimization-compute scaling only,not more data.",
+  "evaluation": {
+    "shared_case_bank": "Same1000physicalcases/model at100(inherited),200,300epochs;sameCEM300x15/H6/execute3/context2/f5/500nativeanysuccess",
+    "intermediate": "150and250epochs use same100case subset;do not treat those as1000case confirmation",
+    "native_controllers": "6same trained H-JEPA/onelevel lineages at100and300,12checkpoints/192shards/12000episodes;not12independenttrainings. OriginalGD/hierarchy recipe,reported separately fromcommonCEM."
+  },
+  "constraints": "Scratch/RGB+actual executed forward input;rewardfree/no state/taskID/language/externalstrongteacher/unknownfuture-optimal-action targets. Inverse only same forward input on observed completed transition. Native baseline batchregs retained;future candidates remain sample-level.",
+  "deadline_utc": "2026-11-12T16:02:48.085628+00:00",
+  "deadline_extended": false,
+  "ownership": {
+    "scaling": "launch-{host}.json/claims/*.json;12waiting pairworkers",
+    "collector": "collector-scaling-v1-launch.json;PID3737917atlaunch;results/summary.json",
+    "original100": "Parentrootownershipunchanged;all18originalrecipesgetprioritybeforecontinuationclaims",
+    "native_frozen": "Legacyroot/native-controller/launch-scale-v1-{host}.json;24standbyworkers;collector-scaling-v1-launch.json PID3737918atlaunch"
+  },
+  "entry_gates": {
+    "cpu_real_models": "All6native20epoch copies pass exact full model/AdamW/scheduler restores,positiveFP32backward,weightsunchanged,sampler100epochboundarycontinuity.0model optimizer updates/0GPUcontexts. Technical mechanics only,not actual100epoch continuations.",
+    "scalar_schedule": "Native warm fractions.01/.1:100->300counts correct,nonzero tailLR,finalLRzero,resumeat103exactlymatchesuninterruptedremaining197updates. Synthetic scalar optimizer,not NNperformance.",
+    "gpu_per_continuation": "Pending parent100complete. Eachjob automatically runs3newDDPupdates/fullCPUrestore/heldoutFP32backward/paddingpoison/20nativeMPC before further100updates/audit and150/200/250/300milestones. No actual300budget progress claimed yet.",
+    "queue_contracts": "10syntheticpriority/ownershipchecksPASS;newunclaimedscalingandassignedunfinishedpairsprotected;originalwavepriority;CUDAprocessprotection.",
+    "public_model_wrapper_sha256": "5faee4b5b9957d2e5fb22df9f97f9f90524df3397bb3a5d01d6e08c88d23e9bb",
+    "prelaunch_dispatch_fix": "Parent-error skipcannotlaterreclaimanactivepairwithout explicit recovery. Oldprepare source archived;0formalclaims/0newSGD whenpatched."
+  },
+  "latest_snapshot": {
+    "utc": "2026-11-07T19:25:42.675357+00:00",
+    "parent": {
+      "utc": "2026-11-07T19:25:23.024820+00:00",
+      "errors": 0,
+      "complete": 0,
+      "models": 18
+    },
+    "scaling": {
+      "utc": "2026-11-07T19:25:18.518421+00:00",
+      "models": 18,
+      "complete": 0,
+      "errors": 0
+    },
+    "native": {
+      "utc": "2026-11-07T19:25:18.519496+00:00",
+      "completed_shards": 0,
+      "errors": [],
+      "episodes": 0,
+      "models": {}
+    },
+    "live_scaling_waiters": 12,
+    "live_native_frozen_waiters": 24,
+    "formal_scaling_claims": 0,
+    "scope": "Current24GPUsserveoriginal100epochtraining/evaluation;newcontinuationswait. Memory/use variesduringimports/restores/CPUphysics,notconstant100percentutilization."
+  },
+  "hourly_monitor": {
+    "authorized": true,
+    "same_session": true,
+    "thread": "01a18941-09c9-7400-8d97-d8ad825d929c",
+    "label": "com.spt-jepa.metaworld-hourly-01a18941",
+    "plist": "/Users/pengsun/Library/LaunchAgents/com.spt-jepa.metaworld-hourly-01a18941.plist",
+    "interval_seconds": 3600,
+    "next_expected_utc": "2026-11-07T20:09:20.668829+00:00",
+    "stop_file": "/Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/STOP",
+    "instructions": "hourly-prompt.txt",
+    "implementation": "Per-userlaunchd invokes supported Codex CLI queue --resume onthisexactthread;not anindependentagent/model. Machine/localdaemon must remain available. No LLM loopbetweenhours.",
+    "actual_probe": "Queueacceptedmessage01a1b769-7f07-75f3-8130-f5bfcec3c02d;resume returned activewriter warning while currentturnruns. First actual idle hourly resume not yetobserved.",
+    "old_goal_and_old_monitors": "Stilloff;only thisnew explicitlyauthorizedhourlydeliveryenabled."
+  },
+  "research": "No new candidate SGD launched yet. Continue evidence-led improvements when baseline convergence/physical diagnostics justify it;require paired matched-budgetcontrols,reproducible realmanipulationgainsandfreshconfirmation beforeclaims/longpromotion. Existing1100CPUreplays/6inverseablations remainvalid;they donot prove missingobjectfeatures uniquely.",
+  "local_evidence": {
+    "root": "results/startup-v1",
+    "sha256_verified_files": 32,
+    "archive_sha256": "2e5035a0de421f4b36fb94e9abc067c17be07279fa793ee45bfec0cb4e5f6c23"
+  },
+  "performance_claim": "Scaling beyond100 hasnot begun yet;actualparent100and300performancepending. No SOTA/convergence/highperformance claim."
+}
