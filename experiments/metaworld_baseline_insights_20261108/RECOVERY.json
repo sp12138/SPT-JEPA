@@ -114,5 +114,54 @@
     "authorized": true,
     "recovery": "../metaworld_baseline_scaling_20261108/RECOVERY.json",
     "old_monitors_remain_off": "Newhourlysame-sessiondeliveryonly;oldgoalnotresumed"
+  },
+  "action_support_audit": {
+    "status": "COMPLETE/PASS",
+    "root": "action-support-v1",
+    "verified_smwm100_physical_traces": 2000,
+    "valid_train_macro_blocks": 172608,
+    "dimensions95_99": [
+      6,
+      12
+    ],
+    "train_effective_rank": 5.541020435108924,
+    "within_block_temporal_variation_fraction": {
+      "train": 0.0693,
+      "smwm100_all50_seed1": 0.6266,
+      "smwm100_all50_seed2": 0.5701
+    },
+    "above_train_p99_residual_to_train99variance_subspace": {
+      "train": 0.0096056,
+      "smwm100_all50_seed1": 0.673297,
+      "smwm100_all50_seed2": 0.711358
+    },
+    "interpretation": "Large descriptive train/control support mismatch. Not proof of causal failure,not a proposed novel prior,not an inverse optimal-action label. Correlated-action CEM already exists in iCEM2008.06389. Need actual paired physical tests.",
+    "model_updates": 0,
+    "neural_models_loaded": 0,
+    "new_physical_episodes": 0,
+    "render_calls": 0,
+    "evidence": "results-action-support/summary.json",
+    "recorded_utc": "2026-11-07T21:29:45.205120+00:00"
+  },
+  "latest_direct_hourly_review": {
+    "utc": "2026-11-07T21:04:00+00:00",
+    "scope": "First completed direct in-session hourly review after actual1hour waiting;no external scheduled delivery.",
+    "original100_complete": 2,
+    "original100_errors": 0,
+    "new_scaling_claims": 0,
+    "native_controller_completed_shards": 0,
+    "smwm100_macro50_by_seed": {
+      "1": 12.6,
+      "2": 14.1
+    },
+    "hard6_successes": 0,
+    "hard6_model_case_outcomes": 240,
+    "hard6_unique_physical_cases": 120,
+    "matched100case_mean20_50_100": [
+      12.0,
+      14.0,
+      14.5
+    ],
+    "decision": "Continue100epoch originals then armed100+200continuations;do not infer robust scaling or declare a winning method. Investigate controller support mismatch before attributing hard-task failure torepresentation."
   }
 }
