@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "step": 20000,
+  "actual_cpu_restore": {
+    "model": true,
+    "optimizer": true,
+    "scheduler": true
+  },
+  "portable_exact": true,
+  "gradients": {
+    "encoder": {
+      "contract": "frozen",
+      "norm": 0.0
+    },
+    "vision": {
+      "contract": "active",
+      "norm": 2.5808519074194263
+    },
+    "predictor": {
+      "contract": "active",
+      "norm": 5.288489691523105
+    },
+    "context": {
+      "contract": "active",
+      "norm": 0.9552378891402667
+    },
+    "decoder": {
+      "contract": "active",
+      "norm": 6.0737732210240925
+    },
+    "effect_head": {
+      "contract": "active",
+      "norm": 1.9123421625691304
+    },
+    "goal_head": {
+      "contract": "active",
+      "norm": 1.3847130912102457
+    },
+    "uncertainty": {
+      "contract": "active",
+      "norm": 0.08264512412633443
+    },
+    "absolute_head": {
+      "contract": "active",
+      "norm": 1.7716713063324938
+    },
+    "transient_head": {
+      "contract": "active",
+      "norm": 0.2956396913582752
+    },
+    "absolute_transient_head": {
+      "contract": "active",
+      "norm": 0.3290014093349024
+    },
+    "drift_head": {
+      "contract": "frozen",
+      "norm": 0.0
+    }
+  },
+  "sample_loss_independence_max_abs": 4.76837158203125e-07,
+  "identity_warp_max_abs": 0.0,
+  "loss": -4.674712657928467,
+  "metrics": {
+    "loss": -4.674712657928467,
+    "future_mse": 3.434508471400477e-05,
+    "predictive_variance": 3.3871187042677775e-05
+  },
+  "balanced_heldout_query_indices": [
+    324,
+    405,
+    568,
+    649,
+    0,
+    81,
+    162,
+    243
+  ],
+  "no_inverse_or_control_coordinate_objective": true,
+  "no_future_action_reference": true,
+  "model_updates": 0,
+  "scope": "Only observed future RGB is the target.Known current command inputs forward prediction only;goal query commands zeroed.Planning is never called in the training loss.No external pretrained model/state/reward/success/taskID input."
+}

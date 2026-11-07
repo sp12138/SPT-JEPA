@@ -1,0 +1,54 @@
+{
+  "seed": 4,
+  "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_action_measure_20261107/training/censored-single-seed4",
+  "dataset_kind": "native_inverse_pairs",
+  "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+  "native_inverse_cache": "/tmp/prescottsun-native-rgb224-20261107-v1",
+  "inverse_anchors": "all",
+  "inverse_balance": "episodes",
+  "model_class": "censored_action_bridge",
+  "model": {
+    "visual_source": "local",
+    "objective": "mse",
+    "chunk": 1,
+    "window": 2,
+    "width": 192,
+    "action_dim": 4,
+    "history_context": false,
+    "temporal_aux": false,
+    "condition_horizon": "none",
+    "noise_odds": 1.0,
+    "goal_representation": "directed",
+    "components": 1,
+    "observation_model": "censored",
+    "action_lower": [
+      -2.153107166290283,
+      -2.2594046592712402,
+      -1.1767576932907104,
+      -1.9350758790969849
+    ],
+    "action_upper": [
+      1.9061925411224365,
+      1.471704363822937,
+      1.715920329093933,
+      0.8853732347488403
+    ]
+  },
+  "batch_size": 128,
+  "workers": 2,
+  "max_steps": 40000,
+  "checkpoint_every": 1000,
+  "cpu_threads": 2,
+  "max_seconds": 86400,
+  "precision": "bf16-mixed",
+  "record_runtime_source": true,
+  "record_initial_weights": true,
+  "retain_steps": [
+    2,
+    600,
+    40000
+  ],
+  "float32_matmul_precision": "highest",
+  "inverse_goals": "phase_mixture",
+  "inverse_tail_reserve": 1
+}

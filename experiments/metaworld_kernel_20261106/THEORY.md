@@ -1,12 +1,17 @@
 # What the successful action target may actually supply
 
-## Current evidence, November 7, 05:44 Beijing time
+## Current evidence, November 7, 08:50 Beijing time
 
 The user now permits inverse learning when necessary. A useful matched gain
 exists, although a broadly successful purely observation-supervised controller
 has not been found. All numbers below use our independent LeRobot expert corpus,
 RGB goals, and 500-native-step any-success evaluation. They are not public
 JEPA-WMs scores or a canonical MetaWorld MT50 comparison.
+
+The strict single-native-action candidate reaches 89.17% on six manipulation
+tasks, 89.25% in the small 50-task screen, and 86.80% on the expanded 50-task
+1,000-physical-case cohort, using model feedback between five-step real observations. It supervises only the known current a_t. The completed
+controlled comparisons and the distinction from the older 20D models follow.
 
 At the original 40k budget, pairing current/goal local features before aggregation
 improves six manipulation tasks from 187/240 (77.92%) to 217/240 (90.42%). On the
@@ -72,16 +77,14 @@ to encode preparatory contacts, while also avoiding a multi-action label head.
 It does not by itself establish novelty or equal-compute superiority: there are
 five policy calls per camera interval plus four world predictions.
 
-The small pilot is encouraging but insufficient: world feedback succeeds on
+The initial small pilot was encouraging but insufficient: world feedback succeeded on
 24/24 manipulation episodes versus 20/24 with copied images and 20/24 with the
 original 224px image held constant. Both controls take the same five own action
 draws. BinPicking is 4/4 versus 0/4. Reach is still 0/4, and all numbers reuse
 only two physical cases per task crossed with two learners. Full 20-case eight
-task and four-case 50-task evaluations are running. Setting only the imagined
-forward controls to zero or their negatives is a separate negative diagnostic;
-it tests whether correct action-conditioned prediction matters beyond arbitrary
-image perturbation. No high-performance single-native-label claim is justified
-until these expanded evaluations finish.
+task and four-case 50-task evaluations, including zero and reversed imagined
+controls, have now finished; see the controlled evidence below. The expansion
+to the existing 1,000-case cohort has completed (details below).
 
 Machine-readable provenance and active ownership are in RECOVERY.json. The
 remote read-only comparison report is current-comparison-confirm.json under
@@ -108,7 +111,10 @@ Versus five samples on the unchanged image, the manipulation gain is +14.58pp,
 physical-case cluster CI [10.00, 19.17], conditional on two trained actors. The
 50-task screen also finishes at 357/400 = 89.25% versus 301/400 = 75.25%, with
 individual trained-seed gains +15pp and +13pp. Four cases/task is a screen;
-evaluation on the existing 1,000-case comparison cohort is still running.
+evaluation on the existing 1,000-case comparison cohort completes at 1,736/2,000
+=86.80% versus 1,421/2,000=71.05%. The +15.75pp interval is [14.20,17.30],
+conditional on two trained actors, with per-actor gains +15.4pp and +16.1pp.
+This is an expanded existing cohort, not untouched confirmation for this method.
 
 The zero-control diagnostic does NOT imply a frozen or zero-flow image: the
 stencil world model still reads known past controls and can predict their
@@ -123,8 +129,12 @@ A deterministic one-current-action MSE actor with the same world model reaches
 208/240 = 86.67%, versus 161/240 = 67.08% when held for five steps. It uses one
 action-field pass per policy call, compared with twelve flow integration passes.
 Both execute five policy calls between real observations. No Gaussian action
-draws occur in the MSE actor. Its copied-image and broad evaluations are pending;
-do not attribute the gain uniquely to generative action modeling.
+draws occur in the MSE actor. Copied images give only 162/240 = 67.50%, confirming
+that deterministic control also benefits from advancing the predicted state.
+However, its 50-task screen is only 335/400 = 83.75%, below flow's 89.25%.
+Two queued MSE continuations were therefore declined before SGD (step0,
+trained=False), not counted as trained models. The broad advantage of flow
+does not uniquely prove multimodality as its cause.
 
 The best existing 20D five-control model still has 217/240 = 90.42% manipulation
 success. The stricter 4D feedback method is comparable, not a demonstrated
@@ -171,6 +181,85 @@ this mismatch. Four locally predicted states permit an approximate internal
 feedback loop without using an actual intermediate observation or a future
 demonstrated control as a reference. This is a practical mechanism with evidence;
 novelty and superiority to public methods under matching data remain unproved.
+
+### Mechanism tests completed after the first feedback result
+
+Moving only the hindsight goal-image grid from five native steps to one did
+not improve the 50-task screen: both matched seed5/6 groups score84.5%, delta0pp,
+CI[-3.25,3.00]. Across four paired actor seeds, the six-manipulation delta is
+-1.46pp, CI[-4.58,1.67]. Retain the simpler existing goal grid. Action labels
+remain ONLYa_t throughout; all 256 default-data parity windows and 192 current
+control access guards passed.
+
+Training maturity is a distinct factor. For seeds3/4 with exactly the same
+random initial tensors, sampler, current labels and forward models, fully
+annealed40k training gives206/240=85.83%, versus189/240=78.75% at step40k of a
+120k schedule. The +7.08pp interval is[2.50,11.67]. The change includes the
+schedule horizon and its derived1%warmup; it does not establish a seed effect.
+At120k the longer schedule gives205/240=85.42%, so more steps have not produced
+a large gain over the40k fully annealed controls. All data/budgets remain visible.
+
+A stronger goal-information control duplicates CURRENT before the CNN in both
+image slots, retaining every parameter, initial tensor, label, sampler and
+compute path. With the same40k schedule, ownF and physical cases, proper-goal
+training reaches206/240=85.83% versus172/240=71.67% without a future goal image.
+The +14.17pp interval is[9.17,19.58], conditional on two actor pairs. This supports
+useful goal information beyond the current image; it does not prove arbitrary
+new-goal generalization. An inconsistent goal-image substitution separately
+changes every first command in32cases/arm; those are dependency diagnostics,
+not valid donor-goal performance episodes. The broader information comparison
+is still running and must retain the same distinction.
+
+Within-real-observation latent coupling gives216/240 versus214/240 for old
+actors, and188/240 versus189/240 for new actors. Swapping the two groups' own
+forward models does not recover the newer actors' performance. A separate ODE
+audit improves numerical agreement with Euler768 substantially, but Euler24
+and midpoint12 give only small physical gains over Euler12. These are negative
+results for strong claims about noise consistency or solver accuracy. They do
+not justify additional controller parameters.
+
+The original20D models'120k four-seed expansion finishes at3510/4000=87.75%
+versus3241/4000=81.025% for absolute tokens. These models supervise FIVE native
+controls, not just a_t, and are labelled comparators. The strict4D route86.80%
+has recovered similar broad performance but has not substantially exceeded
+this strongest measured result. Old chunk6 with the same real-camera5 feedback
+scores186/240=77.5% on six manipulations; strict4D+F scores214/240=89.17%.
+That end-to-end gain is real, but data anchors, model, label scope and forward
+pretraining/inference cost differ; it is not a single-component causal ablation.
+
+### Bounded next tests, with no advertised performance gain
+
+The original TRAIN-only181608 current controls have exact endpoint masses
+19.23%,26.21%,39.56%,49.76% across four actuator axes. Clipping a continuous latent
+command induces boundary atoms: its saturated labels represent tail events,
+not interior density observations. This motivates a one-pass conditional
+logistic mixture likelihood with analytic boundary masses. It uses exactly the
+same currenta_t label and visual architecture; no gripper-specific threshold,
+future command or new data is added. Ordinary point likelihood is the matched
+negative control, and one versus four components separates censoring from
+multimodality. The mixture-density idea itself is established prior art
+([Bishop1994](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/bishop-ncrg-94-004.pdf));
+we claim a testable actuator-measure explanation, not invention of mixtures.
+
+A separate scratch matcher learns current-to-goal patch correspondence and an
+image-coordinate displacement before the existing flow decoder. Image-grid
+coordinates are not object state. It adds query/key/fusion parameters, which
+must be disclosed; this is not an equal-capacity or novelty claim. Two additional
+fully annealed baseline seeds test robustness. Twelve actors total have a fixed
+40k budget/LR40k, paired initial CNN/decoder tensors, original data and ownF3/4.
+All12 native2/600 full restores, held-out gradients, sample-independence checks
+and20-native-step physics entries pass. Their physical performance is pending;
+there is no automatic120k continuation from these short tests.
+
+Eight frozen follow-ups also compare the same mixture actors' stochastic draws
+with the median of their highest-weight latent component, followed by the same
+actuator clipping. This avoids averaging distinct components, while removing
+sampling variation. It is not claimed to be the full mixture MAP, or an optimal
+physical action. Both rules use the exact same trainedNNs/world/camera5/five
+policy calls; no new label, threshold, teacher or task rule is added. Default
+proposal/RNG parity and deterministic bounded median behavior pass on actual
+saved weights and held-out image pairs. These are queued zero-SGD50-task screens;
+no performance benefit has yet been measured.
 
 ## Historical mechanism test before inverse learning was permitted
 
@@ -277,7 +366,7 @@ Partial observation, contact discontinuities, stochastic endpoint selection, or 
 
 Gaussian prediction can describe ambiguity but cannot manufacture information. A Gaussian boundary mean can average incompatible routes. Diagonal uncertainty also depends on the feature coordinates; it is not a coordinate-invariant geometry. Fixed random features avoid target collapse and pretrained priors, but may still represent the relevant object poorly. The experiment must separate these failure modes rather than equating small loss with understanding.
 
-## The present controller
+## The historical observation-only projection controller
 
 The shared network predicts next fixed-random observation features in two modes. The control mode reads only the current transition's known executed command. The boundary mode reads the current history and a later goal image, with all controls zeroed. Its target is strictly between the two observed endpoints, so it cannot copy a provided target frame.
 

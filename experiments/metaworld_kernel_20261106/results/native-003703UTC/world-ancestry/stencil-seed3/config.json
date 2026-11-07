@@ -1,0 +1,29 @@
+{
+  "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed3",
+  "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-native-rgb128-20261106-v1",
+  "native_rgb_cache": "/tmp/prescottsun-native-rgb128-20261106-v1",
+  "dataset_kind": "native_rgb_pairs",
+  "model_class": "causal_transport",
+  "seed": 3,
+  "batch_size": 256,
+  "workers": 2,
+  "cpu_threads": 2,
+  "max_steps": 20000,
+  "max_seconds": 86400,
+  "checkpoint_every": 1000,
+  "retain_steps": [
+    2,
+    1000,
+    5000,
+    20000
+  ],
+  "precision": "bf16-mixed",
+  "record_initial_weights": true,
+  "record_runtime_source": true,
+  "model": {
+    "mode": "stencil",
+    "width": 128,
+    "blocks": 4,
+    "window": 2
+  }
+}

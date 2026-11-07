@@ -1,0 +1,105 @@
+{
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/source-413fee7",
+  "recipes": [
+    {
+      "host": "dev13",
+      "gpu": 0,
+      "seed": 1,
+      "arm": "flow-world",
+      "kind": "world",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/all-executed-seed1",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_input_diagnostic_20261107/flow-world-seed1"
+    },
+    {
+      "host": "dev13",
+      "gpu": 2,
+      "seed": 1,
+      "arm": "flow-held",
+      "kind": "held",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/all-executed-seed1",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_input_diagnostic_20261107/flow-held-seed1"
+    },
+    {
+      "host": "dev13",
+      "gpu": 3,
+      "seed": 1,
+      "arm": "macro20-best",
+      "kind": "held",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_goal_20261107/training/directed-flow-seed1",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_input_diagnostic_20261107/macro20-best-seed1"
+    },
+    {
+      "host": "dev13",
+      "gpu": 4,
+      "seed": 1,
+      "arm": "mse-world",
+      "kind": "world",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_mse_20261107/training/all-executed-seed1",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed1",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_input_diagnostic_20261107/mse-world-seed1"
+    },
+    {
+      "host": "dev15",
+      "gpu": 0,
+      "seed": 2,
+      "arm": "flow-world",
+      "kind": "world",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/all-executed-seed2",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_input_diagnostic_20261107/flow-world-seed2"
+    },
+    {
+      "host": "dev15",
+      "gpu": 2,
+      "seed": 2,
+      "arm": "flow-held",
+      "kind": "held",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_20261107/training/all-executed-seed2",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_input_diagnostic_20261107/flow-held-seed2"
+    },
+    {
+      "host": "dev15",
+      "gpu": 3,
+      "seed": 2,
+      "arm": "macro20-best",
+      "kind": "held",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_current_goal_20261107/training/directed-flow-seed2",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_input_diagnostic_20261107/macro20-best-seed2"
+    },
+    {
+      "host": "dev15",
+      "gpu": 4,
+      "seed": 2,
+      "arm": "mse-world",
+      "kind": "world",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_one_native_mse_20261107/training/all-executed-seed2",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed2",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_input_diagnostic_20261107/mse-world-seed2"
+    }
+  ],
+  "evaluator": "/efs/prescottsun/SPT-JEPA/reports/metaworld_kernel_20261106/imagined_feedback-frozen-v4.py",
+  "evaluator_sha256": "e3547777f8661d7aa68b543f46b7fb22ab6d012cf4cf6348aeecf115e44a3015",
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_input_diagnostic_20261107/cases/manifest.json",
+  "tasks": [
+    "bin-picking-v3",
+    "pick-place-v3",
+    "push-v3",
+    "drawer-open-v3",
+    "door-open-v3",
+    "peg-insert-side-v3",
+    "reach-v3",
+    "reach-wall-v3"
+  ],
+  "seeds": [
+    42,
+    1042
+  ],
+  "deadline_unix": 1794019363.491181,
+  "new_updates": 0,
+  "scope": "GOALINPUTDEPENDENCYdiagnostic,notperformancebenchmark. Samephysicalstate/actualtaskgoal/model/RNG;onlyprovidedgoalRGBfromnextcasewithinSAMEtask. Inputinconsistentbydesign. ReportsactionsandsuccessagainstORIGINALenvgoal,notreachabilityofswappedgoal. NoSGD/newlearninglabels/statefeatures."
+}

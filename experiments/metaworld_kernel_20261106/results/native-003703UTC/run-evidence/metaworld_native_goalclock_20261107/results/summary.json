@@ -1,0 +1,721 @@
+{
+  "runs": [
+    {
+      "host": "dev13",
+      "gpu": 1,
+      "seed": 3,
+      "arm": "native-goal",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_goalclock_20261107/training/native-goal-seed3",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed3",
+      "wait_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_clock_controls_20261107/actual-native-feedback1-seed1",
+      "config_sha256": "f65a526ee3336cf3aa34c29b57b85bd1e55355d0b2dc8b20ce1700478ebf3a94",
+      "random_initial_reference": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_feedback_long_20261107/training/directed-seed3/initial-model/weights.pt",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev13",
+      "gpu": 5,
+      "seed": 5,
+      "arm": "macro-goal",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_goalclock_20261107/training/macro-goal-seed5",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed1",
+      "wait_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_mse_world50_20261107/mse-world-native4-seed1",
+      "config_sha256": "af0a103f4b6a9ee0bab33ed7a5305a10eb2637184b13766c6e5726956ab4d381",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev13",
+      "gpu": 7,
+      "seed": 5,
+      "arm": "native-goal",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_goalclock_20261107/training/native-goal-seed5",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed1",
+      "wait_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_mse_feedback_long_20261107/training/directed-mse-seed3",
+      "config_sha256": "f4f78b53012a50cea04c225b9f4851138c0ebe0b7e37b9915143f3516a7ed756",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev15",
+      "gpu": 1,
+      "seed": 4,
+      "arm": "native-goal",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_goalclock_20261107/training/native-goal-seed4",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed4",
+      "wait_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_clock_controls_20261107/actual-native-feedback1-seed2",
+      "config_sha256": "490172bc993623055168b65b52bc1b2bd062f37d5270a6ec5e9179b50b69b98c",
+      "random_initial_reference": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_feedback_long_20261107/training/directed-seed4/initial-model/weights.pt",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev15",
+      "gpu": 5,
+      "seed": 6,
+      "arm": "macro-goal",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_goalclock_20261107/training/macro-goal-seed6",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed2",
+      "wait_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_mse_world50_20261107/mse-world-native4-seed2",
+      "config_sha256": "539a0e2ab320add404a54f6ffb8b4445de00b602c78bd474b6248c37d3687ad4",
+      "complete": true,
+      "error": null
+    },
+    {
+      "host": "dev15",
+      "gpu": 7,
+      "seed": 6,
+      "arm": "native-goal",
+      "run": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_goalclock_20261107/training/native-goal-seed6",
+      "world": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_transport_20261106/training/stencil-seed2",
+      "wait_output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native_mse_feedback_long_20261107/training/directed-mse-seed4",
+      "config_sha256": "65e53f220ff0e8946dc4da62ff4f201979e7931a6c224f1a0ad11e655809df9f",
+      "complete": true,
+      "error": null
+    }
+  ],
+  "scores": [
+    {
+      "arm": "macro-goal",
+      "step": 40000,
+      "cohort": "hold5",
+      "trained_seeds": [
+        5,
+        6
+      ],
+      "episodes": 320,
+      "manipulation_successes": 162,
+      "manipulation_episodes": 240,
+      "manipulation_percent": 67.5,
+      "goal_valid_episodes": 312,
+      "goal_valid_percent": 73.07692307692308,
+      "task_scores": {
+        "bin-picking-v3": {
+          "successes": 4,
+          "episodes": 40
+        },
+        "door-open-v3": {
+          "successes": 37,
+          "episodes": 40
+        },
+        "drawer-open-v3": {
+          "successes": 40,
+          "episodes": 40
+        },
+        "peg-insert-side-v3": {
+          "successes": 24,
+          "episodes": 40
+        },
+        "pick-place-v3": {
+          "successes": 24,
+          "episodes": 40
+        },
+        "push-v3": {
+          "successes": 33,
+          "episodes": 40
+        },
+        "reach-v3": {
+          "successes": 27,
+          "episodes": 40
+        },
+        "reach-wall-v3": {
+          "successes": 39,
+          "episodes": 40
+        }
+      }
+    },
+    {
+      "arm": "macro-goal",
+      "step": 40000,
+      "cohort": "screen50",
+      "trained_seeds": [
+        5,
+        6
+      ],
+      "episodes": 400,
+      "manipulation_successes": 326,
+      "manipulation_episodes": 384,
+      "manipulation_percent": 84.89583333333333,
+      "goal_valid_episodes": 396,
+      "goal_valid_percent": 84.84848484848484,
+      "task_scores": {
+        "assembly-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "basketball-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "bin-picking-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "box-close-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "button-press-topdown-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-topdown-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "button-press-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "coffee-button-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "coffee-pull-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "coffee-push-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "dial-turn-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "disassemble-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "door-close-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-lock-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "door-unlock-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "drawer-close-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "drawer-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "faucet-close-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "faucet-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "hammer-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "hand-insert-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-press-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-press-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "handle-pull-side-v3": {
+          "successes": 0,
+          "episodes": 8
+        },
+        "handle-pull-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "lever-pull-v3": {
+          "successes": 2,
+          "episodes": 8
+        },
+        "peg-insert-side-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "peg-unplug-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "pick-out-of-hole-v3": {
+          "successes": 6,
+          "episodes": 8
+        },
+        "pick-place-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "pick-place-wall-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "plate-slide-back-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "plate-slide-back-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "plate-slide-side-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "plate-slide-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "push-back-v3": {
+          "successes": 3,
+          "episodes": 8
+        },
+        "push-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "push-wall-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "reach-v3": {
+          "successes": 5,
+          "episodes": 8
+        },
+        "reach-wall-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "shelf-place-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "soccer-v3": {
+          "successes": 0,
+          "episodes": 8
+        },
+        "stick-pull-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "stick-push-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "sweep-into-v3": {
+          "successes": 7,
+          "episodes": 8
+        },
+        "sweep-v3": {
+          "successes": 8,
+          "episodes": 8
+        },
+        "window-close-v3": {
+          "successes": 4,
+          "episodes": 8
+        },
+        "window-open-v3": {
+          "successes": 8,
+          "episodes": 8
+        }
+      }
+    },
+    {
+      "arm": "macro-goal",
+      "step": 40000,
+      "cohort": "standard8",
+      "trained_seeds": [
+        5,
+        6
+      ],
+      "episodes": 320,
+      "manipulation_successes": 199,
+      "manipulation_episodes": 240,
+      "manipulation_percent": 82.91666666666667,
+      "goal_valid_episodes": 312,
+      "goal_valid_percent": 84.2948717948718,
+      "task_scores": {
+        "bin-picking-v3": {
+          "successes": 30,
+          "episodes": 40
+        },
+        "door-open-v3": {
+          "successes": 40,
+          "episodes": 40
+        },
+        "drawer-open-v3": {
+          "successes": 40,
+          "episodes": 40
+        },
+        "peg-insert-side-v3": {
+          "successes": 20,
+          "episodes": 40
+        },
+        "pick-place-v3": {
+          "successes": 30,
+          "episodes": 40
+        },
+        "push-v3": {
+          "successes": 39,
+          "episodes": 40
+        },
+        "reach-v3": {
+          "successes": 26,
+          "episodes": 40
+        },
+        "reach-wall-v3": {
+          "successes": 38,
+          "episodes": 40
+        }
+      }
+    },
+    {
+      "arm": "native-goal",
+      "step": 40000,
+      "cohort": "hold5",
+      "trained_seeds": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "episodes": 640,
+      "manipulation_successes": 323,
+      "manipulation_episodes": 480,
+      "manipulation_percent": 67.29166666666667,
+      "goal_valid_episodes": 624,
+      "goal_valid_percent": 70.67307692307692,
+      "task_scores": {
+        "bin-picking-v3": {
+          "successes": 20,
+          "episodes": 80
+        },
+        "door-open-v3": {
+          "successes": 69,
+          "episodes": 80
+        },
+        "drawer-open-v3": {
+          "successes": 70,
+          "episodes": 80
+        },
+        "peg-insert-side-v3": {
+          "successes": 45,
+          "episodes": 80
+        },
+        "pick-place-v3": {
+          "successes": 46,
+          "episodes": 80
+        },
+        "push-v3": {
+          "successes": 73,
+          "episodes": 80
+        },
+        "reach-v3": {
+          "successes": 41,
+          "episodes": 80
+        },
+        "reach-wall-v3": {
+          "successes": 77,
+          "episodes": 80
+        }
+      }
+    },
+    {
+      "arm": "native-goal",
+      "step": 40000,
+      "cohort": "screen50",
+      "trained_seeds": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "episodes": 800,
+      "manipulation_successes": 632,
+      "manipulation_episodes": 768,
+      "manipulation_percent": 82.29166666666667,
+      "goal_valid_episodes": 792,
+      "goal_valid_percent": 82.57575757575758,
+      "task_scores": {
+        "assembly-v3": {
+          "successes": 11,
+          "episodes": 16
+        },
+        "basketball-v3": {
+          "successes": 13,
+          "episodes": 16
+        },
+        "bin-picking-v3": {
+          "successes": 11,
+          "episodes": 16
+        },
+        "box-close-v3": {
+          "successes": 13,
+          "episodes": 16
+        },
+        "button-press-topdown-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "button-press-topdown-wall-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "button-press-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "button-press-wall-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "coffee-button-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "coffee-pull-v3": {
+          "successes": 13,
+          "episodes": 16
+        },
+        "coffee-push-v3": {
+          "successes": 12,
+          "episodes": 16
+        },
+        "dial-turn-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "disassemble-v3": {
+          "successes": 9,
+          "episodes": 16
+        },
+        "door-close-v3": {
+          "successes": 15,
+          "episodes": 16
+        },
+        "door-lock-v3": {
+          "successes": 13,
+          "episodes": 16
+        },
+        "door-open-v3": {
+          "successes": 14,
+          "episodes": 16
+        },
+        "door-unlock-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "drawer-close-v3": {
+          "successes": 15,
+          "episodes": 16
+        },
+        "drawer-open-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "faucet-close-v3": {
+          "successes": 15,
+          "episodes": 16
+        },
+        "faucet-open-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "hammer-v3": {
+          "successes": 15,
+          "episodes": 16
+        },
+        "hand-insert-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "handle-press-side-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "handle-press-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "handle-pull-side-v3": {
+          "successes": 2,
+          "episodes": 16
+        },
+        "handle-pull-v3": {
+          "successes": 14,
+          "episodes": 16
+        },
+        "lever-pull-v3": {
+          "successes": 3,
+          "episodes": 16
+        },
+        "peg-insert-side-v3": {
+          "successes": 11,
+          "episodes": 16
+        },
+        "peg-unplug-side-v3": {
+          "successes": 14,
+          "episodes": 16
+        },
+        "pick-out-of-hole-v3": {
+          "successes": 10,
+          "episodes": 16
+        },
+        "pick-place-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "pick-place-wall-v3": {
+          "successes": 15,
+          "episodes": 16
+        },
+        "plate-slide-back-side-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "plate-slide-back-v3": {
+          "successes": 15,
+          "episodes": 16
+        },
+        "plate-slide-side-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "plate-slide-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "push-back-v3": {
+          "successes": 10,
+          "episodes": 16
+        },
+        "push-v3": {
+          "successes": 15,
+          "episodes": 16
+        },
+        "push-wall-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "reach-v3": {
+          "successes": 8,
+          "episodes": 16
+        },
+        "reach-wall-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "shelf-place-v3": {
+          "successes": 9,
+          "episodes": 16
+        },
+        "soccer-v3": {
+          "successes": 3,
+          "episodes": 16
+        },
+        "stick-pull-v3": {
+          "successes": 6,
+          "episodes": 16
+        },
+        "stick-push-v3": {
+          "successes": 16,
+          "episodes": 16
+        },
+        "sweep-into-v3": {
+          "successes": 13,
+          "episodes": 16
+        },
+        "sweep-v3": {
+          "successes": 15,
+          "episodes": 16
+        },
+        "window-close-v3": {
+          "successes": 4,
+          "episodes": 16
+        },
+        "window-open-v3": {
+          "successes": 16,
+          "episodes": 16
+        }
+      }
+    },
+    {
+      "arm": "native-goal",
+      "step": 40000,
+      "cohort": "standard8",
+      "trained_seeds": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "episodes": 640,
+      "manipulation_successes": 381,
+      "manipulation_episodes": 480,
+      "manipulation_percent": 79.375,
+      "goal_valid_episodes": 624,
+      "goal_valid_percent": 77.56410256410257,
+      "task_scores": {
+        "bin-picking-v3": {
+          "successes": 39,
+          "episodes": 80
+        },
+        "door-open-v3": {
+          "successes": 79,
+          "episodes": 80
+        },
+        "drawer-open-v3": {
+          "successes": 78,
+          "episodes": 80
+        },
+        "peg-insert-side-v3": {
+          "successes": 45,
+          "episodes": 80
+        },
+        "pick-place-v3": {
+          "successes": 63,
+          "episodes": 80
+        },
+        "push-v3": {
+          "successes": 77,
+          "episodes": 80
+        },
+        "reach-v3": {
+          "successes": 33,
+          "episodes": 80
+        },
+        "reach-wall-v3": {
+          "successes": 70,
+          "episodes": 80
+        }
+      }
+    }
+  ],
+  "complete": 6,
+  "errors": 0,
+  "training": true,
+  "performance_goal_achieved": false,
+  "scope": "Current-onlycandidateorlabelledfuturechunkbaseline;originalcorpus/commonphysicalcases,notpublicSOTA/equalFLOPs.Noclock/oraclefuturecommandsat inference."
+}
