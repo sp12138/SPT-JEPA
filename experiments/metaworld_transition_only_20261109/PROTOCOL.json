@@ -161,5 +161,23 @@
     "new_goal": false,
     "duplicate_llm_monitor": false
   },
-  "claims": "No high performance or novelty established;not published MetaWorld SOTA protocol,full MT50,equalFLOPs or expert-free data."
+  "claims": "No high performance or novelty established;not published MetaWorld SOTA protocol,full MT50,equalFLOPs or expert-free data.",
+  "additional_hour01_diagnostics": {
+    "source": "reports/metaworld_transition_only_20261109/diagnostic-source-v1",
+    "root": "runs/metaworld_transition_only_20261109/factual-diagnostics",
+    "models": 24,
+    "host_workers": 3,
+    "CPU_threads_per_worker": 2,
+    "windows": 16,
+    "checks": [
+      "factual/zero/reversed action-input forecastH1/5/15/30/60",
+      "actual factual feedbackevery2/15",
+      "same-currentRGBreset vsfilteredhiddenpredict15atnative30"
+    ],
+    "new_model_updates": 0,
+    "new_GPU_contexts": 0,
+    "new_physics_steps": 0,
+    "source_NN_data_controller8files_unchanged": true,
+    "scope": "No actual counterfactual accuracy or optimal-action labels;factual errors only"
+  }
 }

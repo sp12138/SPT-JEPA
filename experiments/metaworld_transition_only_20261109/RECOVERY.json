@@ -1,6 +1,6 @@
 {
-  "utc": "2026-11-08T19:30:00Z",
-  "status": "All24 entry gates/global pairing PASS;all24 have active own CUDAchildren;actualsteps900..1600,no execution errors,sourcehashesmatch",
+  "utc": "2026-11-08T20:01:29.240286+00:00",
+  "status": "Hour01:19/24trainingcomplete,all24ownedCUDAapps,3/192formalendpoints96episodes/0executionerrors;hard6zero on completedH1/e15only",
   "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_transition_only_20261109",
   "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_transition_only_20261109/runtime-v1",
   "authoritative": [
@@ -48,7 +48,8 @@
     "adaptation": "Fix evidenced faults or clear methodological weaknesses,preserve original attempts;no long promotion from loss alone",
     "external_delivery": false,
     "new_goal": false,
-    "duplicate_llm_monitor": false
+    "duplicate_llm_monitor": false,
+    "next_due_utc": "2026-11-08T21:01:30Z"
   },
   "performance": "No mature new score;old QueryRecurrent25percent has goal-path branch and is outside this setting",
   "resume_rule": "Never blindly restart original launch;inspect exact children/checkpoints/errors first. Preserve errors and add explicit corrections for recovery. No replay of checkpointed SGD.",
@@ -56,5 +57,31 @@
   "automatic_long_promotion": false,
   "entry_evidence": "results/startup/ENTRY_SUMMARY.json:24CPUrestores,48actual20stepMPCepisodes,960physicalsteps,all48traceSHAchecked",
   "gpu_snapshot": "results/startup/startup-v2-{dev13,dev15,dev6}.json;8ownedCUDAapps each,utilization11..80percent/one0instant at save;do not claim continuous100percent",
-  "inspector": "reports/metaworld_transition_only_20261109/inspect-v2.py;CPU-only one-shot. v1readout header formatting produced null utilization;rawGPUrecords retained,not GPU/model failure."
+  "inspector": "reports/metaworld_transition_only_20261109/inspect-v2.py;CPU-only one-shot. v1readout header formatting produced null utilization;rawGPUrecords retained,not GPU/model failure.",
+  "hourly_last_check": "results/hour01/CHECK.json",
+  "diagnostics": {
+    "source": "reports/metaworld_transition_only_20261109/diagnostic-source-v1",
+    "root": "runs/metaworld_transition_only_20261109/factual-diagnostics",
+    "models": 24,
+    "host_workers": 3,
+    "CPU_threads_per_worker": 2,
+    "windows": 16,
+    "checks": [
+      "factual/zero/reversed action-input forecastH1/5/15/30/60",
+      "actual factual feedbackevery2/15",
+      "same-currentRGBreset vsfilteredhiddenpredict15atnative30"
+    ],
+    "new_model_updates": 0,
+    "new_GPU_contexts": 0,
+    "new_physics_steps": 0,
+    "source_NN_data_controller8files_unchanged": true,
+    "scope": "No actual counterfactual accuracy or optimal-action labels;factual errors only"
+  },
+  "adaptation_utc": "2026-11-08T20:54:40Z",
+  "adaptations": {
+    "horizon_match": "../metaworld_horizon_match_20261109/RECOVERY.json",
+    "fixed_spatial_metric": "../metaworld_sobolev_goal_20261109/RECOVERY.json",
+    "realized_bank": "runs/metaworld_realized_bank_20261109,8physicalcases512actuallyrealizedactionpaths;AUDITONLYnevertrain;13sourcefilesoriginal12unchanged;waitnew12000frozenweights",
+    "cold_history": "cold-diagnostics,8frozenmodels/16sameheldoutclips;first15forecastcold~4.4..5.2xdense,observe2recoversby15,notpersistent-causeproof"
+  }
 }
