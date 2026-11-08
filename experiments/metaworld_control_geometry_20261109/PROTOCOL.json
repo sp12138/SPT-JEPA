@@ -1,0 +1,67 @@
+{
+  "status": "LAUNCHED2026-11-08T23:14:54..23:15:05UTC",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_control_geometry_20261109",
+  "source": "reports/metaworld_control_geometry_20261109/source-v1",
+  "source_original12_unchanged": true,
+  "design": "Four frozen12000 participants:H15/H60loss x2originalparents,8samephysicalcases each=32formalepisodes. OriginalH60/held5/execute15/native500anysuccess,64x4CEM/RGB. Only terminal metric changes;use existing paired white32case baselines.",
+  "metric": "Firstiteration64forecastendpoints formC=U.T@U+sigma2 I. Cost=(prediction-goal).T inverse(C)(prediction-goal). FreezeC across4 CEMiterations within each decision. C uses only own known/candidate action forecasts,not goal/object/task/reward inputs. Sigma2 is factual TRAIN residual mean at nativeH60,never evaluation-calibrated.",
+  "calibration": {
+    "passed": true,
+    "utc": "2026-11-08T23:15:47.439821+00:00",
+    "all4same64trainwindows": true,
+    "models": {
+      "h15-seed1": {
+        "variance": 0.014355126280861441,
+        "manifest_sha256": "b964dbd142e42e8bcef87279c6a2ebb76d4285bab5c89308d115ddec3783ab73"
+      },
+      "h15-seed2": {
+        "variance": 0.01513332870672457,
+        "manifest_sha256": "b964dbd142e42e8bcef87279c6a2ebb76d4285bab5c89308d115ddec3783ab73"
+      },
+      "h60-seed1": {
+        "variance": 0.002001839778131398,
+        "manifest_sha256": "b964dbd142e42e8bcef87279c6a2ebb76d4285bab5c89308d115ddec3783ab73"
+      },
+      "h60-seed2": {
+        "variance": 0.0018114023723683204,
+        "manifest_sha256": "b964dbd142e42e8bcef87279c6a2ebb76d4285bab5c89308d115ddec3783ab73"
+      }
+    },
+    "new_model_updates": 0
+  },
+  "calibration_windows": 64,
+  "training_updates": 0,
+  "objective_sample_level_unchanged": true,
+  "cpu_audit": "Explicitfullmatrixinverse equivalence,globalaffinepixel-unitinvariance,fastvs passive-coordinate toy,zero-control-covariance pixel-rank equivalence allPASS.",
+  "physical_preflight": "All4 actual20step originalwhite actions/success/candidatebank EXACT before changed metric. Original source12/model weights byte-identical.",
+  "roles": [
+    {
+      "host": "dev6",
+      "gpu": 0,
+      "pid": 39840,
+      "model": "h15-seed1"
+    },
+    {
+      "host": "dev6",
+      "gpu": 2,
+      "pid": 39841,
+      "model": "h60-seed1"
+    },
+    {
+      "host": "dev13",
+      "gpu": 1,
+      "pid": 3759070,
+      "model": "h15-seed2"
+    },
+    {
+      "host": "dev15",
+      "gpu": 1,
+      "pid": 3293945,
+      "model": "h60-seed2"
+    }
+  ],
+  "limits": "Nonlinearendpointcovariance is a planning approximation,not a proven nonlinear controllability Gramian. Cannot create unseen objectresponses or fix finite-horizon unreachability. Previously inspected developmental cases,notpublic SOTA/untouched confirmation. Classicalcontrolmetric precedents,novelty unverified.",
+  "primary_prior": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4795843/",
+  "automatic_long_promotion": false,
+  "automatic_expansion": false
+}

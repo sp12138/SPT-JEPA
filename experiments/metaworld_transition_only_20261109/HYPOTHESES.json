@@ -31,12 +31,17 @@
       "finding": "A perfect forecast is insufficient for this fixed planner on some cases",
       "actual": "White privileged true-simulator CEM on three selected cases: Drawer168 success; Door500 and Push500 fail. All selected execution prefixes replay exact; actual traces verified.",
       "limit": "Privileged diagnostic, never candidate performance or training/proposal data. Three selected development cases, not a population score."
+    },
+    {
+      "finding": "Better physical RGB-goal matching need not imply object progress over a finite horizon",
+      "actual": "BothcorrectlydifferentiatedfrozenH60parents improve actualRGBcost throughgradientrefinement;model-selected60step paths stillhave no hardsuccess. In onePush developmentcase, a pathwith objectdistance.065m hasactualRGBMSE.00314, while an almostunmoved object(.168m) hasRGBMSE.00124.",
+      "limit": "ThePushnumbers come from the retainedfirstgradientaudit, actualphysicsindependentofTF32derivativeprecision. Partial60step outcomes,not global taskcompletion orpopulation evidence."
     }
   ],
   "current_prospective_test": {
-    "root": "runs/metaworld_correlated_search_20261109",
-    "design": "Four frozen matched12000 participants; fixed analytic DCT temporal covariance, otherwise identical existing H60/e15/32-case comparisons;128 formal episodes.",
-    "promotion": "Requires actual hard manipulation gains; no automatic expansion or long run."
+    "root": "runs/metaworld_control_geometry_20261109",
+    "design": "Control-induced endpoint covariance plus factual TRAIN residual floor;frozenH15/H60x2parents32episodes. Source/model/lossandCEMbudgetunchanged.",
+    "promotion": "Requires actual hardsuccesses across parents/cases;no longrunfrom lower proxycost."
   },
   "unimplemented_directions": [
     {
@@ -59,6 +64,12 @@
       "primary_source": "https://proceedings.mlr.press/v155/pinneri21a.html",
       "novelty": "ExistingiCEMdirection,NOTanoriginalidea;controlablationonly.",
       "status": "Implemented bounded frozen comparison and separate privileged oracle pairs; physical results pending. Not an original idea."
+    },
+    {
+      "name": "World prediction in intrinsic control units",
+      "basis": "In a limited-capacity model, ordinary pixel risk favors visually large directly actuated motion. Inverse of the executed input also favors these directions. A complementary factual prediction risk measured in own control geometry could preserve slow/indirect effects without task or expert-policy labels.",
+      "candidate": "Only consider a sample-level per-transition covariance operator from own factual-world action response,with known training outcomes;goals absent. First validate inference-only metric above.",
+      "limits": "UNIMPLEMENTED. Proper-loss derivation,collapse/gradient audit and additionalcomputeaccounting required. Do not claim success/novelty or start a long run from this hypothesis."
     }
   ],
   "prohibited_shortcuts": [
