@@ -1,0 +1,74 @@
+{
+  "passed": true,
+  "method": "h-jepa",
+  "episodes": [
+    {
+      "task": "bin-picking-v3",
+      "seed": 6042,
+      "success": false,
+      "steps": 20,
+      "plan_calls": 1,
+      "expert_goal_success": true,
+      "case_sha256": "4cae68edabdaead150669978035de4a16a4eade91ab2c050e196a8f019ddb912",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native100_pilot_20261108/h-jepa-seed3/technical-0/bin-picking-v3-seed6042.npz",
+      "trace_sha256": "7950799453a97f3b71bc485c0ab4d80a3d4d3a952ecec18f85abb74614178482",
+      "compute": {
+        "1": [
+          {
+            "level": 1,
+            "horizon": 36,
+            "num_samples": 16,
+            "n_iters": [
+              39
+            ],
+            "wall_clock": 15.204051971435547,
+            "wall_clock_per_env": [
+              15.093502759933472
+            ]
+          }
+        ],
+        "2": [
+          {
+            "level": 2,
+            "horizon": 12,
+            "num_samples": 4,
+            "n_iters": [
+              83
+            ],
+            "wall_clock": 10.703205823898315,
+            "wall_clock_per_env": [
+              10.642066717147827
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "model_updates": 0,
+  "model_state_before": "960330aa62572b90cf303b59d4eb417764d7d64b2a7411ba00f7409303108eac",
+  "model_state_after": "960330aa62572b90cf303b59d4eb417764d7d64b2a7411ba00f7409303108eac",
+  "weights_sha256": "fbc720a3d99fac04fc8b479242a88d459956af1e464ead95d614e241f56d4586",
+  "budget": 20,
+  "seconds": 29.74941908288747,
+  "controller": {
+    "native_public_droid_GD": true,
+    "fine_horizon_macro": 36,
+    "coarse_horizon": 12,
+    "native_subgoals": 12,
+    "execute_macro_per_block": 36,
+    "frameskip": 5,
+    "observations_per_plan": 1,
+    "physical_action_box_projection": true,
+    "native_prior_clip_sigma": 2.0,
+    "note": "Cold180native-step open-loop blocks repeat to500native steps; no global decay between blocks. Preserves the source DROID single-window planner. Feedback/computation differ from shared CEM; report separately."
+  },
+  "scope": "Native complete hierarchical planner transfer with learned action priors, without future expert controls. Not the common-controller comparison or a published MetaWorld reproduction."
+}

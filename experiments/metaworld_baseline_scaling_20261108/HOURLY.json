@@ -7,7 +7,7 @@
   "same_session": true,
   "new_agent_created": false,
   "installed_utc": "2026-11-07T19:09:20.668689+00:00",
-  "next_expected_utc": "2026-11-08T03:07:26.137189+00:00",
+  "next_expected_utc": "2026-11-08T04:08:07.668621+00:00",
   "stop_file": "/Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/STOP",
   "probe": "Same-session delivery test was received earlier;external timer is now retired. First real direct-hourly review completed.",
   "launchctl_print": "gui/501/com.spt-jepa.metaworld-hourly-01a18941 = {\n\tactive count = 0\n\tpath = /Users/pengsun/Library/LaunchAgents/com.spt-jepa.metaworld-hourly-01a18941.plist\n\ttype = LaunchAgent\n\tstate = not running\n\n\tprogram = /Library/Developer/CommandLineTools/usr/bin/python3\n\targuments = {\n\t\t/Library/Developer/CommandLineTools/usr/bin/python3\n\t\t/Users/pengsun/Documents/working_space/SPT-JEPA/experiments/metaworld_baseline_scaling_20261108/hourly.py\n\t\t--repo\n\t\t/Users/pengsun/Documents/working_space/SPT-JEPA\n\t\t--thread\n\t\t01a18941-09c9-7400-8d97-d8ad825d929c\n\t\t--codex\n\t\t/Users/pengsun/.local/bin/codex\n\t}\n\n\tworking directory = /Users/pengsun/Documents/working_space/SPT-JEPA\n\n\tstdout path = /Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/launchd.stdout.log\n\tstderr path = /Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/launchd.stderr.log\n\tinherited environment = {\n\t\tSSH_AUTH_SOCK => /var/run/com.apple.launchd.BIOGFBTqXc/Listeners\n\t}\n\n\tdefault environment = {\n\t\tPATH => /usr/bin:/bin:/usr/sbin:/sbin\n\t}\n\n\tenvironment = {\n\t\tOSLogRateLimit => 64\n\t\tPATH => /Users/pengsun/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\n\t\tXPC_SERVICE_NAME => com.spt-jepa.metaworld-hourly-01a18941\n\t}\n\n\tdomain = gui/501 [100003]\n\tasid = 100003\n\tminimum runtime = 10\n\texit timeout = 5\n\truns = 0\n\tlast exit code = (never exited)\n\n\tspawn type = background (5)\n\tjetsam priority = 40\n\tjetsam memory limit (active) = (unlimited)\n\tjetsam memory limit (inactive) = (unlimited)\n\tjetsamproperties category = daemon\n\tjetsam thread limit = 32\n\tcpumon = default\n\trun interval = 3600 seconds\n\n\tproperties = inferred program\n}\n",
@@ -18,48 +18,45 @@
   "system_delivery_stopped_utc": "2026-11-07T20:01:39.744956+00:00",
   "mode": "Remain in current turn;interruptible short waits accumulate to1hour,then inspect experiments. No external hourly task.",
   "bootout_returncode": 0,
-  "last_in_session_check_utc": "2026-11-08T02:07:26.137189+00:00",
+  "last_in_session_check_utc": "2026-11-08T03:08:07.668621+00:00",
   "wait_chunk_max_seconds": 60,
   "waiting_in_current_turn": true,
   "last_actual_review": {
-    "utc": "2026-11-08T02:07:26.137189+00:00",
+    "utc": "2026-11-08T03:08:07.668621+00:00",
     "original100_complete": 18,
     "original100_errors": 0,
-    "final100_audit": "PASS/actual18000traceSHA/actions/success/cases/frozenweights+recordedRGBflags;1000uniquephysicalcases,not18000independentcontexts.0newNN/SGD/render/physics.",
-    "three_seed_means": {
-      "ac-mtm": 13.233333333333334,
-      "h-jepa": 10.366666666666667,
-      "lewm": 10.4,
-      "lewm-idm": 11.199999999999998,
-      "lpwm": 8.9,
-      "smwm": 13.433333333333332
-    },
-    "hard6_successes": 5,
-    "hard6_model_case_outcomes": 2160,
-    "hard6_unique_physical_cases": 120,
     "scaling_claims": 12,
     "scaling_errors": 0,
-    "first200_checkpoint_scores": "Pending1000caseevaluations;do notinfer200successfromreadycheckpoints.",
-    "native_full_completed_shards": 0,
-    "early_native_pilot": {
-      "formal_traces": 36,
-      "completed_models": 3,
-      "completed_model_native_successes": [
-        0,
-        0,
-        0
+    "native_full_shards": 0,
+    "early_native_pilot": "COMPLETE/PASS48formal/8technical,4frozenparentsx12samephysicalcases. NativeandmatchedCEMboth0/48;notfull50score/notfreshcohort/notsinglefactor. LpWM1reservedcontinuationresumednormallywithentrygate,nowstep79900.",
+    "all24gpu_compute_processes_at_snapshot": true,
+    "200scores": "Firstcheckpointsready/evaluationsrunning;no completed1000case200score atinspection.",
+    "scene_probe": {
+      "status": "PREPARED_SMOKES_PASS_FULL_CPU_JOBS_RUNNING",
+      "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baseline_insights_20261108/scene-probe-v1",
+      "samples": 9997,
+      "original_trajectories": 2500,
+      "fit_original_trajectories": 2000,
+      "validation_original_trajectories": 250,
+      "test_original_trajectories": 250,
+      "online_initial_cached_frames": 1000,
+      "models": [
+        "smwm-seed1",
+        "h-jepa-seed2"
       ],
-      "matched_cem_successes": [
-        0,
-        0,
-        0
+      "hosts": [
+        "dev15",
+        "dev6"
       ],
-      "technical_reports": 6,
-      "errors": 0,
-      "reserved_continuation": "lpwm-seed1",
-      "fourth_model": "h-jepa-seed3pending"
+      "cpu_threads_each": 8,
+      "timeout_seconds_each": 14400,
+      "smoke_frames_each": 4,
+      "smoke_frozen_weights_unchanged": true,
+      "smoke_raw_rgb_features_identical": true,
+      "model_sgd": 0,
+      "gpu_contexts": 0,
+      "scope": "RGBonlyfrozenNNfeatures;state/taskconditionalreadoutsdiagnosticonly,neverlearner/plannerinputs/proposals/targets. Actualembedding/CLS/spatialpatch/RFF/rawRGB/robotonlycontrols;validationfromoriginaltraintrajectories. Failedprobesdonotproveabsenceofinformation. Grosscameravisualchecksimilar,notfinitedomainproof."
     },
-    "resources": "20actualCUDAprocessesininstantread;dev13pairs0/1inNNimports/stagechanges.24GPUsassignedoriginalreleasedcontinuation/pilot;do notclaimconstant100percent.",
-    "decision": "Continue300scaling/pilot. Final100resultsweakonmanipulation;no newcandidateSGD/highperformanceclaim. Nextdiscriminatingresearchshouldchecktaskstate/goalmetric/controlsupport ratherthanassertsimpleIDMfailureoronlyshorthorizon."
+    "decision": "Longbaselinecontinuationsstayunchanged. Probe information/readout/domainquestionsinCPUwhileGPUswork;newcandidateSGDnotstarted."
   }
 }

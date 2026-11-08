@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "method": "lewm-idm",
+  "episodes": [
+    {
+      "task": "bin-picking-v3",
+      "seed": 7042,
+      "success": false,
+      "steps": 20,
+      "plan_calls": 1,
+      "expert_goal_success": true,
+      "case_sha256": "074adc13ec1be199706f2227fa306d6493ce3ed7dfc6285d5713e6d04f7cba0e",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_native100_pilot_20261108/lewm-idm-seed2/technical-1/bin-picking-v3-seed7042.npz",
+      "trace_sha256": "054eba806ab266410eababf2f238eb5d6c3678431b3c927c580094e7bf3b4977",
+      "compute": {
+        "1": [
+          {
+            "level": 1,
+            "horizon": 36,
+            "num_samples": 32,
+            "n_iters": [
+              90
+            ],
+            "wall_clock": 36.759151458740234,
+            "wall_clock_per_env": [
+              36.63573408126831
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "model_updates": 0,
+  "model_state_before": "6a1fea0e82ddce5ea12c6311c31a2618fd4006e73911753bf10ce8ba6bb062f4",
+  "model_state_after": "6a1fea0e82ddce5ea12c6311c31a2618fd4006e73911753bf10ce8ba6bb062f4",
+  "weights_sha256": "3819097205fa34bba814f6512e4ebb400caeed31d5caa68e915333a114dcd495",
+  "budget": 20,
+  "seconds": 40.365615841932595,
+  "controller": {
+    "native_public_droid_GD": true,
+    "fine_horizon_macro": 36,
+    "coarse_horizon": null,
+    "native_subgoals": null,
+    "execute_macro_per_block": 36,
+    "frameskip": 5,
+    "observations_per_plan": 1,
+    "physical_action_box_projection": true,
+    "native_prior_clip_sigma": 2.0,
+    "note": "Cold180native-step open-loop blocks repeat to500native steps; no global decay between blocks. Preserves the source DROID single-window planner. Feedback/computation differ from shared CEM; report separately."
+  },
+  "scope": "Native complete hierarchical planner transfer with learned action priors, without future expert controls. Not the common-controller comparison or a published MetaWorld reproduction."
+}
