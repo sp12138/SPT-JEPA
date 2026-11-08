@@ -144,82 +144,51 @@
     "recorded_utc": "2026-11-07T21:29:45.205120+00:00"
   },
   "latest_direct_hourly_review": {
-    "utc": "2026-11-08T05:09:15.038166+00:00",
+    "utc": "2026-11-08T06:10:58.482937+00:00",
     "original100_complete": 18,
     "scaling_claims": 12,
     "scaling_errors": 0,
-    "full200_same1000case_scores": {
-      "lewm-idm-seed1": {
-        "100": 11.7,
-        "200": 8.4
-      },
-      "h-jepa-seed1": {
-        "100": 9.2,
-        "200": 8.8
-      },
-      "lewm-idm-seed2": {
-        "100": 11.1,
-        "200": 8.7
-      },
-      "h-jepa-seed2": {
-        "100": 10.8,
-        "200": 9.1
-      },
-      "lewm-idm-seed3": {
-        "100": 10.8,
-        "200": 9.2
-      },
-      "h-jepa-seed3": {
-        "100": 11.1,
-        "200": 8.3
-      },
-      "lewm-seed1": {
-        "100": 10.3,
-        "200": 13.1
-      },
-      "smwm-seed1": {
-        "100": 12.6,
-        "200": 13.3
-      },
-      "ac-mtm-seed1": {
-        "100": 11.4,
-        "200": 14.2
-      },
-      "lewm-seed2": {
-        "100": 11.5,
-        "200": 13.2
-      },
-      "smwm-seed2": {
-        "100": 14.1,
-        "200": 15.9
-      }
+    "first300epoch_result": {
+      "name": "smwm-seed1",
+      "macro50": 14.2,
+      "same1000case100_200_300": [
+        12.6,
+        13.3,
+        14.2
+      ],
+      "hard6_successes": 0,
+      "actual1000trace_audit_passed": true,
+      "scope": "Singletrainedseed/100+200LRrestart. Phase300trainingandevaluationcomplete;outerworkercompletionmetadatawaitingfortemporaryslotloan. NotSOTA/robustmanipulationbreakthrough."
     },
-    "first300": "SMWM1SGD202200complete,final1000caseevalrunning;notafinal300result.",
-    "scene200_probe": "COMPLETE/PASS.Sameexamples/4NNcheckpointsrawRGBfeaturehashesidentical. SMWM1objectonline3.36->3.29cm,H2object3.45->3.41cm;notlargerepresentationgains.",
-    "factual_temporal_order": "Heldout250originaltrajectories,terminalexcludedfromcomparisons.SMembedding70.4->68.8percent/H65.87->62.93percent100->200. Factualtimeordernotshortestpath/actionranking/controlproof.",
-    "control_support_pilot": {
-      "status": "WAIT_ORIGINAL_CHILD_FINISH_BEFORE_GPU_LOAN",
-      "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_control_support_20261108",
-      "host": "dev13",
-      "pair": 1,
-      "worker_pid": 3745097,
-      "original_parent_pid": 3737899,
-      "original_job": "smwm-seed1",
-      "original_metadata_parent_state": "T intentionalloan",
-      "original_cuda_children": "300epochfinalevalcontinueuntouched",
-      "formal_episodes": 48,
-      "technical_episodes": 8,
-      "cpu_projection_contract": "PASS",
-      "actual_os_stop_continue_exception_cleanup": "PASS",
-      "actual_gpu_formal_started": false,
-      "entry_gate": "Fullstandardreplaymustmatchoriginalactions/success/firstbankSHA;held5controlpacketverified",
-      "max_seconds": 7200,
-      "sgd_repeated": 0,
-      "restore": "WorkerfinallyterminatesownpilotchildrenandSIGCONTexactoriginalparent. No newgoal/LLMmonitor. Keepother11pairsunchanged."
+    "support_pilot": {
+      "formal_trace_files": 28,
+      "technical_reports": 6,
+      "effective_errors": 0,
+      "gpu_ready_utc": "2026-11-08T06:03:04.798820+00:00",
+      "completed_results": [
+        {
+          "name": "smwm-seed1",
+          "standard": 0,
+          "held": 0,
+          "cases_each": 12
+        }
+      ],
+      "h-jepa-seed2": "formalstandardinprogress;not a completednegativeyet.",
+      "original_metadata_parent": 3737899,
+      "borrower": 3745097,
+      "restore_required_after_pilot": true
     },
-    "encoder_geometry_prototype": "CPUclosedformownbackbonefeaturematchingSM1timeorder70.4->82.13percent/H65.87->66.53,alphaonlyfeature-MSEvalidation;0NNinference/SGD,state/action/reward/tasklabelunused,targetsameencoderCLS. Notdeployed/notnovel/notentirelysamplelevelcandidate(nativebodybatchregs).",
-    "resource_snapshot": "22CUDAprocessesatsnapshotduringstagechanges;24assignedGPUs,notconstant100percent.",
-    "decision": "Continue300baselines,finiteheld100controltest;stageindependentencodergeometrycosttestwithsame-modelsame-casecontrols. No newworldmodel/candidateSGD."
+    "geometry_pilot": {
+      "status": "WAIT_ORIGINAL_CUDA_CHILD_NATURAL_COMPLETION",
+      "formal_traces": 0,
+      "technical_reports": 0,
+      "effective_errors": 0,
+      "original_metadata_parent_dev15": 3274612,
+      "borrower": 3280408,
+      "restore_required_after_pilot": true
+    },
+    "resources": "22CUDAprocessesatinstantcheck,2dev13GPUsbetweenstages/imports;24allocatedtousefuljobs,notconstant100percent.",
+    "decision": "Continue300and2independentboundedfrozenpilots;no newcandidate/worldmodelSGD,nonewgoal/LLMmonitor. Nextcheckrealcontrolresultsofgeometryandheld,notadditionaluntestedideas."
   },
   "positive_replay": {
     "status": "COMPLETE/PASS",
@@ -276,7 +245,7 @@
   "native_control_support": "COMPLETE/PASS/results-native-action-support/summary.json;96existingtracesfromsame12physicalcases/4weights/2controllers,0NN/SGD/physics.",
   "task_breakdown_insight": "SMWM/AC-MTMstrongDoorClose/CoffeeButton(76.7/93.3and90/98.3)vsblind0/0..10percent. H-JEPA100DrawerClosematchesfixedmean100,SMWM21.7. Overallrankhideslargetasktradeoffs;seeTASK_INSIGHTS.md/TASK_BREAKDOWN.json. Temporal-costT2G/TEMPOprimarysourcesreviewed,notnewmethods/MetaWorldpublishedscores;notimplementedyet.",
   "control_support_pilot": {
-    "status": "WAIT_ORIGINAL_CHILD_FINISH_BEFORE_GPU_LOAN",
+    "status": "ACTIVE_GPU_LOAN_READY_28FORMAL_TRACES",
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_control_support_20261108",
     "host": "dev13",
     "pair": 1,
@@ -293,7 +262,13 @@
     "entry_gate": "Fullstandardreplaymustmatchoriginalactions/success/firstbankSHA;held5controlpacketverified",
     "max_seconds": 7200,
     "sgd_repeated": 0,
-    "restore": "WorkerfinallyterminatesownpilotchildrenandSIGCONTexactoriginalparent. No newgoal/LLMmonitor. Keepother11pairsunchanged."
+    "restore": "WorkerfinallyterminatesownpilotchildrenandSIGCONTexactoriginalparent. No newgoal/LLMmonitor. Keepother11pairsunchanged.",
+    "completed_smwm_standard_held": [
+      0,
+      0
+    ],
+    "completed_smwm_cases_each": 12,
+    "effective_errors": 0
   },
   "encoder_geometry_prototype": "CPUclosedformownbackbonefeaturematchingSM1timeorder70.4->82.13percent/H65.87->66.53,alphaonlyfeature-MSEvalidation;0NNinference/SGD,state/action/reward/tasklabelunused,targetsameencoderCLS. Notdeployed/notnovel/notentirelysamplelevelcandidate(nativebodybatchregs).",
   "geometry_pilot": {
