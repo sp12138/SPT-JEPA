@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "name": "smwm-seed1",
+  "config": {
+    "hidden_dim": 256,
+    "depth": 2,
+    "dropout": 0.0,
+    "max_steps": 15,
+    "min_steps": 1,
+    "gap": 2,
+    "margin": 1.0,
+    "negative_weight": 0.0,
+    "lr": 5e-05,
+    "weight_decay": 0.001,
+    "batch_size": 128,
+    "epochs": 5,
+    "seed": 20261108
+  },
+  "public_commit": "572784cd85a3e4af802be88063449f7bbd0580c9",
+  "public_source_sha256": "afacd522940b60c612b5ae0bfb0194dffccc00b88203301a114c0f6aaee11bec",
+  "adapter_source_sha256": "5ba465a2c8988161ca740d0aa1134904e7eaa0b9bf696ed0e58fbb6e48622411",
+  "feature_proof": {
+    "passed": true,
+    "name": "smwm-seed1",
+    "worldmodel_updates": 0,
+    "model_state_before": "e7c0ff81a0447e2b892068a524a7ade57d535933cae85e73a9413822fad43060",
+    "model_state_after": "e7c0ff81a0447e2b892068a524a7ade57d535933cae85e73a9413822fad43060",
+    "weights_sha256": "03f7bf88414f409f8ce9419406f9a47a43a2326447141d3e42fa6eced213f8da",
+    "feature_sha256": "add76c020a7e9b46f0f9ee04a950d5719f6339ca1890ba8ed5dacafd11482909",
+    "episodes_sha256": "0391583c678f81cf047b3fafe0a143295733cb8958e280be719019002f504449",
+    "frames": 41946,
+    "reused_rgb_frames": 9997,
+    "new_rgb_frames": 31949,
+    "reused_feature_max_abs_difference": 4.544854164123535e-07,
+    "parity_rgb_frames": 16,
+    "actual_new_nn_encoded_frames": 31965,
+    "gpu_context_created": false,
+    "new_physical_episodes": 0,
+    "seconds": 729.4946382951457,
+    "feature_source": "RGBONLY",
+    "state_action_reward_task_targets": false,
+    "external_pretrained_weights": false,
+    "source_sha256": "5ba465a2c8988161ca740d0aa1134904e7eaa0b9bf696ed0e58fbb6e48622411"
+  },
+  "clips": {
+    "0": 27827,
+    "1": 3078,
+    "2": 3541
+  },
+  "excluded_short_original_episodes": [
+    1224,
+    1230,
+    1242
+  ],
+  "original_episode_counts": {
+    "0": 2000,
+    "1": 250,
+    "2": 250
+  },
+  "validation_before": {
+    "triples": 3078,
+    "rank_accuracy": 0.8265107212475633,
+    "raw_latent_rank_accuracy": 0.8261858349577648,
+    "margin_loss": 0.4562786689743429
+  },
+  "validation": {
+    "triples": 3078,
+    "rank_accuracy": 0.9714100064977258,
+    "raw_latent_rank_accuracy": 0.8261858349577648,
+    "margin_loss": 0.09205646744171003
+  },
+  "heldout": {
+    "triples": 3541,
+    "rank_accuracy": 0.9556622423044338,
+    "raw_latent_rank_accuracy": 0.8384637108161537,
+    "margin_loss": 0.14374490431963607
+  },
+  "sample_level_batch_independence_check": true,
+  "head_optimizer_updates": 1085,
+  "worldmodel_optimizer_updates": 0,
+  "metric_state_sha256": "ac7341bb433bb70da979d2049c6b8a63310a00373c6b4ae5feaec4a0714e877f",
+  "metric_checkpoint_restore_passed": true,
+  "gpu_context_created": false,
+  "new_physical_episodes": 0,
+  "state_reward_action_task_labels": false,
+  "external_pretrained_weights": false,
+  "scope": "T2G-adaptedbaselinecost,NOTnovel/officialMetaWorldreplication/performanceclaim. PublicCube5epoch/lr5e-5/batch128/depth2hidden256/margin1/gap2/max15/negative0. Fixedown100epochscratchworldmodelfrozen;nativebodyretainsbatchregs,NOTentiresamplelevelcandidate. Allphase0RGBframes,same40fit/5train-validation/5testoriginaltrajectoriespertask. Raggedclips4..16retainshortepisodeswithoutpadding;length<4explicitlyexcluded. Samplingpubliclegacywithinclip;notfixed16framepublicdataset. Nostate/action/reward/taskIDtargets/inputs,unknownfutureactiontargets,strongteacherweights,privilegedreadoutsornewphysicaldata. Temporalrankdiagnosticonly;noMPC/controlsuccessyet."
+}

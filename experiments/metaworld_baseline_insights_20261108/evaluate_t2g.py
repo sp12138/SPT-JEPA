@@ -1,0 +1,228 @@
+"""Shared RGB-goal MPC using the existing native CEM and model rollout."""
+import argparse
+import datetime
+import hashlib
+import json
+from pathlib import Path
+import time
+from types import SimpleNamespace
+import numpy as np
+
+from experiments.metaworld_eval_20261103.environment import (make_environment, pixels, physics_state,
+                                                           rgb_replay_check, close_environment)
+
+
+def file_sha(path):
+    digest = hashlib.sha256()
+    with Path(path).open('rb') as handle:
+        for block in iter(lambda: handle.read(8 * 1024 * 1024), b''):digest.update(block)
+    return digest.hexdigest()
+
+
+def resize_tensor(frames):
+    import torch
+    from torch.nn import functional as F
+    value = torch.from_numpy(np.stack(frames)).permute(0, 3, 1, 2).float()
+    return F.interpolate(value, size=(224, 224), mode='bilinear', align_corners=False,
+                         antialias=True).round().clamp(0, 255).byte()
+
+
+def model_sha(model):
+    import torch
+    digest = hashlib.sha256()
+    for name, tensor in sorted(model.state_dict().items()):
+        digest.update(name.encode()); digest.update(str((tuple(tensor.shape), tensor.dtype)).encode())
+        digest.update(tensor.detach().reshape(-1).contiguous().view(torch.uint8).cpu().numpy().tobytes())
+    return digest.hexdigest()
+
+
+
+def hold_current_control(candidates,mean,std):
+    m=candidates.new_tensor(mean);s=candidates.new_tensor(std)
+    raw=candidates*s+m
+    held=raw[...,:4].clamp(-1,1).unsqueeze(-2).expand(*raw.shape[:-1],5,4).reshape_as(raw)
+    candidates.copy_((held-m)/s)
+    return candidates
+
+
+def make_encoder_geometry_cost(GoalMSE,matrix):
+    class EncoderGeometryCost(GoalMSE):
+        def __init__(self):
+            super().__init__()
+            self.register_buffer('geometry_matrix',matrix)
+        def forward(self,info_dict):
+            mapped=dict(info_dict)
+            mapped[self.pred_key]=info_dict[self.pred_key][:,:,-1:].float() @ self.geometry_matrix
+            mapped[self.goal_key]=info_dict[self.goal_key][:,-1:].float() @ self.geometry_matrix
+            return super().forward(mapped)
+    return EncoderGeometryCost()
+
+def make_temporal_cost(GoalMSE,metric):
+    class TemporalTerminalCost(GoalMSE):
+        def __init__(self):
+            super().__init__()
+            self.temporal_metric=metric
+        def forward(self,info_dict):
+            predicted=info_dict[self.pred_key][:,:,-1]
+            goal=info_dict[self.goal_key][:,None,-1]
+            return self.temporal_metric(predicted,goal)
+    return TemporalTerminalCost()
+
+
+def load_temporal_metric(state_path,device):
+    import importlib.util
+    import torch
+    state_path=Path(state_path)
+    source=Path('/efs/prescottsun/SPT-JEPA/reports/metaworld_baseline_insights_20261108/t2g-source-572784c/temporal_metric.py')
+    proof=json.loads(state_path.with_name('summary.json').read_text())
+    assert proof['passed'] and proof['metric_checkpoint_restore_passed']
+    assert file_sha(source)==proof['public_source_sha256'] and file_sha(state_path)==proof['metric_state_sha256']
+    state=torch.load(state_path,map_location='cpu',weights_only=True)
+    spec=importlib.util.spec_from_file_location('audited_t2g_eval',source)
+    public=importlib.util.module_from_spec(spec);spec.loader.exec_module(public)
+    with torch.random.fork_rng(devices=[]):
+        metric=public.TemporalMetric(state['encoder.0.weight'].shape[1],hidden_dim=256,depth=2,dropout=0.)
+    metric.load_state_dict(state,strict=True)
+    return metric.to(device).eval().requires_grad_(False),proof
+
+
+def main(checkpoint, data, manifest, output, task=None, bank=None, limit=None, budget=500, success_mode='any', held=False, geometry=None,t2g_state=None):
+    import gymnasium as gym
+    import torch
+    import stable_worldmodel as swm
+    from stable_worldmodel.planning import ShootingCostEvaluator, GoalMSE
+    from stable_worldmodel.planning.solver import CEMSolver
+    from vforge.ops import OpsConfig, initialize_ops
+    output = Path(output); output.mkdir(parents=True, exist_ok=False)
+    initialize_ops(OpsConfig(backend='sdpa', allow_fallback=False), device=torch.device('cuda'), parallel_state=None)
+    torch.set_num_threads(2); torch.set_float32_matmul_precision('highest')
+    card = json.loads((Path(data) / 'dataset_card.json').read_text())
+    assert card['physical_frameskip'] == 5 and len(card['action_mean']) == 20
+    mean, std = np.asarray(card['action_mean'], np.float32), np.asarray(card['action_std'], np.float32)
+    model = swm.wm.utils.load_pretrained(checkpoint).cuda().eval().requires_grad_(False)
+    before = model_sha(model)
+    lower = torch.tensor((-1 - mean) / std, device='cuda')
+    upper = torch.tensor((1 - mean) / std, device='cuda')
+
+    geometry_matrix=None if geometry is None else torch.from_numpy(np.load(geometry)['linear']).to('cuda')
+    assert not (t2g_state and (held or geometry))
+    metric=metric_proof=metric_before=None
+    if t2g_state:
+        metric,metric_proof=load_temporal_metric(t2g_state,'cuda')
+        assert metric_proof['feature_proof']['weights_sha256']==file_sha(Path(checkpoint)/'weights.pt')
+        metric_before=model_sha(metric)
+
+    class BoundedCost(ShootingCostEvaluator):
+        def __init__(self):
+            objective=(make_temporal_cost(GoalMSE,metric) if metric is not None else
+                       GoalMSE() if geometry_matrix is None else make_encoder_geometry_cost(GoalMSE,geometry_matrix))
+            super().__init__(model, objective); self.first_bank_sha256 = None
+        def get_cost(self, info, candidates):
+            # In-place projection ensures native elite updates use the actual
+            # bounded candidates,not an unprojected shadow. Common to all arms.
+            if held:hold_current_control(candidates,mean,std)
+            candidates.clamp_(min=lower, max=upper)
+            if self.first_bank_sha256 is None:
+                self.first_bank_sha256 = hashlib.sha256(candidates.detach().cpu().numpy().tobytes()).hexdigest()
+            return super().get_cost(info, candidates)
+
+    cases = json.loads(Path(manifest).read_text())['rows']
+    if task:cases = [c for c in cases if c['task'] == task]
+    if bank:cases = [c for c in cases if (c['seed'] >= 1000) == (bank == 'fresh')]
+    if limit:cases = cases[:limit]
+    assert cases
+    results = []; started = time.monotonic()
+    for case in cases:
+        assert file_sha(case['path']) == case['sha256']
+        cached = np.load(case['path'])
+        env, initial, vector = make_environment(case['task'], case['seed'], cached['rand_vec'])
+        assert np.array_equal(initial, cached['initial_state'])
+        assert all(np.array_equal(value, cached['initial_physics_'+key])
+                   for key,value in physics_state(env).items())
+        actual_frame = pixels(env); rgb_check = rgb_replay_check(cached['initial'], actual_frame)
+        assert rgb_check['passed'], rgb_check
+        frame = cached['initial'].copy()  # identical first RGB input for all methods
+        frames, past_actions, successes, executed = [frame], [], [], []
+        goal = model.normalize(resize_tensor([cached['goal']])[None].cuda())
+        cost = BoundedCost()
+        solver = CEMSolver(cost, batch_size=1, num_samples=300, n_steps=15, topk=10,
+                           device='cuda', seed=20261103 + case['seed'] * 1009)
+        solver.configure(action_space=gym.spaces.Box(-1., 1., shape=(1,4), dtype=np.float32), n_envs=1,
+                         config=SimpleNamespace(horizon=6, action_block=5))
+        warm = None; plan_calls = 0; terminated = truncated = False
+        try:
+            while len(successes) < budget:
+                context = min(2, len(frames))
+                history = np.asarray(past_actions[-(context-1):], np.float32) if context > 1 else np.empty((0,20), np.float32)
+                info = dict(pixels=model.normalize(resize_tensor(frames[-context:])[None].cuda()), goal=goal,
+                            action=torch.zeros(1, context, 20, device='cuda'),
+                            action_history=torch.from_numpy(history)[None].cuda())
+                assert set(info) == {'pixels', 'goal', 'action', 'action_history'}
+                with torch.inference_mode():solution = solver.solve(info, init_action=warm)
+                plan_calls += 1
+                plan = solution['actions'].numpy()[0]
+                warm = solution['actions'][:,3:].clone()
+                for normalized in plan[:3]:
+                    raw = np.clip(normalized * std + mean, -1, 1).reshape(5,4)
+                    for action in raw:
+                        _, reward, terminated, truncated, outcome = env.step(action.astype(np.float32))
+                        successes.append(bool(outcome['success'])); executed.append(action.copy())
+                        if len(successes) >= budget or terminated or truncated or (success_mode == 'any' and successes[-1]):break
+                    if len(successes) >= budget or terminated or truncated or (success_mode == 'any' and successes[-1]):break
+                    frames.append(pixels(env)); past_actions.append(((raw.reshape(-1)-mean)/std).astype(np.float32))
+                if terminated or truncated or (success_mode == 'any' and successes[-1]):break
+        finally:close_environment(env)
+        success = any(successes) if success_mode == 'any' else successes[-1]
+        trace = output / f"{case['task']}-seed{case['seed']}.npz"
+        np.savez_compressed(trace, actions=np.asarray(executed), successes=np.asarray(successes))
+        results.append(dict(task=case['task'], seed=case['seed'], success=success, any_success=any(successes),
+                            final_success=successes[-1], steps=len(successes), plan_calls=plan_calls,
+                            expert_goal_success=case['expert_any_success'], case_sha256=case['sha256'],
+                            first_bank_sha256=cost.first_bank_sha256, trace=str(trace), trace_sha256=file_sha(trace)))
+        results[-1]['initial_rgb_replay'] = rgb_check
+        print(json.dumps(results[-1]), flush=True)
+    after = model_sha(model); assert before == after
+    if metric is not None:assert model_sha(metric)==metric_before
+    groups = {}
+    for name in sorted({r['task'] for r in results}):
+        selected = [r for r in results if r['task'] == name]
+        groups[name] = dict(episodes=len(selected), success_rate=100 * np.mean([r['success'] for r in selected]),
+                            goal_construction_failures=sum(not r['expert_goal_success'] for r in selected),
+                            goal_valid_episodes=sum(r['expert_goal_success'] for r in selected),
+                            goal_valid_success_rate=(100 * np.mean([r['success'] for r in selected if r['expert_goal_success']])
+                                                     if any(r['expert_goal_success'] for r in selected) else None))
+    report = dict(passed=True, finished_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), checkpoint=checkpoint,
+                  weights_sha256=file_sha(Path(checkpoint) / 'weights.pt'), model_state_before=before, model_state_after=after,
+                  model_updates=0, parameters=sum(p.numel() for p in model.parameters()),
+                  renderer=dict(uniform_first_frame_warmup=True, explicit_mjr_context_cleanup=True,
+                                helper_environment_sha256=file_sha(Path(__file__).with_name('environment.py'))),
+                  data_card_sha256=file_sha(Path(data) / 'dataset_card.json'), manifest_sha256=file_sha(manifest),
+                  groups=groups, episodes=results, budget=budget, success_mode=success_mode,
+                  controller=dict(samples=300, iterations=15, elites=10, horizon_macro=6, execute_macro=3,
+                                  max_context=2, frameskip=5, native_box_projection=True, warm_start=True),
+                  seconds=time.monotonic()-started,
+                  scope='Independent LeRobot RGB-only image-goal extension. All cases including failed expert goals retained; '
+                        '500-step any-success and100-step final-success are separate runs if requested. '
+                        'Not a published JEPA-WMs or canonical task-ID-conditionedMT50 score. '
+                        'No environment state,reward,success or optimal action enters learner or planner.')
+    report['control_parameterization']='hold5' if held else 'standard'
+    report['goal_geometry_metric_sha256']=file_sha(geometry) if geometry is not None else None
+    report['additional_metric_coefficients']=0 if geometry_matrix is None else geometry_matrix.numel()
+    report['t2g_metric_state_sha256']=None if t2g_state is None else file_sha(t2g_state)
+    report['t2g_metric_model_state_before']=metric_before
+    report['t2g_metric_model_state_after']=None if metric is None else model_sha(metric)
+    report['t2g_additional_parameters']=0 if metric is None else sum(p.numel() for p in metric.parameters())
+    report['goal_cost']='last-step-MSE' if metric is None else 'public-T2G-terminal-scale-times-Euclidean-norm'
+    report['t2g_scope']='Ownsame-dataRGBchronology-trainedpublichead,noaction/state/reward/task/strongteacherlabels. Fixednative100bodyhasbatchregs,notentirelysamplelevelcandidate/novelmethod. No worldmodel/headSGDduringevaluation.'
+    (output / 'metrics.json').write_text(json.dumps(report, indent=2) + '\n')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    for name in ['checkpoint','data','manifest','output']:parser.add_argument('--'+name, required=True)
+    parser.add_argument('--task'); parser.add_argument('--bank', choices=['primary','fresh'])
+    parser.add_argument('--limit', type=int); parser.add_argument('--budget', type=int, default=500)
+    parser.add_argument('--success-mode', choices=['any','final'], default='any')
+    parser.add_argument('--t2g-state')
+    args = parser.parse_args()
+    main(args.checkpoint,args.data,args.manifest,args.output,args.task,args.bank,args.limit,args.budget,args.success_mode,t2g_state=args.t2g_state)
