@@ -113,11 +113,15 @@ def evaluate(j,step,gpus,deadline,technical=False,full=False):
         for f in futures:f.result()
 
 
-def work(host,pair):
+def work(host,pair,preclaimed=None):
     plan=read(ROOT/'plan.json');deadline=plan['deadline'];gpus=[2*pair,2*pair+1];h=Path(plan['helper'])
+    if preclaimed is not None:
+        owner=read(ROOT/'claims'/(preclaimed['name']+'.json'))
+        assert owner['host']==host and owner['pair']==pair and owner['pid']==os.getpid()
     while time.time()<deadline:
         if primary_busy(host,pair):time.sleep(20);continue
-        j=claim(host,pair)
+        j=preclaimed if preclaimed is not None else claim(host,pair)
+        preclaimed=None
         if j is None:
             if all(any((Path(x['output'])/n).exists() for n in ['complete.json','error.json','SKIPPED_PARENT_ERROR.json']) for x in plan['jobs']):return
             time.sleep(20);continue
