@@ -1,0 +1,65 @@
+{
+  "status": "ACTIVE",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109",
+  "source": "reports/metaworld_endpoint_density_20261109/source-v1",
+  "source_files": 18,
+  "original12_source_files_unchanged": true,
+  "design": "Own factual H60-inverse12000 parents seed1/2 frozen. Each receives3 identically initialized endpoint renderers: pure-noise mean control,uniformflow,highnoiseoddsx4flow. Samefull2250train trajectories/181608native starts,variableuniformvalid1..60factual target duration,knownexecutedforwardcontrols,optimizer/dataorder/RNG/noises and2000newheadupdates. No desiredgoal/path/policy/actiontargets in training.",
+  "scope": "Ownsame-data two-stageprototype;count12000parentupdates+2000headupdates per participant. Only2originaltrainedparents,reusedacross3heads. All6head modulesrandominit;noexternalpretrainedteacher. Parent was trained only factualfutureRGB plus same first executed input inverse,not unknown nextactions.",
+  "architecture": "Observed currentRGB plus frozen factual futurehidden -> single endpoint renderer. Avoid recursively summing RGB residuals. SameUNet/groupnorm architecture all3objectives;sample-levelflowvelocity targetobservedfutureRGBminusnoise. Meancontrol t=1 Bayesoptimum givesconditionalmean.",
+  "planning": "Goalonlyat inference. Meanhead5-noise averagedendpointRGBcost;flowheads64-stepreverseGaussiannegativeELBO estimate up toaction-independentprior.4stratifiedtransitionKLqueries+1discreteGaussianendpointquery,5rendererNNqueries/candidateallmodes. SameCEM64x4/H60/held5/execute15/500nativeanysuccess. This is not exact NLL or an officialSOTA reproduction.",
+  "training_head_updates_total": 12000,
+  "parent_updates_per_participant": 12000,
+  "formal_endpoints": 96,
+  "formal_episodes": 96,
+  "physical_cases": 8,
+  "checkpoints": [
+    1000,
+    2000
+  ],
+  "technical_native_steps": 120,
+  "actual_all6_full_cpu_restore_and_positive_fp32_backward": true,
+  "exact_paired_initial_parameters_data_durations_and_noise": true,
+  "all6actual20stepinterfaces_pass": true,
+  "actual_entry_status": {
+    "mean-seed1": {
+      "step": 300,
+      "loss": 0.29191964864730835,
+      "gpu_peak_gib": 3.4575376510620117
+    },
+    "uniform-seed1": {
+      "step": 300,
+      "loss": 0.20001725852489471,
+      "gpu_peak_gib": 3.4575371742248535
+    },
+    "highnoise-seed1": {
+      "step": 300,
+      "loss": 0.3380650579929352,
+      "gpu_peak_gib": 3.4575376510620117
+    },
+    "mean-seed2": {
+      "step": 300,
+      "loss": 0.17128175497055054,
+      "gpu_peak_gib": 3.4575376510620117
+    },
+    "uniform-seed2": {
+      "step": 300,
+      "loss": 0.3397177755832672,
+      "gpu_peak_gib": 3.4575371742248535
+    },
+    "highnoise-seed2": {
+      "step": 300,
+      "loss": 0.2602473497390747,
+      "gpu_peak_gib": 3.4575376510620117
+    }
+  },
+  "actual_entry_health_utc": "2026-11-08T23:43:58.741752+00:00",
+  "entry_archive_sha256": "ac9e088e60c92497a6953ad9d348417e168eb9f6aa0f7a835f42cab2ec9150b3",
+  "entry_files_sha_verified": 328,
+  "deadline_unix": 1794195587.1017435,
+  "allocation": "6head trainingGPUroles plus18frozen evaluationroles ondev13/dev15/dev6. Co-locatedwith existing primaryfrozenqueue;24physicalGPUs. EvaluationrolesCPU-wait until sealed1000/2000. No constantGPUutilizationclaim.",
+  "promotion": "Noautomaticlongpromotion. Requireactualmanipulationimprovementsacrossparents/cases beforeexpandedconfirmation orlongtraining.",
+  "mechanism_hypothesis": "Actualfrozenforecasts showarmghosts. Endpointscene formation andconditionaldensity could prevent low-costnonphysicalpointforecasts. Highnoise forces relianceoncurrentstate/knowncontrols ratherthan a nearlycleanfuturetarget. These are hypotheses,notvalidatedperformanceclaims.",
+  "primary_density_derivation": "https://arxiv.org/abs/2107.00630",
+  "novelty_verified": false
+}

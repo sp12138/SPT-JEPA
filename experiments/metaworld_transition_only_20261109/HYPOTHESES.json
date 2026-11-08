@@ -36,12 +36,17 @@
       "finding": "Better physical RGB-goal matching need not imply object progress over a finite horizon",
       "actual": "BothcorrectlydifferentiatedfrozenH60parents improve actualRGBcost throughgradientrefinement;model-selected60step paths stillhave no hardsuccess. In onePush developmentcase, a pathwith objectdistance.065m hasactualRGBMSE.00314, while an almostunmoved object(.168m) hasRGBMSE.00124.",
       "limit": "ThePushnumbers come from the retainedfirstgradientaudit, actualphysicsindependentofTF32derivativeprecision. Partial60step outcomes,not global taskcompletion orpopulation evidence."
+    },
+    {
+      "finding": "Visible nonphysical point forecasts",
+      "actual": "Exactreplayof8Pushcontrolpathsunder2frozenH60parents;allpredictedandrealizedgoalMSEreproduce,NNunchanged. Forecastimages retainmultiplearmghostswhileactualframescontainonearm.494newnativecalls,protectedAUDITONLY.",
+      "limit": "VisualmodeldefectonselectedPushcase;doesnot proveotherworldmodelsfailforsamecause. Cannottrainonortheseprotectedpaths."
     }
   ],
   "current_prospective_test": {
-    "root": "runs/metaworld_control_geometry_20261109",
-    "design": "Control-induced endpoint covariance plus factual TRAIN residual floor;frozenH15/H60x2parents32episodes. Source/model/lossandCEMbudgetunchanged.",
-    "promotion": "Requires actual hardsuccesses across parents/cases;no longrunfrom lower proxycost."
+    "root": "runs/metaworld_endpoint_density_20261109",
+    "design": "6pairedheadson2ownfactualparents:singleendpointmean,uniformflow,highnoiseflow. 2000updates/head,1000/2000nativephysicalpilots. No futureactiontargets/goalpathlabels.",
+    "promotion": "Physicalsuccessfirst;nofrompredictionlossalone."
   },
   "unimplemented_directions": [
     {

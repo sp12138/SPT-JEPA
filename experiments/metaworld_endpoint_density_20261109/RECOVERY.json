@@ -1,0 +1,67 @@
+{
+  "status": "ACTIVE_6HEAD_SHORT_TRAININGS_AND_FROZEN_EVALUATION_QUEUE",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109",
+  "source": "reports/metaworld_endpoint_density_20261109/source-v1",
+  "authoritative": [
+    "plan.json",
+    "launch-dev13.json",
+    "launch-dev15.json",
+    "launch-dev6.json",
+    "collector-launch.json",
+    "TRAINING_APPROVED.json",
+    "training/*/status.json",
+    "training/*/AUDIT-*.json",
+    "results/summary.json"
+  ],
+  "collector": {
+    "host": "dev13",
+    "pid": 3759349,
+    "finite": true
+  },
+  "next_due_utc": "2026-11-09T00:04:36Z",
+  "train_roles": [
+    {
+      "host": "dev13",
+      "gpu": 0,
+      "name": "mean-seed1"
+    },
+    {
+      "host": "dev13",
+      "gpu": 4,
+      "name": "uniform-seed1"
+    },
+    {
+      "host": "dev15",
+      "gpu": 0,
+      "name": "highnoise-seed1"
+    },
+    {
+      "host": "dev15",
+      "gpu": 4,
+      "name": "mean-seed2"
+    },
+    {
+      "host": "dev6",
+      "gpu": 0,
+      "name": "uniform-seed2"
+    },
+    {
+      "host": "dev6",
+      "gpu": 4,
+      "name": "highnoise-seed2"
+    }
+  ],
+  "eval_roles_per_host": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    7
+  ],
+  "last_entry_evidence": "results/entry/reports/metaworld_endpoint_density_20261109/ENTRY_HEALTH.json",
+  "claims": "No matureperformanceresultyet;entry300updates finite/allrequiredpositivegradients. NotSOTA/expert-free-data/publicprotocol/equalpretrainingFLOPs.",
+  "resume_rule": "Neverrepeatlaunch. Readexactcurrentchildren/checkpoints/errors,restorefullheadoptimizer/RNG/samplecursor. FrozenownparentSHAunchanged. Preserveallattempts.",
+  "forbidden": "No protected oracle/evaluation/traj bank data for training/proposals;no goal-query/policy lineages;no unknown-nextactiontargets.",
+  "automatic_long_promotion": false
+}

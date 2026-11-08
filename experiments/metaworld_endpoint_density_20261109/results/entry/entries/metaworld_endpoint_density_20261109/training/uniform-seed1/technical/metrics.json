@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "utc": "2026-11-08T23:41:17.559111+00:00",
+  "episodes": [
+    {
+      "task": "reach-v3",
+      "seed": 6042,
+      "case_sha256": "013ebb7ec2a79813a25a1d41bac0a15d0cab8d23bd7e07b71d18402e37a338e7",
+      "success": false,
+      "steps": 20,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/technical/reach-v3-seed6042.npz",
+      "trace_sha256": "439a0a59805091bda99909b5efd3f77730a7665cda1dc1b0b56e81dc9f9c640e",
+      "planning": [
+        {
+          "planner_score": 6.329963207244873,
+          "score_kind": "finite_reverse_diffusion_NELBO_minus_action_constant_prior",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 5,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.023454178124666214
+        },
+        {
+          "planner_score": 7.312808036804199,
+          "score_kind": "finite_reverse_diffusion_NELBO_minus_action_constant_prior",
+          "first_bank_prefix_sha256": "a50a3ab98c34b09d2d9bcfae07b15c6e4c34d2b4f16c80198d18243f5324129a",
+          "renderer_queries_per_candidate": 5,
+          "native_steps": 20,
+          "actual_rgb_goal_mse": 0.025364067405462265
+        }
+      ]
+    }
+  ],
+  "mode": "uniform",
+  "step": 2,
+  "head_weights_sha256": "88c3552afc9f0301f1d9f873807e16baddc997654dd0749950f522ee640d49c6",
+  "parent_state_before": "b1c42ef261e5b2f92dfa52eb027fce99c2b9c1f4b3d6e60907ebbbd616ef8867",
+  "parent_state_after": "b1c42ef261e5b2f92dfa52eb027fce99c2b9c1f4b3d6e60907ebbbd616ef8867",
+  "head_state_before": "a80c91549d7377c171de1cfb7abf4b02758107ebbf8b3ba665cc882739a46d62",
+  "head_state_after": "a80c91549d7377c171de1cfb7abf4b02758107ebbf8b3ba665cc882739a46d62",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 20,
+  "renderer_queries_per_candidate": 5,
+  "goal_only_in_planner": true,
+  "expert_intermediate_paths_or_action_targets": false,
+  "scope": "Ownfactual12000parent+newendpointhead;meanpure-noise vsuniform/high-noiseflowmatching. SameRGB/action/cases/CEMbudget;rendererNNqueries5/candidate. DensityboundisNOTexactlikelihood. Previouslyinspecteddevelopmentalcases,twooriginaltrainedparents,notpublicSOTA/equalpretrainingFLOPs/untouchedconfirmation."
+}
