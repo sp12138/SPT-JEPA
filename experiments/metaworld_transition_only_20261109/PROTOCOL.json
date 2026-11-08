@@ -1,0 +1,165 @@
+{
+  "authorization": [
+    "Try factual-only learning with optional same-input inverse",
+    "Direct hourly checks in this session; fix clear problems and continue"
+  ],
+  "supervision": {
+    "dataset": "Ungated LeRobot MetaWorld b46a1c18,2500 scripted-expert trajectories used as ordinary logs;NOT expert-free collection",
+    "learner_inputs": [
+      "past and current RGB",
+      "actual recorded controls as factual forward inputs"
+    ],
+    "targets": [
+      "actually observed future RGB",
+      "optional inverse of SAME first forward-input action from OBSERVED endpoints"
+    ],
+    "excluded": [
+      "desired goals in training",
+      "expert future path or policy learning",
+      "unknown next/optimal action targets",
+      "goal-query parent weights/features",
+      "forbidden action-policy lineages",
+      "external pretrained modules",
+      "reward/state/taskID/language learner inputs"
+    ],
+    "goal_use": "Final RGB goal only in CEM planner",
+    "sample_level": "GN,per-window masked loss,no cross-sample regularizer"
+  },
+  "factorial": {
+    "train_horizons_native": [
+      1,
+      5,
+      15
+    ],
+    "inverse": [
+      false,
+      true
+    ],
+    "training_seeds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "models": 24,
+    "pairing": "Same architecture,initial parameter tensors,data cursor and 181608 native anchors within seed;horizon compute differs",
+    "inverse_scale": "Initial TRAIN16-window shared-vision forward/inverse gradient-norm ratio atH15;fixed per seed across tasks and horizons;not tuned using outcomes"
+  },
+  "training": {
+    "initialization": "random entire model;no checkpoint parents",
+    "batch": 64,
+    "optimizer": "AdamW3e-4/wd1e-3",
+    "warmup": 300,
+    "lr_horizon": 30000,
+    "short_updates": 10000,
+    "entry_updates": 2,
+    "save_every": 500,
+    "full_resume": [
+      "model",
+      "optimizer",
+      "scheduler",
+      "Python/NumPy/Torch/CUDA RNG",
+      "sample cursor"
+    ],
+    "max_train_stage_seconds": 43200
+  },
+  "entry_gates": [
+    "All24 actual2update/fullCPUrestore/heldoutFP32backward",
+    "Two actual20-native-step MPC episodes per model:H30/e15,H60/e2",
+    "Paired initial parameter/calibration hashes",
+    "Identical initial2actualbatch sample traces withinseed",
+    "Common training manifests",
+    "All24 preflights before >2updates"
+  ],
+  "planning": {
+    "horizon_native": [
+      30,
+      60
+    ],
+    "execute_native": [
+      2,
+      15
+    ],
+    "action_block_native": 5,
+    "CEM_particles": 64,
+    "CEM_iterations": 4,
+    "CEM_elites": 10,
+    "cost": "terminal RGB MSE",
+    "candidate_inputs": "own Gaussian +own shifted warmplan;no demonstrations/reference actions/inverse proposals",
+    "observations": "realRGB each execute interval",
+    "budget_native": 500,
+    "success": "native any-success",
+    "inverse_deployed": false,
+    "compute": "H60/frequent feedback cost more;NOT equalFLOPs"
+  },
+  "evaluation": {
+    "checkpoints": [
+      2000,
+      10000
+    ],
+    "endpoints": 192,
+    "formal_episodes": 3840,
+    "models_per_condition": 4,
+    "screen_cases": 8,
+    "final_cases": 32,
+    "tasks": [
+      "bin-picking-v3",
+      "door-open-v3",
+      "drawer-open-v3",
+      "peg-insert-side-v3",
+      "pick-place-v3",
+      "push-v3",
+      "reach-v3",
+      "reach-wall-v3"
+    ],
+    "case_scope": "Previously inspected developmental physical cases repeated across models;not independent copies or untouched confirmation",
+    "goal_failures": "Retain and report",
+    "immutable_model_and_actual_action_trace_audit": true
+  },
+  "runtime": {
+    "source_manifest": {
+      "files": {
+        "experiments/metaworld_transition_only_20261109/audit.py": "51a6e6c3a000c75e4c43118b762c9da1eddd140d003e9bd736bf9af58f630182",
+        "experiments/metaworld_transition_only_20261109/model.py": "7b7a9d661f87c20367f7d435f82a499d09c83ecae63571f9d786d7fcc942d0fc",
+        "experiments/metaworld_transition_only_20261109/campaign.py": "8d551d83ea574063dec660adb790dfef499a987deabc36ab863e572470242fab",
+        "experiments/metaworld_transition_only_20261109/common.py": "9e2e1c8fd708476b9d3c89983f206021c3d6d71559115fcf650e4dead0a20197",
+        "experiments/metaworld_transition_only_20261109/train.py": "3f624733bcc6992fb91958d64c0ee193c84dc7c69a0f52d64d98f9f1a928c38b",
+        "experiments/metaworld_transition_only_20261109/evaluate.py": "ccf7db04f92af03007bafb6b0f70c07e3c46640bc2d94811574754e4624bc68d",
+        "experiments/metaworld_transition_only_20261109/data.py": "c49e7b0f1bdc24d96d8f668ca1d5d3832c0267acface776d094f619e0f2429d5",
+        "experiments/metaworld_eval_20261103/environment.py": "5e8b0310d1caba36fe37cb2ec24a4e6bf9f801b50e9a0cc760e784e88ca8ba7c"
+      },
+      "archive_sha256": "1db82b4a1ff7ed4cedace826da500c3f6e2cde79fa5bd7db43b75549e777c539"
+    },
+    "remote_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_transition_only_20261109",
+    "remote_source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_transition_only_20261109/runtime-v1",
+    "hosts": [
+      "dev13",
+      "dev15",
+      "dev6"
+    ],
+    "native_cache": "/tmp/prescottsun-factual-rgb128-20261109-v1",
+    "finite_round_hours": 36,
+    "worker_assignment": "one model perGPU;aftertraining becomes shared frozen-eval worker",
+    "automatic_long_promotion": false,
+    "old_campaigns": "Remain closed"
+  },
+  "hourly": {
+    "mode": "direct session interruptible waits<=60seconds",
+    "first_due_utc": "2026-11-08T20:01:00Z",
+    "period_seconds": 3600,
+    "inspect": [
+      "connectivity",
+      "owned processes and GPU activity",
+      "numerical stability and required gradients",
+      "training progress and timing",
+      "sealed checkpoint restore",
+      "actual physical success by same cases/seeds",
+      "errors and trace integrity"
+    ],
+    "adaptation": "Fix evidenced faults or clear methodological weaknesses,preserve original attempts;no long promotion from loss alone",
+    "external_delivery": false,
+    "new_goal": false,
+    "duplicate_llm_monitor": false
+  },
+  "claims": "No high performance or novelty established;not published MetaWorld SOTA protocol,full MT50,equalFLOPs or expert-free data."
+}
