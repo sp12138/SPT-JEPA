@@ -68,14 +68,12 @@
     "prelaunch_dispatch_fix": "Parent-error skipcannotlaterreclaimanactivepairwithout explicit recovery. Oldprepare source archived;0formalclaims/0newSGD whenpatched."
   },
   "latest_snapshot": {
-    "utc": "2026-11-08T03:08:07.668621+00:00",
-    "original100_complete": 18,
-    "original100_errors": 0,
+    "utc": "2026-11-08T04:08:45.831805+00:00",
     "scaling_claims": 12,
     "scaling_errors": 0,
-    "native_full_shards": 0,
-    "pilot_formal_traces": 48,
-    "pilot_complete": true
+    "completed_200_models": 6,
+    "scene100_probe_complete": 2,
+    "scene200_probe_started": 2
   },
   "hourly_monitor": {
     "authorized": true,
@@ -84,7 +82,7 @@
     "label": "com.spt-jepa.metaworld-hourly-01a18941",
     "plist": "/Users/pengsun/Library/LaunchAgents/com.spt-jepa.metaworld-hourly-01a18941.plist",
     "interval_seconds": 3600,
-    "next_expected_utc": "2026-11-08T04:08:07.668621+00:00",
+    "next_expected_utc": "2026-11-08T05:08:45.831805+00:00",
     "stop_file": "/Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/STOP",
     "instructions": "hourly-prompt.txt",
     "implementation": "Direct interruptible waiting in this conversation;no system scheduled delivery.",
@@ -96,45 +94,64 @@
     "system_delivery_stopped_utc": "2026-11-07T20:01:39.744956+00:00",
     "user_latest": "Use sleep/wait directly in this session,checking everyhour. OldLaunchAgentunloaded anditsloginplistarchived/removed. Training/evaluation queuesunchanged.",
     "mode": "DIRECT_IN_SESSION_WAIT",
-    "last_actual_review_utc": "2026-11-08T03:08:07.668621+00:00",
+    "last_actual_review_utc": "2026-11-08T04:08:45.831805+00:00",
     "external_stop_file_only": true,
     "last_actual_review": {
-      "utc": "2026-11-08T03:08:07.668621+00:00",
+      "utc": "2026-11-08T04:08:45.831805+00:00",
       "original100_complete": 18,
-      "original100_errors": 0,
       "scaling_claims": 12,
       "scaling_errors": 0,
-      "native_full_shards": 0,
-      "early_native_pilot": "COMPLETE/PASS48formal/8technical,4frozenparentsx12samephysicalcases. NativeandmatchedCEMboth0/48;notfull50score/notfreshcohort/notsinglefactor. LpWM1reservedcontinuationresumednormallywithentrygate,nowstep79900.",
-      "all24gpu_compute_processes_at_snapshot": true,
-      "200scores": "Firstcheckpointsready/evaluationsrunning;no completed1000case200score atinspection.",
-      "scene_probe": {
-        "status": "PREPARED_SMOKES_PASS_FULL_CPU_JOBS_RUNNING",
-        "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baseline_insights_20261108/scene-probe-v1",
-        "samples": 9997,
-        "original_trajectories": 2500,
-        "fit_original_trajectories": 2000,
-        "validation_original_trajectories": 250,
-        "test_original_trajectories": 250,
-        "online_initial_cached_frames": 1000,
-        "models": [
-          "smwm-seed1",
-          "h-jepa-seed2"
-        ],
-        "hosts": [
-          "dev15",
-          "dev6"
-        ],
-        "cpu_threads_each": 8,
-        "timeout_seconds_each": 14400,
-        "smoke_frames_each": 4,
-        "smoke_frozen_weights_unchanged": true,
-        "smoke_raw_rgb_features_identical": true,
-        "model_sgd": 0,
-        "gpu_contexts": 0,
-        "scope": "RGBonlyfrozenNNfeatures;state/taskconditionalreadoutsdiagnosticonly,neverlearner/plannerinputs/proposals/targets. Actualembedding/CLS/spatialpatch/RFF/rawRGB/robotonlycontrols;validationfromoriginaltraintrajectories. Failedprobesdonotproveabsenceofinformation. Grosscameravisualchecksimilar,notfinitedomainproof."
+      "completed_200epoch_scores": {
+        "lewm-idm-seed2": {
+          "100": 11.1,
+          "200": 8.7,
+          "hard200": 0
+        },
+        "h-jepa-seed2": {
+          "100": 10.8,
+          "200": 9.1,
+          "hard200": 0
+        },
+        "lewm-idm-seed3": {
+          "100": 10.8,
+          "200": 9.2,
+          "hard200": 0
+        },
+        "h-jepa-seed3": {
+          "100": 11.1,
+          "200": 8.3,
+          "hard200": 0
+        },
+        "lewm-seed1": {
+          "100": 10.3,
+          "200": 13.1,
+          "hard200": 1
+        },
+        "smwm-seed1": {
+          "100": 12.6,
+          "200": 13.3,
+          "hard200": 0
+        }
       },
-      "decision": "Longbaselinecontinuationsstayunchanged. Probe information/readout/domainquestionsinCPUwhileGPUswork;newcandidateSGDnotstarted."
+      "native_pilot": "COMPLETE0/48nativeand0/48matchedCEM,12samephysicalcases/4weights.",
+      "scene100probe": "COMPLETE/PASS2frozenmodels,9997frames/2500originaltrajectories+1000cachedonlineframes;v2readoutsconditionalcoordinatecorrection,oldv1retained.0worldmodelSGD/GPU.",
+      "scene100_embedding_online_rmse_cm": {
+        "smwm-seed1": {
+          "hand_xyz": 2.4725,
+          "first_object_xyz": 3.3642,
+          "hand_minus_firstobject_xyz": 4.0514
+        },
+        "h-jepa-seed2": {
+          "hand_xyz": 2.634,
+          "first_object_xyz": 3.4534,
+          "hand_minus_firstobject_xyz": 4.0977
+        }
+      },
+      "scene100_finding": "Someobjectpositioninformationisreadable;notcompatiblewithcompleteobjectinformationabsence. Probeerrorisnotaninformationlowerboundorproofofcausalcontrolfailure. Onlineinitialdistributiondiffersfromofflinetrajectorytest;notcamera-domaincausalproof.",
+      "native_control_support": "Same96actualnative/CEMtracesverified.Nativeblocktemporalvariation65.9..73.0percent vsCEM54.8..59.4percent/train6.93percent. Global12D99variance-subspace-tailviolationsnative42.4..67.7percent/CEM57.3..59.6percent/train0.96percent. NotcalibratedconditionalOODprobability/causality. Prior20epochheld/librarynegativealreadyexists;actionrepeatisnotnew/provenfix.",
+      "next_cpu": "SameSMWM1/H2frozen200checkpointslauncheddev15PID3279701/dev6PID25231at04:16:35UTC,8threads/4h/0worldmodelSGD/0CUDA. Sameexamples/readouts,askwhetherrepresentationimprovementtrackscontrol.",
+      "resource_snapshot": "23CUDAprocessesduringstageimports/physicaleval;24assignedGPUs. Notcontinuous100percentclaim.",
+      "decision": "Continue300scalingunchanged. No newcandidateSGD. Useevidencetodistinguishphysicalinformation,metricgeometry,andunsupportedplanningqueries."
     }
   },
   "research": "No new candidate SGD launched yet. Continue evidence-led improvements when baseline convergence/physical diagnostics justify it;require paired matched-budgetcontrols,reproducible realmanipulationgainsandfreshconfirmation beforeclaims/longpromotion. Existing1100CPUreplays/6inverseablations remainvalid;they donot prove missingobjectfeatures uniquely.",
@@ -143,44 +160,63 @@
     "sha256_verified_files": 32,
     "archive_sha256": "2e5035a0de421f4b36fb94e9abc067c17be07279fa793ee45bfec0cb4e5f6c23"
   },
-  "performance_claim": "Original18native100modelscomplete/18000tracesaudited;meansSMWM13.43/AC13.23/IDM11.2/LeWM10.4/H10.37/Lp8.9percent. Hard6total5of2160model-caseoutcomeson120sharedcases. Nativepilotfirst3models0/36matchedCEM0/36;pending4th. No mature200/300controlscore,SOTA,orhighperformanceclaim.",
+  "performance_claim": "Partial200epochresults:IDM2/3=8.7/9.2,H2/3=9.1/8.3,LeWM1=13.1,SMWM1=13.3percent,eachsame1000caseas100. Mixedscaling,no broadmanipulationbreakthrough. No300orSOTAclaim.",
   "latest_direct_hourly_review": {
-    "utc": "2026-11-08T03:08:07.668621+00:00",
+    "utc": "2026-11-08T04:08:45.831805+00:00",
     "original100_complete": 18,
-    "original100_errors": 0,
     "scaling_claims": 12,
     "scaling_errors": 0,
-    "native_full_shards": 0,
-    "early_native_pilot": "COMPLETE/PASS48formal/8technical,4frozenparentsx12samephysicalcases. NativeandmatchedCEMboth0/48;notfull50score/notfreshcohort/notsinglefactor. LpWM1reservedcontinuationresumednormallywithentrygate,nowstep79900.",
-    "all24gpu_compute_processes_at_snapshot": true,
-    "200scores": "Firstcheckpointsready/evaluationsrunning;no completed1000case200score atinspection.",
-    "scene_probe": {
-      "status": "PREPARED_SMOKES_PASS_FULL_CPU_JOBS_RUNNING",
-      "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baseline_insights_20261108/scene-probe-v1",
-      "samples": 9997,
-      "original_trajectories": 2500,
-      "fit_original_trajectories": 2000,
-      "validation_original_trajectories": 250,
-      "test_original_trajectories": 250,
-      "online_initial_cached_frames": 1000,
-      "models": [
-        "smwm-seed1",
-        "h-jepa-seed2"
-      ],
-      "hosts": [
-        "dev15",
-        "dev6"
-      ],
-      "cpu_threads_each": 8,
-      "timeout_seconds_each": 14400,
-      "smoke_frames_each": 4,
-      "smoke_frozen_weights_unchanged": true,
-      "smoke_raw_rgb_features_identical": true,
-      "model_sgd": 0,
-      "gpu_contexts": 0,
-      "scope": "RGBonlyfrozenNNfeatures;state/taskconditionalreadoutsdiagnosticonly,neverlearner/plannerinputs/proposals/targets. Actualembedding/CLS/spatialpatch/RFF/rawRGB/robotonlycontrols;validationfromoriginaltraintrajectories. Failedprobesdonotproveabsenceofinformation. Grosscameravisualchecksimilar,notfinitedomainproof."
+    "completed_200epoch_scores": {
+      "lewm-idm-seed2": {
+        "100": 11.1,
+        "200": 8.7,
+        "hard200": 0
+      },
+      "h-jepa-seed2": {
+        "100": 10.8,
+        "200": 9.1,
+        "hard200": 0
+      },
+      "lewm-idm-seed3": {
+        "100": 10.8,
+        "200": 9.2,
+        "hard200": 0
+      },
+      "h-jepa-seed3": {
+        "100": 11.1,
+        "200": 8.3,
+        "hard200": 0
+      },
+      "lewm-seed1": {
+        "100": 10.3,
+        "200": 13.1,
+        "hard200": 1
+      },
+      "smwm-seed1": {
+        "100": 12.6,
+        "200": 13.3,
+        "hard200": 0
+      }
     },
-    "decision": "Longbaselinecontinuationsstayunchanged. Probe information/readout/domainquestionsinCPUwhileGPUswork;newcandidateSGDnotstarted."
+    "native_pilot": "COMPLETE0/48nativeand0/48matchedCEM,12samephysicalcases/4weights.",
+    "scene100probe": "COMPLETE/PASS2frozenmodels,9997frames/2500originaltrajectories+1000cachedonlineframes;v2readoutsconditionalcoordinatecorrection,oldv1retained.0worldmodelSGD/GPU.",
+    "scene100_embedding_online_rmse_cm": {
+      "smwm-seed1": {
+        "hand_xyz": 2.4725,
+        "first_object_xyz": 3.3642,
+        "hand_minus_firstobject_xyz": 4.0514
+      },
+      "h-jepa-seed2": {
+        "hand_xyz": 2.634,
+        "first_object_xyz": 3.4534,
+        "hand_minus_firstobject_xyz": 4.0977
+      }
+    },
+    "scene100_finding": "Someobjectpositioninformationisreadable;notcompatiblewithcompleteobjectinformationabsence. Probeerrorisnotaninformationlowerboundorproofofcausalcontrolfailure. Onlineinitialdistributiondiffersfromofflinetrajectorytest;notcamera-domaincausalproof.",
+    "native_control_support": "Same96actualnative/CEMtracesverified.Nativeblocktemporalvariation65.9..73.0percent vsCEM54.8..59.4percent/train6.93percent. Global12D99variance-subspace-tailviolationsnative42.4..67.7percent/CEM57.3..59.6percent/train0.96percent. NotcalibratedconditionalOODprobability/causality. Prior20epochheld/librarynegativealreadyexists;actionrepeatisnotnew/provenfix.",
+    "next_cpu": "SameSMWM1/H2frozen200checkpointslauncheddev15PID3279701/dev6PID25231at04:16:35UTC,8threads/4h/0worldmodelSGD/0CUDA. Sameexamples/readouts,askwhetherrepresentationimprovementtrackscontrol.",
+    "resource_snapshot": "23CUDAprocessesduringstageimports/physicaleval;24assignedGPUs. Notcontinuous100percentclaim.",
+    "decision": "Continue300scalingunchanged. No newcandidateSGD. Useevidencetodistinguishphysicalinformation,metricgeometry,andunsupportedplanningqueries."
   },
   "native_early_pilot": {
     "status": "COMPLETE/PASS_48FORMAL_ZERO_NATIVE_ZERO_CEM",
@@ -211,7 +247,7 @@
     "scope": "Native100epoch fixed-LeRobot-data commonCEM scratch comparison. Nativewindows/capacity/images/FLOPs differ;not compute-matched/publicJEPA-WMs/MT50RLscores. Three independent trainingseeds crossed SAME1000physicalcases;not18000independentphysicalcases. All500stepany-success,allgoalconstructionfailuresretained. Matched100curves developmental,not full1000case estimates. No SOTA/novelty/strongmanipulation claim."
   },
   "scene_probe": {
-    "status": "PREPARED_SMOKES_PASS_FULL_CPU_JOBS_RUNNING",
+    "status": "100COMPLETE_PASS_V2_READOUTS_200_FROZEN_COMPARISON_RUNNING",
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baseline_insights_20261108/scene-probe-v1",
     "samples": 9997,
     "original_trajectories": 2500,
@@ -234,6 +270,13 @@
     "smoke_raw_rgb_features_identical": true,
     "model_sgd": 0,
     "gpu_contexts": 0,
-    "scope": "RGBonlyfrozenNNfeatures;state/taskconditionalreadoutsdiagnosticonly,neverlearner/plannerinputs/proposals/targets. Actualembedding/CLS/spatialpatch/RFF/rawRGB/robotonlycontrols;validationfromoriginaltraintrajectories. Failedprobesdonotproveabsenceofinformation. Grosscameravisualchecksimilar,notfinitedomainproof."
+    "scope": "RGBonlyfrozenNNfeatures;state/taskconditionalreadoutsdiagnosticonly,neverlearner/plannerinputs/proposals/targets. Actualembedding/CLS/spatialpatch/RFF/rawRGB/robotonlycontrols;validationfromoriginaltraintrajectories. Failedprobesdonotproveabsenceofinformation. Grosscameravisualchecksimilar,notfinitedomainproof.",
+    "local_evidence": "../metaworld_baseline_insights_20261108/results-scene-probe100-v2",
+    "additional_frozen_200_models": [
+      "smwm-seed1",
+      "h-jepa-seed2"
+    ],
+    "additional_200_launch_utc": "2026-11-08T04:16:35UTC",
+    "worldmodel_sgd": 0
   }
 }

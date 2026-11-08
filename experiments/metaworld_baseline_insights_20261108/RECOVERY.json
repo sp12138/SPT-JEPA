@@ -144,42 +144,61 @@
     "recorded_utc": "2026-11-07T21:29:45.205120+00:00"
   },
   "latest_direct_hourly_review": {
-    "utc": "2026-11-08T03:08:07.668621+00:00",
+    "utc": "2026-11-08T04:08:45.831805+00:00",
     "original100_complete": 18,
-    "original100_errors": 0,
     "scaling_claims": 12,
     "scaling_errors": 0,
-    "native_full_shards": 0,
-    "early_native_pilot": "COMPLETE/PASS48formal/8technical,4frozenparentsx12samephysicalcases. NativeandmatchedCEMboth0/48;notfull50score/notfreshcohort/notsinglefactor. LpWM1reservedcontinuationresumednormallywithentrygate,nowstep79900.",
-    "all24gpu_compute_processes_at_snapshot": true,
-    "200scores": "Firstcheckpointsready/evaluationsrunning;no completed1000case200score atinspection.",
-    "scene_probe": {
-      "status": "PREPARED_SMOKES_PASS_FULL_CPU_JOBS_RUNNING",
-      "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baseline_insights_20261108/scene-probe-v1",
-      "samples": 9997,
-      "original_trajectories": 2500,
-      "fit_original_trajectories": 2000,
-      "validation_original_trajectories": 250,
-      "test_original_trajectories": 250,
-      "online_initial_cached_frames": 1000,
-      "models": [
-        "smwm-seed1",
-        "h-jepa-seed2"
-      ],
-      "hosts": [
-        "dev15",
-        "dev6"
-      ],
-      "cpu_threads_each": 8,
-      "timeout_seconds_each": 14400,
-      "smoke_frames_each": 4,
-      "smoke_frozen_weights_unchanged": true,
-      "smoke_raw_rgb_features_identical": true,
-      "model_sgd": 0,
-      "gpu_contexts": 0,
-      "scope": "RGBonlyfrozenNNfeatures;state/taskconditionalreadoutsdiagnosticonly,neverlearner/plannerinputs/proposals/targets. Actualembedding/CLS/spatialpatch/RFF/rawRGB/robotonlycontrols;validationfromoriginaltraintrajectories. Failedprobesdonotproveabsenceofinformation. Grosscameravisualchecksimilar,notfinitedomainproof."
+    "completed_200epoch_scores": {
+      "lewm-idm-seed2": {
+        "100": 11.1,
+        "200": 8.7,
+        "hard200": 0
+      },
+      "h-jepa-seed2": {
+        "100": 10.8,
+        "200": 9.1,
+        "hard200": 0
+      },
+      "lewm-idm-seed3": {
+        "100": 10.8,
+        "200": 9.2,
+        "hard200": 0
+      },
+      "h-jepa-seed3": {
+        "100": 11.1,
+        "200": 8.3,
+        "hard200": 0
+      },
+      "lewm-seed1": {
+        "100": 10.3,
+        "200": 13.1,
+        "hard200": 1
+      },
+      "smwm-seed1": {
+        "100": 12.6,
+        "200": 13.3,
+        "hard200": 0
+      }
     },
-    "decision": "Longbaselinecontinuationsstayunchanged. Probe information/readout/domainquestionsinCPUwhileGPUswork;newcandidateSGDnotstarted."
+    "native_pilot": "COMPLETE0/48nativeand0/48matchedCEM,12samephysicalcases/4weights.",
+    "scene100probe": "COMPLETE/PASS2frozenmodels,9997frames/2500originaltrajectories+1000cachedonlineframes;v2readoutsconditionalcoordinatecorrection,oldv1retained.0worldmodelSGD/GPU.",
+    "scene100_embedding_online_rmse_cm": {
+      "smwm-seed1": {
+        "hand_xyz": 2.4725,
+        "first_object_xyz": 3.3642,
+        "hand_minus_firstobject_xyz": 4.0514
+      },
+      "h-jepa-seed2": {
+        "hand_xyz": 2.634,
+        "first_object_xyz": 3.4534,
+        "hand_minus_firstobject_xyz": 4.0977
+      }
+    },
+    "scene100_finding": "Someobjectpositioninformationisreadable;notcompatiblewithcompleteobjectinformationabsence. Probeerrorisnotaninformationlowerboundorproofofcausalcontrolfailure. Onlineinitialdistributiondiffersfromofflinetrajectorytest;notcamera-domaincausalproof.",
+    "native_control_support": "Same96actualnative/CEMtracesverified.Nativeblocktemporalvariation65.9..73.0percent vsCEM54.8..59.4percent/train6.93percent. Global12D99variance-subspace-tailviolationsnative42.4..67.7percent/CEM57.3..59.6percent/train0.96percent. NotcalibratedconditionalOODprobability/causality. Prior20epochheld/librarynegativealreadyexists;actionrepeatisnotnew/provenfix.",
+    "next_cpu": "SameSMWM1/H2frozen200checkpointslauncheddev15PID3279701/dev6PID25231at04:16:35UTC,8threads/4h/0worldmodelSGD/0CUDA. Sameexamples/readouts,askwhetherrepresentationimprovementtrackscontrol.",
+    "resource_snapshot": "23CUDAprocessesduringstageimports/physicaleval;24assignedGPUs. Notcontinuous100percentclaim.",
+    "decision": "Continue300scalingunchanged. No newcandidateSGD. Useevidencetodistinguishphysicalinformation,metricgeometry,andunsupportedplanningqueries."
   },
   "positive_replay": {
     "status": "COMPLETE/PASS",
@@ -199,7 +218,7 @@
   },
   "final100_audit": "../metaworld_baseline_scaling_20261108/results/final100-audit/summary.json",
   "scene_probe": {
-    "status": "PREPARED_SMOKES_PASS_FULL_CPU_JOBS_RUNNING",
+    "status": "100COMPLETE_PASS_READOUTV2_200_FROZEN_COMPARISON_RUNNING",
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baseline_insights_20261108/scene-probe-v1",
     "samples": 9997,
     "original_trajectories": 2500,
@@ -222,6 +241,16 @@
     "smoke_raw_rgb_features_identical": true,
     "model_sgd": 0,
     "gpu_contexts": 0,
-    "scope": "RGBonlyfrozenNNfeatures;state/taskconditionalreadoutsdiagnosticonly,neverlearner/plannerinputs/proposals/targets. Actualembedding/CLS/spatialpatch/RFF/rawRGB/robotonlycontrols;validationfromoriginaltraintrajectories. Failedprobesdonotproveabsenceofinformation. Grosscameravisualchecksimilar,notfinitedomainproof."
-  }
+    "scope": "RGBonlyfrozenNNfeatures;state/taskconditionalreadoutsdiagnosticonly,neverlearner/plannerinputs/proposals/targets. Actualembedding/CLS/spatialpatch/RFF/rawRGB/robotonlycontrols;validationfromoriginaltraintrajectories. Failedprobesdonotproveabsenceofinformation. Grosscameravisualchecksimilar,notfinitedomainproof.",
+    "readout_effective": "summary-v2.json,notoriginalsummary.json",
+    "original_v1_retained": true,
+    "readout_correction": "Robot-onlydiagnosticinputnowtaskcenteredliketarget;knownhandreadout0.008cmofflinevalidatescoordinatebookkeeping.0newNNforv2refit.",
+    "frozen200_jobs": {
+      "dev15": 3279701,
+      "dev6": 25231
+    },
+    "frozen200_launch_utc": "2026-11-08T04:16:35UTC",
+    "local_evidence": "results-scene-probe100-v2"
+  },
+  "native_control_support": "COMPLETE/PASS/results-native-action-support/summary.json;96existingtracesfromsame12physicalcases/4weights/2controllers,0NN/SGD/physics."
 }

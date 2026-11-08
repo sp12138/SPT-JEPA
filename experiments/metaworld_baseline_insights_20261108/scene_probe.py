@@ -30,7 +30,8 @@ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 def save(p,d):
     p=Path(p);p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text(json.dumps(d,indent=2)+'\n')
+    temp=p.with_name(p.name+f'.{os.getpid()}.tmp')
+    temp.write_text(json.dumps(d,indent=2)+'\n');temp.replace(p)
 
 
 def prepare():
@@ -90,7 +91,7 @@ def prepare():
     print(json.dumps(dict(prepared=True,samples=len(examples),physical_episodes=2500)),flush=True)
 
 
-def features(name,out,smoke=False):
+def features(name,out,smoke=False,epoch=100):
     import torch
     import torch.nn.functional as F
     from transformers import ViTModel
@@ -102,8 +103,9 @@ def features(name,out,smoke=False):
     assert name in selection['models']
     sample=np.load(ROOT/'samples.npz');indices=sample['indices'][:2] if smoke else sample['indices']
     online_cases=selection['online_cases'][:2] if smoke else selection['online_cases']
-    job=next(j for j in read(BASE/'runs/metaworld_baselines_native_20261108/plan.json')['jobs'] if j['name']==name)
-    cfg=read(job['config']);checkpoint=Path(job['output'])/f"model-step{job['epoch_steps']['100']:07d}"
+    parent='metaworld_baselines_native_20261108' if epoch==100 else 'metaworld_baseline_scaling_20261108'
+    job=next(j for j in read(BASE/f'runs/{parent}/plan.json')['jobs'] if j['name']==name)
+    cfg=read(job['config']);checkpoint=Path(job['output'])/f"model-step{job['epoch_steps'][str(epoch)]:07d}"
     model=PublicBaseline(cfg['method'],cfg['sources']);model.load_state_dict(torch.load(checkpoint/'weights.pt',map_location='cpu',weights_only=True),strict=True)
     model.eval().requires_grad_(False);before=digest(model)
     encoders=[m for m in model.modules() if isinstance(m,ViTModel)];assert len(encoders)==1
@@ -143,7 +145,7 @@ def features(name,out,smoke=False):
     save(out/'FROZEN.json',dict(passed=True,name=name,model_updates=0,model_state_before=before,model_state_after=digest(model),
         weights_sha256=sha(checkpoint/'weights.pt'),samples_sha256=selection['samples_sha256'],
         gpu_context_created=False,offline_frames=len(indices),online_initial_frames=len(online_cases),seconds=time.monotonic()-started,
-        technical_smoke_only=smoke,source_sha256=sha(__file__),feature_shapes={k:list(v.shape) for k,v in all_features.items()},
+        technical_smoke_only=smoke,training_epoch=epoch,checkpoint=str(checkpoint),source_sha256=sha(__file__),feature_shapes={k:list(v.shape) for k,v in all_features.items()},
         raw_rgb_features_sha256=hashlib.sha256(all_features['raw_rgb32'].tobytes()).hexdigest()))
 
 
@@ -169,7 +171,13 @@ def fit(out):
                 rms.append(float(np.sqrt(physical_error[mask].mean())))
             result[group]=dict(macro_normalized_mse=float(np.mean(task_errors)),
                 relative_mse_to_fit_task_mean=float(np.mean(task_errors)/max(np.mean(task_bases),1e-20)),
-                macro_rmse_native_units=float(np.mean(rms)),tasks=50)
+                macro_rmse_native_units=float(np.mean(rms)),tasks=50,
+                task_rmse_native_units={str(t):rms[t] for t in range(50)})
+        predicted_physical=pred*std[ids]+mean[ids]
+        relative_error=(predicted_physical[:,:3]-predicted_physical[:,4:7])-(physical[:,:3]-physical[:,4:7])
+        rms=[float(np.sqrt(np.square(relative_error[ids==t]).mean())) for t in range(50)]
+        result['hand_minus_firstobject_xyz']=dict(macro_rmse_native_units=float(np.mean(rms)),tasks=50,
+            task_rmse_native_units={str(t):rms[t] for t in range(50)})
         return result
 
     results={};rng=np.random.default_rng(20261108)
@@ -180,7 +188,11 @@ def fit(out):
     frequencies=rng.normal(size=(emb.shape[1],512))/math.sqrt(emb.shape[1]);phase=rng.uniform(0,2*np.pi,512)
     feature_sets['embedding_rff512']=np.sqrt(2/512)*np.cos(normalized@frequencies+phase)
     # Privileged robot-only baseline is diagnostic;never deployed.
-    robot=np.concatenate([labels[:,:4],online_labels[:,:4]])
+    # The target coordinates are already task-centered/scaled. Give this
+    # privileged diagnostic the SAME coordinate system,so it can exactly read
+    # its own hand input. Raw robot input would lack the task means that RGB
+    # can infer from backgrounds,an unfair correlation baseline.
+    robot=np.concatenate([y[:,:4],online_y[:,:4]])
     feature_sets['robot_state_diagnostic_only']=np.concatenate([robot,robot**2],axis=1)
     for name,values in feature_sets.items():
         x=np.asarray(values,np.float64);xm=x[:n][training].mean(0);xs=np.maximum(x[:n][training].std(0),1e-6);x=(x-xm)/xs
@@ -195,7 +207,10 @@ def fit(out):
             offline_test=metrics(x[:n][splits==2]@w,y[splits==2],labels[splits==2],tasks[splits==2]),
             online_initial=metrics(x[n:]@w,online_y,online_labels,online_tasks))
     assert read(out/'FROZEN.json')['passed']
-    save(out/'summary.json',dict(passed=True,results=results,frozen=read(out/'FROZEN.json'),
+    assert results['robot_state_diagnostic_only']['offline_test']['hand_xyz']['macro_rmse_native_units']<.002
+    save(out/'summary-v2.json',dict(passed=True,results=results,frozen=read(out/'FROZEN.json'),analysis_source_sha256=sha(__file__),
+        correction='Readoutv2normalizestheprivilegedrobotinputlikeitsconditionaltarget;original100epochv1summariesretained. '
+            'Closedformfittingreusesfrozenfeatures,with0NN/SGDduringfitting. Addsper-taskandrelativehand/objecterrors.',
         selection_sha256=sha(ROOT/'samples.npz'),worldmodel_updates=0,readout='Closedformridge,alpha selected ONLY onoriginaltraintrajectoryvalidation. '
             'Conditionaltaskmean/scale fromfitlabels,taskIDnot a NNfeature. ModelinputsRGBonly. '
             'Firstobjectnotuniversallytarget. Failedlinear/RFFreadouts donotproveinformationabsence. '
@@ -204,12 +219,14 @@ def fit(out):
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=['prepare','run','smoke'],required=True);parser.add_argument('--name')
-    args=parser.parse_args();out=ROOT/(str(args.name)+('-smoke' if args.mode=='smoke' else ''))
+    parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=['prepare','run','smoke','fit'],required=True);parser.add_argument('--name')
+    parser.add_argument('--epoch',type=int,choices=[100,200,300],default=100)
+    args=parser.parse_args();out=ROOT/(str(args.name)+(f'-epoch{args.epoch}' if args.epoch!=100 else '')+('-smoke' if args.mode=='smoke' else ''))
     try:
         if args.mode=='prepare':prepare()
+        elif args.mode=='fit':fit(out)
         else:
-            out.mkdir(exist_ok=False);features(args.name,out,smoke=args.mode=='smoke')
+            out.mkdir(exist_ok=False);features(args.name,out,smoke=args.mode=='smoke',epoch=args.epoch)
             if args.mode=='run':fit(out)
     except BaseException:
         save((ROOT if args.mode=='prepare' else out)/'ERROR.json',dict(traceback=traceback.format_exc()));raise

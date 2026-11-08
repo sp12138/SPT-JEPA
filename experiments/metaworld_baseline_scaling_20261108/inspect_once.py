@@ -1,5 +1,6 @@
 """One read-only experiment inspection; no timer,launcher,or NN import."""
 import datetime
+import hashlib
 import json
 from pathlib import Path
 
@@ -44,8 +45,17 @@ def main():
     probe = BASE / 'runs/metaworld_baseline_insights_20261108/scene-probe-v1'
     if probe.exists():
         result['scene_probe'] = {}
-        for name in ['smwm-seed1', 'h-jepa-seed2']:
-            result['scene_probe'][name] = {n: read(probe / name / n) for n in ['progress.json', 'FROZEN.json', 'summary.json', 'ERROR.json'] if (probe / name / n).exists()}
+        for name in ['smwm-seed1', 'h-jepa-seed2', 'smwm-seed1-epoch200', 'h-jepa-seed2-epoch200']:
+            out = probe / name
+            p = {n: read(out / n) for n in ['progress.json', 'FROZEN.json', 'ERROR.json'] if (out / n).exists()}
+            source = out / ('summary-v2.json' if (out / 'summary-v2.json').exists() else 'summary.json')
+            if source.exists():
+                summary = read(source)
+                compact = {f: {s: {g: {k: v for k, v in m.items() if k != 'task_rmse_native_units'}
+                    for g, m in r[s].items()} for s in ['offline_test', 'online_initial']} for f, r in summary['results'].items()}
+                p['summary.json'] = dict(passed=summary['passed'], effective_source=str(source),
+                    source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(), results=compact)
+            result['scene_probe'][name] = p
     dest = BASE / 'reports/metaworld_baseline_scaling_20261108/hourly' / (now.strftime('%Y%m%dT%H%M%S') + '.json')
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(result, indent=2) + '\n')
@@ -54,6 +64,8 @@ def main():
         data = result[key]
         print(key, {k: data[k] for k in ['complete', 'errors', 'claims']})
         for row in data['rows']:
+            if key == 'original' and row['complete'] and not row['error']:
+                continue
             if key == 'scaling' and row['health_step'] is None and not row['proofs']:
                 continue
             print(row['name'], 'step', row['health_step'], 'scores', {e: round(s['macro50'], 3) for e, s in row['epochs'].items()},
