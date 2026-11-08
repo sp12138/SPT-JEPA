@@ -1,0 +1,41 @@
+{
+  "status": "LAUNCHED",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_correlated_search_20261109",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_correlated_search_20261109/source-v1",
+  "design": "Frozen H15/H60 factual loss12000 x2 original parents; same32 physical cases/model as completed white CEM, H60/held5/execute15/native500anysuccess, terminal RGBMSE,64 particles x4 iterations. Change only analytic temporal proposal covariance.",
+  "covariance": "DCT-II orthonormal Q; C=Q.T diag(1/(1+k^2)) Q; normalize unit diagonal; L=Cholesky(C). Each action coordinate retains N(0,1) marginal before clipping. No fitted expert/action/goal statistics.",
+  "cpu_audit": "PASS eigenvalues>0, unit diagonal,100000 independent draws empirical variance .99944..1.00339; adjacent correlation .85072.",
+  "technical": "Four actual20-step original white actions/successes/initial candidate banks match their completed full-case baseline exactly. All PASS22:42:26..30UTC.",
+  "formal_episodes": 128,
+  "model_updates": 0,
+  "parameters_learned": 0,
+  "physical_GPUs_total": 24,
+  "colocated_roles": [
+    {
+      "host": "dev13",
+      "gpu": 0,
+      "pid": 3758729,
+      "model": "h15-seed1"
+    },
+    {
+      "host": "dev13",
+      "gpu": 2,
+      "pid": 3758730,
+      "model": "h60-seed1"
+    },
+    {
+      "host": "dev15",
+      "gpu": 0,
+      "pid": 3293727,
+      "model": "h15-seed2"
+    },
+    {
+      "host": "dev15",
+      "gpu": 6,
+      "pid": 3293728,
+      "model": "h60-seed2"
+    }
+  ],
+  "scope": "Developmental already-inspected cases; repeated parents/cases. No public SOTA, novelty or robust gain claimed. Original24 workers untouched. Two-hour finite deadline, no automatic expansion/long promotion.",
+  "primary_source": "https://proceedings.mlr.press/v155/pinneri21a.html"
+}

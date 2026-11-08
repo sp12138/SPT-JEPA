@@ -26,12 +26,17 @@
       "finding": "Cold history initially matters but densefeedbackrecovers",
       "actual": "8frozenH15models/16sameheldoutclips:oneframevs8pastframes causes~4.4..5.2x15stepforecastMSE. Withfeedbackevery2native,thegapdisappearsby15.",
       "decision": "Not evidence for persistentfailure;do not launchanothermask-training campaign fromthisalone."
+    },
+    {
+      "finding": "A perfect forecast is insufficient for this fixed planner on some cases",
+      "actual": "White privileged true-simulator CEM on three selected cases: Drawer168 success; Door500 and Push500 fail. All selected execution prefixes replay exact; actual traces verified.",
+      "limit": "Privileged diagnostic, never candidate performance or training/proposal data. Three selected development cases, not a population score."
     }
   ],
   "current_prospective_test": {
-    "root": "runs/metaworld_horizon_match_20261109/extended-controller",
-    "design": "H15/H60trainingloss x2sameparents,all12000;H60/execute15;4x32samephysicalcases=128episodes. Completesmissingcombinedcondition.",
-    "promotion": "Requireactualmanipulationgains acrossparents/cases,notlowerforecastloss."
+    "root": "runs/metaworld_correlated_search_20261109",
+    "design": "Four frozen matched12000 participants; fixed analytic DCT temporal covariance, otherwise identical existing H60/e15/32-case comparisons;128 formal episodes.",
+    "promotion": "Requires actual hard manipulation gains; no automatic expansion or long run."
   },
   "unimplemented_directions": [
     {
@@ -53,7 +58,7 @@
       "basis": "OwnGaussianproposalwithfixedanalyticcorrelation,notfittedtosuccess/experttrajectories. Sameper-timeN(0,1)marginals,controlbounds/candidatebudget. Canincreasecoverageofsustainedcontactstrokes.",
       "primary_source": "https://proceedings.mlr.press/v155/pinneri21a.html",
       "novelty": "ExistingiCEMdirection,NOTanoriginalidea;controlablationonly.",
-      "status": "Notimplemented;waitcurrentcombinedcontrollerresult."
+      "status": "Implemented bounded frozen comparison and separate privileged oracle pairs; physical results pending. Not an original idea."
     }
   ],
   "prohibited_shortcuts": [
@@ -62,5 +67,6 @@
     "No reusing goal-query-trained or disqualified policy weights/features",
     "No treating privileged simulator/state audits as candidate performance",
     "No long promotion based on loss or one successful case"
-  ]
+  ],
+  "source_audit": "Local as_jepa_lewm/predictive_density.py includes a desired-goal-conditioned training role and is outside the current setting. Do not reuse its weights/branches. Original AS flow renderer predicts target-minus-noise; any future density energy must respect that sign and full valid origin."
 }

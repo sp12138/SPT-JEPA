@@ -1,6 +1,6 @@
 {
-  "utc": "2026-11-08T21:02:24.085909+00:00",
-  "status": "24maintrainings10000complete/frozen192endpointqueueactive.4matchedH15/H60continuations12000complete;standard64episodequeueactive;newH60/e15matched128episodeextensionactive.",
+  "utc": "2026-11-08T22:48:00Z",
+  "status": "All 24 primary models 10000 updates complete; frozen 192-endpoint queue active. Matched H15/H60 continuation comparison CLOSED_NO_PROMOTION; temporal-correlation frozen and privileged control probes active.",
   "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_transition_only_20261109",
   "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_transition_only_20261109/runtime-v1",
   "authoritative": [
@@ -49,16 +49,16 @@
     "external_delivery": false,
     "new_goal": false,
     "duplicate_llm_monitor": false,
-    "next_due_utc": "2026-11-08T22:02:24Z"
+    "next_due_utc": "2026-11-08T23:04:04Z"
   },
-  "performance": "OneoriginalH15inversePush6042success155withH60/e15;sameweights/caseH30fails. Notreliablebroadmanipulationgain;fixedspatialkernelnegative.",
+  "performance": "At hour03 main66/192 endpoints,2112 episodes, one selected Push success; no reliable hard-manipulation gain. Matched12 endpoints/192 episodes have zero hard successes. White privileged oracle Drawer succeeds168, Door/Push fail500; excluded from candidate scores.",
   "resume_rule": "Never blindly restart original launch;inspect exact children/checkpoints/errors first. Preserve errors and add explicit corrections for recovery. No replay of checkpointed SGD.",
   "baseline_status": "CLOSED;no extensions",
   "automatic_long_promotion": false,
   "entry_evidence": "results/startup/ENTRY_SUMMARY.json:24CPUrestores,48actual20stepMPCepisodes,960physicalsteps,all48traceSHAchecked",
   "gpu_snapshot": "results/startup/startup-v2-{dev13,dev15,dev6}.json;8ownedCUDAapps each,utilization11..80percent/one0instant at save;do not claim continuous100percent",
   "inspector": "reports/metaworld_transition_only_20261109/inspect-v2.py;CPU-only one-shot. v1readout header formatting produced null utilization;rawGPUrecords retained,not GPU/model failure.",
-  "hourly_last_check": "results/hour02/CHECK.json",
+  "hourly_last_check": "results/hour03/CHECK.json",
   "diagnostics": {
     "source": "reports/metaworld_transition_only_20261109/diagnostic-source-v1",
     "root": "runs/metaworld_transition_only_20261109/factual-diagnostics",
@@ -79,9 +79,11 @@
   },
   "adaptation_utc": "2026-11-08T20:54:40Z",
   "adaptations": {
-    "horizon_match": "../metaworld_horizon_match_20261109/RECOVERY.json",
+    "horizon_match": "../metaworld_horizon_match_20261109/RECOVERY.json: CLOSED_NO_PROMOTION",
     "fixed_spatial_metric": "../metaworld_sobolev_goal_20261109/RECOVERY.json",
     "realized_bank": "runs/metaworld_realized_bank_20261109,8physicalcases512actuallyrealizedactionpaths;AUDITONLYnevertrain;13sourcefilesoriginal12unchanged;waitnew12000frozenweights",
-    "cold_history": "cold-diagnostics,8frozenmodels/16sameheldoutclips;first15forecastcold~4.4..5.2xdense,observe2recoversby15,notpersistent-causeproof"
+    "cold_history": "cold-diagnostics,8frozenmodels/16sameheldoutclips;first15forecastcold~4.4..5.2xdense,observe2recoversby15,notpersistent-causeproof",
+    "world_vs_planner": "../metaworld_world_vs_planner_20261109/RECOVERY.json; privileged audit only, never train or propose from these traces",
+    "temporal_covariance": "../metaworld_correlated_search_20261109/RECOVERY.json; frozen paired control test, published principle, no novelty claim"
   }
 }
