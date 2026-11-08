@@ -164,7 +164,7 @@ def verify(report,j,arm,label):
             with np.load(expected['trace']) as old:
                 assert np.array_equal(a,old['actions'][:len(a)]) and np.array_equal(s,old['successes'][:len(s)])
             assert r['first_bank_sha256']==expected['first_bank_sha256']
-        else:
+        elif arm=='held':
             blocks=a[:len(a)//5*5].reshape(-1,5,4)
             assert np.max(np.abs(blocks-blocks[:,:1]))<1e-5
 
@@ -191,7 +191,7 @@ def pilot(runner,host,pair):
         model_updates=0,utc=now(),scope=plan['scope'],promote=all(next(r for r in rows if r['name']==j['name'] and r['arm']=='held')['successes']>=3 for j in plan['jobs'])))
 
 
-def work(host,pair,parent):
+def work(host,pair,parent,pilot_fn=None):
     plan=read(ROOT/'plan.json');runner=Runner(min(plan['deadline'],time.time()+plan['max_seconds']))
     record=identity(parent);assert 'runtime-scaling-v1' in record['command'] and '--mode work' in record['command'] and f'--pair {pair}' in record['command'] and f'--host {host}' in record['command']
     owners=[dict(read(f),name=f.stem) for f in (SCALING/'claims').glob('*.json')]
@@ -215,7 +215,7 @@ def work(host,pair,parent):
                     if runner.cancel.is_set() or time.time()>runner.deadline or (ROOT/'STOP').exists():raise TimeoutError('No free loan pair before deadline/cancel')
                     time.sleep(5)
                 save(ROOT/'GPU_LOAN_READY.json',dict(utc=now(),original_children_completed_naturally=True,original_parent_only_paused=True,sgd_repeated=0))
-                pilot(runner,host,pair)
+                (pilot if pilot_fn is None else pilot_fn)(runner,host,pair)
             finally:runner.close()
     except BaseException:save(ROOT/'ERROR.json',dict(utc=now(),traceback=traceback.format_exc()))
     finally:

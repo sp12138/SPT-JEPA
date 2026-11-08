@@ -56,6 +56,12 @@ def main():
                 p['summary.json'] = dict(passed=summary['passed'], effective_source=str(source),
                     source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(), results=compact)
             result['scene_probe'][name] = p
+    for label, dirname in [('support_loan','metaworld_control_support_20261108'),('geometry_loan','metaworld_geometry_cost_20261108')]:
+        root = BASE / 'runs' / dirname
+        if root.exists():
+            result[label] = {n: read(root / n) for n in ['OWNERSHIP.json','GPU_LOAN_READY.json','progress.json','summary.json','ERROR.json','CLOSED.json'] if (root / n).exists()}
+            result[label]['formal_trace_files'] = len(list(root.glob('*/*/formal-*/*.npz')))
+            result[label]['technical_completed_reports'] = len(list(root.glob('*/*/technical-*/metrics.json')))
     dest = BASE / 'reports/metaworld_baseline_scaling_20261108/hourly' / (now.strftime('%Y%m%dT%H%M%S') + '.json')
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(result, indent=2) + '\n')
@@ -80,6 +86,12 @@ def main():
     for name, p in result.get('scene_probe', {}).items():
         print('scene_probe', name, 'progress', p.get('progress.json'), 'frozen', p.get('FROZEN.json', {}).get('passed'),
               'complete', p.get('summary.json', {}).get('passed'), 'error', p.get('ERROR.json'))
+    for label in ['support_loan','geometry_loan']:
+        if label in result:
+            p = result[label]
+            print(label, 'formal_traces', p['formal_trace_files'], 'technical_reports',p['technical_completed_reports'],
+                  'gpu_loan_ready','GPU_LOAN_READY.json' in p,'closed',p.get('CLOSED.json'),
+                  'error',str(p.get('ERROR.json'))[:1400],'summary',p.get('summary.json'))
 
 
 if __name__ == '__main__':
