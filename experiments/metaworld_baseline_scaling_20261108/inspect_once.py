@@ -62,6 +62,18 @@ def main():
             result[label] = {n: read(root / n) for n in ['OWNERSHIP.json','GPU_LOAN_READY.json','progress.json','summary.json','ERROR.json','CLOSED.json'] if (root / n).exists()}
             result[label]['formal_trace_files'] = len(list(root.glob('*/*/formal-*/*.npz')))
             result[label]['technical_completed_reports'] = len(list(root.glob('*/*/technical-*/metrics.json')))
+    t2g = BASE / 'runs/metaworld_t2g_adapted_20261108'
+    if t2g.exists():
+        result['t2g_adapted'] = {}
+        for name in ['smwm-seed1', 'h-jepa-seed2']:
+            out = t2g / name
+            status = {n: read(out / n) for n in ['progress.json', 'FROZEN.json', 'ERROR-encode.json', 'ERROR-fit.json'] if (out / n).exists()}
+            if (out / 'training.json').exists():
+                status['last_training_epoch'] = read(out / 'training.json')['epochs'][-1]
+            if (out / 'summary.json').exists():
+                complete = read(out / 'summary.json')
+                status['summary'] = {k: complete[k] for k in ['passed', 'validation_before', 'validation', 'heldout', 'head_optimizer_updates', 'worldmodel_optimizer_updates']}
+            result['t2g_adapted'][name] = status
     dest = BASE / 'reports/metaworld_baseline_scaling_20261108/hourly' / (now.strftime('%Y%m%dT%H%M%S') + '.json')
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(result, indent=2) + '\n')
@@ -92,6 +104,10 @@ def main():
             print(label, 'formal_traces', p['formal_trace_files'], 'technical_reports',p['technical_completed_reports'],
                   'gpu_loan_ready','GPU_LOAN_READY.json' in p,'closed',p.get('CLOSED.json'),
                   'error',str(p.get('ERROR.json'))[:1400],'summary',p.get('summary.json'))
+    for name, status in result.get('t2g_adapted', {}).items():
+        print('t2g_adapted', name, 'progress', status.get('progress.json'), 'complete', status.get('summary'),
+              'last_training_epoch', status.get('last_training_epoch'),
+              'errors', {k: v for k, v in status.items() if k.startswith('ERROR-')})
 
 
 if __name__ == '__main__':
