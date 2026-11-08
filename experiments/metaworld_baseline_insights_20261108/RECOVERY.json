@@ -144,27 +144,36 @@
     "recorded_utc": "2026-11-07T21:29:45.205120+00:00"
   },
   "latest_direct_hourly_review": {
-    "utc": "2026-11-07T23:05:28.140561+00:00",
-    "original100_complete": 10,
+    "utc": "2026-11-08T00:05:52.805006+00:00",
+    "original100_complete": 12,
     "original100_errors": 0,
-    "scaling_claims": 4,
+    "scaling_claims": 6,
     "scaling_errors": 0,
-    "scaling_steps": {
-      "lewm-idm-seed2": 56500,
-      "h-jepa-seed2": 48500,
-      "lewm-idm-seed3": 54500,
-      "h-jepa-seed3": 48700
-    },
-    "scaling_all4_actual_entry_gate_passed": true,
-    "scaling_all_required_gradients_and_lrs_positive": true,
-    "new100_scores": {
-      "h-jepa-seed2": 10.8,
-      "h-jepa-seed3": 11.1,
-      "lewm-idm-seed3": 10.8
-    },
+    "all24gpu_compute_processes_in_snapshot": true,
     "native_completed_shards": 0,
-    "resources": "Originalandcontinuationjobscover24assignedGPUs;22CUDAprocessesatinstantread. LpWM3evaluatorsstarted1minago/importphaseondev6g4/5;not an executionfailure. OriginalIDM1/H1finaltracescontinuefreshly,~797/~777of1000.",
-    "decision": "Continue original100and100+200continuations. No source/loss/NN/cases changes,no candidateSGD. Need remainingseeds,matchedcohort learningcurves,andnativecontrollertrackbefore strongranking/causalclaims."
+    "full100epoch_three_seed_means": {
+      "lewm-idm": 11.2,
+      "h-jepa": 10.366666666666667
+    },
+    "three_seed_scope": "CommonCEM/same1000physicalcases/model;not nativehierarchy scores or publicJEPA-WMs reproduction. No universalranking fromincompleteseedsets.",
+    "matched100_developmental_comparison": {
+      "lewm-idm-seed2_100_to150": [
+        9,
+        12
+      ],
+      "lewm-idm-seed3_100_to150": [
+        14,
+        9
+      ],
+      "both_seed_mean_100_to150": [
+        11.5,
+        10.5
+      ],
+      "hard6_successes": 0,
+      "scope": "Same100physicalcases/model;one trainedseedup/otherdown. Not1000case confirmation. No robustbenefit at150yet."
+    },
+    "heldout_diagnostics": "H6factualforecast/persistence ~0.135..0.160 at100;reversing observedactions raiseslatentforecastMSE~4.45..5.06x. Descriptive ownlatenterror,not physicalcalibration/counterfactualaccuracy.",
+    "decision": "Continue original100then100+200;sixH/IDMcontinuationsactive/entrygated. No newcandidateSGD,technicalfix,sourcechange,orprovenhighperformance."
   },
   "positive_replay": {
     "status": "COMPLETE/PASS",
