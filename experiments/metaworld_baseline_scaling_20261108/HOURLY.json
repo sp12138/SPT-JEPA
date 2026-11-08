@@ -7,7 +7,7 @@
   "same_session": true,
   "new_agent_created": false,
   "installed_utc": "2026-11-07T19:09:20.668689+00:00",
-  "next_expected_utc": "2026-11-08T14:15:51.834447+00:00",
+  "next_expected_utc": "2026-11-08T15:16:21.528002+00:00",
   "stop_file": "/Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/STOP",
   "probe": "Same-session delivery test was received earlier;external timer is now retired. First real direct-hourly review completed.",
   "launchctl_print": "gui/501/com.spt-jepa.metaworld-hourly-01a18941 = {\n\tactive count = 0\n\tpath = /Users/pengsun/Library/LaunchAgents/com.spt-jepa.metaworld-hourly-01a18941.plist\n\ttype = LaunchAgent\n\tstate = not running\n\n\tprogram = /Library/Developer/CommandLineTools/usr/bin/python3\n\targuments = {\n\t\t/Library/Developer/CommandLineTools/usr/bin/python3\n\t\t/Users/pengsun/Documents/working_space/SPT-JEPA/experiments/metaworld_baseline_scaling_20261108/hourly.py\n\t\t--repo\n\t\t/Users/pengsun/Documents/working_space/SPT-JEPA\n\t\t--thread\n\t\t01a18941-09c9-7400-8d97-d8ad825d929c\n\t\t--codex\n\t\t/Users/pengsun/.local/bin/codex\n\t}\n\n\tworking directory = /Users/pengsun/Documents/working_space/SPT-JEPA\n\n\tstdout path = /Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/launchd.stdout.log\n\tstderr path = /Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/launchd.stderr.log\n\tinherited environment = {\n\t\tSSH_AUTH_SOCK => /var/run/com.apple.launchd.BIOGFBTqXc/Listeners\n\t}\n\n\tdefault environment = {\n\t\tPATH => /usr/bin:/bin:/usr/sbin:/sbin\n\t}\n\n\tenvironment = {\n\t\tOSLogRateLimit => 64\n\t\tPATH => /Users/pengsun/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\n\t\tXPC_SERVICE_NAME => com.spt-jepa.metaworld-hourly-01a18941\n\t}\n\n\tdomain = gui/501 [100003]\n\tasid = 100003\n\tminimum runtime = 10\n\texit timeout = 5\n\truns = 0\n\tlast exit code = (never exited)\n\n\tspawn type = background (5)\n\tjetsam priority = 40\n\tjetsam memory limit (active) = (unlimited)\n\tjetsam memory limit (inactive) = (unlimited)\n\tjetsamproperties category = daemon\n\tjetsam thread limit = 32\n\tcpumon = default\n\trun interval = 3600 seconds\n\n\tproperties = inferred program\n}\n",
@@ -18,7 +18,7 @@
   "system_delivery_stopped_utc": "2026-11-07T20:01:39.744956+00:00",
   "mode": "Remain in current turn;interruptible short waits accumulate to1hour,then inspect experiments. No external hourly task.",
   "bootout_returncode": 0,
-  "last_in_session_check_utc": "2026-11-08T13:15:51.834447+00:00",
+  "last_in_session_check_utc": "2026-11-08T14:16:21.528002+00:00",
   "wait_chunk_max_seconds": 60,
   "waiting_in_current_turn": true,
   "last_actual_review": {
@@ -121,10 +121,10 @@
     "decision": "Continueauthorized300/nativequeue. Goal-rankedcostphysicstestqueuedondev6gpu2;publicT2Gqueueddev15gpu2unchanged. No actualgoal/publicmetriccontrolresultsatstartup;offlineorder98percentisNOTsuccessrate. No newcandidateworldmodelSGD/longpromotion."
   },
   "latest_review": {
-    "utc": "2026-11-08T13:15:51.834447+00:00",
-    "review_number": 17,
+    "utc": "2026-11-08T14:16:21.528002+00:00",
+    "review_number": 18,
     "original100_complete": 18,
-    "scaling_complete": 14,
+    "scaling_complete": 15,
     "scaling_claims": 18,
     "scaling_errors": 0,
     "results300": {
@@ -206,6 +206,12 @@
         "hard6success": 0,
         "hard6episodes": 120
       },
+      "lpwm-seed2": {
+        "macro50": 4.6,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
       "smwm-seed3": {
         "macro50": 13.7,
         "episodes": 1000,
@@ -215,24 +221,22 @@
     },
     "pending": [
       {
-        "name": "lpwm-seed2",
-        "step": 175800
-      },
-      {
         "name": "lewm-seed3",
         "step": 175800
       },
       {
         "name": "ac-mtm-seed3",
-        "step": 153000
+        "step": 175800
       },
       {
         "name": "lpwm-seed3",
-        "step": 146800
+        "step": 175800
       }
     ],
-    "decision": "Finish four remaining already-started300epoch recipes only;no new baseline or extension.2finalevalonly/2stilltraining.ETA remains~23:30Beijing,estimate not fixed deadline.",
-    "actual_trace_audits300": 14
+    "all18_primary_training_finished": true,
+    "remaining": "OnlyLeWM3/AC3/Lp3finalCEMevaluations;867/184/22of1000caseepisodescompleted at14:16UTC.",
+    "decision": "Onlyfinishalready-startedbaselinefinalevaluations/fileaudits. No newcandidateexperimentsuntilbaselinecollected. Estimated23:30..00:00Beijing,not guaranteed23:30.",
+    "actual_trace_audits300": 15
   },
-  "actual_review_count": 17
+  "actual_review_count": 18
 }
