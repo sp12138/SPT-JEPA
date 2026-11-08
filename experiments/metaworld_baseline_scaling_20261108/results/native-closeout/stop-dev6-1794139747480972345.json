@@ -1,0 +1,196 @@
+{
+  "utc": "2026-11-08T12:09:07.480980+00:00",
+  "host": "dev6",
+  "records": [
+    {
+      "worker": {
+        "gpu": 0,
+        "pid": 20752
+      },
+      "parent": {
+        "pid": 20752,
+        "ppid": 1,
+        "state": "S",
+        "start": "123358576",
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/runtime-scaling-v1/experiments/metaworld_baselines_20261107/native_queue.py --mode work --host dev6 --gpu 0 "
+      },
+      "descendants": [
+        {
+          "pid": 28905,
+          "ppid": 20752,
+          "state": "S",
+          "start": "129030114",
+          "command": "/usr/bin/timeout --signal=TERM --kill-after=60 363377 /efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py --config /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/config.json --checkpoint /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/model-step0041200 --manifest /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/manifests/lewm-idm-seed1-shard15.json --output /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/results/lewm-idm-seed1-shard15 --budget 500 "
+        },
+        {
+          "pid": 28906,
+          "ppid": 28905,
+          "state": "R",
+          "start": "129030114",
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py --config /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/config.json --checkpoint /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/model-step0041200 --manifest /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/manifests/lewm-idm-seed1-shard15.json --output /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/results/lewm-idm-seed1-shard15 --budget 500 "
+        }
+      ]
+    },
+    {
+      "worker": {
+        "gpu": 1,
+        "pid": 20753
+      },
+      "parent": {
+        "pid": 20753,
+        "ppid": 1,
+        "state": "S",
+        "start": "123358577",
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/runtime-scaling-v1/experiments/metaworld_baselines_20261107/native_queue.py --mode work --host dev6 --gpu 1 "
+      },
+      "descendants": [
+        {
+          "pid": 28789,
+          "ppid": 20753,
+          "state": "S",
+          "start": "128995921",
+          "command": "/usr/bin/timeout --signal=TERM --kill-after=60 363719 /efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py --config /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/config.json --checkpoint /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/model-step0041200 --manifest /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/manifests/lewm-idm-seed1-shard14.json --output /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/results/lewm-idm-seed1-shard14 --budget 500 "
+        },
+        {
+          "pid": 28790,
+          "ppid": 28789,
+          "state": "S",
+          "start": "128995922",
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py --config /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/config.json --checkpoint /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/model-step0041200 --manifest /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/manifests/lewm-idm-seed1-shard14.json --output /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/results/lewm-idm-seed1-shard14 --budget 500 "
+        }
+      ]
+    },
+    {
+      "worker": {
+        "gpu": 2,
+        "pid": 20754
+      },
+      "protected_by_active_goal_loan": true,
+      "parent": {
+        "pid": 20754,
+        "ppid": 1,
+        "state": "T",
+        "start": "123358577",
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/runtime-scaling-v1/experiments/metaworld_baselines_20261107/native_queue.py --mode work --host dev6 --gpu 2 "
+      }
+    },
+    {
+      "worker": {
+        "gpu": 3,
+        "pid": 20755
+      },
+      "parent": {
+        "pid": 20755,
+        "ppid": 1,
+        "state": "S",
+        "start": "123358578",
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/runtime-scaling-v1/experiments/metaworld_baselines_20261107/native_queue.py --mode work --host dev6 --gpu 3 "
+      },
+      "descendants": [
+        {
+          "pid": 27817,
+          "ppid": 20755,
+          "state": "S",
+          "start": "128731463",
+          "command": "/usr/bin/timeout --signal=TERM --kill-after=60 366363 /efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py --config /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/config.json --checkpoint /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/model-step0041200 --manifest /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/manifests/lewm-idm-seed1-shard10.json --output /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/results/lewm-idm-seed1-shard10 --budget 500 "
+        },
+        {
+          "pid": 27818,
+          "ppid": 27817,
+          "state": "S",
+          "start": "128731463",
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py --config /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/config.json --checkpoint /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-threehost-v5/lewm-idm-seed1/model-step0041200 --manifest /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/manifests/lewm-idm-seed1-shard10.json --output /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/results/lewm-idm-seed1-shard10 --budget 500 "
+        }
+      ]
+    },
+    {
+      "worker": {
+        "gpu": 4,
+        "pid": 20756
+      },
+      "parent": {
+        "pid": 20756,
+        "ppid": 1,
+        "state": "S",
+        "start": "123358578",
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/runtime-scaling-v1/experiments/metaworld_baselines_20261107/native_queue.py --mode work --host dev6 --gpu 4 "
+      },
+      "descendants": []
+    },
+    {
+      "worker": {
+        "gpu": 5,
+        "pid": 20757
+      },
+      "parent": {
+        "pid": 20757,
+        "ppid": 1,
+        "state": "S",
+        "start": "123358579",
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/runtime-scaling-v1/experiments/metaworld_baselines_20261107/native_queue.py --mode work --host dev6 --gpu 5 "
+      },
+      "descendants": []
+    },
+    {
+      "worker": {
+        "gpu": 6,
+        "pid": 20758
+      },
+      "parent": {
+        "pid": 20758,
+        "ppid": 1,
+        "state": "S",
+        "start": "123358580",
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/runtime-scaling-v1/experiments/metaworld_baselines_20261107/native_queue.py --mode work --host dev6 --gpu 6 "
+      },
+      "descendants": [
+        {
+          "pid": 30078,
+          "ppid": 20758,
+          "state": "S",
+          "start": "129355856",
+          "command": "/usr/bin/timeout --signal=TERM --kill-after=60 360119 /efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py --config /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-v3/lewm-idm-seed2/config.json --checkpoint /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-v3/lewm-idm-seed2/model-step0041200 --manifest /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/manifests/lewm-idm-seed2-shard04.json --output /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/results/lewm-idm-seed2-shard04 --budget 500 "
+        },
+        {
+          "pid": 30079,
+          "ppid": 30078,
+          "state": "R",
+          "start": "129355856",
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py --config /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-v3/lewm-idm-seed2/config.json --checkpoint /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-v3/lewm-idm-seed2/model-step0041200 --manifest /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/manifests/lewm-idm-seed2-shard04.json --output /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/results/lewm-idm-seed2-shard04 --budget 500 "
+        }
+      ]
+    },
+    {
+      "worker": {
+        "gpu": 7,
+        "pid": 20759
+      },
+      "parent": {
+        "pid": 20759,
+        "ppid": 1,
+        "state": "S",
+        "start": "123358580",
+        "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/runtime-scaling-v1/experiments/metaworld_baselines_20261107/native_queue.py --mode work --host dev6 --gpu 7 "
+      },
+      "descendants": [
+        {
+          "pid": 30220,
+          "ppid": 20759,
+          "state": "S",
+          "start": "129380845",
+          "command": "/usr/bin/timeout --signal=TERM --kill-after=60 359869 /efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py --config /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-v3/lewm-idm-seed2/config.json --checkpoint /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-v3/lewm-idm-seed2/model-step0041200 --manifest /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/manifests/lewm-idm-seed2-shard05.json --output /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/results/lewm-idm-seed2-shard05 --budget 500 "
+        },
+        {
+          "pid": 30221,
+          "ppid": 30220,
+          "state": "S",
+          "start": "129380845",
+          "command": "/efs/prescottsun/project_jepa/envs/lewm/bin/python /efs/prescottsun/SPT-JEPA/reports/metaworld_baselines_20261107/native-hjepa-eval-v2.py --config /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-v3/lewm-idm-seed2/config.json --checkpoint /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/training-v3/lewm-idm-seed2/model-step0041200 --manifest /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/manifests/lewm-idm-seed2-shard05.json --output /efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_20261107/native-controller/results/lewm-idm-seed2-shard05 --budget 500 "
+        }
+      ]
+    }
+  ],
+  "remaining": [],
+  "passed": true,
+  "primary_training_signals": 0
+}

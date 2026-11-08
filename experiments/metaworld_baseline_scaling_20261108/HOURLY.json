@@ -7,7 +7,7 @@
   "same_session": true,
   "new_agent_created": false,
   "installed_utc": "2026-11-07T19:09:20.668689+00:00",
-  "next_expected_utc": "2026-11-08T11:13:48.880574+00:00",
+  "next_expected_utc": "2026-11-08T13:14:43.818992+00:00",
   "stop_file": "/Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/STOP",
   "probe": "Same-session delivery test was received earlier;external timer is now retired. First real direct-hourly review completed.",
   "launchctl_print": "gui/501/com.spt-jepa.metaworld-hourly-01a18941 = {\n\tactive count = 0\n\tpath = /Users/pengsun/Library/LaunchAgents/com.spt-jepa.metaworld-hourly-01a18941.plist\n\ttype = LaunchAgent\n\tstate = not running\n\n\tprogram = /Library/Developer/CommandLineTools/usr/bin/python3\n\targuments = {\n\t\t/Library/Developer/CommandLineTools/usr/bin/python3\n\t\t/Users/pengsun/Documents/working_space/SPT-JEPA/experiments/metaworld_baseline_scaling_20261108/hourly.py\n\t\t--repo\n\t\t/Users/pengsun/Documents/working_space/SPT-JEPA\n\t\t--thread\n\t\t01a18941-09c9-7400-8d97-d8ad825d929c\n\t\t--codex\n\t\t/Users/pengsun/.local/bin/codex\n\t}\n\n\tworking directory = /Users/pengsun/Documents/working_space/SPT-JEPA\n\n\tstdout path = /Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/launchd.stdout.log\n\tstderr path = /Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/launchd.stderr.log\n\tinherited environment = {\n\t\tSSH_AUTH_SOCK => /var/run/com.apple.launchd.BIOGFBTqXc/Listeners\n\t}\n\n\tdefault environment = {\n\t\tPATH => /usr/bin:/bin:/usr/sbin:/sbin\n\t}\n\n\tenvironment = {\n\t\tOSLogRateLimit => 64\n\t\tPATH => /Users/pengsun/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\n\t\tXPC_SERVICE_NAME => com.spt-jepa.metaworld-hourly-01a18941\n\t}\n\n\tdomain = gui/501 [100003]\n\tasid = 100003\n\tminimum runtime = 10\n\texit timeout = 5\n\truns = 0\n\tlast exit code = (never exited)\n\n\tspawn type = background (5)\n\tjetsam priority = 40\n\tjetsam memory limit (active) = (unlimited)\n\tjetsam memory limit (inactive) = (unlimited)\n\tjetsamproperties category = daemon\n\tjetsam thread limit = 32\n\tcpumon = default\n\trun interval = 3600 seconds\n\n\tproperties = inferred program\n}\n",
@@ -18,7 +18,7 @@
   "system_delivery_stopped_utc": "2026-11-07T20:01:39.744956+00:00",
   "mode": "Remain in current turn;interruptible short waits accumulate to1hour,then inspect experiments. No external hourly task.",
   "bootout_returncode": 0,
-  "last_in_session_check_utc": "2026-11-08T10:13:48.880574+00:00",
+  "last_in_session_check_utc": "2026-11-08T12:14:43.818992+00:00",
   "wait_chunk_max_seconds": 60,
   "waiting_in_current_turn": true,
   "last_actual_review": {
@@ -119,5 +119,119 @@
       ]
     },
     "decision": "Continueauthorized300/nativequeue. Goal-rankedcostphysicstestqueuedondev6gpu2;publicT2Gqueueddev15gpu2unchanged. No actualgoal/publicmetriccontrolresultsatstartup;offlineorder98percentisNOTsuccessrate. No newcandidateworldmodelSGD/longpromotion."
-  }
+  },
+  "latest_review": {
+    "utc": "2026-11-08T12:14:43.818992+00:00",
+    "review_number": 16,
+    "original100_complete": 18,
+    "scaling_complete": 12,
+    "scaling_claims": 18,
+    "scaling_errors": 0,
+    "results300": {
+      "lewm-idm-seed1": {
+        "macro50": 8.6,
+        "episodes": 1000,
+        "hard6success": 1,
+        "hard6episodes": 120
+      },
+      "h-jepa-seed1": {
+        "macro50": 8.4,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "lewm-idm-seed2": {
+        "macro50": 8.6,
+        "episodes": 1000,
+        "hard6success": 1,
+        "hard6episodes": 120
+      },
+      "h-jepa-seed2": {
+        "macro50": 8.5,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "lewm-idm-seed3": {
+        "macro50": 10.3,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "h-jepa-seed3": {
+        "macro50": 6.9,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "lewm-seed1": {
+        "macro50": 13.4,
+        "episodes": 1000,
+        "hard6success": 1,
+        "hard6episodes": 120
+      },
+      "smwm-seed1": {
+        "macro50": 14.2,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "ac-mtm-seed1": {
+        "macro50": 13.8,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "lpwm-seed1": {
+        "macro50": 4.6,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "lewm-seed2": {
+        "macro50": 15.9,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "smwm-seed2": {
+        "macro50": 14.7,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      }
+    },
+    "pending": [
+      {
+        "name": "ac-mtm-seed2",
+        "step": 175800
+      },
+      {
+        "name": "lpwm-seed2",
+        "step": 163300
+      },
+      {
+        "name": "lewm-seed3",
+        "step": 146900
+      },
+      {
+        "name": "smwm-seed3",
+        "step": 202200
+      },
+      {
+        "name": "ac-mtm-seed3",
+        "step": 127500
+      },
+      {
+        "name": "lpwm-seed3",
+        "step": 121200
+      }
+    ],
+    "native_completed_shards": 11,
+    "native_episodes": 690,
+    "native_expansion": "CLOSED_PARTIAL_BY_USER;24metadataworkers/children/collector retired.690completed audited episodes;11interrupted shards/170deferred;379partial traces excluded.",
+    "goal_pilot": "CLOSED12:11:55UTC,0/24hardmodelcase successes,SM2/16vsraw4,H0/16vsraw0;no promotion",
+    "decision": "Only finish remaining six already-started primary300epoch continuations/commonCEM finals. No new baseline recipes/extensions. No new own-candidate training yet."
+  },
+  "actual_review_count": 16
 }

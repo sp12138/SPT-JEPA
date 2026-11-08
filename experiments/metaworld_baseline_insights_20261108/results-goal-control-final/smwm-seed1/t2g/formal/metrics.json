@@ -1,0 +1,453 @@
+{
+  "passed": true,
+  "finished_utc": "2026-11-08T12:05:35.512201+00:00",
+  "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_baselines_native_20261108/training/smwm-seed1/model-step0067400",
+  "weights_sha256": "03f7bf88414f409f8ce9419406f9a47a43a2326447141d3e42fa6eced213f8da",
+  "model_state_before": "e7c0ff81a0447e2b892068a524a7ade57d535933cae85e73a9413822fad43060",
+  "model_state_after": "e7c0ff81a0447e2b892068a524a7ade57d535933cae85e73a9413822fad43060",
+  "model_updates": 0,
+  "parameters": 18203686,
+  "renderer": {
+    "uniform_first_frame_warmup": true,
+    "explicit_mjr_context_cleanup": true,
+    "helper_environment_sha256": "5e8b0310d1caba36fe37cb2ec24a4e6bf9f801b50e9a0cc760e784e88ca8ba7c"
+  },
+  "data_card_sha256": "801268656ef3f981c4e65561a0aa7829bdc28445c5b254c0213acf95c9a2eddf",
+  "manifest_sha256": "a796b7810ed284cfe3ab0be76c10d862e153cdb12005789507cdbdda19e4304d",
+  "groups": {
+    "bin-picking-v3": {
+      "episodes": 2,
+      "success_rate": 0.0,
+      "goal_construction_failures": 0,
+      "goal_valid_episodes": 2,
+      "goal_valid_success_rate": 0.0
+    },
+    "coffee-button-v3": {
+      "episodes": 2,
+      "success_rate": 50.0,
+      "goal_construction_failures": 0,
+      "goal_valid_episodes": 2,
+      "goal_valid_success_rate": 50.0
+    },
+    "door-close-v3": {
+      "episodes": 2,
+      "success_rate": 50.0,
+      "goal_construction_failures": 0,
+      "goal_valid_episodes": 2,
+      "goal_valid_success_rate": 50.0
+    },
+    "door-open-v3": {
+      "episodes": 2,
+      "success_rate": 0.0,
+      "goal_construction_failures": 0,
+      "goal_valid_episodes": 2,
+      "goal_valid_success_rate": 0.0
+    },
+    "drawer-open-v3": {
+      "episodes": 2,
+      "success_rate": 0.0,
+      "goal_construction_failures": 0,
+      "goal_valid_episodes": 2,
+      "goal_valid_success_rate": 0.0
+    },
+    "peg-insert-side-v3": {
+      "episodes": 2,
+      "success_rate": 0.0,
+      "goal_construction_failures": 0,
+      "goal_valid_episodes": 2,
+      "goal_valid_success_rate": 0.0
+    },
+    "pick-place-v3": {
+      "episodes": 2,
+      "success_rate": 0.0,
+      "goal_construction_failures": 0,
+      "goal_valid_episodes": 2,
+      "goal_valid_success_rate": 0.0
+    },
+    "push-v3": {
+      "episodes": 2,
+      "success_rate": 0.0,
+      "goal_construction_failures": 0,
+      "goal_valid_episodes": 2,
+      "goal_valid_success_rate": 0.0
+    }
+  },
+  "episodes": [
+    {
+      "task": "bin-picking-v3",
+      "seed": 6042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "4cae68edabdaead150669978035de4a16a4eade91ab2c050e196a8f019ddb912",
+      "first_bank_sha256": "3b6a01553d914b3457fe606f787e65438f9208ad630b4ffa173589dc62322a4b",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/bin-picking-v3-seed6042.npz",
+      "trace_sha256": "742b8558bb11afe9c237554f74abe111f8f2e1e83c2ffd80a43c7d3c42921eda",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "coffee-button-v3",
+      "seed": 6042,
+      "success": true,
+      "any_success": true,
+      "final_success": true,
+      "steps": 45,
+      "plan_calls": 3,
+      "expert_goal_success": true,
+      "case_sha256": "3408e2ae8622baa7ab630faa0a97cba27f7e2a431a43eef96853514f5582461e",
+      "first_bank_sha256": "3b6a01553d914b3457fe606f787e65438f9208ad630b4ffa173589dc62322a4b",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/coffee-button-v3-seed6042.npz",
+      "trace_sha256": "5ad99b2142cd20f70d0be757cf89a769dbf467570190882574a5f321b2866292",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "door-close-v3",
+      "seed": 6042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "3bc52dcb237b3bde851158c197211c6d7c00c02f5ffe8a089ec6c54841cbe2ee",
+      "first_bank_sha256": "3b6a01553d914b3457fe606f787e65438f9208ad630b4ffa173589dc62322a4b",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/door-close-v3-seed6042.npz",
+      "trace_sha256": "99a4cad5ff34e04b74d4690caf826de921740c05f35c0c368c87c8465d49237e",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "door-open-v3",
+      "seed": 6042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "9f591f030c901bb46ded77d3498b3c4807224c8494bc4937c60f7778667fac28",
+      "first_bank_sha256": "3b6a01553d914b3457fe606f787e65438f9208ad630b4ffa173589dc62322a4b",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/door-open-v3-seed6042.npz",
+      "trace_sha256": "55719be3239ea672cf85cfb25b32c405898424b7b5c66a54d2ea9d12d6a57b52",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "drawer-open-v3",
+      "seed": 6042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "b5271ab0ea3eb3777366f57abeea541515f6cb08c4570b6d57a8a64ffa78f821",
+      "first_bank_sha256": "3b6a01553d914b3457fe606f787e65438f9208ad630b4ffa173589dc62322a4b",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/drawer-open-v3-seed6042.npz",
+      "trace_sha256": "febd23d78719fea6aeff938cd6a1685c5e8de0e75286d154c0cda8c34edc5af3",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "peg-insert-side-v3",
+      "seed": 6042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "6eef2969c380beb75309df9eab67fb2cd53c6a2191ad47d554c8637c453d56da",
+      "first_bank_sha256": "3b6a01553d914b3457fe606f787e65438f9208ad630b4ffa173589dc62322a4b",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/peg-insert-side-v3-seed6042.npz",
+      "trace_sha256": "3d2459ad94dbc41535b209604d9b812b1c1faaac4d87bdec05edd234d56ebaea",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "pick-place-v3",
+      "seed": 6042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "b6f73b12214feabc28ed21abde5bdee88b2b8bf3452fbafc63d9ebd4200170f9",
+      "first_bank_sha256": "3b6a01553d914b3457fe606f787e65438f9208ad630b4ffa173589dc62322a4b",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/pick-place-v3-seed6042.npz",
+      "trace_sha256": "ec0cc9622806118b9a5bfbc47d3023d9eb228d5123758cca6c202dddfbdc4b89",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "push-v3",
+      "seed": 6042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "195da24f916216653f94e8a480c5938c784d66d19906bef438a94f9ef3b97385",
+      "first_bank_sha256": "3b6a01553d914b3457fe606f787e65438f9208ad630b4ffa173589dc62322a4b",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/push-v3-seed6042.npz",
+      "trace_sha256": "d12b6ade4e1c8cd913c40eae79d15a0c387117ae7871c644d7e89c8aec9bedac",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "bin-picking-v3",
+      "seed": 7042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "074adc13ec1be199706f2227fa306d6493ce3ed7dfc6285d5713e6d04f7cba0e",
+      "first_bank_sha256": "9a65eed45a55efe99e4533a129317c0d64a3db6605be8feb0c79a0f6688fa696",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/bin-picking-v3-seed7042.npz",
+      "trace_sha256": "de76d4997f9877dfcac214fa17445d592d6d7d46790945046b445249a79f714a",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "coffee-button-v3",
+      "seed": 7042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "ef4a4578d668e67c28054bea1df62351373e3909bda56300a64810a514cb7b82",
+      "first_bank_sha256": "9a65eed45a55efe99e4533a129317c0d64a3db6605be8feb0c79a0f6688fa696",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/coffee-button-v3-seed7042.npz",
+      "trace_sha256": "029d764ef312d5890f2ddb9cf5c44c1ecba3696fb98f2a0b33de90fdb37aed38",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "door-close-v3",
+      "seed": 7042,
+      "success": true,
+      "any_success": true,
+      "final_success": true,
+      "steps": 89,
+      "plan_calls": 6,
+      "expert_goal_success": true,
+      "case_sha256": "3698f6488e217227f27f46947f84921e1a4204a188bdcaec2d4fef52f8f92da2",
+      "first_bank_sha256": "9a65eed45a55efe99e4533a129317c0d64a3db6605be8feb0c79a0f6688fa696",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/door-close-v3-seed7042.npz",
+      "trace_sha256": "43f3fd71a1fec4d0aae5eda21ee049eaac5615b9d277c2b6dd97638dc744e268",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "door-open-v3",
+      "seed": 7042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "a6618c912196eeffb1d55efd293c7cd0b9e2a3b1601bfed6bd69add021441e3a",
+      "first_bank_sha256": "9a65eed45a55efe99e4533a129317c0d64a3db6605be8feb0c79a0f6688fa696",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/door-open-v3-seed7042.npz",
+      "trace_sha256": "986165c14eabacddde1838d6d7a999fff8996bb61c002d1ab908eaa43a9359e4",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "drawer-open-v3",
+      "seed": 7042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "96356cfcab25fba7f96f968a4b7003ca976a7f2387ffad611beaf26e0d8b9608",
+      "first_bank_sha256": "9a65eed45a55efe99e4533a129317c0d64a3db6605be8feb0c79a0f6688fa696",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/drawer-open-v3-seed7042.npz",
+      "trace_sha256": "0099f397f276ee8a044cba5163cb2646812b7acfeba4a09161eee562e3694450",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "peg-insert-side-v3",
+      "seed": 7042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "5c4045cbfffde837e6e6ca41aa01be6b314f82b85163fce4c4eda55241a04c4d",
+      "first_bank_sha256": "9a65eed45a55efe99e4533a129317c0d64a3db6605be8feb0c79a0f6688fa696",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/peg-insert-side-v3-seed7042.npz",
+      "trace_sha256": "27e2ec14a4f9ea09315f71bcbfb6cfabcff33cb7bbc683963176b816b95b5e5d",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "pick-place-v3",
+      "seed": 7042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "8f45b36f0a721da2442650f633c39d5805789d5ac094f89f9e04c10030b6ed95",
+      "first_bank_sha256": "9a65eed45a55efe99e4533a129317c0d64a3db6605be8feb0c79a0f6688fa696",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/pick-place-v3-seed7042.npz",
+      "trace_sha256": "2e4230df688f42d03cd2021fb9f8821e580056720099a484cc6b7c9b9bbe4480",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    },
+    {
+      "task": "push-v3",
+      "seed": 7042,
+      "success": false,
+      "any_success": false,
+      "final_success": false,
+      "steps": 500,
+      "plan_calls": 34,
+      "expert_goal_success": true,
+      "case_sha256": "985728c58f8751c9e55234085e75be88f04e98ae56f62c4b0436c15eecfa489d",
+      "first_bank_sha256": "9a65eed45a55efe99e4533a129317c0d64a3db6605be8feb0c79a0f6688fa696",
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108/smwm-seed1/t2g/formal/push-v3-seed7042.npz",
+      "trace_sha256": "ac8966d75028b1e1787022ac82544c8edd51f8fe5981c977f1a4fd2745ee9d56",
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      }
+    }
+  ],
+  "budget": 500,
+  "success_mode": "any",
+  "controller": {
+    "samples": 300,
+    "iterations": 15,
+    "elites": 10,
+    "horizon_macro": 6,
+    "execute_macro": 3,
+    "max_context": 2,
+    "frameskip": 5,
+    "native_box_projection": true,
+    "warm_start": true
+  },
+  "seconds": 134.8225299990736,
+  "scope": "Independent LeRobot RGB-only image-goal extension. All cases including failed expert goals retained; 500-step any-success and100-step final-success are separate runs if requested. Not a published JEPA-WMs or canonical task-ID-conditionedMT50 score. No environment state,reward,success or optimal action enters learner or planner.",
+  "control_parameterization": "standard",
+  "goal_geometry_metric_sha256": null,
+  "additional_metric_coefficients": 0,
+  "t2g_metric_state_sha256": "50d64c406f3127f296de3a078a1ee7faf6b92a3ace6db0604b16b7b96e62c376",
+  "t2g_metric_model_state_before": "9fb8f996edaf2ff00aedf1286c7b67ae4d1f85352c46ed83470d532a779698af",
+  "t2g_metric_model_state_after": "9fb8f996edaf2ff00aedf1286c7b67ae4d1f85352c46ed83470d532a779698af",
+  "t2g_additional_parameters": 182017,
+  "goal_cost": "public-T2G-terminal-scale-times-Euclidean-norm",
+  "t2g_scope": "Ownsame-dataRGBchronology-trainedpublichead,noaction/state/reward/task/strongteacherlabels. Fixednative100bodyhasbatchregs,notentirelysamplelevelcandidate/novelmethod. No worldmodel/headSGDduringevaluation."
+}
