@@ -56,16 +56,17 @@ def main():
                 p['summary.json'] = dict(passed=summary['passed'], effective_source=str(source),
                     source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(), results=compact)
             result['scene_probe'][name] = p
-    for label, dirname in [('support_loan','metaworld_control_support_20261108'),('geometry_loan','metaworld_geometry_cost_20261108'),('t2g_loan','metaworld_t2g_control_20261108')]:
+    for label, dirname in [('support_loan','metaworld_control_support_20261108'),('geometry_loan','metaworld_geometry_cost_20261108'),('t2g_loan','metaworld_t2g_control_20261108'),('goal_rank_loan','metaworld_goal_rank_control_20261108')]:
         root = BASE / 'runs' / dirname
         if root.exists():
             result[label] = {n: read(root / n) for n in ['OWNERSHIP.json','GPU_LOAN_READY.json','progress.json','summary.json','ERROR.json','CLOSED.json'] if (root / n).exists()}
             result[label]['formal_trace_files'] = len(list(root.glob('*/*/formal-*/*.npz')))
             result[label]['technical_completed_reports'] = len(list(root.glob('*/*/technical-*/metrics.json')))
-            if label == 't2g_loan':
+            if label in ['t2g_loan','goal_rank_loan']:
                 result[label]['formal_trace_files'] = len(list(root.glob('*/t2g/formal/*.npz')))
                 result[label]['technical_completed_reports'] = len(list(root.glob('*/*/technical/metrics.json')))
                 if (root/'LAUNCH_ERROR.json').exists():result[label]['LAUNCH_ERROR.json']=read(root/'LAUNCH_ERROR.json')
+                if (root/'WRAPPER_ERROR.json').exists():result[label]['WRAPPER_ERROR.json']=read(root/'WRAPPER_ERROR.json')
     t2g = BASE / 'runs/metaworld_t2g_adapted_20261108'
     if t2g.exists():
         result['t2g_adapted'] = {}
@@ -116,7 +117,7 @@ def main():
     for name, p in result.get('scene_probe', {}).items():
         print('scene_probe', name, 'progress', p.get('progress.json'), 'frozen', p.get('FROZEN.json', {}).get('passed'),
               'complete', p.get('summary.json', {}).get('passed'), 'error', p.get('ERROR.json'))
-    for label in ['support_loan','geometry_loan','t2g_loan']:
+    for label in ['support_loan','geometry_loan','t2g_loan','goal_rank_loan']:
         if label in result:
             p = result[label]
             print(label, 'formal_traces', p['formal_trace_files'], 'technical_reports',p['technical_completed_reports'],

@@ -17,7 +17,7 @@
   "old_goal_and_recurring_llm_monitors": "off",
   "candidate_training_started": false,
   "candidate_long_training_started": false,
-  "primary_resource_use": "Original100all18complete. Scaling18claimed/7outercomplete/0errorsat09:12. NativeGDfirstshardsstartingonreleasedGPUs. OneGPUboundedT2Gcostpilotwaitingcurrentnativechild,other23unchanged.",
+  "primary_resource_use": "As10:13actual23CUDAprocesses/onefinalshardfinishedwhileotherhalfstillrunning. At10:23newgoal-nativeoneGPUloanqueuedaftertargetscalingpaircomplete;originalCUDAchildneverpaused/killed. PublicT2Gloanindependent. Otherscontinuefinite300/nativequeue.",
   "constraints": "Scratch;RGB+actual completed-transition forward controls;reward/state/taskID/language/externalteachers forbidden in learner/planner. Candidates sample-level;native baseline batchregs allowed. Inverse only same already-executed forward input;no goal->unknown next-action targets or disqualified lineage.",
   "cpu_diagnostics": {
     "physical_replay": {
@@ -354,10 +354,10 @@
     }
   },
   "latest_hourly_review": {
-    "utc": "2026-11-08T09:12:56.558627+00:00",
-    "review_number": 13,
+    "utc": "2026-11-08T10:13:48.880574+00:00",
+    "review_number": 14,
     "original100_complete": 18,
-    "scaling_complete": 7,
+    "scaling_complete": 10,
     "scaling_claims": 18,
     "scaling_errors": 0,
     "results300": {
@@ -379,6 +379,12 @@
         "hard6success": 0,
         "hard6episodes": 120
       },
+      "h-jepa-seed3": {
+        "macro50": 6.9,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
       "lewm-seed1": {
         "macro50": 13.4,
         "episodes": 1000,
@@ -393,6 +399,12 @@
       },
       "ac-mtm-seed1": {
         "macro50": 13.8,
+        "episodes": 1000,
+        "hard6success": 0,
+        "hard6episodes": 120
+      },
+      "lpwm-seed1": {
+        "macro50": 4.6,
         "episodes": 1000,
         "hard6success": 0,
         "hard6episodes": 120
@@ -417,31 +429,28 @@
       "smwm-seed2-epoch300": 14.7,
       "lewm-seed1-epoch300": 13.4,
       "lewm-seed2-epoch300": 15.9,
+      "h-jepa-seed3-epoch300": 6.9,
+      "lpwm-seed1-epoch300": 4.6,
       "lewm-idm-seed2-epoch300": 8.6,
       "ac-mtm-seed1-epoch300": 13.8
     },
-    "paired_first_two_lewm_means100_300": [
-      10.9,
-      14.65
-    ],
     "native_completed_shards": 0,
-    "resources": "09:12:56actual22ownedCUDAprocesses,dev15g2/3betweenstageimports. NativeGDstartingonreleasedGPUs;notconstant100percent. Raw3hostsnapshotsinresults/resources.",
-    "t2g_offline": {
-      "smwm_heldout_raw_learned": [
-        0.8384637108161537,
-        0.9556622423044338
+    "resources": "10:13actual23ownedCUDAprocesses;dev6gpu2finished500casefinalshardwhilegpu3had497/500. All18claimed/currentpairfinishesnaturally. LatergoaltrialreservesoneGPUafterscalingpaircomplete,neverpausesoldCUDAchild. Raw3hostsnapshotsinresults/resources.",
+    "new_scaling_results": {
+      "hjepa_seed3_100_300": [
+        11.1,
+        6.9
       ],
-      "hjepa_heldout_raw_learned": [
-        0.7506354137249365,
-        0.9406947190059305
+      "lpwm_seed1_100_300": [
+        7.7,
+        4.6
       ],
-      "heldout_original_episodes": 250,
-      "triples_each": 3541,
-      "head_updates_each": 1085,
-      "worldmodel_updates": 0,
-      "actual_control_result": "Pending"
+      "hjepa_seeds2_3_mean100_300": [
+        10.95,
+        7.7
+      ]
     },
-    "decision": "Continue300andnativefullqueue. PublicT2GofflineorderinggainjustifiesoneGPUboundedactualcontrolpilot;notnovel/performanceclaim/newcandidateSGD."
+    "decision": "Continueauthorized300/nativequeue. Goal-rankedcostphysicstestqueuedondev6gpu2;publicT2Gqueueddev15gpu2unchanged. No actualgoal/publicmetriccontrolresultsatstartup;offlineorder98percentisNOTsuccessrate. No newcandidateworldmodelSGD/longpromotion."
   },
   "factual_effect_diagnostic": {
     "status": "COMPLETE/PASS",
@@ -602,7 +611,7 @@
     },
     "theory": "ForobservedRGBa<n<g,publiclosstrainsd(a,n)<d(a,g);planningneedsgiveng d(n,g)<d(a,g). Theseareindependentconstraintseven for a symmetric Euclidean metric. Euclideancounterexamplea=(0,0),n=(10,0),g=(0,11):d(a,n)=10<11=d(a,g),butd(n,g)=sqrt221>11. GoalarmONLYreversesobservedRGBclipbeforepublicsampling,no action/physicaldynamicsreverse.",
     "supervision": "OnlyRGBchronology,nofuture/currentactionlabelsinthehead,no state/reward/tasklabels/strongteacher. Sameheadarchitecture/exactinitialtensors/1085steps/sharedfeaturecache/samplerRNG. Referencesreproducearchivedpublicfinaltensorsbitexact. NativebodybatchregsmeansNOTwholesamplelevelcandidate/novelalgorithm.",
-    "next": "Testgoal-alignedmetricinmatchedphysicalMPCalongsidealreadyqueuedpublicT2G. Goal-headphysicaltestNOTLAUNCHEDyet. PublicT2Gloan/root/oldnativechildcontinueunchanged;do notcancel/restart/duplicateformalexperimentswithoutnewreason. No longpromotionfromofflineordering.",
+    "next": "Goal-rankedmetricphysicalMPCQUEUED10:23dev6gpu2/nativeMETADATA20754pausedafterIDM1paircomplete;oldnativechildcontinues. PublicT2Gpilotunchangedondev15gpu2. Bothactualmetriccontrols pendingatstartup. No worldlong/promotionfromofflinerank.",
     "local_evidence": "results-goal-rank-cpu-final"
   },
   "t2g_goal_direction_audit": {
@@ -623,5 +632,41 @@
       ]
     },
     "scope": "Same3541triplesalsoequal-gap388subsetshowdirectiongap. Notcontrolcausalityproof. v1batchingconsistencyerrorpreserved;v2originalranksEXACT."
+  },
+  "goal_rank_control_pilot": {
+    "status": "WAIT_ORIGINAL_NATIVE_CHILD_NATURAL_COMPLETION",
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_goal_rank_control_20261108",
+    "host": "dev6",
+    "gpu": 2,
+    "launch_timeout_pid": 27987,
+    "actual_python_worker_pid": 27988,
+    "original_native_metadata_parent": 20754,
+    "original_parent_start": "123358577",
+    "original_parent_state": "T intentionalloan",
+    "launch_utc": "2026-11-08T10:23:10.883541UTC",
+    "max_seconds": 10800,
+    "formal_episodes": 32,
+    "technical_episodes": 8,
+    "unique_physical_cases": 16,
+    "hard_cases": 12,
+    "positive_cases": 4,
+    "source_wrapper_sha256": "0446e91d600272ad8869e286dbcc75827423e64652eabe1fa7e222c561da9fd1",
+    "source_wrapper": "reports/metaworld_baseline_insights_20261108/goal-control-v2.py",
+    "underlying_controller_sha256": "906c2ef62704785e1f28e94a0c69b43120b4c35174f20375858cfe30eda33634",
+    "evaluator_sha256": "e5a5637a1860d9ccc06f4b323f6bddd3bf9ce9464ebcee2442e221bc034d6347",
+    "actual_cpu_goal_metric_cost_binding": "PASS2trainedheads/terminalequation/shape/CPU-RNG-preservation/frozenhash. Inheritsauditedpause/cleanup/realOSexceptionresumecontrollerunchanged.",
+    "actual_gpu_entry_started": false,
+    "formal_trace_files": 0,
+    "technical_completed_reports": 0,
+    "entry_scope": "Asseen10:27actualoriginal20754stateT/identityexact;oldnativeCUDAchildcontinues. No currentphysicalgoalmetricresultclaim.",
+    "ownership": "All18claimsandIDM1scalingpairCOMPLETEverifiedbeforepause. PauseONLYnativeMETADATA20754;waititscurrentchildandGPUfreenaturally,thenrunoneGPU. RunnerfinallyendsONLYownpilotchildrenandSIGCONTexactoriginal20754. Other23jobsunchanged. PublicT2G20754!=3274621;neverautoresumeeitherwhiletheirownpilotCUDAchildrenlive.",
+    "model_or_head_sgd_during_control": 0,
+    "sgd_repeated": 0,
+    "publication_status": "Newgoal-rankobjectivealignmentablationonpublicT2Garchitecture,notpublishedT2Gperformance/novelalgorithm. NativebodiesbatchregsNOTwholesamplelevelcandidate.",
+    "supervision": "HeadRGBchronologyONLY,noaction/state/reward/tasktargets,strongteacherorpolicylineage. PublicandgoalheadsuseEXACTsameinitialtensors/features/1085steps/config/samplerRNG;referencefinaltensorsmatcharchivedpublicheadexact.",
+    "public_comparison_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_t2g_control_20261108",
+    "promotion": "ProvisionalgainoverrawCEMinsufficient;needmatchedpublicheadcontrolandindependentconfirmation. No automaticlongtraining.",
+    "operational_errors": "v1wrapperunmatchedparenthesisBEFOREmodule/ROOTcreation;guardedlaunchrefusedmissingSOURCE_AUDITbeforePopen. 0newSGD/physics/metadata-pauses. Botherrorsandv1sourcepreserved;v2syntaxandCPUchecksPASS.",
+    "local_evidence": "../metaworld_baseline_insights_20261108/results-goal-control-startup"
   }
 }
