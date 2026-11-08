@@ -1,6 +1,6 @@
 {
-  "status": "BASELINE_ALL_TRAINING_COMPLETE_15_OF_18_FINAL_EVALUATIONS_COMPLETE",
-  "latest_user": "\u5c3d\u5feb\u628abaselines\u6536\u5c3e\u5427",
+  "status": "COMPLETE_HOLD_NO_FURTHER_BASELINE_ROUND",
+  "latest_user": "\u5148\u6536\u9f50baselines\uff0c\u518d\u4e13\u5fc3\u5f04\u6211\u4eec\u81ea\u5df1\u7684\u8303\u5f0f\u6539\u8fdb",
   "hosts": [
     "dev13",
     "dev15",
@@ -72,122 +72,61 @@
     "prelaunch_dispatch_fix": "Parent-error skipcannotlaterreclaimanactivepairwithout explicit recovery. Oldprepare source archived;0formalclaims/0newSGD whenpatched."
   },
   "latest_snapshot": {
-    "utc": "2026-11-08T14:16:21.528002+00:00",
-    "review_number": 18,
-    "original100_complete": 18,
-    "scaling_complete": 15,
-    "scaling_claims": 18,
-    "scaling_errors": 0,
-    "results300": {
-      "lewm-idm-seed1": {
-        "macro50": 8.6,
-        "episodes": 1000,
-        "hard6success": 1,
-        "hard6episodes": 120
+    "status": "COMPLETE_HOLD_NO_FURTHER_BASELINE_ROUND",
+    "baseline_finished_utc": "2026-11-08T15:36:13.858574+00:00",
+    "finalized_utc": "2026-11-08T15:37:11.709836+00:00",
+    "resource_snapshot_utc": "2026-11-08T15:38:21.761899+00:00",
+    "primary_recipes_complete": 18,
+    "effective_errors": 0,
+    "trained_seeds_per_method": 3,
+    "actual100epoch_trace_files_verified": 18000,
+    "actual300epoch_trace_files_verified": 18000,
+    "unique_physical_cases_per_model": 1000,
+    "all_owned_baseline_processes_exited": true,
+    "all24gpus_zero_memory_at_snapshot": true,
+    "final_summary": "results/final/summary.json",
+    "artifact_manifest": "results/final/MANIFEST.json",
+    "final_metadata_sha_verified": 102,
+    "no_new_candidate_experiments_started": true,
+    "methods": {
+      "ac-mtm": {
+        "mean100": 13.233333333333334,
+        "mean300": 13.366666666666667,
+        "hard6_successes300": 0,
+        "hard6_model_cases300": 360
       },
-      "h-jepa-seed1": {
-        "macro50": 8.4,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
+      "h-jepa": {
+        "mean100": 10.366666666666667,
+        "mean300": 7.933333333333334,
+        "hard6_successes300": 0,
+        "hard6_model_cases300": 360
       },
-      "lewm-idm-seed2": {
-        "macro50": 8.6,
-        "episodes": 1000,
-        "hard6success": 1,
-        "hard6episodes": 120
+      "lewm": {
+        "mean100": 10.4,
+        "mean300": 14.066666666666668,
+        "hard6_successes300": 1,
+        "hard6_model_cases300": 360
       },
-      "h-jepa-seed2": {
-        "macro50": 8.5,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
+      "lewm-idm": {
+        "mean100": 11.200000000000001,
+        "mean300": 9.166666666666666,
+        "hard6_successes300": 2,
+        "hard6_model_cases300": 360
       },
-      "lewm-idm-seed3": {
-        "macro50": 10.3,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
+      "lpwm": {
+        "mean100": 8.9,
+        "mean300": 4.633333333333333,
+        "hard6_successes300": 0,
+        "hard6_model_cases300": 360
       },
-      "h-jepa-seed3": {
-        "macro50": 6.9,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "lewm-seed1": {
-        "macro50": 13.4,
-        "episodes": 1000,
-        "hard6success": 1,
-        "hard6episodes": 120
-      },
-      "smwm-seed1": {
-        "macro50": 14.2,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "ac-mtm-seed1": {
-        "macro50": 13.8,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "lpwm-seed1": {
-        "macro50": 4.6,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "lewm-seed2": {
-        "macro50": 15.9,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "smwm-seed2": {
-        "macro50": 14.7,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "ac-mtm-seed2": {
-        "macro50": 12.2,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "lpwm-seed2": {
-        "macro50": 4.6,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
-      },
-      "smwm-seed3": {
-        "macro50": 13.7,
-        "episodes": 1000,
-        "hard6success": 0,
-        "hard6episodes": 120
+      "smwm": {
+        "mean100": 13.433333333333332,
+        "mean300": 14.199999999999998,
+        "hard6_successes300": 0,
+        "hard6_model_cases300": 360
       }
     },
-    "pending": [
-      {
-        "name": "lewm-seed3",
-        "step": 175800
-      },
-      {
-        "name": "ac-mtm-seed3",
-        "step": 175800
-      },
-      {
-        "name": "lpwm-seed3",
-        "step": 175800
-      }
-    ],
-    "all18_primary_training_finished": true,
-    "remaining": "OnlyLeWM3/AC3/Lp3finalCEMevaluations;867/184/22of1000caseepisodescompleted at14:16UTC.",
-    "decision": "Onlyfinishalready-startedbaselinefinalevaluations/fileaudits. No newcandidateexperimentsuntilbaselinecollected. Estimated23:30..00:00Beijing,not guaranteed23:30.",
-    "actual_trace_audits300": 15
+    "decision": "Baselinecollectionbarrierfulfilled. No more baselinebranches/extensions/SGD/LLMmonitor. Userauthorizesfocusingonourownparadigmnext;newcandidateworkhasnotstarted. Retainstrictscratch/RGB/samplelevel/no unknownfutureactiontargets;inverseonlyactualforwardinput."
   },
   "hourly_monitor": {
     "authorized": true,
@@ -196,7 +135,7 @@
     "label": "com.spt-jepa.metaworld-hourly-01a18941",
     "plist": "/Users/pengsun/Library/LaunchAgents/com.spt-jepa.metaworld-hourly-01a18941.plist",
     "interval_seconds": 3600,
-    "next_expected_utc": "2026-11-08T15:16:21.528002+00:00",
+    "next_expected_utc": null,
     "stop_file": "/Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/STOP",
     "instructions": "hourly-prompt.txt",
     "implementation": "Direct interruptible waiting in this conversation;no system scheduled delivery.",
@@ -208,126 +147,69 @@
     "system_delivery_stopped_utc": "2026-11-07T20:01:39.744956+00:00",
     "user_latest": "Use sleep/wait directly in this session,checking everyhour. OldLaunchAgentunloaded anditsloginplistarchived/removed. Training/evaluation queuesunchanged.",
     "mode": "DIRECT_IN_SESSION_WAIT",
-    "last_actual_review_utc": "2026-11-08T14:16:21.528002+00:00",
+    "last_actual_review_utc": "2026-11-08T15:17:30.244962+00:00",
     "external_stop_file_only": true,
     "last_actual_review": {
-      "utc": "2026-11-08T14:16:21.528002+00:00",
-      "review_number": 18,
-      "original100_complete": 18,
-      "scaling_complete": 15,
-      "scaling_claims": 18,
-      "scaling_errors": 0,
-      "results300": {
-        "lewm-idm-seed1": {
-          "macro50": 8.6,
-          "episodes": 1000,
-          "hard6success": 1,
-          "hard6episodes": 120
+      "status": "COMPLETE_HOLD_NO_FURTHER_BASELINE_ROUND",
+      "baseline_finished_utc": "2026-11-08T15:36:13.858574+00:00",
+      "finalized_utc": "2026-11-08T15:37:11.709836+00:00",
+      "resource_snapshot_utc": "2026-11-08T15:38:21.761899+00:00",
+      "primary_recipes_complete": 18,
+      "effective_errors": 0,
+      "trained_seeds_per_method": 3,
+      "actual100epoch_trace_files_verified": 18000,
+      "actual300epoch_trace_files_verified": 18000,
+      "unique_physical_cases_per_model": 1000,
+      "all_owned_baseline_processes_exited": true,
+      "all24gpus_zero_memory_at_snapshot": true,
+      "final_summary": "results/final/summary.json",
+      "artifact_manifest": "results/final/MANIFEST.json",
+      "final_metadata_sha_verified": 102,
+      "no_new_candidate_experiments_started": true,
+      "methods": {
+        "ac-mtm": {
+          "mean100": 13.233333333333334,
+          "mean300": 13.366666666666667,
+          "hard6_successes300": 0,
+          "hard6_model_cases300": 360
         },
-        "h-jepa-seed1": {
-          "macro50": 8.4,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
+        "h-jepa": {
+          "mean100": 10.366666666666667,
+          "mean300": 7.933333333333334,
+          "hard6_successes300": 0,
+          "hard6_model_cases300": 360
         },
-        "lewm-idm-seed2": {
-          "macro50": 8.6,
-          "episodes": 1000,
-          "hard6success": 1,
-          "hard6episodes": 120
+        "lewm": {
+          "mean100": 10.4,
+          "mean300": 14.066666666666668,
+          "hard6_successes300": 1,
+          "hard6_model_cases300": 360
         },
-        "h-jepa-seed2": {
-          "macro50": 8.5,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
+        "lewm-idm": {
+          "mean100": 11.200000000000001,
+          "mean300": 9.166666666666666,
+          "hard6_successes300": 2,
+          "hard6_model_cases300": 360
         },
-        "lewm-idm-seed3": {
-          "macro50": 10.3,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
+        "lpwm": {
+          "mean100": 8.9,
+          "mean300": 4.633333333333333,
+          "hard6_successes300": 0,
+          "hard6_model_cases300": 360
         },
-        "h-jepa-seed3": {
-          "macro50": 6.9,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "lewm-seed1": {
-          "macro50": 13.4,
-          "episodes": 1000,
-          "hard6success": 1,
-          "hard6episodes": 120
-        },
-        "smwm-seed1": {
-          "macro50": 14.2,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "ac-mtm-seed1": {
-          "macro50": 13.8,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "lpwm-seed1": {
-          "macro50": 4.6,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "lewm-seed2": {
-          "macro50": 15.9,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "smwm-seed2": {
-          "macro50": 14.7,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "ac-mtm-seed2": {
-          "macro50": 12.2,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "lpwm-seed2": {
-          "macro50": 4.6,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
-        },
-        "smwm-seed3": {
-          "macro50": 13.7,
-          "episodes": 1000,
-          "hard6success": 0,
-          "hard6episodes": 120
+        "smwm": {
+          "mean100": 13.433333333333332,
+          "mean300": 14.199999999999998,
+          "hard6_successes300": 0,
+          "hard6_model_cases300": 360
         }
       },
-      "pending": [
-        {
-          "name": "lewm-seed3",
-          "step": 175800
-        },
-        {
-          "name": "ac-mtm-seed3",
-          "step": 175800
-        },
-        {
-          "name": "lpwm-seed3",
-          "step": 175800
-        }
-      ],
-      "all18_primary_training_finished": true,
-      "remaining": "OnlyLeWM3/AC3/Lp3finalCEMevaluations;867/184/22of1000caseepisodescompleted at14:16UTC.",
-      "decision": "Onlyfinishalready-startedbaselinefinalevaluations/fileaudits. No newcandidateexperimentsuntilbaselinecollected. Estimated23:30..00:00Beijing,not guaranteed23:30.",
-      "actual_trace_audits300": 15
-    }
+      "decision": "Baselinecollectionbarrierfulfilled. No more baselinebranches/extensions/SGD/LLMmonitor. Userauthorizesfocusingonourownparadigmnext;newcandidateworkhasnotstarted. Retainstrictscratch/RGB/samplelevel/no unknownfutureactiontargets;inverseonlyactualforwardinput."
+    },
+    "next_check_reason": "Final result expected imminently;onecloseoutcheck,notnewrecurringmonitor",
+    "status": "COMPLETED_BASELINE_MONITORING",
+    "final_closeout_check_utc": "2026-11-08T15:38:21.761899+00:00",
+    "completion_reason": "Allbaselinejobscompletedandallownedprocessesexited;no furtherbaselinechecksneeded."
   },
   "research": "No new candidate/worldmodelSGD. First100vs300SMWMseeds1/2smallgain/plateau. NativeGD48,held548,encodergeometry24hardcasepilotallnegative;do not keep scaling these fixed controller patches. CPU inverse projection facts archived;does not establish physical accuracy or improved control. Continue remaining baseline scaling and original fullnativecontroller queue.",
   "local_evidence": {
@@ -925,11 +807,7 @@
   "closeout": {
     "request": "User requests fast baseline closeout",
     "optional_native": "CLOSED_PARTIAL_BY_USER;24metadataworkers/children/collector retired.690completed audited episodes;11interrupted shards/170deferred;379partial traces excluded.",
-    "remaining_primary_models": [
-      "lewm-seed3",
-      "ac-mtm-seed3",
-      "lpwm-seed3"
-    ],
+    "remaining_primary_models": [],
     "new_baselines_allowed": false,
     "additional_extensions_allowed": false,
     "final_target_native_epochs": 300,
@@ -947,6 +825,66 @@
       "assumption": "Estimate at observed throughput,not guaranteed23:30;~7min final training plus~75..90min final evaluation/audit",
       "evidence": "results/hourly/eta-20261108T140505.json"
     },
-    "own_candidate_training_must_wait_for_baseline_closeout": true
+    "own_candidate_training_must_wait_for_baseline_closeout": true,
+    "all_primary_training_and_evaluation_complete": true,
+    "finalized": true,
+    "baseline_collection_barrier_fulfilled": true
+  },
+  "completion": {
+    "status": "COMPLETE_HOLD_NO_FURTHER_BASELINE_ROUND",
+    "baseline_finished_utc": "2026-11-08T15:36:13.858574+00:00",
+    "finalized_utc": "2026-11-08T15:37:11.709836+00:00",
+    "resource_snapshot_utc": "2026-11-08T15:38:21.761899+00:00",
+    "primary_recipes_complete": 18,
+    "effective_errors": 0,
+    "trained_seeds_per_method": 3,
+    "actual100epoch_trace_files_verified": 18000,
+    "actual300epoch_trace_files_verified": 18000,
+    "unique_physical_cases_per_model": 1000,
+    "all_owned_baseline_processes_exited": true,
+    "all24gpus_zero_memory_at_snapshot": true,
+    "final_summary": "results/final/summary.json",
+    "artifact_manifest": "results/final/MANIFEST.json",
+    "final_metadata_sha_verified": 102,
+    "no_new_candidate_experiments_started": true,
+    "methods": {
+      "ac-mtm": {
+        "mean100": 13.233333333333334,
+        "mean300": 13.366666666666667,
+        "hard6_successes300": 0,
+        "hard6_model_cases300": 360
+      },
+      "h-jepa": {
+        "mean100": 10.366666666666667,
+        "mean300": 7.933333333333334,
+        "hard6_successes300": 0,
+        "hard6_model_cases300": 360
+      },
+      "lewm": {
+        "mean100": 10.4,
+        "mean300": 14.066666666666668,
+        "hard6_successes300": 1,
+        "hard6_model_cases300": 360
+      },
+      "lewm-idm": {
+        "mean100": 11.200000000000001,
+        "mean300": 9.166666666666666,
+        "hard6_successes300": 2,
+        "hard6_model_cases300": 360
+      },
+      "lpwm": {
+        "mean100": 8.9,
+        "mean300": 4.633333333333333,
+        "hard6_successes300": 0,
+        "hard6_model_cases300": 360
+      },
+      "smwm": {
+        "mean100": 13.433333333333332,
+        "mean300": 14.199999999999998,
+        "hard6_successes300": 0,
+        "hard6_model_cases300": 360
+      }
+    },
+    "decision": "Baselinecollectionbarrierfulfilled. No more baselinebranches/extensions/SGD/LLMmonitor. Userauthorizesfocusingonourownparadigmnext;newcandidateworkhasnotstarted. Retainstrictscratch/RGB/samplelevel/no unknownfutureactiontargets;inverseonlyactualforwardinput."
   }
 }
