@@ -1,0 +1,66 @@
+{
+  "status": "Evidence audit plus UNTESTED next directions;none is claimed novel or a high-performance solution.",
+  "setting": "RGB+knownexecutedforwardinputs -> observedfutureRGB,optionalsamefirstinputinverse. No unknownnextactiontargets/expertpath/policytraining/externalteacher. Goalsonlyplanning.",
+  "evidence": [
+    {
+      "finding": "Forecast length must cover planning length",
+      "actual": "Matched10000parent+2000updateH15vsH60 on2seeds;realized512actionpaths from8samephysicalstates. H60rankrho~.922/.921 vsH15~.773/.674;normalizedforecast/copyerror~.379/.348 vs~.954/1.063.",
+      "limit": "RankingRGBgoalerror acrossrandomactions doesnot prove contact/task success."
+    },
+    {
+      "finding": "Foresight can matter more than average forecast error",
+      "actual": "SameH15inverse10000seed1/Push6042:planH60/execute15 succeeds155native,planH30/execute15 fails500. Sameinitialphysics/currentgoal and initialcandidateprefix;othertrainedseedsmostlyfail.",
+      "limit": "Singletonselecteddevelopmentalcase;not reliablemethodgain. Parent source remains factual-only."
+    },
+    {
+      "finding": "Robot goal appearance can be matched without changing the object",
+      "actual": "Exactphysicalreplay4episodes. Successobjectmove.120m,closestnativeobjectgoal.04964m;short-horizonfailureobjectmove.020m,closestgoal.16933m. Images showfailedhandnearvisualgoalwhilecubeuntouched/wronglymoved.",
+      "limit": "Suggests goalgeometry+causalhorizon/contact bottleneck;doesnot establish onlyonecause."
+    },
+    {
+      "finding": "Generic spatial smoothing alone was insufficient",
+      "actual": "FixedDCTHminus1metric:toytranslationdeadzone removed;factualrank214/240vsRGB216/240. Actual2samefrozenparents/sameCEM/caseshard0/12vsRGB0/12.",
+      "decision": "Closed,NO_EXPANSION;do not retune variants after thisnegative."
+    },
+    {
+      "finding": "Cold history initially matters but densefeedbackrecovers",
+      "actual": "8frozenH15models/16sameheldoutclips:oneframevs8pastframes causes~4.4..5.2x15stepforecastMSE. Withfeedbackevery2native,thegapdisappearsby15.",
+      "decision": "Not evidence for persistentfailure;do not launchanothermask-training campaign fromthisalone."
+    }
+  ],
+  "current_prospective_test": {
+    "root": "runs/metaworld_horizon_match_20261109/extended-controller",
+    "design": "H15/H60trainingloss x2sameparents,all12000;H60/execute15;4x32samephysicalcases=128episodes. Completesmissingcombinedcondition.",
+    "promotion": "Requireactualmanipulationgains acrossparents/cases,notlowerforecastloss."
+  },
+  "unimplemented_directions": [
+    {
+      "name": "Planning is boundary-value inference",
+      "derivation": "Factualworldlearning identifies a transitionlaw/initial-value predictor. Goalcontrol requires solvingforanunknownactuationpath subjecttostartandterminalconstraints. Expertgoalpathlearningamortizesthissecondproblem;it is excludedhere. A solvermay useonlyfactualdynamics toperformboundary inference atplanningtime.",
+      "candidate": "Multiple-shooting/forward-backwardphysicalconditionals,goalsONLYinference. Noexpertwaypoints oractiontargetlabels.",
+      "necessary_audit": "Exact-simulatorplanningceiling andcontact-conditionedrealizedranktests beforeaddingnewtrainings.",
+      "novelty": "UNVERIFIED;classicalcontrol/inferenceprecedentslikely."
+    },
+    {
+      "name": "Conditional world density instead of point prediction",
+      "derivation": "E[||X-g||^2]=||E[X]-g||^2+trCov(X). A pointforecastplanneroptimizingonlythefirsttermcanignorecontactuncertainty. Likelihoodplanningusesp(g|observedhistory,owncandidateinputs),notanexpertpolicy.",
+      "candidate": "Sample-levelconditionalRGBdiffusiontrainedonlyonalreadyobservedoutcomesandknownexecutedinputsequences;noactiondenoising/targetpolicybranch. Goal-conditioneddenoisingevidence/ELBOONLYatplanning;testhigh-noisevpredictionvsuniformnoise usingpairedowninitialization.",
+      "necessary_audit": "Deriveandverifyproperenergyweights;actualactionconditioning/targettime/poison/independence audits;smallcounterfactual+physicalpilot beforelong.",
+      "status": "Notimplemented/notvalidated;donot reportasfeasiblesuccess."
+    },
+    {
+      "name": "Generic temporally correlated action proposals",
+      "basis": "OwnGaussianproposalwithfixedanalyticcorrelation,notfittedtosuccess/experttrajectories. Sameper-timeN(0,1)marginals,controlbounds/candidatebudget. Canincreasecoverageofsustainedcontactstrokes.",
+      "primary_source": "https://proceedings.mlr.press/v155/pinneri21a.html",
+      "novelty": "ExistingiCEMdirection,NOTanoriginalidea;controlablationonly.",
+      "status": "Notimplemented;waitcurrentcombinedcontrollerresult."
+    }
+  ],
+  "prohibited_shortcuts": [
+    "No copying successful/evaluation action paths into a policy/proposal library",
+    "No future expert actions as targets/reference",
+    "No reusing goal-query-trained or disqualified policy weights/features",
+    "No treating privileged simulator/state audits as candidate performance",
+    "No long promotion based on loss or one successful case"
+  ]
+}

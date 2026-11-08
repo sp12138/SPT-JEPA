@@ -1,0 +1,298 @@
+{
+  "utc": "2026-11-08T21:02:18.630791+00:00",
+  "metaworld_horizon_match_20261109": {
+    "errors": {},
+    "statuses": {
+      "h60-seed2": {
+        "step": 12000,
+        "samples": 768000,
+        "utc": "2026-11-08T21:02:17.898405+00:00",
+        "loss": 0.008106804452836514,
+        "gradients": {
+          "vision": 0.0782307256261129,
+          "observer": 0.001886541725035763,
+          "control": 0.000736502448218782,
+          "transition": 0.0030181928572213857,
+          "decoder": 0.03361772060160219,
+          "rgb": 0.5189878590593332,
+          "inverse": 0.05629517760211432
+        },
+        "gradient_norm_before_clip": 0.5289432406425476,
+        "metrics": {
+          "forward": 0.0010668000904843211,
+          "inverse": 0.03613664209842682,
+          "loss": 0.008106804452836514,
+          "inverse_weight": 0.1948162168264389
+        },
+        "gpu_peak_gib": 16.058807373046875,
+        "lr": 0.00019906019449761325
+      },
+      "h15-seed2": {
+        "step": 12000,
+        "samples": 768000,
+        "utc": "2026-11-08T20:43:31.020591+00:00",
+        "loss": 0.007560196332633495,
+        "gradients": {
+          "vision": 0.08051421266313218,
+          "observer": 0.0010206741269278505,
+          "control": 0.0001230340811448356,
+          "transition": 0.0008547526401143553,
+          "decoder": 0.005414822899582418,
+          "rgb": 0.016840851558508108,
+          "inverse": 0.05597812955249189
+        },
+        "gradient_norm_before_clip": 0.099653460085392,
+        "metrics": {
+          "forward": 0.0006004601018503308,
+          "inverse": 0.03572462499141693,
+          "loss": 0.007560196332633495,
+          "inverse_weight": 0.1948162168264389
+        },
+        "gpu_peak_gib": 5.77520751953125,
+        "lr": 0.00019906019449761325
+      },
+      "h60-seed1": {
+        "step": 12000,
+        "samples": 768000,
+        "utc": "2026-11-08T21:01:50.255675+00:00",
+        "loss": 0.007466875948011875,
+        "gradients": {
+          "vision": 0.05966419440237399,
+          "observer": 0.0016165522722559969,
+          "control": 0.0005830027167556235,
+          "transition": 0.0028489697452276828,
+          "decoder": 0.03659789648773646,
+          "rgb": 0.592828223322077,
+          "inverse": 0.06837893434143102
+        },
+        "gradient_norm_before_clip": 0.6008588075637817,
+        "metrics": {
+          "forward": 0.0010892171412706375,
+          "inverse": 0.03304547443985939,
+          "loss": 0.007466875948011875,
+          "inverse_weight": 0.19299644231796265
+        },
+        "gpu_peak_gib": 16.058807373046875,
+        "lr": 0.00019906019449761325
+      },
+      "h15-seed1": {
+        "step": 12000,
+        "samples": 768000,
+        "utc": "2026-11-08T20:43:31.623697+00:00",
+        "loss": 0.007126932963728905,
+        "gradients": {
+          "vision": 0.05996625181289559,
+          "observer": 0.0008122485236705139,
+          "control": 0.00022356627645552033,
+          "transition": 0.0009519194973003956,
+          "decoder": 0.01361244032159364,
+          "rgb": 0.034658447489410396,
+          "inverse": 0.06798553841541587
+        },
+        "gradient_norm_before_clip": 0.09801075607538223,
+        "metrics": {
+          "forward": 0.0006810104823671281,
+          "inverse": 0.033399179577827454,
+          "loss": 0.007126932963728905,
+          "inverse_weight": 0.19299644231796265
+        },
+        "gpu_peak_gib": 5.77520751953125,
+        "lr": 0.00019906019449761325
+      }
+    },
+    "endpoints": 2,
+    "summary": {
+      "utc": "2026-11-08T21:01:53.687549+00:00",
+      "done": 0,
+      "models": 4,
+      "endpoints": 2,
+      "expected_endpoints": 8,
+      "groups": {
+        "trainH15-planH30-execute15": {
+          "episodes": 16,
+          "hard_successes": 0,
+          "hard_episodes": 12,
+          "task_counts": {
+            "bin-picking-v3": {
+              "successes": 0,
+              "episodes": 2
+            },
+            "door-open-v3": {
+              "successes": 0,
+              "episodes": 2
+            },
+            "drawer-open-v3": {
+              "successes": 0,
+              "episodes": 2
+            },
+            "peg-insert-side-v3": {
+              "successes": 0,
+              "episodes": 2
+            },
+            "pick-place-v3": {
+              "successes": 0,
+              "episodes": 2
+            },
+            "push-v3": {
+              "successes": 0,
+              "episodes": 2
+            },
+            "reach-v3": {
+              "successes": 2,
+              "episodes": 2
+            },
+            "reach-wall-v3": {
+              "successes": 2,
+              "episodes": 2
+            }
+          }
+        }
+      },
+      "errors": {},
+      "scope": "Paireddevelopmental8physicalcases/2learnedparents,H15vsH60loss only;2000additionalupdates,bothcount10000parentupdates;noSOTA/equalFLOPsclaim."
+    }
+  },
+  "metaworld_sobolev_goal_20261109": {
+    "errors": {},
+    "statuses": {},
+    "endpoints": 0,
+    "summary": {
+      "utc": "2026-11-08T20:58:14.609220+00:00",
+      "passed": true,
+      "formal_episodes": 16,
+      "physical_cases": 8,
+      "trained_parents": 2,
+      "world_updates": 0,
+      "head_updates": 0,
+      "all8_pixel_successes": 4,
+      "all8_spatial_successes": 2,
+      "hard_episodes": 12,
+      "pixel_hard_successes": 0,
+      "spatial_hard_successes": 0,
+      "decision": "NO_EXPANSION",
+      "scope": "FixedspatialHminus1didnotsolvehardmanipulation;toygeometryproofnotcontrolsuccess. Actualsamecase/samemodel/CEMbudget pairedtraces;16evaluationsrepeat8physicalcases."
+    }
+  },
+  "bank": {
+    "banks": 8,
+    "prediction_comparisons": 40,
+    "errors": {},
+    "groups": {
+      "parentH15-seed1": {
+        "cases": 8,
+        "horizons": {
+          "30": {
+            "mean_rho": 0.9528044871794872,
+            "median_rho": 0.9518543956043956,
+            "mean_forecast_over_copy": 0.33963245153427124,
+            "median_forecast_over_copy": 0.335182249546051,
+            "mean_regret_over_random": 0.05542724300175905,
+            "any_bank_success_cases": 0,
+            "model_selected_success_cases": 0
+          },
+          "60": {
+            "mean_rho": 0.7566163003663002,
+            "median_rho": 0.7855082417582417,
+            "mean_forecast_over_copy": 0.8537767380475998,
+            "median_forecast_over_copy": 0.8506380021572113,
+            "mean_regret_over_random": 0.40067942813038826,
+            "any_bank_success_cases": 0,
+            "model_selected_success_cases": 0
+          }
+        }
+      },
+      "continuedH15-seed2": {
+        "cases": 8,
+        "horizons": {
+          "30": {
+            "mean_rho": 0.9447802197802198,
+            "median_rho": 0.9519688644688643,
+            "mean_forecast_over_copy": 0.35964422300457954,
+            "median_forecast_over_copy": 0.3566093146800995,
+            "mean_regret_over_random": 0.15269819740206003,
+            "any_bank_success_cases": 0,
+            "model_selected_success_cases": 0
+          },
+          "60": {
+            "mean_rho": 0.6735920329670328,
+            "median_rho": 0.6840888278388277,
+            "mean_forecast_over_copy": 1.0628931671380997,
+            "median_forecast_over_copy": 1.0495678186416626,
+            "mean_regret_over_random": 0.20129710249602795,
+            "any_bank_success_cases": 0,
+            "model_selected_success_cases": 0
+          }
+        }
+      },
+      "parentH15-seed2": {
+        "cases": 8,
+        "horizons": {
+          "30": {
+            "mean_rho": 0.9430631868131867,
+            "median_rho": 0.9553113553113552,
+            "mean_forecast_over_copy": 0.39475611597299576,
+            "median_forecast_over_copy": 0.3886825144290924,
+            "mean_regret_over_random": 0.07951313583180308,
+            "any_bank_success_cases": 0,
+            "model_selected_success_cases": 0
+          },
+          "60": {
+            "mean_rho": 0.6574118589743589,
+            "median_rho": 0.6356227106227105,
+            "mean_forecast_over_copy": 1.0456827729940414,
+            "median_forecast_over_copy": 1.0321021676063538,
+            "mean_regret_over_random": 0.24791077710688114,
+            "any_bank_success_cases": 0,
+            "model_selected_success_cases": 0
+          }
+        }
+      },
+      "continuedH60-seed1": {
+        "cases": 8,
+        "horizons": {
+          "30": {
+            "mean_rho": 0.9651957417582417,
+            "median_rho": 0.9664835164835164,
+            "mean_forecast_over_copy": 0.22731085307896137,
+            "median_forecast_over_copy": 0.22221029549837112,
+            "mean_regret_over_random": 0.06150210415944457,
+            "any_bank_success_cases": 0,
+            "model_selected_success_cases": 0
+          },
+          "60": {
+            "mean_rho": 0.9223443223443223,
+            "median_rho": 0.9230998168498169,
+            "mean_forecast_over_copy": 0.3790159560739994,
+            "median_forecast_over_copy": 0.37464258074760437,
+            "mean_regret_over_random": 0.05036613531410694,
+            "any_bank_success_cases": 0,
+            "model_selected_success_cases": 0
+          }
+        }
+      },
+      "continuedH15-seed1": {
+        "cases": 8,
+        "horizons": {
+          "30": {
+            "mean_rho": 0.9483230311355311,
+            "median_rho": 0.9501831501831501,
+            "mean_forecast_over_copy": 0.34172723069787025,
+            "median_forecast_over_copy": 0.33875134587287903,
+            "mean_regret_over_random": 0.02877918817102909,
+            "any_bank_success_cases": 0,
+            "model_selected_success_cases": 0
+          },
+          "60": {
+            "mean_rho": 0.7732429029304029,
+            "median_rho": 0.7929029304029303,
+            "mean_forecast_over_copy": 0.9541736468672752,
+            "median_forecast_over_copy": 0.9486472010612488,
+            "mean_regret_over_random": 0.40067942813038826,
+            "any_bank_success_cases": 0,
+            "model_selected_success_cases": 0
+          }
+        }
+      }
+    }
+  }
+}

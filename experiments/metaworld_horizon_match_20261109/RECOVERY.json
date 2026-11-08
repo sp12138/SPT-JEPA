@@ -1,5 +1,5 @@
 {
-  "status": "H15/H60x2originalparents;4actual2update/fullCPUrestore/20stepMPCgatesPASS;pairedinitial20actions+successesexact;remaining12000training/64formalepisodespending",
+  "status": "All4continuations12000complete/PASS;firstH30/e15formal32episodeshard0/24. H60/e2remainingoriginalformalqueueactive.",
   "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_horizon_match_20261109",
   "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_horizon_match_20261109/source-v1",
   "plan": "PROTOCOL.json",
@@ -23,5 +23,21 @@
   "automatic_long_promotion": false,
   "new_updates_per_branch": 2000,
   "parent_updates": 10000,
-  "branches": 4
+  "branches": 4,
+  "extension": {
+    "root": "runs/metaworld_horizon_match_20261109/extended-controller",
+    "source": "originalsource-v1NN/evaluatorunchanged;extend-controller-v1.pyschedulingonly",
+    "jobs": 4,
+    "formal_episodes": 128,
+    "checkpoint_step": 12000,
+    "horizon_native": 60,
+    "execute_native": 15,
+    "new_updates": 0,
+    "hosts_cards": [
+      "dev13g0/g2",
+      "dev15g0/g6"
+    ],
+    "trigger": "SelectedoriginalPushH60/e15success;developmentalnotindependentconfirmation"
+  },
+  "next_due_utc": "2026-11-08T22:02:24Z"
 }

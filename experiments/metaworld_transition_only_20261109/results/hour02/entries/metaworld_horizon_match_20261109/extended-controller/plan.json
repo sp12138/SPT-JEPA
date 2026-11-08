@@ -1,0 +1,52 @@
+{
+  "utc": "2026-11-08T21:28:32.156301+00:00",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_horizon_match_20261109/source-v1",
+  "jobs": [
+    {
+      "name": "h15-seed1",
+      "host": "dev13",
+      "gpu": 0,
+      "seed": 1,
+      "horizon": 15,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_horizon_match_20261109/training/h15-seed1/config.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_horizon_match_20261109/extended-controller/evaluation/h15-seed1"
+    },
+    {
+      "name": "h60-seed1",
+      "host": "dev13",
+      "gpu": 2,
+      "seed": 1,
+      "horizon": 60,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_horizon_match_20261109/training/h60-seed1/config.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_horizon_match_20261109/extended-controller/evaluation/h60-seed1"
+    },
+    {
+      "name": "h15-seed2",
+      "host": "dev15",
+      "gpu": 0,
+      "seed": 2,
+      "horizon": 15,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_horizon_match_20261109/training/h15-seed2/config.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_horizon_match_20261109/extended-controller/evaluation/h15-seed2"
+    },
+    {
+      "name": "h60-seed2",
+      "host": "dev15",
+      "gpu": 6,
+      "seed": 2,
+      "horizon": 60,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_horizon_match_20261109/training/h60-seed2/config.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_horizon_match_20261109/extended-controller/evaluation/h60-seed2"
+    }
+  ],
+  "deadline": 1794180512.1563187,
+  "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_transition_only_20261109/manifests/final.json",
+  "step": 12000,
+  "forecast_horizon_native": 60,
+  "execute_native": 15,
+  "formal_episodes": 128,
+  "world_updates": 0,
+  "trigger": "OriginalH15inverse10000seed1/Push6042H60e15succeeds155native;SAMEweights/caseH30e15fails. Singletondevelopmentalnotrobustgain. AddmissingcombinedH60trained/H60plannedcomparison againstsameupdateH15control,2parentsx32samecases/model. ExistingH30e15/H60e2endpointsunchanged;notrepeatinganySGD orcompletedendpoint.",
+  "scope": "Previouslyinspecteddevelopmentalcohort,notuntouchedconfirmation/publicSOTA;no goalpath/policytraining oraction-targetreference.",
+  "automatic_long_promotion": false
+}
