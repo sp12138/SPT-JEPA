@@ -36,6 +36,11 @@ def main():
             claims=len(list((root / 'claims').glob('*.json'))), rows=rows)
     native = read(BASE / 'runs/metaworld_baselines_20261107/native-controller/summary.json')
     result['native'] = {k: native.get(k) for k in ['utc', 'completed_shards', 'errors', 'episodes', 'models']}
+    pilot = BASE / 'runs/metaworld_native100_pilot_20261108'
+    if pilot.exists():
+        result['native_pilot'] = {n: read(pilot / n) for n in ['OWNERSHIP.json', 'progress.json', 'summary.json', 'ERROR.json', 'CLOSED.json'] if (pilot / n).exists()}
+        result['native_pilot']['formal_trace_files'] = len(list(pilot.glob('*/formal-*/*.npz')))
+        result['native_pilot']['technical_completed_reports'] = len(list(pilot.glob('*/technical-*/metrics.json')))
     dest = BASE / 'reports/metaworld_baseline_scaling_20261108/hourly' / (now.strftime('%Y%m%dT%H%M%S') + '.json')
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(result, indent=2) + '\n')
@@ -49,6 +54,11 @@ def main():
             print(row['name'], 'step', row['health_step'], 'scores', {e: round(s['macro50'], 3) for e, s in row['epochs'].items()},
                   'hard', {e: s['hard6success'] for e, s in row['epochs'].items()}, 'error', row['proofs'].get('error.json'))
     print('native', {k: result['native'][k] for k in ['completed_shards', 'errors', 'episodes']})
+    if 'native_pilot' in result:
+        p = result['native_pilot']
+        print('early_native_pilot', {k: p[k] for k in ['formal_trace_files', 'technical_completed_reports']},
+              'error', p.get('ERROR.json'), 'closed', p.get('CLOSED.json'))
+        print('pilot_model_results', p.get('progress.json', {}).get('models', []))
 
 
 if __name__ == '__main__':
