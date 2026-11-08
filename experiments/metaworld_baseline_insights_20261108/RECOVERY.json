@@ -1,5 +1,5 @@
 {
-  "status": "BASELINES_RUNNING_1100_PHYSICAL_REPLAYS_AND6_FROZEN_INVERSE_AUDITS_COMPLETE",
+  "status": "BASELINE100_COMPLETE_SCALING_ACTIVE_FROZEN_PILOTS_NEGATIVE",
   "latest_authorization": "Understand baseline strengths/weaknesses first,then improve our method using the same three hosts fully;promising evidence-backed methods may receive long training. Supersedes prior no-candidate-exploration restriction for the next phase.",
   "hosts": [
     "dev13",
@@ -17,7 +17,7 @@
   "old_goal_and_recurring_llm_monitors": "off",
   "candidate_training_started": false,
   "candidate_long_training_started": false,
-  "primary_resource_use": "Original18native100modelscomplete;12scaleclaims(1reservedfrozenpilot),6furthercontinuationsqueued. Max24GPUs;instantutilizationvariesduringimports/CPUaudit.",
+  "primary_resource_use": "18native100complete;14scalingclaims/2complete/0errors at07:12UTC. 24CUDAprocesses instant,notconstant100percent;remaining300continuationsandnativecontrollerqueuecontinue.",
   "constraints": "Scratch;RGB+actual completed-transition forward controls;reward/state/taskID/language/externalteachers forbidden in learner/planner. Candidates sample-level;native baseline batchregs allowed. Inverse only same already-executed forward input;no goal->unknown next-action targets or disqualified lineage.",
   "cpu_diagnostics": {
     "physical_replay": {
@@ -293,5 +293,128 @@
     "source_audit": "results-geometry-loan-startup",
     "independent_of_support_pilot": true,
     "other_pairs": "Supportloanondev13pair1unchanged;other10pairsunchanged. No secondLLMtimer/goal."
+  },
+  "inverse_composition_audit": {
+    "status": "COMPLETE/PASS_DIAGNOSTIC_ONLY",
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_inverse_projection_20261108/v2",
+    "models": [
+      "smwm-seed1",
+      "h-jepa-seed2"
+    ],
+    "heldout_windows_each": 16,
+    "random_candidates_each": 32,
+    "same_forward_input_action_alignment": true,
+    "desired_goal_given_to_inverse": false,
+    "worldmodel_updates": 0,
+    "gpu_contexts": 0,
+    "new_physical_episodes": 0,
+    "source_sha256": "e2339bb6169dde733663f1ea372964b1dc1e87b7600aaacfe2630a954e813a8b",
+    "prior_failures": "Two v1CPUcandidate-axis-historydimensionfailurespreserved;fixeddiagnosticbatchbroadcastonly,noNN/trainingchange.",
+    "finding": "I(observedendpoints)fitsactioninputs,butI(predictedendpoints)factualerrorislower(0.10..0.73xobserved). Thus simpleinverse-composition-failurehypothesisNOTsupported. Doesnotprovewatermark/causality;latentcontrol-cycleaccuracydoesnotestablishactualphysicalforecastaccuracy. Projectionchangesrandompredicted effects substantially,notvalidatedpreserving dynamics/control.",
+    "local_evidence": "../metaworld_baseline_insights_20261108/results-inverse-projection"
+  },
+  "latest_completed_controller_pilots": {
+    "support": {
+      "status": "COMPLETE/PASS_NO_PROMOTION",
+      "formal_episodes": 48,
+      "technical_episodes": 8,
+      "unique_physical_cases": 12,
+      "smwm_standard_held": [
+        0,
+        0
+      ],
+      "hjepa_standard_held": [
+        0,
+        0
+      ],
+      "cases_each": 12,
+      "closed_utc": "2026-11-08T06:14:55.007479+00:00",
+      "original_metadata_parent": 3737899,
+      "original_parent_resumed": true,
+      "local_evidence": "results/support-pilot-final"
+    },
+    "geometry": {
+      "status": "COMPLETE/PASS_NO_PROMOTION",
+      "formal_episodes": 24,
+      "technical_episodes": 8,
+      "unique_physical_cases": 12,
+      "smwm_geometry_cem": [
+        0,
+        0
+      ],
+      "hjepa_geometry_cem": [
+        0,
+        0
+      ],
+      "cases_each": 12,
+      "closed_utc": "2026-11-08T06:31:09.207074+00:00",
+      "original_metadata_parent": 3274612,
+      "original_parent_resumed": true,
+      "local_evidence": "results/geometry-pilot-final"
+    }
+  },
+  "latest_hourly_review": {
+    "utc": "2026-11-08T07:12:03.182638+00:00",
+    "review_number": 11,
+    "original100_complete": 18,
+    "scaling_complete": 2,
+    "scaling_claims": 14,
+    "scaling_errors": 0,
+    "smwm_first_two_seeds": {
+      "same1000cases_means_100_200_300": [
+        13.35,
+        14.6,
+        14.45
+      ],
+      "scores300": [
+        14.2,
+        14.7
+      ],
+      "actual_trace_audits_passed": 2,
+      "hard6_successes": 0,
+      "hard6_unique_physical_cases": 120,
+      "hard6_model_case_outcomes": 240,
+      "scope": "Two trained seeds share same physical cases;100+200LR restart,not scratch300singlecosine/SOTA."
+    },
+    "support_pilot": {
+      "status": "COMPLETE/PASS_NO_PROMOTION",
+      "formal_episodes": 48,
+      "technical_episodes": 8,
+      "unique_physical_cases": 12,
+      "smwm_standard_held": [
+        0,
+        0
+      ],
+      "hjepa_standard_held": [
+        0,
+        0
+      ],
+      "cases_each": 12,
+      "closed_utc": "2026-11-08T06:14:55.007479+00:00",
+      "original_metadata_parent": 3737899,
+      "original_parent_resumed": true,
+      "local_evidence": "results/support-pilot-final"
+    },
+    "geometry_pilot": {
+      "status": "COMPLETE/PASS_NO_PROMOTION",
+      "formal_episodes": 24,
+      "technical_episodes": 8,
+      "unique_physical_cases": 12,
+      "smwm_geometry_cem": [
+        0,
+        0
+      ],
+      "hjepa_geometry_cem": [
+        0,
+        0
+      ],
+      "cases_each": 12,
+      "closed_utc": "2026-11-08T06:31:09.207074+00:00",
+      "original_metadata_parent": 3274612,
+      "original_parent_resumed": true,
+      "local_evidence": "results/geometry-pilot-final"
+    },
+    "resources": "24CUDAprocesses/8perhost at07:12resourcecheck;utilizationvaries,notconstant100percent.",
+    "decision": "Continue authorized300epoch scaling/nativecontroller queue. Both boundedGPUloans complete/parentsresumed. New CPU inverse-composition audit complete,not control improvement;no newcandidate/worldmodelSGD."
   }
 }

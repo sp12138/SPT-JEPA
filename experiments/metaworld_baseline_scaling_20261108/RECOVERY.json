@@ -1,5 +1,5 @@
 {
-  "status": "ACTIVE_100COMPLETE_300SCALING_WITH_BOUNDED_NATIVE_PILOT",
+  "status": "ACTIVE_SCALING_2OF18_COMPLETE_FROZEN_PILOTS_CLOSED",
   "latest_user": "Extend training to test baseline compute scaling. In this same session check effects every1hour,then improve our sample-level algorithm when evidence justifies it and aim for large gains over baselines.",
   "hosts": [
     "dev13",
@@ -58,8 +58,8 @@
     "collector": "collector-scaling-v1-launch.json;PID3737917atlaunch;results/summary.json",
     "original100": "Parentrootownershipunchanged;all18originalrecipesgetprioritybeforecontinuationclaims",
     "native_frozen": "Legacyroot/native-controller/launch-scale-v1-{host}.json;24standbyworkers;collector-scaling-v1-launch.json PID3737918atlaunch",
-    "support_loan": "SUPPORT_LOAN-dev13.json/ROOTOWNERSHIP. OriginalSMWM1metadataPID3737899intentionallyT;itsGPUchildrencontinue. BorrowerPID3745097mustresumetheexactoriginalafterpilot. Do notmisclassifymetadataT asfailedSGD.",
-    "geometry_loan": "GEOMETRY_LOAN-dev15.json/rootOWNERSHIP. OriginalAC1metadataPID3274612intentionallyT;borrower3280408mustresumetheexactoriginal. Do notresumeitwhilepilotCUDAchildrenalive."
+    "support_loan": "CLOSED06:14:55UTC;exactoriginal3737899resumedTrue,0SGDrepeat. No remainingloan/protectedpilotchildren.",
+    "geometry_loan": "CLOSED06:31:09UTC;exactoriginal3274612resumedTrue,0SGDrepeat. No remainingloan/protectedpilotchildren."
   },
   "entry_gates": {
     "cpu_real_models": "All6native20epoch copies pass exact full model/AdamW/scheduler restores,positiveFP32backward,weightsunchanged,sampler100epochboundarycontinuity.0model optimizer updates/0GPUcontexts. Technical mechanics only,not actual100epoch continuations.",
@@ -70,12 +70,68 @@
     "prelaunch_dispatch_fix": "Parent-error skipcannotlaterreclaimanactivepairwithout explicit recovery. Oldprepare source archived;0formalclaims/0newSGD whenpatched."
   },
   "latest_snapshot": {
-    "utc": "2026-11-08T04:08:45.831805+00:00",
-    "scaling_claims": 12,
+    "utc": "2026-11-08T07:12:03.182638+00:00",
+    "review_number": 11,
+    "original100_complete": 18,
+    "scaling_complete": 2,
+    "scaling_claims": 14,
     "scaling_errors": 0,
-    "completed_200_models": 6,
-    "scene100_probe_complete": 2,
-    "scene200_probe_started": 2
+    "smwm_first_two_seeds": {
+      "same1000cases_means_100_200_300": [
+        13.35,
+        14.6,
+        14.45
+      ],
+      "scores300": [
+        14.2,
+        14.7
+      ],
+      "actual_trace_audits_passed": 2,
+      "hard6_successes": 0,
+      "hard6_unique_physical_cases": 120,
+      "hard6_model_case_outcomes": 240,
+      "scope": "Two trained seeds share same physical cases;100+200LR restart,not scratch300singlecosine/SOTA."
+    },
+    "support_pilot": {
+      "status": "COMPLETE/PASS_NO_PROMOTION",
+      "formal_episodes": 48,
+      "technical_episodes": 8,
+      "unique_physical_cases": 12,
+      "smwm_standard_held": [
+        0,
+        0
+      ],
+      "hjepa_standard_held": [
+        0,
+        0
+      ],
+      "cases_each": 12,
+      "closed_utc": "2026-11-08T06:14:55.007479+00:00",
+      "original_metadata_parent": 3737899,
+      "original_parent_resumed": true,
+      "local_evidence": "results/support-pilot-final"
+    },
+    "geometry_pilot": {
+      "status": "COMPLETE/PASS_NO_PROMOTION",
+      "formal_episodes": 24,
+      "technical_episodes": 8,
+      "unique_physical_cases": 12,
+      "smwm_geometry_cem": [
+        0,
+        0
+      ],
+      "hjepa_geometry_cem": [
+        0,
+        0
+      ],
+      "cases_each": 12,
+      "closed_utc": "2026-11-08T06:31:09.207074+00:00",
+      "original_metadata_parent": 3274612,
+      "original_parent_resumed": true,
+      "local_evidence": "results/geometry-pilot-final"
+    },
+    "resources": "24CUDAprocesses/8perhost at07:12resourcecheck;utilizationvaries,notconstant100percent.",
+    "decision": "Continue authorized300epoch scaling/nativecontroller queue. Both boundedGPUloans complete/parentsresumed. New CPU inverse-composition audit complete,not control improvement;no newcandidate/worldmodelSGD."
   },
   "hourly_monitor": {
     "authorized": true,
@@ -84,7 +140,7 @@
     "label": "com.spt-jepa.metaworld-hourly-01a18941",
     "plist": "/Users/pengsun/Library/LaunchAgents/com.spt-jepa.metaworld-hourly-01a18941.plist",
     "interval_seconds": 3600,
-    "next_expected_utc": "2026-11-08T07:10:58.482937+00:00",
+    "next_expected_utc": "2026-11-08T08:12:03.182638+00:00",
     "stop_file": "/Users/pengsun/Documents/working_space/SPT-JEPA/artifacts/metaworld_hourly_20261108/STOP",
     "instructions": "hourly-prompt.txt",
     "implementation": "Direct interruptible waiting in this conversation;no system scheduled delivery.",
@@ -96,109 +152,143 @@
     "system_delivery_stopped_utc": "2026-11-07T20:01:39.744956+00:00",
     "user_latest": "Use sleep/wait directly in this session,checking everyhour. OldLaunchAgentunloaded anditsloginplistarchived/removed. Training/evaluation queuesunchanged.",
     "mode": "DIRECT_IN_SESSION_WAIT",
-    "last_actual_review_utc": "2026-11-08T06:10:58.482937+00:00",
+    "last_actual_review_utc": "2026-11-08T07:12:03.182638+00:00",
     "external_stop_file_only": true,
     "last_actual_review": {
-      "utc": "2026-11-08T06:10:58.482937+00:00",
+      "utc": "2026-11-08T07:12:03.182638+00:00",
+      "review_number": 11,
       "original100_complete": 18,
-      "scaling_claims": 12,
+      "scaling_complete": 2,
+      "scaling_claims": 14,
       "scaling_errors": 0,
-      "first300epoch_result": {
-        "name": "smwm-seed1",
-        "macro50": 14.2,
-        "same1000case100_200_300": [
-          12.6,
-          13.3,
-          14.2
+      "smwm_first_two_seeds": {
+        "same1000cases_means_100_200_300": [
+          13.35,
+          14.6,
+          14.45
         ],
+        "scores300": [
+          14.2,
+          14.7
+        ],
+        "actual_trace_audits_passed": 2,
         "hard6_successes": 0,
-        "actual1000trace_audit_passed": true,
-        "scope": "Singletrainedseed/100+200LRrestart. Phase300trainingandevaluationcomplete;outerworkercompletionmetadatawaitingfortemporaryslotloan. NotSOTA/robustmanipulationbreakthrough."
+        "hard6_unique_physical_cases": 120,
+        "hard6_model_case_outcomes": 240,
+        "scope": "Two trained seeds share same physical cases;100+200LR restart,not scratch300singlecosine/SOTA."
       },
       "support_pilot": {
-        "formal_trace_files": 28,
-        "technical_reports": 6,
-        "effective_errors": 0,
-        "gpu_ready_utc": "2026-11-08T06:03:04.798820+00:00",
-        "completed_results": [
-          {
-            "name": "smwm-seed1",
-            "standard": 0,
-            "held": 0,
-            "cases_each": 12
-          }
+        "status": "COMPLETE/PASS_NO_PROMOTION",
+        "formal_episodes": 48,
+        "technical_episodes": 8,
+        "unique_physical_cases": 12,
+        "smwm_standard_held": [
+          0,
+          0
         ],
-        "h-jepa-seed2": "formalstandardinprogress;not a completednegativeyet.",
+        "hjepa_standard_held": [
+          0,
+          0
+        ],
+        "cases_each": 12,
+        "closed_utc": "2026-11-08T06:14:55.007479+00:00",
         "original_metadata_parent": 3737899,
-        "borrower": 3745097,
-        "restore_required_after_pilot": true
+        "original_parent_resumed": true,
+        "local_evidence": "results/support-pilot-final"
       },
       "geometry_pilot": {
-        "status": "WAIT_ORIGINAL_CUDA_CHILD_NATURAL_COMPLETION",
-        "formal_traces": 0,
-        "technical_reports": 0,
-        "effective_errors": 0,
-        "original_metadata_parent_dev15": 3274612,
-        "borrower": 3280408,
-        "restore_required_after_pilot": true
+        "status": "COMPLETE/PASS_NO_PROMOTION",
+        "formal_episodes": 24,
+        "technical_episodes": 8,
+        "unique_physical_cases": 12,
+        "smwm_geometry_cem": [
+          0,
+          0
+        ],
+        "hjepa_geometry_cem": [
+          0,
+          0
+        ],
+        "cases_each": 12,
+        "closed_utc": "2026-11-08T06:31:09.207074+00:00",
+        "original_metadata_parent": 3274612,
+        "original_parent_resumed": true,
+        "local_evidence": "results/geometry-pilot-final"
       },
-      "resources": "22CUDAprocessesatinstantcheck,2dev13GPUsbetweenstages/imports;24allocatedtousefuljobs,notconstant100percent.",
-      "decision": "Continue300and2independentboundedfrozenpilots;no newcandidate/worldmodelSGD,nonewgoal/LLMmonitor. Nextcheckrealcontrolresultsofgeometryandheld,notadditionaluntestedideas."
+      "resources": "24CUDAprocesses/8perhost at07:12resourcecheck;utilizationvaries,notconstant100percent.",
+      "decision": "Continue authorized300epoch scaling/nativecontroller queue. Both boundedGPUloans complete/parentsresumed. New CPU inverse-composition audit complete,not control improvement;no newcandidate/worldmodelSGD."
     }
   },
-  "research": "No new candidate SGD launched yet. Continue evidence-led improvements when baseline convergence/physical diagnostics justify it;require paired matched-budgetcontrols,reproducible realmanipulationgainsandfreshconfirmation beforeclaims/longpromotion. Existing1100CPUreplays/6inverseablations remainvalid;they donot prove missingobjectfeatures uniquely.",
+  "research": "No new candidate/worldmodelSGD. First100vs300SMWMseeds1/2smallgain/plateau. NativeGD48,held548,encodergeometry24hardcasepilotallnegative;do not keep scaling these fixed controller patches. CPU inverse projection facts archived;does not establish physical accuracy or improved control. Continue remaining baseline scaling and original fullnativecontroller queue.",
   "local_evidence": {
     "root": "results/startup-v1",
     "sha256_verified_files": 32,
     "archive_sha256": "2e5035a0de421f4b36fb94e9abc067c17be07279fa793ee45bfec0cb4e5f6c23"
   },
-  "performance_claim": "FirstSMWM1full300score14.2percentvs10012.6/20013.3onSAME1000cases,hard6zero. Actual1000traceauditPASS. Singlelearner,notrobustgeneral/SOTA. PartialSMWM100held5vsstandardboth0/12. Hcontrol/geometrypending.",
+  "performance_claim": "SMWMfirst2seeds300mean14.45vs10013.35/20014.6onSAME1000cases. Both1000traceauditsPASS;hard6zero. Boundedheld5andencodergeometrypilotsnegative. Nohighperformance/SOTA/noveltyclaim.",
   "latest_direct_hourly_review": {
-    "utc": "2026-11-08T06:10:58.482937+00:00",
+    "utc": "2026-11-08T07:12:03.182638+00:00",
+    "review_number": 11,
     "original100_complete": 18,
-    "scaling_claims": 12,
+    "scaling_complete": 2,
+    "scaling_claims": 14,
     "scaling_errors": 0,
-    "first300epoch_result": {
-      "name": "smwm-seed1",
-      "macro50": 14.2,
-      "same1000case100_200_300": [
-        12.6,
-        13.3,
-        14.2
+    "smwm_first_two_seeds": {
+      "same1000cases_means_100_200_300": [
+        13.35,
+        14.6,
+        14.45
       ],
+      "scores300": [
+        14.2,
+        14.7
+      ],
+      "actual_trace_audits_passed": 2,
       "hard6_successes": 0,
-      "actual1000trace_audit_passed": true,
-      "scope": "Singletrainedseed/100+200LRrestart. Phase300trainingandevaluationcomplete;outerworkercompletionmetadatawaitingfortemporaryslotloan. NotSOTA/robustmanipulationbreakthrough."
+      "hard6_unique_physical_cases": 120,
+      "hard6_model_case_outcomes": 240,
+      "scope": "Two trained seeds share same physical cases;100+200LR restart,not scratch300singlecosine/SOTA."
     },
     "support_pilot": {
-      "formal_trace_files": 28,
-      "technical_reports": 6,
-      "effective_errors": 0,
-      "gpu_ready_utc": "2026-11-08T06:03:04.798820+00:00",
-      "completed_results": [
-        {
-          "name": "smwm-seed1",
-          "standard": 0,
-          "held": 0,
-          "cases_each": 12
-        }
+      "status": "COMPLETE/PASS_NO_PROMOTION",
+      "formal_episodes": 48,
+      "technical_episodes": 8,
+      "unique_physical_cases": 12,
+      "smwm_standard_held": [
+        0,
+        0
       ],
-      "h-jepa-seed2": "formalstandardinprogress;not a completednegativeyet.",
+      "hjepa_standard_held": [
+        0,
+        0
+      ],
+      "cases_each": 12,
+      "closed_utc": "2026-11-08T06:14:55.007479+00:00",
       "original_metadata_parent": 3737899,
-      "borrower": 3745097,
-      "restore_required_after_pilot": true
+      "original_parent_resumed": true,
+      "local_evidence": "results/support-pilot-final"
     },
     "geometry_pilot": {
-      "status": "WAIT_ORIGINAL_CUDA_CHILD_NATURAL_COMPLETION",
-      "formal_traces": 0,
-      "technical_reports": 0,
-      "effective_errors": 0,
-      "original_metadata_parent_dev15": 3274612,
-      "borrower": 3280408,
-      "restore_required_after_pilot": true
+      "status": "COMPLETE/PASS_NO_PROMOTION",
+      "formal_episodes": 24,
+      "technical_episodes": 8,
+      "unique_physical_cases": 12,
+      "smwm_geometry_cem": [
+        0,
+        0
+      ],
+      "hjepa_geometry_cem": [
+        0,
+        0
+      ],
+      "cases_each": 12,
+      "closed_utc": "2026-11-08T06:31:09.207074+00:00",
+      "original_metadata_parent": 3274612,
+      "original_parent_resumed": true,
+      "local_evidence": "results/geometry-pilot-final"
     },
-    "resources": "22CUDAprocessesatinstantcheck,2dev13GPUsbetweenstages/imports;24allocatedtousefuljobs,notconstant100percent.",
-    "decision": "Continue300and2independentboundedfrozenpilots;no newcandidate/worldmodelSGD,nonewgoal/LLMmonitor. Nextcheckrealcontrolresultsofgeometryandheld,notadditionaluntestedideas."
+    "resources": "24CUDAprocesses/8perhost at07:12resourcecheck;utilizationvaries,notconstant100percent.",
+    "decision": "Continue authorized300epoch scaling/nativecontroller queue. Both boundedGPUloans complete/parentsresumed. New CPU inverse-composition audit complete,not control improvement;no newcandidate/worldmodelSGD."
   },
   "native_early_pilot": {
     "status": "COMPLETE/PASS_48FORMAL_ZERO_NATIVE_ZERO_CEM",
@@ -264,33 +354,47 @@
   },
   "task_breakdown_insight": "SMWM/AC-MTMstrongDoorClose/CoffeeButton(76.7/93.3and90/98.3)vsblind0/0..10percent. H-JEPA100DrawerClosematchesfixedmean100,SMWM21.7. Overallrankhideslargetasktradeoffs;seeTASK_INSIGHTS.md/TASK_BREAKDOWN.json. Temporal-costT2G/TEMPOprimarysourcesreviewed,notnewmethods/MetaWorldpublishedscores;notimplementedyet.",
   "support_pilot": {
-    "status": "ACTIVE_GPU_LOAN_READY_28FORMAL_TRACES",
+    "status": "COMPLETE/PASS_NO_PROMOTION",
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_control_support_20261108",
     "host": "dev13",
     "pair": 1,
     "worker_pid": 3745097,
     "original_parent_pid": 3737899,
     "original_job": "smwm-seed1",
-    "original_metadata_parent_state": "T intentionalloan",
+    "original_metadata_parent_state": "RESUMED",
     "original_cuda_children": "300epochfinalevalcontinueuntouched",
     "formal_episodes": 48,
     "technical_episodes": 8,
     "cpu_projection_contract": "PASS",
     "actual_os_stop_continue_exception_cleanup": "PASS",
-    "actual_gpu_formal_started": false,
+    "actual_gpu_formal_started": true,
     "entry_gate": "Fullstandardreplaymustmatchoriginalactions/success/firstbankSHA;held5controlpacketverified",
     "max_seconds": 7200,
     "sgd_repeated": 0,
-    "restore": "WorkerfinallyterminatesownpilotchildrenandSIGCONTexactoriginalparent. No newgoal/LLMmonitor. Keepother11pairsunchanged.",
+    "restore": "COMPLETE;exactoriginalresumedafterallownpilotchildrenfinished.",
     "completed_smwm_standard_held": [
       0,
       0
     ],
     "completed_smwm_cases_each": 12,
-    "effective_errors": 0
+    "effective_errors": 0,
+    "unique_physical_cases": 12,
+    "smwm_standard_held": [
+      0,
+      0
+    ],
+    "hjepa_standard_held": [
+      0,
+      0
+    ],
+    "cases_each": 12,
+    "closed_utc": "2026-11-08T06:14:55.007479+00:00",
+    "original_metadata_parent": 3737899,
+    "original_parent_resumed": true,
+    "local_evidence": "results/support-pilot-final"
   },
   "geometry_pilot": {
-    "status": "WAIT_ORIGINAL_CHILD_AT0610",
+    "status": "COMPLETE/PASS_NO_PROMOTION",
     "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_geometry_cost_20261108",
     "host": "dev15",
     "pair": 0,
@@ -304,14 +408,27 @@
     "max_seconds": 7200,
     "cost_source": "UnprivilegedsameencoderCLSfeaturematching,NOTphysicalstateprobereadout. Native100frozenparents;bodybatchregsmeansNOTentirelysamplelevelcandidate.",
     "cpu_entry": "IdentitymetricbitexactGoalMSE/actualfittedmatrixalgebraPASS;realOSchildnaturalcompletion/exceptionparentresumePASS.",
-    "gpu_formal_entry": "Pendingfreepair;actualstandard20stepmustmatchold100actions/success/firstbankSHA beforemappedcost.",
+    "gpu_formal_entry": "PASS;actual20stepstandardactions/success/firstbankSHAidenticaltooriginal100,fullNN/RGB/controlboundsentrypassed.",
     "worldmodel_updates": 0,
     "sgd_repeated": 0,
-    "ownership": "PauseONLY3274612metadata(notCUDA),oldCUDAchildcontinues. LoanafteroldchildrenfinishandGPUsfree. StopownpilotchildrenthenSIGCONTexactoriginal3274612onordinaryexit/error/cancel.",
+    "ownership": "CLOSED;exactoriginal3274612resumedafterownpilotchildrenfinished.",
     "source_audit": "results-geometry-loan-startup",
     "independent_of_support_pilot": true,
     "other_pairs": "Supportloanondev13pair1unchanged;other10pairsunchanged. No secondLLMtimer/goal.",
-    "effective_errors": 0
+    "effective_errors": 0,
+    "smwm_geometry_cem": [
+      0,
+      0
+    ],
+    "hjepa_geometry_cem": [
+      0,
+      0
+    ],
+    "cases_each": 12,
+    "closed_utc": "2026-11-08T06:31:09.207074+00:00",
+    "original_metadata_parent": 3274612,
+    "original_parent_resumed": true,
+    "local_evidence": "results/geometry-pilot-final"
   },
   "first300_result": {
     "name": "smwm-seed1",
@@ -324,5 +441,24 @@
     "hard6_successes": 0,
     "actual1000trace_audit_passed": true,
     "scope": "Singletrainedseed/100+200LRrestart. Phase300trainingandevaluationcomplete;outerworkercompletionmetadatawaitingfortemporaryslotloan. NotSOTA/robustmanipulationbreakthrough."
+  },
+  "inverse_composition_audit": {
+    "status": "COMPLETE/PASS_DIAGNOSTIC_ONLY",
+    "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_inverse_projection_20261108/v2",
+    "models": [
+      "smwm-seed1",
+      "h-jepa-seed2"
+    ],
+    "heldout_windows_each": 16,
+    "random_candidates_each": 32,
+    "same_forward_input_action_alignment": true,
+    "desired_goal_given_to_inverse": false,
+    "worldmodel_updates": 0,
+    "gpu_contexts": 0,
+    "new_physical_episodes": 0,
+    "source_sha256": "e2339bb6169dde733663f1ea372964b1dc1e87b7600aaacfe2630a954e813a8b",
+    "prior_failures": "Two v1CPUcandidate-axis-historydimensionfailurespreserved;fixeddiagnosticbatchbroadcastonly,noNN/trainingchange.",
+    "finding": "I(observedendpoints)fitsactioninputs,butI(predictedendpoints)factualerrorislower(0.10..0.73xobserved). Thus simpleinverse-composition-failurehypothesisNOTsupported. Doesnotprovewatermark/causality;latentcontrol-cycleaccuracydoesnotestablishactualphysicalforecastaccuracy. Projectionchangesrandompredicted effects substantially,notvalidatedpreserving dynamics/control.",
+    "local_evidence": "../metaworld_baseline_insights_20261108/results-inverse-projection"
   }
 }
