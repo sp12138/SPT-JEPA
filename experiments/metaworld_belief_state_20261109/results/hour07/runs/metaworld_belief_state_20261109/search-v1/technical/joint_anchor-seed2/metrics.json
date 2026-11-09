@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T01:46:50.919333+00:00",
+  "episodes": [
+    {
+      "task": "push-v3",
+      "seed": 6042,
+      "case_sha256": "195da24f916216653f94e8a480c5938c784d66d19906bef438a94f9ef3b97385",
+      "success": false,
+      "steps": 20,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/technical/joint_anchor-seed2/push-v3-seed6042.npz",
+      "trace_sha256": "af75ca6723bb88c0b89030d238fb31e297624cffebed57ac9354090150b0e6b1",
+      "planning": [
+        {
+          "planner_score": 1.706072211265564,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "actual_particles": 64,
+          "actual_iterations": 4,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.013357791118323803
+        },
+        {
+          "planner_score": 1.41726815700531,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "b1cd876855d2b6330035e017b55ab6c51bce63f7356b3dac794b7bdb93d5c06a",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "actual_particles": 64,
+          "actual_iterations": 4,
+          "native_steps": 20,
+          "actual_rgb_goal_mse": 0.015467184595763683
+        }
+      ]
+    }
+  ],
+  "mode": "joint_anchor",
+  "step": 500,
+  "weights_sha256": "bbbe4037a6f9b6f282ba7c29ee601ee537dd37e039f808835f0da84d9364a389",
+  "state_before": "7ac888f16da80aff751109b66337b97fc0da973e115378e60b06683df7ec7ade",
+  "state_after": "7ac888f16da80aff751109b66337b97fc0da973e115378e60b06683df7ec7ade",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 20,
+  "renderer_queries_per_candidate": 10,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Samefrozenjoint500world/goal/cases/H60/e15/10imagequeriespercandidate. OnlyCEMparticles/iterationschange;17.578125xor32xtrajectoryforecastsversus64x4. Candidatenoisebanksdifferentdimensions,notclaimedidenticalpathdraws. NoSGD/goalpath/actionlabels. NotSOTA/equalcompute.",
+  "controller_override": "frozen_CEM_population_iteration_budget"
+}

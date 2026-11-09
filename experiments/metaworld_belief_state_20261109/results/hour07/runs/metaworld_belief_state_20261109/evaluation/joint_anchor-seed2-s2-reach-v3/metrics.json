@@ -1,0 +1,96 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T01:28:19.212175+00:00",
+  "episodes": [
+    {
+      "task": "reach-v3",
+      "seed": 6042,
+      "case_sha256": "013ebb7ec2a79813a25a1d41bac0a15d0cab8d23bd7e07b71d18402e37a338e7",
+      "success": true,
+      "steps": 85,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed2-s2-reach-v3/reach-v3-seed6042.npz",
+      "trace_sha256": "0847327fa05648c8fdd760cb67e932889b7d0ac8d1e6a3d15c6595ac8ae509df",
+      "planning": [
+        {
+          "planner_score": 2.2943220138549805,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.017946330830454826
+        },
+        {
+          "planner_score": 1.7067190408706665,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "8b9e9b7844972c84cbfff10933f65d96086e388c0d9f6660d841d9d90b653c2a",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 30,
+          "actual_rgb_goal_mse": 0.014720991253852844
+        },
+        {
+          "planner_score": 2.159632921218872,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "04dc43381c704355e69db27e0249d7d43d1a20709472582619ebb97d90491970",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 45,
+          "actual_rgb_goal_mse": 0.015161092393100262
+        },
+        {
+          "planner_score": 1.4042820930480957,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "84d4745842aa460e56f993e528daf70bec83f31347e981aa01e15bf36e020825",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 60,
+          "actual_rgb_goal_mse": 0.007670988328754902
+        },
+        {
+          "planner_score": 2.148235321044922,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "366189dae9a4f701f6b232cf3e542787f0a4004b43e05f78b79a19e3ff9b837f",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 75,
+          "actual_rgb_goal_mse": 0.001658656052313745
+        },
+        {
+          "planner_score": 1.3534735441207886,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "5543414b25787aaab4a10c28db40284b1c2ee085440d4f9b4ab7dafcd8ab9a53",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 85,
+          "actual_rgb_goal_mse": 0.003778156591579318
+        }
+      ]
+    }
+  ],
+  "mode": "joint_anchor",
+  "step": 2,
+  "weights_sha256": "46afffcd726ce45ccdedb1ae9e958c4ac0885dc84392910bd22e882bc25d5943",
+  "state_before": "20adfaa2959b93cfd6a7c37febba9291b962bc0ccaf8ecd8601197fed392c093",
+  "state_after": "20adfaa2959b93cfd6a7c37febba9291b962bc0ccaf8ecd8601197fed392c093",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 500,
+  "renderer_queries_per_candidate": 10,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Twoownfactualparents12000+ownhead2000+jointupdates. Same8developmentalcases;notpublicSOTA/equalbackboneFLOPs."
+}

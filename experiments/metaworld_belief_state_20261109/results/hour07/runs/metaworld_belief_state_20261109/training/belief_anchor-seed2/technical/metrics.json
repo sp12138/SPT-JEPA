@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T01:27:22.799208+00:00",
+  "episodes": [
+    {
+      "task": "reach-v3",
+      "seed": 6042,
+      "case_sha256": "013ebb7ec2a79813a25a1d41bac0a15d0cab8d23bd7e07b71d18402e37a338e7",
+      "success": false,
+      "steps": 20,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/belief_anchor-seed2/technical/reach-v3-seed6042.npz",
+      "trace_sha256": "250321ee1e7a091d9869f520f1bd9eb7ddec671f2107cbce12a00b69947fdd39",
+      "planning": [
+        {
+          "planner_score": 5.5111823081970215,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.026866819709539413
+        },
+        {
+          "planner_score": 4.9488091468811035,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "800d0f3c74b0f5644ba5147dfb4904b72aace118422d5b7febe34e89351d5488",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 20,
+          "actual_rgb_goal_mse": 0.026124652475118637
+        }
+      ]
+    }
+  ],
+  "mode": "belief_anchor",
+  "step": 2,
+  "weights_sha256": "0b0de82bd9e2623c3a5b28ebddda92393adbd8a97fd208d533d6df623e4c1efc",
+  "state_before": "5b75021d21cef6adf69bebc30a2ccd8334e5126921f65c9d20e5dcb0e10a365d",
+  "state_after": "5b75021d21cef6adf69bebc30a2ccd8334e5126921f65c9d20e5dcb0e10a365d",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 20,
+  "renderer_queries_per_candidate": 10,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Twoownfactualparents12000+ownhead2000+jointupdates. Same8developmentalcases;notpublicSOTA/equalbackboneFLOPs."
+}

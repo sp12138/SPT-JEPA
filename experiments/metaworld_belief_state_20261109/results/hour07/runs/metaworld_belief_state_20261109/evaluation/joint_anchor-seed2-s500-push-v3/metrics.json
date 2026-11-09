@@ -1,0 +1,105 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T01:37:37.620593+00:00",
+  "episodes": [
+    {
+      "task": "push-v3",
+      "seed": 6042,
+      "case_sha256": "195da24f916216653f94e8a480c5938c784d66d19906bef438a94f9ef3b97385",
+      "success": true,
+      "steps": 92,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed2-s500-push-v3/push-v3-seed6042.npz",
+      "trace_sha256": "de0d99f78faf7d8d214acb3712ca9ef811ea13841616693e726957f2cc6e2878",
+      "planning": [
+        {
+          "planner_score": 1.706072211265564,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.013357791118323803
+        },
+        {
+          "planner_score": 1.41726815700531,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "b1cd876855d2b6330035e017b55ab6c51bce63f7356b3dac794b7bdb93d5c06a",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 30,
+          "actual_rgb_goal_mse": 0.01436429750174284
+        },
+        {
+          "planner_score": 1.6476759910583496,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "8369af4bf3466001d96fe94cac82e000d0de4b33e08f8ce9d6cbdbdf84e55e1a",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 45,
+          "actual_rgb_goal_mse": 0.007595943287014961
+        },
+        {
+          "planner_score": 1.186211109161377,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "23bfac48f58b340f99c587f172d1739c2773d53d1bf0616ccd3439d690c68f9c",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 60,
+          "actual_rgb_goal_mse": 0.001436068443581462
+        },
+        {
+          "planner_score": 1.492436170578003,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "914bb16d074d64029e24fe3ab9c788ccf0db9f411723cc9ab0e3818a19e1f36e",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 75,
+          "actual_rgb_goal_mse": 0.00177211023401469
+        },
+        {
+          "planner_score": 1.1860003471374512,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "bcb0dc723ede43dc5025391089df621b5e2642bfbe87379883cd2857f4f0ae62",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 90,
+          "actual_rgb_goal_mse": 0.004955710843205452
+        },
+        {
+          "planner_score": 1.169154167175293,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "fffd5c68f29bad5773868fa8cfa9601c317a024601e6647978b53030908d32e7",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 92,
+          "actual_rgb_goal_mse": 0.0053234221413731575
+        }
+      ]
+    }
+  ],
+  "mode": "joint_anchor",
+  "step": 500,
+  "weights_sha256": "bbbe4037a6f9b6f282ba7c29ee601ee537dd37e039f808835f0da84d9364a389",
+  "state_before": "7ac888f16da80aff751109b66337b97fc0da973e115378e60b06683df7ec7ade",
+  "state_after": "7ac888f16da80aff751109b66337b97fc0da973e115378e60b06683df7ec7ade",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 500,
+  "renderer_queries_per_candidate": 10,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Twoownfactualparents12000+ownhead2000+jointupdates. Same8developmentalcases;notpublicSOTA/equalbackboneFLOPs."
+}

@@ -1,0 +1,114 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T02:00:21.623031+00:00",
+  "episodes": [
+    {
+      "task": "reach-v3",
+      "seed": 6043,
+      "case_sha256": "ea218413e89025947fe0cb9d14a6489512dd9bdefaf777b597871c9408906525",
+      "success": true,
+      "steps": 108,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/expanded-joint-v1/evaluation/joint_anchor-seed2-s2000-reach-v3-6043/reach-v3-seed6043.npz",
+      "trace_sha256": "6db581319f310a92cca74f8086fc355b1e09a9706ef99eb327f40e919ab752cd",
+      "planning": [
+        {
+          "planner_score": 1.1201088428497314,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "89675973efa2934c12285ad851fd7ae38fd295f14d7848a99246c8914f01e633",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.017129085958003998
+        },
+        {
+          "planner_score": 1.1382064819335938,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "ea9ea0d5b9d654215c8a2e9f7da68c8c41f02e5fac0eefd14cf370d3826eaf8d",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 30,
+          "actual_rgb_goal_mse": 0.00864509865641594
+        },
+        {
+          "planner_score": 1.430823564529419,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "e76b3f8d2d4729332485526a4f35c3a8a686ed7b420fef7cca0324dfd122a8a1",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 45,
+          "actual_rgb_goal_mse": 0.005384658928960562
+        },
+        {
+          "planner_score": 1.24468994140625,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "5a74421d912064500b48f5343e56370dd645f50e6c9128f805f02e6b01014dcd",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 60,
+          "actual_rgb_goal_mse": 0.008477345108985901
+        },
+        {
+          "planner_score": 1.153122901916504,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "8903931a4acde6ae79f7e2627e6d088fa2cad26611eb558d2d0993b0004dff04",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 75,
+          "actual_rgb_goal_mse": 0.002473394386470318
+        },
+        {
+          "planner_score": 1.142746090888977,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "81d3fad771e248515188423e10c4ce443c32beb29bfb3a8b45ea1e7c19e66265",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 90,
+          "actual_rgb_goal_mse": 0.006488462444394827
+        },
+        {
+          "planner_score": 1.1175768375396729,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "00c646dfc0927ad6745d471c5b24b906232e6cb64d6fc111c2e2509b94c4681f",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 105,
+          "actual_rgb_goal_mse": 0.007005148567259312
+        },
+        {
+          "planner_score": 1.2338294982910156,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "685c284afcc704b1fb54eb9db2efea2df9e6e229acde62ee3731b4d28906ca9d",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 108,
+          "actual_rgb_goal_mse": 0.006147238425910473
+        }
+      ]
+    }
+  ],
+  "mode": "joint_anchor",
+  "step": 2000,
+  "weights_sha256": "2f0fbcb8c9dc0b85b35561c02fe19350193fa47b3538f8fe2996bf44954e99dd",
+  "state_before": "785d3975d149a7095f4687c6c4465c38b293cc16ddc843682e6962027ba8d5b4",
+  "state_after": "785d3975d149a7095f4687c6c4465c38b293cc16ddc843682e6962027ba8d5b4",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 500,
+  "renderer_queries_per_candidate": 10,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Twoownfactualparents12000+ownhead2000+jointupdates. Same8developmentalcases;notpublicSOTA/equalbackboneFLOPs."
+}

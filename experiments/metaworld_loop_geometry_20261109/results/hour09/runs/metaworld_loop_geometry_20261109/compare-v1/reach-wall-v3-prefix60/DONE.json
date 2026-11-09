@@ -1,0 +1,176 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T03:54:29.514302+00:00",
+  "task": "reach-wall-v3",
+  "prefix": 60,
+  "case_sha256": "7038b0816186bd4a83ccd28859c50b0ecd8f581cb75282902e9bc29aed4b8cfe",
+  "source_trace_sha256": "4aab931f53cf2aed5613c1d0faa592d74331de6525a65d207d7d30caba51a494",
+  "source_initial_rgb_gate": {
+    "exact": true,
+    "max_abs": 0,
+    "changed_pixels": 0,
+    "changed_fraction": 0.0,
+    "mse": 0.0,
+    "passed": true
+  },
+  "source_initial_physics_exact": true,
+  "inverse_weights_sha256": "03c477eb8d6aaafeccc988c173d6b80561382c87298bf5082327b0c98870d700",
+  "inverse_before": "2143d5b55b4aecf8a196b447c21d926370e31b34ff956b5283fd926cfda867b5",
+  "inverse_after": "2143d5b55b4aecf8a196b447c21d926370e31b34ff956b5283fd926cfda867b5",
+  "reports": {
+    "white": {
+      "bank": "/efs/prescottsun/SPT-JEPA/runs/metaworld_loop_geometry_20261109/compare-v1/reach-wall-v3-prefix60/white.npz",
+      "bank_sha256": "1ca96e5c7dfb969aa1aadc8ebbcaa0fcd0593d9f107fc1974f1d39c0759c8afa",
+      "paths": 64,
+      "native_horizon": 60,
+      "any_successes": 3,
+      "final_successes": 1,
+      "actual_RGB_selected": 10,
+      "actual_RGB_selected_any_success": false,
+      "actual_RGB_selected_final_success": false,
+      "AUC_any": 0.5355191256830601,
+      "AUC_final": 0.4444444444444444,
+      "mean_TCP_return_error_m": 0.16896223391827989,
+      "TCP_endpoint_std_m": [
+        0.12421017144873804,
+        0.0958294477081887,
+        0.09095604347010633
+      ],
+      "gripper_endpoint_std_audit_only": 0.24579807439543855,
+      "mean_object_displacement_m": 2.516438050061824e-06,
+      "object_endpoint_std_m": [
+        2.5361989448187137e-17,
+        2.5438405243138006e-16,
+        7.721468349589114e-18
+      ],
+      "all65_branch_restores_exact": true,
+      "zero_REALIZED_controls_replay_exact": true,
+      "zero_rgb_gate": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "scope": "Object4:7isdiagnosticposeproxy,notuniversalreward. Closed-loopzero replayusesitsRECORDEDcontrols,notassumedRGB-policy-bitdeterminism."
+    },
+    "loop": {
+      "bank": "/efs/prescottsun/SPT-JEPA/runs/metaworld_loop_geometry_20261109/compare-v1/reach-wall-v3-prefix60/loop.npz",
+      "bank_sha256": "de634cdfc18bf02b74125a8ad90955095bb716a74a1c0db5291a81a31decd7eb",
+      "paths": 64,
+      "native_horizon": 60,
+      "any_successes": 3,
+      "final_successes": 0,
+      "actual_RGB_selected": 11,
+      "actual_RGB_selected_any_success": false,
+      "actual_RGB_selected_final_success": false,
+      "AUC_any": 0.9180327868852459,
+      "AUC_final": null,
+      "mean_TCP_return_error_m": 0.049356863339188296,
+      "TCP_endpoint_std_m": [
+        0.0215641589832872,
+        0.02933828038217773,
+        0.032215532365226694
+      ],
+      "gripper_endpoint_std_audit_only": 0.31064382400451973,
+      "mean_object_displacement_m": 2.5164380501647847e-06,
+      "object_endpoint_std_m": [
+        3.8961091316501587e-16,
+        1.217533686677644e-15,
+        1.214848413319291e-16
+      ],
+      "all65_branch_restores_exact": true,
+      "zero_REALIZED_controls_replay_exact": true,
+      "zero_rgb_gate": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "scope": "Object4:7isdiagnosticposeproxy,notuniversalreward. Closed-loopzero replayusesitsRECORDEDcontrols,notassumedRGB-policy-bitdeterminism."
+    },
+    "white-inverse": {
+      "bank": "/efs/prescottsun/SPT-JEPA/runs/metaworld_loop_geometry_20261109/compare-v1/reach-wall-v3-prefix60/white-inverse.npz",
+      "bank_sha256": "f8c11e819eea2770afe04ab40c68a29f3d40f494925c15b53ae5a0f25e3cafc4",
+      "paths": 64,
+      "native_horizon": 75,
+      "any_successes": 3,
+      "final_successes": 0,
+      "actual_RGB_selected": 58,
+      "actual_RGB_selected_any_success": true,
+      "actual_RGB_selected_final_success": false,
+      "AUC_any": 0.9890710382513661,
+      "AUC_final": null,
+      "mean_TCP_return_error_m": 0.11234509259664202,
+      "TCP_endpoint_std_m": [
+        0.0634675281028225,
+        0.07988155267063154,
+        0.06095255831141895
+      ],
+      "gripper_endpoint_std_audit_only": 0.23169731420813988,
+      "mean_object_displacement_m": 2.0189380935488668e-05,
+      "object_endpoint_std_m": [
+        3.158510005771486e-17,
+        4.1191555942998253e-16,
+        1.2910658346753677e-17
+      ],
+      "all65_branch_restores_exact": true,
+      "zero_REALIZED_controls_replay_exact": true,
+      "zero_rgb_gate": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "scope": "Object4:7isdiagnosticposeproxy,notuniversalreward. Closed-loopzero replayusesitsRECORDEDcontrols,notassumedRGB-policy-bitdeterminism."
+    },
+    "loop-inverse": {
+      "bank": "/efs/prescottsun/SPT-JEPA/runs/metaworld_loop_geometry_20261109/compare-v1/reach-wall-v3-prefix60/loop-inverse.npz",
+      "bank_sha256": "0446c593d9b2be71c9664aefba57289e28ed13b18a5da68e9beeb5779640d1d4",
+      "paths": 64,
+      "native_horizon": 75,
+      "any_successes": 3,
+      "final_successes": 0,
+      "actual_RGB_selected": 51,
+      "actual_RGB_selected_any_success": false,
+      "actual_RGB_selected_final_success": false,
+      "AUC_any": 0.366120218579235,
+      "AUC_final": null,
+      "mean_TCP_return_error_m": 0.05330456961607473,
+      "TCP_endpoint_std_m": [
+        0.02126198453282805,
+        0.028008388396431275,
+        0.027790098094727794
+      ],
+      "gripper_endpoint_std_audit_only": 0.2633110419245107,
+      "mean_object_displacement_m": 2.0189380935659335e-05,
+      "object_endpoint_std_m": [
+        3.417249080468289e-16,
+        1.4091935160430164e-15,
+        4.287084005938842e-17
+      ],
+      "all65_branch_restores_exact": true,
+      "zero_REALIZED_controls_replay_exact": true,
+      "zero_rgb_gate": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "scope": "Object4:7isdiagnosticposeproxy,notuniversalreward. Closed-loopzero replayusesitsRECORDEDcontrols,notassumedRGB-policy-bitdeterminism."
+    }
+  },
+  "physics_steps": 17610,
+  "model_updates": 0,
+  "protected_audit_only": true,
+  "training_teacher_proposal_eligible": false,
+  "design": "Matched64whitevsu,v,-u,-vloops;60native/marginalclippedGaussian. Optional15stepFP32INPUT-inverseclosuretowardalreadyOBSERVEDbranchRGB. No expertfuture/path/actionlabels.",
+  "scope": "8previouslyinspectedcasesx3branchstates. Thesearephysicalinterventions,NOT500stepagentperformance or independenttrajectoryconfirmation."
+}

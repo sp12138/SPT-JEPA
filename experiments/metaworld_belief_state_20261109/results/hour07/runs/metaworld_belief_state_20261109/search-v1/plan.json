@@ -1,0 +1,485 @@
+{
+  "utc": "2026-11-09T01:46:35.730411+00:00",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_belief_state_20261109/source-v1",
+  "source_hashes": {
+    "experiments/metaworld_eval_20261103/environment.py": "5e8b0310d1caba36fe37cb2ec24a4e6bf9f801b50e9a0cc760e784e88ca8ba7c",
+    "experiments/metaworld_endpoint_density_20261109/model.py": "0f2538745a9210a15342baf408f0c83e3b1790d40ab3abc9f9bc8fc98229bea2",
+    "experiments/metaworld_endpoint_density_20261109/evaluate.py": "6e92e0eadcc7540fefd4fb17c8eb338528e94e94ecb1ab098fe7c8d4272af75a",
+    "experiments/metaworld_endpoint_density_20261109/audit.py": "be4939538b46e9ceca3ab79e038fc7c43244af669846f44a058ab9600409eb40",
+    "experiments/metaworld_endpoint_density_20261109/energy.py": "b34a46f67056ca52a5ed3e56557baadf8ebf1ae8c96f8403704e1e06e025a2a9",
+    "experiments/metaworld_endpoint_density_20261109/train.py": "86e71a762fd1cc230143b988c403ae8f0e5b4f6ac8073d9ea3a5ef606f4519f6",
+    "experiments/metaworld_endpoint_density_20261109/campaign.py": "f34c74713f0dc17bc84b2aa4eaf83a64acdeb3c22f5516b051007d067c8f6915",
+    "experiments/metaworld_transition_only_20261109/common.py": "9e2e1c8fd708476b9d3c89983f206021c3d6d71559115fcf650e4dead0a20197",
+    "experiments/metaworld_transition_only_20261109/model.py": "7b7a9d661f87c20367f7d435f82a499d09c83ecae63571f9d786d7fcc942d0fc",
+    "experiments/metaworld_transition_only_20261109/evaluate.py": "ccf7db04f92af03007bafb6b0f70c07e3c46640bc2d94811574754e4624bc68d",
+    "experiments/metaworld_transition_only_20261109/audit.py": "51a6e6c3a000c75e4c43118b762c9da1eddd140d003e9bd736bf9af58f630182",
+    "experiments/metaworld_transition_only_20261109/data.py": "c49e7b0f1bdc24d96d8f668ca1d5d3832c0267acface776d094f619e0f2429d5",
+    "experiments/metaworld_transition_only_20261109/train.py": "3f624733bcc6992fb91958d64c0ee193c84dc7c69a0f52d64d98f9f1a928c38b",
+    "experiments/metaworld_transition_only_20261109/campaign.py": "8d551d83ea574063dec660adb790dfef499a987deabc36ab863e572470242fab",
+    "experiments/metaworld_belief_state_20261109/model.py": "62c0fadde9dc2695f0cbb683e1635b251b89fed4b99c76197745f9556355201d",
+    "experiments/metaworld_belief_state_20261109/evaluate.py": "089bf4a67b8edec15edde0f551450f8dc1a11f71488e77eb766ffc0e58d6f052",
+    "experiments/metaworld_belief_state_20261109/audit.py": "6578509ee00bf7268a7b5412128a681b320d8c82dce14161229e3903fa164a92",
+    "experiments/metaworld_belief_state_20261109/train.py": "31303b11552093554f929984f68c70c1f826280af2eac732a94871172fe5e430",
+    "experiments/metaworld_belief_state_20261109/campaign.py": "6842a82c6eaccf1bb6d4cf2cec9abffa58418a16d17beb1db3b929b4c688be02",
+    "experiments/metaworld_horizon_match_20261109/model.py": "ec12b70cb0ee9d21d8331148ebf7e93e23ba45370e565ad44f836e1ab857a6ca",
+    "experiments/metaworld_horizon_match_20261109/evaluate.py": "395772cd59b0d866b0c633ebb3617241b7716aae5b776cba0ce5df1672c4dbbd",
+    "experiments/metaworld_horizon_match_20261109/train.py": "25c64e2b01e21b982985882c0ae0f2d38580ea141c6d82deac6c735e23a2e256",
+    "experiments/metaworld_horizon_match_20261109/campaign.py": "181d8412a27539bbdae23ee0bcbfe0f219dd23c073916caab91d365a41479220"
+  },
+  "helper_sha256": "37deae0634897ca33e8ed09b28d4a44891c0e90071af8e2e2e852bc85057a7ce",
+  "jobs": [
+    {
+      "name": "joint_anchor-seed1",
+      "host": "dev13",
+      "gpus": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1",
+      "seed": 1,
+      "mode": "joint_anchor"
+    },
+    {
+      "name": "joint_anchor-seed2",
+      "host": "dev15",
+      "gpus": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2",
+      "seed": 2,
+      "mode": "joint_anchor"
+    }
+  ],
+  "evaluations": [
+    {
+      "name": "joint_anchor-seed1-p300-i15-bin-picking-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p300-i15-bin-picking-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p300-i15-door-open-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p300-i15-door-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p300-i15-drawer-open-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p300-i15-drawer-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p300-i15-peg-insert-side-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p300-i15-peg-insert-side-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p300-i15-pick-place-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p300-i15-pick-place-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p300-i15-push-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p300-i15-push-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p300-i15-reach-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p300-i15-reach-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p300-i15-reach-wall-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p300-i15-reach-wall-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p300-i15-bin-picking-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p300-i15-bin-picking-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p300-i15-door-open-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p300-i15-door-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p300-i15-drawer-open-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p300-i15-drawer-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p300-i15-peg-insert-side-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p300-i15-peg-insert-side-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p300-i15-pick-place-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p300-i15-pick-place-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p300-i15-push-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p300-i15-push-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p300-i15-reach-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p300-i15-reach-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p300-i15-reach-wall-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 300,
+      "iterations": 15,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p300-i15-reach-wall-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p1024-i8-bin-picking-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p1024-i8-bin-picking-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p1024-i8-door-open-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p1024-i8-door-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p1024-i8-drawer-open-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p1024-i8-drawer-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p1024-i8-peg-insert-side-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p1024-i8-peg-insert-side-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p1024-i8-pick-place-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p1024-i8-pick-place-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p1024-i8-push-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p1024-i8-push-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p1024-i8-reach-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p1024-i8-reach-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-p1024-i8-reach-wall-v3",
+      "job": "joint_anchor-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed1-p1024-i8-reach-wall-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p1024-i8-bin-picking-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p1024-i8-bin-picking-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p1024-i8-door-open-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p1024-i8-door-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p1024-i8-drawer-open-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p1024-i8-drawer-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p1024-i8-peg-insert-side-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p1024-i8-peg-insert-side-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p1024-i8-pick-place-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p1024-i8-pick-place-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p1024-i8-push-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p1024-i8-push-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p1024-i8-reach-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p1024-i8-reach-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-p1024-i8-reach-wall-v3",
+      "job": "joint_anchor-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "particles": 1024,
+      "iterations": 8,
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/search-v1/evaluation/joint_anchor-seed2-p1024-i8-reach-wall-v3"
+    }
+  ],
+  "inherited": [
+    {
+      "name": "joint_anchor-seed1-s500-bin-picking-v3",
+      "job": "joint_anchor-seed1",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed1-s500-bin-picking-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-s500-door-open-v3",
+      "job": "joint_anchor-seed1",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed1-s500-door-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-s500-drawer-open-v3",
+      "job": "joint_anchor-seed1",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed1-s500-drawer-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-s500-peg-insert-side-v3",
+      "job": "joint_anchor-seed1",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed1-s500-peg-insert-side-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-s500-pick-place-v3",
+      "job": "joint_anchor-seed1",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed1-s500-pick-place-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-s500-push-v3",
+      "job": "joint_anchor-seed1",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed1-s500-push-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-s500-reach-v3",
+      "job": "joint_anchor-seed1",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed1-s500-reach-v3"
+    },
+    {
+      "name": "joint_anchor-seed1-s500-reach-wall-v3",
+      "job": "joint_anchor-seed1",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed1-s500-reach-wall-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-s500-bin-picking-v3",
+      "job": "joint_anchor-seed2",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed2-s500-bin-picking-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-s500-door-open-v3",
+      "job": "joint_anchor-seed2",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed2-s500-door-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-s500-drawer-open-v3",
+      "job": "joint_anchor-seed2",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed2-s500-drawer-open-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-s500-peg-insert-side-v3",
+      "job": "joint_anchor-seed2",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed2-s500-peg-insert-side-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-s500-pick-place-v3",
+      "job": "joint_anchor-seed2",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed2-s500-pick-place-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-s500-push-v3",
+      "job": "joint_anchor-seed2",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed2-s500-push-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-s500-reach-v3",
+      "job": "joint_anchor-seed2",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed2-s500-reach-v3"
+    },
+    {
+      "name": "joint_anchor-seed2-s500-reach-wall-v3",
+      "job": "joint_anchor-seed2",
+      "step": 500,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/joint_anchor-seed2-s500-reach-wall-v3"
+    }
+  ],
+  "deadline": 1794195995.7317328,
+  "design": "Freezejoint500selectedbefore2000result. Same2parents/8cases:64x4inheritedvs300x15and1024x8. Onlysolverbudgetchanges;top10/H60/held5/e15/10imagequeriespercandidateunchanged. Twoactual20stepdefault64x4bitexactcontrols/successes/firstbankgatesbeforeformal.",
+  "model_updates": 0,
+  "automatic_expansion": false,
+  "automatic_long_promotion": false
+}

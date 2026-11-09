@@ -1,0 +1,16 @@
+{
+  "seed": 2,
+  "mode": "mean",
+  "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_joint_flow_20261109/training/mean-seed2",
+  "data": "/tmp/prescottsun-factual-rgb128-20261109-v1",
+  "head_config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+  "head_weights": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/head-step0002000/weights.pt",
+  "head_sha256": "a082a4a94494338745d8ab20801e2823b87fc2893d1bd21457ba6b0e613ec0c6",
+  "parent_updates": 12000,
+  "head_updates": 2000,
+  "new_updates_maximum": 2000,
+  "training_gpus": 4,
+  "global_batch": 64,
+  "supervision": "FactualrecordedRGBandknownexecutedforwardcontrolsONLY. No desiredgoal/path/policy/actiontargets. OwnparentinversepretrainingreconstructsSAMEcurrentinputa0only;inversefrozeninnewphase.",
+  "optimization": "IntentionalfreshAdamW1e-4/warm100/cos6000/globalclip1,allarmsidentical. Four-GPUDataParallel/global64;GNsamplelevel. Parent12000+head2000pretrainingdisclosed."
+}

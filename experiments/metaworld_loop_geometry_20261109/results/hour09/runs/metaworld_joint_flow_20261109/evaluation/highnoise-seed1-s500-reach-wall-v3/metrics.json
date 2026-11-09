@@ -1,0 +1,96 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T02:30:26.076108+00:00",
+  "episodes": [
+    {
+      "task": "reach-wall-v3",
+      "seed": 6042,
+      "case_sha256": "7038b0816186bd4a83ccd28859c50b0ecd8f581cb75282902e9bc29aed4b8cfe",
+      "success": true,
+      "steps": 88,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_joint_flow_20261109/evaluation/highnoise-seed1-s500-reach-wall-v3/reach-wall-v3-seed6042.npz",
+      "trace_sha256": "d7bb1ffeffdca11e1944ad0af20df7b79bd5d5160008b3261a992836f232f6b7",
+      "planning": [
+        {
+          "planner_score": 4.469399452209473,
+          "score_kind": "expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.019916128367185593
+        },
+        {
+          "planner_score": 4.042871475219727,
+          "score_kind": "expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "458cb95b84e545d474d115e638407f3c02573aa82cb72900c778b45287465b58",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 30,
+          "actual_rgb_goal_mse": 0.020399507135152817
+        },
+        {
+          "planner_score": 4.610970497131348,
+          "score_kind": "expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "a9eb5a022ea380b39ae45656752b7ffb95512b4768d0a262d37016c33914742f",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 45,
+          "actual_rgb_goal_mse": 0.019099898636341095
+        },
+        {
+          "planner_score": 3.058819055557251,
+          "score_kind": "expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "f4108b66a1397cb68c24cccf663fd3679f1da7e05be1a4abe69843c22533ee6d",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 60,
+          "actual_rgb_goal_mse": 0.019340945407748222
+        },
+        {
+          "planner_score": 4.436982154846191,
+          "score_kind": "expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "bfbf499933853bd98c0fd314c30fb0f5abf3cfcc0b66b87b79811d07874b6506",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 75,
+          "actual_rgb_goal_mse": 0.011768962256610394
+        },
+        {
+          "planner_score": 3.3317508697509766,
+          "score_kind": "expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "6e9223a37e69c7548cdd60b6d7885d3972e3f0947d99d2b25ce01d54fce442f0",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 88,
+          "actual_rgb_goal_mse": 0.0018517713760957122
+        }
+      ]
+    }
+  ],
+  "mode": "highnoise",
+  "step": 500,
+  "weights_sha256": "0eccc6eb8d4c42985804a47c57e30a24016596df451db414c7ad368061adeb3a",
+  "state_before": "95e93e844816a1631a7b1e789fbfc98455ca3e8b30eeb3cb55ec5b9f79b621f5",
+  "state_after": "95e93e844816a1631a7b1e789fbfc98455ca3e8b30eeb3cb55ec5b9f79b621f5",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 500,
+  "renderer_queries_per_candidate": 10,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Twoownfactualparents12000+ownhead2000+jointflowupdates. Same8developmentalcases;notpublicSOTA/equalbackboneFLOPs."
+}

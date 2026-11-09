@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T01:37:07.613242+00:00",
+  "episodes": [
+    {
+      "task": "reach-wall-v3",
+      "seed": 6042,
+      "case_sha256": "7038b0816186bd4a83ccd28859c50b0ecd8f581cb75282902e9bc29aed4b8cfe",
+      "success": true,
+      "steps": 48,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/evaluation/belief_anchor-seed1-s500-reach-wall-v3/reach-wall-v3-seed6042.npz",
+      "trace_sha256": "b2960ca65b0165dff382a577ed9fb10050c2e2627b8c7c48af32c0edd68e97fc",
+      "planning": [
+        {
+          "planner_score": 1.7153213024139404,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.019412893801927567
+        },
+        {
+          "planner_score": 1.4569038152694702,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "c30d08cdee64b3b92a6a872f10843a39a60c4dd8deb155dc4984f1f7630c3c2a",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 30,
+          "actual_rgb_goal_mse": 0.015765737742185593
+        },
+        {
+          "planner_score": 1.6314797401428223,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "3907016af717ed23accaa80f85836808b8fbf89fec812fc206a3c835fbe4093a",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 45,
+          "actual_rgb_goal_mse": 0.007208481431007385
+        },
+        {
+          "planner_score": 1.1859596967697144,
+          "score_kind": "latent_KL_plus_expected_finite_image_NELBO",
+          "first_bank_prefix_sha256": "a5ef12f8cce095a679a5586b701ae30ac13f8b5ba1ae6e32b9fba101ecbfcc9c",
+          "renderer_queries_per_candidate": 10,
+          "latent_samples": 2,
+          "native_steps": 48,
+          "actual_rgb_goal_mse": 0.0038311476819217205
+        }
+      ]
+    }
+  ],
+  "mode": "belief_anchor",
+  "step": 500,
+  "weights_sha256": "fb99df3436fa8265d7f1c436e7c99d2e2518126aadc21fc5c9789e76390d1f3c",
+  "state_before": "fc932fd62caad49085f0633505ea54408e6d379812b19453d9d31d3d098e7f4b",
+  "state_after": "fc932fd62caad49085f0633505ea54408e6d379812b19453d9d31d3d098e7f4b",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 500,
+  "renderer_queries_per_candidate": 10,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Twoownfactualparents12000+ownhead2000+jointupdates. Same8developmentalcases;notpublicSOTA/equalbackboneFLOPs."
+}

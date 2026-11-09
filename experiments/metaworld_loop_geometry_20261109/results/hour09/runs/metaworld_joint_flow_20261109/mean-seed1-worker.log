@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/efs/prescottsun/SPT-JEPA/reports/metaworld_joint_flow_20261109/source-v1/experiments/metaworld_joint_flow_20261109/campaign.py", line 190, in <module>
+    elif a.mode=='train':train_work(a.name)
+                         ^^^^^^^^^^^^^^^^^^
+  File "/efs/prescottsun/SPT-JEPA/reports/metaworld_joint_flow_20261109/source-v1/experiments/metaworld_joint_flow_20261109/campaign.py", line 106, in train_work
+    command(args,out/f'train-{stop}.log',env,s,p['deadline']);cpu_audit(j,stop,p)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/efs/prescottsun/SPT-JEPA/reports/metaworld_joint_flow_20261109/source-v1/experiments/metaworld_transition_only_20261109/campaign.py", line 82, in command
+    subprocess.run(['/usr/bin/timeout','--signal=TERM','--kill-after=60',str(remaining),*map(str,args)],
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/bin/timeout', '--signal=TERM', '--kill-after=60', '13744', '/efs/prescottsun/project_jepa/envs/lewm/bin/python', '-m', 'experiments.metaworld_joint_flow_20261109.train', 'train', '--config', '/efs/prescottsun/SPT-JEPA/runs/metaworld_joint_flow_20261109/training/mean-seed1/config.json', '--stop', '2000', '--resume', '/efs/prescottsun/SPT-JEPA/runs/metaworld_joint_flow_20261109/training/mean-seed1/checkpoint-0000500.pt']' returned non-zero exit status 1.

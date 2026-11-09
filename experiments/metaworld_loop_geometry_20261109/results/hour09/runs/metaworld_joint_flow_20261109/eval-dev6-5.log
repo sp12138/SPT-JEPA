@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/efs/prescottsun/SPT-JEPA/reports/metaworld_joint_flow_20261109/source-v1/experiments/metaworld_joint_flow_20261109/campaign.py", line 191, in <module>
+    elif a.mode=='eval':evaluate_work(a.host,a.gpu)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/efs/prescottsun/SPT-JEPA/reports/metaworld_joint_flow_20261109/source-v1/experiments/metaworld_joint_flow_20261109/campaign.py", line 125, in evaluate_work
+    for j in p['jobs']:wait(Path(j['output'])/f'READY-{step:07d}.json',p)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/efs/prescottsun/SPT-JEPA/reports/metaworld_joint_flow_20261109/source-v1/experiments/metaworld_joint_flow_20261109/campaign.py", line 93, in wait
+    assert not (ROOT/'GLOBAL_GATE_ERROR.json').exists() and not list(ROOT.glob('errors/*.json'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

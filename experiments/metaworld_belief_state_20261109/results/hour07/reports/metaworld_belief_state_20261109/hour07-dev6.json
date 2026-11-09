@@ -1,0 +1,1275 @@
+{
+  "utc": "2026-11-09T02:07:25.446720+00:00",
+  "host": "dev6",
+  "gpus": [
+    {
+      "index": "0",
+      "uuid": "GPU-a348b930-d6d3-418e-4f0b-7a2800d7db43",
+      "utilization.gpu": "0",
+      "memory.used": "0",
+      "power.draw": "123.57"
+    },
+    {
+      "index": "1",
+      "uuid": "GPU-74a6c93b-abcc-f348-c624-93d40d67d2b7",
+      "utilization.gpu": "0",
+      "memory.used": "0",
+      "power.draw": "122.39"
+    },
+    {
+      "index": "2",
+      "uuid": "GPU-44a90018-dc97-3385-459e-9258a38cc20f",
+      "utilization.gpu": "0",
+      "memory.used": "0",
+      "power.draw": "122.61"
+    },
+    {
+      "index": "3",
+      "uuid": "GPU-22863586-2d1a-822d-897f-f58b57f67c70",
+      "utilization.gpu": "0",
+      "memory.used": "0",
+      "power.draw": "122.93"
+    },
+    {
+      "index": "4",
+      "uuid": "GPU-e74f63d3-f568-0ea6-bdf2-ec55eb413bfe",
+      "utilization.gpu": "0",
+      "memory.used": "0",
+      "power.draw": "124.84"
+    },
+    {
+      "index": "5",
+      "uuid": "GPU-11385730-c9c3-b94a-3806-5c8406e52678",
+      "utilization.gpu": "0",
+      "memory.used": "0",
+      "power.draw": "125.83"
+    },
+    {
+      "index": "6",
+      "uuid": "GPU-64619208-d8f0-05bf-05ca-4359485e67c1",
+      "utilization.gpu": "0",
+      "memory.used": "0",
+      "power.draw": "119.91"
+    },
+    {
+      "index": "7",
+      "uuid": "GPU-0a188033-c031-dac4-4d62-0c4a4e637c0b",
+      "utilization.gpu": "0",
+      "memory.used": "0",
+      "power.draw": "120.00"
+    }
+  ],
+  "compute_apps": [],
+  "source_hashes_match": true,
+  "training_gate": {
+    "passed": true,
+    "utc": "2026-11-09T01:27:24.420468+00:00",
+    "six_full_cpu_restores_and_positive_FP32_backward": true,
+    "actual4GPU_two_updates_each": true,
+    "technical_native_steps": 120,
+    "exact_initial_parameter_values": true,
+    "exact_first2_data_and_allrandomterms": true,
+    "common_initial_control_bank": true,
+    "sample_level": true
+  },
+  "four_gpu_audit": {
+    "passed": true,
+    "utc": "2026-11-09T01:26:01.698176+00:00",
+    "four_gpu_vs_single_gpu_FP32_loss": [
+      2.7467868328094482,
+      2.7467868328094482
+    ],
+    "gradient_relative_L2": 5.109802193037212e-07,
+    "analytic_gaussian_KL_matches_torch": true,
+    "common_nats_per_RGB_dimension": true,
+    "actual_train_windows": 8,
+    "maximum_native_future": 3,
+    "model_unchanged": true,
+    "model_updates": 0,
+    "physics_steps": 0
+  },
+  "jobs": {
+    "joint_anchor-seed1": {
+      "status": {
+        "utc": "2026-11-09T01:58:52.171592+00:00",
+        "step": 2000,
+        "samples": 128000,
+        "mode": "joint_anchor",
+        "loss": 1.2979252338409424,
+        "metrics": {
+          "loss": 1.2979252338409424,
+          "image_bound": 1.2979252338409424,
+          "latent_kl": 0.0,
+          "prior_std": 0.0737219899892807,
+          "posterior_std": 0.0737219899892807,
+          "duration": 18.328125
+        },
+        "positive_gradients": {
+          "vision": 0.030724037964701512,
+          "observer": 0.01338188057467388,
+          "control": 0.0025613691554694142,
+          "transition": 0.019482379215536035,
+          "renderer": 12.281967172606178,
+          "prior_scale": 0.0002471733471683802
+        },
+        "gradient_norm": 12.282028198242188,
+        "training_gpus": 4,
+        "gpu_peak_gib": [
+          1.9628582000732422,
+          1.7680916786193848,
+          1.7680916786193848,
+          1.7680916786193848
+        ]
+      },
+      "last": {
+        "step": 2000,
+        "samples": 128000,
+        "path": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed1/checkpoint-0002000.pt",
+        "utc": "2026-11-09T01:58:52.829516+00:00"
+      },
+      "preflight": {
+        "passed": true,
+        "utc": "2026-11-09T01:27:24.241279+00:00",
+        "actual_new_updates": 2,
+        "training_gpus": 4,
+        "technical_steps": 20
+      },
+      "audits": {
+        "AUDIT-0000002.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:27:13.138659+00:00",
+          "step": 2,
+          "samples": 128,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.107314895405613,
+            "observer": 0.08279886119957687,
+            "control": 0.06084376654676145,
+            "transition": 0.532365300718488,
+            "renderer": 21.467970048691267,
+            "prior_scale": 0.0037727446207636703
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 1.8415026664733887,
+            "image_bound": 1.8415026664733887,
+            "latent_kl": 0.0,
+            "prior_std": 0.09999950230121613,
+            "posterior_std": 0.09999950230121613,
+            "duration": 42.0
+          }
+        },
+        "AUDIT-0002000.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:58:59.056022+00:00",
+          "step": 2000,
+          "samples": 128000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.07859564900584054,
+            "observer": 0.06423588638170839,
+            "control": 0.03943717794770477,
+            "transition": 0.16953443876013774,
+            "renderer": 9.22787299658964,
+            "prior_scale": 0.0012069636270431298
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 1.4853301048278809,
+            "image_bound": 1.4853301048278809,
+            "latent_kl": 0.0,
+            "prior_std": 0.06995701789855957,
+            "posterior_std": 0.06995701789855957,
+            "duration": 42.0
+          }
+        },
+        "AUDIT-0000500.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:35:42.084189+00:00",
+          "step": 500,
+          "samples": 32000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.06730517154684072,
+            "observer": 0.053850477005330306,
+            "control": 0.0342856603569947,
+            "transition": 0.17928735789133593,
+            "renderer": 11.334945643497155,
+            "prior_scale": 0.0018041837472669783
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 1.6041064262390137,
+            "image_bound": 1.6041064262390137,
+            "latent_kl": 0.0,
+            "prior_std": 0.09077925980091095,
+            "posterior_std": 0.09077925980091095,
+            "duration": 42.0
+          }
+        }
+      }
+    },
+    "belief_anchor-seed1": {
+      "status": {
+        "utc": "2026-11-09T02:00:03.049125+00:00",
+        "step": 2000,
+        "samples": 128000,
+        "mode": "belief_anchor",
+        "loss": 1.306054711341858,
+        "metrics": {
+          "loss": 1.306054711341858,
+          "image_bound": 1.3054535388946533,
+          "latent_kl": 0.0006012439262121916,
+          "prior_std": 0.11556998640298843,
+          "posterior_std": 0.11544705927371979,
+          "duration": 18.328125
+        },
+        "positive_gradients": {
+          "vision": 0.003927189876456057,
+          "observer": 0.01128599267915232,
+          "control": 0.0006265039534018571,
+          "transition": 0.02471336955279674,
+          "renderer": 13.379014489912509,
+          "prior_scale": 6.128169165556359e-05,
+          "posterior_scale": 0.0006103879121018368
+        },
+        "gradient_norm": 13.379042625427246,
+        "training_gpus": 4,
+        "gpu_peak_gib": [
+          1.9727773666381836,
+          1.7778878211975098,
+          1.7778878211975098,
+          1.7778878211975098
+        ]
+      },
+      "last": {
+        "step": 2000,
+        "samples": 128000,
+        "path": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/belief_anchor-seed1/checkpoint-0002000.pt",
+        "utc": "2026-11-09T02:00:03.626777+00:00"
+      },
+      "preflight": {
+        "passed": true,
+        "utc": "2026-11-09T01:27:23.686488+00:00",
+        "actual_new_updates": 2,
+        "training_gpus": 4,
+        "technical_steps": 20
+      },
+      "audits": {
+        "AUDIT-0000002.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:27:13.770330+00:00",
+          "step": 2,
+          "samples": 128,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 7.7839404217605725,
+            "observer": 3.638530979817445,
+            "control": 0.9011267179064516,
+            "transition": 10.008722310844387,
+            "renderer": 21.614817589138582,
+            "prior_scale": 1.974292537274912,
+            "posterior_scale": 0.005093027590419371
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 5.685701370239258,
+            "image_bound": 1.854473352432251,
+            "latent_kl": 3.8312277793884277,
+            "prior_std": 0.10000422596931458,
+            "posterior_std": 0.09999974071979523,
+            "duration": 42.0
+          }
+        },
+        "AUDIT-0002000.json": {
+          "passed": true,
+          "utc": "2026-11-09T02:00:11.596039+00:00",
+          "step": 2000,
+          "samples": 128000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.008805331718496021,
+            "observer": 0.016675981455926768,
+            "control": 0.0043740109036126676,
+            "transition": 0.07719281856068194,
+            "renderer": 10.171634604258172,
+            "prior_scale": 0.001445319609008032,
+            "posterior_scale": 0.0026733721279159008
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 1.4852818250656128,
+            "image_bound": 1.4847781658172607,
+            "latent_kl": 0.0005036576185375452,
+            "prior_std": 0.11630068719387054,
+            "posterior_std": 0.11614730954170227,
+            "duration": 42.0
+          }
+        },
+        "AUDIT-0000500.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:36:17.702066+00:00",
+          "step": 500,
+          "samples": 32000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.013982747618531917,
+            "observer": 0.02143061268067225,
+            "control": 0.003049016182941939,
+            "transition": 0.04398362989353355,
+            "renderer": 12.55894469666753,
+            "prior_scale": 0.003234571122708384,
+            "posterior_scale": 0.003157735417700913
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 1.599460482597351,
+            "image_bound": 1.5968700647354126,
+            "latent_kl": 0.0025904031936079264,
+            "prior_std": 0.113616444170475,
+            "posterior_std": 0.1135069876909256,
+            "duration": 42.0
+          }
+        }
+      }
+    },
+    "belief_state-seed1": {
+      "status": {
+        "utc": "2026-11-09T02:00:47.139462+00:00",
+        "step": 2000,
+        "samples": 128000,
+        "mode": "belief_state",
+        "loss": 1.6693888902664185,
+        "metrics": {
+          "loss": 1.6693888902664185,
+          "image_bound": 1.6690692901611328,
+          "latent_kl": 0.0003195886383764446,
+          "prior_std": 0.11774126440286636,
+          "posterior_std": 0.11727407574653625,
+          "duration": 18.328125
+        },
+        "positive_gradients": {
+          "vision": 0.023129272908916067,
+          "observer": 0.04630896548790313,
+          "control": 0.0016285552386830794,
+          "transition": 0.06953515612014001,
+          "renderer": 9.414071857812125,
+          "prior_scale": 2.267743290470526e-05,
+          "posterior_scale": 0.0015607417050792635
+        },
+        "gradient_norm": 9.414471626281738,
+        "training_gpus": 4,
+        "gpu_peak_gib": [
+          1.9757070541381836,
+          1.7808175086975098,
+          1.7808175086975098,
+          1.7808175086975098
+        ]
+      },
+      "last": {
+        "step": 2000,
+        "samples": 128000,
+        "path": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/belief_state-seed1/checkpoint-0002000.pt",
+        "utc": "2026-11-09T02:00:48.570654+00:00"
+      },
+      "preflight": {
+        "passed": true,
+        "utc": "2026-11-09T01:27:23.593090+00:00",
+        "actual_new_updates": 2,
+        "training_gpus": 4,
+        "technical_steps": 20
+      },
+      "audits": {
+        "AUDIT-0000002.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:27:12.668446+00:00",
+          "step": 2,
+          "samples": 128,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 11.138660198796183,
+            "observer": 5.606795906170886,
+            "control": 1.1474197964699122,
+            "transition": 15.745009864318797,
+            "renderer": 144.73764688953895,
+            "prior_scale": 1.9744923874850053,
+            "posterior_scale": 0.07573876657938652
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 12.09743881225586,
+            "image_bound": 8.264730453491211,
+            "latent_kl": 3.8327078819274902,
+            "prior_std": 0.10000422596931458,
+            "posterior_std": 0.09999991208314896,
+            "duration": 42.0
+          }
+        },
+        "AUDIT-0002000.json": {
+          "passed": true,
+          "utc": "2026-11-09T02:00:55.251692+00:00",
+          "step": 2000,
+          "samples": 128000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.03497524364820834,
+            "observer": 0.042226410902773945,
+            "control": 0.004273004156728756,
+            "transition": 0.13256664530674123,
+            "renderer": 10.202365287846435,
+            "prior_scale": 0.003982822183377412,
+            "posterior_scale": 0.005977260547181907
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 1.6510064601898193,
+            "image_bound": 1.6506307125091553,
+            "latent_kl": 0.00037587122642435133,
+            "prior_std": 0.11822997033596039,
+            "posterior_std": 0.11769891530275345,
+            "duration": 42.0
+          }
+        },
+        "AUDIT-0000500.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:36:24.007200+00:00",
+          "step": 500,
+          "samples": 32000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.03882083755112466,
+            "observer": 0.06218625244431742,
+            "control": 0.007393779223022303,
+            "transition": 0.1783417592076759,
+            "renderer": 11.401722110583504,
+            "prior_scale": 0.002727289812113842,
+            "posterior_scale": 0.005607481096725529
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 1.9119250774383545,
+            "image_bound": 1.9104297161102295,
+            "latent_kl": 0.001495382166467607,
+            "prior_std": 0.11600382626056671,
+            "posterior_std": 0.11568856239318848,
+            "duration": 42.0
+          }
+        }
+      }
+    },
+    "joint_anchor-seed2": {
+      "status": {
+        "utc": "2026-11-09T01:58:48.045271+00:00",
+        "step": 2000,
+        "samples": 128000,
+        "mode": "joint_anchor",
+        "loss": 1.2030055522918701,
+        "metrics": {
+          "loss": 1.2030055522918701,
+          "image_bound": 1.2030055522918701,
+          "latent_kl": 0.0,
+          "prior_std": 0.07704757153987885,
+          "posterior_std": 0.07704757153987885,
+          "duration": 18.765625
+        },
+        "positive_gradients": {
+          "vision": 0.018730729467994377,
+          "observer": 0.013839925891833449,
+          "control": 0.003988819640309846,
+          "transition": 0.024608336944790175,
+          "renderer": 8.394985368877443,
+          "prior_scale": 0.00022881418863875098
+        },
+        "gradient_norm": 8.395054817199707,
+        "training_gpus": 4,
+        "gpu_peak_gib": [
+          1.9628582000732422,
+          1.7680916786193848,
+          1.7680916786193848,
+          1.7680916786193848
+        ]
+      },
+      "last": {
+        "step": 2000,
+        "samples": 128000,
+        "path": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/joint_anchor-seed2/checkpoint-0002000.pt",
+        "utc": "2026-11-09T01:58:48.667386+00:00"
+      },
+      "preflight": {
+        "passed": true,
+        "utc": "2026-11-09T01:27:24.145176+00:00",
+        "actual_new_updates": 2,
+        "training_gpus": 4,
+        "technical_steps": 20
+      },
+      "audits": {
+        "AUDIT-0000002.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:27:11.943069+00:00",
+          "step": 2,
+          "samples": 128,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.10993434955445568,
+            "observer": 0.08960346972319742,
+            "control": 0.026843883985113143,
+            "transition": 0.4090583526954375,
+            "renderer": 68.18575620108035,
+            "prior_scale": 0.004157034594236703
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 2.9734039306640625,
+            "image_bound": 2.9734039306640625,
+            "latent_kl": 0.0,
+            "prior_std": 0.09999959170818329,
+            "posterior_std": 0.09999959170818329,
+            "duration": 22.5
+          }
+        },
+        "AUDIT-0002000.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:58:55.012055+00:00",
+          "step": 2000,
+          "samples": 128000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.06271568960085094,
+            "observer": 0.053987774702585895,
+            "control": 0.011902726887321758,
+            "transition": 0.17377609737924107,
+            "renderer": 24.25977977722878,
+            "prior_scale": 0.0016790739220906073
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 1.95842707157135,
+            "image_bound": 1.95842707157135,
+            "latent_kl": 0.0,
+            "prior_std": 0.07554666697978973,
+            "posterior_std": 0.07554666697978973,
+            "duration": 22.5
+          }
+        },
+        "AUDIT-0000500.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:35:59.351250+00:00",
+          "step": 500,
+          "samples": 32000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.07643408656456374,
+            "observer": 0.054290385777514355,
+            "control": 0.016957950836336357,
+            "transition": 0.19042727317061886,
+            "renderer": 19.39937177842796,
+            "prior_scale": 0.002635792259298625
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 2.2134971618652344,
+            "image_bound": 2.2134971618652344,
+            "latent_kl": 0.0,
+            "prior_std": 0.09304676949977875,
+            "posterior_std": 0.09304676949977875,
+            "duration": 22.5
+          }
+        }
+      }
+    },
+    "belief_anchor-seed2": {
+      "status": {
+        "utc": "2026-11-09T01:59:16.222106+00:00",
+        "step": 2000,
+        "samples": 128000,
+        "mode": "belief_anchor",
+        "loss": 1.2128342390060425,
+        "metrics": {
+          "loss": 1.2128342390060425,
+          "image_bound": 1.2122739553451538,
+          "latent_kl": 0.0005603159079328179,
+          "prior_std": 0.11606618016958237,
+          "posterior_std": 0.11589585989713669,
+          "duration": 18.765625
+        },
+        "positive_gradients": {
+          "vision": 0.0027106372093507153,
+          "observer": 0.004470704497615112,
+          "control": 0.0003715205465751154,
+          "transition": 0.013360909040415475,
+          "renderer": 12.87839832888558,
+          "prior_scale": 8.665164507068905e-05,
+          "posterior_scale": 0.000651517711022508
+        },
+        "gradient_norm": 12.878405570983887,
+        "training_gpus": 4,
+        "gpu_peak_gib": [
+          1.9727773666381836,
+          1.7778878211975098,
+          1.7778878211975098,
+          1.7778878211975098
+        ]
+      },
+      "last": {
+        "step": 2000,
+        "samples": 128000,
+        "path": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/belief_anchor-seed2/checkpoint-0002000.pt",
+        "utc": "2026-11-09T01:59:17.683812+00:00"
+      },
+      "preflight": {
+        "passed": true,
+        "utc": "2026-11-09T01:27:23.680607+00:00",
+        "actual_new_updates": 2,
+        "training_gpus": 4,
+        "technical_steps": 20
+      },
+      "audits": {
+        "AUDIT-0000002.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:27:13.283796+00:00",
+          "step": 2,
+          "samples": 128,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 4.001083228514589,
+            "observer": 3.2466606868418997,
+            "control": 0.4869115768962878,
+            "transition": 6.942642820682013,
+            "renderer": 72.24152183239252,
+            "prior_scale": 1.3102442168774324,
+            "posterior_scale": 0.007228401525200107
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 5.393897533416748,
+            "image_bound": 2.998791217803955,
+            "latent_kl": 2.395106315612793,
+            "prior_std": 0.1000034362077713,
+            "posterior_std": 0.09999962151050568,
+            "duration": 22.5
+          }
+        },
+        "AUDIT-0002000.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:59:23.560005+00:00",
+          "step": 2000,
+          "samples": 128000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.021703718753777235,
+            "observer": 0.036782504757668526,
+            "control": 0.008793782624072103,
+            "transition": 0.2038734145881471,
+            "renderer": 19.235330254929465,
+            "prior_scale": 0.0018292503583060508,
+            "posterior_scale": 0.00442674570649558
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 1.957353115081787,
+            "image_bound": 1.9568114280700684,
+            "latent_kl": 0.0005416350904852152,
+            "prior_std": 0.1157173216342926,
+            "posterior_std": 0.1155114620923996,
+            "duration": 22.5
+          }
+        },
+        "AUDIT-0000500.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:36:35.418048+00:00",
+          "step": 500,
+          "samples": 32000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.025799935672552527,
+            "observer": 0.043569376303550476,
+            "control": 0.008585712767392855,
+            "transition": 0.1731941696251625,
+            "renderer": 23.970911209350263,
+            "prior_scale": 0.0031066455886198923,
+            "posterior_scale": 0.005027066561619648
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 2.2206690311431885,
+            "image_bound": 2.218400478363037,
+            "latent_kl": 0.002268620766699314,
+            "prior_std": 0.11391565203666687,
+            "posterior_std": 0.11380381882190704,
+            "duration": 22.5
+          }
+        }
+      }
+    },
+    "belief_state-seed2": {
+      "status": {
+        "utc": "2026-11-09T01:58:34.698376+00:00",
+        "step": 2000,
+        "samples": 128000,
+        "mode": "belief_state",
+        "loss": 1.446911334991455,
+        "metrics": {
+          "loss": 1.446911334991455,
+          "image_bound": 1.4466423988342285,
+          "latent_kl": 0.00026886299019679427,
+          "prior_std": 0.12095312774181366,
+          "posterior_std": 0.1204676479101181,
+          "duration": 18.765625
+        },
+        "positive_gradients": {
+          "vision": 0.01427366111926498,
+          "observer": 0.02473154814742172,
+          "control": 0.0016495007616396796,
+          "transition": 0.05479930302014082,
+          "renderer": 6.801880631372443,
+          "prior_scale": 2.0409521636040397e-05,
+          "posterior_scale": 0.0009964706207066007
+        },
+        "gradient_norm": 6.802161693572998,
+        "training_gpus": 4,
+        "gpu_peak_gib": [
+          1.9757070541381836,
+          1.7808175086975098,
+          1.7808175086975098,
+          1.7808175086975098
+        ]
+      },
+      "last": {
+        "step": 2000,
+        "samples": 128000,
+        "path": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109/training/belief_state-seed2/checkpoint-0002000.pt",
+        "utc": "2026-11-09T01:58:35.265317+00:00"
+      },
+      "preflight": {
+        "passed": true,
+        "utc": "2026-11-09T01:27:24.229630+00:00",
+        "actual_new_updates": 2,
+        "training_gpus": 4,
+        "technical_steps": 20
+      },
+      "audits": {
+        "AUDIT-0000002.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:27:13.281001+00:00",
+          "step": 2,
+          "samples": 128,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 7.232482862511567,
+            "observer": 5.092992006185292,
+            "control": 0.679866679459618,
+            "transition": 12.228445790662171,
+            "renderer": 158.96073602378743,
+            "prior_scale": 1.3112585293026051,
+            "posterior_scale": 0.07203299301137296
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 16.914213180541992,
+            "image_bound": 14.51679515838623,
+            "latent_kl": 2.3974170684814453,
+            "prior_std": 0.1000034287571907,
+            "posterior_std": 0.10000022500753403,
+            "duration": 22.5
+          }
+        },
+        "AUDIT-0002000.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:58:41.017975+00:00",
+          "step": 2000,
+          "samples": 128000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.023738423818396234,
+            "observer": 0.03846834125086109,
+            "control": 0.007010775211193416,
+            "transition": 0.16584328441798865,
+            "renderer": 22.603301172191333,
+            "prior_scale": 0.0033636639539286785,
+            "posterior_scale": 0.007941165877054858
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 2.3224434852600098,
+            "image_bound": 2.3221006393432617,
+            "latent_kl": 0.00034270063042640686,
+            "prior_std": 0.12053278088569641,
+            "posterior_std": 0.12004880607128143,
+            "duration": 22.5
+          }
+        },
+        "AUDIT-0000500.json": {
+          "passed": true,
+          "utc": "2026-11-09T01:35:57.851597+00:00",
+          "step": 500,
+          "samples": 32000,
+          "cpu_full_restore_fp32_backward": true,
+          "positive_gradients": {
+            "vision": 0.03318970809578708,
+            "observer": 0.03710649582711108,
+            "control": 0.006985994988647313,
+            "transition": 0.1483737931276155,
+            "renderer": 20.750407956348386,
+            "prior_scale": 0.002308172924830413,
+            "posterior_scale": 0.0069327117307653495
+          },
+          "model_unchanged": true,
+          "zero_identical_gaussian_KL": true,
+          "optimizer_updates": 0,
+          "gpu_contexts": 0,
+          "metrics": {
+            "loss": 2.76058292388916,
+            "image_bound": 2.759345531463623,
+            "latent_kl": 0.0012374042998999357,
+            "prior_std": 0.11699384450912476,
+            "posterior_std": 0.11673636734485626,
+            "duration": 22.5
+          }
+        }
+      }
+    }
+  },
+  "summary": {
+    "utc": "2026-11-09T02:03:47.503034+00:00",
+    "endpoints": 144,
+    "planned_endpoints": 144,
+    "groups": {
+      "joint_anchor-step2": {
+        "episodes": 16,
+        "hard_successes": 0,
+        "hard_episodes": 12,
+        "by_task": {
+          "bin-picking-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "door-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "drawer-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "peg-insert-side-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "pick-place-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "push-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-v3": {
+            "successes": 2,
+            "episodes": 2
+          },
+          "reach-wall-v3": {
+            "successes": 2,
+            "episodes": 2
+          }
+        }
+      },
+      "belief_anchor-step2": {
+        "episodes": 16,
+        "hard_successes": 0,
+        "hard_episodes": 12,
+        "by_task": {
+          "bin-picking-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "door-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "drawer-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "peg-insert-side-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "pick-place-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "push-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-wall-v3": {
+            "successes": 0,
+            "episodes": 2
+          }
+        }
+      },
+      "belief_state-step2": {
+        "episodes": 16,
+        "hard_successes": 0,
+        "hard_episodes": 12,
+        "by_task": {
+          "bin-picking-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "door-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "drawer-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "peg-insert-side-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "pick-place-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "push-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-wall-v3": {
+            "successes": 0,
+            "episodes": 2
+          }
+        }
+      },
+      "joint_anchor-step500": {
+        "episodes": 16,
+        "hard_successes": 2,
+        "hard_episodes": 12,
+        "by_task": {
+          "bin-picking-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "door-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "drawer-open-v3": {
+            "successes": 1,
+            "episodes": 2
+          },
+          "peg-insert-side-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "pick-place-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "push-v3": {
+            "successes": 1,
+            "episodes": 2
+          },
+          "reach-v3": {
+            "successes": 1,
+            "episodes": 2
+          },
+          "reach-wall-v3": {
+            "successes": 2,
+            "episodes": 2
+          }
+        }
+      },
+      "belief_anchor-step500": {
+        "episodes": 16,
+        "hard_successes": 1,
+        "hard_episodes": 12,
+        "by_task": {
+          "bin-picking-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "door-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "drawer-open-v3": {
+            "successes": 1,
+            "episodes": 2
+          },
+          "peg-insert-side-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "pick-place-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "push-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-wall-v3": {
+            "successes": 1,
+            "episodes": 2
+          }
+        }
+      },
+      "belief_state-step500": {
+        "episodes": 16,
+        "hard_successes": 0,
+        "hard_episodes": 12,
+        "by_task": {
+          "bin-picking-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "door-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "drawer-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "peg-insert-side-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "pick-place-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "push-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-wall-v3": {
+            "successes": 0,
+            "episodes": 2
+          }
+        }
+      },
+      "joint_anchor-step2000": {
+        "episodes": 16,
+        "hard_successes": 1,
+        "hard_episodes": 12,
+        "by_task": {
+          "bin-picking-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "door-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "drawer-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "peg-insert-side-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "pick-place-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "push-v3": {
+            "successes": 1,
+            "episodes": 2
+          },
+          "reach-v3": {
+            "successes": 1,
+            "episodes": 2
+          },
+          "reach-wall-v3": {
+            "successes": 1,
+            "episodes": 2
+          }
+        }
+      },
+      "belief_anchor-step2000": {
+        "episodes": 16,
+        "hard_successes": 0,
+        "hard_episodes": 12,
+        "by_task": {
+          "bin-picking-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "door-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "drawer-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "peg-insert-side-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "pick-place-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "push-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-wall-v3": {
+            "successes": 0,
+            "episodes": 2
+          }
+        }
+      },
+      "belief_state-step2000": {
+        "episodes": 16,
+        "hard_successes": 0,
+        "hard_episodes": 12,
+        "by_task": {
+          "bin-picking-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "door-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "drawer-open-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "peg-insert-side-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "pick-place-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "push-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-v3": {
+            "successes": 0,
+            "episodes": 2
+          },
+          "reach-wall-v3": {
+            "successes": 0,
+            "episodes": 2
+          }
+        }
+      }
+    },
+    "errors": [],
+    "trained": 6,
+    "physical_cases": 8,
+    "original_trained_parents": 2
+  },
+  "phase_completions": {
+    "COLLECTED-0002000.json": {
+      "passed": true,
+      "utc": "2026-11-09T02:03:47.524070+00:00",
+      "episodes": 48,
+      "actual_trace_SHA_and_actions_and_successes_verified": true
+    },
+    "COLLECTED-0000002.json": {
+      "passed": true,
+      "utc": "2026-11-09T01:29:11.685623+00:00",
+      "episodes": 48,
+      "actual_trace_SHA_and_actions_and_successes_verified": true
+    },
+    "COLLECTED-0000500.json": {
+      "passed": true,
+      "utc": "2026-11-09T01:38:28.698909+00:00",
+      "episodes": 48,
+      "actual_trace_SHA_and_actions_and_successes_verified": true
+    }
+  },
+  "closed": {
+    "passed": true,
+    "utc": "2026-11-09T02:03:47.545825+00:00",
+    "automatic_long_promotion": false
+  },
+  "errors": {},
+  "model_updates": 0,
+  "physics_steps": 0,
+  "new_cuda_contexts": 0,
+  "scope": "Instant snapshot only. Four-GPU training repeats one PID across four GPU UUIDs; not four independent learners or constantutilization."
+}
