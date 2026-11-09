@@ -1,0 +1,35 @@
+{
+  "utc": "2026-11-09T07:23:00.932466+00:00",
+  "status": "ALL_EIGHT_ENTRY_GATES_PASS_INITIAL128_CONTROLLER_OUTCOMES_ACTIVE",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_causal_inverse_20261109",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_causal_inverse_20261109/source-v2",
+  "source_files": 43,
+  "hosts": [
+    "dev13",
+    "dev15",
+    "dev6"
+  ],
+  "models": 8,
+  "physical_GPUs": 24,
+  "allocation": "dev13four2GPUdeterministiclearners;dev15two4GPUflowseed1;dev6two4GPUflowseed2.",
+  "stages": [
+    2,
+    2000,
+    10000
+  ],
+  "formal_episodes": 384,
+  "physical_cases": 8,
+  "trained_parents": 2,
+  "design": "Currenta0native1MSEvsheld5MSEvsheld5flow_uniformvsheld5flow_highnoiseodds4. AllfiveforwardstepsreceiveSAMEa0;observedRGBtargets. InverseonlySAME4Da0,nevera1/unknownoptimalactions. Actualhistory8/knownpast7causalcontext.",
+  "data": "Old14909eligibleTRAINconstant5primitives+4800OURrandomTRAINprimitives. EXTRAdata/ordinaryscriptedcontext,notexpertfree/equaldataSOTA. TESTheldoutbycase.",
+  "training": "Own12kparents+max10knewjointupdates. FullFP32/GN/samplelevel/global64/unitRGB+inversecoefficients/freshAdamW3e-4. InitialparameterVALUES/data+uniform/Gaussiantermspairedwithinseed;DP2vs4roundoffnotbitidentical.",
+  "audit": "Actual64RGB/inputbytechecksPASS;ALL5forwardcallsreceiveEXACTa0;2GPU/4GPUgradientrelative4.58e-6/sampleisolation0.0/0SGD. Sourcev1audittemporaryboundmethodcopybugretained;sourcev2removesinstanceoverridebeforeDP. All37oldNNsourcebytesunchanged;0SGDbeforefix.",
+  "evaluation": "500nativeanysuccess/every1camera+execute/history8. Inverse-directmeanvs16inverseproposalsrankedby5stepRGBforward. 8inspecteddevelopmentalcases/2originalparents,notpublicSOTA/MT50/equalFLOPs.",
+  "ownership": "launch-{host}.json/collector-launch.json;neverduplicatelaunch. Restorefullmodel/Adam/scheduler/RNG/cursor. Allpreviousclosedcampaignspreserved.",
+  "constraints": "Ownscratch/GNsamplelevel/RGB+knownexecutedcontrols/rewardfree. DesiredgoalONLYplanning. No expertpaths/policy/unknownfutureactionlabels/references/teachers/state/tasklanguage. Protectedoracle/eval/contact/loopbanksNEVERtrain/teacher/proposals.",
+  "monitor": "Directsame-sessionhourly/interruptiblewaits<=60s/NOexternalLLMtimer/newgoal/subagents.",
+  "next_hourly_due_utc": "2026-11-09T07:30:00Z",
+  "performance": "Nonewphysicalperformanceresultyet;highmanipulationperformanceNOTachieved.",
+  "automatic_long_promotion": false,
+  "entry": "All8actualnative2/fullCPUmodelAdamWschedulerrestore/FP32backward+actual20nativestepsPASS. Globalgate07:22:30+ commonparameterVALUES/data/allrandomterms/proposalRNG PASS;0effectiveerrors."
+}
