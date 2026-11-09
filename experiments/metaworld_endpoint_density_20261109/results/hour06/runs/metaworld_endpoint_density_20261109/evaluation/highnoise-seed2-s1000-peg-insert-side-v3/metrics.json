@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "utc": "2026-11-08T23:50:02.118145+00:00",
+  "episodes": [
+    {
+      "task": "peg-insert-side-v3",
+      "seed": 6042,
+      "case_sha256": "6eef2969c380beb75309df9eab67fb2cd53c6a2191ad47d554c8637c453d56da",
+      "success": false,
+      "steps": 500,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/evaluation/highnoise-seed2-s1000-peg-insert-side-v3/peg-insert-side-v3-seed6042.npz",
+      "trace_sha256": "705b0c78ccfe0fa0b318eecbfd989955ac80b7c2ce4ffee10cbf346687b7af1d",
+      "planning_calls": 34,
+      "first_plan": {
+        "planner_score": 2.7853875160217285,
+        "score_kind": "finite_reverse_diffusion_NELBO_minus_action_constant_prior",
+        "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+        "renderer_queries_per_candidate": 5,
+        "native_steps": 15,
+        "actual_rgb_goal_mse": 0.016859780997037888
+      },
+      "last_plan": {
+        "planner_score": 2.2447032928466797,
+        "score_kind": "finite_reverse_diffusion_NELBO_minus_action_constant_prior",
+        "first_bank_prefix_sha256": "bb58b5487cbc9f77f18b70d9cca8bdcf5cde341c4dac2aeede009818bcc99a56",
+        "renderer_queries_per_candidate": 5,
+        "native_steps": 500,
+        "actual_rgb_goal_mse": 0.01029744278639555
+      }
+    }
+  ],
+  "mode": "highnoise",
+  "step": 1000,
+  "head_weights_sha256": "dc4f9ff77e2026851b2c65190581dd46a13b367e9f5dea16ced2e47f36a2016e",
+  "parent_state_before": "2143d5b55b4aecf8a196b447c21d926370e31b34ff956b5283fd926cfda867b5",
+  "parent_state_after": "2143d5b55b4aecf8a196b447c21d926370e31b34ff956b5283fd926cfda867b5",
+  "head_state_before": "8c0a1843b4144cef7e5c07dd961dd17e6167a3c8bae31462644b508f7bfe4fab",
+  "head_state_after": "8c0a1843b4144cef7e5c07dd961dd17e6167a3c8bae31462644b508f7bfe4fab",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 500,
+  "renderer_queries_per_candidate": 5,
+  "goal_only_in_planner": true,
+  "expert_intermediate_paths_or_action_targets": false,
+  "scope": "Ownfactual12000parent+newendpointhead;meanpure-noise vsuniform/high-noiseflowmatching. SameRGB/action/cases/CEMbudget;rendererNNqueries5/candidate. DensityboundisNOTexactlikelihood. Previouslyinspecteddevelopmentalcases,twooriginaltrainedparents,notpublicSOTA/equalpretrainingFLOPs/untouchedconfirmation.",
+  "_archive_note": "Compact copy: per-step planning list replaced by first/last/count; original source bytes SHA256 in SOURCE_MANIFEST.json.",
+  "_original_source_sha256": "cb388d29a4d3d3a8b204f2eb17e3b23fd7f845e0e93268e0778b9601fa963bba"
+}

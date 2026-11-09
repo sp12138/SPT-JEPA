@@ -12,6 +12,14 @@ from .train import setup
 from .model import advance
 from .energy import cost
 
+RENDERER_QUERIES=5
+FORECAST_HORIZON=60
+CONTROL_HOLD=5
+PLANNER_OVERRIDE=None
+PLANNER_SCOPE=('Ownfactual12000parent+newendpointhead;meanpure-noise vsuniform/high-noiseflowmatching. '
+    'SameRGB/action/cases/CEMbudget;rendererNNqueries5/candidate. DensityboundisNOTexactlikelihood. '
+    'Previouslyinspecteddevelopmentalcases,twooriginaltrainedparents,notpublicSOTA/equalpretrainingFLOPs/untouchedconfirmation.')
+
 
 @torch.no_grad()
 def plan(parent,head,mode,hidden,image,goal,generator,warm):
@@ -78,12 +86,11 @@ def run(config,step,manifest,output,budget):
     assert before==(tensor_sha(parent),tensor_sha(head))
     save(output/'metrics.json',dict(passed=True,utc=now(),episodes=rows,mode=cfg['mode'],step=step,
         head_weights_sha256=sha(weights),parent_state_before=before[0],parent_state_after=before[0],
-        head_state_before=before[1],head_state_after=before[1],model_updates=0,horizon_native=60,execute_native=15,
-        particles=64,iterations=4,budget_native=budget,renderer_queries_per_candidate=5,
+        head_state_before=before[1],head_state_after=before[1],model_updates=0,horizon_native=FORECAST_HORIZON,execute_native=15,
+        control_hold_native=CONTROL_HOLD,planner_override=PLANNER_OVERRIDE,
+        particles=64,iterations=4,budget_native=budget,renderer_queries_per_candidate=RENDERER_QUERIES,
         goal_only_in_planner=True,expert_intermediate_paths_or_action_targets=False,
-        scope='Ownfactual12000parent+newendpointhead;meanpure-noise vsuniform/high-noiseflowmatching. '
-            'SameRGB/action/cases/CEMbudget;rendererNNqueries5/candidate. DensityboundisNOTexactlikelihood. '
-            'Previouslyinspecteddevelopmentalcases,twooriginaltrainedparents,notpublicSOTA/equalpretrainingFLOPs/untouchedconfirmation.'))
+        scope=PLANNER_SCOPE))
 
 
 if __name__=='__main__':

@@ -1,5 +1,5 @@
 {
-  "status": "ACTIVE_6HEAD_SHORT_TRAININGS_AND_FROZEN_EVALUATION_QUEUE",
+  "status": "CLOSED_SIXHEADS_AND_EXPANDED_FROZEN_COMPARISON_NO_LONG_PROMOTION",
   "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109",
   "source": "reports/metaworld_endpoint_density_20261109/source-v1",
   "authoritative": [
@@ -18,7 +18,7 @@
     "pid": 3759349,
     "finite": true
   },
-  "next_due_utc": "2026-11-09T00:04:36Z",
+  "next_due_utc": "2026-11-09T02:05:49Z",
   "train_roles": [
     {
       "host": "dev13",
@@ -60,8 +60,14 @@
     7
   ],
   "last_entry_evidence": "results/entry/reports/metaworld_endpoint_density_20261109/ENTRY_HEALTH.json",
-  "claims": "No matureperformanceresultyet;entry300updates finite/allrequiredpositivegradients. NotSOTA/expert-free-data/publicprotocol/equalpretrainingFLOPs.",
+  "claims": "WeakDrawerlocalimprovement,not robustbroadmanipulation/SOTA/publicprotocol/equalFLOPs.",
   "resume_rule": "Neverrepeatlaunch. Readexactcurrentchildren/checkpoints/errors,restorefullheadoptimizer/RNG/samplecursor. FrozenownparentSHAunchanged. Preserveallattempts.",
   "forbidden": "No protected oracle/evaluation/traj bank data for training/proposals;no goal-query/policy lineages;no unknown-nextactiontargets.",
-  "automatic_long_promotion": false
+  "automatic_long_promotion": false,
+  "utc": "2026-11-09T01:30:41Z",
+  "final": "All6head2000 and96originalepisodescomplete;expanded192combinedepisodes=48inherited+144newmodel-caseepisodes/32physicalcases. All3modeshard2/48,allDrawer2/8;other5hardtasks0. No broad/highnoiseadvantage.",
+  "composition": "composition-v1 all96complete/0effectiveerrors;longbothmodeshard0/24andReachWall0/8;free-timehard0/24. NO_PROMOTION/NO_EXPANSION.",
+  "causal_audit": "causal-audit-v1 all6frozenheads truefactualinputmatch95.7..97.3percent over3072model-pathcomparisons/8physicalstates;wholesaleinputignoranceNOTsupported.",
+  "actuation_audit": "TRAINmetadata/native8constantprobes120steps: no grosstransform/sign/Hz/factor2mismatch;exactcontactphysicsversionnotproven. Rawproprioauditonly/neverlearner.",
+  "new_active_experiment": "../metaworld_belief_state_20261109/RECOVERY.json"
 }

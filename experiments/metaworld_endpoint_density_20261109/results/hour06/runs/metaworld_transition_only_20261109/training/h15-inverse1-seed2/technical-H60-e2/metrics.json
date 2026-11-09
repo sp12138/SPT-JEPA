@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "utc": "2026-11-08T19:25:52.797831+00:00",
+  "episodes": [
+    {
+      "task": "reach-v3",
+      "seed": 6042,
+      "case_sha256": "013ebb7ec2a79813a25a1d41bac0a15d0cab8d23bd7e07b71d18402e37a338e7",
+      "success": false,
+      "steps": 20,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_transition_only_20261109/training/h15-inverse1-seed2/technical-H60-e2/reach-v3-seed6042.npz",
+      "trace_sha256": "807e22bda530d95814b7395b5436c1e0f9dff5fb95f42e2a4a4a685630643ade",
+      "expert_goal_success": true,
+      "planning_calls": 10,
+      "first_plan": {
+        "predicted_terminal_goal_mse": 0.03152873367071152,
+        "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+        "executed": 2,
+        "factual_prefix_rgb_mse": 6.983545608818531e-05,
+        "predicted_prefix_goal_mse": 0.020727485418319702,
+        "actual_prefix_goal_mse": 0.020731676369905472
+      },
+      "last_plan": {
+        "predicted_terminal_goal_mse": 0.025769010186195374,
+        "first_bank_prefix_sha256": "038691227241324d36b0298aa443af912a465af7d330a2324947cfd3a2f18f87",
+        "executed": 2,
+        "factual_prefix_rgb_mse": 0.003996485844254494,
+        "predicted_prefix_goal_mse": 0.01813117042183876,
+        "actual_prefix_goal_mse": 0.018183987587690353
+      }
+    }
+  ],
+  "weights_sha256": "f14e6898ee1388b6f610a4899ac14b6691c19d9fbec3cece78bee0a0bec0b840",
+  "model_state_before": "944982705f16df51511a97ef01d3ec7d5a82813f9864ed3e79395950c0840a1f",
+  "model_state_after": "944982705f16df51511a97ef01d3ec7d5a82813f9864ed3e79395950c0840a1f",
+  "horizon_native": 60,
+  "execute_native": 2,
+  "particles": 64,
+  "iterations": 4,
+  "action_block_native": 5,
+  "budget_native": 20,
+  "checkpoint_step": 2,
+  "seconds": 14.318039986072108,
+  "model_updates": 0,
+  "goal_only_in_planner": true,
+  "inverse_not_deployed": true,
+  "expert_intermediate_frames_or_actions_used": false,
+  "scope": "Samecachedphysicalcases/RGBgoals;native-steprecurrentmodel. CEMterminalRGBMSE,ownGaussian/warmcontrols,held5nativeactionblocks. H30/H60andexecute2/15factorial;not identical to prior20DcommonCEM300x15 or publishedprotocol. No state/reward/taskID/language/goal inputs to worldmodel;simulatorstateonlyreset/audit. Scriptedexpertgoalsarefinalimagesonly;goal failuresretained.",
+  "_archive_note": "Compact copy: per-step planning list replaced by first/last/count; original source bytes SHA256 in SOURCE_MANIFEST.json.",
+  "_original_source_sha256": "c2cadee0d871ac567026c5be77226fae542a31770257fb8f563050113ea90506"
+}

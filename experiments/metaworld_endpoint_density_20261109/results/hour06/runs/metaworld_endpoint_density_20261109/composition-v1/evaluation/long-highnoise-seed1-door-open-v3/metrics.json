@@ -1,0 +1,70 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T01:03:18.468218+00:00",
+  "episodes": [
+    {
+      "task": "door-open-v3",
+      "seed": 6042,
+      "case_sha256": "9f591f030c901bb46ded77d3498b3c4807224c8494bc4937c60f7778667fac28",
+      "success": false,
+      "steps": 500,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed1-door-open-v3/door-open-v3-seed6042.npz",
+      "trace_sha256": "7d18959c7d31202b9fd3177ff71a0cf0031a0fb8598fa3ab039900401e34970c",
+      "planning_calls": 34,
+      "first_plan": {
+        "planner_score": 3.4341869708441277,
+        "score_kind": "controlled_observation_composition_long",
+        "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+        "renderer_queries_per_candidate": 49,
+        "horizon_native": 120,
+        "control_hold_native": 10,
+        "selected_midpoint_NELBO": 2.362333297729492,
+        "goal_not_used_in_midpoint_sampling": true,
+        "native_steps": 15,
+        "actual_rgb_goal_mse": 0.012453602626919746
+      },
+      "last_plan": {
+        "planner_score": 3.2302892562292596,
+        "score_kind": "controlled_observation_composition_long",
+        "first_bank_prefix_sha256": "7899d2c8f591dd2fa28c21424a533b2c96694be9edc992dbe92bf7b3ce2db132",
+        "renderer_queries_per_candidate": 49,
+        "horizon_native": 120,
+        "control_hold_native": 10,
+        "selected_midpoint_NELBO": 3.7121236324310303,
+        "goal_not_used_in_midpoint_sampling": true,
+        "native_steps": 500,
+        "actual_rgb_goal_mse": 0.01828577369451523
+      }
+    }
+  ],
+  "mode": "highnoise",
+  "step": 2000,
+  "head_weights_sha256": "55720e24b8afee2abfc55535cd2d566783b16b42879153053103d05e8071eab3",
+  "parent_state_before": "b1c42ef261e5b2f92dfa52eb027fce99c2b9c1f4b3d6e60907ebbbd616ef8867",
+  "parent_state_after": "b1c42ef261e5b2f92dfa52eb027fce99c2b9c1f4b3d6e60907ebbbd616ef8867",
+  "head_state_before": "5c25402f0b5627d6f50280bb1e7c4766cc338b535a25f2f70666e8de4d3ee1a8",
+  "head_state_after": "5c25402f0b5627d6f50280bb1e7c4766cc338b535a25f2f70666e8de4d3ee1a8",
+  "model_updates": 0,
+  "horizon_native": 120,
+  "execute_native": 15,
+  "control_hold_native": 10,
+  "planner_override": "controlled_observation_composition_long",
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 500,
+  "renderer_queries_per_candidate": 49,
+  "goal_only_in_planner": true,
+  "expert_intermediate_paths_or_action_targets": false,
+  "scope": "Frozenfactualworldcomposition:16stepreverseGaussianimagechain,same49rendererqueries/candidate. OwnsampledimaginedmidpointRGBonly,NOdesiredgoalinputtomidpointgeneration. Knowncandidatecontrolsandpastobservationsonly. H60hold5vsH120hold10,12actionknots;not equalbackboneFLOPsorhorizon-onlycausality. MonteCarloimagedensity/time-mixtureproxy,notexactNLL. Previouslyinspected8physicalcases/2originalparents,notpublicSOTA.",
+  "_archive_note": "Compact copy: per-step planning list replaced by first/last/count; original source bytes SHA256 in SOURCE_MANIFEST.json.",
+  "_original_source_sha256": "89e73ce32abfc6068752c23066b74b6afa35f1919b962306a132b6c4545d048a"
+}

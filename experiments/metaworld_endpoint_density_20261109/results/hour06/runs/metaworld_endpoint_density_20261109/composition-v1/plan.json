@@ -1,0 +1,844 @@
+{
+  "utc": "2026-11-09T00:46:17.101670+00:00",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_endpoint_density_20261109/composition-source-v1",
+  "jobs": [
+    {
+      "name": "uniform-seed1",
+      "host": "dev13",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1",
+      "seed": 1,
+      "mode": "uniform"
+    },
+    {
+      "name": "highnoise-seed1",
+      "host": "dev15",
+      "gpu": 0,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1",
+      "seed": 1,
+      "mode": "highnoise"
+    },
+    {
+      "name": "uniform-seed2",
+      "host": "dev6",
+      "gpu": 0,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2",
+      "seed": 2,
+      "mode": "uniform"
+    },
+    {
+      "name": "highnoise-seed2",
+      "host": "dev6",
+      "gpu": 4,
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2",
+      "seed": 2,
+      "mode": "highnoise"
+    }
+  ],
+  "evaluations": [
+    {
+      "name": "short-uniform-seed1-bin-picking-v3",
+      "kind": "short",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed1-bin-picking-v3"
+    },
+    {
+      "name": "short-uniform-seed1-door-open-v3",
+      "kind": "short",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed1-door-open-v3"
+    },
+    {
+      "name": "short-uniform-seed1-drawer-open-v3",
+      "kind": "short",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed1-drawer-open-v3"
+    },
+    {
+      "name": "short-uniform-seed1-peg-insert-side-v3",
+      "kind": "short",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed1-peg-insert-side-v3"
+    },
+    {
+      "name": "short-uniform-seed1-pick-place-v3",
+      "kind": "short",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed1-pick-place-v3"
+    },
+    {
+      "name": "short-uniform-seed1-push-v3",
+      "kind": "short",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed1-push-v3"
+    },
+    {
+      "name": "short-uniform-seed1-reach-v3",
+      "kind": "short",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed1-reach-v3"
+    },
+    {
+      "name": "short-uniform-seed1-reach-wall-v3",
+      "kind": "short",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed1-reach-wall-v3"
+    },
+    {
+      "name": "short-highnoise-seed1-bin-picking-v3",
+      "kind": "short",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed1-bin-picking-v3"
+    },
+    {
+      "name": "short-highnoise-seed1-door-open-v3",
+      "kind": "short",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed1-door-open-v3"
+    },
+    {
+      "name": "short-highnoise-seed1-drawer-open-v3",
+      "kind": "short",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed1-drawer-open-v3"
+    },
+    {
+      "name": "short-highnoise-seed1-peg-insert-side-v3",
+      "kind": "short",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed1-peg-insert-side-v3"
+    },
+    {
+      "name": "short-highnoise-seed1-pick-place-v3",
+      "kind": "short",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed1-pick-place-v3"
+    },
+    {
+      "name": "short-highnoise-seed1-push-v3",
+      "kind": "short",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed1-push-v3"
+    },
+    {
+      "name": "short-highnoise-seed1-reach-v3",
+      "kind": "short",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed1-reach-v3"
+    },
+    {
+      "name": "short-highnoise-seed1-reach-wall-v3",
+      "kind": "short",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed1-reach-wall-v3"
+    },
+    {
+      "name": "short-uniform-seed2-bin-picking-v3",
+      "kind": "short",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed2-bin-picking-v3"
+    },
+    {
+      "name": "short-uniform-seed2-door-open-v3",
+      "kind": "short",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed2-door-open-v3"
+    },
+    {
+      "name": "short-uniform-seed2-drawer-open-v3",
+      "kind": "short",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed2-drawer-open-v3"
+    },
+    {
+      "name": "short-uniform-seed2-peg-insert-side-v3",
+      "kind": "short",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed2-peg-insert-side-v3"
+    },
+    {
+      "name": "short-uniform-seed2-pick-place-v3",
+      "kind": "short",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed2-pick-place-v3"
+    },
+    {
+      "name": "short-uniform-seed2-push-v3",
+      "kind": "short",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed2-push-v3"
+    },
+    {
+      "name": "short-uniform-seed2-reach-v3",
+      "kind": "short",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed2-reach-v3"
+    },
+    {
+      "name": "short-uniform-seed2-reach-wall-v3",
+      "kind": "short",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-uniform-seed2-reach-wall-v3"
+    },
+    {
+      "name": "short-highnoise-seed2-bin-picking-v3",
+      "kind": "short",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed2-bin-picking-v3"
+    },
+    {
+      "name": "short-highnoise-seed2-door-open-v3",
+      "kind": "short",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed2-door-open-v3"
+    },
+    {
+      "name": "short-highnoise-seed2-drawer-open-v3",
+      "kind": "short",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed2-drawer-open-v3"
+    },
+    {
+      "name": "short-highnoise-seed2-peg-insert-side-v3",
+      "kind": "short",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed2-peg-insert-side-v3"
+    },
+    {
+      "name": "short-highnoise-seed2-pick-place-v3",
+      "kind": "short",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed2-pick-place-v3"
+    },
+    {
+      "name": "short-highnoise-seed2-push-v3",
+      "kind": "short",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed2-push-v3"
+    },
+    {
+      "name": "short-highnoise-seed2-reach-v3",
+      "kind": "short",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed2-reach-v3"
+    },
+    {
+      "name": "short-highnoise-seed2-reach-wall-v3",
+      "kind": "short",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/short-highnoise-seed2-reach-wall-v3"
+    },
+    {
+      "name": "long-uniform-seed1-bin-picking-v3",
+      "kind": "long",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed1-bin-picking-v3"
+    },
+    {
+      "name": "long-uniform-seed1-door-open-v3",
+      "kind": "long",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed1-door-open-v3"
+    },
+    {
+      "name": "long-uniform-seed1-drawer-open-v3",
+      "kind": "long",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed1-drawer-open-v3"
+    },
+    {
+      "name": "long-uniform-seed1-peg-insert-side-v3",
+      "kind": "long",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed1-peg-insert-side-v3"
+    },
+    {
+      "name": "long-uniform-seed1-pick-place-v3",
+      "kind": "long",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed1-pick-place-v3"
+    },
+    {
+      "name": "long-uniform-seed1-push-v3",
+      "kind": "long",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed1-push-v3"
+    },
+    {
+      "name": "long-uniform-seed1-reach-v3",
+      "kind": "long",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed1-reach-v3"
+    },
+    {
+      "name": "long-uniform-seed1-reach-wall-v3",
+      "kind": "long",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed1-reach-wall-v3"
+    },
+    {
+      "name": "long-highnoise-seed1-bin-picking-v3",
+      "kind": "long",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed1-bin-picking-v3"
+    },
+    {
+      "name": "long-highnoise-seed1-door-open-v3",
+      "kind": "long",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed1-door-open-v3"
+    },
+    {
+      "name": "long-highnoise-seed1-drawer-open-v3",
+      "kind": "long",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed1-drawer-open-v3"
+    },
+    {
+      "name": "long-highnoise-seed1-peg-insert-side-v3",
+      "kind": "long",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed1-peg-insert-side-v3"
+    },
+    {
+      "name": "long-highnoise-seed1-pick-place-v3",
+      "kind": "long",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed1-pick-place-v3"
+    },
+    {
+      "name": "long-highnoise-seed1-push-v3",
+      "kind": "long",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed1-push-v3"
+    },
+    {
+      "name": "long-highnoise-seed1-reach-v3",
+      "kind": "long",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed1-reach-v3"
+    },
+    {
+      "name": "long-highnoise-seed1-reach-wall-v3",
+      "kind": "long",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed1-reach-wall-v3"
+    },
+    {
+      "name": "long-uniform-seed2-bin-picking-v3",
+      "kind": "long",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed2-bin-picking-v3"
+    },
+    {
+      "name": "long-uniform-seed2-door-open-v3",
+      "kind": "long",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed2-door-open-v3"
+    },
+    {
+      "name": "long-uniform-seed2-drawer-open-v3",
+      "kind": "long",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed2-drawer-open-v3"
+    },
+    {
+      "name": "long-uniform-seed2-peg-insert-side-v3",
+      "kind": "long",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed2-peg-insert-side-v3"
+    },
+    {
+      "name": "long-uniform-seed2-pick-place-v3",
+      "kind": "long",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed2-pick-place-v3"
+    },
+    {
+      "name": "long-uniform-seed2-push-v3",
+      "kind": "long",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed2-push-v3"
+    },
+    {
+      "name": "long-uniform-seed2-reach-v3",
+      "kind": "long",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed2-reach-v3"
+    },
+    {
+      "name": "long-uniform-seed2-reach-wall-v3",
+      "kind": "long",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-uniform-seed2-reach-wall-v3"
+    },
+    {
+      "name": "long-highnoise-seed2-bin-picking-v3",
+      "kind": "long",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed2-bin-picking-v3"
+    },
+    {
+      "name": "long-highnoise-seed2-door-open-v3",
+      "kind": "long",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed2-door-open-v3"
+    },
+    {
+      "name": "long-highnoise-seed2-drawer-open-v3",
+      "kind": "long",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed2-drawer-open-v3"
+    },
+    {
+      "name": "long-highnoise-seed2-peg-insert-side-v3",
+      "kind": "long",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed2-peg-insert-side-v3"
+    },
+    {
+      "name": "long-highnoise-seed2-pick-place-v3",
+      "kind": "long",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed2-pick-place-v3"
+    },
+    {
+      "name": "long-highnoise-seed2-push-v3",
+      "kind": "long",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed2-push-v3"
+    },
+    {
+      "name": "long-highnoise-seed2-reach-v3",
+      "kind": "long",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed2-reach-v3"
+    },
+    {
+      "name": "long-highnoise-seed2-reach-wall-v3",
+      "kind": "long",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/long-highnoise-seed2-reach-wall-v3"
+    },
+    {
+      "name": "free_time-uniform-seed1-bin-picking-v3",
+      "kind": "free_time",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed1-bin-picking-v3"
+    },
+    {
+      "name": "free_time-uniform-seed1-door-open-v3",
+      "kind": "free_time",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed1-door-open-v3"
+    },
+    {
+      "name": "free_time-uniform-seed1-drawer-open-v3",
+      "kind": "free_time",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed1-drawer-open-v3"
+    },
+    {
+      "name": "free_time-uniform-seed1-peg-insert-side-v3",
+      "kind": "free_time",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed1-peg-insert-side-v3"
+    },
+    {
+      "name": "free_time-uniform-seed1-pick-place-v3",
+      "kind": "free_time",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed1-pick-place-v3"
+    },
+    {
+      "name": "free_time-uniform-seed1-push-v3",
+      "kind": "free_time",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed1-push-v3"
+    },
+    {
+      "name": "free_time-uniform-seed1-reach-v3",
+      "kind": "free_time",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed1-reach-v3"
+    },
+    {
+      "name": "free_time-uniform-seed1-reach-wall-v3",
+      "kind": "free_time",
+      "job": "uniform-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed1-reach-wall-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed1-bin-picking-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed1-bin-picking-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed1-door-open-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed1-door-open-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed1-drawer-open-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed1-drawer-open-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed1-peg-insert-side-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed1-peg-insert-side-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed1-pick-place-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed1-pick-place-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed1-push-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed1-push-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed1-reach-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed1-reach-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed1-reach-wall-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed1",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed1/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed1-reach-wall-v3"
+    },
+    {
+      "name": "free_time-uniform-seed2-bin-picking-v3",
+      "kind": "free_time",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed2-bin-picking-v3"
+    },
+    {
+      "name": "free_time-uniform-seed2-door-open-v3",
+      "kind": "free_time",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed2-door-open-v3"
+    },
+    {
+      "name": "free_time-uniform-seed2-drawer-open-v3",
+      "kind": "free_time",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed2-drawer-open-v3"
+    },
+    {
+      "name": "free_time-uniform-seed2-peg-insert-side-v3",
+      "kind": "free_time",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed2-peg-insert-side-v3"
+    },
+    {
+      "name": "free_time-uniform-seed2-pick-place-v3",
+      "kind": "free_time",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed2-pick-place-v3"
+    },
+    {
+      "name": "free_time-uniform-seed2-push-v3",
+      "kind": "free_time",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed2-push-v3"
+    },
+    {
+      "name": "free_time-uniform-seed2-reach-v3",
+      "kind": "free_time",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed2-reach-v3"
+    },
+    {
+      "name": "free_time-uniform-seed2-reach-wall-v3",
+      "kind": "free_time",
+      "job": "uniform-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/uniform-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-uniform-seed2-reach-wall-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed2-bin-picking-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/bin-picking-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed2-bin-picking-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed2-door-open-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/door-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed2-door-open-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed2-drawer-open-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/drawer-open-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed2-drawer-open-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed2-peg-insert-side-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/peg-insert-side-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed2-peg-insert-side-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed2-pick-place-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/pick-place-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed2-pick-place-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed2-push-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/push-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed2-push-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed2-reach-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed2-reach-v3"
+    },
+    {
+      "name": "free_time-highnoise-seed2-reach-wall-v3",
+      "kind": "free_time",
+      "job": "highnoise-seed2",
+      "config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/training/highnoise-seed2/config.json",
+      "manifest": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/manifests/reach-wall-v3.json",
+      "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_endpoint_density_20261109/composition-v1/evaluation/free_time-highnoise-seed2-reach-wall-v3"
+    }
+  ],
+  "deadline": 1794192377.1016889,
+  "source_hashes": {
+    "experiments/metaworld_eval_20261103/environment.py": "5e8b0310d1caba36fe37cb2ec24a4e6bf9f801b50e9a0cc760e784e88ca8ba7c",
+    "experiments/metaworld_endpoint_density_20261109/model.py": "0f2538745a9210a15342baf408f0c83e3b1790d40ab3abc9f9bc8fc98229bea2",
+    "experiments/metaworld_endpoint_density_20261109/composition_probe.py": "a9677fc8fcd52d935ff9fbd4a2ab56fc564ddfe93f2e2debd6684a07fb82fde5",
+    "experiments/metaworld_endpoint_density_20261109/evaluate.py": "f988bda1852045371b10b20f751b7c0cdb6c7192aeefda52210d5910fc3bdcbb",
+    "experiments/metaworld_endpoint_density_20261109/audit.py": "be4939538b46e9ceca3ab79e038fc7c43244af669846f44a058ab9600409eb40",
+    "experiments/metaworld_endpoint_density_20261109/sampler_audit.py": "516caeab07a84769e4394f8f5d172ea91e16201649771b8052f17fcb04a5219e",
+    "experiments/metaworld_endpoint_density_20261109/energy.py": "b34a46f67056ca52a5ed3e56557baadf8ebf1ae8c96f8403704e1e06e025a2a9",
+    "experiments/metaworld_endpoint_density_20261109/train.py": "86e71a762fd1cc230143b988c403ae8f0e5b4f6ac8073d9ea3a5ef606f4519f6",
+    "experiments/metaworld_endpoint_density_20261109/composition.py": "da9d00b0e16904870323b9707845ee609ab741acdc7bcd63946c8157012af9a4",
+    "experiments/metaworld_endpoint_density_20261109/campaign.py": "f34c74713f0dc17bc84b2aa4eaf83a64acdeb3c22f5516b051007d067c8f6915",
+    "experiments/metaworld_transition_only_20261109/common.py": "9e2e1c8fd708476b9d3c89983f206021c3d6d71559115fcf650e4dead0a20197",
+    "experiments/metaworld_transition_only_20261109/model.py": "7b7a9d661f87c20367f7d435f82a499d09c83ecae63571f9d786d7fcc942d0fc",
+    "experiments/metaworld_transition_only_20261109/evaluate.py": "ccf7db04f92af03007bafb6b0f70c07e3c46640bc2d94811574754e4624bc68d",
+    "experiments/metaworld_transition_only_20261109/audit.py": "51a6e6c3a000c75e4c43118b762c9da1eddd140d003e9bd736bf9af58f630182",
+    "experiments/metaworld_transition_only_20261109/data.py": "c49e7b0f1bdc24d96d8f668ca1d5d3832c0267acface776d094f619e0f2429d5",
+    "experiments/metaworld_transition_only_20261109/train.py": "3f624733bcc6992fb91958d64c0ee193c84dc7c69a0f52d64d98f9f1a928c38b",
+    "experiments/metaworld_transition_only_20261109/campaign.py": "8d551d83ea574063dec660adb790dfef499a987deabc36ab863e572470242fab",
+    "experiments/metaworld_horizon_match_20261109/model.py": "ec12b70cb0ee9d21d8331148ebf7e93e23ba45370e565ad44f836e1ab857a6ca",
+    "experiments/metaworld_horizon_match_20261109/evaluate.py": "395772cd59b0d866b0c633ebb3617241b7716aae5b776cba0ce5df1672c4dbbd",
+    "experiments/metaworld_horizon_match_20261109/train.py": "25c64e2b01e21b982985882c0ae0f2d38580ea141c6d82deac6c735e23a2e256",
+    "experiments/metaworld_horizon_match_20261109/campaign.py": "181d8412a27539bbdae23ee0bcbfe0f219dd23c073916caab91d365a41479220"
+  },
+  "formal_episodes": 96,
+  "model_updates": 0,
+  "trained_parents": 2,
+  "physical_cases": 8,
+  "design": "Same4frozenCFMheads2000,parent12000. Threecontrollers:singleH60;composedH120;composedH120withunknownterminaltime60or120marginalized. EverycontrollerCEM64x4/12actionknots/execute15/native500/49rendererqueriespercandidate. H60hold5,H120hold10;notahorizon-onlyorequalbackboneFLOPscomparison. SingleH60uses48transitionKLqueries+1endpoint. H120uses2samplesof16-stepreverseGaussianmidpoint(17queryeach),2conditionalgoalbounds5each,midpointgoalbound5:49total. SAMEdeclared16stepchainforgenerationandgoalbound. TwoimaginedfutureobservationsaregeneratedfromknowncandidatecontrolsWITHOUTgoalconditioning. ParentobserverassimilatesitsOWNgeneratedRGB,thenadvancesnext60nativecontrols. GoalONLYscorescandidateoutcomes;nofutureGT/expertpaths/actionlabels. FixedH120recordsmidpointgoaldiagnosticonly;free_timeintegratesgoal-time60/120withuniformprior. MonteCarloboundapproximations,notexactlikelihood.",
+  "rationale": "Actualworldmodelsuseactions(95.7..97.3percentrealizedinputmatch),betterRGBpredictionstillweakcontrol. Testfree-terminal-timeboundaryinferenceandlongerforwardworldcompositioninsteadofaddinglabels/policytraining.",
+  "automatic_long_promotion": false,
+  "automatic_expansion": false
+}

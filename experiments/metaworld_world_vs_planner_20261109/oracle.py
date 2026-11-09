@@ -25,6 +25,9 @@ ORIGINAL=BASE/'runs/metaworld_world_vs_planner_20261109'
 ROOT=ORIGINAL/'recovery-v3'
 OLD=BASE/'runs/metaworld_transition_only_20261109'
 CORRELATED=False
+HORIZON=60
+BLOCK=5
+VARIANT='white'
 
 
 def restore_exact(env,state):
@@ -37,7 +40,7 @@ def restore_exact(env,state):
 
 @torch.no_grad()
 def optimize(env,snapshot,goal,generator,warm):
-    mean=torch.zeros(12,4,device='cuda') if warm is None else torch.as_tensor(warm,device='cuda').reshape(12,5,4).mean(1)
+    mean=torch.zeros(12,4,device='cuda') if warm is None else torch.as_tensor(warm,device='cuda').reshape(12,BLOCK,4).mean(1)
     std=torch.ones_like(mean);best=None;best_score=float('inf');iterations=[]
     for iteration in range(4):
         raw=torch.randn(64,12,4,device='cuda',generator=generator)
@@ -47,14 +50,14 @@ def optimize(env,snapshot,goal,generator,warm):
         candidates=(mean[None]+std[None]*raw).clamp(-1,1);candidates[0]=mean
         if best is not None:candidates[1]=best
         prefix=hashlib.sha256(candidates[:,:6].cpu().numpy().tobytes()).hexdigest()
-        commands=candidates[:, :,None,:].expand(-1,-1,5,-1).reshape(64,60,4).cpu().numpy()
+        commands=candidates[:, :,None,:].expand(-1,-1,BLOCK,-1).reshape(64,HORIZON,4).cpu().numpy()
         scores=[]
         for path in commands:
             restore_exact(env,snapshot)
             actual_limit=env.max_path_length
             # The learned predictor also forecasts a full60steps near episode
             # end. Lift ONLY imagined administrative truncation,notphysics.
-            env.max_path_length=max(actual_limit,int(env.curr_path_length)+61)
+            env.max_path_length=max(actual_limit,int(env.curr_path_length)+HORIZON+1)
             try:
                 for control in path:env.step(control.astype(np.float32))
                 image=rgb_tensor(pixels(env),FactualRecurrent)
@@ -65,8 +68,8 @@ def optimize(env,snapshot,goal,generator,warm):
         if float(values[0])<best_score:best_score=float(values[0]);best=elite[0].clone()
         mean=elite.mean(0);std=elite.std(0,unbiased=False).clamp_min(1e-6)
         iterations.append(dict(iteration=iteration,first_bank_prefix_sha256=prefix,min_cost=float(values[0]),mean_cost=float(costs.mean())))
-    return best[:,None].expand(-1,5,-1).reshape(60,4).cpu().numpy(),dict(best_terminal_RGB_mse=best_score,
-        iterations=iterations,imagined_native_calls=64*4*60)
+    return best[:,None].expand(-1,BLOCK,-1).reshape(HORIZON,4).cpu().numpy(),dict(best_terminal_RGB_mse=best_score,
+        iterations=iterations,imagined_native_calls=64*4*HORIZON,horizon_native=HORIZON,control_hold_native=BLOCK)
 
 
 def prefix(env,commands):
@@ -100,6 +103,9 @@ def run(task):
             candidates=torch.einsum('ij,nja->nia',mixing(raw.device),raw).clamp(-1,1)
             candidates[0]=0
             expected_prefix=hashlib.sha256(candidates[:,:6].cpu().numpy().tobytes()).hexdigest()
+            if VARIANT=='long':
+                short=read(ORIGINAL/'correlated-v4'/task/'progress.json')
+                assert expected_prefix==short['decisions'][0]['iterations'][0]['first_bank_prefix_sha256']
         actions=[];successes=[];decisions=[];warm=None;started=time.monotonic();imagined=0
         checkpoint=out/'checkpoint-latest.pt'
         if checkpoint.exists():
@@ -136,6 +142,7 @@ def run(task):
             native_steps=len(actions),imagined_native_calls=imagined,seconds=time.monotonic()-started,initial_rgb=initial,
             all_selected_execution_replays_exact=True,initial_candidate_bank_contract_verified=True,
             initial_bank_matches_white_reference=not CORRELATED,proposal='fixed_DCT_covariance' if CORRELATED else 'original_independent',
+            horizon_native=HORIZON,control_hold_native=BLOCK,action_knots=12,execute_native=15,
             trace=str(trace),trace_sha256=sha(trace),
             candidate_performance=False,training_data_eligible=False,model_updates=0,
             information='PRIVILEGEDtrue-simulatorprediction;NOTourlearnedscratchalgorithm/NOTfairSOTAscore/NOtrainingorproposalreuse.'))
@@ -153,7 +160,7 @@ def prepare(source):
     save(ROOT/'AUDIT_ONLY_PRIVILEGED_NO_TRAINING.json',dict(utc=now(),candidate_performance=False,
         excluded='Neveraggregateasouralgorithm/SOTAbaseline;nevertrainfromstates/RGB/actions oruseasactionproposals/goalpathteachers.'))
     save(ROOT/'plan.json',dict(utc=now(),source=str(source),deadline=old_plan['deadline'],cases=cases,inherited=inherited,
-        variant='correlated' if CORRELATED else 'white',
+        variant=VARIANT,horizon_native=HORIZON,control_hold_native=BLOCK,
         jobs=[dict(task=task,host=host,gpu=7) for task,host in [('door-open-v3','dev13'),('drawer-open-v3','dev15'),('push-v3','dev6')] if task not in inherited],
         source_hashes={str(p.relative_to(source)):sha(p) for p in source.rglob('*.py')},model_updates=0,
         design='Samecachedinitialcases/RGBgoals/initialGaussianbanks/CEM64x4/top10/H60/held5/execute15/native500anysuccess. '
@@ -165,6 +172,13 @@ def prepare(source):
             '0SGDrepeated;completedDrawerv2inherited/notrerun. ImaginedtimecapliftedtoallowfullH60likelearnedpredictor;real500unchanged. '
             'v3fullphysics/privateRNG/actions/warmplancheckpointsafteveryactualprefix. Originaldeadlineunchanged. '
             'Coloredv4runs3newpairedcases;doesNOTinheritwhiteperformancesascolored. White3validresultsretained/notrerun.'))
+    if VARIANT=='long':
+        p=read(ROOT/'plan.json')
+        p['interpretation']=('PrivilegedH120/held10vscompletedH60/held5coloredCEM. Same12actionknots/64x4/RGBobjective/native500/execute15andinitialGaussian-knotbank. '
+            'Temporal dilation changes horizon ANDhold;not equalphysicscompute orsinglefactorholdindependentcomparison. '
+            'No expertcontrols,policylabels,reward/objectstatecost. Oldshortresultsretainednotrerun. NEVERcandidateperformance/training/proposaldata.')
+        p['design']='Truephysics/RGBgoal/CEM64x4/top10/H120/held10/execute15/native500,12actionknots;fixedDCTproposal-timecovariance.'
+        save(ROOT/'plan.json',p)
 
 
 def launch(host):
@@ -178,9 +192,10 @@ def launch(host):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('mode',choices=['prepare','launch','work']);p.add_argument('--source',type=Path);p.add_argument('--host');p.add_argument('--task')
-    p.add_argument('--variant',choices=['white','correlated'],default='white');a=p.parse_args()
-    CORRELATED=a.variant=='correlated'
-    if CORRELATED:ROOT=ORIGINAL/'correlated-v4'
+    p.add_argument('--variant',choices=['white','correlated','long'],default='white');a=p.parse_args()
+    VARIANT=a.variant;CORRELATED=a.variant in ['correlated','long']
+    if a.variant=='correlated':ROOT=ORIGINAL/'correlated-v4'
+    if a.variant=='long':ROOT=ORIGINAL/'long-horizon-v1';HORIZON=120;BLOCK=10
     if a.mode=='prepare':prepare(a.source)
     elif a.mode=='launch':launch(a.host)
     else:run(a.task)

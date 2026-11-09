@@ -1,0 +1,50 @@
+{
+  "utc": "2026-11-09T01:30:41Z",
+  "status": "ACTIVE_SIX_FOUR_GPU_LEARNERS_WITH_EXCLUSIVE_FROZEN_EVALUATION_PHASES",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_belief_state_20261109",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_belief_state_20261109/source-v1",
+  "source_contract": "23 files: original18 endpoint-runtime sources unchanged plus5 new belief-world sources.",
+  "hosts": [
+    "dev13",
+    "dev15",
+    "dev6"
+  ],
+  "authoritative": [
+    "plan.json",
+    "launch-dev13.json",
+    "launch-dev15.json",
+    "launch-dev6.json",
+    "collector-launch.json",
+    "FOUR_GPU_AUDIT.json",
+    "TRAINING_APPROVED.json",
+    "training/*/status.json",
+    "training/*/AUDIT-*.json",
+    "COLLECTED-*.json",
+    "results/summary.json",
+    "errors/*.json"
+  ],
+  "collector": {
+    "host": "dev13",
+    "pid": 3761168,
+    "finite": true
+  },
+  "actual_entry_gate": "All6 actual four-GPU2updates, fullCPUrestore/FP32backward and20native-stepcontrol passed; initial parameter values/data/all random terms paired exactly withinseed; commoninitialcontrolbank.",
+  "four_gpu_FP32_gradient_relative_L2": 5.109802193037212e-07,
+  "latest_snapshot": "At01:33:54UTC all6models300updates,0errors,source23filehashesmatchallhosts. Eachhost2CUDAtrainingPIDsacross8GPUUUIDs. Instantutilization0..23percent,NOTcontinuousfullutilization. Traininglater400..500 at01:36.",
+  "phases": [
+    2,
+    500,
+    2000
+  ],
+  "formal_episodes": 144,
+  "physical_cases": 8,
+  "original_trained_parents": 2,
+  "ancestry": "Ownscratchfactualparent12000 + ownfactualhead2000 + atmost2000newjointworldupdates perparticipant. Newoptimizerintentional; noexternal/goalquery/policy lineage.",
+  "next_hourly_due_utc": "2026-11-09T02:05:49Z",
+  "monitor_mode": "Direct session; interruptible waits<=60seconds. No externaldelivery/LLMmonitor/newgoal.",
+  "resume_rule": "Neverrepeatlaunch. Read exactownedchildren/checkpoints/errors; preserveallattempts. Restorefullnewphaseoptimizer/RNG/cursor. Training4GPU andfrozenevaluationphasesexclusive.",
+  "prohibition": "No desiredgoal/path/policy/unknown-next-actiontargets in training; no protectedoracle/evaluation/bank dataasexamples/teachers/proposals. Optional inverse is same first factual forward input only.",
+  "automatic_long_promotion": false,
+  "automatic_expansion": false,
+  "entry_evidence": "results/entry:165metadatafilesSHAverified,archive e2cd467484cdb8301519474aa48791fed049b47f5641bbb6a3dd415cffb129c9"
+}
