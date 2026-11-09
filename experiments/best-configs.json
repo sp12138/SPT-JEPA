@@ -1,0 +1,627 @@
+{
+  "schema_version": 1,
+  "updated": "2026-11-09",
+  "scope": "Descriptive best-established settings within each listed internal protocol; NOT global optima/SOTA. Original resolved configs are archival records, not automatic launch instructions. Keep source/config/result identities together.",
+  "research_paused": true,
+  "entries": {
+    "pusht_temporal_forecast": {
+      "status": "historical_positive",
+      "training_updates": 37473,
+      "training_seeds": [
+        1,
+        2
+      ],
+      "scores_percent": {
+        "primary": 94.0,
+        "fresh": 92.33333333333333
+      },
+      "resolved_training_configs": [
+        {
+          "path": "experiments/promising20261029/configs/temporal-forecast-seed1-selected-epoch3.json",
+          "sha256": "ba0bd6ad49575b8a37a3ec1d487b8c13577bee7e08eda695af45538c9284287b",
+          "config": {
+            "output": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/temporal-forecast-seed1-selected-epoch3",
+            "data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1",
+            "evaluation_data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+            "pose_weights": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+            "seed": 1,
+            "batch_size": 128,
+            "workers": 4,
+            "cpu_threads": 2,
+            "max_steps": 124910,
+            "max_seconds": 31536000,
+            "checkpoint_every": 2500,
+            "all_phase_data": true,
+            "stop_after": 37473,
+            "retain_steps": [
+              37473
+            ],
+            "model": {
+              "mode": "L2",
+              "beta": 0.25,
+              "sigma0": 0.1,
+              "window": 8,
+              "anchor_gap": 8,
+              "renderer_width": 384,
+              "renderer_depth": 12,
+              "renderer_heads": 6,
+              "rho": 0.8,
+              "forecast_fraction": 0.5,
+              "forecast_seed": 20361032
+            },
+            "record_initial_weights": false,
+            "robust_variant": true
+          }
+        },
+        {
+          "path": "experiments/promising20261029/configs/temporal-forecast-seed2-selected-epoch3.json",
+          "sha256": "1f3c1ed92e146044c599b78765abd85ebc4ed50af232a77077cb3dcf1f44baa8",
+          "config": {
+            "output": "/efs/prescottsun/SPT-JEPA/runs/promising_20261029/temporal-forecast-seed2-selected-epoch3",
+            "data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1",
+            "evaluation_data": "/efs/prescottsun/SPT-JEPA/data/pusht-lance-full-v1/phase0",
+            "pose_weights": "/efs/prescottsun/SPT-JEPA/runs/insights12h_20261027/pose-v2/weights.pt",
+            "seed": 2,
+            "batch_size": 128,
+            "workers": 4,
+            "cpu_threads": 2,
+            "max_steps": 124910,
+            "max_seconds": 31536000,
+            "checkpoint_every": 2500,
+            "all_phase_data": true,
+            "stop_after": 37473,
+            "retain_steps": [
+              37473
+            ],
+            "model": {
+              "mode": "L2",
+              "beta": 0.25,
+              "sigma0": 0.1,
+              "window": 8,
+              "anchor_gap": 8,
+              "renderer_width": 384,
+              "renderer_depth": 12,
+              "renderer_heads": 6,
+              "rho": 0.8,
+              "forecast_fraction": 0.5,
+              "forecast_seed": 20461035
+            },
+            "record_initial_weights": false,
+            "robust_variant": true
+          }
+        }
+      ],
+      "code": "as_jepa_tools/train_stage.py",
+      "conclusion": "experiments/lingjing_fullspec_20261102/CLOSEOUT_20261103.md"
+    },
+    "tworoom_local1024_public_ngc": {
+      "status": "historical_positive_controller_change",
+      "training_updates": 6000,
+      "training_seeds": [
+        1,
+        2
+      ],
+      "scores_percent": {
+        "primary": 98.0,
+        "fresh": 94.0,
+        "same_weights_L2_primary": 60.0,
+        "same_weights_L2_fresh": 66.0
+      },
+      "resolved_training_configs": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed1/config.json",
+          "sha256": "534de9645213196cec6455197c97aaa8e9f39c73e474c65233d2e7f72f539e83",
+          "config": {
+            "output": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed1",
+            "data": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+            "dataset_kind": "benchmark_hdf5",
+            "seed": 1,
+            "batch_size": 128,
+            "workers": 4,
+            "cpu_threads": 2,
+            "max_steps": 124910,
+            "max_seconds": 31536000,
+            "checkpoint_every": 2000,
+            "record_initial_weights": true,
+            "robust_variant": true,
+            "retain_steps": [
+              4000,
+              6000
+            ],
+            "model": {
+              "mode": "L2",
+              "sigma0": 0.1,
+              "window": 8,
+              "renderer_width": 384,
+              "renderer_depth": 12,
+              "renderer_heads": 6,
+              "forecast_seed": 20361032,
+              "action_dim": 10,
+              "beta": 0.25,
+              "rho": 0.8,
+              "forecast_fraction": 0.5,
+              "flow_logit_shift": 0.0,
+              "spatial_mode": "local",
+              "state_slots": 64,
+              "state_width": 16
+            },
+            "model_class": "spatial_carrier",
+            "spatial_calibration": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-tworoom-seed1/calibration.json",
+              "sha256": "c89b514e352db5c19cc982eb0a59c895f68ca71e1f16973ce9a7d155c808bad5"
+            },
+            "audit_expectations": {
+              "gradients": {
+                "action_encoder": "active"
+              },
+              "initial_unchanged_prefixes": [
+                "spatial_projection",
+                "spatial_mean",
+                "spatial_scale"
+              ]
+            }
+          },
+          "external_parameters": {
+            "model.spatial_mean": {
+              "source_config": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed1/config.json",
+              "source_config_sha256": "534de9645213196cec6455197c97aaa8e9f39c73e474c65233d2e7f72f539e83",
+              "json_pointer": "/model/spatial_mean",
+              "length": 1024,
+              "canonical_JSON_sha256": "9ef2ac80aa033a9cb0e1649b83f49aade20e14ddf7bb596c115a952dd4f3cb52"
+            },
+            "model.spatial_scale": {
+              "source_config": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed1/config.json",
+              "source_config_sha256": "534de9645213196cec6455197c97aaa8e9f39c73e474c65233d2e7f72f539e83",
+              "json_pointer": "/model/spatial_scale",
+              "length": 1024,
+              "canonical_JSON_sha256": "e531dc7b8de97644f65397a6758bededaebab1b903856c45d29c43bee417741f"
+            }
+          },
+          "config_scope": "Core hyperparameters; fitted1024Dcalibrationvectorsstayintheimmutableoriginalconfigandareboundabove. Resolvebeforereplay."
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed2/config.json",
+          "sha256": "0dc5cf2baf4d7549330194feb214833136c99b6e7ef932f0a0cc30539fe4f0b6",
+          "config": {
+            "output": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed2",
+            "data": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/tworoom-metadata",
+            "dataset_kind": "benchmark_hdf5",
+            "seed": 2,
+            "batch_size": 128,
+            "workers": 4,
+            "cpu_threads": 2,
+            "max_steps": 124910,
+            "max_seconds": 31536000,
+            "checkpoint_every": 2000,
+            "record_initial_weights": true,
+            "robust_variant": true,
+            "retain_steps": [
+              4000,
+              6000
+            ],
+            "model": {
+              "mode": "L2",
+              "sigma0": 0.1,
+              "window": 8,
+              "renderer_width": 384,
+              "renderer_depth": 12,
+              "renderer_heads": 6,
+              "forecast_seed": 20461035,
+              "action_dim": 10,
+              "beta": 0.25,
+              "rho": 0.8,
+              "forecast_fraction": 0.5,
+              "flow_logit_shift": 0.0,
+              "spatial_mode": "local",
+              "state_slots": 64,
+              "state_width": 16
+            },
+            "model_class": "spatial_carrier",
+            "spatial_calibration": {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic_calibration_20261031/calibrate-tworoom-seed2/calibration.json",
+              "sha256": "ae0fdfe0b2284d923f71195082fd4d69cc7fddf1f4b0dc7562a30c4fbb6ba78c"
+            },
+            "audit_expectations": {
+              "gradients": {
+                "action_encoder": "active"
+              },
+              "initial_unchanged_prefixes": [
+                "spatial_projection",
+                "spatial_mean",
+                "spatial_scale"
+              ]
+            }
+          },
+          "external_parameters": {
+            "model.spatial_mean": {
+              "source_config": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed2/config.json",
+              "source_config_sha256": "0dc5cf2baf4d7549330194feb214833136c99b6e7ef932f0a0cc30539fe4f0b6",
+              "json_pointer": "/model/spatial_mean",
+              "length": 1024,
+              "canonical_JSON_sha256": "c3f5db76a6af4bfa265c3eebb70f55d8e74548939671313e1022edfac2faba07"
+            },
+            "model.spatial_scale": {
+              "source_config": "/efs/prescottsun/SPT-JEPA/runs/local_isotropic6000_20261031/tworoom-spatial-local-seed2/config.json",
+              "source_config_sha256": "0dc5cf2baf4d7549330194feb214833136c99b6e7ef932f0a0cc30539fe4f0b6",
+              "json_pointer": "/model/spatial_scale",
+              "length": 1024,
+              "canonical_JSON_sha256": "f262d7ba8048ff545dc230d80f8a53eb0bb85ce18d06ea9b26f99d1986d9b8af"
+            }
+          },
+          "config_scope": "Core hyperparameters; fitted1024Dcalibrationvectorsstayintheimmutableoriginalconfigandareboundabove. Resolvebeforereplay."
+        }
+      ],
+      "planner": {
+        "cost": "public NGC / stable direct-distance attachment",
+        "proposal": "original white CEM",
+        "nodes": 5000,
+        "neighbors": 15,
+        "anchors": 4,
+        "graph": "mutual-15NN + public component bridges",
+        "node_seed": 20261031,
+        "particles": 300,
+        "iterations": 30,
+        "elites": 30,
+        "history": 3,
+        "horizon": 5,
+        "frameskip": 5,
+        "receding": 5,
+        "native_budget": 50,
+        "code": "experiments/public_ngc_20261031/stable_evaluate.py"
+      },
+      "extra_information": "5000 training state-support nodes per graph; different model/controller from PushT.",
+      "conclusion": "experiments/CONCLUSIONS.md"
+    },
+    "cube_temporal_forecast_retrieval": {
+      "status": "historical_positive_extra_trajectory_memory",
+      "training_updates": 23342,
+      "training_seeds": [
+        1,
+        2
+      ],
+      "scores_percent": {
+        "primary": 41.0,
+        "fresh": 46.0,
+        "third_cases": 53.0,
+        "overall": 46.666666666666664,
+        "same_weights_original_CEM": 28.666666666666668
+      },
+      "physical_cases": 150,
+      "resolved_training_configs": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-temporal-forecast-seed1/config.json",
+          "sha256": "8cf2475e88d97099b4a30679368939b77dfe4c53d722b2898c1ce98ea7e52dfb",
+          "config": {
+            "output": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-temporal-forecast-seed1",
+            "data": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+            "dataset_kind": "benchmark_hdf5",
+            "seed": 1,
+            "batch_size": 128,
+            "workers": 4,
+            "cpu_threads": 2,
+            "max_steps": 124910,
+            "max_seconds": 31536000,
+            "checkpoint_every": 2000,
+            "record_initial_weights": true,
+            "robust_variant": true,
+            "retain_steps": [
+              18000,
+              23342
+            ],
+            "model": {
+              "mode": "L2",
+              "sigma0": 0.1,
+              "window": 8,
+              "renderer_width": 384,
+              "renderer_depth": 12,
+              "renderer_heads": 6,
+              "forecast_seed": 20361032,
+              "action_dim": 25,
+              "beta": 0.25,
+              "rho": 0.8,
+              "forecast_fraction": 0.5,
+              "flow_logit_shift": 0.0
+            }
+          }
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-temporal-forecast-seed2/config.json",
+          "sha256": "a68ca9f4966006d2f3e3457dbcd479ce43a732d6c48027338b0fbc38881e68e6",
+          "config": {
+            "output": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-temporal-forecast-seed2",
+            "data": "/efs/prescottsun/SPT-JEPA/data/hardtasks-v1/cube-metadata",
+            "dataset_kind": "benchmark_hdf5",
+            "seed": 2,
+            "batch_size": 128,
+            "workers": 4,
+            "cpu_threads": 2,
+            "max_steps": 124910,
+            "max_seconds": 31536000,
+            "checkpoint_every": 2000,
+            "record_initial_weights": true,
+            "robust_variant": true,
+            "retain_steps": [
+              18000,
+              23342
+            ],
+            "model": {
+              "mode": "L2",
+              "sigma0": 0.1,
+              "window": 8,
+              "renderer_width": 384,
+              "renderer_depth": 12,
+              "renderer_heads": 6,
+              "forecast_seed": 20461035,
+              "action_dim": 25,
+              "beta": 0.25,
+              "rho": 0.8,
+              "forecast_fraction": 0.5,
+              "flow_logit_shift": 0.0
+            }
+          }
+        }
+      ],
+      "resolved_model_configs": [
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-temporal-forecast-seed1/model-step0023342/config.json",
+          "sha256": "e63f8cd765b67a5f5676c5ba441edc28a512eca175c5b99d7d57f81323e2528a",
+          "config": {
+            "_target_": "as_jepa_lewm.robust.RobustLeWM",
+            "mode": "L2",
+            "sigma0": 0.1,
+            "window": 8,
+            "renderer_width": 384,
+            "renderer_depth": 12,
+            "renderer_heads": 6,
+            "forecast_seed": 20361032,
+            "action_dim": 25,
+            "beta": 0.25,
+            "rho": 0.8,
+            "forecast_fraction": 0.5,
+            "flow_logit_shift": 0.0
+          }
+        },
+        {
+          "path": "/efs/prescottsun/SPT-JEPA/runs/cube_maturity23342_20261031/cube-temporal-forecast-seed2/model-step0023342/config.json",
+          "sha256": "c6306c81aa9507bd8fedc60a3c4c668675b02694f550d951f07c3b9eb4c429da",
+          "config": {
+            "_target_": "as_jepa_lewm.robust.RobustLeWM",
+            "mode": "L2",
+            "sigma0": 0.1,
+            "window": 8,
+            "renderer_width": 384,
+            "renderer_depth": 12,
+            "renderer_heads": 6,
+            "forecast_seed": 20461035,
+            "action_dim": 25,
+            "beta": 0.25,
+            "rho": 0.8,
+            "forecast_fraction": 0.5,
+            "flow_logit_shift": 0.0
+          }
+        }
+      ],
+      "planner": {
+        "library_trajectories": 1024,
+        "source_split": "train",
+        "one_uniform_valid_window_per_distinct_episode": true,
+        "library_seed": 20261101,
+        "RGB_pool": [
+          8,
+          8
+        ],
+        "candidates_replaced_first_iteration": 64,
+        "native_sequence_length": 25,
+        "particles": 300,
+        "iterations": 30,
+        "elites": 30,
+        "history": 3,
+        "horizon": 5,
+        "frameskip": 5,
+        "receding": 5,
+        "native_budget": 50,
+        "code": "experiments/trajectory_search_20261101/evaluate.py"
+      },
+      "eligibility": "Historical reference only: uses logged training action sequences/proposals. NOT an eligible current no-expert-path-reference manipulation candidate.",
+      "conclusion": "experiments/CONCLUSIONS.md"
+    },
+    "metaworld_innovation_reaching": {
+      "status": "best_documented_reaching_only_NOT_manipulation_solution",
+      "training_updates": 16480,
+      "training_epochs": 20,
+      "training_seeds": [
+        1,
+        2
+      ],
+      "scores_percent": {
+        "reach": 90.0,
+        "reach_wall": 100.0,
+        "six_hard_manipulation": 0.0
+      },
+      "physical_cases_per_task": 20,
+      "model_case_evaluations_per_task": 40,
+      "models": [
+        {
+          "seed": 1,
+          "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/innovation-seed1/model-step0016480",
+          "weights_sha256": "78a5891d9c5715176568fba2a3ea607a661aee14ef0ecebb43137185a2a54101",
+          "configs": [
+            {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/innovation-seed1/config.json",
+              "sha256": "b09fc9afa0843f456f20fcdc9ea46e95a666aa9b96ce4f00ecc0d8b37d6ec118",
+              "config": {
+                "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/innovation-seed1",
+                "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+                "evaluation_data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+                "dataset_kind": "benchmark_hdf5",
+                "model_class": "innovation",
+                "seed": 1,
+                "batch_size": 128,
+                "workers": 4,
+                "cpu_threads": 2,
+                "max_steps": 41200,
+                "max_seconds": 172800,
+                "checkpoint_every": 824,
+                "retain_steps": [
+                  9888,
+                  9890,
+                  16480
+                ],
+                "precision": "bf16-mixed",
+                "record_initial_weights": true,
+                "record_runtime_source": true,
+                "model": {
+                  "mode": "L2",
+                  "beta": 0.25,
+                  "sigma0": 0.1,
+                  "window": 8,
+                  "anchor_gap": 8,
+                  "renderer_width": 384,
+                  "renderer_depth": 12,
+                  "renderer_heads": 6,
+                  "action_dim": 20,
+                  "rho": 0.8,
+                  "forecast_fraction": 0.5,
+                  "forecast_seed": 20361032
+                },
+                "audit_expectations": {
+                  "gradients": {
+                    "encoder": "active",
+                    "pool": "active",
+                    "predictor": "active",
+                    "action_encoder": "active",
+                    "renderer": "active"
+                  }
+                },
+                "initial_encoder_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training/temporal-forecast-seed1/initial-model",
+                "initial_encoder_scope": "Original same-seed RANDOM encoder captured before the first MetaWorld update. Uniformly loaded by all three AS arms;not trained/pretrained. Other model tensors,optimizer and schedule fresh."
+              }
+            },
+            {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-dev13-v4/innovation-seed1/model-step0016480/config.json",
+              "sha256": "a33f4a28f65f0c9791fb5b5ca0417b121bb2e0adf1c4b8db1b64e0d301ad2194",
+              "config": {
+                "_target_": "as_jepa_lewm.innovation.InnovationLeWM",
+                "mode": "L2",
+                "beta": 0.25,
+                "sigma0": 0.1,
+                "window": 8,
+                "anchor_gap": 8,
+                "renderer_width": 384,
+                "renderer_depth": 12,
+                "renderer_heads": 6,
+                "action_dim": 20,
+                "rho": 0.8,
+                "forecast_fraction": 0.5,
+                "forecast_seed": 20361032
+              }
+            }
+          ]
+        },
+        {
+          "seed": 2,
+          "checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/innovation-seed2/model-step0016480",
+          "weights_sha256": "3791acf0efeb9de9b50292d6bbfe685094ae15cfc3304aa3c2c17494ebc4bf52",
+          "configs": [
+            {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/innovation-seed2/config.json",
+              "sha256": "6308bf9d1d9fd8d3b99abce4fa10d148cb9e5fe5ccdfb42e2a56c5ccd59720e0",
+              "config": {
+                "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/innovation-seed2",
+                "data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+                "evaluation_data": "/efs/prescottsun/SPT-JEPA/data/metaworld-lerobot-b46a1c18-packed-v1",
+                "dataset_kind": "benchmark_hdf5",
+                "model_class": "innovation",
+                "seed": 2,
+                "batch_size": 128,
+                "workers": 4,
+                "cpu_threads": 2,
+                "max_steps": 41200,
+                "max_seconds": 172800,
+                "checkpoint_every": 824,
+                "retain_steps": [
+                  8242,
+                  8244,
+                  9888,
+                  16480
+                ],
+                "precision": "bf16-mixed",
+                "record_initial_weights": true,
+                "record_runtime_source": true,
+                "model": {
+                  "mode": "L2",
+                  "beta": 0.25,
+                  "sigma0": 0.1,
+                  "window": 8,
+                  "anchor_gap": 8,
+                  "renderer_width": 384,
+                  "renderer_depth": 12,
+                  "renderer_heads": 6,
+                  "action_dim": 20,
+                  "rho": 0.8,
+                  "forecast_fraction": 0.5,
+                  "forecast_seed": 20461035
+                },
+                "audit_expectations": {
+                  "gradients": {
+                    "encoder": "active",
+                    "pool": "active",
+                    "predictor": "active",
+                    "action_encoder": "active",
+                    "renderer": "active"
+                  }
+                },
+                "initial_encoder_checkpoint": "/efs/prescottsun/SPT-JEPA/runs/metaworld_eval_20261103/training/temporal-forecast-seed2/initial-model",
+                "initial_encoder_scope": "Original same-seed RANDOM encoder captured before the first MetaWorld update. Uniformly loaded by all three AS arms;not trained/pretrained. Other model tensors,optimizer and schedule fresh."
+              }
+            },
+            {
+              "path": "/efs/prescottsun/SPT-JEPA/runs/metaworld_improve_20261104/training-eio-v2/innovation-seed2/model-step0016480/config.json",
+              "sha256": "e12a8f4f771a233ab21dd5934daf34ceb7a42541dfd16cdbb9c0aa4c36fdd9cd",
+              "config": {
+                "_target_": "as_jepa_lewm.innovation.InnovationLeWM",
+                "mode": "L2",
+                "beta": 0.25,
+                "sigma0": 0.1,
+                "window": 8,
+                "anchor_gap": 8,
+                "renderer_width": 384,
+                "renderer_depth": 12,
+                "renderer_heads": 6,
+                "action_dim": 20,
+                "rho": 0.8,
+                "forecast_fraction": 0.5,
+                "forecast_seed": 20461035
+              }
+            }
+          ]
+        }
+      ],
+      "planner": {
+        "proposal": "standard CEM, not held/library pilot",
+        "particles": 300,
+        "iterations": 15,
+        "elites": 10,
+        "horizon": 6,
+        "frameskip": 5,
+        "execute_blocks": 3,
+        "context": 2,
+        "budget_native": 500,
+        "success": "any-success",
+        "RGB_goal": true
+      },
+      "data": "lerobot/metaworld_mt50 revision b46a1c185a2368660650a82ac5a5083a56722f48; not official JEPA-WMs",
+      "conclusion": "experiments/metaworld_proposal_20261104/REACHING_RESULTS.md"
+    },
+    "metaworld_hard_manipulation": {
+      "status": "NO_QUALIFIED_HIGH_PERFORMANCE_CONFIG",
+      "latest_study": "runs/metaworld_causal_inverse_20261109",
+      "models": 8,
+      "new_updates_each": 10000,
+      "controller_episodes": 384,
+      "hard_successes_per_method_and_controller": 0,
+      "hard_model_cases_per_method_and_controller": 12,
+      "automatic_long_training": false
+    }
+  }
+}

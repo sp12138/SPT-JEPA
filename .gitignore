@@ -24,16 +24,31 @@ venvs/
 *.log
 .DS_Store
 
-# Small per-case numerical result artifacts; no pixel banks or model tensors.
-!experiments/completion20261028/results/quality-per-case-metrics.npz
-!experiments/completion20261028/results/quality-additional-per-case.npz
-!experiments/completion20261028/results/baseline-*-quality.npz
+# Research artifacts stay outside version control. Keep source, concise
+# conclusions, protocol templates and the curated best-configs registry.
+/experiments/**/*results*/
+/experiments/**/raw_chart/
+/experiments/**/legacy-closure/
+/experiments/**/reports/
+/experiments/**/snapshots/
+/experiments/**/upstream/
+/experiments/**/source-*/
+/experiments/**/runtime-*/
+/experiments/**/*.json
+!/experiments/**/protocol.json
+!/experiments/**/PROTOCOL.json
+!/experiments/best-configs.json
+/experiments/**/*.jsonl
+/experiments/**/*.png
+/experiments/**/*.svg
+/experiments/**/*.pdf
+/experiments/**/*.jpg
+/experiments/**/*.csv
+/experiments/**/*.plist
+/experiments/**/RECOVERY.md
+/experiments/**/CHECKING.md
+/experiments/**/HOURLY.md
+/RECOVERY_*.md
 
-!experiments/completion20261028/results/confirmation-*-metrics.npz
-
-!experiments/completion20261028/results/L2-50k-*-quality.npz
-
-!experiments/completion20261028/results/I08-*-quality.npz
-
-# Local delivery state for the user-authorized same-session hourly review.
+# Local delivery state and raw experiment files are never Git inputs.
 /artifacts/metaworld_hourly_20261108/

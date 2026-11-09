@@ -1,3 +1,5 @@
+> 当前研究已暂停。Git仅保留核心代码、必要配置与精简结论。请先读 [核心结论](experiments/CONCLUSIONS.md)、[较优配置](experiments/best-configs.json) 和 [当前交接](HANDOFF.md)；原始记录见 [归档说明](docs/experiment-archives.md)。下文历史运行示例不授权恢复实验，机器权限以 [AGENTS.md](AGENTS.md) 为准。
+
 # SPT-JEPA
 
 最新[第三 epoch 结果](experiments/promising20261029/results/epoch3/DECISION.md)：Temporal-forecast 两种子 P0 均为 **94.0%**，附加评测 **93.33%/91.33%**；同预算原版 β=.25 为88.0%/74.67%，调参β=.0625为86.0%/84.0%。[单独组件对照](experiments/promising20261029/results/components/DECISION.md)显示forecast-render第二epoch已达90%/90%，正在检验更简洁的方案。[新案例2042/2043/2044确认](experiments/forecastconfirm20261030/newcase-results/DECISION.md)为91.33%/94.0%，原版81.33%/70.67%、调参86.0%/86.67%。所有模型51.1M参数、sample-level loss；更多种子与学术新颖性仍待确认。恢复见 [RECOVERY_PROMISING_20261029.md](RECOVERY_PROMISING_20261029.md)。
