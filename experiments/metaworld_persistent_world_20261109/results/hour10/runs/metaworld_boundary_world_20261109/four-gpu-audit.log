@@ -1,0 +1,13 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/parallel/_functions.py:71: UserWarning: Was asked to gather along dimension 0, but all input tensors were scalars; will instead unsqueeze and return a vector.
+  warnings.warn(
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/efs/prescottsun/SPT-JEPA/reports/metaworld_boundary_world_20261109/source-v1/experiments/metaworld_boundary_world_20261109/audit.py", line 46, in <module>
+    if __name__=='__main__':run()
+                            ^^^^^
+  File "/efs/prescottsun/SPT-JEPA/reports/metaworld_boundary_world_20261109/source-v1/experiments/metaworld_boundary_world_20261109/audit.py", line 37, in run
+    assert torch.isfinite(g).all() and float(g.norm())>0
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+[W1109 04:34:43.189949308 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

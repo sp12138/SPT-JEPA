@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T05:20:58.551305+00:00",
+  "episodes": [
+    {
+      "task": "reach-v3",
+      "seed": 6042,
+      "case_sha256": "013ebb7ec2a79813a25a1d41bac0a15d0cab8d23bd7e07b71d18402e37a338e7",
+      "success": false,
+      "steps": 20,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_persistent_world_20261109_v2/training/interventions-gru-seed1/technical/reach-v3-seed6042.npz",
+      "trace_sha256": "0de5e193f713beedb5d3e5ba61d7a6f0088f5516e70e527e7e1bc6221d58cffc",
+      "planning": [
+        {
+          "planner_score": 0.001981578068807721,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.015536678954958916
+        },
+        {
+          "planner_score": 0.0024785110726952553,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "83b62fee1a9f4894882676b2d5e228e0af0248218ed28111212cb2815702115c",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 20,
+          "actual_rgb_goal_mse": 0.017541036009788513
+        }
+      ]
+    }
+  ],
+  "mode": "gru",
+  "step": 2,
+  "weights_sha256": "ba059c0c9652b8d62bea4bd8fccae5c4a7f893acf40357bce16fc3fc3d5cfcb9",
+  "state_before": "c9d430fb7797c88984692099f17737def4215d5c69bfae2ddeb7f48f7485d5f1",
+  "state_after": "c9d430fb7797c88984692099f17737def4215d5c69bfae2ddeb7f48f7485d5f1",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 20,
+  "renderer_queries_per_candidate": 1,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Ownscratchfactual12000+meanworld2000,trainedGRUcontrolretained;twoNEWcouplingtransitionsfromrandom/fine-tuneworldmax2000. GRUvsparallelresidualvssequentialreversible;fixedordinaryRGBforwardobjective. Old-onlyvsadditionalrandom-interventiondata. NOgoal/path/actiontargets. Extra-dataarmNOTsame-dataSOTAcomparison."
+}

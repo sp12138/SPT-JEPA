@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T04:59:16.625013+00:00",
+  "episodes": [
+    {
+      "task": "reach-v3",
+      "seed": 6042,
+      "case_sha256": "013ebb7ec2a79813a25a1d41bac0a15d0cab8d23bd7e07b71d18402e37a338e7",
+      "success": false,
+      "steps": 20,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_covariance_world_20261109/training/diagonal-seed2/technical/reach-v3-seed6042.npz",
+      "trace_sha256": "fece39e6a21392a1d03a24451f525c7eb78f5c26cde5c882d4bda4c96b66e0b6",
+      "planning": [
+        {
+          "planner_score": -1.6798802614212036,
+          "score_kind": "sample_level_Gaussian_goal_NLL_with_diagonal_innovation_covariance",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.018072864040732384
+        },
+        {
+          "planner_score": -1.6506692171096802,
+          "score_kind": "sample_level_Gaussian_goal_NLL_with_diagonal_innovation_covariance",
+          "first_bank_prefix_sha256": "44e5518babe129bbd4b3fad37600f5e6ccffe7edd6b50c919c0b8c95feb71f60",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 20,
+          "actual_rgb_goal_mse": 0.017633730545639992
+        }
+      ]
+    }
+  ],
+  "mode": "diagonal",
+  "step": 2,
+  "weights_sha256": "73d6db790cf5f07a1d0f3ef91b9ab06ace9d6ed2570e77cec4a33101b09fa39a",
+  "state_before": "a9e396f937f835b25ee2d5609ba52c8ef5da2bfb4c73e624ab1800b9ecd911aa",
+  "state_after": "a9e396f937f835b25ee2d5609ba52c8ef5da2bfb4c73e624ab1800b9ecd911aa",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 20,
+  "renderer_queries_per_candidate": 1,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Ownscratchfactual12000+ownmeanworld2000FROZEN+covariancecalibration. Gaussianlikelihoodsamplelevel,learnedfromordinaryRGBforecastresiduals. No newaction/goal/pathlabels. Pixelareaalonecanovercountcoherentroboterrors;learncovarianceinstead. NotpublicSOTA/equalFLOPs/untouchedconfirmation."
+}

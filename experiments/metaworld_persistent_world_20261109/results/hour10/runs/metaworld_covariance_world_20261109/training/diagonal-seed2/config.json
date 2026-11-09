@@ -1,0 +1,16 @@
+{
+  "seed": 2,
+  "mode": "diagonal",
+  "output": "/efs/prescottsun/SPT-JEPA/runs/metaworld_covariance_world_20261109/training/diagonal-seed2",
+  "data": "/tmp/prescottsun-factual-rgb128-20261109-v1",
+  "parent_config": "/efs/prescottsun/SPT-JEPA/runs/metaworld_boundary_world_20261109/training/residual-seed2/config.json",
+  "parent_weights": "/efs/prescottsun/SPT-JEPA/runs/metaworld_boundary_world_20261109/training/residual-seed2/model-step0002000/weights.pt",
+  "parent_sha256": "acb1cdf4b2c4bf07ca2fe66b8621ad87ad818d6402104c083a42a9dd2462a0c9",
+  "parent_updates": 12000,
+  "mean_world_updates": 2000,
+  "new_updates_maximum": 2000,
+  "training_gpus": 4,
+  "global_batch": 64,
+  "supervision": "Frozenmeanworldfactual12000+mean2000;ordinaryfutureRGBresiduallikelihoodONLY. Conditionalscalar/diagonal/diagonal+rank16covariance. Allsamplelevel;no batchstats/negativepairs/state/reward/taskID/goals/expertpaths/actiontargets.",
+  "optimization": "FreshAdamW3e-4/warm100/cos6000/clip1/global64/fourGPUs. ONLYnewcovarianceparameterslearn;allmean-worldweightsFROZEN."
+}

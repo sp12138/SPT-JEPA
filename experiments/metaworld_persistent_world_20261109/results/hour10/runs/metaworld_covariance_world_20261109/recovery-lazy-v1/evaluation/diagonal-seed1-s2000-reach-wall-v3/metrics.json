@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T05:15:49.698245+00:00",
+  "episodes": [
+    {
+      "task": "reach-wall-v3",
+      "seed": 6042,
+      "case_sha256": "7038b0816186bd4a83ccd28859c50b0ecd8f581cb75282902e9bc29aed4b8cfe",
+      "success": true,
+      "steps": 75,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_covariance_world_20261109/recovery-lazy-v1/evaluation/diagonal-seed1-s2000-reach-wall-v3/reach-wall-v3-seed6042.npz",
+      "trace_sha256": "c533cf87ec9f5f6a274e86571d6c1bc382241e3037bef62ca38cecaea8b0c945",
+      "planning": [
+        {
+          "planner_score": -2.3150014877319336,
+          "score_kind": "sample_level_Gaussian_goal_NLL_with_diagonal_innovation_covariance",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.020367039367556572
+        },
+        {
+          "planner_score": -2.3280105590820312,
+          "score_kind": "sample_level_Gaussian_goal_NLL_with_diagonal_innovation_covariance",
+          "first_bank_prefix_sha256": "5f24906ea92d896c1e345511af25e6b099c6bf7fbc627c367bfc42a6ee5a1efb",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 30,
+          "actual_rgb_goal_mse": 0.017419155687093735
+        },
+        {
+          "planner_score": -2.4346113204956055,
+          "score_kind": "sample_level_Gaussian_goal_NLL_with_diagonal_innovation_covariance",
+          "first_bank_prefix_sha256": "15028c692e223b1730b89edee83b57bb578d5de40211dbd38ff2b0b5da9fa2e9",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 45,
+          "actual_rgb_goal_mse": 0.009205672889947891
+        },
+        {
+          "planner_score": -2.572498321533203,
+          "score_kind": "sample_level_Gaussian_goal_NLL_with_diagonal_innovation_covariance",
+          "first_bank_prefix_sha256": "8af1c4ff926725d9ee87fc1cc2acbc560bc318c54bd8e8afc8768e72098d620a",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 60,
+          "actual_rgb_goal_mse": 0.004128839820623398
+        },
+        {
+          "planner_score": -2.6778907775878906,
+          "score_kind": "sample_level_Gaussian_goal_NLL_with_diagonal_innovation_covariance",
+          "first_bank_prefix_sha256": "6e7d814797b29c4438f6ecfaac0d451c258a8a4a864876a1bb93029cc2a9e730",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 75,
+          "actual_rgb_goal_mse": 0.0013521675718948245
+        }
+      ]
+    }
+  ],
+  "mode": "diagonal",
+  "step": 2000,
+  "weights_sha256": "b9092e57f5f98d987787888d470dab333ce353f5482062407a249478ffe29792",
+  "state_before": "7cb56c9dd488cf4487bf1eb9d7d7becf794fe8343f181ad8c47e1a1350a525f4",
+  "state_after": "7cb56c9dd488cf4487bf1eb9d7d7becf794fe8343f181ad8c47e1a1350a525f4",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 500,
+  "renderer_queries_per_candidate": 1,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Ownscratchfactual12000+ownmeanworld2000FROZEN+covariancecalibration. Gaussianlikelihoodsamplelevel,learnedfromordinaryRGBforecastresiduals. No newaction/goal/pathlabels. Pixelareaalonecanovercountcoherentroboterrors;learncovarianceinstead. NotpublicSOTA/equalFLOPs/untouchedconfirmation."
+}

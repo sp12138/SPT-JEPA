@@ -1,6 +1,6 @@
 {
-  "utc": "2026-11-09T04:39:03.362243+00:00",
-  "status": "ACTIVE_SIX_PAIRED_NATIVE2_ENTRY_WORKERS_LAUNCHED",
+  "utc": "2026-11-09T04:55:09.874719+00:00",
+  "status": "CLOSED_SIX2000_144EPISODES_ALL_MATURE_HARD_ZERO_NO_LONG",
   "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_boundary_world_20261109",
   "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_boundary_world_20261109/source-v1",
   "source_files": 32,
@@ -24,12 +24,17 @@
   "supervision": "ObservedRGBoutcomesandknownactuallyexecutedforwardcontrolsINPUTS;reverse-timebranchpredictsPASTRGBfromOBSERVEDlaterRGBandSAMEknowncontrols reversedorder. No actiontarget/goalpath/policy/desiredgoaltraining.",
   "planner": "CEM64x4/H60/held5/e15/500nativeanysuccess. Bridgeuses30forward+30reversemeetingRGB;others60forwardgoalRGB. GoalONLYinference.",
   "four_gpu_audit": "Actual64inputalignment/endpointbytes/FP32gradientrelative2.51099e-7/directionaldataflowPASS. Originalprobeusedunusedstreamandfailedexpectedzero;retained0SGD.",
-  "entry": "Sixactualnative2updates/fullCPUrestores/heldoutFP32backward/20nativestepgatesPENDING;doNOTclaimtrainedperformance.",
+  "entry": "Allsixactualnative2/fullCPUrestore/positiveFP32backward/20nativecontrolPASS;globalgate04:38:37Z.",
   "ownership": "rootlaunch-{host}.json/collector-launch.json;readactualstatus/errors;NEVERblindduplicate.",
   "automatic_long_promotion": false,
   "automatic_expansion": false,
   "next_hourly_due_utc": "2026-11-09T05:30:00Z",
   "monitor": "Directsame-sessiononly/interruptiblewaits<=60s;noexternalLLMmonitor/newgoal/subagents.",
   "constraints": "Wholepipelineownscratch/GNsamplelevel/RGBexecutedinputs/rewardfree. No expertpath/policy/unknownnext-actiontargets. ScriptedLeRobotordinarylogsallowed,notexpert-free. AllprotectedbanksNEVERtrain/teacher/proposal.",
-  "closed_prior_evidence": "../metaworld_loop_geometry_20261109/results/hour09"
+  "closed_prior_evidence": "../metaworld_loop_geometry_20261109/results/hour09",
+  "final": "Completed04:51:16UTC;500residualhard1/12;warp/bridge0/12. 2000ALLthreegroupshard0/12;144episodes/zeroerrors. No long.",
+  "new_active": [
+    "../metaworld_covariance_world_20261109/RECOVERY.json",
+    "Newordinarytransitiondata /efs/prescottsun/SPT-JEPA/runs/metaworld_interventions_20261109"
+  ]
 }

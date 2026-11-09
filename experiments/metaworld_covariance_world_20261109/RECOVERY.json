@@ -1,0 +1,35 @@
+{
+  "utc": "2026-11-09T05:24:33.406800+00:00",
+  "status": "CLOSED_RECOVERY_LAZY_V1_144_EPISODES_NO_LONG",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_covariance_world_20261109",
+  "canonical": "recovery-lazy-v1",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_covariance_world_20261109/source-v1",
+  "source_files": 37,
+  "original32_NN_runtime_files_unchanged": true,
+  "original_trained_parents": 2,
+  "models": 6,
+  "stages": [
+    2,
+    500,
+    2000
+  ],
+  "formal_episodes": 144,
+  "physical_cases": 8,
+  "parent_updates": "Ownscratchfactual12000+ownresidualmeanworld2000FROZEN;newcovarianceonlymax2000",
+  "objective": "SamplelevelconditionalGaussianfutureRGBlikelihood;scalar/diagonal/diagonal+rank16covariance. Quantizationsensorvariance(1/255)^2/12. NOgoal/path/actiontargets;meanworldallfrozen/hashchecked.",
+  "four_gpu_audit": "ActualFP64Gaussianreferenceerror7.77e-8/rankrotation/diaglimit/4GPUgradientrelative9.58e-7 passed.",
+  "recovery": "Torchlazy linalgwrapper FIRSTDPforward race. Serialdeterministicforward/backwardwarmupwithCPU+CUDA RNGunchanged. Original37NN/runtimefilesUNCHANGED. Fourcompletednative2+CPUaudits+20stepinherited;twolowrankrestoreFULLstep0,0SGDrepeated. All30originalerrorrecordsretained,2runtimecauses/28propagations. Oldcollector3831092retiredexactPID;new3831442 finite.",
+  "entry": "ALLsixnative2/CPUrestore/FP32backward/physical20pass/globalpairedgate;200updateslive/48initialformalepisodescomplete/0effectiveerrors at05:10snapshot.",
+  "next_hourly_due_utc": "2026-11-09T05:30:00Z",
+  "monitor": "Directsame-sessiononly/noexternalLLMmonitor/newgoal/subagents;interruptiblewaits<=60s.",
+  "automatic_long_promotion": false,
+  "automatic_expansion": false,
+  "hosts": [
+    "dev13",
+    "dev15",
+    "dev6"
+  ],
+  "constraints": "Ownscratch/GNsamplelevel/RGBexecutedinputs/rewardfree. DesiredgoalONLYplanning. Samecurrentinputa0inverseancestryfrozen/UNUSED. Protectedoracle/eval/contact/loopbanksNEVERtrain/teacher/proposal.",
+  "final": "All6learners2000/144formalepisodesPASS05:16:54Z. Maturediagonalhard1/12,scalar0/12,lowrank0/12;NOhighperformance/promotion. Additionaloracle-metric-v1readonly3Pushprefixjobs,0SGD/physics.",
+  "new_active": "../metaworld_persistent_world_20261109/RECOVERY.json"
+}

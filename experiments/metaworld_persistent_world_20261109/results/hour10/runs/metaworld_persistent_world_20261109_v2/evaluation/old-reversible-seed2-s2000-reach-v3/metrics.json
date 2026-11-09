@@ -1,0 +1,106 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T05:33:26.982863+00:00",
+  "episodes": [
+    {
+      "task": "reach-v3",
+      "seed": 6042,
+      "case_sha256": "013ebb7ec2a79813a25a1d41bac0a15d0cab8d23bd7e07b71d18402e37a338e7",
+      "success": true,
+      "steps": 118,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_persistent_world_20261109_v2/evaluation/old-reversible-seed2-s2000-reach-v3/reach-v3-seed6042.npz",
+      "trace_sha256": "f1b1f9d6f92b50073a561da5015340f9cda06429376ebd13472342e2f31b3713",
+      "planning": [
+        {
+          "planner_score": 0.0024112004321068525,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.01976805180311203
+        },
+        {
+          "planner_score": 0.002404422964900732,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "561f27caacd0f7f1d70305987c959af9b269f62b59cf2c8087ed1737b7faa33e",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 30,
+          "actual_rgb_goal_mse": 0.018137697130441666
+        },
+        {
+          "planner_score": 0.0026219096034765244,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "df90d6caf4ca5ed297513cf818aae01354fb5fa934de16f125992ae424627449",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 45,
+          "actual_rgb_goal_mse": 0.014342173933982849
+        },
+        {
+          "planner_score": 0.003818091005086899,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "3b47f99a139d208d5b8a702ff8ae0d397672eed177881ec54c1f6878c8f42c4d",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 60,
+          "actual_rgb_goal_mse": 0.010847519151866436
+        },
+        {
+          "planner_score": 0.0052304333075881,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "2f9201601cb3c2659a857e7219da64428a0dace29627b62c6df614dd1a37a23f",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 75,
+          "actual_rgb_goal_mse": 0.0050520943477749825
+        },
+        {
+          "planner_score": 0.004411138594150543,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "1e026e7336f3b2b09b80569d92e28918e1efef3207328f8d7ac8ec51136aabec",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 90,
+          "actual_rgb_goal_mse": 0.0053194426000118256
+        },
+        {
+          "planner_score": 0.004645319189876318,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "4ef40ae2efc57b7560e905351a7cac8755fddef0de77391cadd8659cccf6cf79",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 105,
+          "actual_rgb_goal_mse": 0.010148859582841396
+        },
+        {
+          "planner_score": 0.005937025882303715,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "25b13544490866b0efdc70e95c758f01a467a3337376fbbe12f1b21e4cbddd6b",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 118,
+          "actual_rgb_goal_mse": 0.0019496692111715674
+        }
+      ]
+    }
+  ],
+  "mode": "reversible",
+  "step": 2000,
+  "weights_sha256": "6c1c01b5e4c01925e29e549269fd405e9495cb4dc750c1d779d89dbb9dc7710f",
+  "state_before": "d6b0937e042fc5a53e8d9d9e3ee77c2bdaf6af396e8a068b66b287dda3d3d09b",
+  "state_after": "d6b0937e042fc5a53e8d9d9e3ee77c2bdaf6af396e8a068b66b287dda3d3d09b",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 500,
+  "renderer_queries_per_candidate": 1,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Ownscratchfactual12000+meanworld2000,trainedGRUcontrolretained;twoNEWcouplingtransitionsfromrandom/fine-tuneworldmax2000. GRUvsparallelresidualvssequentialreversible;fixedordinaryRGBforwardobjective. Old-onlyvsadditionalrandom-interventiondata. NOgoal/path/actiontargets. Extra-dataarmNOTsame-dataSOTAcomparison."
+}

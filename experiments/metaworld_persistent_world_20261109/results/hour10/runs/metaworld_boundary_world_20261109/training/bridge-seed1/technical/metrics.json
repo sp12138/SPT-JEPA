@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T04:38:36.263819+00:00",
+  "episodes": [
+    {
+      "task": "reach-v3",
+      "seed": 6042,
+      "case_sha256": "013ebb7ec2a79813a25a1d41bac0a15d0cab8d23bd7e07b71d18402e37a338e7",
+      "success": false,
+      "steps": 20,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_boundary_world_20261109/training/bridge-seed1/technical/reach-v3-seed6042.npz",
+      "trace_sha256": "8e9c8d561c0c765f6812f815965202a4ef93a6b08d9b403907a4b724ce6cf7fe",
+      "planning": [
+        {
+          "planner_score": 0.02075684629380703,
+          "score_kind": "bidirectional_RGB_boundary_match_at30",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 2,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.023099061101675034
+        },
+        {
+          "planner_score": 0.023078104481101036,
+          "score_kind": "bidirectional_RGB_boundary_match_at30",
+          "first_bank_prefix_sha256": "26c582354e15775e3f4049c4cf365850f8b84d40e539561a30f60f13fb1f95ae",
+          "renderer_queries_per_candidate": 2,
+          "native_steps": 20,
+          "actual_rgb_goal_mse": 0.024158386513590813
+        }
+      ]
+    }
+  ],
+  "mode": "bridge",
+  "step": 2,
+  "weights_sha256": "4760cbacee270f85a67d68090e8d4c601bb29d6c36fca782bf505c3764d25b94",
+  "state_before": "fb9d02120e6698146bfcd24e51a1e444c230b8178590944e14935cd0bf3879b1",
+  "state_after": "fb9d02120e6698146bfcd24e51a1e444c230b8178590944e14935cd0bf3879b1",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 20,
+  "renderer_queries_per_candidate": 2,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Twoownfactualparents12000+newboundaryworldupdates. SAMEexecutedcontrolsareinputs;optionalreverse-timeRGBprediction,nevergoal/path/actiontargettraining. FP32worldandrenderer. Same8developmentalcases;notpublicSOTA/equalFLOPs."
+}

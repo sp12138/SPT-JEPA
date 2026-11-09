@@ -1,0 +1,47 @@
+{
+  "utc": "2026-11-09T06:03:52.673156+00:00",
+  "status": "CLOSED_12_LEARNERS2000_288EPISODES_NO_LONG",
+  "root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_persistent_world_20261109_v2",
+  "source": "/efs/prescottsun/SPT-JEPA/reports/metaworld_persistent_world_20261109/source-v2",
+  "source_files": 38,
+  "hosts": [
+    "dev13",
+    "dev15",
+    "dev6"
+  ],
+  "models": 12,
+  "original_trained_parents": 2,
+  "physical_cases": 8,
+  "stages": [
+    2,
+    500,
+    2000
+  ],
+  "formal_episodes": 288,
+  "training_GPUs_each": 2,
+  "physical_GPUs_total": 24,
+  "collector": {
+    "host": "dev13",
+    "pid": 3848427,
+    "finite": true
+  },
+  "design": "TrainedGRUcontrolRETAINStrainedtransition vsNEWparallelresidual/sequentialreversiblecoupling xold/interventionordinarydata x2OWNparents. 14kownpretraining+max2000new. SameRGBforwardMSE/knowncontrolsINPUTS;no action/goal/path/policytargets.",
+  "pairing": "CNN/observer/control/readoutparameterVALUESidenticalwithinseed;residual/reversibletransitionparamVALUESidentical. GRUcapacity/initialtransitionDIFFERENTandSTRONGretainedcontrol. Data/RNGpairedwithinseed+pool. Allactual12native2/fullCPUrestore/positiveFP32backward/20nativePASSED/globalgate.",
+  "mathematical_audit": "Actual2GPUgradientrelative2.89e-7/60stepFP32stateinverseerror8.52e-7. TheseareNOTperformance. TrainedGRU60stepVJP.2485,so blanket memory-collapse explanationunsupported.",
+  "retired_v1": "V1mathauditONLY/0SGD/nophysicalformalepisodes;preservedAUDIT_ONLY_NO_SGD_HOLD.json. V2keepsstrongtrainedGRUinstead ofresetbaseline.",
+  "additional_data": "100NEWcases/800branches/54400frames/48000randomnativeinputs;64,135physicalsteps excluding561unsavedfailedpreflightreplayed. TRAIN50cases400siblings/TEST50cases400siblings. No success/casefiltering. Scriptedcontextatpresampledprefix;OURrandominterventions. Ordinarylogs/notexpert-free;NOstate/reward/success/taskID/goals/actiontargetsmodeldata.",
+  "additional_data_audit": "All100sourceNPZSHAverified/all24nativearraySHAsverifiedall3SSDcaches/1160canonicalprotectedcasebankvectorschecked. Diagnosticobject4:7branchstd>1mm86/100,>1cm75/100,median3.44cm;notuniversalrewardproxy/notfilter/learnerinput.",
+  "additional_data_root": "/efs/prescottsun/SPT-JEPA/runs/metaworld_interventions_20261109",
+  "next_hourly_due_utc": "2026-11-09T06:30:00Z",
+  "monitor": "Directsame-sessionchecks/interruptiblewaits<=60s;NOexternalLLMmonitor/newgoal/subagents.",
+  "ownership": "rootlaunch-{host}.json+collector-launch.json;neverduplicatelaunch. FullstateRNG/cursorrestores/preserveallerrors.",
+  "constraints": "Ownscratch/GNsamplelevel/RGB+actuallyexecutedforwardcontrols/rewardfree. InverseancestrySAMEa0frozen/UNUSED;desiredgoalONLYplanning. Allprotectedoracle/eval/contact/loopbanksNEVERtrain/teacher/proposals.",
+  "automatic_long_promotion": false,
+  "automatic_expansion": false,
+  "performance": "NOmaturehighperformanceresult;onlyinitialformalepisodesinprogress.",
+  "no_SOTA_claim": "New-dataarmaddsdata;originalLeRobotnotJEPA-WMsgateddata;500nativeanysuccessnot100final/MT50/equalFLOPs.",
+  "final": "05:34:13Z COMPLETE288episodes/12learners2000/0effectiveerrors. Matureinterventions-residualhard1/12;allother5groups0/12. No highperformance/no long.",
+  "last_full_hourly_check": "2026-11-09T05:30:39Z all3sourcesPASS/all24GPUscomputing/instant37..98percent,notcontinuous.",
+  "evidence": "results/hour10:3930metadata/source/logcontentSHAverified;archivef92f66095336c12d2c9e2f74478d244f61651c03e425d9d5c94f0f38d5e5f26d",
+  "new_active": "../metaworld_random_roadmap_20261109/RECOVERY.json"
+}

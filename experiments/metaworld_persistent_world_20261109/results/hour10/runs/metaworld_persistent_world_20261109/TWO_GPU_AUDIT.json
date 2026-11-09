@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T05:13:38.522783+00:00",
+  "two_gpu_FP32_gradient_relative_L2": 2.8166618903924245e-07,
+  "actual_TRAIN_batch64_forward_backward": true,
+  "initial_memory_diagnostics": {
+    "pretrained_gru": {
+      "initial_h0_to_h60_VJP_norm_ratio": 0.2485029399394989,
+      "endpoint_hidden_rms": 0.2627789080142975
+    },
+    "gru": {
+      "initial_h0_to_h60_VJP_norm_ratio": 4.06923538647571e-14,
+      "endpoint_hidden_rms": 0.11297982186079025
+    },
+    "residual": {
+      "initial_h0_to_h60_VJP_norm_ratio": 2.3573644161224365,
+      "endpoint_hidden_rms": 1.0156906843185425
+    },
+    "reversible": {
+      "initial_h0_to_h60_VJP_norm_ratio": 2.3660216331481934,
+      "endpoint_hidden_rms": 1.017564058303833,
+      "sixty_step_FP32_roundtrip_relative_error": 8.524620511707326e-07,
+      "algebraic_inverse_uses_SAME_known_controls": true
+    }
+  },
+  "optimizer_updates": 0,
+  "scope": "SyntheticOWNcontrolsandTRAINobservations/0physics. InitialVJP/roundtripNOTcontrolperformance or proofthatalltrainedsingularvaluesare1."
+}

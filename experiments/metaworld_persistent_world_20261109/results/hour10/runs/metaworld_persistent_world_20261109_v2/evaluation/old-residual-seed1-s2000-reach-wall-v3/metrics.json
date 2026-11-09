@@ -1,0 +1,98 @@
+{
+  "passed": true,
+  "utc": "2026-11-09T05:32:35.113723+00:00",
+  "episodes": [
+    {
+      "task": "reach-wall-v3",
+      "seed": 6042,
+      "case_sha256": "7038b0816186bd4a83ccd28859c50b0ecd8f581cb75282902e9bc29aed4b8cfe",
+      "success": true,
+      "steps": 91,
+      "initial_rgb_replay": {
+        "exact": true,
+        "max_abs": 0,
+        "changed_pixels": 0,
+        "changed_fraction": 0.0,
+        "mse": 0.0,
+        "passed": true
+      },
+      "expert_goal_success": true,
+      "trace": "/efs/prescottsun/SPT-JEPA/runs/metaworld_persistent_world_20261109_v2/evaluation/old-residual-seed1-s2000-reach-wall-v3/reach-wall-v3-seed6042.npz",
+      "trace_sha256": "64bd69657d5627b0a7e5a8ceb9ed1cab390e6f35a1670800694ec5bd1abbc547",
+      "planning": [
+        {
+          "planner_score": 0.002852360252290964,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "8a25e087df36ef3f3eeb0d9a81645f2f57b1c59dfc307957c4a4702b86410755",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 15,
+          "actual_rgb_goal_mse": 0.017698626965284348
+        },
+        {
+          "planner_score": 0.0035838938783854246,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "9934d25761be8db70d772eb6a9660d80e6d543d757f5f92894e7ac84e424cbea",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 30,
+          "actual_rgb_goal_mse": 0.01511602383106947
+        },
+        {
+          "planner_score": 0.003889960702508688,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "b61dc235995accfee16ce17eb16a72fb319701e75630efe0e3e703ad71c72690",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 45,
+          "actual_rgb_goal_mse": 0.01695898547768593
+        },
+        {
+          "planner_score": 0.005059500224888325,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "65e9b5d5568d9dd8ec38f7207d54e42182c7afdc46f93b2743165889fcadc6ad",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 60,
+          "actual_rgb_goal_mse": 0.014652034267783165
+        },
+        {
+          "planner_score": 0.00774982338771224,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "a4db7dff37a49922a2a3aa5748a6237e9ec40d8b89cac1d1a6b37b90c7ab6f45",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 75,
+          "actual_rgb_goal_mse": 0.010303105227649212
+        },
+        {
+          "planner_score": 0.005471453070640564,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "e469f0ab5338ffb285c8c9f38d293df3ea5484abf9b0412969e358ac7f1ec217",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 90,
+          "actual_rgb_goal_mse": 0.0018895635148510337
+        },
+        {
+          "planner_score": 0.002970948815345764,
+          "score_kind": "anchored_endpoint_RGB_MSE_at60",
+          "first_bank_prefix_sha256": "429c51e9821d0636d9d7f4ab07fecd9ce1a9e152a5d5066300873d8b4a26d461",
+          "renderer_queries_per_candidate": 1,
+          "native_steps": 91,
+          "actual_rgb_goal_mse": 0.0016405829228460789
+        }
+      ]
+    }
+  ],
+  "mode": "residual",
+  "step": 2000,
+  "weights_sha256": "785a42e611fe0a920a8fadb138abe119d494f98f76cfe90b1354d88c4b852a7d",
+  "state_before": "9f66beffe056fcfe49d29c798f8fbb3d382e401b8e3921ef4f3c962da1fd67b2",
+  "state_after": "9f66beffe056fcfe49d29c798f8fbb3d382e401b8e3921ef4f3c962da1fd67b2",
+  "model_updates": 0,
+  "horizon_native": 60,
+  "execute_native": 15,
+  "control_hold_native": 5,
+  "particles": 64,
+  "iterations": 4,
+  "budget_native": 500,
+  "renderer_queries_per_candidate": 1,
+  "goal_only_in_planner": true,
+  "expert_paths_or_action_targets": false,
+  "scope": "Ownscratchfactual12000+meanworld2000,trainedGRUcontrolretained;twoNEWcouplingtransitionsfromrandom/fine-tuneworldmax2000. GRUvsparallelresidualvssequentialreversible;fixedordinaryRGBforwardobjective. Old-onlyvsadditionalrandom-interventiondata. NOgoal/path/actiontargets. Extra-dataarmNOTsame-dataSOTAcomparison."
+}
