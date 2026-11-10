@@ -203,3 +203,19 @@ continue unchanged after retiring their parent PIDs; only subsequent chunks use
 the cadenced collector. Same model, sampler, CEM bytecode/math, cases, inputs and
 original24-hour deadline. Results retain which GC implementation produced them;
 the new root's finite collector is authoritative. No current episode is replayed.
+
+Final fork study:1024 valid logs,128 full groups,16,384 transitions,58 TRAIN/6
+new-log validation kitchens, zero acquisition errors. All six7000-step models
+and48 source evaluations finish with full-state/gradient/entry checks passing.
+
+| Method | Uniform Reach/Push | Direction Reach/Push |
+| --- | --- | --- |
+| Ordinary logs |41.28/6.17%|45.20/9.31%|
+| Fork logs |38.61/9.30%|32.55/9.29%|
+| Shared root |35.77/10.34%|30.94/27.29%|
+
+All strict completions0. Shared-direction Push is45.34/9.25% across its two
+ancestors; this is not a stable improvement or better than prior global-support
+source mean34.88%. `results/review.json` records NO_LONG_PROMOTION. This finite
+study is complete; no further SGD/simulation was launched by the results review.
+Reference-only collection on the fourth host continues independently.
