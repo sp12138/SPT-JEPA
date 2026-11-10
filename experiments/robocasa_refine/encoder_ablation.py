@@ -68,6 +68,60 @@ def original(root):
     return Path(json.loads((root / "plan.json").read_text())["original"])
 
 
+def initialize_budget(root,parent):
+    """Keep the completed1000 states; restart a common9000-update LR schedule."""
+    root.mkdir(parents=True,exist_ok=False)
+    for name in ("sources","environment","features","observations","cases","data.json","validation-plan.json",
+                 "CACHE-DONE-dev13.json","CACHE-DONE-dev15.json","CACHE-DONE-dev6.json",
+                 "PROOF-own1.json","PROOF-own2.json","PROOF-vjepa.json"):
+        (root/name).symlink_to(parent/name,target_is_directory=(parent/name).is_dir())
+    code=Path(__file__).resolve().parents[2]
+    (root/"code").symlink_to(code,target_is_directory=True)
+    plan=json.loads((parent/"plan.json").read_text())
+    plan.update(parent=str(parent),max_steps=10000,stages=[1002,5000,10000],deadline=time.time()+6*3600,
+        fresh_heads=False,prior_head_updates=1000,extra_head_updates=9000,
+        training_data_and_model_unchanged=True,LR_restart="Common cosine horizon9000;1% warmup; retain moments",
+        same_session_check_seconds=3600,not_a_from_scratch_fixed_LR_horizon_scaling_law=True,
+        no_automatic_long_training=True)
+    save(root/"plan.json",plan)
+    rows=[]
+    for source in sorted((parent/"training").iterdir()):
+        old=torch.load(source/"last.ckpt",map_location="cpu",weights_only=False)
+        assert old["step"]==1000 and old["samples"]==32000
+        assert old["config_sha256"]==sha(source/"config.json")
+        cfg=json.loads((source/"config.json").read_text())
+        cfg.update(max_steps=10000,phase_start=1000,stages=[1002,5000,10000],parent=str(source),
+            new_training_origin="Exact1000-step full state; new common LR restart only")
+        run=root/"training"/source.name;run.mkdir(parents=True)
+        save(run/"config.json",cfg)
+        model=build(root,cfg);model.load_state_dict(old["model"],strict=True)
+        assert common.state_hash(model.state_dict())==old["nn_sha256"]
+        opt,scheduler=optimizer_for(model,cfg)
+        assert common.associations(model,opt)==old["parameter_associations"]
+        opt.load_state_dict(old["optimizer"])
+        assert common.checkpoint_equal(old["optimizer"]["state"],opt.state_dict()["state"])
+        rates=[base*factor(1000) for base,factor in zip(scheduler.base_lrs,scheduler.lr_lambdas)]
+        schedule=copy.deepcopy(old["scheduler"]);schedule["_last_lr"]=rates
+        scheduler.load_state_dict(schedule)
+        for group,lr in zip(opt.param_groups,rates):group["lr"]=lr
+        state=dict(old,model=common.cpu(model.state_dict()),optimizer=common.cpu(opt.state_dict()),
+            scheduler=scheduler.state_dict(),config_sha256=sha(run/"config.json"))
+        assert common.checkpoint_equal(old["rank_rng"],state["rank_rng"])
+        common.save_full_state(run,state)
+        (run/"step-001000").symlink_to(source/"step-001000",target_is_directory=True)
+        (run/"original-initial.json").symlink_to(source/"initial.json")
+        evaluation=root/"evaluation"/source.name;evaluation.mkdir(parents=True)
+        (evaluation/"step-001000").symlink_to(parent/"evaluation"/source.name/"step-001000",target_is_directory=True)
+        row=dict(passed=True,parent=str(source),parent_step=1000,model_hash=old["nn_sha256"],
+            optimizer_moments_RNG_cursor_exact=True,new_parameters=0,SGD_replayed=0,
+            new_LR_horizon=9000,new_LR_warmup=90,restored_world_size=old["world_size"])
+        save(run/"ancestry.json",row);rows.append(dict(run=source.name,**row))
+        print(json.dumps(dict(initialized=source.name,parent_step=1000,new_updates=9000)),flush=True)
+        del old,model,opt,scheduler,state
+    save(root/"INITIALIZED.json",dict(passed=True,rows=rows,inherited_control_episodes=32,
+        new_control_episodes=64,physical_cases=4,new_SGD=0,SGD_replayed=0))
+
+
 def load_encoder(root, kind):
     from experiments.robocasa_compare.evaluate import install_public
     plan=json.loads((root / "plan.json").read_text())
@@ -265,6 +319,19 @@ class DenseWorld(nn.Module):
         return loss,dict(loss=loss,tf=tf_loss,ar=ar_loss)
 
 
+def optimizer_for(model,cfg):
+    phase=cfg.get("phase_start",0);total=cfg["max_steps"]
+    if cfg["objective"] == "spt":return common.make_optimizer(model,total,phase)
+    horizon=total-phase
+    assert horizon>0
+    warmup=max(1,int(horizon*.01))
+    def factor(step):
+        n=max(0,step-phase)
+        return min(1.,max(1,n)/warmup)*.5*(1+math.cos(math.pi*min(n,horizon)/horizon))
+    opt=torch.optim.AdamW(model.parameters(),lr=5e-5,weight_decay=.001)
+    return opt,torch.optim.lr_scheduler.LambdaLR(opt,factor)
+
+
 def training(root,run,resume=False,stop=1000):
     import torch.distributed as dist
     from torch.nn.parallel import DistributedDataParallel as DDP
@@ -276,10 +343,7 @@ def training(root,run,resume=False,stop=1000):
     cfg=json.loads((run/"config.json").read_text());model=build(root,cfg).to(device)
     from vforge.ops import OpsConfig,initialize_ops
     initialize_ops(OpsConfig(backend="sdpa",allow_fallback=False),device=device,parallel_state=None)
-    if cfg["objective"] == "spt":opt,scheduler=common.make_optimizer(model,cfg["max_steps"])
-    else:
-        opt=torch.optim.AdamW(model.parameters(),lr=5e-5,weight_decay=.001)
-        scheduler=torch.optim.lr_scheduler.LambdaLR(opt,lambda n:min(1.,max(1,n)/10)*.5*(1+math.cos(math.pi*min(n,1000)/1000)))
+    opt,scheduler=optimizer_for(model,cfg)
     start=0;restored=None
     if resume:
         state=torch.load(run/"last.ckpt",map_location="cpu",weights_only=False)
@@ -289,12 +353,16 @@ def training(root,run,resume=False,stop=1000):
         assert common.state_hash(model.state_dict()) == state["nn_sha256"]
         start=state["step"];restored=state["rank_rng"][rank]
         assert state["samples"] == start*cfg["global_batch"]
+        if rank==0:save(run/f"restore-{start:06d}.json",dict(passed=True,step=start,
+            neural_hash=state["nn_sha256"],optimizer_parameter_associations_exact=True,
+            rank_RNG_and_sample_cursor_restored=True,world_size=world,SGD_replayed=0))
     elif rank == 0:
         excluded=("feature_adapter.",) if cfg["objective"] == "spt" else ("input.","output.")
         common_parameters={k:v for k,v in model.state_dict().items() if not k.startswith(excluded)}
         save(run/"initial.json",dict(passed=True,parameters=sum(p.numel() for p in model.parameters()),
             common_heads_sha256=common.state_hash(common_parameters),fresh_heads=True,
             encoder_not_in_optimizer_or_checkpoint=True,encoder_kind=cfg["encoder"]))
+    assert cfg.get("phase_start",0)<=start<stop<=cfg["max_steps"]
     wrapped=DDP(common.LossModel(model),device_ids=[local],broadcast_buffers=False,find_unused_parameters=True)
     data=FeatureWindows(root,cfg)
     loader=DataLoader(data,batch_sampler=common.CounterBatches(start,stop,cfg["global_batch"],rank,world),
@@ -312,7 +380,7 @@ def training(root,run,resume=False,stop=1000):
         with torch.autocast("cuda",dtype=torch.bfloat16):loss,metrics=wrapped(batch,step)
         assert torch.isfinite(loss),metrics
         loss.backward()
-        if step <= 4 or step % 100 == 0 or step == stop:
+        if step <= 4 or step<=start+2 or step % 100 == 0 or step == stop:
             last_grad={n:float(p.grad.detach().float().norm()) for n,p in model.named_parameters() if p.grad is not None}
             assert last_grad and all(math.isfinite(v) for v in last_grad.values())
             if cfg["objective"] == "spt":
@@ -328,11 +396,16 @@ def training(root,run,resume=False,stop=1000):
                     assert sum(v for n,v in last_grad.items() if n.startswith(prefix))>0,prefix
         torch.nn.utils.clip_grad_norm_(model.parameters(),1.)
         opt.step();scheduler.step()
-        if rank == 0 and (step<=2 or step%20==0 or step==stop):
+        if rank == 0 and (step<=2 or step<=start+2 or step%20==0 or step==stop):
             save(run/"progress.json",dict(step=step,loss=float(loss),metrics={k:float(v.detach()) for k,v in metrics.items()},
-                elapsed_seconds=time.time()-began,completed=step==1000,gradients_checked=bool(last_grad)))
+                elapsed_seconds=time.time()-began,completed=step==cfg["max_steps"],gradients_checked=bool(last_grad),
+                phase_start=cfg.get("phase_start",0),segment_start=start,
+                gradient_norms={prefix:sum(v*v for n,v in last_grad.items() if n.startswith(prefix))**.5
+                    for prefix in (("pool.","predictor.","action_encoder.","renderer.","feature_adapter.")
+                    if cfg["objective"]=="spt" else ("input.","action.","blocks.","output."))}))
         if step == stop or step % 250 == 0:
-            common.checkpoint(run,model,opt,scheduler,cfg,step,world,rank,publish=step in (4,500,1000))
+            common.checkpoint(run,model,opt,scheduler,cfg,step,world,rank,
+                publish=step in cfg.get("stages",(4,500,1000)))
     dist.destroy_process_group()
 
 
@@ -567,31 +640,35 @@ def worker(root,host,adopt_cache=False,attempt="v5"):
             encoder,objective,seed,gpus=job;run=root/"training"/f"{encoder}-{objective}-seed{seed}"
             logs=run/f"execution-{attempt}";logs.mkdir(exist_ok=True)
             world=len(gpus.split(","))
-            for stop in (4,1000):
+            cfg=json.loads((run/"config.json").read_text())
+            stages=cfg.get("stages",(4,1000))
+            for stop in stages:
                 argv=[TRAIN_PYTHON,"-m","torch.distributed.run","--standalone","--nnodes=1",f"--nproc-per-node={world}",
                     "-m","--",MODULE,"--root",str(root),"--mode","train","--run",str(run),"--stop",str(stop)]
                 if (run/"last.ckpt").exists():argv.append("--resume")
                 if not (run/f"step-{stop:06d}/ready.json").exists():
                     call(root,argv,logs/f"train-{stop}.log",gpus)
-                if stop == 4:
-                    if not list((root/"entry"/run.name/"step-000004").glob("*/summary.json")):
+                if stop == stages[0]:
+                    if not list((root/"entry"/run.name/f"step-{stop:06d}").glob("*/summary.json")):
                         call(root,[str(root/"environment/bin/python"),"-u","-m",MODULE,"--root",str(root),
-                            "--mode","evaluate","--run",str(run),"--step","4","--technical"],logs/"entry.log",gpus.split(",")[0],True)
+                            "--mode","evaluate","--run",str(run),"--step",str(stop),"--technical"],logs/"entry.log",gpus.split(",")[0],True)
                 else:
-                    if not (run/"diagnostic-001000.json").exists():
+                    if not (run/f"diagnostic-{stop:06d}.json").exists():
                         call(root,[TRAIN_PYTHON,"-u","-m",MODULE,"--root",str(root),"--mode","diagnostic",
-                            "--run",str(run),"--step","1000"],logs/"diagnostic.log",gpus.split(",")[0])
-            def control(i):
-                from experiments.robocasa_refine.validation import name
-                case=json.loads((root/"plan.json").read_text())["source_cases"][i]
-                if (root/"evaluation"/run.name/"step-001000"/name(**case)/"summary.json").exists():return
-                call(root,[str(root/"environment/bin/python"),"-u","-m",MODULE,"--root",str(root),
-                    "--mode","evaluate","--run",str(run),"--step","1000","--case",str(i)],
-                    logs/f"evaluate-{i}.log",gpus.split(",")[i%world],True)
-            # Dense jobs use two GPUs; each serves two independent physical cases.
-            for begin in range(0,4,world):
-                with ThreadPoolExecutor(max_workers=world) as pool:list(pool.map(control,range(begin,min(4,begin+world))))
-            save(run/"DONE.json",dict(passed=True,new_updates=1000,no_automatic_long_training=True))
+                            "--run",str(run),"--step",str(stop)],logs/f"diagnostic-{stop}.log",gpus.split(",")[0])
+                    def control(i):
+                        from experiments.robocasa_refine.validation import name
+                        case=json.loads((root/"plan.json").read_text())["source_cases"][i]
+                        if (root/"evaluation"/run.name/f"step-{stop:06d}"/name(**case)/"summary.json").exists():return
+                        call(root,[str(root/"environment/bin/python"),"-u","-m",MODULE,"--root",str(root),
+                            "--mode","evaluate","--run",str(run),"--step",str(stop),"--case",str(i)],
+                            logs/f"evaluate-{stop}-{i}.log",gpus.split(",")[i%world],True)
+                    # Dense jobs use two GPUs, two independent cases per wave.
+                    for begin in range(0,4,world):
+                        with ThreadPoolExecutor(max_workers=world) as pool:list(pool.map(control,range(begin,min(4,begin+world))))
+                    save(run/f"STAGE-{stop:06d}.json",dict(passed=True,step=stop,control_episodes=4))
+            save(run/"DONE.json",dict(passed=True,new_updates=cfg["max_steps"]-cfg.get("phase_start",0),
+                max_steps=cfg["max_steps"],no_automatic_long_training=True))
         with ThreadPoolExecutor(max_workers=len(jobs)) as pool:list(pool.map(one,jobs))
         save(root/f"DONE-{attempt}-{host}.json",dict(passed=True,host=host,cache_adopted=adopt_cache))
     except BaseException as error:
@@ -601,7 +678,7 @@ def worker(root,host,adopt_cache=False,attempt="v5"):
 
 if __name__ == "__main__":
     p=argparse.ArgumentParser();p.add_argument("--root",type=Path,required=True)
-    p.add_argument("--mode",choices=["initialize","cache","worker","train","evaluate","diagnostic","proof"],required=True)
+    p.add_argument("--mode",choices=["initialize","continue","cache","worker","train","evaluate","diagnostic","proof"],required=True)
     for name in ("source","original","run"):p.add_argument("--"+name,type=Path)
     p.add_argument("--kind",choices=["own1","own2","vjepa"]);p.add_argument("--shard",type=int);p.add_argument("--shards",type=int)
     p.add_argument("--host",choices=HOSTS);p.add_argument("--resume",action="store_true");p.add_argument("--technical",action="store_true")
@@ -610,6 +687,7 @@ if __name__ == "__main__":
     p.add_argument("--stop",type=int,default=1000);p.add_argument("--step",type=int,default=1000);p.add_argument("--case",type=int)
     a=p.parse_args()
     if a.mode == "initialize":initialize(a.root,a.source,a.original)
+    elif a.mode == "continue":initialize_budget(a.root,a.source)
     elif a.mode == "cache":cache(a.root,a.kind,a.shard,a.shards)
     elif a.mode == "worker":worker(a.root,a.host,a.adopt_cache,a.attempt)
     elif a.mode == "train":training(a.root,a.run,a.resume,a.stop)

@@ -1,6 +1,10 @@
 # 当前交接
 
-最新目标是超过 RoboJEPA，尚未达成。用户现授权 dev13、dev15、dev6、dev6-2c 四台，尽量用于有效实验。旧 MetaWorld／PushT 等研究、goal 和定时 LLM 监控不恢复。协议见 [robocasa_refine/PROTOCOL.md](experiments/robocasa_refine/PROTOCOL.md)。不把有限实验控制器当作新 goal 或周期监控。
+最新目标是匹配条件下超过 RoboJEPA，尚未达成。最新用户明确授权1000→5000→10000步续训、在本会话每小时检查；若性能差，先复现官方RoboJEPA，再逐个融合／修正SPT组件。四机dev13/dev15/dev6/dev6-2c可用，旧任务／goal／旧监控不恢复。当前检查为持续会话等待，没有创建不存在的托管定时任务。
+
+新有限根 `runs/robocasa_encoder_budget_20261111` 已实际启动：8个原1000步完整状态，零NN／优化器动量／rank RNG／游标改动，统一重启9000步cosine／90步warmup。相同数据、窗口、batch、NN、loss、控制案例；不是从零固定LR日程scaling law。新stages1002（恢复＋真实MPC入口）／5000／10000，每个正式点32回合，共64新回合＋32继承回合，四物理案例。八个实际恢复和1002入口均已通过、继续SGD，`STARTUP_APPROVED.json`，NN及输入定义与v7的AST相同。源 `sources/encoder-budget-20261111-v1`，核心sha dbcfc09b；启动 `launch-dev*.json`，finite collector `collector-launch.json`，结果 `results/{step-001000,step-005000,step-010000,summary}.json`。六小时cap，旧根HOLD保持。外部骨干预算不匹配、无未来／最优动作target、无proprio／奖励输入。
+
+当前每小时检查计划在新根 `SESSION_CHECKS.json`，首次2026-11-10 18:31:46UTC（Nov11 02:31北京时间），之后每小时；只在当次实际检查后记录结果。若10k仍差，官方公开权重评测复现与同数据训练复现分别标注，不把自建dense头冒称官方RoboJEPA。先建立同输入／图像预处理／历史动作／CEM的参考锚点，再一次只换一个SPT组件；额外预训练或本体输入只能分轨，不能冒称公平算法胜利。第四台的旧官方目标厨房队列仍在dev6-2c独立运行。
 
 最新用户明确授权试用 V-JEPA2.1，现追问预算是否不足。有限根 `runs/robocasa_encoder_20261110` 已收齐8个1000步新头、32个源闭环回合，严格final／any成功全0，HOLD。Own／SPT、own／dense、V-JEPA／SPT、V-JEPA／dense的Reach／Push进度为17.32／9.33%、22.07／5.52%、11.03／9.33%、10.11／9.26%。这些是进度；同案例旧零动作Push已有9.09%。同1024随机日志，RGB／当前指令、无动作target或proprio；只导入外部视觉编码器，非同预算从零SOTA比较。Own骨干继承7000步，但所有预测头重新初始化，不能当成熟模型额外续训1000步。只有四个物理源案例和两个新头seed，不是32独立案例。
 

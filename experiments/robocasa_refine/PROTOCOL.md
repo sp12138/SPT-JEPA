@@ -303,3 +303,37 @@ SPT targets change with its learned projection, unlike the fixed dense targets;
 normalized errors are neither common physical units nor control-success scores.
 No5000/10000-step continuation was launched. Canonical review:
 `budget-review/summary.json`; final screen remains HOLD.
+
+## Authorized budget continuation and hourly checks
+
+Latest user authorizes the10000-step curve and hourly checks in this same
+conversation, followed by official RoboJEPA reproduction and incremental SPT
+integration if performance remains poor. New root:
+`runs/robocasa_encoder_budget_20261111`; old roots/HOLDs are unchanged.
+
+All eight native1000-step states retain exact neural tensors, optimizer moments,
+rank RNG, global-batch32 cursor and world sizes. The original LR reached zero;
+all arms therefore share one9000-step cosine restart with90 warmup updates.
+LR/horizon intentionally change, while data, loss, model, normalization, planner,
+four source cases and seeds stay fixed. This is a controlled continuation,
+not a from-scratch fixed-horizon scaling law. States1002/5000/10000 are published;
+the first is an actual restoration/backward/two-command MPC gate. The new training
+code only generalizes scheduling, milestones and progress/restore records. AST
+checks preserve all encoder, model, loss, input and evaluation definitions.
+
+Each formal5000/10000 milestone has32 episodes plus128 fixed held-out-window
+diagnostics/model; the old1000 endpoints are inherited, not rerun.64 new physical
+episodes reuse the same four cases and two ancestral heads per configuration.
+Controllers are finite/six-hour-capped. `STARTUP_APPROVED.json` passes all eight
+real entries and restored1000→1002 continuations without repeating completed SGD.
+Canonical collector: `results/summary.json`, plus `results/step-*.json`.
+
+Only one current-session hourly check loop is authorized, beginning18:31:46UTC
+on2026-11-10. `SESSION_CHECKS.json` records the next check; actual observations
+are written after checks. No hosted automation is claimed or old goal resumed.
+After the budget curve, poor control triggers reference-first diagnosis: retain
+the exact public predictor/weights, distinguish RGB and proprio tracks, verify
+camera preprocessing/history/physical replay/CEM, then introduce one SPT component
+per contrast. External initialization, adaptation data and compute are disclosed.
+An improved forecast score alone does not establish a successful manipulation
+algorithm or authorize a SOTA claim.
