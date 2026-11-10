@@ -2,6 +2,8 @@
 
 最新目标是超过 RoboJEPA，尚未达成。用户现授权 dev13、dev15、dev6、dev6-2c 四台，尽量用于有效实验。旧 MetaWorld／PushT 等研究、goal 和定时 LLM 监控不恢复。协议见 [robocasa_refine/PROTOCOL.md](experiments/robocasa_refine/PROTOCOL.md)。不把有限实验控制器当作新 goal 或周期监控。
 
+最新用户明确授权试用 V-JEPA 2.1 归因。新有限根 `runs/robocasa_encoder_20261110`：冻结 own 两个7000步编码器／冻结 V-JEPA2.1 × 原压缩SPT／直接稠密预测，各两个全新预测头。三主机负责冻结特征缓存及同数据1000步短训，dev6-2c原参考队列继续；不恢复其他旧任务。只导入外部视觉编码器，不导入公开预测器、生成器或策略；这是预训练诊断分支，不是从零同预算SOTA比较。数据为同1024普通随机程序，控制输入仍RGB与当前发出动作，无动作target或proprio。3072特征文件／24分片及三套真实图像预检已全部通过；零初始化的条件通路需要两次临时Adam更新激活，预检后全部权重还原，未保留这些更新。原失败与CORRECTIONS保留。实际训练入口 `launch-training-v7-*.json`，缓存v2与梯度预检v4沿用、运行v7；全部8个实际MPC入口与完整状态恢复通过，已正常进入1000步续跑，见 `STARTUP_APPROVED-v7.json`。最终32源验证回合；六小时总上限，不自动长训。八个原4步完整状态全部沿用，torchrun参数、评测import顺序与240/480相机尺寸适配错误保留，0已完成SGD重放；四种模型的缓存RGB H5-CEM、两种原始分辨率、权重hash与两seed公共初始头hash均通过。有限collector入口 `collector-launch-v7.json`、`results/summary-v7.json`；旧incomplete summary/HOLD不是当前完成结果。完整协议见末节，当前尚无该分支性能结论。
+
 六个原始5000步模型已完成240回合：TF／spatial／long 的 Reach 平均进度21.80／18.33／20.55%，Push 最终进度4.59／3.68／11.36%；严格完成均0。这是旧 issued-history pilot，不能当官方客户端复现。其根目录 `runs/robocasa_compare_20261110` 已STOP，未完的旧参考评测已明确取消，勿重启。源图像视场裁剪修复保留；原始随机初始化、5000步祖先与一次未保存更新的重放均保留。
 
 `runs/robocasa_official_20261110` 的修正参考链已实际验证：50M120k、2B450k、8B300k 的全部预测器参数均与下载权重一致；逐相机编码、实际运动历史回放、KV缓存、下一步预测及短CEM与直接公开调用相同。编码FP16、预测BF16按论文表格；发布客户端的FP16预测有差异，不声称逐项完整论文复现。RGB零绝对状态、released手工状态、native训练对齐状态分别报告。外部权重只作冻结参考，不进入候选初始化／教师。

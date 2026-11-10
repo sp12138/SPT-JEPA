@@ -219,3 +219,66 @@ ancestors; this is not a stable improvement or better than prior global-support
 source mean34.88%. `results/review.json` records NO_LONG_PROMOTION. This finite
 study is complete; no further SGD/simulation was launched by the results review.
 Reference-only collection on the fourth host continues independently.
+
+## Frozen encoder attribution
+
+The user explicitly authorizes V-JEPA 2.1 for this diagnostic branch. Root:
+`runs/robocasa_encoder_20261110`; core: `encoder_ablation.py`. The original scratch
+track remains separately labeled. Only the public visual encoder is imported,
+not a released dynamics predictor, decoder, teacher policy, or proprio input.
+
+The factorial screen crosses frozen own encoders from the two fork-flat7000
+parents / frozen V-JEPA2.1 with compressed SPT / direct dense-feature prediction.
+Every predictor, pool, input adapter and optional DiT starts fresh. Paired SPT
+heads have identical initial tensors apart from the necessary input-width adapter.
+Dense blocks likewise share initialization apart from input/output width. The own
+encoders retain their7000-update ancestry; the external encoder has much larger
+pretraining, so this is attribution, not an equal-budget scratch comparison.
+
+All eight heads use the same1024 ordinary random-command logs,58 training/6 new-log
+validation kitchens, current issued controls, window8, batch32,1000 new updates,
+and paired counter-based sample streams. No expert path, action target, absolute
+state, reward, language, goal or protected diagnostic enters training. These are
+new-interaction holdouts; the6 kitchens already belonged to the old human TRAIN
+split. The four control-development cases remain separate source-validation
+kitchens, not the public target-kitchen benchmark.
+
+Cache exact frozen patch tokens on the identical224-square field of view, with
+ImageNet normalization and single-frame V-JEPA input. V-JEPA uses FP16, the own
+ViT BF16, both cached FP16. This is not the full rectangular public client recipe.
+SPT retains its64-dimensional carrier, analytic residual prior and image flow
+objective, with a trainable192-wide input adapter. Dense prediction retains all
+patches/channels, uses causal axial blocks and equal teacher-forcing/autoregressive
+L1 losses, detaching recursive feedback. Thus the dense contrast changes both
+carrier and objective; channel widths, parameter counts and FLOPs are disclosed,
+not claimed identical. Raw latent errors cannot be compared across encoders.
+
+Before formal continuation: real TRAIN-image backward/terminal-action checks,
+frozen encoder and preprocessing checks, actual4-update checkpoints/full-state
+resumes and two-command MPC entry. Final diagnostics use128 paired held-out windows
+and normalized forecast/copy errors;32 closed-loop episodes use the existing four
+strictly replayed physical cases, common public CEM and issued-action history.
+Progress and strict completion are separate. Two ancestors/four physical cases
+are not32 independent cases. Three main hosts preprocess/train/evaluate; the
+fourth-host reference continues. The entire root has a six-hour wall cap, stops
+after the finite screen, and never automatically promotes to long training.
+
+All3072 feature files and24 shard-completion checks pass. Initial audit failures
+are retained: CPU/CUDA preprocessing differs7.15e-7, within FP32 tolerance; SPT's
+zero output and adaLN gates require two activation updates before action-encoder
+gradients appear. The corrected real-image audit uses two temporary Adam updates,
+restores every original tensor, and retains zero updates. Both objectives/all
+three encoders then pass terminal-action poisoning and required positive gradients.
+Formal training checks these gradients from step3 onward, with the MPC gate at4.
+Cache codev2 and gradient proofv4 are immutable. The effective runtime isv7,
+bound by `RUNTIME-v7.json` and `launch-training-v7-*.json`: the torchrun separator,
+simulator import order and240/480 camera-size adapter were repaired, retaining
+all original errors. Neural/training definitions are unchanged. All eight native
+four-update states are reused; no cache or completed SGD was repeated. Four cached
+RGB H5-CEM checks pass for both raw camera sizes, with checkpoint hashes matching.
+Paired common SPT heads and dense blocks have identical initial hashes for both
+seeds. The authoritative finite collector is `collector-launch-v7.json` and
+`results/summary-v7.json`; earlier incomplete summaries/HOLDs remain historical.
+All eight actual two-command simulator entries/full-state continuations pass;
+`STARTUP_APPROVED-v7.json` binds the successful startup. This is operational
+evidence, not a manipulation-success result.
