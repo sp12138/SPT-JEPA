@@ -1,5 +1,10 @@
 # RoboCasa kitchen generalization pilot
 
+This historical issued-history pilot is complete and STOP; its unfinished old
+reference queue is retired. Corrected comparison and later authorized work are
+in [the current protocol](../robocasa_refine/PROTOCOL.md). Do not resume the queue
+from the original launch instructions below.
+
 The user authorizes a finite pilot on dev13/dev15/dev6, with one SPT-JEPA route
 per host. Old campaigns, goals, and recurring LLM monitors remain stopped.
 

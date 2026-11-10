@@ -12,9 +12,9 @@
 
 ## 当前边界
 
-- 最新用户授权 RoboCasa 留出厨房的有限三路线对照，每台机器一条 SPT-JEPA 路线；见 `experiments/robocasa_compare/PROTOCOL.md`。不恢复旧实验、goal 或定时监控。
+- 最新用户授权持续分析、修复和重跑 RoboCasa 对照，以超过 RoboJEPA 为目标；见 `experiments/robocasa_compare/PROTOCOL.md`。不恢复旧实验、goal 或定时监控。
 - 状态入口为 `HANDOFF.md`，关键结论为 `experiments/CONCLUSIONS.md`。
-- 后续获授权时，计算资源仅限 dev13、dev15、dev6；不使用 dev2 或 dev6-2c。
+- 后续获授权时，计算资源限 dev13、dev15、dev6、dev6-2c；不使用 dev2。
 - 检查实际进程和 GPU 后再报告利用率；历史快照不代表当前或持续满载。
 - 不根据旧文档中“ACTIVE”“下一步”等文字自动恢复任务。
 

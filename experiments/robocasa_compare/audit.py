@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from experiments.robocasa_compare.acquire import save, sha
 from experiments.robocasa_compare.data import Windows
 from experiments.robocasa_compare.train import (associations, build, gradients, make_optimizer,
-                                               prepare_batch, state_hash)
+                                               prepare_batch, state_hash,make_dataset)
 
 
 def equal(a, b):
@@ -33,7 +33,7 @@ def run(args):
     assert all(set(v) == {"python", "numpy", "torch", "cuda"} for v in state["rank_rng"])
     core = build(cfg["model"], args.root / "code")
     core.load_state_dict(state["model"], strict=True)
-    optimizer, scheduler = make_optimizer(core, cfg["max_steps"])
+    optimizer, scheduler = make_optimizer(core, cfg["max_steps"], cfg.get("phase_start",0))
     assert associations(core, optimizer) == state["parameter_associations"]
     optimizer.load_state_dict(state["optimizer"])
     scheduler.load_state_dict(state["scheduler"])
@@ -42,7 +42,7 @@ def run(args):
     assert state_hash(core.state_dict()) == state["nn_sha256"]
     cpu_restore = True
     del optimizer, scheduler
-    dataset = Windows(cfg["data"], cfg["model"]["window"], cfg["seed"], "validation")
+    dataset = make_dataset(cfg,cfg["data"],"validation")
     raw = next(iter(DataLoader(dataset, batch_size=1, num_workers=0)))
     assert set(raw) == {"pixels", "action"}
     assert raw["pixels"].dtype == torch.uint8

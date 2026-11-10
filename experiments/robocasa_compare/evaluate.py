@@ -1,13 +1,15 @@
 """Common official RoboCasa tasks and unmodified public CEM for all models."""
 import argparse
+import atexit
 from dataclasses import dataclass
 import json
 import os
 from pathlib import Path
 import random
-import socket
+import shutil
 import sys
 import time
+import tempfile
 import types
 
 import numpy as np
@@ -23,21 +25,21 @@ def install_public(root):
     os.environ["VJEPA2_HUB_REPO"] = str(root / "sources/vjepa2")
 
 
-def make_env(task, kitchen, seed):
+def make_env(task, kitchen, seed, camera_size=(480,640), push_object="flour_bag"):
     from robots.robocasa.object_push_kitchen import ObjectPushKitchen
-    ObjectPushKitchen.DEFAULT_OBJECT_NAME = "flourbag001"
+    ObjectPushKitchen.DEFAULT_OBJECT_NAME = push_object
     from robots.robocasa.robot_env import RoboCasaEnv
     from robots.robocasa.blocking_robot_env import ReachBlockingRoboCasaEnv, ObjectPushBlockingRoboCasaEnv
     random.seed(902000 + kitchen); np.random.seed(902000 + kitchen)
     inner = RoboCasaEnv(task_name="ObjectPushKitchen" if task == "push" else "CloseStandMixerHead",
-        camera_names=["robot0_agentview_left", "robot0_eye_in_hand"], camera_width=320, camera_height=240,
+        camera_names=["robot0_agentview_left", "robot0_eye_in_hand"], camera_width=camera_size[1], camera_height=camera_size[0],
         seed=kitchen-1, robot="PandaOmron", chunk_size=4, wm_embodiment="franka_omron_state_delta",
         reach_task=task == "reach", reach_task_seed=seed, reach_min_distance=.25, reach_max_distance=.35,
         reach_clear_radius=1., kitchen_split="target", layout_and_style_ids=[(kitchen, kitchen)])
     if task == "reach":
         return ReachBlockingRoboCasaEnv(inner, reach_task_seed=seed, reach_min_distance=.25,
             reach_max_distance=.35, reach_clear_radius=1., kitchen_split="target", pos_tol=.001, max_steps=200)
-    return ObjectPushBlockingRoboCasaEnv(inner, object_push_object_name="flourbag001",
+    return ObjectPushBlockingRoboCasaEnv(inner, object_push_object_name=push_object,
         object_push_task_seed=seed, object_push_min_distance=.10, object_push_max_distance=.15,
         object_push_forward_cone_deg=60., object_push_clear_radius=1., pos_tol=.001, max_steps=200)
 
@@ -49,7 +51,7 @@ def reset(env, task, seed, mode):
     obs = result[0] if isinstance(result, tuple) else result
     for name in ["img_0", "img_1"]:
         image = obs[name]
-        assert image.shape == (240, 320, 3) and image.dtype == np.uint8
+        assert image.shape in ((240,320,3),(480,640,3)) and image.dtype == np.uint8
         assert float(image.std()) > 1., (name, "invalid RGB")
     return obs
 
@@ -73,6 +75,15 @@ def native_training_pose(env):
                             sensors["robot0_gripper_qpos"][:1]])
     assert value.shape == (14,) and np.isfinite(value).all()
     return value
+
+
+def verify_physics(env,cached,name):
+    """Strict replay of deterministically constructed physical cases."""
+    state=physics(env)
+    assert np.array_equal(state["kitchen"],cached["kitchen"])
+    record={key:float(np.max(np.abs(state[key]-cached[key]))) for key in ("qpos","qvel","time")}
+    assert max(record.values())<=1e-8,(name,record)
+    return record
 
 
 def case_name(task, kitchen, seed):
@@ -141,7 +152,7 @@ class RollState:
 
 
 class SPTAdapter:
-    def __init__(self, root, run, step):
+    def __init__(self, root, run, step, online_correction=False):
         self.cfg = json.loads((run / "config.json").read_text())
         self.model = build(self.cfg["model"], root / "code").cuda().eval().requires_grad_(False)
         self.model.load_state_dict(torch.load(run / f"step-{step:06d}/weights.pt", map_location="cuda", weights_only=True))
@@ -151,7 +162,11 @@ class SPTAdapter:
         self.mean = torch.tensor(card["action_mean"], device="cuda")
         self.std = torch.tensor(card["action_std"], device="cuda")
         self.before = state_hash(self.model.state_dict())
-        self.extra_information = "none; RGB and own issued controls only"
+        self.extra_information = "RGB and factual past transition controls only; no absolute proprioception"
+        self.online_correction=online_correction
+        self.residual=None
+        if online_correction:
+            self.extra_information+="; per-episode Bayesian residual updates from own past RGB transitions"
 
     @torch.no_grad()
     def encode(self, observations):
@@ -174,14 +189,20 @@ class SPTAdapter:
             emb = self.model.encode(dict(pixels=pixels))["emb"]
         return emb.reshape(1, length, views, self.model.state_slots, 1, self.model.state_width).float()
 
-    def history(self, observations, commands):
+    def history(self, observations, commands, realized_controls=None):
         value = self.encode(observations)
-        actions = torch.as_tensor(np.asarray(commands, np.float32).reshape(-1, 7), device="cuda")[None]
-        raw = control14(actions)
+        if realized_controls is None:
+            actions = torch.as_tensor(np.asarray(commands, np.float32).reshape(-1, 7), device="cuda")[None]
+            raw = control14(actions)
+        else:
+            raw=torch.as_tensor(np.asarray(realized_controls,np.float32).reshape(-1,14),device="cuda")[None]
+            assert raw.shape[1]==len(observations)-1
+            if self.cfg.get("input_semantics")=="achieved-translation":
+                translation=raw[...,7:10].clone();raw=torch.zeros_like(raw);raw[...,7:10]=translation
         return RollState(value, (raw - self.mean) / self.std)
 
     @torch.no_grad()
-    def step(self, action, state, **kwargs):
+    def nominal_step(self, action, state, **kwargs):
         action = action.to("cuda")
         known = (control14(action) - self.mean) / self.std
         controls = torch.cat([state.actions, known], 1)
@@ -196,44 +217,76 @@ class SPTAdapter:
         actions = torch.cat([state.actions, known], 1)[:, -(features.shape[1]-1):]
         return future, RollState(features, actions)
 
+    @torch.no_grad()
+    def step(self,action,state,**kwargs):
+        future,following=self.nominal_step(action,state,**kwargs)
+        if self.online_correction:
+            from experiments.robocasa_refine.control import ResidualPosterior
+            if self.residual is None:
+                self.residual=ResidualPosterior(14,future[0].numel(),self.model.sigma0,future.device)
+            design=(control14(action.to("cuda"))-self.mean)/self.std
+            future=future+self.residual.predict(design).reshape_as(future)
+            following.features=following.features.clone()
+            following.features[:,-1:]=future
+        return future,following
+
+    @torch.no_grad()
+    def observe(self,command,nominal,observation):
+        actual=self.encode([observation])
+        action=torch.as_tensor(command,device="cuda").float()[None,None]
+        design=(control14(action)-self.mean)/self.std
+        assert self.residual is not None
+        self.residual.update(design,actual-nominal)
+
     def unchanged(self):
         return state_hash(self.model.state_dict()) == self.before
 
 
 class RoboAdapter:
-    def __init__(self, root, size, mode):
+    def __init__(self, root, size, mode, pose_source="native"):
         from app.robo_jepa.world_model import WorldModel
         self.model = WorldModel.load_pretrained(root / "reference" / size, load_decoder=False,
                                                load_compiled=False, device="cuda")
         self.model.transition_model.eval().requires_grad_(False)
         self.mode = mode
+        self.pose_source=pose_source
         self.before = state_hash(dict(self.model.transition_model.named_parameters()))
         self.extra_information = "published frozen V-JEPA encoder and full multi-dataset pretraining"
         if mode == 3:
-            self.extra_information += "; source-aligned native robot proprioception (separate paper-input track)"
+            self.extra_information += f"; robot proprioception from {pose_source} sensors (separate input track)"
 
     @torch.no_grad()
     def encode(self, observations):
+        from PIL import Image
         values = []
         for obs in observations:
-            x = self.model.encode([obs["img_0"], obs["img_1"]], size=(240, 320), dtype=torch.float16)
-            values.append(x)
+            # Released policy_client resizes and encodes each camera separately.
+            views=[]
+            for key in ("img_0","img_1"):
+                frame=np.asarray(Image.fromarray(obs[key]).resize((320,240)))
+                views.append(self.model.encode(frame[None],size=(240,320),dtype=torch.float16))
+            values.append(torch.cat(views,0))
         return torch.stack(values, 0)[None].float()
 
     def history(self, observations, commands):
-        from app.robo_jepa.world_model import WorldModelState
+        from app.robo_jepa.world_model import WorldModelState,poses_to_diffs
         features = self.encode(observations)
+        assert len(commands)==len(observations)-1
         if self.mode == 2:
             states = torch.zeros(1, len(observations), 7, device="cuda")
+            poses=torch.as_tensor(np.stack([o["pose"] for o in observations])).float()
+            actual=poses_to_diffs(poses)[None].cuda() if len(observations)>1 else states[:,:0]
         else:
-            states = torch.as_tensor(np.stack([o["_reference_native_pose"] for o in observations]), device="cuda").float()[None]
+            key="_reference_native_pose" if self.pose_source=="native" else "proprio_robocasa"
+            states = torch.as_tensor(np.stack([o[key] for o in observations]), device="cuda").float()[None]
+            actual=states[:,1:]-states[:,:-1]
         state = WorldModelState.from_features(features=features[:, :1], states=states[:, :1],
             view_map=torch.tensor([[0, 2]], device="cuda"),
             embodiment_ids=torch.tensor([[self.mode]], device="cuda"))
         # Same real-context replay as the released policy client: step packs
         # the action representation, then actual observations replace predictions.
-        for index, command in enumerate(commands):
-            action = torch.as_tensor(command, device="cuda").float()[None, None]
+        for index in range(len(commands)):
+            action = actual[:,index:index+1]
             _, state = self.step(action, state, use_cache=True, no_grad=True, device="cuda")
             state.features = features[:, index+1:index+2]
             state.states = states[:, index+1:index+2]
@@ -250,11 +303,11 @@ class RoboAdapter:
 def initialize_singleton():
     import torch.distributed as dist
     if not dist.is_initialized():
-        with socket.socket() as stream:
-            stream.bind(("127.0.0.1", 0))
-            port = stream.getsockname()[1]
+        directory=Path(tempfile.mkdtemp(prefix="spt-singleton-"))
+        atexit.register(shutil.rmtree,directory,ignore_errors=True)
+        store=dist.FileStore(str(directory/"store"),1)
         torch.cuda.set_device(0)
-        dist.init_process_group("nccl", init_method=f"tcp://127.0.0.1:{port}", rank=0, world_size=1,
+        dist.init_process_group("nccl", store=store, rank=0, world_size=1,
                                 device_id=torch.device("cuda", 0))
 
 
@@ -270,17 +323,20 @@ def direct_tensor_cem(public_cem):
                               public_cem.__defaults__, public_cem.__closure__)
 
 
-def evaluate(args):
+def evaluate(args, adapter=None):
     from app.robo_jepa.mpc.mpc_utils import cem as public_cem
     initialize_singleton()
     torch.set_num_threads(2)
     torch.set_float32_matmul_precision("high")
-    if args.reference:
-        adapter = RoboAdapter(args.root, args.reference, args.reference_mode)
+    if adapter is not None:
+        if isinstance(adapter,SPTAdapter):
+            adapter.residual=None
+    elif args.reference:
+        adapter = RoboAdapter(args.root, args.reference, args.reference_mode,getattr(args,"reference_pose_source","native"))
     elif args.zero:
         adapter = None
     else:
-        adapter = SPTAdapter(args.root, args.run, args.step)
+        adapter = SPTAdapter(args.root, args.run, args.step,getattr(args,"online_correction",False))
         from vforge.ops import OpsConfig, initialize_ops
         initialize_ops(OpsConfig(backend="sdpa", allow_fallback=False), device=torch.device("cuda"), parallel_state=None)
     cem = public_cem if args.reference else direct_tensor_cem(public_cem)
@@ -298,13 +354,11 @@ def evaluate(args):
     try:
         generated_goal = reset(env, args.task, args.seed, "goal")
         obs = reset(env, args.task, args.seed, "init")
+        last_native=native_training_pose(env)
         if args.reference and args.reference_mode == 3:
-            obs["_reference_native_pose"] = native_training_pose(env)
+            obs["_reference_native_pose"] = last_native.copy()
         goal_validation = goal_proof(args.task, generated_goal, obs)
-        state = physics(env)
-        assert np.array_equal(state["kitchen"], cached["kitchen"])
-        for key in ["qpos", "qvel", "time"]:
-            assert np.allclose(state[key], cached[key], atol=1e-8, rtol=0), (name, key)
+        physics_errors=verify_physics(env,cached,name)
         actual = np.stack([obs["img_0"], obs["img_1"]])
         goal_actual = np.stack([generated_goal["img_0"], generated_goal["img_1"]])
         initial_mse = float(np.mean((actual.astype(float)-cached["initial"].astype(float))**2))
@@ -312,7 +366,14 @@ def evaluate(args):
         assert max(initial_mse, goal_mse) < 5., (name, initial_mse, goal_mse)
         goal_obs = {"img_0": cached["goal"][0], "img_1": cached["goal"][1]}
         observations = [obs]
+        realized=[]
         goal = adapter.encode([goal_obs]) if adapter else None
+        objective_kwargs={}
+        if getattr(args,"goal_metric","uniform")=="support":
+            assert not args.reference and adapter is not None
+            from experiments.robocasa_refine.control import goal_support_cost
+            objective_kwargs["objective"]=goal_support_cost(adapter.encode([obs]),goal,
+                                                          adapter.model.state_slots,adapter.model.state_width)
         warm = None
         np.random.seed(710000 + args.seed + 1009 * args.kitchen)
         torch.manual_seed(710000 + args.seed + 1009 * args.kitchen)
@@ -321,22 +382,34 @@ def evaluate(args):
             if adapter:
                 context = observations[-2:]
                 past = commands[-(len(context)-1):] if len(context) > 1 else []
-                wm_state = adapter.history(context, past)
+                if args.reference:
+                    wm_state=adapter.history(context,past)
+                else:
+                    feedback=realized[-(len(context)-1):] if len(context)>1 else []
+                    wm_state=adapter.history(context,past,feedback if getattr(args,"history_controls","achieved")=="achieved" else None)
                 _, means, _ = cem(adapter, wm_state, goal, rollout=1 if args.task == "reach" else 5,
+                    action_repeat=getattr(args,"action_repeat",1),
                     cem_steps=2 if args.technical else 15 if index == 0 else 10,
                     samples=16, num_batches=1 if args.technical else 64, cutoff=10 if args.technical else 20,
                     use_gripper=False, maxnorm=.3, robot_init_std=.3, gripper_init_std=.8, maxgripper=.99,
                     momentum_mean=.15, momentum_std=.70, momentum_mean_gripper=.15, momentum_std_gripper=.45,
                     translation_only=True, view_weights=[.5, .5], prev_actions=warm,
                     use_cache=bool(args.reference), step_func=adapter.step, global_step=index,
-                    total_steps=5 if args.task == "reach" else 18)
+                    total_steps=5 if args.task == "reach" else 18,**objective_kwargs)
                 command = means[-1][0].numpy().copy()
                 warm = means[-1][1:]
             else:
                 command = np.zeros(7, np.float32)
+            nominal=None
+            if adapter is not None and not args.reference and adapter.online_correction:
+                nominal,_=adapter.nominal_step(torch.as_tensor(command,device="cuda").float()[None,None],wm_state)
             obs, reward, done, info = env.step(command)
+            current_native=native_training_pose(env)
+            realized.append(current_native-last_native)
+            last_native=current_native
             if args.reference and args.reference_mode == 3:
-                obs["_reference_native_pose"] = native_training_pose(env)
+                obs["_reference_native_pose"] = current_native.copy()
+            if nominal is not None:adapter.observe(command,nominal,obs)
             commands.append(command.copy()); rewards.append(float(reward))
             observations.append(obs)
             infos.append({k:float(v) for k, v in info.items() if np.isscalar(v) and isinstance(v, (bool, int, float, np.number))})
@@ -368,11 +441,19 @@ def evaluate(args):
             final_task_complete=distances[-1] < tolerance, any_task_complete=any(d < tolerance for d in distances),
             normalized_discounted_return=normalized_discounted_return,
             initial_rgb_mse=initial_mse, goal_rgb_mse=goal_mse, physical_replay_pass=True,
+            physical_replay_errors=physics_errors,
+            replay_precision="All qpos/qvel/time1e-8; RGB MSE<5",
             goal_validation=goal_validation,
             technical_only=args.technical, reference=args.reference, reference_mode=args.reference_mode,
             information=adapter.extra_information if adapter else "zero control",
             candidate_rgb_preprocessing="training-square-FOV center crop and OpenCV area224" if args.run else None,
             planner_forced_gc="unchanged public reference" if args.reference else "omitted for acyclic tensor state; same CEM bytecode/math",
+            history_control_convention="released_client_achieved_motion" if args.reference else getattr(args,"history_controls","achieved"),
+            raw_camera_resolution=list(actual.shape[1:3]),
+            reference_pose_source=getattr(args,"reference_pose_source","native") if args.reference else None,
+            goal_metric=getattr(args,"goal_metric","uniform"),
+            online_residual_updates=adapter.residual.updates if adapter is not None and not args.reference and adapter.residual is not None else 0,
+            imagined_substeps_per_macro=getattr(args,"action_repeat",1),
             no_future_action_reference=True, no_ground_truth_intermediate_frame=True)
         save(args.output / "summary.json", result)
         print(json.dumps(result), flush=True)
@@ -390,7 +471,12 @@ if __name__ == "__main__":
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--run", type=Path)
     parser.add_argument("--step", type=int, default=2)
-    parser.add_argument("--reference", choices=["50m", "2b"])
+    parser.add_argument("--reference", choices=["50m", "2b","2b450k","8b300k"])
+    parser.add_argument("--reference-pose-source",choices=["native","released"],default="native")
+    parser.add_argument("--history-controls",choices=["issued","achieved"],default="achieved")
+    parser.add_argument("--online-correction",action="store_true")
+    parser.add_argument("--goal-metric",choices=["uniform","support"],default="uniform")
+    parser.add_argument("--action-repeat",type=int,default=1)
     parser.add_argument("--reference-mode", type=int, choices=[2, 3], default=2)
     parser.add_argument("--zero", action="store_true")
     parser.add_argument("--technical", action="store_true")

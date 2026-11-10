@@ -49,11 +49,31 @@ def model_config(arm, seed):
 def build(config, code):
     install_runtime(code)
     config = dict(config)
+    analytic=config.pop("analytic_prior",False)
+    local=config.pop("local_encoder",False)
+    if analytic:
+        assert not local and not config.get("spatial_pool",False)
+        from experiments.robocasa_refine.analytic_model import AnalyticResidualSPT
+        return AnalyticResidualSPT(**config)
+    if local:
+        from experiments.robocasa_refine.local_model import LocalSpatialForecast
+        assert config.pop("spatial_pool")
+        return LocalSpatialForecast(**config)
+    if "clean_calibration" in config:
+        from experiments.robocasa_refine.model import RefinedSPT
+        return RefinedSPT(**config)
     if config.pop("spatial_pool", False):
         from experiments.robocasa_compare.spatial_model import SpatialForecast
         return SpatialForecast(**config)
     from as_jepa_lewm.robust import RobustLeWM
     return RobustLeWM(**config)
+
+
+def make_dataset(config,root,split="train"):
+    if config.get("input_semantics"):
+        from experiments.robocasa_refine.intervene import Interventions
+        return Interventions(root,config["model"]["window"],config["seed"],split,config["input_semantics"])
+    return Windows(root,config["model"]["window"],config["seed"],split)
 
 
 def state_hash(state):
@@ -65,7 +85,7 @@ def state_hash(state):
     return h.hexdigest()
 
 
-def make_optimizer(model, total):
+def make_optimizer(model, total, phase_start=0):
     renderer, other = [], []
     for name, p in model.named_parameters():
         if p.requires_grad:
@@ -73,12 +93,15 @@ def make_optimizer(model, total):
     groups = [dict(params=other, lr=5e-5, weight_decay=1e-3, betas=(.9, .999)),
               dict(params=renderer, lr=1e-4, weight_decay=0., betas=(.9, .95))]
     optimizer = torch.optim.AdamW(groups, foreach=True)
-    warmup = max(1, int(total * .01))
+    horizon = total-phase_start
+    assert horizon > 0
+    warmup = max(1, int(horizon * .01))
 
     def schedule(step):
+        step = max(0, step-phase_start)
         if step < warmup:
             return max(1, step) / warmup
-        return .5 * (1 + math.cos(math.pi * min(1., (step - warmup) / max(1, total - warmup))))
+        return .5 * (1 + math.cos(math.pi * min(1., (step - warmup) / max(1, horizon - warmup))))
 
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, schedule)
     return optimizer, scheduler
@@ -157,27 +180,56 @@ def associations(model, optimizer):
     return [[names[id(p)] for p in group["params"]] for group in optimizer.param_groups]
 
 
+def checkpoint_equal(a,b):
+    if torch.is_tensor(a):return torch.is_tensor(b) and a.dtype==b.dtype and a.shape==b.shape and torch.equal(a.cpu(),b.cpu())
+    if isinstance(a,np.ndarray):return isinstance(b,np.ndarray) and a.dtype==b.dtype and np.array_equal(a,b)
+    if isinstance(a,dict):return isinstance(b,dict) and a.keys()==b.keys() and all(checkpoint_equal(a[k],b[k]) for k in a)
+    if isinstance(a,(list,tuple)):return isinstance(b,type(a)) and len(a)==len(b) and all(checkpoint_equal(x,y) for x,y in zip(a,b))
+    return a==b
+
+
+def save_full_state(output,state):
+    # A shared-filesystem rename can report ENOENT after the destination was
+    # already committed. Accept that outcome only after exact full-state readback.
+    tmp=output/f"checkpoint-{state['step']}-pid{os.getpid()}.tmp"
+    with tmp.open("wb") as stream:
+        torch.save(state,stream)
+        stream.flush();os.fsync(stream.fileno())
+    try:
+        tmp.replace(output/"last.ckpt")
+    except OSError as error:
+        try:committed=torch.load(output/"last.ckpt",map_location="cpu",weights_only=False)
+        except Exception:raise error
+        if not checkpoint_equal(state,committed):raise error
+        save(output/f"checkpoint-rename-readback-{state['step']}.json",
+             dict(passed=True,original_error=repr(error),full_model_optimizer_scheduler_rng_cursor_exact=True,
+                  step=state["step"],sgd_replayed=0))
+
+
 def checkpoint(output, model, optimizer, scheduler, config, step, world, rank, publish=True):
     import torch.distributed as dist
     all_rng = [None] * world
     dist.all_gather_object(all_rng, rng_state())
+    failure=[None]
     if rank == 0:
+      try:
         state = dict(model=cpu(model.state_dict()), optimizer=cpu(optimizer.state_dict()),
                      scheduler=scheduler.state_dict(), rank_rng=all_rng, step=step,
                      samples=step * config["global_batch"], world_size=world,
                      parameter_associations=associations(model, optimizer),
                      config_sha256=sha(output / "config.json"),
                      nn_sha256=state_hash(model.state_dict()), bf16_grad_scaler=None)
-        tmp = output / "last.ckpt.partial"
-        torch.save(state, tmp)
-        tmp.replace(output / "last.ckpt")
+        save_full_state(output,state)
         if publish:
             endpoint = output / f"step-{step:06d}"
             endpoint.mkdir(exist_ok=False)
             torch.save(state["model"], endpoint / "weights.pt")
             save(endpoint / "ready.json", dict(passed=True, step=step, model_sha256=state["nn_sha256"],
                                               weights_sha256=sha(endpoint / "weights.pt")))
-    dist.barrier()
+      except Exception as error:
+        failure[0]=repr(error)
+    dist.broadcast_object_list(failure,src=0)
+    if failure[0]:raise RuntimeError("Checkpoint failed on rank0: "+failure[0])
 
 
 def train(args):
@@ -201,7 +253,7 @@ def train(args):
     initial = torch.load(args.root / f"random-parent-seed{seed}.pt", map_location="cpu", weights_only=True)
     shared = {k:v for k, v in initial.items() if k in model.state_dict() and v.shape == model.state_dict()[k].shape}
     model.load_state_dict(shared, strict=False)
-    optimizer, scheduler = make_optimizer(model, config["max_steps"])
+    optimizer, scheduler = make_optimizer(model, config["max_steps"], config.get("phase_start",0))
     start = 0
     resumed_rng = None
     if args.resume:
@@ -230,7 +282,7 @@ def train(args):
                                              Path(inspect.getfile(importlib.import_module("as_jepa_lewm.model")))]}))
     data_root = args.data_root or Path(config["data"])
     assert sha(data_root / "dataset.json") == sha(Path(config["data"]) / "dataset.json")
-    dataset = Windows(data_root, config["model"]["window"], seed)
+    dataset = make_dataset(config,data_root)
     loader = DataLoader(dataset, batch_sampler=CounterBatches(start, args.stop_step, config["global_batch"], rank, world),
                         num_workers=2, pin_memory=True, persistent_workers=False,
                         generator=torch.Generator().manual_seed(seed + 9000 + rank), prefetch_factor=2)

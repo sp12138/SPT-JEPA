@@ -93,6 +93,7 @@ def environment(root, gpu_list, simulator=False):
                 LD_LIBRARY_PATH=str(egl / "usr/lib/x86_64-linux-gnu") + ":" + os.environ.get("LD_LIBRARY_PATH", ""),
                 __EGL_VENDOR_LIBRARY_FILENAMES=str(egl / "10_nvidia.json"),
                 OMP_NUM_THREADS="2", OPENBLAS_NUM_THREADS="1", PYTHONDONTWRITEBYTECODE="1",
+                PYTHONHASHSEED="0",
                 WANDB_MODE="disabled", PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True")
 
 
