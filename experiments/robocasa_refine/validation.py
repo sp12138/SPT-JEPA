@@ -117,7 +117,7 @@ if __name__=="__main__":
     p.add_argument("--reference-pose-source",choices=["native","released"],default="native")
     p.add_argument("--history-controls",choices=["issued","achieved"],default="achieved")
     p.add_argument("--online-correction",action="store_true")
-    p.add_argument("--goal-metric",choices=["uniform","support"],default="uniform")
+    p.add_argument("--goal-metric",choices=["uniform","support","direction"],default="uniform")
     a=p.parse_args();ROOT=a.root;base.install_public(ROOT)
     base.make_env=make_env;base.case_name=name
     try:

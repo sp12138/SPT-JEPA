@@ -129,3 +129,77 @@ retired, retaining partial results, to free full paired-training hosts. The main
 fourth-host reference queue continues. New physics-ceiling diagnostics may use
 protected state to test contact attainability under the same18 commands/.3 norm;
 their state-dependent traces cannot enter training, teachers or proposal memory.
+
+All six structural models finish6000. Forty source episodes (four physical cases,
+two ancestors, five controller/model combinations) give the following progress:
+
+| Model / cost | Reach | Push |
+| --- | ---: | ---: |
+| Global spatial / uniform |45.14%|9.24%|
+| Global spatial / support |18.76%|34.88%|
+| Regional spatial / uniform |32.08%|4.65%|
+| Regional spatial / support |13.67%|9.28%|
+| Analytic noise / uniform |40.32%|0%|
+
+All strict completions remain zero. Both global-spatial parents improve Push
+with support, while Reach regresses. Frozen direction-only projection on these
+and the prior issued models adds24 episodes and does not resolve the tradeoff.
+No long promotion. One final audit originally reported1.43e-4 size-changing
+predictor error; FP32 math SDPA gives2.38e-7 and fixed-shape other-sample poisoning
+gives exactly0. Original failure remains; full6000 state, all gradients, weights
+and controls are preserved with zero SGD replay.
+
+Protected state-assisted pushes do make gripper/object contact and approach the
+goal, but do not finish stably. Contact versus free-motion latent MSE shows no
+large consistent jump; this aggregate latent statistic does not establish correct
+object dynamics or identify a unique failure cause.
+
+## Repeated-state interventions
+
+`robocasa_forks_20261110` selects64 original TRAIN kitchens before model scores,
+two initial seeds and eight independent16-command programs/state. Maximum1024
+trajectories/16,384 transitions. First commands use a scrambled spherical Sobol
+design with the same uniform-radius bound; suffixes are independent isotropic
+commands. No goal, reward, success, object state or expert path selects controls.
+This is additional task adaptation data, not identical public pretraining.
+
+Every branch must replay the same initial physical state within1e-8 and raw RGB
+MSE<5. The actual branch0 observation is then the common root image. Physical
+state stays in separate technical reset proofs. Only full eight-branch groups
+enter the corpus; incomplete technical groups remain archived. Existing original
+validation and target kitchens stay excluded; the fresh log split is inherited.
+Dataset consumers return RGB and current factual controls only.
+
+Three arms restore both prior issued6000-step parents: ordinary-flat on the
+previous corpus, fork-flat on the new grouped corpus, fork-shared on identical
+grouped data. All use the analytic conditional prior,2048 camera images/update,
+the same1000-update restart/10warmup and no added neural parameters. The ordinary
+control can train while acquisition finishes. Grouped batch8×8 branches replaces
+flat batch64; the cumulative sampler cursor is converted exactly by8, with all
+model/Adam/rank-RNG states preserved. This is a changed data unit/corpus, not an
+identical old sample order. Uniform/direction source controllers are paired.
+
+Shared-root charges the initial-code entry once per physical experiment while
+retaining every conditional transition/image term. Algebraically this is the
+existing branch loss with entry scaled1/8 on matched data; it is not by itself a
+novelty or joint-ELBO claim. A genuine TRAIN eight-branch loss identity agrees
+within3.1e-9; terminal poisoning changes loss0; all required gradients are positive
+without SGD or parameter changes. The objective remains a sum of trajectory terms,
+with no statistics/negatives coupling independent worlds.
+
+Finite acquisition, proof, restoration, actual6002 MPC entry,7000-step training
+and48 source episodes are owned by `phase-launch-*-v2.json`. No automatic long
+training follows. Acquisition ownership is now `acquisition-launch-parallel-*`:
+at most48 independent initial states/host, same GPU and unchanged eight-program
+sequence per state. Original live programs are adopted, completed SHA-verified
+records reused, original acquisition deadline/corpus cap retained. This uses the
+otherwise idle160-core CPU quota; render/physics need not saturate GPU arithmetic.
+
+Generation-one/full-GC cadence checks pass for50M/2B/8B: all output and RNG errors0,
+H5/128 candidates/two refits, plus1024-candidate cache lifetime. Repeated allocated
+memory is constant; measured speedups1.34/1.11/1.25. Reference-only execution is
+owned by `robocasa_reference_adopt_20261110/launch.json`. Eight original chunks
+continue unchanged after retiring their parent PIDs; only subsequent chunks use
+the cadenced collector. Same model, sampler, CEM bytecode/math, cases, inputs and
+original24-hour deadline. Results retain which GC implementation produced them;
+the new root's finite collector is authoritative. No current episode is replayed.

@@ -46,12 +46,17 @@ def run(args):
     raw = next(iter(DataLoader(dataset, batch_size=1, num_workers=0)))
     assert set(raw) == {"pixels", "action"}
     assert raw["pixels"].dtype == torch.uint8
-    assert torch.equal(raw["action"][:, -1], torch.zeros_like(raw["action"][:, -1]))
+    assert torch.equal(raw["action"][..., -1, :], torch.zeros_like(raw["action"][..., -1, :]))
     core = core.cuda().eval()
     from vforge.ops import OpsConfig, initialize_ops
     initialize_ops(OpsConfig(backend="sdpa", allow_fallback=False), device=torch.device("cuda"), parallel_state=None)
+    # Runtime setup may configure precision. Audit sample isolation with fixed
+    # batch shapes, and check the size-changing comparison in the math backend.
+    torch.set_float32_matmul_precision("highest")
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cudnn.allow_tf32 = False
     batch = prepare_batch(raw, torch.device("cuda"))
-    with torch.no_grad():
+    with torch.no_grad(), torch.nn.attention.sdpa_kernel(torch.nn.attention.SDPBackend.MATH):
         pixels, _, _ = core.prepare(batch)
         joined = core.encode(dict(pixels=pixels, action=batch["action"]))
         singles = [core.encode(dict(pixels=pixels[i:i+1], action=batch["action"][i:i+1]))
@@ -61,6 +66,14 @@ def run(args):
         individual = torch.cat([core.predict(x["emb"][:, :-1], x["act_emb"][:, :-1]) for x in singles])
         predictor_error = float((pred - individual).abs().max())
         assert encoder_error < 1e-4 and predictor_error < 1e-4, (encoder_error, predictor_error)
+        assert len(pixels) >= 2
+        other_pixels = pixels.clone(); other_pixels[1:] = -other_pixels[1:]
+        other_actions = batch["action"].clone(); other_actions[1:] += 3.
+        other = core.encode(dict(pixels=other_pixels, action=other_actions))
+        other_prediction = core.predict(other["emb"][:, :-1], other["act_emb"][:, :-1])
+        fixed_shape_encoder_error = float((joined["emb"][:1]-other["emb"][:1]).abs().max())
+        fixed_shape_predictor_error = float((pred[:1]-other_prediction[:1]).abs().max())
+        assert fixed_shape_encoder_error == fixed_shape_predictor_error == 0.
         torch.manual_seed(451)
         normal, _ = core.loss(batch, step=args.step)
         poisoned = dict(batch, action=batch["action"].clone())
@@ -83,6 +96,9 @@ def run(args):
                   heldout_fp32_loss=float(loss.detach()), required_gradients=norms,
                   sample_independence_encoder_max=encoder_error,
                   sample_independence_predictor_max=predictor_error,
+                  fixed_shape_other_sample_poison_encoder_max=fixed_shape_encoder_error,
+                  fixed_shape_other_sample_poison_predictor_max=fixed_shape_predictor_error,
+                  independence_audit_precision="FP32 highest, no TF32, math SDPA",
                   unused_terminal_action_poison_error=terminal_error,
                   no_action_policy_target=True, model_unchanged=True,
                   model_sha256=before, checkpoint_sha256=sha(args.run / "last.ckpt"))

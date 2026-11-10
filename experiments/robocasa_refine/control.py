@@ -41,3 +41,18 @@ def goal_support_cost(initial,goal,slots,width):
         error=(prediction-target).reshape(-1,1,views,slots,width).abs().mean(-1)
         return -(error*weights).sum(-1)
     return objective
+
+
+def goal_direction_cost(initial, goal):
+    """Compare along the observed initial-to-goal change, independently/view.
+
+    This discards orthogonal changes, an explicit hypothesis about unspecified
+    posture. It may also discard real goal constraints; control must test it.
+    """
+    direction = (goal-initial).float().flatten(3)
+    energy = direction.square().sum(-1).clamp_min(1e-20)
+
+    def objective(target, prediction):
+        error = (prediction-target).float().flatten(3)
+        return -(error*direction).sum(-1).abs()/energy
+    return objective

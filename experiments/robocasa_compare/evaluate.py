@@ -374,6 +374,10 @@ def evaluate(args, adapter=None):
             from experiments.robocasa_refine.control import goal_support_cost
             objective_kwargs["objective"]=goal_support_cost(adapter.encode([obs]),goal,
                                                           adapter.model.state_slots,adapter.model.state_width)
+        elif getattr(args,"goal_metric","uniform")=="direction":
+            assert not args.reference and adapter is not None
+            from experiments.robocasa_refine.control import goal_direction_cost
+            objective_kwargs["objective"]=goal_direction_cost(adapter.encode([obs]),goal)
         warm = None
         np.random.seed(710000 + args.seed + 1009 * args.kitchen)
         torch.manual_seed(710000 + args.seed + 1009 * args.kitchen)
@@ -475,7 +479,7 @@ if __name__ == "__main__":
     parser.add_argument("--reference-pose-source",choices=["native","released"],default="native")
     parser.add_argument("--history-controls",choices=["issued","achieved"],default="achieved")
     parser.add_argument("--online-correction",action="store_true")
-    parser.add_argument("--goal-metric",choices=["uniform","support"],default="uniform")
+    parser.add_argument("--goal-metric",choices=["uniform","support","direction"],default="uniform")
     parser.add_argument("--action-repeat",type=int,default=1)
     parser.add_argument("--reference-mode", type=int, choices=[2, 3], default=2)
     parser.add_argument("--zero", action="store_true")

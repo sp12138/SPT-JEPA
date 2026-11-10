@@ -51,6 +51,11 @@ def build(config, code):
     config = dict(config)
     analytic=config.pop("analytic_prior",False)
     local=config.pop("local_encoder",False)
+    shared_root=config.pop("shared_root_branches",0)
+    if shared_root:
+        assert analytic and not local and not config.get("spatial_pool",False)
+        from experiments.robocasa_refine.tree_model import SharedRootSPT
+        return SharedRootSPT(shared_root_branches=shared_root,**config)
     if analytic:
         assert not local and not config.get("spatial_pool",False)
         from experiments.robocasa_refine.analytic_model import AnalyticResidualSPT
@@ -70,6 +75,9 @@ def build(config, code):
 
 
 def make_dataset(config,root,split="train"):
+    if config.get("fork_groups"):
+        from experiments.robocasa_refine.tree_model import ForkGroups
+        return ForkGroups(root,config["model"]["window"],config["seed"],split)
     if config.get("input_semantics"):
         from experiments.robocasa_refine.intervene import Interventions
         return Interventions(root,config["model"]["window"],config["seed"],split,config["input_semantics"])
@@ -133,13 +141,20 @@ def prepare_batch(batch, device):
     from torch.nn import functional as F
     pixels = batch["pixels"].to(device, non_blocking=True)
     action = batch["action"].to(device, non_blocking=True)
+    fork_branches = None
+    if pixels.ndim == 7:
+        fork_branches = pixels.shape[1]
+        assert fork_branches == 8 and action.ndim == 4
+        pixels = pixels.flatten(0, 1); action = action.flatten(0, 1)
     assert pixels.ndim == 6 and pixels.shape[1] == 2
     b, views, window = pixels.shape[:3]
     pixels = pixels.flatten(0, 1)
     action = action[:, None].expand(b, views, window, 14).reshape(b * views, window, 14)
     render = F.interpolate(pixels.flatten(0, 1).float(), size=(64, 64), mode="area").round()
     render = render.reshape(b * views, window, 3, 64, 64)
-    return dict(pixels=pixels, action=action, render=render, anchor=render[:, 0], anchor224=pixels[:, 0])
+    result = dict(pixels=pixels, action=action, render=render, anchor=render[:, 0], anchor224=pixels[:, 0])
+    if fork_branches is not None: result["fork_branches"] = fork_branches
+    return result
 
 
 class LossModel(nn.Module):
