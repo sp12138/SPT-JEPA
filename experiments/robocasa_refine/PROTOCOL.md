@@ -282,3 +282,24 @@ seeds. The authoritative finite collector is `collector-launch-v7.json` and
 All eight actual two-command simulator entries/full-state continuations pass;
 `STARTUP_APPROVED-v7.json` binds the successful startup. This is operational
 evidence, not a manipulation-success result.
+
+The finite screen is now complete:8 models/32 episodes, strict final/any0,
+no effective execution errors. Own-SPT/own-dense/V-JEPA-SPT/V-JEPA-dense progress
+is17.32/9.33%,22.07/5.52%,11.03/9.33%,10.11/9.26% Reach/Push. The prior
+same-case zero controller already has9.09% Push progress. Four physical cases and
+two head seeds are reused, not32 independent cases. All heads were initialized
+fresh, so this is not1000 extra updates of the earlier mature world models.
+
+After the user asks about budget,24 read-only diagnostics compare existing500
+and1000 states on the same128 train/validation draws per seed; original1000
+validation outputs are reused. No SGD or simulator episodes are added. All
+sample identities and model hashes are unchanged; fresh diagnostics live in
+`budget-review/`, outside Git. H7 validation forecast/copy ratios are1.35→1.34,
+.95→.91,1.67→1.51,.90→.89 in the above order. SPT train H7 ratios remain1.29/1.46
+at1000, while dense train/validation both improve. The actual head budget is
+about4–7 minutes/model,32k draws/9280 possible training windows. This leaves
+insufficient optimization a live explanation, without proving it is the cause.
+SPT targets change with its learned projection, unlike the fixed dense targets;
+normalized errors are neither common physical units nor control-success scores.
+No5000/10000-step continuation was launched. Canonical review:
+`budget-review/summary.json`; final screen remains HOLD.

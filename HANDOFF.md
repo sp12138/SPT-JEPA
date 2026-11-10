@@ -2,7 +2,11 @@
 
 最新目标是超过 RoboJEPA，尚未达成。用户现授权 dev13、dev15、dev6、dev6-2c 四台，尽量用于有效实验。旧 MetaWorld／PushT 等研究、goal 和定时 LLM 监控不恢复。协议见 [robocasa_refine/PROTOCOL.md](experiments/robocasa_refine/PROTOCOL.md)。不把有限实验控制器当作新 goal 或周期监控。
 
-最新用户明确授权试用 V-JEPA 2.1 归因。新有限根 `runs/robocasa_encoder_20261110`：冻结 own 两个7000步编码器／冻结 V-JEPA2.1 × 原压缩SPT／直接稠密预测，各两个全新预测头。三主机负责冻结特征缓存及同数据1000步短训，dev6-2c原参考队列继续；不恢复其他旧任务。只导入外部视觉编码器，不导入公开预测器、生成器或策略；这是预训练诊断分支，不是从零同预算SOTA比较。数据为同1024普通随机程序，控制输入仍RGB与当前发出动作，无动作target或proprio。3072特征文件／24分片及三套真实图像预检已全部通过；零初始化的条件通路需要两次临时Adam更新激活，预检后全部权重还原，未保留这些更新。原失败与CORRECTIONS保留。实际训练入口 `launch-training-v7-*.json`，缓存v2与梯度预检v4沿用、运行v7；全部8个实际MPC入口与完整状态恢复通过，已正常进入1000步续跑，见 `STARTUP_APPROVED-v7.json`。最终32源验证回合；六小时总上限，不自动长训。八个原4步完整状态全部沿用，torchrun参数、评测import顺序与240/480相机尺寸适配错误保留，0已完成SGD重放；四种模型的缓存RGB H5-CEM、两种原始分辨率、权重hash与两seed公共初始头hash均通过。有限collector入口 `collector-launch-v7.json`、`results/summary-v7.json`；旧incomplete summary/HOLD不是当前完成结果。完整协议见末节，当前尚无该分支性能结论。
+最新用户明确授权试用 V-JEPA2.1，现追问预算是否不足。有限根 `runs/robocasa_encoder_20261110` 已收齐8个1000步新头、32个源闭环回合，严格final／any成功全0，HOLD。Own／SPT、own／dense、V-JEPA／SPT、V-JEPA／dense的Reach／Push进度为17.32／9.33%、22.07／5.52%、11.03／9.33%、10.11／9.26%。这些是进度；同案例旧零动作Push已有9.09%。同1024随机日志，RGB／当前指令、无动作target或proprio；只导入外部视觉编码器，非同预算从零SOTA比较。Own骨干继承7000步，但所有预测头重新初始化，不能当成熟模型额外续训1000步。只有四个物理源案例和两个新头seed，不是32独立案例。
+
+只读预算复核已完成24项：现有500／1000检查点、相同128次train／validation窗口抽样，每seed身份一致，新增SGD／模拟0。验证7步预测／复制误差为own-SPT1.35→1.34、own-dense0.95→0.91、V-JEPA-SPT1.67→1.51、V-JEPA-dense0.90→0.89；1000步SPT训练片段仍为1.29／1.46。预算不足值得检验，不能凭短训0成功否定编码器／扩展性；SPT目标表示也在变化，且预测误差不是控制成功率。正式头训练约4–7分钟，尚未启动5000／10000步续训。三主机的本轮训练与只读预算队列均结束，第四台原官方参考继续；不恢复旧goal或LLM监控。
+
+有效代码v7，入口 `launch-training-v7-*.json`；梯度预检v4、缓存v2和8个原4步完整状态沿用，已完成SGD重放0。启动错误与修正保留；`STARTUP_APPROVED-v7.json` 为实际恢复／MPC证明。权威结果 `results/summary-v7.json`，预算复核 `budget-review/summary.json`；早期incomplete summaries/HOLD是历史。核心源码 `experiments/robocasa_refine/encoder_ablation.py`，协议见末节。
 
 六个原始5000步模型已完成240回合：TF／spatial／long 的 Reach 平均进度21.80／18.33／20.55%，Push 最终进度4.59／3.68／11.36%；严格完成均0。这是旧 issued-history pilot，不能当官方客户端复现。其根目录 `runs/robocasa_compare_20261110` 已STOP，未完的旧参考评测已明确取消，勿重启。源图像视场裁剪修复保留；原始随机初始化、5000步祖先与一次未保存更新的重放均保留。
 
