@@ -4,11 +4,15 @@
 
 新有限根 `runs/robocasa_encoder_budget_20261111` 已实际启动：8个原1000步完整状态，零NN／优化器动量／rank RNG／游标改动，统一重启9000步cosine／90步warmup。相同数据、窗口、batch、NN、loss、控制案例；不是从零固定LR日程scaling law。新stages1002（恢复＋真实MPC入口）／5000／10000，每个正式点32回合，共64新回合＋32继承回合，四物理案例。八个实际恢复和1002入口均已通过、继续SGD，`STARTUP_APPROVED.json`，NN及输入定义与v7的AST相同。源 `sources/encoder-budget-20261111-v1`，核心sha dbcfc09b；启动 `launch-dev*.json`，finite collector `collector-launch.json`，结果 `results/{step-001000,step-005000,step-010000,summary}.json`。六小时cap，旧根HOLD保持。外部骨干预算不匹配、无未来／最优动作target、无proprio／奖励输入。
 
-当前每小时检查计划在新根 `SESSION_CHECKS.json`，首次2026-11-10 18:31:46UTC（Nov11 02:31北京时间），之后每小时；只在当次实际检查后记录结果。若10k仍差，官方公开权重评测复现与同数据训练复现分别标注，不把自建dense头冒称官方RoboJEPA。先建立同输入／图像预处理／历史动作／CEM的参考锚点，再一次只换一个SPT组件；额外预训练或本体输入只能分轨，不能冒称公平算法胜利。第四台的旧官方目标厨房队列仍在dev6-2c独立运行。
+当前每小时检查计划在新根 `SESSION_CHECKS.json`，首次实际检查2026-11-10 18:34:37UTC，下一次19:34:37UTC（Nov11 03:34北京时间）；只在实际检查后记录结果。5000步的own-SPT／V-JEPA-SPT／V-JEPA-dense Reach进度为23.93／47.58／27.78%，Push约9.2%，已完成回合严格成功仍0。四个SPT头训练至10000，尚待正式终点评测；两个own-dense还在5000评测、V-JEPA-dense继续SGD。预算确实可能遮蔽视觉骨干的收益，但LR也统一重启，不能单独归因于步数。
+
+四个SPT分支10000步正式终点已完成：own／V-JEPA的Reach平均进度15.73／64.77%，Push约9.2%，严格成功均0。V-JEPA收益随训练显现，但操作任务仍接近被动进度。稠密分支还未收齐，不能当整轮结束。
+
+因此启动官方参考的逐组件诊断，公开权重评测复现与同数据训练复现分别标注，不把自建dense头冒称官方RoboJEPA。新根 `runs/robocasa_robojepa_fusion_20261111`，核心 `robo_fusion.py`；50M／2B／8B的H5缓存API证明全部通过，含full-FOV／square224／既有SPT读出，0SGD／0模拟。分布式原生CEM保持全局候选数，NumPy候选流独立，各rank选中动作相同。Phase1六小时有限队列已排入三机：dev13为2B官方RGB，dev15为8B官方RGB，dev6在原预算队列DONE后接2B square224；12正式回合复用四个物理源案例，每组先做2指令真实入口并核对四rank动作／距离一致。`phase1-plan.json`／`phase1-launch-dev*.json`／`PHASE1-{DONE,ERROR}-*.json`是入口。尚未启动正式SPT读出融合性能实验。额外预训练／读出适配数据／本体输入只能分轨，不能冒称公平算法胜利。第四台的旧官方目标厨房队列仍在dev6-2c独立运行。
 
 最新用户明确授权试用 V-JEPA2.1，现追问预算是否不足。有限根 `runs/robocasa_encoder_20261110` 已收齐8个1000步新头、32个源闭环回合，严格final／any成功全0，HOLD。Own／SPT、own／dense、V-JEPA／SPT、V-JEPA／dense的Reach／Push进度为17.32／9.33%、22.07／5.52%、11.03／9.33%、10.11／9.26%。这些是进度；同案例旧零动作Push已有9.09%。同1024随机日志，RGB／当前指令、无动作target或proprio；只导入外部视觉编码器，非同预算从零SOTA比较。Own骨干继承7000步，但所有预测头重新初始化，不能当成熟模型额外续训1000步。只有四个物理源案例和两个新头seed，不是32独立案例。
 
-只读预算复核已完成24项：现有500／1000检查点、相同128次train／validation窗口抽样，每seed身份一致，新增SGD／模拟0。验证7步预测／复制误差为own-SPT1.35→1.34、own-dense0.95→0.91、V-JEPA-SPT1.67→1.51、V-JEPA-dense0.90→0.89；1000步SPT训练片段仍为1.29／1.46。预算不足值得检验，不能凭短训0成功否定编码器／扩展性；SPT目标表示也在变化，且预测误差不是控制成功率。正式头训练约4–7分钟，尚未启动5000／10000步续训。三主机的本轮训练与只读预算队列均结束，第四台原官方参考继续；不恢复旧goal或LLM监控。
+只读预算复核已完成24项：现有500／1000检查点、相同128次train／validation窗口抽样，每seed身份一致，新增SGD／模拟0。验证7步预测／复制误差为own-SPT1.35→1.34、own-dense0.95→0.91、V-JEPA-SPT1.67→1.51、V-JEPA-dense0.90→0.89；1000步SPT训练片段仍为1.29／1.46。预算不足值得检验，不能凭短训0成功否定编码器／扩展性；SPT目标表示也在变化，且预测误差不是控制成功率。1000步正式头训练约4–7分钟；该审查已结束，后续5000／10000步在独立新根推进。
 
 有效代码v7，入口 `launch-training-v7-*.json`；梯度预检v4、缓存v2和8个原4步完整状态沿用，已完成SGD重放0。启动错误与修正保留；`STARTUP_APPROVED-v7.json` 为实际恢复／MPC证明。权威结果 `results/summary-v7.json`，预算复核 `budget-review/summary.json`；早期incomplete summaries/HOLD是历史。核心源码 `experiments/robocasa_refine/encoder_ablation.py`，协议见末节。
 

@@ -301,7 +301,8 @@ about4–7 minutes/model,32k draws/9280 possible training windows. This leaves
 insufficient optimization a live explanation, without proving it is the cause.
 SPT targets change with its learned projection, unlike the fixed dense targets;
 normalized errors are neither common physical units nor control-success scores.
-No5000/10000-step continuation was launched. Canonical review:
+That review added no5000/10000-step continuation; the later authorized curve
+uses the separate root below. Canonical review:
 `budget-review/summary.json`; final screen remains HOLD.
 
 ## Authorized budget continuation and hourly checks
@@ -337,3 +338,34 @@ camera preprocessing/history/physical replay/CEM, then introduce one SPT compone
 per contrast. External initialization, adaptation data and compute are disclosed.
 An improved forecast score alone does not establish a successful manipulation
 algorithm or authorize a SOTA claim.
+
+## Reference-first component diagnosis
+
+`runs/robocasa_robojepa_fusion_20261111` retains the exact released encoder,
+predictor, achieved-motion history, cached rollout and native distributed CEM.
+The core is `robo_fusion.py`. Cached H5/two-refit checks on50M120k/2B450k/8B300k
+pass for full public320x240 preprocessing, square224 preprocessing, and the latter
+with the existing10000-step V-JEPA-SPT feature adapter/query pool used only as
+the terminal goal-distance readout. Dynamics always retain the full dense state.
+These checks add no SGD or simulation and do not establish control improvement.
+
+Four ranks partition the GLOBAL1024 candidates, preserving20 elites,15/10 refits,
+Reach/Push horizons1/5 and5/18 commands. Public translation sampling uses NumPy:
+rank streams are partitioned only after physical reset, never by changing a
+physical-case seed. Cached proofs check unique streams and identical globally
+selected actions. Batch32 is proven on all three models;8B uses103GiB peak in the
+rectangular-input proof. This preserves CEM's distribution and total work, not
+the original single-rank RNG trajectory or bitwise batch-size arithmetic.
+
+Phase1 is a finite six-hour12-episode source diagnosis:2B public RGB ondev13,
+8B public RGB ondev15,2B square RGB ondev6 after its budget run completes. Each
+host has two four-GPU groups and reuses the same four source physical cases.
+Each group must first pass an actual two-command Push entry at128 candidates,
+strict physical/RGB replay, unchanged NN, and exact cross-rank actions with
+distance agreement1e-8. Replicated physics is counted only once, through rank0.
+No formal SPT-readout performance run has started in this phase. A later readout
+contrast must keep the same dense dynamics/input/CEM and disclose the pool's
+extra adaptation data and budget. Public pretraining is much larger than the
+scratch candidate; mode2/action-key has no absolute proprio input but differs
+from mode3 also in embodiment/action representation. Candidate issued-history
+and reference achieved-history comparisons are not single-factor ablations.
