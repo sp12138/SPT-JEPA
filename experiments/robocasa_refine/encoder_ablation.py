@@ -265,7 +265,11 @@ def build(root,cfg):
             def loss(self,batch,step=0,ramp_steps=0):
                 try:return super().loss(batch,step,ramp_steps)
                 finally:self.cached=None
-        return CachedSPT()
+        model=CachedSPT()
+        if cfg.get("view_message"):
+            from experiments.robocasa_refine.cross_view import attach
+            attach(model,cfg["view_message"],cfg["seed"])
+        return model
     return DenseWorld(dim,8)
 
 
@@ -332,6 +336,12 @@ def optimizer_for(model,cfg):
     return opt,torch.optim.lr_scheduler.LambdaLR(opt,factor)
 
 
+def gradient_prefixes(cfg):
+    prefixes=(("pool.","predictor.","action_encoder.","renderer.","feature_adapter.")
+        if cfg["objective"]=="spt" else ("input.","action.","blocks.","output."))
+    return prefixes+(("view_bridge.",) if cfg.get("view_message") else ())
+
+
 def training(root,run,resume=False,stop=1000):
     import torch.distributed as dist
     from torch.nn.parallel import DistributedDataParallel as DDP
@@ -384,7 +394,7 @@ def training(root,run,resume=False,stop=1000):
             last_grad={n:float(p.grad.detach().float().norm()) for n,p in model.named_parameters() if p.grad is not None}
             assert last_grad and all(math.isfinite(v) for v in last_grad.values())
             if cfg["objective"] == "spt":
-                for prefix in ("pool.","predictor.","action_encoder.","renderer.","feature_adapter."):
+                for prefix in gradient_prefixes(cfg):
                     norm=sum(v for n,v in last_grad.items() if n.startswith(prefix))
                     if prefix == "action_encoder." and step <= 2:
                         # Output and adaLN gates are both zero initially. Strict
@@ -401,8 +411,7 @@ def training(root,run,resume=False,stop=1000):
                 elapsed_seconds=time.time()-began,completed=step==cfg["max_steps"],gradients_checked=bool(last_grad),
                 phase_start=cfg.get("phase_start",0),segment_start=start,
                 gradient_norms={prefix:sum(v*v for n,v in last_grad.items() if n.startswith(prefix))**.5
-                    for prefix in (("pool.","predictor.","action_encoder.","renderer.","feature_adapter.")
-                    if cfg["objective"]=="spt" else ("input.","action.","blocks.","output."))}))
+                    for prefix in gradient_prefixes(cfg)}))
         if step == stop or step % 250 == 0:
             common.checkpoint(run,model,opt,scheduler,cfg,step,world,rank,
                 publish=step in cfg.get("stages",(4,500,1000)))

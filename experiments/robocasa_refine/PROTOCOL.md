@@ -339,6 +339,11 @@ per contrast. External initialization, adaptation data and compute are disclosed
 An improved forecast score alone does not establish a successful manipulation
 algorithm or authorize a SOTA claim.
 
+The budget curve finishes all eight models and64 new episodes, with zero strict
+success at every formal milestone. At10000, own-SPT/own-dense/V-JEPA-SPT/
+V-JEPA-dense Reach progress is15.73/20.11/64.77/38.85%; Push is9.29/9.31/9.25/
+9.14%, near the same-case passive9.09%. There is no manipulation promotion.
+
 ## Reference-first component diagnosis
 
 `runs/robocasa_robojepa_fusion_20261111` retains the exact released encoder,
@@ -369,3 +374,73 @@ extra adaptation data and budget. Public pretraining is much larger than the
 scratch candidate; mode2/action-key has no absolute proprio input but differs
 from mode3 also in embodiment/action representation. Candidate issued-history
 and reference achieved-history comparisons are not single-factor ablations.
+
+All six actual Phase1 entries pass. The dev6 operationalv2 changes only the
+resource barrier to each assigned pair of completed dense jobs; original waiting
+parents are retired without completed-SGD/evaluation replay. A separate fixed
+eight-TRAIN-kitchen/eight-branch replay audit checks whether ordinary logs contain
+robot-object contact and branch-dependent object movement. All1024 actions are
+archived controls, not newly selected. Initial physics/RGB and every archived
+achieved-motion/RGB transition must replay. Object/contact state is protected
+diagnostic output, prohibited from learners, teachers and proposal memory.
+
+The public main-input track is also queued separately at
+`runs/robocasa_public_inputs_20261111`:2B released proprio,2B native training
+proprio,8B released proprio on the same four source cases and CEM budget. Corev2
+only exposes the existing reference mode/pose-source parameters and synchronizes
+their observed fields across ranks; activev1 sources remain unchanged. Each host
+waits for its Phase1 completion before new actual two-command entry/formal runs.
+This is another finite12-episode/eight-hour baseline diagnosis,0SGD, with no
+automatic fusion/training phase. Mode3 introduces proprio AND a different action/
+embodiment representation, so mode2-vs-mode3 is not a pure proprio ablation.
+
+The64-log TRAIN replay audit is complete with zero initial-physics, achieved-
+motion and RGB error.16 logs/36 of1024 commands show sampled robot contact;
+all eight initial-condition groups show action-dependent object XY separation
+above1cm. This rules out complete absence of object interventions in that subset,
+not sparse contact, poor signal allocation or lack of generalization. The public
+2B RGB source cohort finishes with77.19% Reach/11.25% Push progress and zero strict
+completion. It is also weak on this control-development manipulation cohort.
+
+## Coupled sensor-state diagnosis
+
+The present cached-SPT and dense paths flatten synchronized views into separate
+examples, while the public predictor jointly attends to view tokens. If one
+sensor disambiguates the other's geometry/occlusion, the independent predictor
+cannot use that information. This is a concrete information-access difference,
+not an established explanation of every performance gap.
+
+`cross_view.py` adds a49792-parameter causal residual to the mature SPT predictor:
+current own-view state, paired-view state and current action embedding enter a
+shared MLP. The self-view control has the exact same parameters/initialization,
+using its own state twice. A plain continuation controls additional optimization.
+The final layer starts at zero; every original tensor and optimizer moment,
+four rank RNG states,320000-sample cursor and batch32 are preserved by name.
+Only the common1000-step cosine restart/10 warmup and declared new parameters
+change. The other sensor is at the same observed/imagined time; no future frame
+or target action is introduced. Independent physical worlds never communicate.
+
+Root `runs/robocasa_crossview_20261111`:two original10000-step V-JEPA-SPT parents
+crossed with plain/self/cross,1000 extra updates each,24 fixed-source episodes,
+three-hour cap. Self/cross complete initial NN hashes match. Actual real-data
+private backwards, terminal-action poisoning, future-action-prefix causality,
+paired-sensor connectivity and independent-world poisoning pass, with all private
+updates restored. Six actual10002 restores/backwards/Push-H5 entries also pass.
+These are technical gates, not performance evidence. Dev6 uses dedicated GPUs
+after the RGB crop cohort ends; its unstarted native-proprio reference waiter is
+retired/replaced to follow this finite trial, keeping the reference's deadline.
+There is no concurrent distributed ownership of a GPU or automatic long training.
+
+## Frozen SPT readout integration
+
+Root `runs/robocasa_readout_20261111` queues two existing SPT readouts behind the
+complete dev13 public-input2B reference. Retain that exact full dense dynamics,
+public rectangular encoder input, released proprio, history, global1024 CEM and
+source cohort; replace only terminal L1 geometry with L1 between SPT pooled codes.
+Two trained readouts times four physical cases give eight source episodes, not
+eight independent scenes or two independent pretrained world models.0 new SGD,
+six-hour cap, actual entry and replica-consistency gates before formal runs.
+The pool saw square224 tokens in training, so full-grid use is also a readout
+distribution shift. Its extra adaptation data/training remain unmatched to the
+unadapted reference; any gain is a component diagnosis pending matched-training
+controls and target-kitchen confirmation, not a same-budget SOTA claim.

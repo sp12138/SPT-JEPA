@@ -4,11 +4,23 @@
 
 新有限根 `runs/robocasa_encoder_budget_20261111` 已实际启动：8个原1000步完整状态，零NN／优化器动量／rank RNG／游标改动，统一重启9000步cosine／90步warmup。相同数据、窗口、batch、NN、loss、控制案例；不是从零固定LR日程scaling law。新stages1002（恢复＋真实MPC入口）／5000／10000，每个正式点32回合，共64新回合＋32继承回合，四物理案例。八个实际恢复和1002入口均已通过、继续SGD，`STARTUP_APPROVED.json`，NN及输入定义与v7的AST相同。源 `sources/encoder-budget-20261111-v1`，核心sha dbcfc09b；启动 `launch-dev*.json`，finite collector `collector-launch.json`，结果 `results/{step-001000,step-005000,step-010000,summary}.json`。六小时cap，旧根HOLD保持。外部骨干预算不匹配、无未来／最优动作target、无proprio／奖励输入。
 
-当前每小时检查计划在新根 `SESSION_CHECKS.json`，首次实际检查2026-11-10 18:34:37UTC，下一次19:34:37UTC（Nov11 03:34北京时间）；只在实际检查后记录结果。5000步的own-SPT／V-JEPA-SPT／V-JEPA-dense Reach进度为23.93／47.58／27.78%，Push约9.2%，已完成回合严格成功仍0。四个SPT头训练至10000，尚待正式终点评测；两个own-dense还在5000评测、V-JEPA-dense继续SGD。预算确实可能遮蔽视觉骨干的收益，但LR也统一重启，不能单独归因于步数。
+当前每小时检查仍记录在预算根 `SESSION_CHECKS.json`，实际检查18:34／19:35／20:34UTC，下一次2026-11-10 21:34:10UTC（Nov11 05:34北京时间）。现用参考根 `session-check.py` 统一读取全部活动根；没有第二套后台监控。20:34旧目标参考计数的漏读gpu目录已单列correction，不能把原0条误当方法结果。5000步的own-SPT／V-JEPA-SPT／V-JEPA-dense Reach进度为23.93／47.58／27.78%，Push约9.2%。预算确实可能遮蔽视觉骨干的收益，但LR也统一重启，不能单独归因于步数。
 
-四个SPT分支10000步正式终点已完成：own／V-JEPA的Reach平均进度15.73／64.77%，Push约9.2%，严格成功均0。V-JEPA收益随训练显现，但操作任务仍接近被动进度。稠密分支还未收齐，不能当整轮结束。
+预算轮8模型／64新增回合已全部完成，全部正式点的严格成功均0。10000步own-SPT／own-dense／V-JEPA-SPT／V-JEPA-dense Reach进度15.73／20.11／64.77／38.85%，Push9.29／9.31／9.25／9.14%。V-JEPA收益随训练显现，但操作任务仍接近旧零动作9.09%；尚不能做目标厨房推广或算法胜利声明。
 
 因此启动官方参考的逐组件诊断，公开权重评测复现与同数据训练复现分别标注，不把自建dense头冒称官方RoboJEPA。新根 `runs/robocasa_robojepa_fusion_20261111`，核心 `robo_fusion.py`；50M／2B／8B的H5缓存API证明全部通过，含full-FOV／square224／既有SPT读出，0SGD／0模拟。分布式原生CEM保持全局候选数，NumPy候选流独立，各rank选中动作相同。Phase1六小时有限队列已排入三机：dev13为2B官方RGB，dev15为8B官方RGB，dev6在原预算队列DONE后接2B square224；12正式回合复用四个物理源案例，每组先做2指令真实入口并核对四rank动作／距离一致。`phase1-plan.json`／`phase1-launch-dev*.json`／`PHASE1-{DONE,ERROR}-*.json`是入口。尚未启动正式SPT读出融合性能实验。额外预训练／读出适配数据／本体输入只能分轨，不能冒称公平算法胜利。第四台的旧官方目标厨房队列仍在dev6-2c独立运行。
+
+Phase1六个真实入口均已通过，`PHASE1_STARTUP_APPROVED.json`；dev6有效父控制器是 `phase1-launch-v2-dev6.json`，只把整机等待改成各自半机预算任务DONE等待，无SGD／评测重放。另以固定盐抽8个TRAIN厨房×8条原日志重放1024转移，`coverage/`仅存受保护的对象／接触诊断；首条16步物理／RGB／实测位移全部通过，0新动作／0SGD。不要把这些状态喂给训练或proposal。
+
+接触审计已64/64完成，初始物理、每步实测位移与RGB误差全部0。16/64条有机器人接触，36/1024动作步有接触；8/8组的跨动作物体XY位移差超过1cm。否定“完全没有动作改变物体的数据”，但接触事件稀疏，不能据此认定唯一失败原因。2B RGB四源案例已齐：Reach77.19%、Push11.25%、严格成功0；同2B square四回合也已完成，Push9.29%。8B RGB未齐。RGB轨不是完整论文主输入，不能把上述差距冒称同预训练预算算法差距。
+
+公开主轨有本体状态，RGB mode2还改变embodiment/action编码，不能直接当论文主轨。为此另排 `runs/robocasa_public_inputs_20261111`，v2核心sha9912dc6d；在每台Phase1完成后，分别dev13跑2B发布端proprio、dev6跑2B原训练native proprio、dev15跑8B发布端proprio，仍同四案例／1024全局候选／H1或5／5或18指令、0新SGD。新根 `phase1-plan.json`／`launch-dev*.json`／`PHASE1-{DONE,ERROR}-*.json`；八小时cap、真实入口先于正式回合。该轨仅诊断公开输入，不能与RGB候选混排名；未自动启动融合或新训练。
+
+现dev13两个mode3真实入口已通过并正式评测；dev15仍在8B RGB，之后接mode3。dev6的native等待父控制器改为 `launch-v2-dev6.json`：只退役尚无NN／模拟子任务的等待父进程，先完成下述短训，再接原native队列；原截止不延长、无已完成SGD／评测重放。
+
+新短训 `runs/robocasa_crossview_20261111` 使用dev6专用8卡，核心 `cross_view.py` 与48ee0030版 `encoder_ablation.py`。当前模型确实把两相机摊成独立样本；公开预测器把视角token联合处理。试验只增加49792参数的同时间跨视角消息，配同参数同初始化的self-view控制及原模型续训，两个原10000步SPT父模型，各1000新增步，24源回合，三小时cap。全部原NN／Adam动量／4rank RNG／游标保留；初始残差严格0，self/cross初始完整NN哈希相同。六个实际10002完整恢复／梯度／Push H5入口已通过，`STARTUP_APPROVED.json`；随后按cross/self/plain推进。无新数据、奖励、inverse或未来动作target；同世界两视角交流、独立世界扰动影响严格0。0保留更新的私有梯度／因果性检查不是性能证据。`launch-dev6.json`／`ERROR.json`／`results/summary.json`／`DONE.json`是入口，完成后不自动长训。
+
+另排真正的单组件融合 `runs/robocasa_readout_20261111`：dev13公开mode3参考全部完成后，用相同2B密集动力学、相同全矩形输入、proprio和CEM，只替换两个SPT父模型的已训练目标读出，8源回合、0新SGD、六小时cap。先做真实入口再正式评测。池化器是在square224上训练而用于公开矩形token，且额外适配数据／预算不同；仅输入匹配的机制诊断，不是同预算SOTA胜利。当前只排队，尚无融合性能结论。
 
 最新用户明确授权试用 V-JEPA2.1，现追问预算是否不足。有限根 `runs/robocasa_encoder_20261110` 已收齐8个1000步新头、32个源闭环回合，严格final／any成功全0，HOLD。Own／SPT、own／dense、V-JEPA／SPT、V-JEPA／dense的Reach／Push进度为17.32／9.33%、22.07／5.52%、11.03／9.33%、10.11／9.26%。这些是进度；同案例旧零动作Push已有9.09%。同1024随机日志，RGB／当前指令、无动作target或proprio；只导入外部视觉编码器，非同预算从零SOTA比较。Own骨干继承7000步，但所有预测头重新初始化，不能当成熟模型额外续训1000步。只有四个物理源案例和两个新头seed，不是32独立案例。
 

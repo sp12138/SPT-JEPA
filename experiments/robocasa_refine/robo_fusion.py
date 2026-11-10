@@ -53,18 +53,20 @@ class SPTReadout(nn.Module):
 
 
 class ReferenceAdapter(base.RoboAdapter):
-    def __init__(self,root,size,recipe,readout_run=None,readout_step=10000):
-        super().__init__(root,size,2)
+    def __init__(self,root,size,recipe,readout_run=None,readout_step=10000,
+                 reference_mode=2,pose_source="native"):
+        super().__init__(root,size,reference_mode,pose_source)
         assert recipe in ("public","square")
         self.recipe=recipe
         self.readout=SPTReadout(readout_run,readout_step,root/"code").cuda() if readout_run else None
-        self.extra_information+=(f"; RGB-only/action-key; camera recipe={recipe}; real executed-motion history")
+        inputs="RGB-only/action-key" if reference_mode==2 else f"RGB plus {pose_source} proprio/state-delta"
+        self.extra_information+=(f"; {inputs}; camera recipe={recipe}; real executed-motion history")
         if self.readout:self.extra_information+="; only goal-distance readout replaced by existing SPT pool"
 
     def synchronize_observations(self,observations):
         import torch.distributed as dist
         if dist.get_world_size()==1:return observations
-        fields=("img_0","img_1","pose")
+        fields=("img_0","img_1","pose","_reference_native_pose","proprio_robocasa")
         payload=[([{k:o[k] for k in fields if k in o} for o in observations]) if dist.get_rank()==0 else None]
         dist.broadcast_object_list(payload,src=0)
         assert len(payload[0])==len(observations)
@@ -148,7 +150,8 @@ def main(args):
     common.install_runtime(args.root/"code")
     from experiments.robocasa_refine import validation
     validation.ROOT=args.root;base.make_env=validation.make_env;base.case_name=validation.name
-    adapter=ReferenceAdapter(args.root,args.reference,args.recipe,args.readout_run,args.readout_step)
+    adapter=ReferenceAdapter(args.root,args.reference,args.recipe,args.readout_run,args.readout_step,
+                             args.reference_mode,args.pose_source)
     install_cem(adapter,args.candidates,args.samples,args.technical)
     # Each rank draws an independent partition; the GLOBAL count stays fixed.
     # All ranks still execute the identical globally selected action sequence.
@@ -156,7 +159,7 @@ def main(args):
     torch.manual_seed=lambda value:seed(int(value)+104729*rank)
     primary=args.output
     if rank:args.output=primary.parent.parent/"physics-replicas"/f"rank{rank}"/primary.parent.name/primary.name
-    args.run=None;args.step=0;args.reference_mode=2;args.reference_pose_source="native"
+    args.run=None;args.step=0;args.reference_pose_source=args.pose_source
     args.zero=False;args.history_controls="achieved";args.online_correction=False
     args.goal_metric="uniform";args.action_repeat=1
     base.evaluate(args,adapter=adapter)
@@ -180,6 +183,8 @@ if __name__=="__main__":
     p=argparse.ArgumentParser();p.add_argument("--root",type=Path,required=True)
     p.add_argument("--reference",choices=["50m","2b450k","8b300k"],required=True)
     p.add_argument("--recipe",choices=["public","square"],required=True)
+    p.add_argument("--reference-mode",type=int,choices=[2,3],default=2)
+    p.add_argument("--pose-source",choices=["native","released"],default="native")
     p.add_argument("--readout-run",type=Path);p.add_argument("--readout-step",type=int,default=10000)
     p.add_argument("--task",choices=["reach","push"],required=True);p.add_argument("--kitchen",type=int,required=True)
     p.add_argument("--seed",type=int,default=7401);p.add_argument("--output",type=Path,required=True)
