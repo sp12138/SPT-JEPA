@@ -1,68 +1,54 @@
 # 当前交接
 
-最新目标是匹配条件下超过 RoboJEPA，尚未达成。最新用户明确授权1000→5000→10000步续训、在本会话每小时检查；若性能差，先复现官方RoboJEPA，再逐个融合／修正SPT组件。四机dev13/dev15/dev6/dev6-2c可用，旧任务／goal／旧监控不恢复。当前检查为持续会话等待，没有创建不存在的托管定时任务。
+目标是匹配条件下超过 RoboJEPA，尚未达成。用户授权在本会话每小时检查，性能差则复现参考、逐组件融合／改进。仅用dev13/dev15/dev6/dev6-2c；旧goal／旧监控不恢复。没有创建托管定时任务。以下成绩均为进度，严格成功另报；源验证只含Reach-v2/v3、Push-v2/v3四个物理案例（seed7401），重复评测不增加独立案例数。
 
-新有限根 `runs/robocasa_encoder_budget_20261111` 已实际启动：8个原1000步完整状态，零NN／优化器动量／rank RNG／游标改动，统一重启9000步cosine／90步warmup。相同数据、窗口、batch、NN、loss、控制案例；不是从零固定LR日程scaling law。新stages1002（恢复＋真实MPC入口）／5000／10000，每个正式点32回合，共64新回合＋32继承回合，四物理案例。八个实际恢复和1002入口均已通过、继续SGD，`STARTUP_APPROVED.json`，NN及输入定义与v7的AST相同。源 `sources/encoder-budget-20261111-v1`，核心sha dbcfc09b；启动 `launch-dev*.json`，finite collector `collector-launch.json`，结果 `results/{step-001000,step-005000,step-010000,summary}.json`。六小时cap，旧根HOLD保持。外部骨干预算不匹配、无未来／最优动作target、无proprio／奖励输入。
+## 当前推进
 
-当前每小时检查仍记录在预算根 `SESSION_CHECKS.json`，实际检查18:34／19:35／20:34UTC，下一次2026-11-10 21:34:10UTC（Nov11 05:34北京时间）。现用参考根 `session-check.py` 统一读取全部活动根；没有第二套后台监控。20:34旧目标参考计数的漏读gpu目录已单列correction，不能把原0条误当方法结果。5000步的own-SPT／V-JEPA-SPT／V-JEPA-dense Reach进度为23.93／47.58／27.78%，Push约9.2%。预算确实可能遮蔽视觉骨干的收益，但LR也统一重启，不能单独归因于步数。
+新有限根 `runs/robocasa_target_refinement_20261111` 已在三台主机实际启动，六个10002步完整恢复／梯度／Push-H5入口全部通过，正在继续到15000步。三个配对方向：原目标续训、冻结读出表示、把像素流匹配目标换成自然未来帧的冻结V-JEPA特征。六个模型均从原10000步V-JEPA-SPT的两个完整父状态开始，每个新增5000步；同1024普通随机日志、batch32、window8、四rank RNG／游标，统一5000步cosine重启／50步warmup。冻结组仅冻结pool／feature_adapter，动力学和像素解码器继续训练。特征组保留解码器384×12主干，重建1664通道输入／输出和14×14位置缓存；兼容参数／Adam动量按名称保留，新I/O无旧动量。各组保留原beta=.25和rate分母12288；像素／特征失真单位不同，不冒称等单位ELBO。先做私有梯度／因果性检查和真实10002恢复／Push入口，最终15000步24源回合，六小时cap，无自动长训。核心 `target_refinement.py`；冻结源 `sources/target-refinement-20261111-v1`。启动 `launch-dev13/dev15/dev6.json`，有限collector汇总 `results/summary.json`；私有检查六项均通过，像素重构前后loss／RNG／所有参数梯度完全一致。新目标只是有证据的假设，尚无最终性能结果。
 
-预算轮8模型／64新增回合已全部完成，全部正式点的严格成功均0。10000步own-SPT／own-dense／V-JEPA-SPT／V-JEPA-dense Reach进度15.73／20.11／64.77／38.85%，Push9.29／9.31／9.25／9.14%。V-JEPA收益随训练显现，但操作任务仍接近旧零动作9.09%；尚不能做目标厨房推广或算法胜利声明。
+本会话检查记录在 `runs/robocasa_encoder_budget_20261111/SESSION_CHECKS.json`。上次21:35UTC之后，用户恢复会话时已到Nov11 03:59UTC；中间没有实际检查，不能补写。最近实际检查04:00:56UTC，下一次约05:00:56UTC；统一helper在 `runs/robocasa_robojepa_fusion_20261111/session-check.py`。20:34漏读旧参考gpu目录的问题已单独correction，旧0计数不是实验结果。04:00–04:18实际快照：三台主机原队列全部结束、24卡空闲；正在转入本轮，不能把分配卡数称为持续满载。dev6-2c原参考队列仍在跑，截止约07:05UTC不延长。
 
-因此启动官方参考的逐组件诊断，公开权重评测复现与同数据训练复现分别标注，不把自建dense头冒称官方RoboJEPA。新根 `runs/robocasa_robojepa_fusion_20261111`，核心 `robo_fusion.py`；50M／2B／8B的H5缓存API证明全部通过，含full-FOV／square224／既有SPT读出，0SGD／0模拟。分布式原生CEM保持全局候选数，NumPy候选流独立，各rank选中动作相同。Phase1六小时有限队列已排入三机：dev13为2B官方RGB，dev15为8B官方RGB，dev6在原预算队列DONE后接2B square224；12正式回合复用四个物理源案例，每组先做2指令真实入口并核对四rank动作／距离一致。`phase1-plan.json`／`phase1-launch-dev*.json`／`PHASE1-{DONE,ERROR}-*.json`是入口。尚未启动正式SPT读出融合性能实验。额外预训练／读出适配数据／本体输入只能分轨，不能冒称公平算法胜利。第四台的旧官方目标厨房队列仍在dev6-2c独立运行。
+## 已收齐的关键结果
 
-Phase1六个真实入口均已通过，`PHASE1_STARTUP_APPROVED.json`；dev6有效父控制器是 `phase1-launch-v2-dev6.json`，只把整机等待改成各自半机预算任务DONE等待，无SGD／评测重放。另以固定盐抽8个TRAIN厨房×8条原日志重放1024转移，`coverage/`仅存受保护的对象／接触诊断；首条16步物理／RGB／实测位移全部通过，0新动作／0SGD。不要把这些状态喂给训练或proposal。
+所有下表源回合严格final／any成功均0；Reach为平均归一化进度，Push为最终归一化进度。同案例旧零动作Push已有9.09%，约9.2%不是操纵突破。
 
-接触审计已64/64完成，初始物理、每步实测位移与RGB误差全部0。16/64条有机器人接触，36/1024动作步有接触；8/8组的跨动作物体XY位移差超过1cm。否定“完全没有动作改变物体的数据”，但接触事件稀疏，不能据此认定唯一失败原因。2B RGB四源案例已齐：Reach77.19%、Push11.25%、严格成功0；同2B square四回合也已完成，Push9.29%。8B RGB未齐。RGB轨不是完整论文主输入，不能把上述差距冒称同预训练预算算法差距。
+| 对照／有限根 | Reach | Push | 结论 |
+| --- | ---: | ---: | --- |
+| own-SPT 10000步 |15.73%|9.29%|未解决操作 |
+| V-JEPA-SPT 10000步 |64.77%|9.25%|Reach随预算明显提高，Push不动 |
+| own-dense／V-JEPA-dense 10000步 |20.11%／38.85%|9.31%／9.14%|换dense头也没有操作收益 |
+| 官方2B RGB全视场 |77.19%|11.25%|非论文完整输入，非同训练预算 |
+| 同2B square224 |70.67%|9.29%|全视场有差异，未解决操作 |
+| 官方8B RGB全视场 |43.51%|9.18%|该源队列未显示更大模型收益 |
+| 官方2B released proprio |92.02%|28.33%|Push-v2为55.39%，v3为1.26%；仍0严格成功 |
+| 官方2B native proprio |93.14%|4.54%|训练式本体输入并未更好 |
+| 官方8B released proprio |95.44%|9.15%|Reach高不代表Push完成 |
+| SPT续训plain／self／cross 11000步 |75.67%／77.75%／80.05%|9.20%／9.19%／9.17%|跨相机消息未改善操纵，不长训 |
+| 官方2B动力学＋SPT读出 |86.69%|10.89%|低于原92.02／28.33；读出额外适配预算和矩形分布偏移须披露 |
 
-公开主轨有本体状态，RGB mode2还改变embodiment/action编码，不能直接当论文主轨。为此另排 `runs/robocasa_public_inputs_20261111`，v2核心sha9912dc6d；在每台Phase1完成后，分别dev13跑2B发布端proprio、dev6跑2B原训练native proprio、dev15跑8B发布端proprio，仍同四案例／1024全局候选／H1或5／5或18指令、0新SGD。新根 `phase1-plan.json`／`launch-dev*.json`／`PHASE1-{DONE,ERROR}-*.json`；八小时cap、真实入口先于正式回合。该轨仅诊断公开输入，不能与RGB候选混排名；未自动启动融合或新训练。
+预算根 `runs/robocasa_encoder_budget_20261111` 已完成八模型／64新增回合，保留32继承回合。原1000→5000→10000完整状态续训，统一9000步cosine重启／90warmup；不是固定LR的纯scaling law。V-JEPA-SPT Reach为11.03→47.58→64.77%，说明短训会遮蔽骨干收益。所有头1000步前重新初始化；own骨干继承7000步，外部视觉骨干预算不同。
 
-现dev13两个mode3真实入口已通过并正式评测；dev15仍在8B RGB，之后接mode3。dev6的native等待父控制器改为 `launch-v2-dev6.json`：只退役尚无NN／模拟子任务的等待父进程，先完成下述短训，再接原native队列；原截止不延长、无已完成SGD／评测重放。
+公开RGB／预处理诊断 `runs/robocasa_robojepa_fusion_20261111`、公开主输入 `runs/robocasa_public_inputs_20261111`、跨视角 `runs/robocasa_crossview_20261111`、读出融合 `runs/robocasa_readout_20261111` 均已完成，HOLD，无有效执行错误。各正式回合前实际入口、NN不变和分布式物理／动作一致检查通过。模式2到3同时改变proprio、embodiment和动作编码，不是纯proprio消融。公开预训练／状态参考与RGB候选分轨，不作同预算SOTA排名。
 
-新短训 `runs/robocasa_crossview_20261111` 使用dev6专用8卡，核心 `cross_view.py` 与48ee0030版 `encoder_ablation.py`。当前模型确实把两相机摊成独立样本；公开预测器把视角token联合处理。试验只增加49792参数的同时间跨视角消息，配同参数同初始化的self-view控制及原模型续训，两个原10000步SPT父模型，各1000新增步，24源回合，三小时cap。全部原NN／Adam动量／4rank RNG／游标保留；初始残差严格0，self/cross初始完整NN哈希相同。六个实际10002完整恢复／梯度／Push H5入口已通过，`STARTUP_APPROVED.json`；随后按cross/self/plain推进。无新数据、奖励、inverse或未来动作target；同世界两视角交流、独立世界扰动影响严格0。0保留更新的私有梯度／因果性检查不是性能证据。`launch-dev6.json`／`ERROR.json`／`results/summary.json`／`DONE.json`是入口，完成后不自动长训。
+## 采样器假设已被物理结果否定
 
-另排真正的单组件融合 `runs/robocasa_readout_20261111`：dev13公开mode3参考全部完成后，用相同2B密集动力学、相同全矩形输入、proprio和CEM，只替换两个SPT父模型的已训练目标读出，8源回合、0新SGD、六小时cap。先做真实入口再正式评测。池化器是在square224上训练而用于公开矩形token，且额外适配数据／预算不同；仅输入匹配的机制诊断，不是同预算SOTA胜利。当前只排队，尚无融合性能结论。
+`runs/robocasa_endpoint_20261111` 已完成24回合、0SGD、严格成功全0。`endpoint_cem.py`在相同1024候选／20elite／原refit数下比较发布式径向分布、初始矩匹配Gaussian和终点／路径分解协方差。CPU小实验确实发现分布／高斯方差refit不一致会在无信息目标下冷却，分解协方差可保留路径探索；这没有转成控制收益。公开2B released轨的Push从原28.33%降为Gaussian0%、endpoint1.72%。SPT只有一个父模型的单Push-v2病例有Gaussian收益，另一父模型不成立；不能叫稳健改进。无长训晋级。实际源、CPU证明和分family结果留在该根及同级 `robocasa_endpoint_{gaussian,endpoint}_20261111`。
 
-最新用户明确授权试用 V-JEPA2.1，现追问预算是否不足。有限根 `runs/robocasa_encoder_20261110` 已收齐8个1000步新头、32个源闭环回合，严格final／any成功全0，HOLD。Own／SPT、own／dense、V-JEPA／SPT、V-JEPA／dense的Reach／Push进度为17.32／9.33%、22.07／5.52%、11.03／9.33%、10.11／9.26%。这些是进度；同案例旧零动作Push已有9.09%。同1024随机日志，RGB／当前指令、无动作target或proprio；只导入外部视觉编码器，非同预算从零SOTA比较。Own骨干继承7000步，但所有预测头重新初始化，不能当成熟模型额外续训1000步。只有四个物理源案例和两个新头seed，不是32独立案例。
+## 表示／数据诊断的边界
 
-只读预算复核已完成24项：现有500／1000检查点、相同128次train／validation窗口抽样，每seed身份一致，新增SGD／模拟0。验证7步预测／复制误差为own-SPT1.35→1.34、own-dense0.95→0.91、V-JEPA-SPT1.67→1.51、V-JEPA-dense0.90→0.89；1000步SPT训练片段仍为1.29／1.46。预算不足值得检验，不能凭短训0成功否定编码器／扩展性；SPT目标表示也在变化，且预测误差不是控制成功率。1000步正式头训练约4–7分钟；该审查已结束，后续5000／10000步在独立新根推进。
+固定盐抽8个TRAIN初态组×8分支，64条旧日志／1024事实转移全部严格重放，初始物理、RGB、实测位移误差均0。16/64条有机器人接触，36/1024动作步有接触；8/8组跨动作物体XY位移差>1cm。这否定完全没有对象干预数据，不能排除接触稀疏、目标失配或泛化问题。对象／接触字段仅诊断，不进训练、教师或proposal。
 
-有效代码v7，入口 `launch-training-v7-*.json`；梯度预检v4、缓存v2和8个原4步完整状态沿用，已完成SGD重放0。启动错误与修正保留；`STARTUP_APPROVED-v7.json` 为实际恢复／MPC证明。权威结果 `results/summary-v7.json`，预算复核 `budget-review/summary.json`；早期incomplete summaries/HOLD是历史。核心源码 `experiments/robocasa_refine/encoder_ablation.py`，协议见末节。
+固定距离统计（无拟合probe、无SGD／模拟）3584同时间跨分支pair：dense V-JEPA的物体XY／机械臂EEF相关为.122／.740，SPT两读出为.090/.910、.092/.921；控制EEF的部分秩相关分别.100、.054、.060。没有符合阈值的固定EEF匹配pair，所以只能说该度量明显跟随机械臂运动，不能证明物体信息不存在或找到了唯一原因。新增同pair的RGB224／64固定距离统计中，物体XY相关为.117／.121，EEF为.579／.580，未显示明显分辨率退化；这削弱了单独归因64像素的解释，不是生成器或控制能力证明。入口 `robocasa_robojepa_fusion_20261111/coverage/{protected,distance-statistics}`。
 
-六个原始5000步模型已完成240回合：TF／spatial／long 的 Reach 平均进度21.80／18.33／20.55%，Push 最终进度4.59／3.68／11.36%；严格完成均0。这是旧 issued-history pilot，不能当官方客户端复现。其根目录 `runs/robocasa_compare_20261110` 已STOP，未完的旧参考评测已明确取消，勿重启。源图像视场裁剪修复保留；原始随机初始化、5000步祖先与一次未保存更新的重放均保留。
+## 第四台公开目标厨房参考
 
-`runs/robocasa_official_20261110` 的修正参考链已实际验证：50M120k、2B450k、8B300k 的全部预测器参数均与下载权重一致；逐相机编码、实际运动历史回放、KV缓存、下一步预测及短CEM与直接公开调用相同。编码FP16、预测BF16按论文表格；发布客户端的FP16预测有差异，不声称逐项完整论文复现。RGB零绝对状态、released手工状态、native训练对齐状态分别报告。外部权重只作冻结参考，不进入候选初始化／教师。
+`runs/robocasa_reference_adopt_20261110` 接管原24小时队列；结果实际在 `runs/robocasa_intervention_20261110/public-evaluation/*/gpu*/*/summary.json`。保留原chunk，无重复实验，原截止不延长。04:00UTC released轨的20个Reach案例均齐，50M／2B／8B平均进度91.00／93.40／96.12%，严格final为0／3／1次。50M Push19例均齐，平均0.49%；2B6例、8B4例未齐，不拿部分均值排名。50M native已开始。该39有效目标厨房案例、外部预训练和状态输入与上表源验证不同，不能直接拼表成公平差距。参考BF16预测按论文表格，发布客户端FP16差异仍披露。
 
-`runs/robocasa_refine_20261110`：两个原long父模型各续训control／clean／highnoise1000步，六个6000步恢复／梯度检查已完成。control-seed2从真实5250完整状态跨机恢复750步，0重放，原错误保留。clean的预测／copy误差比降至0.91／0.92，但旧共同可重放Reach案例控制变差；factual／zero预测误差比0.92／0.95，control约0.61／0.62。不同表示的裸MSE不可直接比较，未模拟的零动作也不是反事实因果证据。源验证Reach-v1不稳定，相关技术失败不计模型负结果。
+## 历史轮次
 
-`runs/robocasa_intervention_20261110` 已完成：在128个原TRAIN厨房尝试普通随机控制，222条有效轨迹／111厨房／3552转移，34个初始化几何失败保留。独立加盐分组得到102训练厨房、9新日志验证厨房，旧54验证厨房和十个测试厨房全部排除。三组同用RGB日志，各两个同源5000步父模型，完整Adam/RNG/游标续训1000步。六个6000步模型／24个源闭环回合完成，实际位移、发出指令、高噪声的Reach／Push平均进度为34.62／7.29%、40.27／11.00%、13.14／9.26%；零动作Push已有9.09%。严格完成全0，两个父模型改善不一致，NO_LONG_PROMOTION。无inverse、最优／未来动作标签、奖励、专家路径或外部教师。完整结论在该根目录 `results/source-summary.json`。
+旧 `robocasa_compare/refine/intervention/local/forks_20261110` 均已结束；没有可靠严格操纵成功，均未获长训晋级。局部目标support和共享根direction曾提高个别源Push进度，但牺牲Reach或跨父模型不稳定。冻结几何／动作辨识诊断在 `runs/robocasa_geometry_review_20261110`；分支预测77%–82%可辨识动作，不证明对象接触已学好。全部原始错误、修复、祖先与结果仍在EFS。旧R3参考已STOP，不恢复。旧MetaWorld困难六任务均未可靠突破；历史分任务正结果及边界见结论。
 
-该轮源案例先在三台各两个新进程严格重放；选定Reach-v2/v3、Push-v2/v3，seed7401，24次选定案例检查全部通过，状态容差仍1e-8。全部66次检查及4次不可靠Reach-v1失败保留。目标图像只用于规划。不能混用旧源案例分数。当前入口：`training/*/{progress,audit-006000,ERROR}.json`、`source-evaluation/`、`REPLAY_APPROVED.json`。
-
-dev6-2c 已接通，8×H200；八路冻结诊断和模拟器缓存校验完成，50M／2B450k／8B300k参考队列由此机负责。共同目标物理／RGB预检在R4 `NEW_HOST_ENTRY.json`，结果仍在R4 `public-evaluation/`。当前调度入口已改为 `runs/robocasa_reference_adopt_20261110/launch.json`（PID2920，须核对实际存活）；原八个chunk2158–2165原样接管，当前案例未终止或重跑，旧父控制器1548/1549明确退役。后续chunk只调整Python GC节奏；三种模型输出/RNG完全一致，H5/128候选两次refit及1024候选缓存测试通过，重复显存不增长，提速1.34／1.11／1.25倍。原24小时截止不变。最终collector在新根 `results/summary.json`，不再等旧父进程的完成标记。同评测不等于同训练预算；新增随机交互不是同数据SOTA证明。
-
-`runs/robocasa_local_20261110` 已完成六个6000步模型与40个源闭环回合。global-spatial的uniform／support分别为Reach45.14／18.76%、Push9.24／34.88%；regional-spatial为32.08／13.67%、4.65／9.28%；analytic-noise为40.32／0%。严格完成全0。Support对两个global父模型的Push均改善，但损害Reach，NO_LONG_PROMOTION。源物理案例仍只有四个。局部结构扰动／条件KL证明不能当控制改善。global-seed2原终检1.43e-4数值差已用FP32 math SDPA复核至2.38e-7，固定形状其他样本污染0，完整6000状态及所有梯度通过，无SGD重放；原错误在CORRECTIONS中保留。该根目录 `results/source-summary.json` 为结论入口。
-
-旧R3源参考仍占卡的进程已明确退役（`retirement-dev13/dev15.json`），保留部分结果及旧重放失败；完整官方参考继续由第四台负责。新 `physics_ceiling.py` 仅作受保护的状态辅助接触／可达性诊断，与公开18指令、0.3范数约束一致，轨迹禁止进入训练、教师或proposal memory。
-
-`runs/robocasa_forks_20261110` 已全部完成。实际采集64个原TRAIN厨房×两个初态×八个普通16指令分支，共1024条／16,384转移，128完整组，116训练组／12验证组（58／6厨房），0采集错误；不读目标、奖励、成功或对象状态选动作。分支严格重放同初态，再共用实测branch0初始RGB；物理状态只在独立技术证明中。TREE_APPROVED的目标代数误差3.1e-9、终端动作污染0、所有梯度为正，是正确性证明，不能当性能改善。
-
-三组各两个原issued6000步父模型都到7000，完整恢复／梯度／6002真实MPC入口检查和48源回合全部通过。Uniform的Reach／Push平均进度：ordinary-flat41.28／6.17%，fork-flat38.61／9.30%，fork-shared35.77／10.34%。Direction下分别45.20／9.31%、32.55／9.29%、30.94／27.29%。全部严格完成0；shared-direction的Push两父模型为45.34／9.25%，改善不稳定，且未超过旧global-support的源验证均值34.88%。NO_LONG_PROMOTION。结果入口 `results/{summary,review}.json`。四个源物理案例及两个从零祖先重复评测，不是48个独立案例，不是留出厨房SOTA比较。
-
-三个方法同用analytic条件先验、每步2048相机图像、1000新增步；分组batch8×8对应flat64，游标按8换单位，旧数据对照与分支语料不同，fork-flat／fork-shared数据和采样相同。shared仅把共同根entry计一次（等价该项乘1/8），没有新增参数或未来动作标签。结论不支持直接长训，也不支持把该缩放称为新范式。原有限控制器均结束；2026-11-10 13:09UTC实测dev13/dev15/dev6本轮控制器已退出、24卡0MiB，这是当时快照。
-
-采集提速曾由 `acquisition-launch-parallel-dev*.json` 接管，保留当时在跑程序；48个独立初态/host并行，案例、动作、episode函数、上限及截止不变。该队列现已全部退出，原始日志／SHA／接管证据仍在EFS。不要据这些旧启动记录自动恢复任务。
-
-同根目录 `results/direction-summary.json` 的24次冻结方向投影评测也未解决Reach／Push取舍。三种GC节奏测试是执行基准，不是性能进步；当前参考chunk仍为原实现，后续chunk才用经核对的新回收节奏。
-
-dev6-2c的公开参考仍在跑。13:09UTC，released-proprio轨道的20个共同Reach测试案例已齐：50M91.00%、2B93.40%、8B96.12%平均进度；严格final为0／3／1次。Push未齐，不汇报部分案例均值作排名。其测试厨房、外部预训练和绝对本体输入不同于上述源验证RGB候选；不能直接把两张表当同条件差距。
-
-最新用户追问失败本质／关键点。完成 `runs/robocasa_geometry_review_20261110` 的冻结诊断，0SGD／0新模拟：新shared两个模型和官方视觉编码器在同两物理Push案例四路径上均把第1步判为图像目标距离最小，所以全图距离偏离物体进度是共有问题，不能单独归因成我们输官方的原因。12个交互验证初态×八个真实当前a0，分支模型辨识对应下一帧为77%–82%，否定“完全没学动作”的笼统描述；它仍可能主要利用机械臂／视角变化，不能证明对象接触或长程控制。官方动作诊断仅mode2/action-key＋已裁切图像，不是主mode3轨道，不能据此正式排名。几何与动作诊断已经结束，原模型均未变；入口 `SUMMARY.json`、`review.py`、`action-review.py`，源码SHA在launch记录。下一项有区分力的问题是固定机器人／相机姿态后，物体状态信息是否保留、后果能否预测；尚未启动这类新模拟或训练。
-
-2026-11-09 最新 causal-inverse 研究已结束：8 个模型各新增 10,000 步，384 个控制评测回合，无执行错误。六项困难 manipulation 在每种方法、每种控制器下均为 0/12；尚无可靠性能突破。每组复用六个物理案例及两个原训练父模型，不能把总回合数当独立案例数。
-
-- [核心结论](experiments/CONCLUSIONS.md)
-- [较优配置与适用边界](experiments/best-configs.json)
-- [原始记录及清理归档](docs/experiment-archives.md)
-- [项目约定](AGENTS.md)
-
-源码保留在 `as_jepa_lewm/`、`as_jepa_tools/`、`jobs/`、`runtime/` 和各 `experiments/` 方法目录。历史实验脚本可能需要从归档恢复配置／数据才能重放；不据旧运行状态自动启动。
+- [关键结论](experiments/CONCLUSIONS.md)
+- [较优配置](experiments/best-configs.json)：本轮无新配方晋级
+- [原始记录归档](docs/experiment-archives.md)
+- [稳定约定](AGENTS.md)

@@ -384,7 +384,7 @@ archived controls, not newly selected. Initial physics/RGB and every archived
 achieved-motion/RGB transition must replay. Object/contact state is protected
 diagnostic output, prohibited from learners, teachers and proposal memory.
 
-The public main-input track is also queued separately at
+The public main-input track completed separately at
 `runs/robocasa_public_inputs_20261111`:2B released proprio,2B native training
 proprio,8B released proprio on the same four source cases and CEM budget. Corev2
 only exposes the existing reference mode/pose-source parameters and synchronizes
@@ -433,8 +433,8 @@ There is no concurrent distributed ownership of a GPU or automatic long training
 
 ## Frozen SPT readout integration
 
-Root `runs/robocasa_readout_20261111` queues two existing SPT readouts behind the
-complete dev13 public-input2B reference. Retain that exact full dense dynamics,
+Root `runs/robocasa_readout_20261111` completed two existing SPT readouts after the
+dev13 public-input2B reference. Retain that exact full dense dynamics,
 public rectangular encoder input, released proprio, history, global1024 CEM and
 source cohort; replace only terminal L1 geometry with L1 between SPT pooled codes.
 Two trained readouts times four physical cases give eight source episodes, not
@@ -444,3 +444,46 @@ The pool saw square224 tokens in training, so full-grid use is also a readout
 distribution shift. Its extra adaptation data/training remain unmatched to the
 unadapted reference; any gain is a component diagnosis pending matched-training
 controls and target-kitchen confirmation, not a same-budget SOTA claim.
+
+
+## Completed integration and sampling results
+
+All cross-view/plain/self and frozen-readout cohorts completed with zero strict
+completion. Cross-view raises Reach progress slightly but Push stays near the
+9.09% passive-control value. Public2B released-proprio source progress is92.02%
+Reach/28.33% Push; SPT readout replacement yields86.69/10.89. Native-proprio2B
+and released8B yield93.14/4.54 and95.44/9.15. These are four development scenes,
+not target-kitchen confirmation or matched-pretraining algorithm rankings.
+
+`endpoint_cem.py` replaces only proposal sampling/covariance in the pinned CEM,
+with a moment-matched Gaussian control and basis-independent endpoint/path
+covariance. Same1024 candidates,20 elites,rollout and refit budget; H1 degenerates
+exactly to Gaussian. Toy neutral/endpoint-only objectives verify the proposed
+variance mechanism, but24 actual source episodes in `robocasa_endpoint_20261111`
+reject it as a control improvement: public2B Push28.33% falls to Gaussian0% and
+endpoint1.72%; one SPT parent/case Gaussian gain does not replicate across parents.
+No extra SGD or long promotion. Preserve this negative physical outcome with the
+numerical proof; numerical optimization success is not manipulation evidence.
+
+## Stationary-code and feature-distortion trial
+
+`target_refinement.py`, finite root `robocasa_target_refinement_20261111`, compares
+three arms from the same two original10000-step V-JEPA-SPT full states. Plain
+continues the unchanged objective; fixed freezes only pool/feature_adapter while
+learning the original dynamics and pixel decoder; features uses naturally
+observed future frozen1664-D V-JEPA tokens as the flow target. The feature decoder
+keeps the384x12 trunk, replaces input/anchor/output channel projections, and
+rebuilds14x14 rotary buffers. Matching weights and Adam moments are preserved by
+name, changed I/O is fresh, four-rank RNG/sample cursor remain exact. All arms
+restart a common5000-step cosine/50-step warmup, batch32, window8, same1024 logs.
+The original rate denominator12288 and beta.25 remain fixed; mean pixel/feature
+flow losses have different units and this is not an equal-unit ELBO comparison.
+
+Dev13/plain,dev15/features,dev6/fixed each own two4-GPU learners. The six-hour cap
+includes10002-step real-restoration/Push-H5 entry,5000 retained new updates per
+model and24 final source episodes. Private gradient activation updates are fully
+restored; pixel refactor must preserve exact loss, RNG and every gradient. Frozen
+weights/gradients, sample independence, terminal-action poisoning and causal
+future-action prefix are checked. This trial tests target stationarity and target
+information, not a proven explanation of earlier failure. No future/optimal action
+target, privileged state, policy learning or new teacher. No automatic long run.

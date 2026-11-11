@@ -269,6 +269,9 @@ def build(root,cfg):
         if cfg.get("view_message"):
             from experiments.robocasa_refine.cross_view import attach
             attach(model,cfg["view_message"],cfg["seed"])
+        if cfg.get("target_refinement"):
+            from experiments.robocasa_refine.target_refinement import configure
+            configure(model,cfg["target_refinement"],cfg["seed"])
         return model
     return DenseWorld(dim,8)
 
@@ -339,6 +342,8 @@ def optimizer_for(model,cfg):
 def gradient_prefixes(cfg):
     prefixes=(("pool.","predictor.","action_encoder.","renderer.","feature_adapter.")
         if cfg["objective"]=="spt" else ("input.","action.","blocks.","output."))
+    if cfg.get("target_refinement")=="fixed":
+        prefixes=tuple(p for p in prefixes if p not in ("pool.","feature_adapter."))
     return prefixes+(("view_bridge.",) if cfg.get("view_message") else ())
 
 
@@ -476,10 +481,14 @@ class Adapter:
                 self.versions == [p._version for p in self.encoder.parameters()])
 
 
-def evaluate(root,run,step,technical=False,case=None):
+def evaluate(root,run,step,technical=False,case=None,proposal="released"):
     from experiments.robocasa_compare import evaluate as base
     from experiments.robocasa_refine import validation
     base.install_public(root);validation.ROOT=root
+    if proposal!="released":
+        from app.robo_jepa.mpc import mpc_utils
+        from experiments.robocasa_refine.endpoint_cem import make_cem
+        mpc_utils.cem=make_cem(mpc_utils.cem,proposal)
     base.make_env=validation.make_env;base.case_name=validation.name
     base.initialize_singleton()
     common.install_runtime(root/"code")
@@ -495,6 +504,11 @@ def evaluate(root,run,step,technical=False,case=None):
             reference_pose_source="native",zero=False,history_controls="issued",online_correction=False,
             goal_metric="uniform",technical=technical,output=output,action_repeat=1,**c)
         base.evaluate(args,adapter=adapter)
+        if proposal!="released":
+            value=json.loads((output/"summary.json").read_text())
+            value.update(CEM_proposal=proposal,
+                planner_forced_gc="Omitted for acyclic tensor state; sampling/covariance intentionally replaced")
+            save(output/"summary.json",value)
 
 
 def diagnostic(root,run,step):
@@ -694,12 +708,13 @@ if __name__ == "__main__":
     p.add_argument("--adopt-cache",action="store_true")
     p.add_argument("--attempt",default="v5")
     p.add_argument("--stop",type=int,default=1000);p.add_argument("--step",type=int,default=1000);p.add_argument("--case",type=int)
+    p.add_argument("--proposal",choices=["released","gaussian","endpoint"],default="released")
     a=p.parse_args()
     if a.mode == "initialize":initialize(a.root,a.source,a.original)
     elif a.mode == "continue":initialize_budget(a.root,a.source)
     elif a.mode == "cache":cache(a.root,a.kind,a.shard,a.shards)
     elif a.mode == "worker":worker(a.root,a.host,a.adopt_cache,a.attempt)
     elif a.mode == "train":training(a.root,a.run,a.resume,a.stop)
-    elif a.mode == "evaluate":evaluate(a.root,a.run,a.step,a.technical,a.case)
+    elif a.mode == "evaluate":evaluate(a.root,a.run,a.step,a.technical,a.case,a.proposal)
     elif a.mode == "proof":proof(a.root,a.kind)
     else:diagnostic(a.root,a.run,a.step)

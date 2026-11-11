@@ -37,6 +37,13 @@ class AnalyticResidualSPT(RobustLeWM):
             history.append(self.predict(torch.stack(history,1),actions[:,:t+1])[:,-1])
         return torch.stack(history,1)
 
+    def distortion(self,batch,render,anchor,condition):
+        """Default pixel distortion; refinements may change the observed target."""
+        w=render.shape[1]
+        y=pack(render[:,1:].flatten(0,1))
+        anchors=pack(anchor).repeat_interleave(w-1,dim=0)
+        return flow_loss(self.renderer,y,condition.flatten(0,1),anchors,self.training_shift)
+
     def loss(self,batch,step=0,ramp_steps=0):
         pixels,render,anchor=self.prepare(batch)
         info=self.encode(dict(pixels=pixels,action=batch["action"]))
@@ -60,8 +67,7 @@ class AnalyticResidualSPT(RobustLeWM):
         entry=entry_nats(mu[:,0],self.sigma0)
         surprise=surprise_nats(error,torch.zeros_like(error),self.sigma0)
         surprise=surprise+self.state_dim*.5*(-self.rho**2-math.log1p(-self.rho**2))
-        y=pack(render[:,1:].flatten(0,1));anchors=pack(anchor).repeat_interleave(w-1,dim=0)
-        fm=flow_loss(self.renderer,y,condition.flatten(0,1),anchors,self.training_shift)
+        fm=self.distortion(batch,render,anchor,condition)
         rate=(entry+surprise.sum(1)).mean()/((w-1)*FRAME_ELEMS)
         beta=self.beta*min(1.,step/max(1,ramp_steps)) if ramp_steps else self.beta
         loss=fm+beta*rate

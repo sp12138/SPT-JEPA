@@ -98,13 +98,16 @@ class ReferenceAdapter(base.RoboAdapter):
             common.state_hash(self.readout.state_dict())==self.readout.before)
 
 
-def install_cem(adapter,total_candidates,samples,technical=False):
+def install_cem(adapter,total_candidates,samples,technical=False,proposal="released"):
     """Use native public distributed CEM; no extra sampled candidates."""
     import torch.distributed as dist
     from app.robo_jepa.mpc import mpc_utils
     world=dist.get_world_size();rank=dist.get_rank()
     assert total_candidates%(samples*world)==0 and total_candidates>=samples*world
     original=mpc_utils.cem
+    if proposal!="released":
+        from experiments.robocasa_refine.endpoint_cem import make_cem
+        original=make_cem(original,proposal)
     partition_seeded=False
     def cem(world_model,state,goal,**kwargs):
         nonlocal partition_seeded
@@ -152,7 +155,7 @@ def main(args):
     validation.ROOT=args.root;base.make_env=validation.make_env;base.case_name=validation.name
     adapter=ReferenceAdapter(args.root,args.reference,args.recipe,args.readout_run,args.readout_step,
                              args.reference_mode,args.pose_source)
-    install_cem(adapter,args.candidates,args.samples,args.technical)
+    install_cem(adapter,args.candidates,args.samples,args.technical,args.proposal)
     # Each rank draws an independent partition; the GLOBAL count stays fixed.
     # All ranks still execute the identical globally selected action sequence.
     seed=torch.manual_seed
@@ -175,6 +178,7 @@ def main(args):
         extra_new_SGD=0,no_future_action_target=True,
         public_predictor_and_encoder_retained=True,
         reference_history_is_released_actual_motion_not_budget_candidate_issued_history=True,
+        CEM_proposal=args.proposal,
         not_an_equal_pretraining_or_data_SOTA_claim=True)
     save(path,value)
 
@@ -190,4 +194,5 @@ if __name__=="__main__":
     p.add_argument("--seed",type=int,default=7401);p.add_argument("--output",type=Path,required=True)
     p.add_argument("--samples",type=int,default=32);p.add_argument("--candidates",type=int,default=1024)
     p.add_argument("--technical",action="store_true")
+    p.add_argument("--proposal",choices=["released","gaussian","endpoint"],default="released")
     main(p.parse_args())
