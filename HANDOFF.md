@@ -4,9 +4,23 @@
 
 ## 当前推进
 
-新有限根 `runs/robocasa_target_refinement_20261111` 已在三台主机实际启动，六个10002步完整恢复／梯度／Push-H5入口全部通过，正在继续到15000步。三个配对方向：原目标续训、冻结读出表示、把像素流匹配目标换成自然未来帧的冻结V-JEPA特征。六个模型均从原10000步V-JEPA-SPT的两个完整父状态开始，每个新增5000步；同1024普通随机日志、batch32、window8、四rank RNG／游标，统一5000步cosine重启／50步warmup。冻结组仅冻结pool／feature_adapter，动力学和像素解码器继续训练。特征组保留解码器384×12主干，重建1664通道输入／输出和14×14位置缓存；兼容参数／Adam动量按名称保留，新I/O无旧动量。各组保留原beta=.25和rate分母12288；像素／特征失真单位不同，不冒称等单位ELBO。先做私有梯度／因果性检查和真实10002恢复／Push入口，最终15000步24源回合，六小时cap，无自动长训。核心 `target_refinement.py`；冻结源 `sources/target-refinement-20261111-v1`。启动 `launch-dev13/dev15/dev6.json`，有限collector汇总 `results/summary.json`；私有检查六项均通过，像素重构前后loss／RNG／所有参数梯度完全一致。新目标只是有证据的假设，尚无最终性能结果。
+新有限根 `runs/robocasa_conditional_20261111`，冻结源 `sources/conditional-codes-20261111-v1`。四组global／delta／delta-noise／forecast，从同两个spatial20000完整父模型出发，计划每组新增10000步到30000；四机各两个4卡模型。八模型私有梯度／跨世界与未来目标污染／终端动作污染检查全部通过，临时更新已完全恢复；四机已提交启动，尚不宣称八个实际Push入口通过。Delta在pool前取同一视角的E(未来)-E(实际初始画面)，减去同窗口首代码，q₀精确为0；解码器和spatial先验同用实际初始画面。规划每次重编码真实历史时同步在该坐标中编码目标，目标永不设置动力学context。Delta-noise只额外增加全局flow logit shift4。Forecast冻结global读出和生成器，只最小化原高斯先验的创新残差均方；不同于旧fixed组继续让生成失真梯度训练F，样本损失缩放和有效可训练参数随之改变。均无动作target、奖励、状态输入或教师。
 
-本会话检查记录在 `runs/robocasa_encoder_budget_20261111/SESSION_CHECKS.json`。上次21:35UTC之后，用户恢复会话时已到Nov11 03:59UTC；中间没有实际检查，不能补写。最近实际检查04:00:56UTC，下一次约05:00:56UTC；统一helper在 `runs/robocasa_robojepa_fusion_20261111/session-check.py`。20:34漏读旧参考gpu目录的问题已单独correction，旧0计数不是实验结果。04:00–04:18实际快照：三台主机原队列全部结束、24卡空闲；正在转入本轮，不能把分配卡数称为持续满载。dev6-2c原参考队列仍在跑，截止约07:05UTC不延长。
+全组使用相同1120条TRAIN／96条验证日志：原1024条日志加192条新普通机器人动作闭合／反馈回位日志；全部有效新日志保留，未按回位质量、物体效果或模型分数选择。缓存id加loop-前缀避免与旧日志碰撞，保留旧动作归一化。相同32世界batch、window8、四rank RNG／全量兼容Adam动量／累计样本游标；数据混合改变取样记录，统一10000步cosine／100warmup，不能说是未改变数据顺序的原轨迹续训。只使用公开视觉编码器，不导入公开动力学／策略；不是同预算从零主线。该有限轮不自动长训，源开发案例仍只有四个。实际入口、训练和收集状态读取launch-dev*.json、training/*/ENTRY_APPROVED.json和results/summary.json。
+
+## 已结束的条件先验与回位诊断
+
+`runs/robocasa_context_prior_20261111` 六模型全部20000步、24回合、无有效错误。Plain／pooled／spatial Reach67.74／78.66／67.02%，Push9.17／9.16／9.18%，严格final／any全0；未超过旧15000步plain Reach86.10%，不长训。旧context初始零输出、匹配参数和392个key的pooled控制、跨世界隔离／目标隔离等证明及实际15002恢复、梯度、Push-H5入口均通过。六项最终完整model／Adam／scheduler／四rank RNG和累计游标恢复复核全部通过。
+
+`runs/robocasa_loops_20261111` 的192条普通TRAIN日志／3072真实转移已采集并缓存完成，0错误。机器人反馈只在底层执行回位使用，学习档案为RGB／已执行命令／实测位移，不含机器人绝对状态。166/192末端平移回位误差<1mm；这不等同于世界坐标的完整关节／相机姿态闭合。新数据没有专门富集接触，不能这样宣传。
+
+固定盐8个新TRAIN组×八条普通日志的只读重放诊断收齐64回合／1024转移，物理／RGB／实测位移误差全0；9/64有接触、12/1024动作步有接触。受保护物体／接触／世界姿态字段仅用于事后诊断，绝不进入学习、教师或proposal。诊断选择不改变原192条自然日志的学习资格，也不是留出控制评测。
+
+世界EEF位置≤1mm、完整旋转≤.004rad、夹爪≤.5mm时有112个同时间pair，其中20对物体XY差>1cm（两端点和八组被重复使用，不是112个独立案例）。该子集上dense／两个15000步SPT读出的物体XY秩相关为.352／.410／.298，未支持压缩特有的信息丢失；同时EEF残差仍有较强相关，关节也匹配后仅38对、其中2对物体差>1cm，不能据此唯一归因。固定距离不证明信息不存在，也不证明目标几何已足够。入口 `coverage/geometry/{summary.json,pairs.npz}`。八个旧模型的冻结事实分支预测诊断已齐：当前spatial两父模型H1误差／copy为.412／.421，H3为.529／.554，H7为1.889／1.999。H7按代码最近事实分支匹配的物体XY误差为1.43／3.30cm，copy约1.22cm；这只是八分支候选上的诊断评分，不是NN直接预测物体位置，不可冒称控制结果。64条日志对旧模型是未见日志，加入下一轮后不再是留出；受保护物理只在NN预测后评分，无probe或控制proposal库。入口coverage/forecast/summary.json。
+
+本会话检查在 `runs/robocasa_encoder_budget_20261111/SESSION_CHECKS.json`。最近实际07:09:41UTC，下一次约08:09:41UTC；略晚于原07:01计划，按真实时间记录。21:35→03:59会话中断没有实际检查，不补写。只有当前会话人工检查及有限任务收集器，没有托管定时任务或第二套LLM监控。
+
+第四台原公开参考已按原截止07:05:18UTC结束。一次性pidfd身份核对终止器处理了不在新timeout组内的旧孤儿chunk，`ORPHAN_CAP_ENFORCED.json`；07:18实际核对全部原PID不存在、8卡无CUDA进程／0MiB，`CAP_RELEASE_VERIFIED.json`。未完成案例标为预算截断，不作方法失败，无续跑或延长。该台可用于上述新有限轮。
 
 ## 已收齐的关键结果
 
@@ -30,6 +44,12 @@
 
 公开RGB／预处理诊断 `runs/robocasa_robojepa_fusion_20261111`、公开主输入 `runs/robocasa_public_inputs_20261111`、跨视角 `runs/robocasa_crossview_20261111`、读出融合 `runs/robocasa_readout_20261111` 均已完成，HOLD，无有效执行错误。各正式回合前实际入口、NN不变和分布式物理／动作一致检查通过。模式2到3同时改变proprio、embodiment和动作编码，不是纯proprio消融。公开预训练／状态参考与RGB候选分轨，不作同预算SOTA排名。
 
+## 目标／表示短训已结束
+
+`runs/robocasa_target_refinement_20261111` 六个模型全部15000步，24回合完成，无有效执行错误。Plain／fixed／features的Reach为86.10／86.21／66.25%，Push为9.21／9.20／9.26%，严格final／any均0，不长训。六项最终CPU完整model／Adam／scheduler恢复及四rank RNG结构／游标通过；fixed读出与原10000父模型仍精确相同。固定表示未显示额外收益，未来特征失真也未解决操纵；它们的损失单位不同，不能横比裸loss。结果和 `FINAL_RESTORE_AUDIT.json` 留在该根。
+
+只读 `runs/robocasa_decoder_geometry_20261111` 也完成八模型×四既有路径共32行，0新SGD／模拟。比较代码L1、生成器输出核距离及目标流匹配能量，MC四次，同训练时刻分布。所有生成器核距离仍选第1步，物理最近点为3／16／5／18；流匹配能量的改变也未稳定匹配最近点，不自动启动该度量的规划实验。这些路径的机器人姿态不同于目标，故不能据此证明对象信息丢失或直接认定规划必败。只有两个物理Push案例，绝非32独立案例。
+
 ## 采样器假设已被物理结果否定
 
 `runs/robocasa_endpoint_20261111` 已完成24回合、0SGD、严格成功全0。`endpoint_cem.py`在相同1024候选／20elite／原refit数下比较发布式径向分布、初始矩匹配Gaussian和终点／路径分解协方差。CPU小实验确实发现分布／高斯方差refit不一致会在无信息目标下冷却，分解协方差可保留路径探索；这没有转成控制收益。公开2B released轨的Push从原28.33%降为Gaussian0%、endpoint1.72%。SPT只有一个父模型的单Push-v2病例有Gaussian收益，另一父模型不成立；不能叫稳健改进。无长训晋级。实际源、CPU证明和分family结果留在该根及同级 `robocasa_endpoint_{gaussian,endpoint}_20261111`。
@@ -42,7 +62,7 @@
 
 ## 第四台公开目标厨房参考
 
-`runs/robocasa_reference_adopt_20261110` 接管原24小时队列；结果实际在 `runs/robocasa_intervention_20261110/public-evaluation/*/gpu*/*/summary.json`。保留原chunk，无重复实验，原截止不延长。04:00UTC released轨的20个Reach案例均齐，50M／2B／8B平均进度91.00／93.40／96.12%，严格final为0／3／1次。50M Push19例均齐，平均0.49%；2B6例、8B4例未齐，不拿部分均值排名。50M native已开始。该39有效目标厨房案例、外部预训练和状态输入与上表源验证不同，不能直接拼表成公平差距。参考BF16预测按论文表格，发布客户端FP16差异仍披露。
+已按24小时原cap停止：`runs/robocasa_reference_adopt_20261110`。实际结果在 `runs/robocasa_intervention_20261110/public-evaluation/*/gpu*/*/summary.json`。Released轨20个Reach案例全部收齐，50M／2B／8B平均进度91.00／93.40／96.12%，严格final为0／3／1。50M全部19个Push为0.49%、严格0；2B只收齐7个、8B只收齐4个，不能按部分均值排名，未齐项不算失败。50M native Reach20个93.62%、严格0，Push5个为部分结果。目标厨房／flour_bag、完整图像／预训练／proprio与上表源案例／flourbag001不同，不能拼成同条件性能差距。BF16表格设置与发布客户端FP16差异仍披露。
 
 ## 历史轮次
 

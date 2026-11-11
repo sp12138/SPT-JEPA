@@ -248,7 +248,9 @@ def build(root,cfg):
             def __init__(self):
                 super().__init__(mode="L2",beta=.25,sigma0=.1,window=8,anchor_gap=0,
                     renderer_width=384,renderer_depth=12,renderer_heads=6,action_dim=14,
-                    rho=.8,forecast_fraction=.5,forecast_seed=61001+cfg["seed"],rate_prior="forecast")
+                    rho=.8,forecast_fraction=.5,forecast_seed=61001+cfg["seed"],rate_prior="forecast",
+                    flow_logit_shift=cfg.get("flow_logit_shift",0.))
+                self.code_chart=cfg.get("code_chart","global")
                 self.encoder=nn.Identity()
                 # Adapter initialized after all common SPT heads, preserving their RNG.
                 self.feature_adapter=nn.Sequential(nn.Linear(dim,192),nn.LayerNorm(192))
@@ -258,8 +260,11 @@ def build(root,cfg):
                 return render,render,render[:,0]
             def encode(self,info):
                 b,w=self.cached.shape[:2]
-                tokens=self.feature_adapter(self.cached.flatten(0,1).float())
+                features=self.cached.float()
+                if self.code_chart=="delta":features=features-features[:,:1]
+                tokens=self.feature_adapter(features.flatten(0,1))
                 info["emb"]=self.pool(tokens).reshape(b,w,self.state_dim)
+                if self.code_chart=="delta":info["emb"]=info["emb"]-info["emb"][:,:1]
                 if "action" in info:info["act_emb"]=self.action_encoder(info["action"])
                 return info
             def loss(self,batch,step=0,ramp_steps=0):
@@ -272,6 +277,12 @@ def build(root,cfg):
         if cfg.get("target_refinement"):
             from experiments.robocasa_refine.target_refinement import configure
             configure(model,cfg["target_refinement"],cfg["seed"])
+        if cfg.get("context_memory"):
+            from experiments.robocasa_refine.context_prior import attach
+            attach(model,cfg["context_memory"],cfg["seed"])
+        if cfg.get("forecast_only"):
+            from experiments.robocasa_refine.conditional_codes import forecast_only
+            forecast_only(model)
         return model
     return DenseWorld(dim,8)
 
@@ -344,7 +355,9 @@ def gradient_prefixes(cfg):
         if cfg["objective"]=="spt" else ("input.","action.","blocks.","output."))
     if cfg.get("target_refinement")=="fixed":
         prefixes=tuple(p for p in prefixes if p not in ("pool.","feature_adapter."))
-    return prefixes+(("view_bridge.",) if cfg.get("view_message") else ())
+    if cfg.get("forecast_only"):
+        prefixes=tuple(p for p in prefixes if p not in ("pool.","feature_adapter.","renderer."))
+    return prefixes+(("view_bridge.",) if cfg.get("view_message") else ())+(("context_bridge.",) if cfg.get("context_memory") else ())
 
 
 def training(root,run,resume=False,stop=1000):
@@ -435,7 +448,7 @@ class Adapter:
         self.extra_information=f"Frozen {self.cfg['encoder']} RGB encoder; fresh {self.cfg['objective']} predictor; no proprio; same ordinary-command training"
         self.online_correction=False;self.residual=None
     @torch.no_grad()
-    def encode(self,observations):
+    def dense(self,observations):
         import cv2
         cv2.setNumThreads(1)
         def pixels(observation):
@@ -447,8 +460,12 @@ class Adapter:
                 result.append(cv2.resize(image[:,left:left+h],(224,224),interpolation=cv2.INTER_AREA).transpose(2,0,1))
             return np.stack(result)
         images=torch.from_numpy(np.stack([pixels(o) for o in observations])).flatten(0,1).cuda()
-        features=encode(self.encoder,images,self.cfg["feature_kind"])
+        return encode(self.encoder,images,self.cfg["feature_kind"])
+    @torch.no_grad()
+    def encode(self,observations):
+        features=self.dense(observations)
         if self.cfg["objective"] == "spt":
+            if self.cfg.get("context_memory"):self._latest_dense_initial=features[:2].detach()
             with torch.autocast("cuda",dtype=torch.bfloat16):
                 pooled=self.model.pool(self.model.feature_adapter(features.float()))
             return pooled.reshape(1,len(observations),2,self.model.state_slots,1,self.model.state_width).float()
@@ -458,7 +475,12 @@ class Adapter:
     def history(self,observations,commands,realized_controls=None):
         from experiments.robocasa_compare.evaluate import RollState,control14
         a=torch.tensor(np.asarray(commands,np.float32).reshape(1,-1,7),device="cuda")
-        return RollState(self.encode(observations),(control14(a)-self.mean)/self.std)
+        encoded=self.encode(observations)
+        if self.cfg.get("context_memory"):
+            # Only real history sets dynamics context; encoding a goal never does.
+            with torch.no_grad(),torch.autocast("cuda",dtype=torch.bfloat16):
+                self.model.context_tokens=self.model.feature_adapter(self._latest_dense_initial.float())
+        return RollState(encoded,(control14(a)-self.mean)/self.std)
     @torch.no_grad()
     def step(self,action,state,**kwargs):
         from experiments.robocasa_compare.evaluate import RollState,control14
@@ -494,7 +516,11 @@ def evaluate(root,run,step,technical=False,case=None,proposal="released"):
     common.install_runtime(root/"code")
     from vforge.ops import OpsConfig,initialize_ops
     initialize_ops(OpsConfig(backend="sdpa",allow_fallback=False),device=torch.device("cuda"),parallel_state=None)
-    adapter=Adapter(root,run,step)
+    cfg=json.loads((run/"config.json").read_text())
+    if cfg.get("code_chart","global")=="delta":
+        from experiments.robocasa_refine.conditional_codes import ConditionalAdapter
+        adapter=ConditionalAdapter(root,run,step)
+    else:adapter=Adapter(root,run,step)
     cases=json.loads((root/"plan.json").read_text())["source_cases"]
     if case is not None:cases=[cases[case]]
     elif technical:cases=cases[:1]
@@ -527,9 +553,12 @@ def diagnostic(root,run,step):
             with torch.autocast("cuda",dtype=torch.bfloat16):
                 if cfg["objective"] == "spt":
                     model.cached=batch["features"]
+                    if cfg.get("context_memory"):
+                        model.context_tokens=model.feature_adapter(batch["features"][:,0].float())
                     z=model.encode(dict(pixels=batch["render"],action=batch["action"]))["emb"].float()
                     model.cached=None
                     pred=model.mean_trajectory(z[:,0],model.action_encoder(batch["action"])[:,:-1])
+                    if cfg.get("context_memory"):model.context_tokens=None
                 else:
                     z=batch["features"].float()
                     if z.shape[2] == 257:z=z[:,:,1:]

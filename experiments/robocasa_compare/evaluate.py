@@ -367,7 +367,8 @@ def evaluate(args, adapter=None):
         goal_obs = {"img_0": cached["goal"][0], "img_1": cached["goal"][1]}
         observations = [obs]
         realized=[]
-        goal = adapter.encode([goal_obs]) if adapter else None
+        goal = (adapter.initialize_goal(goal_obs,obs) if hasattr(adapter,"initialize_goal")
+                else adapter.encode([goal_obs])) if adapter else None
         objective_kwargs={}
         if getattr(args,"goal_metric","uniform")=="support":
             assert not args.reference and adapter is not None
@@ -391,6 +392,10 @@ def evaluate(args, adapter=None):
                 else:
                     feedback=realized[-(len(context)-1):] if len(context)>1 else []
                     wm_state=adapter.history(context,past,feedback if getattr(args,"history_controls","achieved")=="achieved" else None)
+                if hasattr(adapter,"goal_for_state"):
+                    # A conditional representation uses the same current chart
+                    # for real history, imagined futures and the visual goal.
+                    goal=adapter.goal_for_state()
                 _, means, _ = cem(adapter, wm_state, goal, rollout=1 if args.task == "reach" else 5,
                     action_repeat=getattr(args,"action_repeat",1),
                     cem_steps=2 if args.technical else 15 if index == 0 else 10,

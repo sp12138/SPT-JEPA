@@ -134,13 +134,14 @@ def worker(root,host):
         assert json.loads((root/"METHOD_PROOF_APPROVED.json").read_text())["passed"]
         def one(seed):
             run=root/"training"/f"{arm}-seed{seed}"
+            cfg=json.loads((run/"config.json").read_text());stages=cfg["stages"]
             logs=run/"execution-v1";logs.mkdir(exist_ok=False)
             gpus=",".join(str(x) for x in range((seed-1)*4,seed*4))
-            for stop in (10002,15000):
+            for stop in stages:
                 base.call(root,[base.TRAIN_PYTHON,"-m","torch.distributed.run","--standalone","--nnodes=1",
                     "--nproc-per-node=4","-m","--",base.MODULE,"--root",str(root),"--mode","train",
                     "--run",str(run),"--stop",str(stop),"--resume"],logs/f"train-{stop}.log",gpus)
-                if stop==10002:
+                if stop==stages[0]:
                     base.call(root,[str(root/"environment/bin/python"),"-u","-m",base.MODULE,"--root",str(root),
                         "--mode","evaluate","--run",str(run),"--step",str(stop),"--technical","--case","2"],
                         logs/"entry.log",gpus.split(",")[0],True)
@@ -153,7 +154,7 @@ def worker(root,host):
                             "--mode","evaluate","--run",str(run),"--step",str(stop),"--case",str(case)],
                             logs/f"evaluate-{case}.log",gpus.split(",")[case],True)
                     with ThreadPoolExecutor(max_workers=4) as pool:list(pool.map(control,range(4)))
-            save(run/"DONE.json",dict(passed=True,step=15000,new_updates=5000))
+            save(run/"DONE.json",dict(passed=True,step=stages[-1],new_updates=stages[-1]-cfg["phase_start"]))
         with ThreadPoolExecutor(max_workers=2) as pool:list(pool.map(one,(1,2)))
         save(root/f"DONE-{host}.json",dict(passed=True,host=host,arm=arm))
     except BaseException as error:
