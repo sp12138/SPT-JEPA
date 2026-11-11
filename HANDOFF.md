@@ -4,15 +4,23 @@
 
 ## 当前推进
 
-有限根 `runs/robocasa_spatial_20261111`，冻结源 `sources/spatial-codes-20261111-v1`。仅dev13／dev15／dev6，global16／grid16／grid16-noise各两个四卡模型，父模型均为上一轮global30000。16槽×16维，比旧64维更宽；三组参数／初始张量完全一致，只改全局／固定4×4空间支持及全局flow shift4。每patch恰属于一槽，冻结V-JEPA仍有全图感受野，不能叫像素严格局部。统一1120TRAIN／96旧验证、window8、batch32，再10000步到40000；没有新动作标签、状态、奖励、教师或样本间统计。比较uniform及原有initial-goal support两种代价，各24源回合，共48，不自动长训。
+先前参考只完成API／缓存／动作历史／物理重放核对，**没有复现论文高性能操纵**。最新静态审计发现官方`reproduce_push.sh`不覆盖客户端`action_repeat=2`默认值、预测使用FP16；旧适配固定repeat1、BF16，不能叫literal-client复现。官方同样执行CEM最后均值，非此处实现错误。证据`runs/robocasa_robojepa_fusion_20261111/PUBLIC_CLIENT_PROTOCOL_AUDIT.json`。下一参考须优先对齐完整输入、240×320、repeat2、FP16，并保留配对repeat1控制；源四案例仍不是论文留出评测全集。
 
-347个同形参数的Adam动量保留，14个变形参数由旧权重结构性重复输出／平均输入来扩维，变形参数重新积累Adam动量；四rank RNG及960000累计样本游标保留。不是原轨迹的逐位续训，也不是独立从零种子。全局控制的确定性编码／动作编码／F rollout对旧模型的重复代码核对误差为0／4.77e-7／2.38e-7；未把这说成整个有噪声目标或优化轨迹相同。三个结构的私有两次更新已完全恢复，独立世界／终端动作污染／空间token支持和必要梯度通过。六个实际30002更新完成、所需梯度正常，实际Push-H5入口尚在进行。启动归属launch-dev*.json，有限collector及results/summary.json。
+新有限根`runs/robocasa_current_inverse_20261111`，冻结源码`sources/current-inverse-20261111-v1`：dev13/control、dev15/observed、dev6/paired，各两个四卡模型。父模型均为global16/40000，统一1120TRAIN／96旧验证、batch32/window8，再10000步至50000，共24控制回合。三组含同初始化inverse头，control不使用；observed只从q(x0),q(x1)重建同转移实际输入a0；paired另从F(q(x0),a0)经同头重建**同一个a0**。辅助项为原beta=.25乘单位方差Gaussian每输入坐标NLL，无额外任务系数，未冒称新ELBO。没有未来／最优动作target、专家路径、受保护诊断数据或独立世界间统计。361个兼容Adam状态、四rank RNG及1280000样本游标保留，新增头动量从零、共同cosine重启。
 
-源复制保留了旧initialize.log，第一次打开同名日志在进程启动前失败，0SGD／0新根；已改用唯一spatial-initialize.log，六项继承全部完成。后续看该日志及INITIALIZED.json，不把继承的旧初始化日志当本轮。实际执行源码未在启动后编辑。
+三个私有真实batch后向核对通过：梯度有限／所需模块正梯度、终端动作污染不改loss、所有a1及以后输入变化不改inverse项、NN无更新。六模型实际完整状态恢复与40002更新均完成，实际Push-H5入口进行中；后续以ENTRY_APPROVED、progress、ERROR及launch-dev*.json为准，不把启动当性能。原始helper／日志仅EFS，源码启动后不编辑。绝对cap为plan.deadline，无自动长训。
 
-第四台dev6-2c运行冻结2B RGB square224的公平planner对照：`runs/robocasa_reference_patch_v3_20261111`，同四源案例／模型／1024全局候选／四rank／每rank sample16，只比较全局L1与初始—目标密集特征变化所定义的patch支持。8个主回合，物理replica不增样本数；每项核对所有replica动作／奖励精确相同及RGB门。旧v1／v2缺少reference资源指针，均在加载模型／仿真前失败，错误保留；已补齐原公开权重的只读路径，并补齐显式proposal默认参数。v3两个uniform Reach为63.93／71.62%，均严格0、replica通过，support和Push未齐，不比较部分均值。此轮sample16与旧参考sample32分块不同，候选随机路径不同，使用本轮新uniform配对，不能把旧数当逐位复现。它是公开F的读出诊断，不是SPT训练提升或同预算scratch成绩。
+第四台dev6-2c运行`runs/robocasa_rescored_cem_20261111`：冻结global16与grid16-noise的两父模型40000，16源回合。不改原CEM搜索／精英／随机数／均值更新，只多作两条NN rollout，重新评分最后均值与最后一代最佳采样路径后执行较优者；不增加物理查询。真实H5核对搜索均值／std／精英回报完全一致、NN不变、选中预测分数不低于均值；这不是物理改善证明。完成的私有proof进程在NCCL退出时等待，按准确PID／argv退掉，0SGD损失；操作helper-v2显式销毁进程组，旧记录保留。
 
-本会话检查记录 `runs/robocasa_encoder_budget_20261111/SESSION_CHECKS.json`：最近实际09:19:02UTC，下一次约10:19UTC。08:11→09:19实际约68分钟，按真实时间记录；没有补写检查、托管定时任务、第二套LLM监控或旧goal恢复。新轮准备与入口间主机有GPU空档，不宣称持续满载。当前使用率必须读实际进程／GPU。
+最近实际会话检查11:51:30UTC，下一次12:51UTC，记录仍为`runs/robocasa_encoder_budget_20261111/SESSION_CHECKS.json`。此前10:19→11:51有延迟，未补写检查。无托管定时任务、第二套LLM监控或旧goal恢复；GPU利用率须读实际快照。
+
+## 40000步空间轮及冻结诊断已收齐
+
+`runs/robocasa_spatial_20261111`完成六模型／48回合、0有效错误，HOLD。Global16／grid16／grid16-noise的uniform Reach为91.88／84.35／81.32%，Push9.16／9.22／9.20%；support Reach91.74／91.83／87.39%，Push9.15／9.25／9.19%。严格final／any全0，不长训。三组同256维容量与初始张量；结构性lift保留旧确定性核的数值证明不能证明物理收益。
+
+冻结公开2B RGB square224的patch对照`runs/robocasa_reference_patch_v3_20261111`也收齐8回合：uniform Reach67.78／Push9.51%，support39.55／2.19%，均严格0；四rank动作／奖励／RGB及NN不变证明齐。旧v1/v2资源路径错误仍保留。这不是完整官方输入／literal配置的性能复现。冻结V-JEPA dense10000两父模型的16回合`runs/robocasa_dense_patch_20261111`，uniform38.85／9.14，support30.41／11.30%，均严格0，未构成可靠操纵突破。
+
+自然留出回位日志的生成分解`runs/robocasa_decoder_decomposition_20261111`完成八模型，96日志／12初态组／6厨房、0SGD／0新控制。共享解码噪声时，H7真实未来编码的两分支图像差误差／真实差能量约.54–.76，动作预测编码约1.20–2.03；预测缺口明显，但前者也非完美重构。H16超出训练窗、仅保留7帧想象历史。对比包含机器人／相机变化，不是对象信息的独立证明；oracle未来编码只用于诊断，不进入训练或规划。原始图像NPZ和每模型summary留EFS。
 
 ## 30000步条件代码轮已结束
 

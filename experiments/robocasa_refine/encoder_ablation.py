@@ -286,6 +286,9 @@ def build(root,cfg):
         if cfg.get("pool_layout")=="grid":
             from experiments.robocasa_refine.spatial_codes import restrict_pool
             restrict_pool(model.pool)
+        if cfg.get("current_inverse"):
+            from experiments.robocasa_refine.current_inverse import attach
+            attach(model,cfg["current_inverse"],cfg["seed"])
         return model
     return DenseWorld(dim,8)
 
@@ -360,7 +363,9 @@ def gradient_prefixes(cfg):
         prefixes=tuple(p for p in prefixes if p not in ("pool.","feature_adapter."))
     if cfg.get("forecast_only"):
         prefixes=tuple(p for p in prefixes if p not in ("pool.","feature_adapter.","renderer."))
-    return prefixes+(("view_bridge.",) if cfg.get("view_message") else ())+(("context_bridge.",) if cfg.get("context_memory") else ())
+    return (prefixes+(("view_bridge.",) if cfg.get("view_message") else ())
+            +(("context_bridge.",) if cfg.get("context_memory") else ())
+            +(("inverse_head.",) if cfg.get("current_inverse") in ("observed","paired") else ()))
 
 
 def training(root,run,resume=False,stop=1000):
