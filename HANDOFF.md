@@ -1,6 +1,17 @@
 # 当前交接
 
-长期目标是改进SPT并超过RoboJEPA，尚未达成。**最新授权的300M Reach四个固定案例已完成数值验证，四机释放，等待下一步；不训练、不自动扩展或恢复旧监控。**
+长期目标是改进SPT并超过RoboJEPA，尚未达成。**最新授权四机同时间训练对比，持续至用户叫停，每累计训练一小时评测。三个SPT配方必须来自历史较好规划记录，不跑三个seed。旧实验、goal与旧LLM监控不恢复。**
+
+## 当前Reach同时间比较
+
+- EFS根`/efs/prescottsun/SPT-JEPA/runs/robocasa_time_compare_20261112`；核心入口`experiments/robocasa_time_compare`，协议见该目录`PROTOCOL.md`。以实际`launch-long-{host}-*.json`、各run的`progress.json`和`execution-long-*/ERROR.json`确认运行状态，不凭本文推断GPU占用。
+- dev13=`robojepa-seed1`，公开309M参数架构的RGB-only K2适配；dev15=`spt-seed1`，历史global16/256D＋初态空间上下文；dev6=`spt64-seed1`，原64D analytic temporal-forecast/无场景bridge；dev6-2c=`spt-grid16-seed1`，256D固定空间槽位＋上下文。四算法均seed1，不是独立种子重复。历史Reach回报约91.88/86.10/84.35%，不保证新头复现；grid16的旧support代价91.83%单列，本轮统一uniform主要代价。
+- 新预测器随机初始化，共享冻结V-JEPA2.1-G；不继承历史高分头或公开动力学。普通随机命令日志1120train/96validation，厨房分离；四机本地1216记录实际SHA清单完全相同，manifest`ced8adcea7896427db758ae9bade7423e5e4b8434a91a5fb973d135b6b2d4e68`。只用RGB/发出并执行的命令，无proprio/reward/task/动作标签；候选sample-level、无inverse。
+- 每模型8张H200、globalbatch32；SPT窗口8、基线16，不等参数/图像FLOPs。共同预缓存特征成本排除；累计最慢rank每次数据读取/传输/前后向/优化器迭代墙钟，排除初始化/存盘/评测，另外报告进程墙钟。用户把24h建议改为无限期；900秒warmup后恒定LR，无任意终点cosine。检查点包含model/Adam/时钟调度/8rank RNG/数据游标。
+- 每小时八个预固定target案例：厨房1/4/8/10×taskseed19301/19302，实际8个goal/初态物理与RGB检查通过。公开CEM1024候选/H1/15后10轮/top20/context2/execute1/5动作/repeat1；方形224共同输入，uniform latent L1。每卡一个案例并行。报告平均归一化回报、最终mm距离及2mm完成数；不是23数据集完整论文复现，也不把回报当成功率。
+- 四run实际入口均PASS：各保留8个真实更新，必要正梯度/有限loss、末尾动作污染不影响loss、缓存重编码一致、真实两动作CEM。RoboJEPA公开K2与本实现FP32 loss误差0。四机持续worker已启动，归属见`launch-long-{host}-1.json`；从完整8步状态继续，不重放已保存SGD。有效训练源码`code-v4`；旧源码和启动/精度审计错误均保留，未据此改训练损失。实际最新恢复/训练/GPU证据见一次性`HEALTH-{host}.json`，不是持续满载证明。
+- 用户两次细化方向前，两个额外seed及两个新假设各做8步后封存，合计32个启动更新，分别在`superseded-seed-startup`和`superseded-hypothesis-startup`，不计入当前算法祖先或性能。当前只保留基线/global16的原8步，其余两方法重新随机初始化；不是把旧hypothesis续成历史配方。
+- 逐小时结果`results/{run}/hour-NN.json`；`results/latest.json`只比较四方法均完成的同一训练小时，并保留各自最新小时。尚无本轮正式小时性能结果。新native worker负责训练/评测，无第二套LLM定时监控；报错要先看实际完整检查点和错误记录，再修复续训。
 
 ## 已完成300M Reach四例
 

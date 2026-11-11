@@ -1,6 +1,6 @@
 # 关键结论
 
-更新：2026-11-12。旧 MetaWorld 研究已结束；RoboCasa最新的官方300M Reach四例数值评测已完成，四机释放，旧训练和监控保持停止。SPT尚无操纵突破，入口见 [HANDOFF](../HANDOFF.md)。资源授权为dev13/dev15/dev6/dev6-2c。较优配方与来源统一保存在 [best-configs.json](best-configs.json)，原始实验记录的定位见 [归档说明](../docs/experiment-archives.md)。这里的成绩均有适用边界，不是统一公开基准的 SOTA 声明。
+更新：2026-11-12。旧 MetaWorld 研究已结束，官方300M Reach四例数值评测已完成。最新授权四机进行RoboJEPA300M与三套历史SPT配方的同时间训练比较，持续至叫停、每训练一小时评测；尚无本轮正式性能结果。旧训练、goal及LLM监控保持停止。SPT尚无操纵突破，入口见 [HANDOFF](../HANDOFF.md)。资源授权为dev13/dev15/dev6/dev6-2c。较优配方与来源统一保存在 [best-configs.json](best-configs.json)，原始实验记录的定位见 [归档说明](../docs/experiment-archives.md)。这里的成绩均有适用边界，不是统一公开基准的 SOTA 声明。
 
 ## RoboCasa 的新证据
 
