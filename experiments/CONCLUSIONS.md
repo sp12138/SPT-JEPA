@@ -1,8 +1,10 @@
 # 关键结论
 
-更新：2026-11-12。旧 MetaWorld 研究已结束；RoboCasa最新的官方1B四机测速与单例评测也已完成，四机释放，旧训练和监控保持停止。SPT尚无操纵突破，入口见 [HANDOFF](../HANDOFF.md)。资源授权为dev13/dev15/dev6/dev6-2c。较优配方与来源统一保存在 [best-configs.json](best-configs.json)，原始实验记录的定位见 [归档说明](../docs/experiment-archives.md)。这里的成绩均有适用边界，不是统一公开基准的 SOTA 声明。
+更新：2026-11-12。旧 MetaWorld 研究已结束；RoboCasa最新的官方300M Reach四例数值评测已完成，四机释放，旧训练和监控保持停止。SPT尚无操纵突破，入口见 [HANDOFF](../HANDOFF.md)。资源授权为dev13/dev15/dev6/dev6-2c。较优配方与来源统一保存在 [best-configs.json](best-configs.json)，原始实验记录的定位见 [归档说明](../docs/experiment-archives.md)。这里的成绩均有适用边界，不是统一公开基准的 SOTA 声明。
 
 ## RoboCasa 的新证据
+
+官方300M300k在留出厨房1/4/8/10的四个固定Reach案例完成20个真实动作。各8rank×128候选×1批，H1、5动作、15/10轮、context2、BF16 eager；目标距离.25–.35m，480×640渲染后240×320输入，embodiment2全本体参考。轨迹平均归一化回报.86925/.88974/.89709/.89032，总平均.88660，最终平均进度.98491、末端误差1.896–8.162mm，native2mm为1/4；回报不是成功率。正式每例约2.3分钟，四机并行含启动4.52分钟，不含此前下载/配置和事后归档。低于论文Reach图的约.95–.96累计回报；公开权重为K10 cooldown，而该曲线采用K2，四例也不能证明统计等价。第四例仅在完整数值归档后因ffmpeg路径漏检导致视频导出错误；保留原错误、验证NPZ和5步轨迹后接管数值结果，0重跑/0额外NN调用；其正式时间由归档时间近似，只有其他三例有视频。路径已修好并在四机验证，资源全部释放。原始入口EFS `runs/robocasa_300m_reach_20261112/results/summary.json`。
 
 官方1B300k预测器加冻结V-JEPA2.1-G，在四机32张H200上完成一个Push案例。保持1024候选／H5／15与10轮／action_repeat2，32rank×32sample×1batch的初态H5测速为4.23秒/轮，单机8卡最佳为14.50秒/轮。完整18动作正式过程14.05分钟；从进程启动到退出16.91分钟，含42.25秒批量测速，不含下载、单机测速和前次网络配置修复。与22M同一kitchen4/style4/seed0，最终归一化进度18.7521%，距目标10.3383cm，native2cm final/any均未完成；0SGD、0有效执行错误，四机已退出。原版client/server源不变，测速后恢复RNG与当前输入；跨集群DNS失败的早期启动在0动作时修复，保留记录、不记模型失败。一个案例不代表论文成功率，公开本体输入／预训练参考也不是RGB从零候选的公平排名。入口EFS `runs/robocasa_1b_speed_20261111/results/summary.json`。
 
