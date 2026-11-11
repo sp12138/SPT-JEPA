@@ -2,17 +2,21 @@
 
 目标是匹配条件下超过 RoboJEPA，尚未达成。用户授权在本会话每小时检查，性能差则复现参考、逐组件融合／改进。仅用dev13/dev15/dev6/dev6-2c；旧goal／旧监控不恢复。没有创建托管定时任务。以下成绩均为进度，严格成功另报；源验证只含Reach-v2/v3、Push-v2/v3四个物理案例（seed7401），重复评测不增加独立案例数。
 
-## 当前推进
+## 当前推进：先确认官方基线
 
-先前参考只完成API／缓存／动作历史／物理重放核对，**没有复现论文高性能操纵**。最新静态审计发现官方`reproduce_push.sh`不覆盖客户端`action_repeat=2`默认值、预测使用FP16；旧适配固定repeat1、BF16，不能叫literal-client复现。官方同样执行CEM最后均值，非此处实现错误。证据`runs/robocasa_robojepa_fusion_20261111/PUBLIC_CLIENT_PROTOCOL_AUDIT.json`。下一参考须优先对齐完整输入、240×320、repeat2、FP16，并保留配对repeat1控制；源四案例仍不是论文留出评测全集。
+用户最新追问训练／评测复现，已明确承认尚未复现论文操纵效果；优先官方基线，不新增算法分支。RoboJEPA离线学习事实轨迹中的未来视觉编码，仿真用于闭环控制评测。目前工作是使用公开权重复现规划，不是重新训练全部23数据混合。SPT仍用自己的普通转移日志，不能叫同训练数据比较；完整同数据／同编码器／同预算训练对照尚未完成。
 
-新有限根`runs/robocasa_current_inverse_20261111`，冻结源码`sources/current-inverse-20261111-v1`：dev13/control、dev15/observed、dev6/paired，各两个四卡模型。父模型均为global16/40000，统一1120TRAIN／96旧验证、batch32/window8，再10000步至50000，共24控制回合。三组含同初始化inverse头，control不使用；observed只从q(x0),q(x1)重建同转移实际输入a0；paired另从F(q(x0),a0)经同头重建**同一个a0**。辅助项为原beta=.25乘单位方差Gaussian每输入坐标NLL，无额外任务系数，未冒称新ELBO。没有未来／最优动作target、专家路径、受保护诊断数据或独立世界间统计。361个兼容Adam状态、四rank RNG及1280000样本游标保留，新增头动量从零、共同cosine重启。
+**当前规范入口**`runs/robocasa_literal_minimal_v2_20261111`，dev6-2c，launch.json PID9360。执行未修改的上游policy_client.py与robot_env_server.py；字体／绘图视频依赖已提供，本地仿真包与资产清单核对，未加入adapter或记录钩子。公开2B450k、完整240×320、embodiment3/proprio、客户端FP16、默认action_repeat2；target kitchen4/taskseed0。先前单卡18步技术测试已完整执行、官方NPZ／视频输出、客户端exit0；仅4候选／2次CEM，不作性能结果。新根继承该technical结果不重复运行，formal为官方15/10次CEM、top20、1024全局候选，8rank×16sample×8batch分担**同一个**物理案例，不算8个案例。绝对deadline沿用上一minimal根plan，不重新延长。当前正式结果未齐，不能声称性能复现。
 
-三个私有真实batch后向核对通过：梯度有限／所需模块正梯度、终端动作污染不改loss、所有a1及以后输入变化不改inverse项、NN无更新。六模型实际完整状态恢复与40002更新均完成，实际Push-H5入口进行中；后续以ENTRY_APPROVED、progress、ERROR及launch-dev*.json为准，不把启动当性能。原始helper／日志仅EFS，源码启动后不编辑。绝对cap为plan.deadline，无自动长训。
+旧`robocasa_literal_client_20261111`的启动错误全部保留：启动器漏掉本地仿真PYTHONPATH导致EFS资产os.listdir扫描；依赖已改节点本地；upstream --help有未转义百分号，只影响help格式，实际参数解析通过。随后我加的记录器对代理env直接赋reset，触发__setattr__转发到内层并递归，8例均在首次reset失败、0CEM动作，属于启动错误而非模型负结果。新minimal根完全移除这些钩子。旧minimal技术18步实际成功，外层glob没找到官方嵌套task输出路径而误报AssertionError；原错保留，递归定位并验证18有限reward后继承。不可恢复旧失败控制器／将其计成性能0。
 
-第四台dev6-2c运行`runs/robocasa_rescored_cem_20261111`：冻结global16与grid16-noise的两父模型40000，16源回合。不改原CEM搜索／精英／随机数／均值更新，只多作两条NN rollout，重新评分最后均值与最后一代最佳采样路径后执行较优者；不增加物理查询。真实H5核对搜索均值／std／精英回报完全一致、NN不变、选中预测分数不低于均值；这不是物理改善证明。完成的私有proof进程在NCCL退出时等待，按准确PID／argv退掉，0SGD损失；操作helper-v2显式销毁进程组，旧记录保留。
+官方脚本与论文表格有差异：example沿用action_repeat2默认、客户端FP16；论文Table14列BF16 eager，未明确区分该repeat参数。旧适配repeat1/BF16是单列诊断；不能称literal-client复现。官方本身执行CEM最后均值。Paper Fig15的Push成功描述仅为物体向目标移动，精确二值阈值尚未验证；本地2cm严格完成不得当作同一指标。
 
-最近实际会话检查11:51:30UTC，下一次12:51UTC，记录仍为`runs/robocasa_encoder_budget_20261111/SESSION_CHECKS.json`。此前10:19→11:51有延迟，未补写检查。无托管定时任务、第二套LLM监控或旧goal恢复；GPU利用率须读实际快照。
+已有有限根`runs/robocasa_current_inverse_20261111`，dev13/control、dev15/observed、dev6/paired，各两个四卡模型已到50000，24个源闭环回合收集中，不追加分支／长训。父模型为global16/40000，1120TRAIN／96旧验证、batch32/window8，再10000步，兼容361个Adam状态／四rank RNG／1280000游标保留，共同cosine重启。Observed仅从q(x0),q(x1)重建实际输入a0；paired另从F(q(x0),a0)经同头重建**同一个a0**。辅助项原beta=.25乘单位方差Gaussian每坐标NLL，不是新ELBO。无未来动作target、专家路径或独立世界间统计。三结构私有后向、终端动作污染、全部未来动作改变不改inverse项、六模型实际恢复／梯度／Push-H5入口均通过。Paired训练中自预测inverse远低于真实后果inverse，仅为捷径线索，不能当控制进步。
+
+`runs/robocasa_rescored_cem_20261111`已收齐16冻结源回合、0错误，HOLD。Global16／grid16-noise重评分后的Reach91.42／81.70%、Push9.15／9.23%，原uniform91.88／81.32、9.16／9.20，严格全0。搜索／精英／均值更新不变，仅多两条NN rollout比较最后均值与最后一代最佳样本；预测评分更优没有转换成可靠Push改善。源四案例／两共享父模型的边界保留。
+
+最近实际每小时检查12:51:25UTC，下一次13:51UTC，canonical helper仍为`runs/robocasa_robojepa_fusion_20261111/session-check.py`，已更新至minimal_v2入口；配置在`runs/robocasa_encoder_budget_20261111/SESSION_CHECKS.json`。没有托管定时任务／第二套LLM监控／旧goal恢复。12:51快照三台24卡在计算、dev6-2c当时尚无GPU进程；不宣称持续满载。以新的实际GPU和进程为准。
 
 ## 40000步空间轮及冻结诊断已收齐
 
