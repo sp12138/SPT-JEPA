@@ -12,7 +12,9 @@
 
 官方脚本与论文表格有差异：example沿用action_repeat2默认、客户端FP16；论文Table14列BF16 eager，未明确区分该repeat参数。旧适配repeat1/BF16是单列诊断；不能称literal-client复现。官方本身执行CEM最后均值。Paper Fig15的Push成功描述仅为物体向目标移动，精确二值阈值尚未验证；本地2cm严格完成不得当作同一指标。
 
-已有有限根`runs/robocasa_current_inverse_20261111`，dev13/control、dev15/observed、dev6/paired，各两个四卡模型已到50000，24个源闭环回合收集中，不追加分支／长训。父模型为global16/40000，1120TRAIN／96旧验证、batch32/window8，再10000步，兼容361个Adam状态／四rank RNG／1280000游标保留，共同cosine重启。Observed仅从q(x0),q(x1)重建实际输入a0；paired另从F(q(x0),a0)经同头重建**同一个a0**。辅助项原beta=.25乘单位方差Gaussian每坐标NLL，不是新ELBO。无未来动作target、专家路径或独立世界间统计。三结构私有后向、终端动作污染、全部未来动作改变不改inverse项、六模型实际恢复／梯度／Push-H5入口均通过。Paired训练中自预测inverse远低于真实后果inverse，仅为捷径线索，不能当控制进步。
+现已把三台空闲机器也转到同一官方流程：dev13的`robocasa_official_k4_s1_20261111`、dev15的`robocasa_official_k8_s0_20261111`、dev6的`robocasa_official_k8_s1_20261111`，各8rank、一个Push案例、同1024全局候选／repeat2／完整输入／FP16。共同入口`runs/robocasa_official_cohort_20261111/{plan.json,collect.py,summary.json}`。四物理案例、两厨房、同一个公开checkpoint，不是32个案例或论文完整评测群。三新根继承技术证据，全部沿用最初minimal的绝对deadline。运行环境Python3.12.3／Torch2.9.1+cu130／MuJoCo3.3.1；官方README为Python3.11／Torch2.7.1+cu126，未做逐版本环境重建。差异在RUNTIME.json，不冒称完整环境严格复刻。
+
+已有有限根`runs/robocasa_current_inverse_20261111`，dev13/control、dev15/observed、dev6/paired，各两个四卡模型已到50000，24源回合全部完成、0执行错误、HOLD，不追加分支／长训。Control／observed／paired Reach90.98／67.72／68.68%，Push9.31／9.16／9.66%，严格final／any均0。父模型为global16/40000，1120TRAIN／96旧验证、batch32/window8，再10000步，兼容361个Adam状态／四rank RNG／1280000游标保留，共同cosine重启。Observed仅从q(x0),q(x1)重建实际输入a0；paired另从F(q(x0),a0)经同头重建**同一个a0**。辅助项原beta=.25乘单位方差Gaussian每坐标NLL，不是新ELBO。无未来动作target、专家路径或独立世界间统计。三结构私有后向、终端动作污染、全部未来动作改变不改inverse项、六模型实际恢复／梯度／Push-H5入口均通过。Paired自预测inverse很低仍无控制收益，不能当真实后果已学好的证据。
 
 `runs/robocasa_rescored_cem_20261111`已收齐16冻结源回合、0错误，HOLD。Global16／grid16-noise重评分后的Reach91.42／81.70%、Push9.15／9.23%，原uniform91.88／81.32、9.16／9.20，严格全0。搜索／精英／均值更新不变，仅多两条NN rollout比较最后均值与最后一代最佳样本；预测评分更优没有转换成可靠Push改善。源四案例／两共享父模型的边界保留。
 
