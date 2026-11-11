@@ -1,8 +1,10 @@
 # 关键结论
 
-更新：2026-11-11。旧 MetaWorld 研究已结束；RoboCasa已进入10000步预算对照及官方参考逐组件诊断，尚无操纵突破，入口见 [HANDOFF](../HANDOFF.md)。资源授权为dev13/dev15/dev6/dev6-2c。较优配方与来源统一保存在 [best-configs.json](best-configs.json)，原始实验记录的定位见 [归档说明](../docs/experiment-archives.md)。这里的成绩均有适用边界，不是统一公开基准的 SOTA 声明。
+更新：2026-11-12。旧 MetaWorld 研究已结束；RoboCasa最新的官方1B四机测速与单例评测也已完成，四机释放，旧训练和监控保持停止。SPT尚无操纵突破，入口见 [HANDOFF](../HANDOFF.md)。资源授权为dev13/dev15/dev6/dev6-2c。较优配方与来源统一保存在 [best-configs.json](best-configs.json)，原始实验记录的定位见 [归档说明](../docs/experiment-archives.md)。这里的成绩均有适用边界，不是统一公开基准的 SOTA 声明。
 
 ## RoboCasa 的新证据
+
+官方1B300k预测器加冻结V-JEPA2.1-G，在四机32张H200上完成一个Push案例。保持1024候选／H5／15与10轮／action_repeat2，32rank×32sample×1batch的初态H5测速为4.23秒/轮，单机8卡最佳为14.50秒/轮。完整18动作正式过程14.05分钟；从进程启动到退出16.91分钟，含42.25秒批量测速，不含下载、单机测速和前次网络配置修复。与22M同一kitchen4/style4/seed0，最终归一化进度18.7521%，距目标10.3383cm，native2cm final/any均未完成；0SGD、0有效执行错误，四机已退出。原版client/server源不变，测速后恢复RNG与当前输入；跨集群DNS失败的早期启动在0动作时修复，保留记录、不记模型失败。一个案例不代表论文成功率，公开本体输入／预训练参考也不是RGB从零候选的公平排名。入口EFS `runs/robocasa_1b_speed_20261111/results/summary.json`。
 
 配对1000→10000步续训全部收齐8模型／64新增回合：V-JEPA-SPT的Reach平均进度11.03→47.58→64.77%（1000／5000／10000），own-SPT为17.32→23.93→15.73%。10000步own-dense／V-JEPA-dense为20.11／38.85%；四组Push均9.1%–9.3%，所有正式点严格完成均0。短预算确实遮蔽外部视觉骨干的收益，但续训也统一重启LR，不能仅归因于步数。四个物理源案例重复使用，未作目标厨房确认。新参考对照先保留官方dense动力学，分开检查图像预处理和SPT读出；公开主轨的本体输入与RGB mode2分开报告，不能把输入／embodiment差异当作算法优劣。缓存API验证成功不等于性能提升。
 
