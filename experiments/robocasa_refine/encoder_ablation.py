@@ -249,7 +249,7 @@ def build(root,cfg):
                 super().__init__(mode="L2",beta=.25,sigma0=.1,window=8,anchor_gap=0,
                     renderer_width=384,renderer_depth=12,renderer_heads=6,action_dim=14,
                     rho=.8,forecast_fraction=.5,forecast_seed=61001+cfg["seed"],rate_prior="forecast",
-                    flow_logit_shift=cfg.get("flow_logit_shift",0.))
+                    flow_logit_shift=cfg.get("flow_logit_shift",0.),state_slots=cfg.get("state_slots",4))
                 self.code_chart=cfg.get("code_chart","global")
                 self.encoder=nn.Identity()
                 # Adapter initialized after all common SPT heads, preserving their RNG.
@@ -283,6 +283,9 @@ def build(root,cfg):
         if cfg.get("forecast_only"):
             from experiments.robocasa_refine.conditional_codes import forecast_only
             forecast_only(model)
+        if cfg.get("pool_layout")=="grid":
+            from experiments.robocasa_refine.spatial_codes import restrict_pool
+            restrict_pool(model.pool)
         return model
     return DenseWorld(dim,8)
 
@@ -503,7 +506,7 @@ class Adapter:
                 self.versions == [p._version for p in self.encoder.parameters()])
 
 
-def evaluate(root,run,step,technical=False,case=None,proposal="released"):
+def evaluate(root,run,step,technical=False,case=None,proposal="released",goal_metric="uniform"):
     from experiments.robocasa_compare import evaluate as base
     from experiments.robocasa_refine import validation
     base.install_public(root);validation.ROOT=root
@@ -525,10 +528,11 @@ def evaluate(root,run,step,technical=False,case=None,proposal="released"):
     if case is not None:cases=[cases[case]]
     elif technical:cases=cases[:1]
     for c in cases:
-        output=root/("entry" if technical else "evaluation")/run.name/f"step-{step:06d}"/validation.name(**c)
+        tier="evaluation" if goal_metric=="uniform" else "evaluation-"+goal_metric
+        output=root/("entry" if technical else tier)/run.name/f"step-{step:06d}"/validation.name(**c)
         args=argparse.Namespace(root=root,run=run,step=step,reference=None,reference_mode=2,
             reference_pose_source="native",zero=False,history_controls="issued",online_correction=False,
-            goal_metric="uniform",technical=technical,output=output,action_repeat=1,**c)
+            goal_metric=goal_metric,technical=technical,output=output,action_repeat=1,**c)
         base.evaluate(args,adapter=adapter)
         if proposal!="released":
             value=json.loads((output/"summary.json").read_text())
@@ -738,12 +742,13 @@ if __name__ == "__main__":
     p.add_argument("--attempt",default="v5")
     p.add_argument("--stop",type=int,default=1000);p.add_argument("--step",type=int,default=1000);p.add_argument("--case",type=int)
     p.add_argument("--proposal",choices=["released","gaussian","endpoint"],default="released")
+    p.add_argument("--goal-metric",choices=["uniform","support","direction"],default="uniform")
     a=p.parse_args()
     if a.mode == "initialize":initialize(a.root,a.source,a.original)
     elif a.mode == "continue":initialize_budget(a.root,a.source)
     elif a.mode == "cache":cache(a.root,a.kind,a.shard,a.shards)
     elif a.mode == "worker":worker(a.root,a.host,a.adopt_cache,a.attempt)
     elif a.mode == "train":training(a.root,a.run,a.resume,a.stop)
-    elif a.mode == "evaluate":evaluate(a.root,a.run,a.step,a.technical,a.case,a.proposal)
+    elif a.mode == "evaluate":evaluate(a.root,a.run,a.step,a.technical,a.case,a.proposal,a.goal_metric)
     elif a.mode == "proof":proof(a.root,a.kind)
     else:diagnostic(a.root,a.run,a.step)
