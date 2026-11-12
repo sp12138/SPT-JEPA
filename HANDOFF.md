@@ -1,17 +1,17 @@
 # 当前交接
 
-长期目标是改进SPT并超过RoboJEPA，尚未达成。**最新授权四机同时间训练对比，持续至用户叫停，每累计训练一小时评测。三个SPT配方必须来自历史较好规划记录，不跑三个seed。旧实验、goal与旧LLM监控不恢复。**
+长期目标是改进SPT并超过RoboJEPA，尚未达成。**最新用户限制后续只用dev13/dev15/dev6，继续基线/global16/64维方案，持续至叫停，每累计训练一小时评测。dev6-2c不再连接、恢复或调度，grid16保留历史数据；之前询问新SSH入口已失去必要，不再追问。旧实验、goal与旧LLM监控不恢复。**
 
 ## 当前Reach同时间比较
 
 - EFS根`/efs/prescottsun/SPT-JEPA/runs/robocasa_time_compare_20261112`；核心入口`experiments/robocasa_time_compare`，协议见该目录`PROTOCOL.md`。以实际`launch-long-{host}-*.json`、各run的`progress.json`和`execution-long-*/ERROR.json`确认运行状态，不凭本文推断GPU占用。
-- dev13=`robojepa-seed1`，公开309M参数架构的RGB-only K2适配；dev15=`spt-seed1`，历史global16/256D＋初态空间上下文；dev6=`spt64-seed1`，原64D analytic temporal-forecast/无场景bridge；dev6-2c=`spt-grid16-seed1`，256D固定空间槽位＋上下文。四算法均seed1，不是独立种子重复。历史Reach回报约91.88/86.10/84.35%，不保证新头复现；grid16的旧support代价91.83%单列，本轮统一uniform主要代价。
+- 活跃范围为dev13=`robojepa-seed1`、dev15=`spt-seed1`、dev6=`spt64-seed1`，分别为309M参数RGB-only K2基线、global16/256D＋初态空间上下文、原64D analytic temporal-forecast/无场景bridge。`plan.json`的`active_hosts/active_runs`为后续资源边界。dev6-2c的grid16已排除，不迁移到其他机器；旧结果和完整检查点保留。各算法均seed1，不是独立种子重复。历史配方与本轮随机新头/新案例结果分别报告。
 - 新预测器随机初始化，共享冻结V-JEPA2.1-G；不继承历史高分头或公开动力学。普通随机命令日志1120train/96validation，厨房分离；四机本地1216记录实际SHA清单完全相同，manifest`ced8adcea7896427db758ae9bade7423e5e4b8434a91a5fb973d135b6b2d4e68`。只用RGB/发出并执行的命令，无proprio/reward/task/动作标签；候选sample-level、无inverse。
 - 每模型8张H200、globalbatch32；SPT窗口8、基线16，不等参数/图像FLOPs。共同预缓存特征成本排除；累计最慢rank每次数据读取/传输/前后向/优化器迭代墙钟，排除初始化/存盘/评测，另外报告进程墙钟。用户把24h建议改为无限期；900秒warmup后恒定LR，无任意终点cosine。检查点包含model/Adam/时钟调度/8rank RNG/数据游标。
 - 每小时八个预固定target案例：厨房1/4/8/10×taskseed19301/19302，实际8个goal/初态物理与RGB检查通过。公开CEM1024候选/H1/15后10轮/top20/context2/execute1/5动作/repeat1；方形224共同输入，uniform latent L1。每卡一个案例并行。报告平均归一化回报、最终mm距离及2mm完成数；不是23数据集完整论文复现，也不把回报当成功率。
 - 四run实际入口均PASS：各保留8个真实更新，必要正梯度/有限loss、末尾动作污染不影响loss、缓存重编码一致、真实两动作CEM。RoboJEPA公开K2与本实现FP32 loss误差0。原训练源码`code-v4`和全部旧错误保留。dev13/dev15持续归属`launch-long-{host}-1.json`；dev6的attempt1在约9.57h遇BF16非有限梯度，attempt2从204871步/9.5h的完整model/Adam/scheduler/8rankRNG/cursor恢复，已完成11h评测并继续训练。独立`code-v5`的同一失败batch/RNG FP32重算已经实际触发363次，首个206399步、最近235659步均有限，无丢样本或更改loss/LR/optimizer；证明该重算能跨过这些具体异常，不等于已识别唯一数值根因。至少1509个未保存更新重放，确切数量未知；原完整状态另存`recovery-dev6-numerics/saved-204871.ckpt`。dev6-2c SSH35779仍关闭且心跳停在约7.56h，保存到144117步/7.5h；不能声称当前仍跑或已停止，已询问新入口，不自动迁移到其他机器。最新实际快照dev13/dev15/dev6各8卡参与计算，不是四机满载。
 - 用户两次细化方向前，两个额外seed及两个新假设各做8步后封存，合计32个启动更新，分别在`superseded-seed-startup`和`superseded-hypothesis-startup`，不计入当前算法祖先或性能。当前只保留基线/global16的原8步，其余两方法重新随机初始化；不是把旧hypothesis续成历史配方。
-- 逐小时结果`results/{run}/hour-NN.json`；`results/latest.json`只比较四方法均完成的同一训练小时，并保留各自最新小时。四方法共同7h仍为基线/global16/64D/grid16回报19.33/70.68/74.65/69.45%、全部0/8。新三方法共同11h：基线/global16/64D为15.30/75.05/77.80%，最终距离261.9/51.7/51.7mm，final/any2mm全部0/8；24条实际trace SHA/物理/RGB/NN不变核对通过。最新独立点：基线13h12.91%，global16 14h69.25%，64D11h77.80%，grid16仅7h，不同小时不横向混比。当前选择最高仍为64D2h79.65%，不是未选择确认或成功率。曲线未显示持续scaling：基线TF/AR损失下降同时回报下降，不能证明唯一原因；SPT早期达到较高回报后波动、严格成功仍0。原始本次审查`reviews/status-20261112/summary.json`的`current`字段。新native worker负责训练/评测，无第二套LLM定时监控；当前资源状态必须查实际进程，不沿用旧32卡满载说法。
+- 逐小时结果仍自动写入`results/{run}/hour-NN.json`。三机汇总用`python scope-report.py --root <root> --output active-latest.json`按需更新`results/active-latest.json`；该独立只读汇总不改冻结训练源码、不重启训练或增加监控进程。旧冻结worker的`results/latest.json`仍按历史四方法汇总，会滞留7h，不作为当前主入口。四方法历史共同7h回报19.33/70.68/74.65/69.45%、全部0/8。新三方法共同11h：基线/global16/64D为15.30/75.05/77.80%，最终距离261.9/51.7/51.7mm，final/any2mm全部0/8；24条实际trace核对通过。当前选择最高仍为64D2h79.65%，不是未选择确认或成功率。曲线未显示持续scaling：基线损失下降同时回报下降，SPT高回报后波动、严格成功仍0，未确定唯一原因。原始审查`reviews/status-20261112/summary.json`。实际进程和GPU需重新查，不沿用旧满载说法。
 
 ## 已完成300M Reach四例
 

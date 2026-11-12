@@ -1,4 +1,4 @@
-"""Finite four-host campaign; no LLM monitor and no automatic research round."""
+"""Authorized three-host campaign; no LLM monitor or automatic research round."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import json
@@ -12,8 +12,7 @@ from experiments.robocasa_compare.acquire import save, sha
 from experiments.robocasa_compare.campaign import environment, TRAIN_PYTHON
 
 MODULE = "experiments.robocasa_time_compare"
-ARMS = {"dev13": ("robojepa", 1), "dev15": ("spt", 1),
-        "dev6": ("spt64", 1), "dev6-2c": ("spt-grid16", 1)}
+ARMS = {"dev13": ("robojepa", 1), "dev15": ("spt", 1), "dev6": ("spt64", 1)}
 
 
 def initialize(root, code, budget=None):
@@ -30,11 +29,12 @@ def initialize(root, code, budget=None):
         active_time_definition="Sum of slowest-rank data-load/transfer/forward/backward/optimizer iteration wall times; excludes setup, checkpoint and evaluation",
         allocated_time_also_reported=True, source_code=str(code),
         baseline_adaptation="Public300M architecture and TF/2+detachedK2/4; RGB-only zero-state, common224/FOV/caches; not23-dataset reproduction",
-        primary_comparison="Four different algorithms, allseed1; no seed replication or significance claim",
+        primary_comparison="Three different algorithms, allseed1; no seed replication or significance claim",
         historical_SPT_cumulative_40000_updates_NOT_inherited=True,
         LR_schedule="Common wall-clock900second warmup then flat LR; method-native peakLR/betas/WD",
         no_automatic_extension=False, until_user_stop=True,
         common_global_batch=32, SPT_window=8, RoboJEPA_window=16,
+        active_hosts=list(ARMS), active_runs=[f"{method}-seed{seed}" for method,seed in ARMS.values()],
         unequal_capacity_steps_and_image_FLOPs_disclosed=True, phase="entry")
     save(root/"plan.json", plan)
     for host, (method, seed) in ARMS.items():
@@ -83,6 +83,7 @@ def call(root, argv, log, gpus, simulator=False, timeout=36*3600):
 
 
 def worker(root, host, entry=False, attempt=1, fp32_retry=False):
+    assert host in json.loads((root/"plan.json").read_text()).get("active_hosts", list(ARMS))
     method, seed = ARMS[host]; run = root/"training"/f"{method}-seed{seed}"
     logs = run/f"execution-{'entry' if entry else 'long'}-{attempt}"
     logs.mkdir(exist_ok=False)
@@ -124,6 +125,7 @@ def worker(root, host, entry=False, attempt=1, fp32_retry=False):
 
 
 def launch(root, host, entry=False, attempt=1, fp32_retry=False):
+    assert host in json.loads((root/"plan.json").read_text()).get("active_hosts", list(ARMS))
     assert json.loads((root/"INITIALIZED.json").read_text())["passed"]
     active = subprocess.check_output(["nvidia-smi", "--query-compute-apps=pid,process_name,used_gpu_memory",
                                       "--format=csv,noheader"], text=True).strip()

@@ -12,9 +12,9 @@
 
 ## 当前边界
 
-- 最新用户授权dev13训练RoboJEPA300M基线，dev15/dev6/dev6-2c跑三个已有较好规划记录的SPT配方，而非三个seed：历史global16、原64维temporal-forecast、grid16空间槽位。按共同累计训练时长比较，持续至用户叫停，每一小时评测。先完成随机新头、共同缓存/输入和真实训练/规划入口审计，再续训；旧实验、goal和旧定时监控不恢复，不自动更换算法。
+- 最新用户将后续资源限制为dev13、dev15、dev6：分别继续RoboJEPA300M基线、历史SPT global16、原64维temporal-forecast。按共同累计训练时长比较，持续至用户叫停，每一小时评测。dev6-2c及grid16不再连接、恢复或调度，历史数据保留。旧实验、goal和旧定时监控不恢复，不自动更换算法。
 - 状态入口为 `HANDOFF.md`，关键结论为 `experiments/CONCLUSIONS.md`。
-- 后续获授权时，计算资源限 dev13、dev15、dev6、dev6-2c；不使用 dev2。
+- 计算资源限 dev13、dev15、dev6；不使用 dev6-2c、dev2 或其他机器。
 - 检查实际进程和 GPU 后再报告利用率；历史快照不代表当前或持续满载。
 - 不根据旧文档中“ACTIVE”“下一步”等文字自动恢复任务。
 

@@ -1,9 +1,9 @@
 # RoboCasa Reach 同时间比较
 
 最新用户授权持续运行至叫停，每累计训练一小时评测。dev13：公开
-RoboJEPA300M 架构的 RGB-only K2 适配；dev15/dev6/dev6-2c：SPT global16
-空间初态上下文配方、原64维temporal-forecast配方、grid16空间槽位变体。
-四算法均seed1，各一台8卡；这是三方法探索，不是独立种子重复，不能
+RoboJEPA300M 架构的 RGB-only K2 适配；dev15：SPT global16空间初态
+上下文；dev6：原64维temporal-forecast。用户已排除dev6-2c，grid16仅
+保留历史数据，不再连接、恢复或调度。三算法均seed1，各一台8卡，不是独立种子重复，不能
 宣称稳定性或把选择后的赢家当作未选择确认实验。
 
 共同使用冻结的 V-JEPA2.1-G 编码器和普通随机命令转移日志：1120条训练、
@@ -13,7 +13,7 @@ RoboJEPA300M 架构的 RGB-only K2 适配；dev15/dev6/dev6-2c：SPT global16
 SPT 保留自身 sample-level 像素64 flow/rate 目标，无 inverse。global16
 用16个全局query、256维代码和实际初态上下文；64维版用4个query且无
 场景bridge；grid16用16个固定空间区域的query和初态上下文。分别检验
-较优完整配方、紧凑的动态表示和有空间地址的表示。历史源案例Reach回报
+较优完整配方、紧凑的动态表示和有空间地址的表示；grid16当前仅为历史对照。历史源案例Reach回报
 约91.88/86.10/84.35%，不是成功率，也不是本轮新头/新案例的性能保证。
 grid16历史support代价约91.83%，本轮主要对照统一uniform L1，不混报。
 
@@ -44,6 +44,11 @@ std/maxnorm .3、mean/std momentum .15/.70、双视角等权。每卡同时评�
 旧实验或LLM监控，不自动更换算法。报错保留并停在检查点，修复后按
 完整状态续训。EFS根为`runs/robocasa_time_compare_20261112`，原始结果、
 运行状态及检查点不进Git。
+
+现有冻结训练worker继续逐小时输出各自结果，不因资源范围调整而重启。
+当前三方法共同训练小时由独立`report.py --root <root> --output active-latest.json`
+按需汇总，读取`plan.json`的`active_runs`；不增设后台监控。旧冻结worker
+仍可能写入历史四方法`latest.json`，后续查看当前对照应使用三方法入口。
 
 dev6在约9.57h出现实际BF16非有限梯度，原错误保留。数值恢复可对失败的
 同一全局batch恢复外部RNG后用FP32重算一次；不能跳过样本或以非有限
