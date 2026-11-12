@@ -139,7 +139,7 @@ def checkpoint(root, run, cfg, model, opt, step, elapsed, rank, world, label=Non
     dist.barrier()
 
 
-def train(root, run, local_data, target_seconds, entry=False, resume=False):
+def train(root, run, local_data, target_seconds, entry=False, resume=False, fp32_retry=False):
     import torch.distributed as dist
     from torch.nn.parallel import DistributedDataParallel as DDP
     from torch.utils.data import DataLoader
@@ -204,10 +204,40 @@ def train(root, run, local_data, target_seconds, entry=False, resume=False):
         raw = next(iterator); batch = prepare(raw, cfg, device)
         opt.zero_grad(set_to_none=True)
         set_rates(opt, elapsed, cfg["budget_seconds"])
+        iteration_rng = common.rng_state() if fp32_retry else None
         with torch.autocast("cuda", dtype=torch.bfloat16):
             loss, metrics = wrapped(batch, step+1)
-        assert torch.isfinite(loss), metrics
-        loss.backward()
+        finite_loss = bool(torch.isfinite(loss))
+        if fp32_retry:
+            loss_flag = torch.tensor(int(finite_loss), device=device)
+            dist.all_reduce(loss_flag, op=dist.ReduceOp.MIN)
+            finite_loss = bool(loss_flag)
+        if finite_loss: loss.backward()
+        if fp32_retry:
+            finite = finite_loss and all(bool(torch.isfinite(p.grad).all())
+                for p in model.parameters() if p.grad is not None)
+            flag = torch.tensor(int(finite), device=device)
+            dist.all_reduce(flag, op=dist.ReduceOp.MIN)
+            if not bool(flag):
+                # Same physical batch and sample cursor; no optimizer update,
+                # skipped example or LR change. Preserve the failed AMP attempt.
+                opt.zero_grad(set_to_none=True)
+                common.restore_rng(iteration_rng)
+                with torch.autocast("cuda", enabled=False):
+                    loss, metrics = wrapped(batch, step+1)
+                assert torch.isfinite(loss), ("FP32 retry loss", step+1, metrics)
+                loss.backward()
+                finite = all(bool(torch.isfinite(p.grad).all())
+                    for p in model.parameters() if p.grad is not None)
+                flag.fill_(int(finite)); dist.all_reduce(flag, op=dist.ReduceOp.MIN)
+                if rank == 0:
+                    save(run/f"numeric-retry-{step+1:08d}.json", dict(step=step+1,
+                        same_batch_and_cursor=True, optimizer_updates_before_retry=0,
+                        outer_RNG_restored=True, precision="FP32", finite=bool(flag),
+                        algorithm_loss_optimizer_LR_unchanged=True))
+                assert bool(flag), ("FP32 retry gradients", step+1)
+        else:
+            assert finite_loss, metrics
         check = step < 8 or step % 100 == 0 or segment_updates < 2
         norms = {}
         if check:
@@ -255,5 +285,6 @@ if __name__ == "__main__":
     p.add_argument("--local-data", type=Path, required=True)
     p.add_argument("--target-seconds", type=float, required=True)
     p.add_argument("--entry", action="store_true"); p.add_argument("--resume", action="store_true")
+    p.add_argument("--fp32-retry", action="store_true")
     a = p.parse_args()
-    train(a.root, a.run, a.local_data, a.target_seconds, a.entry, a.resume)
+    train(a.root, a.run, a.local_data, a.target_seconds, a.entry, a.resume, a.fp32_retry)

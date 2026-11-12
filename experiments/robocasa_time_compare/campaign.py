@@ -73,13 +73,16 @@ def env(root, gpus, simulator=False):
 
 def call(root, argv, log, gpus, simulator=False, timeout=36*3600):
     assert not (root/"STOP").exists()
+    code = Path(__file__).resolve().parents[2]
+    child_env = env(root, gpus, simulator)
+    child_env["PYTHONPATH"] = str(code) + ":" + child_env["PYTHONPATH"]
     with log.open("x") as stream:
-        subprocess.run(argv, cwd=root/"code", env=env(root, gpus, simulator),
+        subprocess.run(argv, cwd=code, env=child_env,
             stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.STDOUT,
             check=True, timeout=timeout)
 
 
-def worker(root, host, entry=False, attempt=1):
+def worker(root, host, entry=False, attempt=1, fp32_retry=False):
     method, seed = ARMS[host]; run = root/"training"/f"{method}-seed{seed}"
     logs = run/f"execution-{'entry' if entry else 'long'}-{attempt}"
     logs.mkdir(exist_ok=False)
@@ -97,6 +100,7 @@ def worker(root, host, entry=False, attempt=1):
                     "--target-seconds", str(target)]
                 if entry: argv.append("--entry")
                 if (run/"last.ckpt").exists(): argv.append("--resume")
+                if fp32_retry: argv.append("--fp32-retry")
                 call(root, argv, logs/f"train-{label}.log", "0,1,2,3,4,5,6,7")
             if entry: break
             def one(i):
@@ -119,7 +123,7 @@ def worker(root, host, entry=False, attempt=1):
         raise
 
 
-def launch(root, host, entry=False, attempt=1):
+def launch(root, host, entry=False, attempt=1, fp32_retry=False):
     assert json.loads((root/"INITIALIZED.json").read_text())["passed"]
     active = subprocess.check_output(["nvidia-smi", "--query-compute-apps=pid,process_name,used_gpu_memory",
                                       "--format=csv,noheader"], text=True).strip()
@@ -129,10 +133,12 @@ def launch(root, host, entry=False, attempt=1):
     argv = [TRAIN_PYTHON, "-u", "-m", MODULE+".campaign", "--mode", "worker", "--root", str(root),
         "--host", host, "--attempt", str(attempt)]
     if entry: argv.append("--entry")
+    if fp32_retry: argv.append("--fp32-retry")
     with (root/f"worker-{mode}-{host}-{attempt}.log").open("x") as stream:
-        process = subprocess.Popen(argv, cwd=root/"code", env=env(root, ""),
+        process = subprocess.Popen(argv, cwd=Path(__file__).resolve().parents[2], env=env(root, ""),
             stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
-    row = dict(host=host, pid=process.pid, command=argv, created_unix=time.time(), entry=entry)
+    row = dict(host=host, pid=process.pid, command=argv, created_unix=time.time(), entry=entry,
+               runtime_code=str(Path(__file__).resolve().parents[2]), fp32_retry=fp32_retry)
     save(owner, row); print(json.dumps(row), flush=True)
 
 
@@ -142,7 +148,8 @@ if __name__ == "__main__":
     p.add_argument("--mode", choices=("initialize", "worker", "launch"), required=True)
     p.add_argument("--host", choices=tuple(ARMS)); p.add_argument("--code", type=Path)
     p.add_argument("--budget", type=int); p.add_argument("--attempt", type=int, default=1)
-    p.add_argument("--entry", action="store_true"); a = p.parse_args()
+    p.add_argument("--entry", action="store_true"); p.add_argument("--fp32-retry", action="store_true")
+    a = p.parse_args()
     if a.mode == "initialize": initialize(a.root, a.code, a.budget)
-    elif a.mode == "launch": launch(a.root, a.host, a.entry, a.attempt)
-    else: worker(a.root, a.host, a.entry, a.attempt)
+    elif a.mode == "launch": launch(a.root, a.host, a.entry, a.attempt, a.fp32_retry)
+    else: worker(a.root, a.host, a.entry, a.attempt, a.fp32_retry)

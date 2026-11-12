@@ -9,9 +9,9 @@
 - 新预测器随机初始化，共享冻结V-JEPA2.1-G；不继承历史高分头或公开动力学。普通随机命令日志1120train/96validation，厨房分离；四机本地1216记录实际SHA清单完全相同，manifest`ced8adcea7896427db758ae9bade7423e5e4b8434a91a5fb973d135b6b2d4e68`。只用RGB/发出并执行的命令，无proprio/reward/task/动作标签；候选sample-level、无inverse。
 - 每模型8张H200、globalbatch32；SPT窗口8、基线16，不等参数/图像FLOPs。共同预缓存特征成本排除；累计最慢rank每次数据读取/传输/前后向/优化器迭代墙钟，排除初始化/存盘/评测，另外报告进程墙钟。用户把24h建议改为无限期；900秒warmup后恒定LR，无任意终点cosine。检查点包含model/Adam/时钟调度/8rank RNG/数据游标。
 - 每小时八个预固定target案例：厨房1/4/8/10×taskseed19301/19302，实际8个goal/初态物理与RGB检查通过。公开CEM1024候选/H1/15后10轮/top20/context2/execute1/5动作/repeat1；方形224共同输入，uniform latent L1。每卡一个案例并行。报告平均归一化回报、最终mm距离及2mm完成数；不是23数据集完整论文复现，也不把回报当成功率。
-- 四run实际入口均PASS：各保留8个真实更新，必要正梯度/有限loss、末尾动作污染不影响loss、缓存重编码一致、真实两动作CEM。RoboJEPA公开K2与本实现FP32 loss误差0。四机持续worker已启动，归属见`launch-long-{host}-1.json`；从完整8步状态继续，不重放已保存SGD。有效训练源码`code-v4`；旧源码和启动/精度审计错误均保留，未据此改训练损失。实际最新恢复/训练/GPU证据见一次性`HEALTH-{host}.json`，不是持续满载证明。
+- 四run实际入口均PASS：各保留8个真实更新，必要正梯度/有限loss、末尾动作污染不影响loss、缓存重编码一致、真实两动作CEM。RoboJEPA公开K2与本实现FP32 loss误差0。原训练源码`code-v4`和全部旧错误保留。dev13/dev15持续归属`launch-long-{host}-1.json`；dev6的attempt1在约9.57h遇BF16非有限梯度，attempt2从204871步/9.5h的完整model/Adam/scheduler/8rankRNG/cursor恢复，已实际到205120步/34254秒、有限loss/必要正梯度/8卡计算。独立`code-v5`增加同一失败batch/RNG的FP32重算，无丢样本或更改loss/LR/optimizer；此快照尚未触发FP32分支，不能称已复现并消除数值根因。至少1509个未保存更新会重放，确切数量未知；原完整状态另存`recovery-dev6-numerics/saved-204871.ckpt`。dev6-2c SSH35779连续关闭且心跳停在约7.56h，保存到144117步/7.5h；不能声称当前仍跑或已停止，已询问新入口，不自动迁移到其他机器。
 - 用户两次细化方向前，两个额外seed及两个新假设各做8步后封存，合计32个启动更新，分别在`superseded-seed-startup`和`superseded-hypothesis-startup`，不计入当前算法祖先或性能。当前只保留基线/global16的原8步，其余两方法重新随机初始化；不是把旧hypothesis续成历史配方。
-- 逐小时结果`results/{run}/hour-NN.json`；`results/latest.json`只比较四方法均完成的同一训练小时，并保留各自最新小时。尚无本轮正式小时性能结果。新native worker负责训练/评测，无第二套LLM定时监控；报错要先看实际完整检查点和错误记录，再修复续训。
+- 逐小时结果`results/{run}/hour-NN.json`；`results/latest.json`只比较四方法均完成的同一训练小时，并保留各自最新小时。当前共同7h：基线/global16/64D/grid16回报19.33/70.68/74.65/69.45%，最终距离243.5/70.1/56.9/61.5mm，final/any2mm全部0/8；32条实际trace SHA/物理/RGB/NN不变核对通过。当前选择最高64D为2h79.65%，不是未选择确认或成功率。另一个完整配对12h：global16为71.97%、73.9mm，基线为14.36%、271.3mm，均0/8；64D9h71.66%，grid16仅7h，不同小时不配对混比。曲线未显示持续scaling：基线TF/AR损失下降同时回报下降，不能证明唯一原因；SPT早期达到较高回报后波动、严格成功仍0。原始本次审查`reviews/status-20261112/summary.json`。新native worker负责训练/评测，无第二套LLM定时监控；当前资源状态必须查实际进程，不沿用旧32卡满载说法。
 
 ## 已完成300M Reach四例
 
