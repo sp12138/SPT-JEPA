@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-11-09",
+  "updated": "2026-11-13",
   "scope": "Descriptive best-established settings within each listed internal protocol; NOT global optima/SOTA. Original resolved configs are archival records, not automatic launch instructions. Keep source/config/result identities together.",
   "research_paused": true,
   "entries": {
@@ -622,6 +622,62 @@
       "hard_successes_per_method_and_controller": 0,
       "hard_model_cases_per_method_and_controller": 12,
       "automatic_long_training": false
+    },
+    "robocasa_reach_detached_linear_readout": {
+      "status": "bounded_probe_return_and_speed_improvement; strict_success_zero; not_long_run_promoted",
+      "source": "/efs/prescottsun/SPT-JEPA/runs/robocasa_action_probe_20261113",
+      "code": "experiments/robocasa_action_probe/probe.py",
+      "protocol": "experiments/robocasa_action_probe/PROTOCOL.md",
+      "parent": {
+        "run": "robocasa_time_compare_20261112/training/spt64-seed1",
+        "checkpoint": "hour-17",
+        "step": 326088,
+        "active_training_hours": 17,
+        "external_frozen_encoder": "V-JEPA2.1-G; ~1.845B; shared authorized pretrained exception",
+        "independent_training_seeds": 1,
+        "weights_sha256": "bf9dfde5db815864bb2ed8ed768d208fee1b930b83c1bacbdca620ae53c79f3c",
+        "full_nn_sha256": "e3e19a6ff6463566def7230d19522beb4620dce53fde33064ef14431f5af57c4"
+      },
+      "head": {
+        "input": "128D difference of two-view pooled next/current RGB codes",
+        "output": "same-transition actual input a_t translation xyz; no future/optimal action labels",
+        "fit": "sample MSE + ridge L2; analytic; no intercept",
+        "ridge_candidates": [
+          1e-06,
+          0.0001,
+          0.01,
+          1.0
+        ],
+        "selected_ridge": 0.01,
+        "selection": "only disjoint validation kitchens",
+        "stopgrad": true,
+        "train_transitions": 17920,
+        "validation_transitions": 1536,
+        "validation_RMSE": 0.07089233802786048,
+        "sha256": "81c2685c920a49222317268a607a51ca9494cd0dbfd2156e19803cf85879fce4"
+      },
+      "evaluation": {
+        "unique_physical_development_cases": 8,
+        "task": "Reach; target kitchens1/4/8/10 seeds19301/19302",
+        "input": "same224 center-square two RGB views",
+        "real_actions": 5,
+        "action_max_norm": 0.3,
+        "goal_use": "replace observed next RGB with target only at inference",
+        "CEM_calls": 0,
+        "mean_normalized_return": 0.8349541596944783,
+        "final_distance_mm": 41.1178598681615,
+        "final_and_any_2mm_successes": 0,
+        "mean_episode_seconds_excluding_startup": 11.777110957948025,
+        "paired_CEM_return": 0.7356169955777953,
+        "paired_CEM_seconds": 42.157606571912766
+      },
+      "boundaries": [
+        "Extra current-action supervised readout; action loss never reaches consequence learner.",
+        "Frozen external backbone and17h learned pooling; not scratch or end-to-end backbone experiment.",
+        "Eight reused development cases, not independent confirmation; all strict completions zero.",
+        "Reach only; no demonstrated manipulation or public RoboJEPA superiority.",
+        "Analytic head cost additional; no automatic long training."
+      ]
     }
   }
 }

@@ -1,17 +1,25 @@
 # 当前交接
 
-长期目标是改进SPT并超过RoboJEPA，尚未达成。**最新用户限制后续只用dev13/dev15/dev6，继续基线/global16/64维方案，持续至叫停，每累计训练一小时评测。dev6-2c不再连接、恢复或调度，grid16保留历史数据；之前询问新SSH入口已失去必要，不再追问。旧实验、goal与旧LLM监控不恢复。**
+长期目标是改进SPT并超过RoboJEPA，尚未达成。最新用户在长训平台后建议：后果学习与stop-gradient独立动作头分开。有限pilot已完成三种读出、24回合，回报与速度有改善，严格2mm完成仍全0。资源限dev13/dev15/dev6；dev6-2c及grid16只保留历史记录，旧goal和旧LLM监控不恢复。
 
-## 当前Reach同时间比较
+## 当前独立动作读出
 
-- EFS根`/efs/prescottsun/SPT-JEPA/runs/robocasa_time_compare_20261112`；核心入口`experiments/robocasa_time_compare`，协议见该目录`PROTOCOL.md`。以实际`launch-long-{host}-*.json`、各run的`progress.json`和`execution-long-*/ERROR.json`确认运行状态，不凭本文推断GPU占用。
-- 活跃范围为dev13=`robojepa-seed1`、dev15=`spt-seed1`、dev6=`spt64-seed1`，分别为309M参数RGB-only K2基线、global16/256D＋初态空间上下文、原64D analytic temporal-forecast/无场景bridge。`plan.json`的`active_hosts/active_runs`为后续资源边界。dev6-2c的grid16已排除，不迁移到其他机器；旧结果和完整检查点保留。各算法均seed1，不是独立种子重复。历史配方与本轮随机新头/新案例结果分别报告。
-- 新预测器随机初始化，共享冻结V-JEPA2.1-G；不继承历史高分头或公开动力学。普通随机命令日志1120train/96validation，厨房分离；四机本地1216记录实际SHA清单完全相同，manifest`ced8adcea7896427db758ae9bade7423e5e4b8434a91a5fb973d135b6b2d4e68`。只用RGB/发出并执行的命令，无proprio/reward/task/动作标签；候选sample-level、无inverse。
-- 每模型8张H200、globalbatch32；SPT窗口8、基线16，不等参数/图像FLOPs。共同预缓存特征成本排除；累计最慢rank每次数据读取/传输/前后向/优化器迭代墙钟，排除初始化/存盘/评测，另外报告进程墙钟。用户把24h建议改为无限期；900秒warmup后恒定LR，无任意终点cosine。检查点包含model/Adam/时钟调度/8rank RNG/数据游标。
-- 每小时八个预固定target案例：厨房1/4/8/10×taskseed19301/19302，实际8个goal/初态物理与RGB检查通过。公开CEM1024候选/H1/15后10轮/top20/context2/execute1/5动作/repeat1；方形224共同输入，uniform latent L1。每卡一个案例并行。报告平均归一化回报、最终mm距离及2mm完成数；不是23数据集完整论文复现，也不把回报当成功率。
-- 四run实际入口均PASS：各保留8个真实更新，必要正梯度/有限loss、末尾动作污染不影响loss、缓存重编码一致、真实两动作CEM。RoboJEPA公开K2与本实现FP32 loss误差0。原训练源码`code-v4`和全部旧错误保留。dev13/dev15持续归属`launch-long-{host}-1.json`；dev6的attempt1在约9.57h遇BF16非有限梯度，attempt2从204871步/9.5h的完整model/Adam/scheduler/8rankRNG/cursor恢复，已完成11h评测并继续训练。独立`code-v5`的同一失败batch/RNG FP32重算已经实际触发363次，首个206399步、最近235659步均有限，无丢样本或更改loss/LR/optimizer；证明该重算能跨过这些具体异常，不等于已识别唯一数值根因。至少1509个未保存更新重放，确切数量未知；原完整状态另存`recovery-dev6-numerics/saved-204871.ckpt`。dev6-2c SSH35779仍关闭且心跳停在约7.56h，保存到144117步/7.5h；不能声称当前仍跑或已停止，已询问新入口，不自动迁移到其他机器。最新实际快照dev13/dev15/dev6各8卡参与计算，不是四机满载。
-- 用户两次细化方向前，两个额外seed及两个新假设各做8步后封存，合计32个启动更新，分别在`superseded-seed-startup`和`superseded-hypothesis-startup`，不计入当前算法祖先或性能。当前只保留基线/global16的原8步，其余两方法重新随机初始化；不是把旧hypothesis续成历史配方。
-- 逐小时结果仍自动写入`results/{run}/hour-NN.json`。三机汇总用`python scope-report.py --root <root> --output active-latest.json`按需更新`results/active-latest.json`；该独立只读汇总不改冻结训练源码、不重启训练或增加监控进程。旧冻结worker的`results/latest.json`仍按历史四方法汇总，会滞留7h，不作为当前主入口。四方法历史共同7h回报19.33/70.68/74.65/69.45%、全部0/8。新三方法共同11h：基线/global16/64D为15.30/75.05/77.80%，最终距离261.9/51.7/51.7mm，final/any2mm全部0/8；24条实际trace核对通过。当前选择最高仍为64D2h79.65%，不是未选择确认或成功率。曲线未显示持续scaling：基线损失下降同时回报下降，SPT高回报后波动、严格成功仍0，未确定唯一原因。原始审查`reviews/status-20261112/summary.json`。实际进程和GPU需重新查，不沿用旧满载说法。
+- EFS根`/efs/prescottsun/SPT-JEPA/runs/robocasa_action_probe_20261113`，核心入口`experiments/robocasa_action_probe/probe.py`，协议见同目录`PROTOCOL.md`。最终`results/summary.json`、`paired-comparison.json`、`DONE.json`和`HOLD`；24条trace校验和、物理/RGB重放、5动作、模型不变与实际stopgrad backward均通过。有限pilot已结束，不自动长训或搜索。
+- 共享冻结V-JEPA2.1-G（约1.845B）；不是本轮训练大backbone。global16/64D池化表示分别继承同数据17h的321983/326088步父模型；不继承公开动力学或策略。视觉对照只取V-JEPA patch均值，不调用RoboJEPA预测器，不能称为RoboJEPA策略复现。global16在dev15、64D在dev6；视觉对照改由已完成的dev15顺序执行，dev13待机probe在无子进程时先停止，重定位记录保留，无重复实验。
+- 同一普通随机命令日志1120train/96validation，17920/1536真实转移、厨房分离。仅以同一次实际转移的输入a_t前三维为标签，输入两个真实RGB编码之差。表示冻结/detach；动作监督不进入后果学习器，没有a_(t+1)、最优动作、专家路径、reward/state/task。不是整个链条都没有动作标签。
+- 线性头`W(z_next-z_current)`、无截距，sample MSE+L2；固定ridge候选1e-6/1e-4/1e-2/1，仅按验证厨房RMSE选择，三头均选.01。SPT64/global16/视觉验证RMSE .07089/.07098/.07462，零预测.10035；头拟合成本另计，不能与旧无动作监督CEM作同目标训练的公平排名。
+- 相同8个Reach开发案例（厨房1/4/8/10×19301/19302）、224方形两视角、5动作、norm上限.3、2mm规则。推理将真实下一帧替换为目标RGB，直接出动作，不调用CEM。17h global16的CEM→头回报71.99→77.55%，最终88.47→59.57mm；64D为73.56→83.50%、63.59→41.12mm。逐案例回报4/8、6/8改善；final/any全0/8。视觉头回报68.54%、80.96mm，也全0/8。三个模型重复同8个物理案例，不是24独立案例或未选择确认集。
+- 每回合实测均值含编码/仿真/记录、不含启动：global16 50.80→11.61秒（约4.38×），64D42.16→11.78秒（约3.58×）；头本身不能代替整回合计时。新头编码/读出约1.08/1.10秒，另有物理执行成本。中位回合约7.37/7.64秒，一例约42秒；不是所有案例均约7秒。
+- 有限结论：独立动作读出有用，原CEM成绩不足以代表表示可用于控制的上限。仍有远目标分布变化、末端精度与反复修正；未证明任何一个是唯一瓶颈，未解决manipulation或超过RoboJEPA论文。
+- 旧无限期controller已暂停后交接：dev15/dev6在当前完整阶段结束后退役，保留21h/18h完整状态；dev13仍让已开始的21h子阶段保存退出，由`retire-only-dev13.py`有限交接，之后不启动新实验。实际归属在`boundary-*`、`OLD_STAGE_RETIRED-*`及`launch-retire-only-dev13.json`。不要把pilot完成说成dev13已全部停止；需检查该退出记录和真实进程。本轮末次实际检查dev15/dev6无项目进程、GPU计算为空；dev13当前阶段8卡仍在计算，不是三机满载。检查GPU后再报告新占用。
+
+## 原Reach同时间比较
+
+- EFS根`runs/robocasa_time_compare_20261112`，旧冻结训练源码`code-v4`、dev6数值恢复`code-v5`保留。基线为309M RGB-only K2适配，global16/原64D分别约46.6M/45.9M训练参数；均共享上述冻结编码器、随机新预测头、seed1。原目标无任何动作标签或inverse，候选sample-level。不是公开23数据集训练复现。
+- 本地1216日志及缓存清单三机一致，manifest`ced8adcea7896427db758ae9bade7423e5e4b8434a91a5fb973d135b6b2d4e68`。每模型8H200/globalbatch32；SPT窗口8、基线16。累计最慢rank数据/前后向/优化墙钟，排除初始化/存盘/评测；SPT每秒更新约11–12倍、图像量约5–6倍，非等容量/FLOPs比较。900秒warmup后恒定LR。完整状态包括model/Adam/时钟调度/8rank RNG及确定性数据游标。
+- 原CEM1024候选/H1/首15后10轮/top20/context2/execute1/5动作/repeat1/uniform L1。三算法共同17h回报基线/global16/64D为12.30/71.99/73.56%，最终274.56/88.47/63.59mm；严格final/any全部0/8。旧CEM选择最高为64D2h79.65%，非确认成绩；新动作头不是继续训练原CEM目标得到的改善。更多SGD没有展示持续控制scaling。
+- dev6约9.57h的BF16非有限梯度原错误保留，从204871步/9.5h完整状态恢复；同batch/RNG FP32重算不跳样本、不改loss/LR/optimizer，已跨过大量具体异常，不代表唯一数值根因已确定。至少1509个未保存更新重放，确切数量未知；原状态`recovery-dev6-numerics/saved-204871.ckpt`。两个额外seed/两个新假设合计32个启动更新另封存，不计入当前祖先。
+- 逐小时原始结果在`results/{run}/hour-NN.json`，三机按需汇总`results/active-latest.json`；旧四方法`latest.json`滞留7h不作主入口。旧根`plan.json`已标交接和禁止自动恢复；不依据旧ACTIVE/LONG_APPROVED或本文旧协议重启。历史grid16及失联不构成当前性能或占用证据。
 
 ## 已完成300M Reach四例
 
@@ -62,4 +70,4 @@
 
 40000空间轮六模型48回合与16回合重评分CEM均未解决Push。单卡原版2B技术测试完成18步、官方NPZ／视频、exit0，但仅4候选／2轮，不是性能复现。较早路径配置／记录钩子／输出glob错误均保留，不能作为模型负结果。全部原始证据仍在EFS。
 
-当前SPT训练使用自身普通事实转移，不是RoboJEPA完整23数据集混合；同数据／同编码器／同预算训练对照尚未完成。公开全输入参考和RGB候选分轨，不混作公平算法排名。详见[关键结论](experiments/CONCLUSIONS.md)。本轮无最优配置晋级。
+SPT使用自身普通事实转移，不是RoboJEPA完整23数据集混合；同数据／同编码器的本地17h训练对照已完成，参数和FLOPs不等。公开全输入参考和RGB候选分轨，不混作公平算法排名。详见[关键结论](experiments/CONCLUSIONS.md)。本轮无最优配置晋级。

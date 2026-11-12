@@ -1,5 +1,9 @@
 # RoboCasa Reach 同时间比较
 
+本轮已转入独立动作读出短程验证，当前状态见`HANDOFF.md`和
+`experiments/robocasa_action_probe/PROTOCOL.md`。旧controller在当前完整
+子阶段后退役；以下是原比较协议，不是恢复无限期训练的指令。
+
 最新用户授权持续运行至叫停，每累计训练一小时评测。dev13：公开
 RoboJEPA300M 架构的 RGB-only K2 适配；dev15：SPT global16空间初态
 上下文；dev6：原64维temporal-forecast。用户已排除dev6-2c，grid16仅
