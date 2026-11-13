@@ -1,6 +1,6 @@
 # 关键结论
 
-更新：2026-11-13。独立动作读出pilot已完成，SPT的Reach回报与评测速度改善，严格2mm完成仍0；尚无困难manipulation突破。资源限dev13/dev15/dev6，旧无限期controller在完整阶段后交接，pilot有限完成后HOLD。状态见[HANDOFF](../HANDOFF.md)，配方见[best-configs.json](best-configs.json)，原始记录定位见[归档说明](../docs/experiment-archives.md)。不将局部结果称为公开基准SOTA。
+更新：2026-11-13。独立动作读出pilot已完成，SPT的Reach回报与评测速度改善，严格2mm完成仍0；尚无困难manipulation突破。资源限dev13/dev15/dev6，旧无限期controller已在完整阶段后全部退役，pilot有限完成后HOLD，没有新增性能结果。状态见[HANDOFF](../HANDOFF.md)，配方见[best-configs.json](best-configs.json)，原始记录定位见[归档说明](../docs/experiment-archives.md)。不将局部结果称为公开基准SOTA。
 
 ## RoboCasa 的新证据
 
