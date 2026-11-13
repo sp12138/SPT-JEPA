@@ -20,24 +20,66 @@ from experiments.robocasa_refine import encoder_ablation as old
 from experiments.robocasa_time_compare.train import optimizer
 
 
+class ConditionalFeatureDecoder(nn.Module):
+    """A scene-conditioned observation map with exactly zero change at zero."""
+    def __init__(self):
+        super().__init__()
+        self.context = nn.Linear(1664, 192)
+        self.motion = nn.Linear(64, 192, bias=False)
+        self.output = nn.Linear(192, 1664, bias=False)
+
+    def forward(self, delta, anchor):
+        context = self.context(anchor.reshape(anchor.shape[0], 1, 1664, 16).transpose(-1, -2))
+        motion = self.motion(delta)[:, :, None]
+        # Preserve small changes while using mixed precision for the linears.
+        value = self.output(F.silu(context.float()+motion.float())-F.silu(context.float()))
+        return value.transpose(-1, -2).flatten(-2)
+
+
+def additive_predict(self, means, actions):
+    return means+actions
+
+
+def observation_codes(model, dense):
+    b,t,p,_ = dense.shape
+    tokens = model.feature_adapter(dense.flatten(0, 1)).reshape(b,t,p,192)
+    if getattr(model,"joint_views",False):
+        assert b % 2 == 0
+        tokens = tokens.reshape(b//2,2,t,p,192).permute(0,2,1,3,4)
+        tokens = tokens+model.joint_view_embedding[None,None,:,None]
+        return model.pool(tokens.reshape(b//2*t,2*p,192)).reshape(b//2,t,64)
+    return model.pool(tokens.flatten(0,1)).reshape(b,t,64)
+
+
+def decode_feature_change(model, delta, anchor):
+    if getattr(model,"joint_views",False):
+        delta = delta[:,None].expand(-1,2,-1,-1).reshape(anchor.shape[0],delta.shape[1],64)
+    return (model.future_decoder(delta,anchor) if model.conditional_feature_decoder
+        else model.future_decoder(delta)).float()
+
+
 def feature_delta_loss(self, batch, step=0, ramp_steps=0):
     dense = batch["features"].float()
     b, t, patches, width = dense.shape
     assert patches == 196 and width == 1664
-    means = self.pool(self.feature_adapter(dense.flatten(0, 1))).reshape(b, t, 64)
-    actions = self.action_encoder(batch["action"])
+    means = observation_codes(self,dense)
+    raw_action = batch["action"]
+    if self.joint_views: raw_action = raw_action.reshape(b//2,2,t,14)[:,0]
+    actions = self.action_encoder(raw_action)
     # Fixed visual features, with the actual first observation as an anchor.
     # There is no learned skip that can bypass the bottleneck with future RGB.
     target = F.adaptive_avg_pool2d(dense.reshape(b*t, 14, 14, width)
         .permute(0, 3, 1, 2), (4, 4)).flatten(1).reshape(b, t, -1).detach()
     prediction = self.predict(means[:, :-1], actions[:, :-1])
-    decoded = self.future_decoder(prediction-means[:, :1]).float()
+    def decode(value):
+        return decode_feature_change(self,value,target[:, :1])
+    decoded = decode(prediction-means[:, :1])
     delta = target[:, 1:]-target[:, :1]
     tf = (decoded-delta).abs().mean()
     prefix = int(torch.randint(t-2, (1,), device=dense.device))+1
     history = torch.cat((means[:, :prefix], prediction[:, prefix-1:prefix].detach()), 1)
     future = self.predict(history, actions[:, :prefix+1])[:, -1:]
-    ar = (self.future_decoder(future-means[:, :1]).float()-(target[:, prefix+1:prefix+2]-target[:, :1])).abs().mean()
+    ar = (decode(future-means[:, :1])-(target[:, prefix+1:prefix+2]-target[:, :1])).abs().mean()
     loss = tf*.5+ar*.25
     copy = (target[:, 1:]-target[:, :-1]).abs().mean()
     return loss, dict(loss=loss, fixed_feature_TF=tf, fixed_feature_AR=ar,
@@ -46,11 +88,23 @@ def feature_delta_loss(self, batch, step=0, ramp_steps=0):
 
 def build(root, cfg):
     base = old.build(root, cfg)
-    if cfg["variant"] == "feature-delta":
+    if cfg["variant"] in ("feature-delta", "feature-conditional", "action-transport"):
         base.renderer.requires_grad_(False)
+        base.conditional_feature_decoder = cfg["variant"] != "feature-delta"
+        base.joint_views = cfg.get("joint_views",False)
+        if base.joint_views:
+            assert cfg["variant"] == "action-transport"
+            base.joint_view_embedding = nn.Parameter(torch.zeros(2,192))
         with torch.random.fork_rng():
             torch.manual_seed(90120261114)
-            base.future_decoder = nn.Linear(64, 1664*16, bias=False)
+            base.future_decoder = (nn.Linear(64, 1664*16, bias=False) if cfg["variant"] == "feature-delta"
+                else ConditionalFeatureDecoder())
+        if cfg["variant"] == "action-transport":
+            base.predictor.requires_grad_(False)
+            with torch.random.fork_rng():
+                torch.manual_seed(91220261114)
+                base.action_encoder = nn.Linear(14, 64, bias=False)
+            base.predict = types.MethodType(additive_predict, base)
         base.loss = types.MethodType(feature_delta_loss, base)
     else:
         assert cfg["variant"] == "spt-rate"
@@ -106,7 +160,8 @@ def checkpoint(root, run, cfg, model, opt, step, elapsed, manifest, rank, world,
             step=step, samples=step*32, active_seconds=elapsed, world_size=world,
             parameter_associations=common.associations(model, opt), config_sha256=sha(run/"config.json"),
             nn_sha256=common.state_hash(model.state_dict()), data_cursor=dict(next_step=step,
-                manifest=str(manifest), manifest_sha256=sha(manifest), deterministic_counter_batches=True))
+                manifest=str(manifest), manifest_sha256=sha(manifest), deterministic_counter_batches=True),
+            training_source_sha256=sha(Path(__file__)))
         common.save_full_state(run, state)
         if label:
             folder = run/label; folder.mkdir(exist_ok=False)
@@ -150,8 +205,14 @@ def train(root, run, manifest, target, label, max_updates=None):
         del full
     elif rank == 0:
         shared = {k:v for k,v in model.state_dict().items() if k.startswith(("feature_adapter.", "pool.", "predictor.", "action_encoder."))}
+        encoder = {k:v for k,v in shared.items() if k.startswith(("feature_adapter.","pool."))}
+        full_encoder = dict(encoder)
+        if cfg.get("joint_views"): full_encoder["joint_view_embedding"] = model.joint_view_embedding
         save(run/"initial.json", dict(passed=True, fresh_random_model=True, seed=cfg["seed"],
             nn_sha256=common.state_hash(model.state_dict()), shared_encoder_predictor_sha256=common.state_hash(shared),
+            common_encoder_parameter_sha256=common.state_hash(encoder), visual_encoder_sha256=common.state_hash(full_encoder),
+            joint_views=cfg.get("joint_views",False),
+            observation_decoder_sha256=common.state_hash(model.future_decoder.state_dict()) if hasattr(model,"future_decoder") else None,
             parameters=sum(p.numel() for p in model.parameters()), trainable=sum(p.numel() for p in model.parameters() if p.requires_grad)))
     wrapped = DistributedDataParallel(common.LossModel(model), device_ids=[local],
         broadcast_buffers=False, find_unused_parameters=True)
@@ -168,7 +229,9 @@ def train(root, run, manifest, target, label, max_updates=None):
     segment = 0; saved_at = elapsed; started = time.time()
     while elapsed < target:
         # A graceful stop still publishes a full state below.
-        if (root/"STOP").exists(): break
+        stopping = torch.tensor(int((root/"STOP").exists() or (run/"STOP").exists()),device="cuda")
+        dist.all_reduce(stopping,op=dist.ReduceOp.MAX)
+        if bool(stopping): break
         began = time.perf_counter(); batch = prepare(next(iterator)); iteration_rng = common.rng_state()
         opt.zero_grad(set_to_none=True); rates(opt, elapsed)
         with torch.autocast("cuda", dtype=torch.bfloat16): loss, metrics = wrapped(batch, step+1)
@@ -185,9 +248,11 @@ def train(root, run, manifest, target, label, max_updates=None):
             if rank == 0: save(run/f"numeric-retry-{step+1:08d}.json", dict(passed=bool(finite), same_batch_RNG_cursor=True, precision="FP32"))
             assert bool(finite), ("non-finite FP32 retry", step+1)
         norms = {}
-        if segment < 8 or step % 100 == 0:
-            prefixes = ["feature_adapter.", "pool.", "predictor.", "action_encoder.",
-                "future_decoder." if cfg["variant"] == "feature-delta" else "renderer."]
+        if segment < 8 or (step+1) % 100 == 0:
+            prefixes = ["feature_adapter.", "pool.", "action_encoder."]
+            if cfg.get("joint_views"): prefixes.append("joint_view_embedding")
+            if cfg["variant"] != "action-transport": prefixes.append("predictor.")
+            prefixes.append("future_decoder." if hasattr(model,"future_decoder") else "renderer.")
             for prefix in prefixes:
                 norms[prefix] = sum(float(p.grad.detach().float().norm())**2
                     for name, p in model.named_parameters() if name.startswith(prefix) and p.grad is not None)**.5
@@ -207,9 +272,11 @@ def train(root, run, manifest, target, label, max_updates=None):
             checkpoint(root, run, cfg, model, opt, step, elapsed, manifest, rank, world, label if final else None)
             saved_at = elapsed
         if final: break
-    if not (run/label/"ready.json").exists(): checkpoint(root, run, cfg, model, opt, step, elapsed, manifest, rank, world, label)
+    complete = elapsed >= target or (max_updates is not None and segment >= max_updates)
+    if not (run/label/"ready.json").exists():
+        checkpoint(root, run, cfg, model, opt, step, elapsed, manifest, rank, world, label if complete else None)
     if rank == 0:
-        save(run/("TRAINED-"+label+".json"), dict(passed=True, step=step, active_seconds=elapsed,
+        save(run/("TRAINED-"+label+".json"), dict(passed=complete, interrupted=not complete, step=step, active_seconds=elapsed,
             segment_updates=segment, model_optimizer_scheduler_rank_RNG_cursor_saved=True, world_size=world))
     dist.destroy_process_group()
 

@@ -30,7 +30,7 @@ class Readout(nn.Module):
     def __init__(self, root, arm):
         super().__init__(); self.arm = arm
         common.install_runtime(root/"code")
-        self.parent = None
+        self.parent = None; self.joint_views = False
         if arm != "vjepa-linear":
             from vforge.models.as_jepa.pooling import QueryPool
             plan = json.loads((root/"plan.json").read_text())
@@ -43,6 +43,9 @@ class Readout(nn.Module):
             self.feature_adapter = nn.Sequential(nn.Linear(1664, 192), nn.LayerNorm(192))
             self.pool = QueryPool(192, 3, cfg["state_slots"], 16)
             weights = torch.load(path, map_location="cpu", weights_only=True)
+            self.joint_views = cfg.get("joint_views",False)
+            if self.joint_views:
+                self.joint_view_embedding = nn.Parameter(weights["joint_view_embedding"].clone(),requires_grad=False)
             for prefix, module in (("feature_adapter.", self.feature_adapter), ("pool.", self.pool)):
                 module.load_state_dict({k[len(prefix):]:v for k,v in weights.items() if k.startswith(prefix)}, strict=True)
             self.parent = dict(run=str(run), label=label, step=ready["step"],
@@ -54,7 +57,12 @@ class Readout(nn.Module):
         if self.arm == "vjepa-linear":
             return features.float().mean(-2)
         with torch.autocast("cuda", dtype=torch.bfloat16):
-            result = self.pool(self.feature_adapter(features.float()))
+            tokens = self.feature_adapter(features.float())
+            if self.joint_views:
+                assert tokens.shape[0] % 2 == 0
+                tokens = tokens.reshape(-1,2,tokens.shape[1],192)+self.joint_view_embedding[None,:,None]
+                tokens = tokens.flatten(1,2)
+            result = self.pool(tokens)
         return result.flatten(-2).float()
 
 

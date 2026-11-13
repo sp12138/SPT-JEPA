@@ -4,11 +4,14 @@
 
 ## 当前持续实验
 
-- 新根`runs/robocasa_stable_scaling_20261114`，核心入口`experiments/robocasa_stable_scaling`，[协议](experiments/robocasa_stable_scaling/PROTOCOL.md)。dev13跑固定未来视觉特征变化目标，dev15跑原SPT temporal-forecast；各有固定／增长语料两组4卡。dev6八卡持续采集并编码TRAIN厨房的无目标、多尺度随机命令日志。实际进程、GPU及检查记录只看EFS的`training/*/{OWNER,controller,progress}.json`、`stream/PROGRESS-*.json`及`SESSION_CHECKS.json`，不从本文推断持续利用率。
+- 新根`runs/robocasa_stable_scaling_20261114`，核心入口`experiments/robocasa_stable_scaling`，[协议](experiments/robocasa_stable_scaling/PROTOCOL.md)。现四组各4卡：dev13的0–3卡`feature-conditional-growing`、4–7卡`action-transport-growing`；dev15的0–3卡` spt-rate-growing`（原模型完整2h状态续训）、4–7卡`joint-action-transport-growing`。dev6八卡持续采集并编码TRAIN厨房的无目标、多尺度随机命令日志。实际进程、GPU及检查记录只看EFS的`training/*/{OWNER,controller,progress}.json`、`stream/PROGRESS-*.json`及`SESSION_CHECKS.json`，不从本文推断持续利用率。
 - 四组均新随机初始化、seed1、global batch32、window8，E/pool/F/action-encoder初始SHA配对一致；各8步启动和8步完整恢复已实际通过。首版共1238轨迹（原1120 TRAIN加118新事实日志），之后仅增长组接受新版本；96验证轨迹不进body训练。动作按物理范围归一化，共同900秒warmup后逆平方根衰减。这些共同改变及不同参数/吞吐须披露，四配方不是四独立种子。
-- 共享冻结V-JEPA2.1-G；新的后果头从零，不是整个视觉骨干从零。body无动作标签，独立线性头始终同17920/1536当前a_t事实标签，表示冻结/detach。每累计训练一小时保存完整状态并评真实闭环；同会话每墙钟小时检查、必要时另冻结版本修复，禁止修改已运行源码。当前冻结入口`code-train-v1`。采集保留`code-stream-v1`八条流水线，另`code-stream-v2`扩容56条（最多7168新轨迹、索引1000000起、stride56），共64条/八卡；扩容归属`stream/OWNER-throughput.json`，不会覆盖原记录。
+- 共享冻结V-JEPA2.1-G；新的后果头从零，不是整个视觉骨干从零。body无动作标签，独立线性头始终同17920/1536当前a_t事实标签，表示冻结/detach。每累计训练一小时保存完整状态并评真实闭环；同会话每墙钟小时检查、必要时另冻结版本修复，禁止修改已运行源码。首小时`code-train-v1`、第二小时v2；现v6与已测试v5的训练/读出代码SHA完全一致，另优化不可变本地缓存复用。每卡4个评测worker。v5同步各rank的停止判断，四卡实际11步完整停止后精确恢复8步到19，未发布不完整小时，见`SMOKE-distributed-stop.json`。v2不在训练中触发STOP，均在完整2h后只结束父controller、保留控制子进程完成64例；边界记录`RETIRED-2H-BOUNDARY.json`。采集保留v1八条流水线，另v2扩容56条（最多7168新轨迹、索引1000000起、stride56），共64条/八卡；归属`stream/OWNER-throughput.json`，不覆盖原记录。
 - 主监测集预定64案例：厨房1/4/8/10×39301至39316；反复查看后属于开发集。另32确认案例预定厨房2/3/5/6×49301至49308，尚未打开控制评测。回报、距离和原2mm final/any分别报告；不把单点、loss下降或最佳点选择叫稳定scaling。结果入口`results/<run>/hour-NNN.json`；完成有限诊断不代表当前持续目标完成。
 - 已完成诊断：非线性势函数差分动作头在全部8个旧时间点验证误差改善，却没有闭环收益，40个已见案例8h回报84.76%、18h76.46%，严格成功均0/40，不采用。1h曾因FP32/FP64核对精度守卫失败，另冻结`code-readout-v2`只修匹配算术后重试，原错误保留。旧F的事实验证实际动作MSE/copy在1/8/18h为.334/.205/.263，零动作约.998/.979/.971；支持预测本身也平台，非因果反事实或控制结果。原始在新根`readout-pilot`及`predictive-diagnostic`。
+- 新64例对照：旧8h/18h线性头80.19/79.12%、48.02/52.88mm。新SPT固定1→2h回报78.50→79.21%、末端48.84→46.28mm；增长组79.04→80.08%、49.49→43.83mm。线性特征目标固定70.29→61.46%、增长68.33→65.87%，均退化。全部0/64。2h增长组2977轨迹（原1120加1857新日志）；收益小、单训练seed，未证稳定scaling。三弱臂完整收尾，不自动恢复；SPT增长组保留作参照。结果只报同案例，不与旧32例混比。
+- 具体瓶颈：当前线性特征解码范围即使使用最优oracle潜码，最小L2仍为copy的1.135–1.146倍；不向训练传oracle码/基。源码在`diagnostics.py`，原始`decoder-span-diagnostic`。F隐式Newton头16例67.24%对同模型线性81.63%、仅2/16改善，不采用；完整原型只归档`code-implicit-v1`及`implicit-readout-pilot`。
+- 新三配方现已在v6启动，均新随机状态，实际入口8步和完整恢复8步通过；尚无正式控制成绩。参照续训3h语料为6444轨迹，新三者仍从同首版1238开始、按同版本序列增长。v3/v4的12个启动更新及v5停止恢复的19个更新均丢弃，不继承测试权重；joint训练/读出及旧loss回归逐位一致。停止测试首次仅因dev6缺少118新日志本地缓存而在任何完整更新前退出，补齐后另尝试通过；原错误保留。算法、假设及参数差异见持续协议。
 
 ## 最新已完成scaling验证
 
