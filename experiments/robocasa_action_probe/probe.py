@@ -189,11 +189,17 @@ class Policy:
             all(p.grad is None and not p.requires_grad for p in self.encoder.parameters()))
 
 
-def evaluate(root, arm, index):
+def evaluate(root, arm, index, policy=None):
     from experiments.robocasa_compare import evaluate as base
     base.install_public(root); torch.set_num_threads(2); torch.set_float32_matmul_precision("high")
-    start = time.perf_counter(); policy = Policy(root, arm)
-    startup_seconds = time.perf_counter()-start
+    start = time.perf_counter()
+    if policy is None:
+        policy = Policy(root, arm)
+        startup_seconds = time.perf_counter()-start
+    else:
+        assert policy.readout.arm == arm
+        startup_seconds = 0.
+    previous_seconds, previous_calls = policy.seconds, policy.calls
     case = json.loads((root/"plan.json").read_text())["cases"][index]
     name = base.case_name(**case); path = root/"cases"/(name+".npz")
     proof = json.loads(path.with_suffix(".json").read_text()); assert proof["passed"] and sha(path) == proof["sha256"]
@@ -224,12 +230,15 @@ def evaluate(root, arm, index):
         distances = [x["reach_distance_to_goal"] for x in infos]
         row = dict(passed=True, arm=arm, **case, case_sha256=proof["sha256"], trace_sha256=sha(trace),
             score=float(np.mean(rewards)), metric="mean_normalized_progress", macro_steps=len(commands),
+            environment_terminated=bool(done),
             final_goal_distance_m=distances[-1], final_task_complete=distances[-1]<.002,
             any_task_complete=any(x<.002 for x in distances), rewards=rewards, infos=infos,
             physical_replay_pass=True, physical_replay_errors=physical, initial_rgb_mse=initial_mse,
             goal_rgb_mse=goal_mse, goal_validation=goal_proof, model_unchanged=True,
-            elapsed_seconds=time.perf_counter()-began, encoder_and_readout_seconds=policy.seconds,
-            encoder_calls=policy.calls, physics_seconds=physics_seconds, startup_seconds=startup_seconds,
+            elapsed_seconds=time.perf_counter()-began,
+            encoder_and_readout_seconds=policy.seconds-previous_seconds,
+            encoder_calls=policy.calls-previous_calls,
+            physics_seconds=physics_seconds, startup_seconds=startup_seconds,
             CEM_calls=0, learned_inverse_current_command=True, optimal_action_assumed=False,
             inference_goal_distribution_shift=True, no_proprio_reward_or_state_to_policy=True)
         save(output/"summary.json", row); print(json.dumps(row), flush=True)

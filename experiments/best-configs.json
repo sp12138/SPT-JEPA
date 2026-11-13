@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-11-13",
+  "updated": "2026-11-14",
   "scope": "Descriptive best-established settings within each listed internal protocol; NOT global optima/SOTA. Original resolved configs are archival records, not automatic launch instructions. Keep source/config/result identities together.",
   "research_paused": true,
   "entries": {
@@ -624,19 +624,19 @@
       "automatic_long_training": false
     },
     "robocasa_reach_detached_linear_readout": {
-      "status": "bounded_probe_return_and_speed_improvement; strict_success_zero; not_long_run_promoted",
-      "source": "/efs/prescottsun/SPT-JEPA/runs/robocasa_action_probe_20261113",
+      "status": "selected_8h_readout_after_full_scaling_curve; sparse_strict_success; not_SOTA_or_long_run_promoted",
+      "source": "/efs/prescottsun/SPT-JEPA/runs/robocasa_action_scaling_20261113/cells/spt64-linear-hour-08",
       "code": "experiments/robocasa_action_probe/probe.py",
       "protocol": "experiments/robocasa_action_probe/PROTOCOL.md",
       "parent": {
         "run": "robocasa_time_compare_20261112/training/spt64-seed1",
-        "checkpoint": "hour-17",
-        "step": 326088,
-        "active_training_hours": 17,
+        "checkpoint": "hour-08",
+        "step": 172830,
+        "active_training_hours": 8.000044385843536,
         "external_frozen_encoder": "V-JEPA2.1-G; ~1.845B; shared authorized pretrained exception",
         "independent_training_seeds": 1,
-        "weights_sha256": "bf9dfde5db815864bb2ed8ed768d208fee1b930b83c1bacbdca620ae53c79f3c",
-        "full_nn_sha256": "e3e19a6ff6463566def7230d19522beb4620dce53fde33064ef14431f5af57c4"
+        "weights_sha256": "ec5433b8dc335ff3a9541cdf17abd61f3e24cc7341646d27c752240a29df2a21",
+        "full_nn_sha256": "12fa6f0434756b2f2cf5c28ce6d72856d3bf5d894f0da955f62a68784a438cb0"
       },
       "head": {
         "input": "128D difference of two-view pooled next/current RGB codes",
@@ -653,31 +653,51 @@
         "stopgrad": true,
         "train_transitions": 17920,
         "validation_transitions": 1536,
-        "validation_RMSE": 0.07089233802786048,
-        "sha256": "81c2685c920a49222317268a607a51ca9494cd0dbfd2156e19803cf85879fce4"
+        "validation_RMSE": 0.07098457376288854,
+        "sha256": "31f356b212a5fbc5b1869c26328af1620102b58fa54501e0b7c8af0bc07a1f40"
       },
       "evaluation": {
-        "unique_physical_development_cases": 8,
-        "task": "Reach; target kitchens1/4/8/10 seeds19301/19302",
+        "selection": "chosen after inspecting full8-checkpoint curve; both cohorts now development data",
+        "unique_physical_cases": 40,
+        "old8_development": {
+          "mean_return": 0.8569789173943538,
+          "final_distance_mm": 33.8650767236537,
+          "final_successes": 0,
+          "any_successes": 0,
+          "mean_episode_seconds": 11.667038640269311
+        },
+        "initially_fresh32_cases": {
+          "mean_return": 0.864983617748839,
+          "final_distance_mm": 29.365669371889915,
+          "final_successes": 1,
+          "any_successes": 1,
+          "mean_episode_seconds": 7.178244885406457
+        },
+        "task": "Reach; target kitchens1/4/8/10; seeds19301/19302 plus29301..29308",
         "input": "same224 center-square two RGB views",
-        "real_actions": 5,
+        "real_actions_max": 5,
         "action_max_norm": 0.3,
-        "goal_use": "replace observed next RGB with target only at inference",
         "CEM_calls": 0,
-        "mean_normalized_return": 0.8349541596944783,
-        "final_distance_mm": 41.1178598681615,
-        "final_and_any_2mm_successes": 0,
-        "mean_episode_seconds_excluding_startup": 11.777110957948025,
-        "paired_CEM_return": 0.7356169955777953,
-        "paired_CEM_seconds": 42.157606571912766
+        "goal_use": "observed next RGB replaced with target only at inference",
+        "source_full_curve": "runs/robocasa_action_scaling_20261113/results/summary.json"
       },
       "boundaries": [
         "Extra current-action supervised readout; action loss never reaches consequence learner.",
-        "Frozen external backbone and17h learned pooling; not scratch or end-to-end backbone experiment.",
-        "Eight reused development cases, not independent confirmation; all strict completions zero.",
-        "Reach only; no demonstrated manipulation or public RoboJEPA superiority.",
-        "Analytic head cost additional; no automatic long training."
-      ]
+        "Frozen external V-JEPA and learned pooling; not scratch or end-to-end backbone experiment.",
+        "Eight development plus32 initially fresh cases reused across all checkpoints; selected8h is not independent confirmation.",
+        "Only one strict completion; no stable successful control or manipulation/public RoboJEPA superiority.",
+        "64D improves mainly1..8h, then plateaus/regresses; do not infer continuing scaling.",
+        "No new consequence SGD; analytic head cost additional; no automatic long training."
+      ],
+      "scaling_protocol": "experiments/robocasa_action_probe/SCALING.md",
+      "previous_17h_pilot_reference": {
+        "source": "/efs/prescottsun/SPT-JEPA/runs/robocasa_action_probe_20261113",
+        "mean_normalized_return": 0.8349541596944783,
+        "final_distance_mm": 41.1178598681615,
+        "physical_cases": 8,
+        "strict_successes": 0,
+        "head_preserved": true
+      }
     }
   }
 }

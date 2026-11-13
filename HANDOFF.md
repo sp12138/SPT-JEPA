@@ -1,8 +1,31 @@
 # 当前交接
 
-长期目标是改进SPT并超过RoboJEPA，尚未达成。最新用户在长训平台后建议：后果学习与stop-gradient独立动作头分开。有限pilot已完成三种读出、24回合，回报与速度有改善，严格2mm完成仍全0。资源限dev13/dev15/dev6；dev6-2c及grid16只保留历史记录，旧goal和旧LLM监控不恢复。
+长期目标是改进SPT并超过RoboJEPA，尚未达成。最新用户明确要求验证独立动作头控制下的训练scaling；新实验复用既有早晚权重，三机并行测完整曲线。旧pilot、长训、goal和旧定时监控均不恢复。资源只限dev13/dev15/dev6。
 
-## 当前独立动作读出
+## 最新已完成scaling验证
+
+- EFS根`runs/robocasa_action_scaling_20261113`；入口`experiments/robocasa_action_probe/scaling.py`，预定协议见同目录`SCALING.md`。17个单元全部完成：680条模型—案例记录，656次新控制、24条旧开发回合复用；40个独立物理案例，其中32个首次使用。`results/summary.json`、`analysis.json`、`scaling.png/pdf/csv`及`DONE.json`/`HOLD`为入口。原始记录留EFS，图表与汇总本地镜像在仓库旁`SPT-JEPA-local-archives/robocasa_action_scaling_20261113`。
+- 两种SPT各入口8更新、1/2/4/8/12/17/18h，另有视觉均值参考。相同1120/96普通随机日志、ridge协议、当前a_t标签，表示冻结/detach；新增后果学习SGD为0。共享冻结外部V-JEPA，不是整个backbone从零或解冻实验。
+- 旧8开发案例单列；32个新案例为厨房1/4/8/10×29301至29308，均在读分前固定，学习厨房分离，全部时间点评全部案例。曲线在这32个案例上为：
+
+| 累计后果训练 | 64D动作头回报 | global16动作头回报 |
+| --- | ---: | ---: |
+| 入口8更新 | 19.05% | 43.62% |
+| 1h | 81.02% | 81.89% |
+| 2h | 85.22% | 81.69% |
+| 4h | 85.38% | 84.40% |
+| 8h | 86.50% | 83.33% |
+| 12h | 86.46% | 82.58% |
+| 17h | 85.51% | 81.49% |
+| 18h | 84.97% | 82.64% |
+
+- 64D距离1h47.61→8h29.37→18h34.20mm。预定18h对1h回报+3.94个百分点，四厨房区组区间[+.27,+8.08]，19/32案例改善；global16仅+.75点，区间[-2.79,+4.28]，增益不明确。64D有前段回报/距离scaling，8h后平台/回落；不能称持续scaling或通用power law。仅一个训练seed，区间不包括训练seed不确定性。
+- 只有64D8h出现final/any1/32，厨房1/29304最终1.331mm，物理/初始及目标RGB重放误差0、模型不变；其余所有点严格final/any均0/32。视觉参考69.98%、76.50mm、0/32。尚无稳定精确控制或困难manipulation突破；不能拿不同案例/输入的公开RoboJEPA数字直接排名。
+- 旧8案同一64D权重的CEM1→8h为78.85→73.37%，独立头却81.37→85.70%；原控制读数不能直接归因表示没学好。动作头有额外当前动作监督，不能把两控制器当同学习目标排名。动作头仅读取472528个学习参数（全45916946中的约1.03%），没有读动力学预测器/renderer，所以这不是完整F能力的scaling测量。
+- 原始`READOUT_DEPENDENCY.json`和`GAUGE_DIAGNOSTIC.json`提供机制诊断：在共享槽内O(16)旋转后，重新拟合同样ridge的验证动作预测最大差约1.92e-15；1632个事实验证轨迹—目标排序中1553个出现严格L1顺序翻转。说明uniform L1缺少该坐标不变性，而校准动作读出保有它；不是完整NN重参数化/控制实验或唯一失败原因证明。
+- 三个新worker均已退出，本轮EXIT实际检查三机GPU计算为空、24卡0MiB。旧controller/goal/定时监控不恢复，不自动追加长训。64D9.5h后的同batch/RNG FP32异常重算路径仍需披露；8h点在此之前。8h是完整曲线中的选择后较优点，32新案例今后应视作已见开发案例，不能再次冒称独立确认。
+
+## 已完成独立动作读出pilot
 
 - EFS根`/efs/prescottsun/SPT-JEPA/runs/robocasa_action_probe_20261113`，核心入口`experiments/robocasa_action_probe/probe.py`，协议见同目录`PROTOCOL.md`。最终`results/summary.json`、`paired-comparison.json`、`DONE.json`和`HOLD`；24条trace校验和、物理/RGB重放、5动作、模型不变与实际stopgrad backward均通过。有限pilot已结束，不自动长训或搜索。
 - 共享冻结V-JEPA2.1-G（约1.845B）；不是本轮训练大backbone。global16/64D池化表示分别继承同数据17h的321983/326088步父模型；不继承公开动力学或策略。视觉对照只取V-JEPA patch均值，不调用RoboJEPA预测器，不能称为RoboJEPA策略复现。global16在dev15、64D在dev6；视觉对照改由已完成的dev15顺序执行，dev13待机probe在无子进程时先停止，重定位记录保留，无重复实验。

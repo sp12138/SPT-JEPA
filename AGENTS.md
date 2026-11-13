@@ -12,7 +12,7 @@
 
 ## 当前边界
 
-- 最新用户在原长训平台后建议独立动作读出：表示只学后果，stop-gradient后单独训练action head。先进行有限冻结表示pilot，比较视觉读出、global16和64维；只用同一转移实际输入a_t为标签，不用未来/最优动作或专家策略。旧长训在当前完整子阶段后交接，保留完整状态；pilot完成HOLD，不自动扩展。实际放置与运行状态见HANDOFF和EFS，不从文档推断卡占用。dev6-2c及grid16不再连接、恢复或调度，历史数据保留。旧goal和旧定时监控不恢复。
+- 最新用户明确授权验证独立动作头控制下的训练scaling：以已有global16/64维早晚检查点、相同数据和读出协议测完整曲线，并在预先固定的新案例验证趋势。旧pilot及长训保持封存；新授权不自动恢复旧controller/goal/定时监控。只监督同一转移当前输入a_t，表示冻结/detach，无未来/最优动作或专家策略。保留平坦/负结果，不把单点读出改善或验证loss下降称为控制scaling。实际范围见HANDOFF和[SCALING.md](experiments/robocasa_action_probe/SCALING.md)，不凭文档推断卡占用。dev6-2c及grid16不再连接、恢复或调度，历史数据保留。
 - 状态入口为 `HANDOFF.md`，关键结论为 `experiments/CONCLUSIONS.md`。
 - 计算资源限 dev13、dev15、dev6；不使用 dev6-2c、dev2 或其他机器。
 - 检查实际进程和 GPU 后再报告利用率；历史快照不代表当前或持续满载。
