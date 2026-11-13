@@ -134,6 +134,33 @@ def feature_codec_loss(self, batch, step=0, ramp_steps=0):
         rate_share=self.beta*rate/distortion.detach().clamp_min(1e-8))
 
 
+def pixel_prediction_distortion(self, batch, render, anchor, condition):
+    """Compare conditional change density with conditional future-image mean.
+
+    Both use the original code/rate and natural future RGB, without action
+    targets. The residual density is an invertible target translation given
+    the observed anchor. The mean objective deliberately abandons density
+    modeling; a constant renderer input cannot leak observed future pixels.
+    """
+    from vforge.models.as_jepa.pixels import pack
+    from vforge.models.as_jepa.flow import flow_loss, draw_timesteps
+    w = render.shape[1]
+    y = pack(render[:, 1:].flatten(0, 1))
+    anchors = pack(anchor).repeat_interleave(w-1, dim=0)
+    if self.pixel_objective == "residual-flow":
+        return flow_loss(self.renderer, y-anchors, condition.flatten(0, 1), anchors,
+                         self.training_shift)
+    assert self.pixel_objective == "future-mean"
+    # Consume the baseline draws to preserve subsequent RNG coupling. Neither
+    # random value, nor a partially observed future frame, enters the renderer.
+    draw_timesteps(y.shape[0], y.device, self.training_shift)
+    torch.randn_like(y)
+    t = torch.ones(y.shape[0], 1, device=y.device)
+    with self.renderer.anchored(anchors):
+        predicted = self.renderer(torch.zeros_like(y), t, condition=condition.flatten(0, 1))
+    return (predicted-y).square().mean()
+
+
 def build(root, cfg):
     base = old.build(root, cfg)
     if cfg["variant"] in ("feature-delta", "feature-conditional", "action-transport", "codec-transport", "codec-conditional"):
@@ -156,7 +183,10 @@ def build(root, cfg):
             base.predict = types.MethodType(additive_predict, base)
         base.loss = types.MethodType(feature_codec_loss if cfg["variant"].startswith("codec-") else feature_delta_loss, base)
     else:
-        assert cfg["variant"] == "spt-rate"
+        assert cfg["variant"] in ("spt-rate", "spt-residual-flow", "spt-future-mean")
+        if cfg["variant"] != "spt-rate":
+            base.pixel_objective = cfg["variant"].removeprefix("spt-")
+            base.distortion = types.MethodType(pixel_prediction_distortion, base)
     return base
 
 
