@@ -1,6 +1,14 @@
 # 当前交接
 
-长期目标是改进SPT并超过RoboJEPA，尚未达成。最新用户明确要求验证独立动作头控制下的训练scaling；新实验复用既有早晚权重，三机并行测完整曲线。旧pilot、长训、goal和旧定时监控均不恢复。资源只限dev13/dev15/dev6。
+长期目标是改进SPT并超过RoboJEPA，尚未达成。最新用户要求继续改进独立动作头控制、同会话每小时检查，直到验证可靠稳定的scaling，不在有限pilot后自行HOLD。资源只限dev13/dev15/dev6；旧pilot、长训、goal和旧定时监控不恢复。
+
+## 当前持续实验
+
+- 新根`runs/robocasa_stable_scaling_20261114`，核心入口`experiments/robocasa_stable_scaling`，[协议](experiments/robocasa_stable_scaling/PROTOCOL.md)。dev13跑固定未来视觉特征变化目标，dev15跑原SPT temporal-forecast；各有固定／增长语料两组4卡。dev6八卡持续采集并编码TRAIN厨房的无目标、多尺度随机命令日志。实际进程、GPU及检查记录只看EFS的`training/*/{OWNER,controller,progress}.json`、`stream/PROGRESS-*.json`及`SESSION_CHECKS.json`，不从本文推断持续利用率。
+- 四组均新随机初始化、seed1、global batch32、window8，E/pool/F/action-encoder初始SHA配对一致；各8步启动和8步完整恢复已实际通过。首版共1238轨迹（原1120 TRAIN加118新事实日志），之后仅增长组接受新版本；96验证轨迹不进body训练。动作按物理范围归一化，共同900秒warmup后逆平方根衰减。这些共同改变及不同参数/吞吐须披露，四配方不是四独立种子。
+- 共享冻结V-JEPA2.1-G；新的后果头从零，不是整个视觉骨干从零。body无动作标签，独立线性头始终同17920/1536当前a_t事实标签，表示冻结/detach。每累计训练一小时保存完整状态并评真实闭环；同会话每墙钟小时检查、必要时另冻结版本修复，禁止修改已运行源码。当前冻结入口`code-train-v1`。采集保留`code-stream-v1`八条流水线，另`code-stream-v2`扩容56条（最多7168新轨迹、索引1000000起、stride56），共64条/八卡；扩容归属`stream/OWNER-throughput.json`，不会覆盖原记录。
+- 主监测集预定64案例：厨房1/4/8/10×39301至39316；反复查看后属于开发集。另32确认案例预定厨房2/3/5/6×49301至49308，尚未打开控制评测。回报、距离和原2mm final/any分别报告；不把单点、loss下降或最佳点选择叫稳定scaling。结果入口`results/<run>/hour-NNN.json`；完成有限诊断不代表当前持续目标完成。
+- 已完成诊断：非线性势函数差分动作头在全部8个旧时间点验证误差改善，却没有闭环收益，40个已见案例8h回报84.76%、18h76.46%，严格成功均0/40，不采用。1h曾因FP32/FP64核对精度守卫失败，另冻结`code-readout-v2`只修匹配算术后重试，原错误保留。旧F的事实验证实际动作MSE/copy在1/8/18h为.334/.205/.263，零动作约.998/.979/.971；支持预测本身也平台，非因果反事实或控制结果。原始在新根`readout-pilot`及`predictive-diagnostic`。
 
 ## 最新已完成scaling验证
 
