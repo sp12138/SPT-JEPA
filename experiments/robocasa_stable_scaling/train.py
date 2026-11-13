@@ -40,6 +40,31 @@ def additive_predict(self, means, actions):
     return means.float()+actions.float()
 
 
+class ControlAffineTransition(nn.Module):
+    """Learn autonomous drift and a state-dependent action response."""
+    def __init__(self):
+        super().__init__()
+        self.field = nn.Sequential(nn.Linear(64, 192), nn.GELU(), nn.Linear(192, 64*65))
+        nn.init.zeros_(self.field[-1].weight)
+        nn.init.zeros_(self.field[-1].bias)
+
+    def forward(self, means, actions):
+        with torch.autocast("cuda", enabled=False):
+            coefficients = self.field(means.float()).reshape(*means.shape[:-1], 64, 65)
+            drift = coefficients[..., 0]
+            effect = (coefficients[..., 1:] @ actions.float().unsqueeze(-1)).squeeze(-1)
+            return means.float()+drift+effect
+
+
+def control_affine_predict(self, means, actions):
+    return self.predictor(means, actions)
+
+
+def fp32_cached_encode(self, info):
+    with torch.autocast("cuda", enabled=False):
+        return self.original_cached_encode(info)
+
+
 def observation_codes(model, dense):
     if getattr(model,"fp32_observation",False):
         with torch.autocast("cuda",enabled=False):
@@ -183,10 +208,26 @@ def build(root, cfg):
             base.predict = types.MethodType(additive_predict, base)
         base.loss = types.MethodType(feature_codec_loss if cfg["variant"].startswith("codec-") else feature_delta_loss, base)
     else:
-        assert cfg["variant"] in ("spt-rate", "spt-residual-flow", "spt-future-mean")
-        if cfg["variant"] != "spt-rate":
+        assert cfg["variant"] in ("spt-rate", "spt-residual-flow", "spt-future-mean",
+                                  "spt-control-affine", "spt-deep-observation")
+        if cfg["variant"] in ("spt-residual-flow", "spt-future-mean"):
             base.pixel_objective = cfg["variant"].removeprefix("spt-")
             base.distortion = types.MethodType(pixel_prediction_distortion, base)
+        if cfg["variant"] == "spt-control-affine":
+            with torch.random.fork_rng():
+                torch.manual_seed(92320261114+cfg["seed"])
+                base.action_encoder = nn.Linear(14, 64, bias=False)
+                base.predictor = ControlAffineTransition()
+            base.predict = types.MethodType(control_affine_predict, base)
+        if cfg["variant"] == "spt-deep-observation":
+            from experiments.robocasa_action_probe.probe import deepen_observation_adapter
+            assert cfg["observation_depth"] == 2
+            with torch.random.fork_rng():
+                torch.manual_seed(93420261114+cfg["seed"])
+                base.feature_adapter = deepen_observation_adapter(base.feature_adapter, 2)
+        if cfg["variant"] in ("spt-deep-observation", "spt-control-affine"):
+            base.original_cached_encode = base.encode
+            base.encode = types.MethodType(fp32_cached_encode, base)
     return base
 
 
@@ -259,7 +300,9 @@ def train(root, run, manifest, target, label, max_updates=None):
     torch.cuda.set_device(local); torch.set_num_threads(2); torch.set_float32_matmul_precision("high")
     dist.init_process_group("nccl", device_id=torch.device("cuda", local))
     cfg = json.loads((run/"config.json").read_text()); assert world == cfg["world_size"]
-    if cfg["variant"] in ("action-transport","codec-transport","codec-conditional"): torch.set_float32_matmul_precision("highest")
+    if cfg["variant"] in ("action-transport","codec-transport","codec-conditional",
+                          "spt-control-affine","spt-deep-observation"):
+        torch.set_float32_matmul_precision("highest")
     model = build(root, cfg).cuda()
     from vforge.ops import OpsConfig, initialize_ops
     initialize_ops(OpsConfig(backend="sdpa", allow_fallback=False), device=torch.device("cuda"), parallel_state=None)
@@ -291,6 +334,8 @@ def train(root, run, manifest, target, label, max_updates=None):
         save(run/"initial.json", dict(passed=True, fresh_random_model=True, seed=cfg["seed"],
             nn_sha256=common.state_hash(model.state_dict()), shared_encoder_predictor_sha256=common.state_hash(shared),
             common_encoder_parameter_sha256=common.state_hash(encoder), visual_encoder_sha256=common.state_hash(full_encoder),
+            initial_projection_and_pool_sha256=common.state_hash({k:v for k,v in encoder.items()
+                if k.startswith(("feature_adapter.0.","feature_adapter.1.","pool."))}),
             joint_views=cfg.get("joint_views",False),
             observation_decoder_sha256=common.state_hash(model.future_decoder.state_dict()) if hasattr(model,"future_decoder") else None,
             parameters=sum(p.numel() for p in model.parameters()), trainable=sum(p.numel() for p in model.parameters() if p.requires_grad)))

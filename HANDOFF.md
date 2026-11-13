@@ -4,7 +4,7 @@
 
 ## 当前持续实验
 
-- 新根`runs/robocasa_stable_scaling_20261114`，核心入口`experiments/robocasa_stable_scaling`，[协议](experiments/robocasa_stable_scaling/PROTOCOL.md)。现各4卡：dev13的0–3卡`spt-residual-flow-growing`、4–7卡`spt-future-mean-growing`；dev15的0–3卡`spt-rate-growing`保留完整状态续训，4–7卡固定双线性读出评测队列。dev6八卡采集编码，并共享资源作有限反对称头消融。三结构弱臂已同步停止并保存约2.09h完整状态，codec/空间头/响应校准短测已完成、未推广。实际进程/GPU只看EFS的`training/*/{OWNER,controller,progress}.json`、`stream/PROGRESS-*.json`及`SESSION_CHECKS.json`，不从本文推断持续利用率。
+- 新根`runs/robocasa_stable_scaling_20261114`，核心入口`experiments/robocasa_stable_scaling`，[协议](experiments/robocasa_stable_scaling/PROTOCOL.md)。现各4卡：dev13的0–3卡`spt-residual-flow-growing`、4–7卡`spt-future-mean-growing`；dev15的0–3卡`spt-rate-growing`续训、4–7卡固定双线性读出队列；dev6的0–3卡`spt-control-affine-growing`、4–7卡`spt-deep-observation-growing`，与原八条采集共用设备，非额外八卡。有限反对称头已结束，失败分支不恢复。实际进程/GPU只看EFS的`training/*/{OWNER,controller,progress}.json`、`stream/PROGRESS-*.json`及`SESSION_CHECKS.json`，不从本文推断持续利用率。
 - 四组均新随机初始化、seed1、global batch32、window8，E/pool/F/action-encoder初始SHA配对一致；各8步启动和8步完整恢复已实际通过。首版共1238轨迹（原1120 TRAIN加118新事实日志），之后仅增长组接受新版本；96验证轨迹不进body训练。动作按物理范围归一化，共同900秒warmup后逆平方根衰减。这些共同改变及不同参数/吞吐须披露，四配方不是四独立种子。
 - 共享冻结V-JEPA2.1-G；新的后果头从零，不是整个视觉骨干从零。body无动作标签，独立线性头始终同17920/1536当前a_t事实标签，表示冻结/detach。每累计训练一小时保存完整状态并评真实闭环；同会话每墙钟小时检查、必要时另冻结版本修复，禁止修改已运行源码。首小时`code-train-v1`、第二小时v2；现v6与已测试v5的训练/读出代码SHA完全一致，另优化不可变本地缓存复用。每卡4个评测worker。v5同步各rank的停止判断，四卡实际11步完整停止后精确恢复8步到19，未发布不完整小时，见`SMOKE-distributed-stop.json`。v2不在训练中触发STOP，均在完整2h后只结束父controller、保留控制子进程完成64例；边界记录`RETIRED-2H-BOUNDARY.json`。采集保留v1八条流水线，另v2扩容56条（最多7168新轨迹、索引1000000起、stride56），共64条/八卡；归属`stream/OWNER-throughput.json`，不覆盖原记录。
 - 主监测集预定64案例：厨房1/4/8/10×39301至39316；反复查看后属于开发集。另32确认案例预定厨房2/3/5/6×49301至49308，尚未打开控制评测。回报、距离和原2mm final/any分别报告；不把单点、loss下降或最佳点选择叫稳定scaling。结果入口`results/<run>/hour-NNN.json`；完成有限诊断不代表当前持续目标完成。
@@ -19,7 +19,8 @@
 - `runs/robocasa_likelihood_readout_20261114`六点TRAIN-only响应校准已完成：线性Gaussian假设下用(WB)^-1 W移除动作先验收缩。验证平均响应近单位阵，但同16例新1/2/3/4h仅57.37/63.11/63.02/62.24%，旧8/18h70.41/65.18%，全0，均差于原头，不采用。与空间头的完整原型仅保留EFS及仓库外归档，不为失败短测增加Git细节文件。
 - 新v8只改原SPT像素distortion：`residual-flow`预测相对已观测首帧的RGB变化；`future-mean`用恒零renderer输入直接预测未来RGB条件均值。均保留原Gaussian码/forecast/rate及同64例线性头，原SPT参照语义不变。两组完整初始NN SHA与SPT参照一致，8步入口及8步/16步真实完整恢复已通过，所有更新计入预算。
 - 有限读出`runs/robocasa_differential_readout_20261114`：同16例双线性1→4h为81.59→85.20%、39.43→29.74mm；原线性80.99→82.25%、45.27→37.81mm。共享二次势差头77.62→75.68%、49.39→52.21mm，均0成功。仅两个开发点、不同容量，未证稳定scaling或本质非可积性。核心`differential_readout.py`仅固定标签读出，body冻结。
-- 新根`runs/robocasa_differential_scaling_20261114`固定双线性方法，dev15 4–7卡评入口8更新及各完整小时的同64开发例；覆盖参照及新两body，固定队列无算法选择或第二套LLM监控。1/4h原16例只在模型/头SHA完全一致后复用，不算新案例，`REUSE-PREFLIGHT.json`通过。另`runs/robocasa_antisymmetric_readout_20261114`有限1/4h×16例与二次势头近等参数比较，尚待闭环结果；32确认例继续未打开。
+- 新根`runs/robocasa_differential_scaling_20261114`固定双线性方法，dev15 4–7卡评入口8更新及各完整小时的同64开发例；覆盖参照及两像素body，固定队列无算法选择或第二套LLM监控。1/4h原16例仅在模型/头SHA一致后复用，`REUSE-PREFLIGHT.json`通过。扩至64例后入口27.76%，1/2/3/4h80.46/79.60/78.93/79.27%，末端45.01/48.67/47.23/45.40mm，全部0；原16例正结果未推广。近等容量反对称头16例1/4h77.24/66.93%，54.68/84.71mm，全0；不能宣称非可积性收益。32确认例继续未打开。
+- 原SPT线性头5h81.45%、39.29mm，全0/64。v9在dev6新随机检验两瓶颈：局部`z+drift(z)+G(z)A*a`替代通用历史F（3588万参数），或仅加两层192宽帧内注意力（4681万）。两者新E/action运算FP32，原code/noise/rate/像素flow不变；共享初始投影及pool SHA，8步及8/16步完整恢复通过。共用采集会影响吞吐，不冒称等FLOPs/独占GPU预算。实际占用归属检查在`cohosting-startup.json`，读出数值验证在`readout-startup-v9`。
 - 第一轮扩容56×128有效日志已完成；第二轮同策略56×128已启动，索引2000000起、stride56，归属`stream/OWNER-throughput2.json`。原八条采集继续，日志不覆盖，原始错误保留；21:13实际检查11449条新日志，非持续利用率证明。
 
 ## 最新已完成scaling验证

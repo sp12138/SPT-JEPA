@@ -23,7 +23,7 @@ from experiments.robocasa_compare.evaluate import case_name
 
 MODULE = "experiments.robocasa_stable_scaling"
 PYTHON = "/efs/prescottsun/project_jepa/envs/lewm/bin/python"
-HOST_VARIANTS = {"dev13": "feature-delta", "dev15": "spt-rate"}
+HOST_VARIANTS = {"dev13": "feature-delta", "dev15": "spt-rate", "dev6": "spt-rate"}
 
 
 def corpus(root, version):
@@ -159,12 +159,36 @@ def control(root, cell, shard, shards=4):
         probe.evaluate(cell, "spt64-linear", index, policy=policy)
 
 
+def gpu_startup_ready(root, run, cfg):
+    output = subprocess.check_output(["nvidia-smi", "-i", cfg["gpus"],
+        "--query-compute-apps=pid", "--format=csv,noheader,nounits"], text=True).strip()
+    if not output:
+        return True
+    if not cfg.get("cohost_owned_base_collection", False):
+        return False
+    owners = []
+    for pid in sorted({int(line.strip()) for line in output.splitlines()}):
+        path = Path("/proc") / str(pid) / "cmdline"
+        try: argv = path.read_bytes().decode().strip("\0").split("\0")
+        except FileNotFoundError: continue
+        if "-m" not in argv or argv[argv.index("-m")+1] != MODULE+".stream": return False
+        if "--root" not in argv or Path(argv[argv.index("--root")+1]) != root: return False
+        if "--cohort" in argv and argv[argv.index("--cohort")+1] != "base": return False
+        owners.append(dict(pid=pid, argv=argv))
+    free = [int(x) for x in subprocess.check_output(["nvidia-smi", "-i", cfg["gpus"],
+        "--query-gpu=memory.free", "--format=csv,noheader,nounits"], text=True).splitlines()]
+    if min(free) < 60000: return False
+    save(run / "cohosting-startup.json", dict(passed=True, only_owned_base_collectors=True,
+        owners=owners, actual_free_MiB=free, time=time.time()))
+    return True
+
+
 def worker(root, host, run_name):
     run = root/"training"/run_name;cfg=json.loads((run/"config.json").read_text())
     assert cfg["host"]==host;variant=cfg["variant"];gpus=cfg["gpus"]
     logs = run/"logs"; logs.mkdir(parents=True, exist_ok=True)
     try:
-        while not (root/"PRETRAIN_READY.json").exists() or subprocess.check_output(["nvidia-smi","-i",gpus, "--query-compute-apps=pid,used_gpu_memory", "--format=csv,noheader"], text=True).strip():
+        while not (root/"PRETRAIN_READY.json").exists() or not gpu_startup_ready(root,run,cfg):
             save(run/"controller.json", dict(phase="waiting_for_owned_diagnostics", time=time.time()))
             if (root/"STOP").exists() or (run/"STOP").exists(): return
             time.sleep(5)

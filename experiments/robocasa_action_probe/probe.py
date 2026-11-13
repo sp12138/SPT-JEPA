@@ -26,6 +26,15 @@ TRAIN_PYTHON = "/efs/prescottsun/project_jepa/envs/lewm/bin/python"
 HOSTS = {"dev13": "vjepa-linear", "dev15": "global16-linear", "dev6": "spt64-linear"}
 
 
+def deepen_observation_adapter(adapter, depth):
+    """Within-image attention only; no temporal or cross-sample mixing."""
+    assert depth in (0, 2)
+    for _ in range(depth):
+        adapter.append(nn.TransformerEncoderLayer(192, 3, 768, dropout=0.,
+            activation="gelu", batch_first=True, norm_first=True))
+    return adapter
+
+
 class Readout(nn.Module):
     def __init__(self, root, arm):
         super().__init__(); self.arm = arm
@@ -42,7 +51,9 @@ class Readout(nn.Module):
             path = run/label/"weights.pt"
             assert ready["passed"] and sha(path) == ready["weights_sha256"]
             cfg = json.loads((run/"config.json").read_text())
-            self.feature_adapter = nn.Sequential(nn.Linear(1664, 192), nn.LayerNorm(192))
+            self.feature_adapter = deepen_observation_adapter(
+                nn.Sequential(nn.Linear(1664, 192), nn.LayerNorm(192)),
+                cfg.get("observation_depth", 0))
             self.pool = QueryPool(192, 3, cfg["state_slots"], 16)
             weights = torch.load(path, map_location="cpu", weights_only=True)
             self.joint_views = cfg.get("joint_views",False)
