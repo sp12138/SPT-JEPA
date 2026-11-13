@@ -30,6 +30,8 @@ class Readout(nn.Module):
     def __init__(self, root, arm):
         super().__init__(); self.arm = arm
         common.install_runtime(root/"code")
+        self.precision = json.loads((root/"plan.json").read_text()).get("readout_precision","bf16")
+        assert self.precision in ("bf16","fp32")
         self.parent = None; self.joint_views = False
         if arm != "vjepa-linear":
             from vforge.models.as_jepa.pooling import QueryPool
@@ -56,7 +58,7 @@ class Readout(nn.Module):
     def forward(self, features):
         if self.arm == "vjepa-linear":
             return features.float().mean(-2)
-        with torch.autocast("cuda", dtype=torch.bfloat16):
+        with torch.autocast("cuda", dtype=torch.bfloat16, enabled=self.precision=="bf16"):
             tokens = self.feature_adapter(features.float())
             if self.joint_views:
                 assert tokens.shape[0] % 2 == 0
@@ -69,6 +71,7 @@ class Readout(nn.Module):
 def cache(root, arm, shard):
     torch.set_num_threads(2); torch.set_float32_matmul_precision("high")
     readout = Readout(root, arm).cuda()
+    if readout.precision=="fp32": torch.set_float32_matmul_precision("highest")
     before = common.state_hash(readout.state_dict())
     source = Path("/tmp/spt-time-compare-20261112")
     records = json.loads((root/"data.json").read_text())["records"]
@@ -95,7 +98,8 @@ def cache(root, arm, shard):
                         actions=np.stack(actions), splits=np.asarray(splits))
     save(output.with_suffix(".json"), dict(passed=True, shard=shard, records=len(rows),
         sha256=sha(output), readout_sha256=before, parent=readout.parent,
-        all_features_detached=True, readout_frozen_unchanged=True, current_actions_only=True))
+        all_features_detached=True, readout_frozen_unchanged=True, current_actions_only=True,
+        readout_precision=readout.precision))
 
 
 def fit(root, arm):
@@ -151,6 +155,7 @@ def fit(root, arm):
         validation_zero_RMSE=float(yv.square().mean().sqrt()),
         validation_RMSE=best[0]**.5, input_width=x.shape[-1],
         physical_kitchen_split_disjoint=True, actual_stopgradient_backward_pass=True,
+        readout_precision=json.loads((root/"plan.json").read_text()).get("readout_precision","bf16"),
         no_new_backbone_updates=True, no_action_loss_to_backbone=True,
         no_future_or_optimal_action_labels=True, target_case_feedback_used_for_selection=False))
 
@@ -207,6 +212,7 @@ def evaluate(root, arm, index, policy=None):
     else:
         assert policy.readout.arm == arm
         startup_seconds = 0.
+    if policy.readout.precision=="fp32": torch.set_float32_matmul_precision("highest")
     previous_seconds, previous_calls = policy.seconds, policy.calls
     case = json.loads((root/"plan.json").read_text())["cases"][index]
     name = base.case_name(**case); path = root/"cases"/(name+".npz")

@@ -37,10 +37,17 @@ class ConditionalFeatureDecoder(nn.Module):
 
 
 def additive_predict(self, means, actions):
-    return means+actions
+    return means.float()+actions.float()
 
 
 def observation_codes(model, dense):
+    if getattr(model,"fp32_observation",False):
+        with torch.autocast("cuda",enabled=False):
+            return _observation_codes(model,dense.float())
+    return _observation_codes(model,dense)
+
+
+def _observation_codes(model, dense):
     b,t,p,_ = dense.shape
     tokens = model.feature_adapter(dense.flatten(0, 1)).reshape(b,t,p,192)
     if getattr(model,"joint_views",False):
@@ -65,7 +72,9 @@ def feature_delta_loss(self, batch, step=0, ramp_steps=0):
     means = observation_codes(self,dense)
     raw_action = batch["action"]
     if self.joint_views: raw_action = raw_action.reshape(b//2,2,t,14)[:,0]
-    actions = self.action_encoder(raw_action)
+    if self.fp32_observation:
+        with torch.autocast("cuda",enabled=False): actions=self.action_encoder(raw_action.float())
+    else: actions = self.action_encoder(raw_action)
     # Fixed visual features, with the actual first observation as an anchor.
     # There is no learned skip that can bypass the bottleneck with future RGB.
     target = F.adaptive_avg_pool2d(dense.reshape(b*t, 14, 14, width)
@@ -86,26 +95,66 @@ def feature_delta_loss(self, batch, step=0, ramp_steps=0):
         fixed_feature_copy_L1=copy, feature_std=means.float().std((0, 1)).mean())
 
 
+def feature_codec_loss(self, batch, step=0, ramp_steps=0):
+    """SPT's analytic conditional code; replace pixel flow distortion only.
+
+    Fixed future visual features are natural observations, not action labels.
+    Keep the existing sigma/rho/beta and RGB-normalized code rate. This is a
+    rate/distortion replacement, not a claim of a new joint feature ELBO.
+    """
+    from experiments.robocasa_refine.analytic_model import innovation_error
+    from vforge.models.as_jepa.codes import entry_nats, surprise_nats
+    from vforge.models.as_jepa.constants import FRAME_ELEMS
+    dense=batch["features"].float(); bv,t,_,width=dense.shape
+    means=observation_codes(self,dense).float(); b=means.shape[0]
+    raw=batch["action"]
+    if self.joint_views: raw=raw.reshape(b,2,t,14)[:,0]
+    with torch.autocast("cuda",enabled=False): actions=self.action_encoder(raw.float())
+    mu=means.reshape(b,t,self.state_slots,self.state_width)
+    noise=torch.randn_like(mu)
+    for i in range(1,t): noise[:,i]=self.rho*noise[:,i-1]+math.sqrt(1-self.rho**2)*noise[:,i]
+    noisy=mu+self.sigma0*noise
+    forecast_means=self.mean_trajectory(means[:,0],actions[:,:-1]).reshape_as(mu)
+    powers=mu.new_tensor([self.rho**i for i in range(1,t)])[None,:,None,None]
+    forecast=forecast_means[:,1:]+powers*(noisy[:,:1]-mu[:,:1])
+    choose=torch.rand(b,t-1,1,1,device=mu.device)<self.forecast_fraction
+    condition=torch.where(choose,forecast,noisy[:,1:]).flatten(2)
+    target=F.adaptive_avg_pool2d(dense.reshape(bv*t,14,14,width).permute(0,3,1,2),(4,4)).flatten(1).reshape(bv,t,-1).detach()
+    predicted=decode_feature_change(self,condition-means[:,:1],target[:,:1])
+    distortion=(predicted-(target[:,1:]-target[:,:1])).abs().mean()
+    error=innovation_error(mu,forecast_means,self.rho)
+    entry=entry_nats(mu[:,0],self.sigma0)
+    surprise=surprise_nats(error,torch.zeros_like(error),self.sigma0)
+    surprise=surprise+self.state_dim*.5*(-self.rho**2-math.log1p(-self.rho**2))
+    rate=(entry+surprise.sum(1)).mean()/((t-1)*FRAME_ELEMS*(2 if self.joint_views else 1))
+    loss=distortion+self.beta*rate
+    return loss,dict(loss=loss,feature_distortion=distortion,rate=rate,entry=entry.mean(),
+        surprise=surprise.mean(),feature_std=means.std((0,1)).mean(),
+        clean_rollout_mse=(mu[:,1:]-forecast_means[:,1:]).square().mean(),
+        rate_share=self.beta*rate/distortion.detach().clamp_min(1e-8))
+
+
 def build(root, cfg):
     base = old.build(root, cfg)
-    if cfg["variant"] in ("feature-delta", "feature-conditional", "action-transport"):
+    if cfg["variant"] in ("feature-delta", "feature-conditional", "action-transport", "codec-transport", "codec-conditional"):
         base.renderer.requires_grad_(False)
         base.conditional_feature_decoder = cfg["variant"] != "feature-delta"
         base.joint_views = cfg.get("joint_views",False)
+        base.fp32_observation = cfg["variant"] in ("action-transport","codec-transport","codec-conditional")
         if base.joint_views:
-            assert cfg["variant"] == "action-transport"
+            assert cfg["variant"] in ("action-transport","codec-transport","codec-conditional")
             base.joint_view_embedding = nn.Parameter(torch.zeros(2,192))
         with torch.random.fork_rng():
             torch.manual_seed(90120261114)
             base.future_decoder = (nn.Linear(64, 1664*16, bias=False) if cfg["variant"] == "feature-delta"
                 else ConditionalFeatureDecoder())
-        if cfg["variant"] == "action-transport":
+        if cfg["variant"] in ("action-transport","codec-transport"):
             base.predictor.requires_grad_(False)
             with torch.random.fork_rng():
                 torch.manual_seed(91220261114)
                 base.action_encoder = nn.Linear(14, 64, bias=False)
             base.predict = types.MethodType(additive_predict, base)
-        base.loss = types.MethodType(feature_delta_loss, base)
+        base.loss = types.MethodType(feature_codec_loss if cfg["variant"].startswith("codec-") else feature_delta_loss, base)
     else:
         assert cfg["variant"] == "spt-rate"
     return base
@@ -180,6 +229,7 @@ def train(root, run, manifest, target, label, max_updates=None):
     torch.cuda.set_device(local); torch.set_num_threads(2); torch.set_float32_matmul_precision("high")
     dist.init_process_group("nccl", device_id=torch.device("cuda", local))
     cfg = json.loads((run/"config.json").read_text()); assert world == cfg["world_size"]
+    if cfg["variant"] in ("action-transport","codec-transport","codec-conditional"): torch.set_float32_matmul_precision("highest")
     model = build(root, cfg).cuda()
     from vforge.ops import OpsConfig, initialize_ops
     initialize_ops(OpsConfig(backend="sdpa", allow_fallback=False), device=torch.device("cuda"), parallel_state=None)
@@ -251,7 +301,7 @@ def train(root, run, manifest, target, label, max_updates=None):
         if segment < 8 or (step+1) % 100 == 0:
             prefixes = ["feature_adapter.", "pool.", "action_encoder."]
             if cfg.get("joint_views"): prefixes.append("joint_view_embedding")
-            if cfg["variant"] != "action-transport": prefixes.append("predictor.")
+            if cfg["variant"] not in ("action-transport","codec-transport"): prefixes.append("predictor.")
             prefixes.append("future_decoder." if hasattr(model,"future_decoder") else "renderer.")
             for prefix in prefixes:
                 norms[prefix] = sum(float(p.grad.detach().float().norm())**2
