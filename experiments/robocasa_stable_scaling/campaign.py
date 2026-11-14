@@ -39,13 +39,17 @@ def corpus(root, version):
         for record in card["records"]:
             if record["split"] != "train": continue
             ident = record["id"]; base = Path("/tmp/spt-time-compare-20261112")
-            rows.append(dict(record, local_features=str(base/"features/vjepa"/(ident+".npy")),
-                local_observations=str(base/"observations"/(ident+".npz")), original=True))
+            rows.append(dict(record,
+                local_features=record.get("local_features",str(base/"features/vjepa"/(ident+".npy"))),
+                local_observations=record.get("local_observations",str(base/"observations"/(ident+".npz"))),
+                original=True))
+        initial_ids = {row["id"] for row in rows}
         for p in sorted((root/"stream/records").glob("*.json")):
             record = json.loads(p.read_text())
             if record["completed_unix"] > cutoff: continue
+            if record["id"] in initial_ids: continue
             assert record["passed"] and record["split"] == "train" and tuple(record["kitchen"]) in kitchens
-            ident = record["id"]; base = Path("/tmp/spt-stable-scaling-20261114")
+            ident = record["id"]; base = Path(plan.get("local_stream_cache", "/tmp/spt-stable-scaling-20261114"))
             rows.append(dict(record, local_features=str(base/"features/vjepa"/(ident+".npy")),
                 local_observations=str(base/"observations"/(ident+".npz")), original=False))
         assert len(rows) >= 1120 and len({r["id"] for r in rows}) == len(rows)

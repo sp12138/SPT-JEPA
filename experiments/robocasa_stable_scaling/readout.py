@@ -60,6 +60,8 @@ def load_pairs(directory):
 
 def fit(root, arm="spt64-linear", steps=5000):
     torch.set_num_threads(2); torch.set_float32_matmul_precision("high")
+    if json.loads((root/"plan.json").read_text()).get("readout_precision") == "fp32":
+        torch.set_float32_matmul_precision("highest")
     torch.manual_seed(20261114)
     directory = root/"heads"/arm
     source = directory/"linear-head.pt"; ready = json.loads((directory/"linear-ready.json").read_text())
@@ -133,6 +135,8 @@ class PotentialPolicy(probe.Policy):
 
 def control(root, arm="spt64-linear", shard=0, shards=1):
     torch.set_num_threads(2); torch.set_float32_matmul_precision("high")
+    if json.loads((root/"plan.json").read_text()).get("readout_precision") == "fp32":
+        torch.set_float32_matmul_precision("highest")
     policy = PotentialPolicy(root, arm)
     plan = json.loads((root/"plan.json").read_text())
     for index in range(len(plan["cases"])):

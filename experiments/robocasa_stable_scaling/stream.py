@@ -3,6 +3,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import random
 import time
 import traceback
 
@@ -11,7 +12,7 @@ import torch
 
 from experiments.robocasa_compare.acquire import save, sha
 from experiments.robocasa_compare.evaluate import install_public, reset
-from experiments.robocasa_refine.intervene import make_env, pixels
+from experiments.robocasa_refine.intervene import make_env as make_push_env, pixels
 from experiments.robocasa_refine.encoder_ablation import load_encoder, encode
 
 
@@ -23,10 +24,31 @@ def atomic_array(path, value):
     temp.replace(path)
 
 
+def make_env(pair, seed, dynamics):
+    if dynamics == "push":
+        return make_push_env(pair, seed)
+    assert dynamics == "reach"
+    from robots.robocasa.robot_env import RoboCasaEnv
+    from robots.robocasa.blocking_robot_env import ReachBlockingRoboCasaEnv
+    scene = 100000+pair[0]*64+pair[1]
+    random.seed(scene+seed); np.random.seed(scene+seed)
+    inner = RoboCasaEnv(task_name="CloseStandMixerHead",
+        camera_names=["robot0_agentview_left", "robot0_eye_in_hand"],
+        camera_width=640, camera_height=480, seed=scene, robot="PandaOmron",
+        chunk_size=4, wm_embodiment="franka_omron_state_delta", reach_task=True,
+        reach_task_seed=seed, reach_min_distance=.25, reach_max_distance=.35,
+        reach_clear_radius=1., kitchen_split="pretrain", layout_and_style_ids=[tuple(pair)])
+    return ReachBlockingRoboCasaEnv(inner, reach_task_seed=seed,
+        reach_min_distance=.25, reach_max_distance=.35, reach_clear_radius=1.,
+        kitchen_split="pretrain", pos_tol=.001, max_steps=200)
+
+
 def episode(root, encoder, index, lane):
     import cv2
     card = json.loads((root/"data.json").read_text())
-    split = json.loads((root/"plan.json").read_text()).get("collection_split", "train")
+    plan = json.loads((root/"plan.json").read_text())
+    split = plan.get("collection_split", "train")
+    dynamics = plan.get("collection_dynamics", "push")
     assert split in ("train", "validation")
     kitchens = sorted({tuple(r["kitchen"]) for r in card["records"] if r["split"] == split})
     assert kitchens
@@ -40,9 +62,9 @@ def episode(root, encoder, index, lane):
     forward = directions*radii
     actions = np.zeros((16, 7), np.float32)
     actions[:8, :3] = forward; actions[8:, :3] = -forward[::-1]
-    started = time.time(); env = make_env(pair, seed)
+    started = time.time(); env = make_env(pair, seed, dynamics)
     try:
-        observation = reset(env, "push", seed, "init")
+        observation = reset(env, dynamics, seed, "init")
         images = [pixels(observation)]
         for action in actions:
             # Only RGB is consumed. Reward, success, goal and kinematic state
@@ -68,7 +90,8 @@ def episode(root, encoder, index, lane):
         with temp.open("wb") as stream: np.savez_compressed(stream, **values)
         temp.replace(path)
     row = dict(passed=True, id=ident, index=index, lane=lane, kitchen=list(pair), seed=seed,
-        split=split, frames=17, transitions=16, features=str(feature_path), observations=str(obs_path),
+        split=split, collection_dynamics=dynamics, frames=17, transitions=16,
+        features=str(feature_path), observations=str(obs_path),
         rgb=str(rgb_path), features_sha256=sha(feature_path), observations_sha256=sha(obs_path),
         rgb_sha256=sha(rgb_path), input_fields=["RGB", "issued_current_commands"],
         no_goal_reward_state_or_expert=True, no_future_or_optimal_action_labels=True,

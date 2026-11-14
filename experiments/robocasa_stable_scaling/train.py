@@ -233,7 +233,8 @@ def build(root, cfg):
                 base.feature_adapter = deepen_observation_adapter(base.feature_adapter, 2)
         if cfg["variant"] == "spt-conditional-rate":
             base.initial_rate = types.MethodType(conditional_initial_rate, base)
-        if cfg["variant"] in ("spt-deep-observation", "spt-control-affine", "spt-conditional-rate"):
+        if cfg.get("fp32_encoder", False) or cfg["variant"] in (
+                "spt-deep-observation", "spt-control-affine", "spt-conditional-rate"):
             base.original_cached_encode = base.encode
             base.encode = types.MethodType(fp32_cached_encode, base)
     return base
@@ -308,7 +309,7 @@ def train(root, run, manifest, target, label, max_updates=None):
     torch.cuda.set_device(local); torch.set_num_threads(2); torch.set_float32_matmul_precision("high")
     dist.init_process_group("nccl", device_id=torch.device("cuda", local))
     cfg = json.loads((run/"config.json").read_text()); assert world == cfg["world_size"]
-    if cfg["variant"] in ("action-transport","codec-transport","codec-conditional",
+    if cfg.get("fp32_encoder", False) or cfg["variant"] in ("action-transport","codec-transport","codec-conditional",
                           "spt-control-affine","spt-deep-observation","spt-conditional-rate"):
         torch.set_float32_matmul_precision("highest")
     model = build(root, cfg).cuda()
