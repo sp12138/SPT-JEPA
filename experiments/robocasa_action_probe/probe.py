@@ -90,11 +90,11 @@ def cache(root, arm, shard):
     for index, record in enumerate(records):
         if index % 8 != shard: continue
         rid = record["id"]
-        dense = np.load(source/"features/vjepa"/(rid+".npy"), mmap_mode="r")
+        dense = np.load(record.get("local_features", source/"features/vjepa"/(rid+".npy")), mmap_mode="r")
         assert dense.shape == (17, 2, 196, 1664)
         features = torch.from_numpy(np.asarray(dense).copy()).flatten(0, 1).cuda()
         code = readout(features).reshape(17, 2, -1).flatten(1).detach().cpu().numpy()
-        with np.load(source/"observations"/(rid+".npz")) as stream:
+        with np.load(record.get("local_observations", source/"observations"/(rid+".npz"))) as stream:
             assert set(stream.files) == {"render", "commands"}
             action = stream["commands"][:, :3].astype(np.float32)
         assert code.shape[0] == 17 and action.shape == (16, 3)
@@ -110,7 +110,7 @@ def cache(root, arm, shard):
     save(output.with_suffix(".json"), dict(passed=True, shard=shard, records=len(rows),
         sha256=sha(output), readout_sha256=before, parent=readout.parent,
         all_features_detached=True, readout_frozen_unchanged=True, current_actions_only=True,
-        readout_precision=readout.precision))
+        readout_precision=readout.precision, readout_data_sha256=sha(root/"data.json")))
 
 
 def fit(root, arm):
@@ -121,6 +121,8 @@ def fit(root, arm):
         path = directory/"cache"/f"part-{shard}.npz"
         proof = json.loads(path.with_suffix(".json").read_text())
         assert proof["passed"] and sha(path) == proof["sha256"]
+        if "readout_data_sha256" in proof:
+            assert proof["readout_data_sha256"] == sha(root/"data.json")
         with np.load(path) as s:
             rows.extend(s["indices"].tolist()); codes.extend(s["codes"])
             actions.extend(s["actions"]); splits.extend(s["splits"].tolist())

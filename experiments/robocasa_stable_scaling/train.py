@@ -65,6 +65,12 @@ def fp32_cached_encode(self, info):
         return self.original_cached_encode(info)
 
 
+def conditional_initial_rate(self, mean):
+    # q(z0|x0) is also the conditional prior p(z0|x0): its KL is zero.
+    # x0 is already observed by the forward learner; future RGB is not an input.
+    return mean.new_zeros(mean.shape[0], dtype=torch.float32)
+
+
 def observation_codes(model, dense):
     if getattr(model,"fp32_observation",False):
         with torch.autocast("cuda",enabled=False):
@@ -209,7 +215,7 @@ def build(root, cfg):
         base.loss = types.MethodType(feature_codec_loss if cfg["variant"].startswith("codec-") else feature_delta_loss, base)
     else:
         assert cfg["variant"] in ("spt-rate", "spt-residual-flow", "spt-future-mean",
-                                  "spt-control-affine", "spt-deep-observation")
+                                  "spt-control-affine", "spt-deep-observation", "spt-conditional-rate")
         if cfg["variant"] in ("spt-residual-flow", "spt-future-mean"):
             base.pixel_objective = cfg["variant"].removeprefix("spt-")
             base.distortion = types.MethodType(pixel_prediction_distortion, base)
@@ -225,7 +231,9 @@ def build(root, cfg):
             with torch.random.fork_rng():
                 torch.manual_seed(93420261114+cfg["seed"])
                 base.feature_adapter = deepen_observation_adapter(base.feature_adapter, 2)
-        if cfg["variant"] in ("spt-deep-observation", "spt-control-affine"):
+        if cfg["variant"] == "spt-conditional-rate":
+            base.initial_rate = types.MethodType(conditional_initial_rate, base)
+        if cfg["variant"] in ("spt-deep-observation", "spt-control-affine", "spt-conditional-rate"):
             base.original_cached_encode = base.encode
             base.encode = types.MethodType(fp32_cached_encode, base)
     return base
@@ -301,7 +309,7 @@ def train(root, run, manifest, target, label, max_updates=None):
     dist.init_process_group("nccl", device_id=torch.device("cuda", local))
     cfg = json.loads((run/"config.json").read_text()); assert world == cfg["world_size"]
     if cfg["variant"] in ("action-transport","codec-transport","codec-conditional",
-                          "spt-control-affine","spt-deep-observation"):
+                          "spt-control-affine","spt-deep-observation","spt-conditional-rate"):
         torch.set_float32_matmul_precision("highest")
     model = build(root, cfg).cuda()
     from vforge.ops import OpsConfig, initialize_ops

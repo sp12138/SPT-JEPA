@@ -44,6 +44,9 @@ class AnalyticResidualSPT(RobustLeWM):
         anchors=pack(anchor).repeat_interleave(w-1,dim=0)
         return flow_loss(self.renderer,y,condition.flatten(0,1),anchors,self.training_shift)
 
+    def initial_rate(self,mean):
+        return entry_nats(mean,self.sigma0)
+
     def loss(self,batch,step=0,ramp_steps=0):
         pixels,render,anchor=self.prepare(batch)
         info=self.encode(dict(pixels=pixels,action=batch["action"]))
@@ -64,7 +67,7 @@ class AnalyticResidualSPT(RobustLeWM):
             choose=torch.rand(b,w-1,1,1,device=flat.device)<self.forecast_fraction
             condition=torch.where(choose,forecast,noisy[:,1:])
         error=innovation_error(mu,means,self.rho)
-        entry=entry_nats(mu[:,0],self.sigma0)
+        entry=self.initial_rate(mu[:,0])
         surprise=surprise_nats(error,torch.zeros_like(error),self.sigma0)
         surprise=surprise+self.state_dim*.5*(-self.rho**2-math.log1p(-self.rho**2))
         fm=self.distortion(batch,render,anchor,condition)

@@ -1,4 +1,4 @@
-"""Goal-free multiscale factual interaction stream, restricted to TRAIN kitchens."""
+"""Goal-free multiscale factual logs with an explicit physical kitchen split."""
 import argparse
 import json
 import os
@@ -26,7 +26,10 @@ def atomic_array(path, value):
 def episode(root, encoder, index, lane):
     import cv2
     card = json.loads((root/"data.json").read_text())
-    kitchens = sorted({tuple(r["kitchen"]) for r in card["records"] if r["split"] == "train"})
+    split = json.loads((root/"plan.json").read_text()).get("collection_split", "train")
+    assert split in ("train", "validation")
+    kitchens = sorted({tuple(r["kitchen"]) for r in card["records"] if r["split"] == split})
+    assert kitchens
     pair = kitchens[(index//8+lane*7) % len(kitchens)]; seed = 51000+index
     ident = f"stream-{index:09d}"; directory = root/"stream"
     proof_path = directory/"records"/(ident+".json")
@@ -65,7 +68,7 @@ def episode(root, encoder, index, lane):
         with temp.open("wb") as stream: np.savez_compressed(stream, **values)
         temp.replace(path)
     row = dict(passed=True, id=ident, index=index, lane=lane, kitchen=list(pair), seed=seed,
-        split="train", frames=17, transitions=16, features=str(feature_path), observations=str(obs_path),
+        split=split, frames=17, transitions=16, features=str(feature_path), observations=str(obs_path),
         rgb=str(rgb_path), features_sha256=sha(feature_path), observations_sha256=sha(obs_path),
         rgb_sha256=sha(rgb_path), input_fields=["RGB", "issued_current_commands"],
         no_goal_reward_state_or_expert=True, no_future_or_optimal_action_labels=True,
