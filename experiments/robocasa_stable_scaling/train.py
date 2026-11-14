@@ -71,6 +71,42 @@ def conditional_initial_rate(self, mean):
     return mean.new_zeros(mean.shape[0], dtype=torch.float32)
 
 
+def joint_pixel_encode(self, info):
+    """One physical state for synchronized views; no physical-sample mixing."""
+    bv, t, p, _ = self.cached.shape
+    assert bv % 2 == 0 and self.code_chart == "global"
+    b = bv//2
+    tokens = self.feature_adapter(self.cached.float().flatten(0, 1))
+    tokens = tokens.reshape(b, 2, t, p, 192).permute(0, 2, 1, 3, 4)
+    tokens = tokens+self.joint_view_embedding[None, None, :, None]
+    info["emb"] = self.pool(tokens.reshape(b*t, 2*p, 192)).reshape(b, t, self.state_dim)
+    if "action" in info:
+        action = info["action"].reshape(b, 2, t, 14)
+        assert torch.equal(action[:, 0], action[:, 1])
+        info["act_emb"] = self.action_encoder(action[:, 0])
+    return info
+
+
+def joint_pixel_distortion(self, batch, render, anchor, condition):
+    b, t, k, d = condition.shape
+    condition = condition[:, None].expand(b, 2, t, k, d).reshape(b*2, t, k, d)
+    return self.original_pixel_distortion(batch, render, anchor, condition)
+
+
+def joint_pixel_loss(self, batch, step=0, ramp_steps=0):
+    from experiments.robocasa_refine.analytic_model import AnalyticResidualSPT
+    try:
+        _, metrics = AnalyticResidualSPT.loss(self, batch, step, ramp_steps)
+        # One joint code is paid for against both cameras' rendered values.
+        rate = metrics["rate"]/2
+        beta = self.beta*min(1., step/max(1, ramp_steps)) if ramp_steps else self.beta
+        loss = metrics["fm"]+beta*rate
+        return loss, dict(metrics, loss=loss, rate=rate,
+            rate_share=beta*rate/metrics["fm"].detach().clamp_min(1e-8))
+    finally:
+        self.cached = None
+
+
 def observation_codes(model, dense):
     if getattr(model,"fp32_observation",False):
         with torch.autocast("cuda",enabled=False):
@@ -237,6 +273,14 @@ def build(root, cfg):
                 base.feature_adapter = deepen_observation_adapter(base.feature_adapter, 2)
         if cfg["variant"] == "spt-conditional-rate":
             base.initial_rate = types.MethodType(conditional_initial_rate, base)
+        if cfg.get("joint_views", False):
+            assert cfg["variant"] == "spt-deep-observation"
+            base.joint_views = True
+            base.joint_view_embedding = nn.Parameter(torch.zeros(2, 192))
+            base.encode = types.MethodType(joint_pixel_encode, base)
+            base.original_pixel_distortion = base.distortion
+            base.distortion = types.MethodType(joint_pixel_distortion, base)
+            base.loss = types.MethodType(joint_pixel_loss, base)
         if cfg.get("fp32_encoder", False) or cfg["variant"] in (
                 "spt-deep-observation", "spt-control-affine", "spt-conditional-rate"):
             base.original_cached_encode = base.encode
