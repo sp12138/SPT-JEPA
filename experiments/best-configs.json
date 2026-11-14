@@ -2,8 +2,78 @@
   "schema_version": 1,
   "updated": "2026-11-14",
   "scope": "Descriptive best-established settings within each listed internal protocol; NOT global optima/SOTA. Original resolved configs are archival records, not automatic launch instructions. Keep source/config/result identities together.",
-  "research_paused": true,
+  "research_paused": false,
   "entries": {
+    "robocasa_matched_reach_deep_detached_readout": {
+      "status": "development_return_selected_after_hours1_to9; unconfirmed; no stable_control_scaling; not_SOTA_or_long_run_promoted",
+      "source": "/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114",
+      "code": "experiments/robocasa_stable_scaling/train.py",
+      "protocol": "experiments/robocasa_stable_scaling/PROTOCOL.md",
+      "training": {
+        "run": "training/spt-deep-observation-growing",
+        "config_sha256": "7875969ca2a0fc4517b68d8a4fb91b4f24fa5a78c8aa3a29ae3b919f14302c8d",
+        "checkpoint": {
+          "passed": true,
+          "label": "hour-004",
+          "step": 61160,
+          "active_seconds": 14400.117468999233,
+          "nn_sha256": "a34354c78ae6b0eab603aa84b278360cbde1768d717b9254e0af73277dc6e598",
+          "weights_sha256": "32710abd21dcc0ba92dd4fae7ae3d8cf68b840061145f62307ded144ee4edf03",
+          "data_manifest_sha256": "0f260a9a82495706daf6736ed3192c765246e74dde095bb9e9446c4b1436b515"
+        },
+        "recipe": {
+          "seed": 1,
+          "global_batch": 32,
+          "window": 8,
+          "state_slots": 4,
+          "state_width": 16,
+          "observation_depth": 2,
+          "adapter_width": 192,
+          "renderer_width": 384,
+          "renderer_depth": 12,
+          "renderer_heads": 6,
+          "beta": 0.25,
+          "sigma0": 0.1,
+          "rho": 0.8,
+          "forecast_fraction": 0.5,
+          "flow_logit_shift": 0,
+          "fp32_encoder": true,
+          "learning_rate": "900 active second warmup then inverse square root; peak E/F5e-5,renderer1e-4"
+        },
+        "ancestry": "E/F/renderer freshly random; all retained startup/restore updates included in61160; frozen external V-JEPA2.1-G authorized exception,1.845B; no pretrained dynamics/policy",
+        "corpus_episodes_at_selected_budget": 2593,
+        "budget": "4 active training hours on4H200, excludes cache/readout/eval; cohosting and unequal architecture throughput disclosed"
+      },
+      "readout": {
+        "selected_alpha": 0.000001,
+        "train_transitions": 17920,
+        "validation_transitions": 1536,
+        "validation_RMSE": 0.030178229092410382,
+        "head_sha256": "08c7940bc112e9da3a4c0129e2d0333d49ff7bcd214803afe5053cb4c98c479c",
+        "input_width": 128,
+        "target": "same factual current issued a_t XYZ only",
+        "form": "W(E(next RGB)-E(current RGB)); no intercept; frozen/detached",
+        "objective": "absolute sample MSE plus ridge; validation kitchen selection",
+        "data_sha256": "5b511c9ec51f472a51a7637b8c54abcff56a345b5ca78a807478479fafb64ff4"
+      },
+      "evaluation": {
+        "cases": 64,
+        "case_definition": "monitored development;kitchens1/4/8/10 x seeds39301..39316",
+        "mean_return": 0.9440594121552832,
+        "final_distance_mm": 12.915921869022458,
+        "final_successes": 0,
+        "any_successes": 1,
+        "mean_episode_seconds": 8.928915424363367,
+        "control": "224 square center crop/twoRGB cameras,5 actions,norm<=.3,native2mm",
+        "confirmation_cases": "32 predefined cases remain unopened"
+      },
+      "boundaries": [
+        "Selected for development mean return,not strict success or an untouched test result.",
+        "Deep1/3/6/9h92.20/94.30/93.62/93.12%;late plateau/regression persists.",
+        "Matched Reach-controller random logs differ from former Push-data protocol;not an algorithm-only improvement.",
+        "Single training seed;shared frozen external encoder;neither fully scratch nor public RoboJEPA policy reproduction."
+      ]
+    },
     "pusht_temporal_forecast": {
       "status": "historical_positive",
       "training_updates": 37473,
