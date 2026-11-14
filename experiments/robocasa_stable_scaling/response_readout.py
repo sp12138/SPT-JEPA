@@ -23,6 +23,7 @@ class FrozenResponse(nn.Module):
     def __init__(self, root):
         super().__init__()
         plan=json.loads((root/"plan.json").read_text())
+        self.symmetric_endpoints=bool(plan.get("response_symmetric_endpoints",False))
         run=Path(plan["source"])/"training"/plan["source_models"]["spt64-linear"]
         cfg=json.loads((run/"config.json").read_text())
         assert cfg["variant"]=="spt-control-affine" and cfg["state_slots"]==4
@@ -71,6 +72,10 @@ class FrozenResponse(nn.Module):
     @torch.no_grad()
     def forward(self, current, following):
         basis=self.basis(current)
+        if self.symmetric_endpoints:
+            # Trapezoidal approximation to the action tangent along a chord.
+            # Both endpoints are naturally observed RGB encodings, never actions.
+            basis=(basis+self.basis(following))*.5
         delta=(following-current).float().reshape(-1,128,1)
         if self.noise_cholesky is not None:
             # One shared channel likelihood, applied within each physical sample.
@@ -171,6 +176,7 @@ def fit(root):
         exact_zero_for_identical_codes=True,no_future_or_optimal_action_labels=True,
         response_noise_covariance_sha256=response.noise_model_sha256,
         response_noise_covariance_parameters=136 if response.noise_model_sha256 else 0,
+        response_symmetric_endpoints=response.symmetric_endpoints,
         head_target="same factual current issued XYZ a_t",target_case_feedback_used_for_selection=False))
 
 

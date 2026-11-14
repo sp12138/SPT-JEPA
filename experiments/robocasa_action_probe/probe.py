@@ -42,6 +42,16 @@ class Readout(nn.Module):
         self.precision = json.loads((root/"plan.json").read_text()).get("readout_precision","bf16")
         assert self.precision in ("bf16","fp32")
         self.parent = None; self.joint_views = False
+        self.frozen_layout=json.loads((root/"plan.json").read_text()).get("frozen_readout_layout","mean")
+        assert self.frozen_layout in ("mean","spatial-moments")
+        if self.frozen_layout=="spatial-moments":
+            assert arm=="vjepa-linear"
+            coordinate=torch.linspace(-1,1,14,dtype=torch.float32)
+            y,x=torch.meshgrid(coordinate,coordinate,indexing="ij")
+            # Fixed orthonormal first spatial modes; no fitted representation.
+            modes=torch.stack((x,y)).flatten(1)
+            modes=modes/modes.square().mean(-1,keepdim=True).sqrt()
+            self.register_buffer("spatial_modes",modes/196)
         if arm != "vjepa-linear":
             from vforge.models.as_jepa.pooling import QueryPool
             plan = json.loads((root/"plan.json").read_text())
@@ -68,7 +78,11 @@ class Readout(nn.Module):
     @torch.no_grad()
     def forward(self, features):
         if self.arm == "vjepa-linear":
-            return features.float().mean(-2)
+            mean=features.float().mean(-2)
+            if self.frozen_layout=="mean":return mean
+            assert features.shape[-2]==196
+            moments=torch.einsum("pn,...nd->...pd",self.spatial_modes,features.float())
+            return torch.cat((mean.unsqueeze(-2),moments),-2).flatten(-2)
         with torch.autocast("cuda", dtype=torch.bfloat16, enabled=self.precision=="bf16"):
             tokens = self.feature_adapter(features.float())
             if self.joint_views:

@@ -26,6 +26,10 @@ TRAIN-only自然预测残差的16通道协方差条件数16.63、验证Gaussian 
 
 后续假设检验观察/预测编码通道的噪声分布差异：原forecast只传播初始噪声，末帧方差为观察码的rho^14≈.044；新通道以独立于未来RGB的同外生AR噪声采样forecast，并匹配条件prior方差sigma0²(1-rho²)。它同时改变创新误差系数，不能单独归因为生成噪声，也不说明原KL错误。0SGD默认loss/指标逐位回归、梯度舍入界、Gaussian KL代数和实际有限梯度通过，初始整个NN与原加法模型相同；尚无控制收益。原始`runs/robocasa_reach3d_stationary_channel_20261114`，只在原弱分支整阶段保全后交接，继续固定标签/控制曲线。
 
+deep+Euler4h的F响应读出有正面接口证据：同NN/事实标签/64例，从E-only直接头的91.43%/21.48mm/0final变为94.05%/12.73mm/4final（any8），只拟合9参数C、无body更新。它使用已学F，容量与参数化也不同，不作单因素F归因或E-only scaling证明。保护性只读审计中原头/响应头末步blocking不收敛7/3例，近目标约6mm平台仍在，均值改善部分与少量大失败减少相关，未唯一归因。固定再补1/3/6h同开发曲线，原始`runs/robocasa_reach3d_deep_field_geometry_v2_20261114`；32确认例不打开，评测细节不进入训练或proposal memory。
+
+扩大冻结G读出到固定空间一阶矩、29952参数后，同标签/64例仅80.01%/44.47mm/final与any均0，较原G均值77.67%/53.75mm/0final小幅改善，但仍弱于学过后果的SPT。空间线性信号与更大头容量不是精度的直接解法；该有限负结果不是G信息上界或E唯一丢失信息的证明，不扩展。原始`runs/robocasa_reach3d_spatial_frozen_20261114`，默认回归/空间代数/样本隔离/实际detach拟合通过，0body训练，冻结外部G来源仍单列。
+
 状态条件残差动作头`W*delta+f(z,delta)-f(z,0)`另做有限192模型—案例控制，body无新增更新、detach/严格同码零动作/物理重放通过。入口/旧Push5h/新Reach1h平均回报57.30/83.60/88.42%，均低于相应线性头；新Reach1h有1/64final/any，其余0。虽验证动作RMSE均下降，尚无稳健控制收益，不推广。原始`runs/robocasa_reach3d_response_20261114`；该有限DONE不停止六组持续曲线。
 
 动作尺度审计：deep6h事实验证集中小于1cm指令25.5%，只贡献.72%动作MSE，单轴误差5.04mm高于该组target RMS3.56mm。但同容量相对误差线性头1/3/6h仅74.04/83.22/86.75%，末端36.41/23.10/17.82mm，final0/2/2，均值均差于绝对目标，暂不推广。默认头重拟合逐位一致、detach/物理重放通过。TRAIN-only零SGD的32窗口诊断中，t=.9表示端FM梯度范数约.333，t=.5约.091，原采样约.235；只是高噪声机制假设的依据，不是控制改进证明。原始新根`analysis/{factual-action-scale-audit,flow-condition-audit}.json`及`runs/robocasa_reach3d_relative_20261114`。
