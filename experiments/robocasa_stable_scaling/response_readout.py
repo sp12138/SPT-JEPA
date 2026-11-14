@@ -38,6 +38,20 @@ class FrozenResponse(nn.Module):
         # Windows normalizes actual XYZ inputs by the declared .3m bound.
         self.register_buffer("input_map",weights["action_encoder.weight"][:,7:10].clone()/.3)
         self.parent_nn_sha256=ready["nn_sha256"]
+        self.register_buffer("noise_cholesky",None)
+        self.noise_model_sha256=None
+        if "response_noise_covariance" in plan:
+            spec=plan["response_noise_covariance"]
+            path=Path(spec["path"])
+            assert sha(path)==spec["sha256"]
+            noise=torch.load(path,map_location="cpu",weights_only=True)
+            assert noise["parent_nn_sha256"]==self.parent_nn_sha256
+            assert noise["source_split"]=="TRAINonly"
+            covariance=noise["covariance"].double()
+            assert covariance.shape==(16,16) and torch.isfinite(covariance).all()
+            assert torch.allclose(covariance,covariance.T,rtol=1e-12,atol=1e-12)
+            self.noise_cholesky=torch.linalg.cholesky(covariance)
+            self.noise_model_sha256=spec["sha256"]
         self.eval().requires_grad_(False)
 
     @torch.no_grad()
@@ -47,10 +61,63 @@ class FrozenResponse(nn.Module):
         return (coefficients[...,1:]@self.input_map).reshape(-1,128,3)
 
     @torch.no_grad()
+    def predict(self, current, action):
+        z=current.float().reshape(-1,2,64)
+        coefficients=self.field(z).reshape(-1,2,64,65)
+        u=action.float()@self.input_map.T
+        return (z+coefficients[...,0]+
+            (coefficients[...,1:]@u[:,None,:,None]).squeeze(-1)).reshape(-1,128)
+
+    @torch.no_grad()
     def forward(self, current, following):
         basis=self.basis(current)
         delta=(following-current).float().reshape(-1,128,1)
+        if self.noise_cholesky is not None:
+            # One shared channel likelihood, applied within each physical sample.
+            # Its fixed mean is the learned forward model; no goal/error archive fit.
+            basis=torch.linalg.solve_triangular(self.noise_cholesky,
+                basis.double().reshape(-1,8,16,3),upper=False).reshape(-1,128,3)
+            delta=torch.linalg.solve_triangular(self.noise_cholesky,
+                delta.double().reshape(-1,8,16,1),upper=False).reshape(-1,128,1)
         return (torch.linalg.pinv(basis)@delta).squeeze(-1)
+
+
+def fit_noise(root):
+    """MLE of natural prediction errors with the forward mean held fixed."""
+    from experiments.robocasa_stable_scaling.readout import load_pairs
+    torch.set_num_threads(2);torch.set_float32_matmul_precision("highest")
+    output=root/"response-noise.pt";assert not output.exists()
+    directory=root/"heads/spt64-linear"
+    response=FrozenResponse(root).cuda();before=common.state_hash(response.state_dict())
+    assert response.noise_cholesky is None,"Fit noise from the unweighted parent"
+    for path in (directory/"cache").glob("part-*.json"):
+        proof=json.loads(path.read_text())
+        assert proof["parent"]["full_nn_sha256"]==response.parent_nn_sha256
+        assert proof["readout_data_sha256"]==sha(root/"data.json")
+    residuals=[]
+    for current,following,actions in load_pairs(directory):
+        predicted=torch.cat([response.predict(z,a) for z,a in
+            zip(current.split(512),actions.split(512))])
+        residuals.append((following-predicted).reshape(-1,16).double())
+    train,validation=residuals
+    covariance=train.T@train/len(train)
+    eigenvalues=torch.linalg.eigvalsh(covariance)
+    assert torch.isfinite(covariance).all() and bool((eigenvalues>0).all())
+    logdet=torch.linalg.slogdet(covariance)[1];isotropic=covariance.diag().mean()
+    def nll(residual):
+        full=((torch.linalg.solve(covariance,residual.T).T*residual).sum(-1)+logdet).mean()/2
+        iso=(residual.square().sum(-1)/isotropic+16*isotropic.log()).mean()/2
+        return dict(full=float(full),isotropic=float(iso))
+    assert common.state_hash(response.state_dict())==before
+    assert all(not p.requires_grad and p.grad is None for p in response.parameters())
+    torch.save(dict(covariance=covariance.cpu(),parent_nn_sha256=response.parent_nn_sha256,
+        source_split="TRAINonly"),output)
+    save(root/"response-noise.json",dict(passed=True,sha256=sha(output),parameters=136,
+        source_split="TRAINonly",parent_nn_sha256=response.parent_nn_sha256,
+        mean_fixed_to_frozen_forward_model=True,actions_are_forward_inputs_only=True,
+        all_body_frozen_unchanged=True,eigenvalues=eigenvalues.cpu().tolist(),
+        train_slot_residuals=len(train),validation_slot_residuals=len(validation),
+        train_NLL=nll(train),validation_NLL=nll(validation),not_control_evidence=True))
 
 
 def fit(root):
@@ -102,6 +169,8 @@ def fit(root):
         validation_zero_RMSE=float(yv.square().mean().sqrt()),scores=scores,selected_alpha=best[2],
         frozen_forward_model_unchanged=True,actual_stopgradient_backward_pass=True,
         exact_zero_for_identical_codes=True,no_future_or_optimal_action_labels=True,
+        response_noise_covariance_sha256=response.noise_model_sha256,
+        response_noise_covariance_parameters=136 if response.noise_model_sha256 else 0,
         head_target="same factual current issued XYZ a_t",target_case_feedback_used_for_selection=False))
 
 
@@ -116,7 +185,7 @@ class ResponsePolicy(probe.Policy):
     @torch.no_grad()
     def command(self, observation, goal):
         current=self.encode(observation)
-        coordinates=self.response(current,goal)[0]
+        coordinates=self.response(current,goal)[0].to(self.weight.dtype)
         value=self.weight@coordinates
         assert torch.isfinite(value).all()
         value*=torch.clamp(.3/value.norm().clamp_min(1e-12),max=1.)
@@ -129,9 +198,10 @@ class ResponsePolicy(probe.Policy):
 
 if __name__=="__main__":
     p=argparse.ArgumentParser();p.add_argument("--root",type=Path,required=True)
-    p.add_argument("--mode",choices=["fit","control"],required=True)
+    p.add_argument("--mode",choices=["fit","fit-noise","control"],required=True)
     p.add_argument("--shard",type=int);p.add_argument("--shards",type=int,default=8);a=p.parse_args()
     if a.mode=="fit":fit(a.root)
+    elif a.mode=="fit-noise":fit_noise(a.root)
     else:
         torch.set_num_threads(2);torch.set_float32_matmul_precision("highest")
         policy=ResponsePolicy(a.root,"spt64-linear")
