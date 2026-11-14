@@ -175,6 +175,13 @@ alpha，不混作独立确认。根`runs/robocasa_reach3d_ridge_choice_20261114`
 不代表视觉码已遵循该映射。先固定1h同64开发例对照常规当前动作头，
 根`runs/robocasa_reach3d_intrinsic_transport_20261114`；确认32例不打开。
 
+同一1h加法模型再比较受限9参数校准：先由A得到三维坐标，再仅用原
+17920/1536事实当前a_t拟合C，控制矩阵为`C B^+`。表示及A冻结，sample
+MSE/原ridge网格和事实验证选择不变；与零标签内生读出、384参数直接头
+分别报告。默认零标签矩阵逐位回归、实际detach拟合先过，不以目标案例
+选C。根`runs/robocasa_reach3d_calibrated_transport_20261114`，各完整64开发例，
+无未来/最优动作标签，不将小容量或预测误差当控制进步。
+
 ## 前序Push迁移实验与信息边界
 
 dev13：固定未来视觉特征变化目标；dev15：原SPT temporal-forecast。

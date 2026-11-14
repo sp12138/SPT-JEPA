@@ -216,14 +216,41 @@ def make_additive_head(root):
     assert error<1e-10 and torch.isfinite(weight).all()
     directory=root/"heads"/arm;directory.mkdir(parents=True,exist_ok=True)
     assert not (directory/"head.pt").exists()
+    calibrated=plan.get("additive_readout_calibrated",False)
+    details={};label_count=0
+    if calibrated:
+        from experiments.robocasa_stable_scaling.readout import load_pairs
+        torch.set_num_threads(2);torch.set_float32_matmul_precision("highest")
+        for path in (directory/"cache").glob("part-*.json"):
+            proof=json.loads(path.read_text())
+            assert proof["parent"]["full_nn_sha256"]==parent["nn_sha256"]
+            assert proof["readout_data_sha256"]==sha(root/"data.json")
+        (z0,z1,a),(v0,v1,va)=load_pairs(directory)
+        x=(z1-z0).double()@weight.T.cuda();vx=(v1-v0).double()@weight.T.cuda()
+        y=a.double();vy=va.double();gram=x.T@x/len(x);rhs=x.T@y/len(x)
+        energy=float(gram.diag().mean());assert energy>0 and np.isfinite(energy)
+        best=None;scores=[]
+        for alpha in plan["ridge_lambdas"]:
+            calibration=torch.linalg.solve(gram+alpha*energy*torch.eye(3,device="cuda",dtype=torch.float64),rhs).T
+            mse=float((vx@calibration.T-vy).square().mean());assert np.isfinite(mse)
+            scores.append(dict(alpha=alpha,validation_RMSE=mse**.5))
+            if best is None or mse<best[0]:best=(mse,calibration,alpha)
+        leaf=x[:32].float().detach().requires_grad_();head=best[1].float().detach().requires_grad_()
+        (leaf.detach()@head.T-y[:32].float()).square().mean().backward()
+        assert leaf.grad is None and head.grad is not None and torch.isfinite(head.grad).all()
+        assert float(head.grad.norm())>0
+        weight=best[1].cpu()@weight;label_count=len(x)
+        details=dict(train_transitions=len(x),validation_transitions=len(vx),
+            validation_RMSE=best[0]**.5,selected_alpha=best[2],scores=scores,
+            actual_stopgradient_backward_pass=True,head_target="same factual current XYZ input a_t")
     torch.save(dict(weight=weight.float(),head_type="intrinsic_additive_response",
-        fitted_current_action_labels=0),directory/"head.pt")
+        fitted_current_action_labels=label_count),directory/"head.pt")
     save(directory/"ready.json",dict(passed=True,head_sha256=sha(directory/"head.pt"),
-        parent_nn_sha256=parent["nn_sha256"],input_width=128,fitted_head_parameters=0,
-        derived_head_values=weight.numel(),fitted_current_action_labels=0,new_body_updates=0,
-        source="learned forward input operator from natural consequence pretraining",
+        parent_nn_sha256=parent["nn_sha256"],input_width=128,fitted_head_parameters=9 if calibrated else 0,
+        derived_head_values=weight.numel(),fitted_current_action_labels=label_count,new_body_updates=0,
+        source="learned forward input operator;optional factual current-input calibration explicitly reported",
         physical_input_units="same XYZ current command divided by public .3m bound",
-        learned_response_left_inverse_max_error=error,not_control_evidence=True))
+        uncalibrated_response_left_inverse_max_error=error,not_control_evidence=True,**details))
 
 
 class AdditivePolicy(probe.Policy):
@@ -231,7 +258,10 @@ class AdditivePolicy(probe.Policy):
         super().__init__(root,arm)
         saved=torch.load(root/"heads"/arm/"head.pt",map_location="cpu",weights_only=True)
         assert saved["head_type"]=="intrinsic_additive_response"
-        self.uses_factual_action_labels=False;self.initial_weight=self.weight.clone()
+        proof=json.loads((root/"heads"/arm/"ready.json").read_text())
+        assert proof["parent_nn_sha256"]==self.readout.parent["full_nn_sha256"]
+        self.uses_factual_action_labels=bool(saved["fitted_current_action_labels"])
+        self.initial_weight=self.weight.clone()
 
     def unchanged(self):
         return super().unchanged() and torch.equal(self.weight,self.initial_weight)
