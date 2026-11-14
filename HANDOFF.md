@@ -10,7 +10,7 @@
 - 六组各4卡：dev13原SPT64/256维宽状态，dev15两层加深E/条件编码率，dev6局部控制仿射/像素残差flow。新E/F/decoder均重新随机开始，不继承旧Push权重；共享已授权冻结V-JEPA2.1-G，不能称整个RGB骨干从零。全组E/action统一FP32，原sample-level目标、sigma .1/rho .8/beta .25及900活跃秒warmup后逆平方根调度保持。架构参数/吞吐不同、同seed1不是独立重复；宽状态初始化不冒称与64D逐参数配对。
 - 三机先验证本地1216条缓存SHA，再启动16个保留功能更新与真实全状态恢复；`PRETRAIN_READY.json`是数据门。有限采集尚占卡时controller等待，不把等待算成训练。dev6后续八条Reach事实采集可与训练共用设备；归属和实际GPU看新根，非额外机器。所有恢复含model/optimizer/scheduler/RNG/游标，未保存重放须披露。
 - 动作头始终冻结/detach，只用同一转移a_t的17920/1536个XYZ标签；body无动作target。数据从旧Push改为Reach，旧/新协议单列，不把数据变化算算法公平收益。仍同64已见开发案例、5动作、norm .3、native2mm final/any；32确认例保持未打开。固定标签/同案例的多预算曲线、后段稳定及严格完成进步才算目标，不用loss或单点代替。
-- 新根`baseline_worker.py`有限比较同Reach标签下的冻结G均值、旧Push-SPT5h及新模型入口8更新，额外body SGD为0；目的区分读出校准与后果学习，不当公开RoboJEPA策略复现。结果看`baseline-results`。主模型各完整训练小时独立重拟合线性头并闭环，不因有限诊断DONE自行HOLD。
+- 新根`baseline_worker.py`完成同Reach标签下冻结G均值、旧Push-SPT5h及新模型入口8更新：77.67/84.28/58.29%，final0/1/0（各64例），额外body SGD为0，不当公开RoboJEPA策略复现。六组1h首点中加深E92.20%/17.26mm、原SPT89.48%/24.00mm，全部final0；仍需多预算曲线。有限状态条件动作头`runs/robocasa_reach3d_response_20261114`完成192记录，验证MSE降低但三组平均回报均变差，暂不推广。主模型各完整训练小时独立重拟合线性头并闭环，不因有限诊断DONE自行HOLD。
 - 旧阶段完整结论见[CONCLUSIONS](experiments/CONCLUSIONS.md)及[持续协议](experiments/robocasa_stable_scaling/PROTOCOL.md)。原SPT旧标签1→6h约79–81%且严格成功稀少；多尺度Push标签3h84.40%、5h83.75%仍全部0，非线性/双线性未证持续收益。不可据这批跨控制器迁移结果断言JEPA原理不适合3D。
 - 一次加深E的第2h恢复在写JSON临时文件时退出，发生在该阶段任何SGD前；改为独占临时文件，160次本地及160次EFS并发写通过，从14006步完整恢复、0重放，随后随旧阶段正常收尾。原错误、恢复及全部状态保留，非模型数值失败。此前数值守卫与精度修复也保留原版本，不改在跑的冻结源码。
 
