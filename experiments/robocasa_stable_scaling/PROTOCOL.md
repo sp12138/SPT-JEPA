@@ -182,6 +182,27 @@ MSE/原ridge网格和事实验证选择不变；与零标签内生读出、384�
 选C。根`runs/robocasa_reach3d_calibrated_transport_20261114`，各完整64开发例，
 无未来/最优动作标签，不将小容量或预测误差当控制进步。
 
+编码通道对照在同加法像素模型上配对初始化，不继承NN更新。原观察码的
+AR噪声边缘方差为sigma0²，而用于生成的forecast只保留首噪声的rho^t
+衰减，末帧方差比为rho^14≈.044；这提供了支路分布差异，但尚非控制
+失败的唯一归因。新`stationary_coding_channel`用独立于未来RGB的同一
+外生AR噪声采样预测码，并将条件prior方差匹配为sigma0²(1-rho²)。
+相应Gaussian KL仅有innovation_error²/[2 sigma0²(1-rho²)]，不保留旧
+方差差异常数；误差项梯度也随之改变，不能把收益只归因生成噪声。
+原prior本身有效，不称旧KL公式错误。没有新增标签、超参数、跨样本
+统计或未来观测输入到均值动力学；sigma/rho/beta、固定标签和控制条件
+不变。新E/A/renderer与加法参照完整初始NN逐位配对；冻结外部G例外
+继续披露。默认旧loss/metrics逐位回归、梯度在重复旧backward的舍入误差
+或8倍FP32机器精度范围内、条件Gaussian KL代数及
+实际有限梯度检查通过后才可交接，实际更新/完整恢复仍是长训门。
+根`runs/robocasa_reach3d_stationary_channel_20261114`；联合码完成整阶段/
+64控制并核验全状态后，拟用dev13的0–3卡，不提前报告已启动或收益。
+
+deep+Euler另固定4h同父模型，以冻结F的9参数响应读出与原384参数E-only
+头比较，原标签/验证/64例不变，body零新增更新。根
+`runs/robocasa_reach3d_deep_field_geometry_v2_20261114`；只用于分离动力学响应
+和线性表示读出的差异，不打开确认例，不把预测/拟合改善当控制改善。
+
 ## 前序Push迁移实验与信息边界
 
 dev13：固定未来视觉特征变化目标；dev15：原SPT temporal-forecast。

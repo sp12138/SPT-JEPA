@@ -283,6 +283,9 @@ def build(root, cfg):
                 base.action_encoder=nn.Linear(14,64,bias=False)
             base.predictor.requires_grad_(False)
             base.predict=types.MethodType(additive_predict,base)
+        if cfg.get("stationary_coding_channel",False):
+            assert cfg.get("pixel_additive_transport",False)
+            base.stationary_coding_channel=True
         if cfg.get("observation_depth", 0):
             from experiments.robocasa_action_probe.probe import deepen_observation_adapter
             assert cfg["observation_depth"] == 2

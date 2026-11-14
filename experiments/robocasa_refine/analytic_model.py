@@ -6,6 +6,11 @@ The existing correlated Gaussian q then has exact KL mean residual
   (mu_t-m_t) - rho*(mu_{t-1}-m_{t-1}).
 Initial-code regularization and image distortion remain unchanged. This is a
 replacement prior, not an additional clean auxiliary loss or joint-ELBO claim.
+
+An opt-in stationary coding channel matches the prior innovation variance to
+q's sigma0^2*(1-rho^2) and renders rollout samples with the same stationary AR
+noise as observation codes. Those innovations are random variables independent
+of future RGB; only the clean rollout mean uses the observed initial code.
 """
 import math
 
@@ -62,19 +67,26 @@ class AnalyticResidualSPT(RobustLeWM):
         with torch.random.fork_rng(devices=devices):
             torch.manual_seed(self.forecast_seed+int(step))
             means=self.mean_trajectory(flat[:,0],info["act_emb"][:,:-1]).reshape_as(mu)
-            powers=mu.new_tensor([self.rho**t for t in range(1,w)])[None,:,None,None]
-            forecast=means[:,1:]+powers*(noisy[:,:1]-mu[:,:1])
+            if getattr(self,"stationary_coding_channel",False):
+                forecast=means[:,1:]+self.sigma0*noise[:,1:]
+            else:
+                powers=mu.new_tensor([self.rho**t for t in range(1,w)])[None,:,None,None]
+                forecast=means[:,1:]+powers*(noisy[:,:1]-mu[:,:1])
             choose=torch.rand(b,w-1,1,1,device=flat.device)<self.forecast_fraction
             condition=torch.where(choose,forecast,noisy[:,1:])
         error=innovation_error(mu,means,self.rho)
         entry=self.initial_rate(mu[:,0])
-        surprise=surprise_nats(error,torch.zeros_like(error),self.sigma0)
-        surprise=surprise+self.state_dim*.5*(-self.rho**2-math.log1p(-self.rho**2))
+        coding_sigma=self.sigma0
+        if getattr(self,"stationary_coding_channel",False):
+            coding_sigma*=math.sqrt(1-self.rho**2)
+        surprise=surprise_nats(error,torch.zeros_like(error),coding_sigma)
+        if not getattr(self,"stationary_coding_channel",False):
+            surprise=surprise+self.state_dim*.5*(-self.rho**2-math.log1p(-self.rho**2))
         fm=self.distortion(batch,render,anchor,condition)
         rate=(entry+surprise.sum(1)).mean()/((w-1)*FRAME_ELEMS)
         beta=self.beta*min(1.,step/max(1,ramp_steps)) if ramp_steps else self.beta
         loss=fm+beta*rate
-        variable=(.5*mu[:,0].float().square()+error.square().sum(1)/(2*self.sigma0**2)).mean(0)
+        variable=(.5*mu[:,0].float().square()+error.square().sum(1)/(2*coding_sigma**2)).mean(0)
         return loss,dict(loss=loss,fm=fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),
             rate_share=beta*rate/fm.detach().clamp_min(1e-8),feature_std=mu.float().std((0,1)).mean(),
             active_dims=(variable>.1).sum(),temporal_noise_rho=loss.new_tensor(self.rho),
