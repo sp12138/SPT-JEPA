@@ -216,8 +216,12 @@ def build(root, cfg):
     else:
         assert cfg["variant"] in ("spt-rate", "spt-residual-flow", "spt-future-mean",
                                   "spt-control-affine", "spt-deep-observation", "spt-conditional-rate")
-        if cfg["variant"] in ("spt-residual-flow", "spt-future-mean"):
-            base.pixel_objective = cfg["variant"].removeprefix("spt-")
+        pixel_objective = cfg.get("pixel_objective")
+        if pixel_objective is None and cfg["variant"] in ("spt-residual-flow", "spt-future-mean"):
+            pixel_objective = cfg["variant"].removeprefix("spt-")
+        if pixel_objective is not None:
+            assert pixel_objective in ("residual-flow", "future-mean")
+            base.pixel_objective = pixel_objective
             base.distortion = types.MethodType(pixel_prediction_distortion, base)
         if cfg["variant"] == "spt-control-affine":
             with torch.random.fork_rng():
