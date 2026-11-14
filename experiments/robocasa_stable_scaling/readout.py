@@ -1,7 +1,7 @@
-"""Detached factual-action probes, including a shared nonlinear potential.
+"""Detached factual-action probes with potential and state-conditioned heads.
 
-The residual is a difference of the same function, so identical observations
-always imply zero action. Only the actually issued action of this transition
+Both residuals are zero for identical observations.
+Only the actually issued action of this transition
 is a label. No goal, expert path or world-model gradient enters this fit.
 """
 import argparse
@@ -37,6 +37,26 @@ class Potential(nn.Module):
         return F.linear(following-current, self.weight)+self.net(following)-self.net(current)
 
 
+class Response(nn.Module):
+    """State-conditioned inverse; identity goals imply exactly zero action.
+
+    Issued commands under saturation need not be an integrable pose difference.
+    Keep the same factual supervision without imposing that extra constraint.
+    """
+    def __init__(self, weight):
+        super().__init__()
+        self.register_buffer("weight", weight.detach().clone())
+        self.net = nn.Sequential(nn.Linear(2*weight.shape[1], 256), nn.SiLU(),
+            nn.Linear(256, 256), nn.SiLU(), nn.Linear(256, 3))
+        nn.init.zeros_(self.net[-1].weight); nn.init.zeros_(self.net[-1].bias)
+
+    def forward(self, current, following):
+        current, following = current.detach(), following.detach()
+        delta = following-current
+        return F.linear(delta, self.weight)+self.net(torch.cat((current,delta),-1))-self.net(
+            torch.cat((current,torch.zeros_like(delta)),-1))
+
+
 def load_pairs(directory):
     rows, codes, actions, splits = [], [], [], []
     for shard in range(8):
@@ -67,7 +87,10 @@ def fit(root, arm="spt64-linear", steps=5000):
     source = directory/"linear-head.pt"; ready = json.loads((directory/"linear-ready.json").read_text())
     assert sha(source) == ready["head_sha256"]
     weight = torch.load(source, map_location="cpu", weights_only=True)["weight"]
-    model = Potential(weight).cuda(); opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-4)
+    kind=json.loads((root/"plan.json").read_text()).get("detached_head_kind","potential")
+    assert kind in ("potential","response")
+    model = (Response if kind=="response" else Potential)(weight).cuda()
+    opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-4)
     (x0, x1, target), (v0, v1, vy) = load_pairs(directory)
     generator = torch.Generator(device="cuda").manual_seed(20261114)
     with torch.no_grad(): baseline = float((model(v0, v1)-vy).square().mean())
@@ -100,9 +123,10 @@ def fit(root, arm="spt64-linear", steps=5000):
     assert any(p.grad is not None and float(p.grad.norm()) > 0 for p in model.parameters())
     with torch.no_grad(): assert torch.equal(model(v0[:32], v0[:32]), torch.zeros_like(vy[:32]))
     model.zero_grad(set_to_none=True)
-    torch.save(dict(weight=weight, potential=best[1], head_type="potential", selected_step=best[2]), directory/"head.pt")
+    torch.save(dict(weight=weight, potential=best[1], head_type=kind, selected_step=best[2]), directory/"head.pt")
     save(directory/"ready.json", dict(ready, head_sha256=sha(directory/"head.pt"),
-        head_type="shared nonlinear potential difference", selected_step=best[2], steps_trained=steps,
+        head_type=kind, selected_step=best[2], steps_trained=steps,
+        head_parameters=sum(p.numel() for p in model.parameters()),
         validation_RMSE=best[0]**.5, linear_validation_RMSE=baseline**.5,
         linear_FP64_validation_RMSE=reference**.5,
         validation_history=history, actual_stopgradient_backward_pass=True,
@@ -116,7 +140,8 @@ class PotentialPolicy(probe.Policy):
     def __init__(self, root, arm):
         super().__init__(root, arm)
         saved = torch.load(root/"heads"/arm/"head.pt", map_location="cpu", weights_only=True)
-        self.potential = Potential(saved["weight"]).cuda().eval().requires_grad_(False)
+        cls=Response if saved.get("head_type")=="response" else Potential
+        self.potential = cls(saved["weight"]).cuda().eval().requires_grad_(False)
         self.potential.load_state_dict(saved["potential"], strict=True)
         self.head_hash = common.state_hash(self.potential.state_dict())
 

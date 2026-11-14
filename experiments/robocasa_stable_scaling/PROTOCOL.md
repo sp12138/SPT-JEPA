@@ -31,6 +31,14 @@ norm .3/native2mm；另32确认例不参与选择。有限冻结G、旧Push-SPT5
 策略复现。每完整训练小时评控制，本会话每小时检查和修正；原goal/
 旧监控不恢复，有限DONE不结束当前目标。状态与源版本只查新根。
 
+另用同一冻结表示、标签和64例有限检验状态条件动作头：
+`W*delta + f(z,delta) - f(z,0)`，不额外假设动作是全局势函数差。
+固定5000次AdamW更新、batch512、lr .001/weight decay .0001；
+只按事实验证动作RMSE选步数。先比较入口、旧Push5h、新Reach1h，
+无新增body更新，先看真实控制再决定是否扩展；并非预先保证改善。
+拟合实际检查detach梯度、同码严格零动作，控制继续核验物理重放与模型
+不变。原始根`runs/robocasa_reach3d_response_20261114`，失败同样保留。
+
 ## 前序Push迁移实验与信息边界
 
 dev13：固定未来视觉特征变化目标；dev15：原SPT temporal-forecast。
