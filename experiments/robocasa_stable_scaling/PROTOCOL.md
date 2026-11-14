@@ -83,6 +83,16 @@ RK各阶段恒用当前输入a_t，未取得未来动作；E/action/像素目标
 `runs/robocasa_reach3d_control_flow_20261114`；dev6只额外允许明确属于
 原根的既有普通采集器共卡，其他进程仍须退出；真实更新/全恢复为启动门。
 
+独立的推理校准对照将冻结线性头视作三维观察坐标`phi(o)=W E(o)`。
+每回合J从I开始，仅用最近实际输入a及其后自然RGB的
+`y=phi(o_next)-phi(o_current)`作Broyden更新，再求`J^+ (phi(goal)-phi(now))`。
+校准不使用目标图像，不访问reward/state/success、档案轨迹或其他案例，
+每案例显式清空历史；E与W不更新，最多5实际动作/norm .3保持。
+只用默认机器数值秩容差，不新增任务相关增益/阻尼/停止规则。该对照是
+控制器变更，不混作原固定直接头或body训练收益。先在deep12h-MAE和
+仿射12h-ridge同64例完整验证，根`runs/robocasa_reach3d_servo_20261114`。
+线性数值案例与重置检查通过不证明真实任务有效；确认案例仍不打开。
+
 ## 前序Push迁移实验与信息边界
 
 dev13：固定未来视觉特征变化目标；dev15：原SPT temporal-forecast。

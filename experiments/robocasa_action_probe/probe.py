@@ -244,6 +244,8 @@ def evaluate(root, arm, index, policy=None):
     else:
         assert policy.readout.arm == arm
         startup_seconds = 0.
+    if hasattr(policy, "begin_episode"):
+        policy.begin_episode()
     if policy.readout.precision=="fp32": torch.set_float32_matmul_precision("highest")
     previous_seconds, previous_calls = policy.seconds, policy.calls
     case = json.loads((root/"plan.json").read_text())["cases"][index]
@@ -287,6 +289,8 @@ def evaluate(root, arm, index, policy=None):
             physics_seconds=physics_seconds, startup_seconds=startup_seconds,
             CEM_calls=0, learned_inverse_current_command=True, optimal_action_assumed=False,
             inference_goal_distribution_shift=True, no_proprio_reward_or_state_to_policy=True)
+        if hasattr(policy, "decisions"):
+            row["controller_decisions"] = policy.decisions
         save(output/"summary.json", row); print(json.dumps(row), flush=True)
     finally: env.close()
 
