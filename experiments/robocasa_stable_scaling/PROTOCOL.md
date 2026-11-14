@@ -65,6 +65,14 @@ norm .3/native2mm；另32确认例不参与选择。有限冻结G、旧Push-SPT5
 真实更新/全恢复及控制门仍需通过。新模型无旧NN祖先；首次控制前不
 称多视角机制已提供性能收益。原deep/仿射/残差三组继续，源版本均冻结。
 
+有限动作损失对照另固定deep3/12h、384参数线性头，均从同ridge初始化，
+同5000次AdamW/batch512/lr .001/WD .0001/seed，惟sample MSE与MAE不同，
+分别按事实验证同类误差选步数。MAE检验限幅等造成的歧义大指令是否
+主导平方损失；不使用状态/实际位移筛样本、不加相对权重或epsilon。
+两头都评完整64例，body无新增更新；不能把拟合改善代替控制。
+根`runs/robocasa_reach3d_robust_linear_20261114`，与原解析ridge、非线性
+头分别报告。首两头detach/同码严格零动作实际检查已通过。
+
 ## 前序Push迁移实验与信息边界
 
 dev13：固定未来视觉特征变化目标；dev15：原SPT temporal-forecast。

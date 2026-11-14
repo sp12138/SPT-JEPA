@@ -57,6 +57,18 @@ class Response(nn.Module):
             torch.cat((current,torch.zeros_like(delta)),-1))
 
 
+class Linear(nn.Module):
+    def __init__(self, weight):
+        super().__init__()
+        self.weight = nn.Parameter(weight.detach().clone())
+
+    def forward(self, current, following):
+        return F.linear(following.detach()-current.detach(), self.weight)
+
+
+HEADS = {"potential": Potential, "response": Response, "linear": Linear}
+
+
 def load_pairs(directory):
     rows, codes, actions, splits = [], [], [], []
     for shard in range(8):
@@ -87,9 +99,14 @@ def fit(root, arm="spt64-linear", steps=5000):
     source = directory/"linear-head.pt"; ready = json.loads((directory/"linear-ready.json").read_text())
     assert sha(source) == ready["head_sha256"]
     weight = torch.load(source, map_location="cpu", weights_only=True)["weight"]
-    kind=json.loads((root/"plan.json").read_text()).get("detached_head_kind","potential")
-    assert kind in ("potential","response")
-    model = (Response if kind=="response" else Potential)(weight).cuda()
+    plan=json.loads((root/"plan.json").read_text())
+    kind=plan.get("detached_head_kind","potential")
+    objective=plan.get("head_fit_loss","mse")
+    assert kind in HEADS and objective in ("mse","mae")
+    def criterion(predicted, actual):
+        error=predicted-actual
+        return error.square().mean() if objective=="mse" else error.abs().mean()
+    model = HEADS[kind](weight).cuda()
     opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-4)
     (x0, x1, target), (v0, v1, vy) = load_pairs(directory)
     generator = torch.Generator(device="cuda").manual_seed(20261114)
@@ -99,48 +116,56 @@ def fit(root, arm="spt64-linear", steps=5000):
     with torch.no_grad():
         reference = float((F.linear((v1-v0).double(), weight.cuda().double())-vy.double()).square().mean())
     assert abs(reference**.5-ready["validation_RMSE"]) < 1e-6
-    best = (baseline, common.cpu(model.state_dict()), 0); history = []
+    with torch.no_grad(): baseline_score=float(criterion(model(v0,v1),vy))
+    best = (baseline_score, common.cpu(model.state_dict()), 0); history = []
     started = time.perf_counter()
     for step in range(1, steps+1):
         indices = torch.randint(len(x0), (512,), device="cuda", generator=generator)
         opt.zero_grad(set_to_none=True)
-        loss = (model(x0[indices], x1[indices])-target[indices]).square().mean()
+        loss = criterion(model(x0[indices], x1[indices]),target[indices])
         assert torch.isfinite(loss); loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1., error_if_nonfinite=True); opt.step()
         if step % 100 == 0 or step == steps:
-            with torch.no_grad(): mse = float((model(v0, v1)-vy).square().mean())
-            assert np.isfinite(mse)
-            history.append(dict(step=step, train_RMSE=float(loss.detach())**.5, validation_RMSE=mse**.5))
-            if mse < best[0]: best = (mse, common.cpu(model.state_dict()), step)
+            with torch.no_grad():
+                prediction=model(v0,v1)
+                score=float(criterion(prediction,vy))
+                mse=float((prediction-vy).square().mean())
+            assert np.isfinite(score) and np.isfinite(mse)
+            history.append(dict(step=step, train_objective=float(loss.detach()),
+                validation_objective=score, validation_RMSE=mse**.5))
+            if score < best[0]: best = (score, common.cpu(model.state_dict()), step)
     common.save_full_state(directory, dict(model=common.cpu(model.state_dict()), optimizer=common.cpu(opt.state_dict()),
         scheduler=dict(kind="constant", lr=1e-3), step=steps, rng=common.rng_state(),
         data_cursor=dict(kind="CUDA random sampler", generator=generator.get_state().cpu(), batch=512),
         source_linear_sha256=ready["head_sha256"], samples=steps*512))
     model.load_state_dict(best[1]); model.zero_grad(set_to_none=True)
     leaf = v0[:32].detach().requires_grad_()
-    test = (model(leaf, v1[:32])-vy[:32]).square().mean(); test.backward()
+    test = criterion(model(leaf, v1[:32]),vy[:32]); test.backward()
     assert leaf.grad is None and all(p.grad is None or bool(torch.isfinite(p.grad).all()) for p in model.parameters())
     assert any(p.grad is not None and float(p.grad.norm()) > 0 for p in model.parameters())
-    with torch.no_grad(): assert torch.equal(model(v0[:32], v0[:32]), torch.zeros_like(vy[:32]))
+    with torch.no_grad():
+        assert torch.equal(model(v0[:32], v0[:32]), torch.zeros_like(vy[:32]))
+        validation_rmse=float((model(v0,v1)-vy).square().mean().sqrt())
     model.zero_grad(set_to_none=True)
     torch.save(dict(weight=weight, potential=best[1], head_type=kind, selected_step=best[2]), directory/"head.pt")
     save(directory/"ready.json", dict(ready, head_sha256=sha(directory/"head.pt"),
         head_type=kind, selected_step=best[2], steps_trained=steps,
         head_parameters=sum(p.numel() for p in model.parameters()),
-        validation_RMSE=best[0]**.5, linear_validation_RMSE=baseline**.5,
+        validation_RMSE=validation_rmse, head_fit_loss=objective,
+        validation_objective=best[0], linear_validation_RMSE=baseline**.5,
         linear_FP64_validation_RMSE=reference**.5,
         validation_history=history, actual_stopgradient_backward_pass=True,
         exact_zero_for_identical_codes=True, no_action_loss_to_backbone=True,
         elapsed_seconds=time.perf_counter()-started, target_case_feedback_used_for_selection=False))
     print(json.dumps(dict(root=str(root), best_step=best[2], baseline_RMSE=baseline**.5,
-        validation_RMSE=best[0]**.5)), flush=True)
+        validation_RMSE=validation_rmse, head_fit_loss=objective)), flush=True)
 
 
 class PotentialPolicy(probe.Policy):
     def __init__(self, root, arm):
         super().__init__(root, arm)
         saved = torch.load(root/"heads"/arm/"head.pt", map_location="cpu", weights_only=True)
-        cls=Response if saved.get("head_type")=="response" else Potential
+        cls=HEADS[saved.get("head_type","potential")]
         self.potential = cls(saved["weight"]).cuda().eval().requires_grad_(False)
         self.potential.load_state_dict(saved["potential"], strict=True)
         self.head_hash = common.state_hash(self.potential.state_dict())
