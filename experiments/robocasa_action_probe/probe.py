@@ -287,7 +287,8 @@ def evaluate(root, arm, index, policy=None):
             encoder_and_readout_seconds=policy.seconds-previous_seconds,
             encoder_calls=policy.calls-previous_calls,
             physics_seconds=physics_seconds, startup_seconds=startup_seconds,
-            CEM_calls=0, learned_inverse_current_command=True, optimal_action_assumed=False,
+            CEM_calls=0, learned_inverse_current_command=bool(getattr(policy,"uses_factual_action_labels",True)),
+            optimal_action_assumed=False,
             inference_goal_distribution_shift=True, no_proprio_reward_or_state_to_policy=True)
         if hasattr(policy, "decisions"):
             row["controller_decisions"] = policy.decisions

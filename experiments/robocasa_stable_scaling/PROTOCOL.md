@@ -93,6 +93,18 @@ RK各阶段恒用当前输入a_t，未取得未来动作；E/action/像素目标
 仿射12h-ridge同64例完整验证，根`runs/robocasa_reach3d_servo_20261114`。
 线性数值案例与重置检查通过不证明真实任务有效；确认案例仍不打开。
 
+冻结响应读出另使用已学Euler仿射F的`B(z)=dF/da`，不是仿真器Jacobian。
+两个同步视角拼成128维，逐物理样本计算`psi=B(z_current)^+ (z_next-z_current)`，
+仅拟合9参数`a_hat=C psi`，同17920/1536事实当前a_t标签、同ridge网格。
+E和F均冻结/detach，控制时下一帧换成给定目标RGB，仍5动作/norm .3。
+它使用了F，因此与E-only线性probe分开报告。每样本矩阵伪逆不混合
+其他物理样本；一致旋转B与位移的FP64代数检查误差约2.50e-16，
+不代表完整NN重参数化或控制收益证明。根`runs/robocasa_reach3d_response_geometry_20261114`。
+1/12h完整控制后，固定追加3/6/9/13h曲线；这是开发集上的后续验证，
+不能冒称预先独立确认。另在`runs/robocasa_reach3d_response_identity_20261114`
+固定C=I、不拟合任何动作标签，单列12h校准去除对照。所有F都只学自然
+后果，动作作为输入；identity对照不新增任何body/head训练。
+
 ## 前序Push迁移实验与信息边界
 
 dev13：固定未来视觉特征变化目标；dev15：原SPT temporal-forecast。
