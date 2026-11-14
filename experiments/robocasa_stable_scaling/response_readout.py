@@ -196,14 +196,56 @@ class ResponsePolicy(probe.Policy):
             common.state_hash(self.response.state_dict())==self.response_hash)
 
 
+def make_additive_head(root):
+    """Invert the learned additive input map without fitting any action labels."""
+    plan=json.loads((root/"plan.json").read_text());arm="spt64-linear"
+    run=Path(plan["source"])/"training"/plan["source_models"][arm]
+    cfg=json.loads((run/"config.json").read_text())
+    assert cfg.get("pixel_additive_transport") and cfg["state_slots"]==4
+    assert not cfg.get("joint_views",False)
+    folder=run/plan["comparison_checkpoint"];parent=json.loads((folder/"ready.json").read_text())
+    assert parent["passed"] and sha(folder/"weights.pt")==parent["weights_sha256"]
+    weights=torch.load(folder/"weights.pt",map_location="cpu",weights_only=True)
+    assert "action_encoder.bias" not in weights
+    response=weights["action_encoder.weight"][:,7:10].double()/.3
+    # Both synchronized views use the same input operator during pretraining.
+    response=torch.cat([response,response],0)
+    assert response.shape==(128,3) and int(torch.linalg.matrix_rank(response))==3
+    weight=torch.linalg.pinv(response)
+    error=float((weight@response-torch.eye(3,dtype=torch.float64)).abs().max())
+    assert error<1e-10 and torch.isfinite(weight).all()
+    directory=root/"heads"/arm;directory.mkdir(parents=True,exist_ok=True)
+    assert not (directory/"head.pt").exists()
+    torch.save(dict(weight=weight.float(),head_type="intrinsic_additive_response",
+        fitted_current_action_labels=0),directory/"head.pt")
+    save(directory/"ready.json",dict(passed=True,head_sha256=sha(directory/"head.pt"),
+        parent_nn_sha256=parent["nn_sha256"],input_width=128,fitted_head_parameters=0,
+        derived_head_values=weight.numel(),fitted_current_action_labels=0,new_body_updates=0,
+        source="learned forward input operator from natural consequence pretraining",
+        physical_input_units="same XYZ current command divided by public .3m bound",
+        learned_response_left_inverse_max_error=error,not_control_evidence=True))
+
+
+class AdditivePolicy(probe.Policy):
+    def __init__(self,root,arm):
+        super().__init__(root,arm)
+        saved=torch.load(root/"heads"/arm/"head.pt",map_location="cpu",weights_only=True)
+        assert saved["head_type"]=="intrinsic_additive_response"
+        self.uses_factual_action_labels=False;self.initial_weight=self.weight.clone()
+
+    def unchanged(self):
+        return super().unchanged() and torch.equal(self.weight,self.initial_weight)
+
+
 if __name__=="__main__":
     p=argparse.ArgumentParser();p.add_argument("--root",type=Path,required=True)
-    p.add_argument("--mode",choices=["fit","fit-noise","control"],required=True)
+    p.add_argument("--mode",choices=["fit","fit-noise","fit-additive","control","control-additive"],required=True)
     p.add_argument("--shard",type=int);p.add_argument("--shards",type=int,default=8);a=p.parse_args()
     if a.mode=="fit":fit(a.root)
     elif a.mode=="fit-noise":fit_noise(a.root)
+    elif a.mode=="fit-additive":make_additive_head(a.root)
     else:
         torch.set_num_threads(2);torch.set_float32_matmul_precision("highest")
-        policy=ResponsePolicy(a.root,"spt64-linear")
+        policy=(AdditivePolicy if a.mode=="control-additive" else ResponsePolicy)(a.root,"spt64-linear")
         for i,_ in enumerate(json.loads((a.root/"plan.json").read_text())["cases"]):
             if i%a.shards==a.shard:probe.evaluate(a.root,"spt64-linear",i,policy=policy)
