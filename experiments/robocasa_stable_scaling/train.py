@@ -275,6 +275,14 @@ def build(root, cfg):
                 base.action_encoder = nn.Linear(14, 64, bias=False)
                 base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"))
             base.predict = types.MethodType(control_affine_predict, base)
+        if cfg.get("pixel_additive_transport",False):
+            assert cfg["variant"]=="spt-deep-observation"
+            assert not cfg.get("joint_views",False) and pixel_objective is None
+            with torch.random.fork_rng():
+                torch.manual_seed(92320261114+cfg["seed"])
+                base.action_encoder=nn.Linear(14,64,bias=False)
+            base.predictor.requires_grad_(False)
+            base.predict=types.MethodType(additive_predict,base)
         if cfg.get("observation_depth", 0):
             from experiments.robocasa_action_probe.probe import deepen_observation_adapter
             assert cfg["observation_depth"] == 2
@@ -443,7 +451,8 @@ def train(root, run, manifest, target, label, max_updates=None):
         if segment < 8 or (step+1) % 100 == 0:
             prefixes = ["feature_adapter.", "pool.", "action_encoder."]
             if cfg.get("joint_views"): prefixes.append("joint_view_embedding")
-            if cfg["variant"] not in ("action-transport","codec-transport"): prefixes.append("predictor.")
+            if cfg["variant"] not in ("action-transport","codec-transport") and not cfg.get("pixel_additive_transport",False):
+                prefixes.append("predictor.")
             prefixes.append("future_decoder." if hasattr(model,"future_decoder") else "renderer.")
             for prefix in prefixes:
                 norms[prefix] = sum(float(p.grad.detach().float().norm())**2
