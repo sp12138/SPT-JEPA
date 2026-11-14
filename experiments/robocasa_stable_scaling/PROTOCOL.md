@@ -225,6 +225,17 @@ deep+Euler另固定4h同父模型，以冻结F的9参数响应读出与原384参
 根`runs/robocasa_reach3d_symmetric_response_20261114`，这是后续开发假设，
 不是已验证控制改进；不修改在跑的单端点曲线，不打开确认例。
 
+RK4响应读出在零XYZ输入处对整个已学转移作forward AD，得到128×3
+Jacobian，再沿用逐样本伪逆/9参数当前动作校准；不将瞬时向量场当作
+整个有限转移的导数，不假设它是真实物理Jacobian。E/F全部冻结、参数
+梯度为零，动作只是待求导的三个假想输入；监督仍仅同一事实a_t。
+原Euler输出及实际默认头拟合逐位回归、RK转移与训练源相同、正反AD及
+有限差分核对先过，再固定RK4的5h同64开发例，0新增body更新。
+根`runs/robocasa_reach3d_rk_response_20261114`；不与单纯E-only头混报，
+也不由精确微分推断控制收益。另以同原单端点接口固定补原仿射18h/64例，
+根`runs/robocasa_reach3d_late_response_20261114`，检验后段是否仍回落，
+原自动ridge输出保留，两项均不打开确认集。
+
 ## 前序Push迁移实验与信息边界
 
 dev13：固定未来视觉特征变化目标；dev15：原SPT temporal-forecast。

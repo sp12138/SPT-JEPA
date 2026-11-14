@@ -1,7 +1,8 @@
 """Detached action readout in the frozen forward model's response coordinates.
 
-For the Euler control-affine model, B(z) is the exact response of the next
-code to the current translation input. Project an observed code change onto
+For Euler, B(z) is the exact response to the translation input. For RK4,
+differentiate the full learned transition at zero input using forward AD.
+Project an observed code change onto
 B(z), then fit a nine-parameter calibration using factual current actions.
 Encoder, forward model and external visual features never receive this loss.
 """
@@ -27,7 +28,9 @@ class FrozenResponse(nn.Module):
         run=Path(plan["source"])/"training"/plan["source_models"]["spt64-linear"]
         cfg=json.loads((run/"config.json").read_text())
         assert cfg["variant"]=="spt-control-affine" and cfg["state_slots"]==4
-        assert cfg.get("control_integrator","euler")=="euler" and not cfg.get("joint_views",False)
+        self.integrator=cfg.get("control_integrator","euler")
+        assert self.integrator in ("euler","rk4") and not cfg.get("joint_views",False)
+        assert self.integrator=="euler" or not self.symmetric_endpoints
         folder=run/plan["comparison_checkpoint"]
         ready=json.loads((folder/"ready.json").read_text())
         assert ready["passed"] and sha(folder/"weights.pt")==ready["weights_sha256"]
@@ -35,6 +38,9 @@ class FrozenResponse(nn.Module):
         self.field=ControlAffineTransition().field
         prefix="predictor.field."
         self.field.load_state_dict({k[len(prefix):]:v for k,v in weights.items() if k.startswith(prefix)},strict=True)
+        if self.integrator=="rk4":
+            self.rk4_transition=ControlAffineTransition("rk4")
+            self.rk4_transition.field=self.field
         assert "action_encoder.bias" not in weights
         # Windows normalizes actual XYZ inputs by the declared .3m bound.
         self.register_buffer("input_map",weights["action_encoder.weight"][:,7:10].clone()/.3)
@@ -57,6 +63,16 @@ class FrozenResponse(nn.Module):
 
     @torch.no_grad()
     def basis(self, current):
+        if self.integrator=="rk4":
+            current=current.float().reshape(-1,128)
+            def transition(action,state):
+                z=state.reshape(2,64)
+                u=(action@self.input_map.T).expand_as(z)
+                return self.rk4_transition(z,u).flatten()
+            # Forward AD differentiates only the three hypothetical inputs.
+            # Frozen NN parameters never receive the action-label loss.
+            return torch.vmap(torch.func.jacfwd(transition,argnums=0))(
+                current.new_zeros(len(current),3),current)
         z=current.float().reshape(-1,2,64)
         coefficients=self.field(z).reshape(-1,2,64,65)
         return (coefficients[...,1:]@self.input_map).reshape(-1,128,3)
@@ -64,6 +80,9 @@ class FrozenResponse(nn.Module):
     @torch.no_grad()
     def predict(self, current, action):
         z=current.float().reshape(-1,2,64)
+        if self.integrator=="rk4":
+            u=action.float()@self.input_map.T
+            return self.rk4_transition(z,u[:,None].expand_as(z)).reshape(-1,128)
         coefficients=self.field(z).reshape(-1,2,64,65)
         u=action.float()@self.input_map.T
         return (z+coefficients[...,0]+
@@ -177,6 +196,8 @@ def fit(root):
         response_noise_covariance_sha256=response.noise_model_sha256,
         response_noise_covariance_parameters=136 if response.noise_model_sha256 else 0,
         response_symmetric_endpoints=response.symmetric_endpoints,
+        response_transition_integrator=response.integrator,
+        response_basis="full_transition_Jacobian_at_zero_input" if response.integrator=="rk4" else "exact_Euler_input_response",
         head_target="same factual current issued XYZ a_t",target_case_feedback_used_for_selection=False))
 
 
