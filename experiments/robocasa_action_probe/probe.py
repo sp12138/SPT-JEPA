@@ -115,6 +115,9 @@ def cache(root, arm, shard):
 
 def fit(root, arm):
     torch.set_num_threads(2)
+    plan = json.loads((root/"plan.json").read_text())
+    objective = plan.get("head_loss", "absolute")
+    assert objective in ("absolute", "relative")
     directory = root/"heads"/arm
     rows, codes, actions, splits = [], [], [], []
     for shard in range(8):
@@ -140,33 +143,49 @@ def fit(root, arm):
     train = torch.as_tensor(splits == "train", device="cuda")
     xt, yt = x[train].flatten(0, 1), y[train].flatten(0, 1)
     xv, yv = x[~train].flatten(0, 1), y[~train].flatten(0, 1)
-    gram = xt.T@xt/len(xt); rhs = xt.T@yt/len(xt)
+    def sample_weight(action):
+        if objective == "absolute": return torch.ones_like(action[:, :1])
+        norm2 = action.square().sum(-1, keepdim=True)
+        # The random-command protocol has a strictly positive minimum radius.
+        # Reject zero labels instead of silently introducing a tuned epsilon.
+        assert bool((norm2 > 0).all())
+        return norm2.reciprocal()
+    wt, wv = sample_weight(yt), sample_weight(yv)
+    if objective == "absolute":
+        gram = xt.T@xt/len(xt); rhs = xt.T@yt/len(xt)
+    else:
+        gram = xt.T@(xt*wt)/len(xt); rhs = xt.T@(yt*wt)/len(xt)
     energy = float(gram.diag().mean()); assert energy > 0 and np.isfinite(energy)
     eye = torch.eye(gram.shape[0], dtype=torch.float64, device="cuda")
     scores = []; best = None
-    for alpha in json.loads((root/"plan.json").read_text())["ridge_lambdas"]:
+    for alpha in plan["ridge_lambdas"]:
         weight = torch.linalg.solve(gram+alpha*energy*eye, rhs).T
         train_mse = float((xt@weight.T-yt).square().mean())
         val_mse = float((xv@weight.T-yv).square().mean())
-        row = dict(alpha=alpha, train_RMSE=train_mse**.5, validation_RMSE=val_mse**.5)
+        selection = float(((xv@weight.T-yv).square()*wv).mean())
+        row = dict(alpha=alpha, train_RMSE=train_mse**.5, validation_RMSE=val_mse**.5,
+            validation_objective_RMSE=selection**.5)
         assert np.isfinite(val_mse) and torch.isfinite(weight).all()
         scores.append(row)
-        if best is None or val_mse < best[0]: best = (val_mse, weight.detach().float().cpu(), alpha)
+        if best is None or selection < best[0]:
+            best = (selection, weight.detach().float().cpu(), alpha, val_mse)
     # Actual supervised backward confirms the head cannot propagate into features.
     detached_input = xt[:32].float().detach().requires_grad_()
     head_weight = best[1].cuda().clone().requires_grad_()
-    loss = (detached_input.detach()@head_weight.T-yt[:32].float()).square().mean()
+    loss = ((detached_input.detach()@head_weight.T-yt[:32].float()).square()*wt[:32].float()).mean()
     loss.backward()
     assert detached_input.grad is None and head_weight.grad is not None
     assert torch.isfinite(head_weight.grad).all() and float(head_weight.grad.norm()) > 0
     head = dict(weight=best[1], arm=arm, alpha=best[2], input_width=x.shape[-1],
         target="same_transition_issued_translation_a_t", no_intercept=True,
-        labels_are_optimal=False, backbone_gradient=False, head_fit="analytic ridge; no SGD/optimizer")
+        labels_are_optimal=False, backbone_gradient=False, head_fit="analytic ridge; no SGD/optimizer",
+        head_loss=objective)
     torch.save(head, directory/"head.pt")
     save(directory/"ready.json", dict(passed=True, head_sha256=sha(directory/"head.pt"),
         selected_alpha=best[2], scores=scores, train_transitions=len(xt), validation_transitions=len(xv),
         validation_zero_RMSE=float(yv.square().mean().sqrt()),
-        validation_RMSE=best[0]**.5, input_width=x.shape[-1],
+        validation_RMSE=best[3]**.5, head_loss=objective,
+        validation_objective_RMSE=best[0]**.5, input_width=x.shape[-1],
         physical_kitchen_split_disjoint=True, actual_stopgradient_backward_pass=True,
         readout_precision=json.loads((root/"plan.json").read_text()).get("readout_precision","bf16"),
         no_new_backbone_updates=True, no_action_loss_to_backbone=True,
