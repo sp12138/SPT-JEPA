@@ -34,6 +34,17 @@ def basis(weight, current, conditional):
     return torch.einsum("kdf,nf->nkd",weight[:,1:,:],state)/.3
 
 
+def training_phase(pairs, phase):
+    assert phase in ("all","randomized_prefix","reverse_suffix")
+    if phase=="all":return pairs
+    current,following,actions=pairs
+    assert len(current)==len(following)==len(actions)==1120*16
+    commands=actions.reshape(1120,16,3)
+    assert torch.equal(commands[:,8:],-commands[:,:8].flip(1))
+    selected=slice(0,8) if phase=="randomized_prefix" else slice(8,16)
+    return tuple(x.reshape(1120,16,-1)[:,selected].reshape(-1,x.shape[-1]) for x in pairs)
+
+
 def fit(root):
     torch.set_num_threads(2);torch.set_float32_matmul_precision("highest")
     directory=root/"heads/spt64-linear";assert not (directory/"head.pt").exists()
@@ -45,7 +56,10 @@ def fit(root):
         proof=json.loads(path.read_text())
         assert proof["parent"]["full_nn_sha256"]==readout.parent["full_nn_sha256"]
         assert proof["readout_data_sha256"]==sha(root/"data.json")
-    (current,following,actions),(vcurrent,vfollowing,vactions)=load_pairs(directory)
+    train,validation=load_pairs(directory)
+    phase=plan.get("effect_training_phase","all")
+    current,following,actions=training_phase(train,phase)
+    vcurrent,vfollowing,vactions=validation
     x=design(current.double(),actions.double(),conditional)
     y=(following-current).double()
     vx=design(vcurrent.double(),vactions.double(),conditional)
@@ -81,6 +95,7 @@ def fit(root):
         parent_nn_sha256=readout.parent["full_nn_sha256"],head_parameters=weight.numel(),
         state_conditioned=conditional,selected_alpha=best[2],scores=scores,
         train_transitions=len(x),validation_transitions=len(vx),validation_next_code_MSE=best[0],
+        training_phase=phase,validation_phase="all",
         validation_copy_MSE=float(vy.square().mean()),fitted_current_action_labels=0,
         actions_are_inputs_not_targets=True,all_body_frozen_unchanged=True,
         actual_stopgradient_backward_pass=True,response_decomposition_max_error=response_error,
