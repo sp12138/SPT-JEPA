@@ -170,13 +170,14 @@ def gpu_startup_ready(root, run, cfg):
         return True
     if not cfg.get("cohost_owned_base_collection", False):
         return False
+    collection_root = Path(cfg.get("cohost_collection_root", str(root)))
     owners = []
     for pid in sorted({int(line.strip()) for line in output.splitlines()}):
         path = Path("/proc") / str(pid) / "cmdline"
         try: argv = path.read_bytes().decode().strip("\0").split("\0")
         except FileNotFoundError: continue
         if "-m" not in argv or argv[argv.index("-m")+1] != MODULE+".stream": return False
-        if "--root" not in argv or Path(argv[argv.index("--root")+1]) != root: return False
+        if "--root" not in argv or Path(argv[argv.index("--root")+1]) != collection_root: return False
         if "--cohort" in argv and argv[argv.index("--cohort")+1] != "base": return False
         owners.append(dict(pid=pid, argv=argv))
     free = [int(x) for x in subprocess.check_output(["nvidia-smi", "-i", cfg["gpus"],

@@ -73,6 +73,16 @@ norm .3/native2mm；另32确认例不参与选择。有限冻结G、旧Push-SPT5
 根`runs/robocasa_reach3d_robust_linear_20261114`，与原解析ridge、非线性
 头分别报告。首两头detach/同码严格零动作实际检查已通过。
 
+控制仿射较原deep的后段读出有小幅正信号，另将两组件配对：deep E加
+同一`v(z,a)=drift(z)+G(z)A*a`，一次Euler与一次经典RK4积分比较。
+RK各阶段恒用当前输入a_t，未取得未来动作；E/action/像素目标、代码率、
+标签和线性读出不变。两新模型36,773,888参数、初始NN逐位相同，E初始
+亦与原deep相同；RK多次计算不是等FLOPs。旧Euler非零向量场算术逐位
+回归通过，RK线性场误差约1.19e-7；不把积分器单元检查当控制收益。
+原deep/原残差完整13h及读出后交接，原仿射及前三新路线继续。根
+`runs/robocasa_reach3d_control_flow_20261114`；dev6只额外允许明确属于
+原根的既有普通采集器共卡，其他进程仍须退出；真实更新/全恢复为启动门。
+
 ## 前序Push迁移实验与信息边界
 
 dev13：固定未来视觉特征变化目标；dev15：原SPT temporal-forecast。

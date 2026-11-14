@@ -42,18 +42,28 @@ def additive_predict(self, means, actions):
 
 class ControlAffineTransition(nn.Module):
     """Learn autonomous drift and a state-dependent action response."""
-    def __init__(self):
+    def __init__(self, integrator="euler"):
         super().__init__()
+        assert integrator in ("euler", "rk4")
+        self.integrator = integrator
         self.field = nn.Sequential(nn.Linear(64, 192), nn.GELU(), nn.Linear(192, 64*65))
         nn.init.zeros_(self.field[-1].weight)
         nn.init.zeros_(self.field[-1].bias)
 
     def forward(self, means, actions):
         with torch.autocast("cuda", enabled=False):
-            coefficients = self.field(means.float()).reshape(*means.shape[:-1], 64, 65)
-            drift = coefficients[..., 0]
-            effect = (coefficients[..., 1:] @ actions.float().unsqueeze(-1)).squeeze(-1)
-            return means.float()+drift+effect
+            def velocity(state):
+                coefficients = self.field(state).reshape(*state.shape[:-1], 64, 65)
+                return coefficients[..., 0]+(coefficients[..., 1:] @ actions.float().unsqueeze(-1)).squeeze(-1)
+            state = means.float()
+            if self.integrator == "euler":
+                # Preserve the existing arithmetic order for full-state resumes.
+                coefficients = self.field(state).reshape(*state.shape[:-1], 64, 65)
+                return state+coefficients[..., 0]+(coefficients[..., 1:] @ actions.float().unsqueeze(-1)).squeeze(-1)
+            # The same currently supplied command defines all four RK stages.
+            k1 = velocity(state); k2 = velocity(state+k1*.5)
+            k3 = velocity(state+k2*.5); k4 = velocity(state+k3)
+            return state+(k1+2*k2+2*k3+k4)/6
 
 
 def control_affine_predict(self, means, actions):
@@ -263,9 +273,9 @@ def build(root, cfg):
             with torch.random.fork_rng():
                 torch.manual_seed(92320261114+cfg["seed"])
                 base.action_encoder = nn.Linear(14, 64, bias=False)
-                base.predictor = ControlAffineTransition()
+                base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"))
             base.predict = types.MethodType(control_affine_predict, base)
-        if cfg["variant"] == "spt-deep-observation":
+        if cfg.get("observation_depth", 0):
             from experiments.robocasa_action_probe.probe import deepen_observation_adapter
             assert cfg["observation_depth"] == 2
             with torch.random.fork_rng():
