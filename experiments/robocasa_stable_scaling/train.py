@@ -240,7 +240,7 @@ def pixel_prediction_distortion(self, batch, render, anchor, condition):
 
 def build(root, cfg):
     if cfg.get("raw_pixel_encoder",False):
-        assert cfg['variant']=='spt-deep-observation' and cfg.get('observation_depth',0)==0
+        assert cfg['variant'] in ('spt-deep-observation','spt-control-affine') and cfg.get('observation_depth',0)==0
         assert not cfg.get('joint_views',False)
         from experiments.robocasa_stable_scaling.raw_pixels import build as build_raw
         base=build_raw(root,cfg)
@@ -327,6 +327,8 @@ class Windows:
         # than reusing statistics derived from a different action semantic.
         self.mean = np.zeros(14, np.float32); self.std = np.ones(14, np.float32)
         self.std[7:10] = .3; self.std[13] = .04
+        if cfg.get('learn_angular_commands', False):
+            self.std[10:13] = .5
 
     def __getitem__(self, index):
         rng = np.random.default_rng(np.random.SeedSequence([781021, self.cfg["seed"], int(index)]))
@@ -352,6 +354,8 @@ class Windows:
         render, command = self.observations[ident]
         raw = np.zeros((8, 14), np.float32)
         raw[:-1, 7:10] = command[start:start+7, :3]; raw[:-1, 13] = -.04*command[start:start+7, 6]
+        if self.cfg.get('learn_angular_commands', False):
+            raw[:-1, 10:13] = command[start:start+7, 3:6]
         action = np.zeros_like(raw); action[:-1] = (raw[:-1]-self.mean)/self.std
         result=dict(features=(torch.zeros(2,8,1,1) if self.cfg.get('raw_pixel_encoder',False) else
                 torch.from_numpy(self.features[ident][start:start+8].transpose(1, 0, 2, 3).copy())),

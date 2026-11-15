@@ -166,9 +166,45 @@ def fit(root, arm):
     assert np.sum(splits == "train") == 1120 and np.sum(splits == "validation") == 96
     x = torch.from_numpy(z[:, 1:]-z[:, :-1]).double().cuda()
     y = torch.from_numpy(y).double().cuda()
+    projection = None; projection_proof = None
+    if "readout_input_projection" in plan:
+        spec = plan["readout_input_projection"]
+        path = Path(spec["path"]); assert sha(path) == spec["sha256"]
+        saved = torch.load(path, map_location="cpu", weights_only=True)
+        assert saved["source_split"] == "train"
+        for shard in range(8):
+            cached_proof = json.loads((directory/"cache"/f"part-{shard}.json").read_text())
+            assert cached_proof["parent"]["full_nn_sha256"] == saved["parent_nn_sha256"]
+        projection = saved["projection"].double().cuda()
+        assert projection.shape == (x.shape[-1], x.shape[-1]) and torch.isfinite(projection).all()
+        assert torch.allclose(projection, projection.T, atol=1e-12, rtol=1e-12)
+        assert torch.allclose(projection@projection, projection, atol=1e-12, rtol=1e-12)
+        raw_x = x
+        x = x@projection.T
+        projection_proof = dict(sha256=spec["sha256"], parent_nn_sha256=saved["parent_nn_sha256"],
+            fitted_using_only_TRAIN_factual_forward_effects=True, folded_into_final_weight=True)
     train = torch.as_tensor(splits == "train", device="cuda")
     xt, yt = x[train].flatten(0, 1), y[train].flatten(0, 1)
     xv, yv = x[~train].flatten(0, 1), y[~train].flatten(0, 1)
+    extra_proof = None
+    if "additional_factual_head_pairs" in plan:
+        assert objective == "absolute"
+        spec = plan["additional_factual_head_pairs"]
+        path = Path(spec["path"]); assert sha(path) == spec["sha256"]
+        extra = torch.load(path, map_location="cpu", weights_only=True)
+        assert extra["source_split"] == "train" and extra["current_inputs_not_optimal_targets"]
+        assert {tuple(k) for k in extra["kitchens"]} <= train_kitchens
+        for shard in range(8):
+            cached_proof = json.loads((directory/"cache"/f"part-{shard}.json").read_text())
+            assert cached_proof["parent"]["full_nn_sha256"] == extra["parent_nn_sha256"]
+        ex = extra["code_change"].double().cuda(); ey = extra["current_XYZ_input"].double().cuda()
+        assert ex.shape == (len(ey), xt.shape[-1]) and ey.shape[1:] == (3,)
+        assert torch.isfinite(ex).all() and torch.isfinite(ey).all()
+        if projection is not None:
+            ex = ex@projection.T
+        xt = torch.cat((xt, ex)); yt = torch.cat((yt, ey))
+        extra_proof = dict(sha256=spec["sha256"], additional_TRAIN_transitions=len(ex),
+            source_split="train", current_inputs_not_optimal_targets=True)
     def sample_weight(action):
         if objective == "absolute": return torch.ones_like(action[:, :1])
         norm2 = action.square().sum(-1, keepdim=True)
@@ -202,10 +238,19 @@ def fit(root, arm):
     loss.backward()
     assert detached_input.grad is None and head_weight.grad is not None
     assert torch.isfinite(head_weight.grad).all() and float(head_weight.grad.norm()) > 0
-    head = dict(weight=best[1], arm=arm, alpha=best[2], input_width=x.shape[-1],
+    deployed_weight = best[1]
+    if projection is not None:
+        deployed_weight = (deployed_weight.cuda().double()@projection).float().cpu()
+        projection_proof["deployed_validation_RMSE"] = float((
+            raw_x[~train].flatten(0,1).float()@deployed_weight.cuda().T-yv.float()).square().mean().sqrt())
+    head = dict(weight=deployed_weight, arm=arm, alpha=best[2], input_width=x.shape[-1],
         target="same_transition_issued_translation_a_t", no_intercept=True,
         labels_are_optimal=False, backbone_gradient=False, head_fit="analytic ridge; no SGD/optimizer",
         head_loss=objective)
+    if projection_proof is not None:
+        head["input_projection"] = projection_proof
+    if extra_proof is not None:
+        head["additional_factual_pairs"] = extra_proof
     torch.save(head, directory/"head.pt")
     save(directory/"ready.json", dict(passed=True, head_sha256=sha(directory/"head.pt"),
         selected_alpha=best[2], scores=scores, train_transitions=len(xt), validation_transitions=len(xv),
@@ -216,6 +261,10 @@ def fit(root, arm):
         readout_precision=json.loads((root/"plan.json").read_text()).get("readout_precision","bf16"),
         no_new_backbone_updates=True, no_action_loss_to_backbone=True,
         no_future_or_optimal_action_labels=True, target_case_feedback_used_for_selection=False))
+    if projection_proof is not None:
+        save(directory/"projection-ready.json", dict(passed=True, **projection_proof))
+    if extra_proof is not None:
+        save(directory/"additional-facts-ready.json", dict(passed=True, **extra_proof))
 
 
 class Policy:
