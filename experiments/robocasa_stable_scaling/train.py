@@ -42,23 +42,25 @@ def additive_predict(self, means, actions):
 
 class ControlAffineTransition(nn.Module):
     """Learn autonomous drift and a state-dependent action response."""
-    def __init__(self, integrator="euler"):
+    def __init__(self, integrator="euler", state_dim=64):
         super().__init__()
         assert integrator in ("euler", "rk4")
         self.integrator = integrator
-        self.field = nn.Sequential(nn.Linear(64, 192), nn.GELU(), nn.Linear(192, 64*65))
+        self.state_dim = state_dim
+        self.field = nn.Sequential(nn.Linear(state_dim, 192), nn.GELU(),
+            nn.Linear(192, state_dim*(state_dim+1)))
         nn.init.zeros_(self.field[-1].weight)
         nn.init.zeros_(self.field[-1].bias)
 
     def forward(self, means, actions):
         with torch.autocast("cuda", enabled=False):
             def velocity(state):
-                coefficients = self.field(state).reshape(*state.shape[:-1], 64, 65)
+                coefficients = self.field(state).reshape(*state.shape[:-1], self.state_dim, self.state_dim+1)
                 return coefficients[..., 0]+(coefficients[..., 1:] @ actions.float().unsqueeze(-1)).squeeze(-1)
             state = means.float()
             if self.integrator == "euler":
                 # Preserve the existing arithmetic order for full-state resumes.
-                coefficients = self.field(state).reshape(*state.shape[:-1], 64, 65)
+                coefficients = self.field(state).reshape(*state.shape[:-1], self.state_dim, self.state_dim+1)
                 return state+coefficients[..., 0]+(coefficients[..., 1:] @ actions.float().unsqueeze(-1)).squeeze(-1)
             # The same currently supplied command defines all four RK stages.
             k1 = velocity(state); k2 = velocity(state+k1*.5)
@@ -285,8 +287,8 @@ def build(root, cfg):
         if cfg["variant"] == "spt-control-affine":
             with torch.random.fork_rng():
                 torch.manual_seed(92320261114+cfg["seed"])
-                base.action_encoder = nn.Linear(14, 64, bias=False)
-                base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"))
+                base.action_encoder = nn.Linear(14, base.state_dim, bias=False)
+                base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"), base.state_dim)
             base.predict = types.MethodType(control_affine_predict, base)
         if cfg.get("pixel_additive_transport",False):
             assert cfg["variant"]=="spt-deep-observation"
@@ -322,6 +324,9 @@ def build(root, cfg):
                 "spt-deep-observation", "spt-control-affine", "spt-conditional-rate"):
             base.original_cached_encode = base.encode
             base.encode = types.MethodType(fp32_cached_encode, base)
+    if cfg.get("raw_physical_joint", False):
+        from experiments.robocasa_stable_scaling.stereo_state import install
+        install(base, cfg)
     if not cfg.get("decoder_forecast_noise", True):
         assert base.pixel_objective == "future-mean"
         base.decoder_forecast_noise = False
@@ -363,7 +368,9 @@ class Windows:
                 self.observations[ident] = (stream["render"].copy(), stream["commands"].copy())
             if self.cfg.get('raw_pixel_encoder',False) and self.cfg.get('raw_render_size',64)!=64:
                 assert self.cfg['raw_render_size']==224
-                self.observations[ident]=(self.pixels[ident].copy(),self.observations[ident][1])
+                # Both returned windows are copied below. Share their immutable
+                # full episode cache instead of retaining a second RGB array.
+                self.observations[ident]=(self.pixels[ident],self.observations[ident][1])
         render, command = self.observations[ident]
         raw = np.zeros((8, 14), np.float32)
         raw[:-1, 7:10] = command[start:start+7, :3]; raw[:-1, 13] = -.04*command[start:start+7, 6]

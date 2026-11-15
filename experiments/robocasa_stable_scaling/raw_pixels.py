@@ -153,6 +153,8 @@ class RawPixelsReadout(nn.Module):
         super().__init__()
         assert feature_mode in ('code','cls','mean','spatial-moments','spatial-flat','renderer-mean','renderer-spatial-moments')
         self.feature_mode=feature_mode
+        self.physical_joint=cfg.get('raw_physical_joint',False)
+        if self.physical_joint:assert feature_mode=='code'
         from experiments.robocasa_stable_scaling.train import build as build_full
         from experiments.robocasa_compare import train as common
         model=build_full(root,cfg)
@@ -169,6 +171,9 @@ class RawPixelsReadout(nn.Module):
 
     @torch.no_grad()
     def forward(self,pixels):
+        if self.physical_joint and len(pixels)>2:
+            assert len(pixels)%2==0
+            return torch.cat([self.forward(pixels[i:i+2]) for i in range(0,len(pixels),2)])
         with torch.autocast('cuda',enabled=False):
             if self.feature_mode.startswith('renderer-'):
                 return backbone_summary(self.renderer_tokens(pixels),self.feature_mode.removeprefix('renderer-'),has_cls=False)
