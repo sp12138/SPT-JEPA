@@ -211,7 +211,11 @@ def worker(root, host, run_name):
             if limit is not None: argv += ["--max-updates",str(limit)]
             call(root,argv,logs/("train-"+label+".log"),gpus)
         # Retain startup updates and prove a real full-state continuation before long training.
-        learn("entry",first_hour*3600,8); learn("restore-probe",first_hour*3600,8)
+        ancestry = int(cfg.get("ancestry_updates", 0))
+        learn("entry",first_hour*3600,8)
+        assert json.loads((run/"entry/ready.json").read_text())["step"] >= ancestry+8
+        learn("restore-probe",first_hour*3600,8)
+        assert json.loads((run/"restore-probe/ready.json").read_text())["step"] >= ancestry+16
         hour=first_hour
         while not (root/"STOP").exists() and not (run/"STOP").exists() and not (root/"FINISHED").exists():
             label=f"hour-{hour:03d}"
