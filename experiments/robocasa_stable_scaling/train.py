@@ -236,6 +236,12 @@ def pixel_prediction_distortion(self, batch, render, anchor, condition):
     t = torch.ones(y.shape[0], 1, device=y.device)
     with self.renderer.anchored(anchors):
         predicted = self.renderer(torch.zeros_like(y), t, condition=condition.flatten(0, 1))
+    if getattr(self, "pixel_profile", None):
+        from vforge.models.as_jepa.pixels import unpack
+        from experiments.robocasa_stable_scaling.pixel_likelihood import profiled_pixel_nll
+        value, self._profiled_pixel_metrics = profiled_pixel_nll(
+            unpack(predicted.float()-y.float(), patch=patch), self.pixel_profile)
+        return value
     return (predicted-y).square().mean()
 
 
