@@ -17,7 +17,7 @@ class StereoPool(nn.Module):
         with torch.random.fork_rng(devices=[]):
             torch.manual_seed(97620261116+seed)
             for _ in range(depth):
-                layer = nn.TransformerEncoderLayer(width, 3, 4*width, dropout=0.,
+                layer = nn.TransformerEncoderLayer(width, pool.attn.num_heads, 4*width, dropout=0.,
                     activation="gelu", batch_first=True, norm_first=True)
                 # Start with the same function as joint pooling. Additional
                 # residual paths become trainable without changing the base NN.

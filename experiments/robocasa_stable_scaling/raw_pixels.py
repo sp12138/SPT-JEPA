@@ -117,7 +117,6 @@ def build(root,cfg):
     allocation = cfg.get('raw_encoder_heavy',False)
     if allocation or 'raw_encoder_width' in cfg or 'raw_decoder_depth' in cfg:
         assert cfg.get('raw_shared_visual_anchor') and cfg.get('pixel_objective')=='future-mean'
-        assert not cfg.get('raw_physical_joint',False)
         from experiments.robocasa_stable_scaling.encoder_allocation import install
         install(model,cfg['seed'],encoder_width=cfg.get('raw_encoder_width',384 if allocation else 192),
             decoder_depth=cfg.get('raw_decoder_depth',6 if allocation else 12))
