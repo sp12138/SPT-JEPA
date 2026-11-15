@@ -42,6 +42,8 @@ class Readout(nn.Module):
         self.precision = json.loads((root/"plan.json").read_text()).get("readout_precision","bf16")
         assert self.precision in ("bf16","fp32")
         self.parent = None; self.joint_views = False; self.raw_pixel_encoder=False
+        self.raw_feature_mode=json.loads((root/'plan.json').read_text()).get('raw_readout_features','code')
+        assert self.raw_feature_mode in ('code','cls','mean','spatial-moments','spatial-flat','renderer-mean','renderer-spatial-moments')
         self.frozen_layout=json.loads((root/"plan.json").read_text()).get("frozen_readout_layout","mean")
         assert self.frozen_layout in ("mean","spatial-moments")
         if self.frozen_layout=="spatial-moments":
@@ -65,7 +67,10 @@ class Readout(nn.Module):
             self.raw_pixel_encoder=cfg.get('raw_pixel_encoder',False)
             if self.raw_pixel_encoder:
                 from experiments.robocasa_stable_scaling.raw_pixels import RawPixelsReadout
-                self.raw_visual=RawPixelsReadout(root,cfg,weights,ready['nn_sha256'])
+                if self.raw_feature_mode=='code':
+                    self.raw_visual=RawPixelsReadout(root,cfg,weights,ready['nn_sha256'])
+                else:
+                    self.raw_visual=RawPixelsReadout(root,cfg,weights,ready['nn_sha256'],feature_mode=self.raw_feature_mode)
             else:
                 self.feature_adapter = deepen_observation_adapter(
                     nn.Sequential(nn.Linear(1664, 192), nn.LayerNorm(192)),cfg.get("observation_depth", 0))
@@ -77,6 +82,7 @@ class Readout(nn.Module):
                     module.load_state_dict({k[len(prefix):]:v for k,v in weights.items() if k.startswith(prefix)}, strict=True)
             self.parent = dict(run=str(run), label=label, step=ready["step"],
                 weights_sha256=ready["weights_sha256"], full_nn_sha256=ready["nn_sha256"])
+        assert self.raw_feature_mode=='code' or self.raw_pixel_encoder
         self.eval().requires_grad_(False)
 
     @torch.no_grad()
@@ -136,7 +142,18 @@ def cache(root, arm, shard):
     save(output.with_suffix(".json"), dict(passed=True, shard=shard, records=len(rows),
         sha256=sha(output), readout_sha256=before, parent=readout.parent,
         all_features_detached=True, readout_frozen_unchanged=True, current_actions_only=True,
-        readout_precision=readout.precision, readout_data_sha256=sha(root/"data.json")))
+        readout_precision=readout.precision, readout_data_sha256=sha(root/"data.json"),
+        raw_readout_features=readout.raw_feature_mode))
+
+
+def dual_ridge_weights(gram,features,target,alpha,energy):
+    """The same sample-MSE ridge objective, solved in sample space for D>N."""
+    assert alpha>0 and features.shape[0]==gram.shape[0]==gram.shape[1]
+    system=gram.clone();system.diagonal().add_(alpha*energy)
+    coefficients=torch.linalg.solve(system,target)
+    residual=float((system@coefficients-target).norm()/target.norm())
+    assert np.isfinite(residual) and residual<1e-4,residual
+    return (coefficients.T@features)/len(features),residual
 
 
 def fit(root, arm):
@@ -150,6 +167,7 @@ def fit(root, arm):
         path = directory/"cache"/f"part-{shard}.npz"
         proof = json.loads(path.with_suffix(".json").read_text())
         assert proof["passed"] and sha(path) == proof["sha256"]
+        assert proof.get('raw_readout_features','code')==plan.get('raw_readout_features','code')
         if "readout_data_sha256" in proof:
             assert proof["readout_data_sha256"] == sha(root/"data.json")
         with np.load(path) as s:
@@ -213,20 +231,28 @@ def fit(root, arm):
         assert bool((norm2 > 0).all())
         return norm2.reciprocal()
     wt, wv = sample_weight(yt), sample_weight(yv)
-    if objective == "absolute":
+    dual=xt.shape[1]>len(xt)
+    if dual:
+        assert objective=='absolute','Wide-feature dual solve currently supports absolute MSE'
+        gram=xt@xt.T/len(xt);rhs=yt
+    elif objective == "absolute":
         gram = xt.T@xt/len(xt); rhs = xt.T@yt/len(xt)
     else:
         gram = xt.T@(xt*wt)/len(xt); rhs = xt.T@(yt*wt)/len(xt)
-    energy = float(gram.diag().mean()); assert energy > 0 and np.isfinite(energy)
-    eye = torch.eye(gram.shape[0], dtype=torch.float64, device="cuda")
+    energy = float(gram.diag().sum()/xt.shape[1] if dual else gram.diag().mean()); assert energy > 0 and np.isfinite(energy)
+    eye = None if dual else torch.eye(gram.shape[0], dtype=torch.float64, device="cuda")
     scores = []; best = None
     for alpha in plan["ridge_lambdas"]:
-        weight = torch.linalg.solve(gram+alpha*energy*eye, rhs).T
+        if dual:
+            weight,dual_residual=dual_ridge_weights(gram,xt,rhs,alpha,energy)
+        else:
+            weight = torch.linalg.solve(gram+alpha*energy*eye, rhs).T
         train_mse = float((xt@weight.T-yt).square().mean())
         val_mse = float((xv@weight.T-yv).square().mean())
         selection = float(((xv@weight.T-yv).square()*wv).mean())
         row = dict(alpha=alpha, train_RMSE=train_mse**.5, validation_RMSE=val_mse**.5,
             validation_objective_RMSE=selection**.5)
+        if dual:row['dual_system_relative_residual']=dual_residual
         assert np.isfinite(val_mse) and torch.isfinite(weight).all()
         scores.append(row)
         if best is None or selection < best[0]:
@@ -246,7 +272,7 @@ def fit(root, arm):
     head = dict(weight=deployed_weight, arm=arm, alpha=best[2], input_width=x.shape[-1],
         target="same_transition_issued_translation_a_t", no_intercept=True,
         labels_are_optimal=False, backbone_gradient=False, head_fit="analytic ridge; no SGD/optimizer",
-        head_loss=objective)
+        head_loss=objective,raw_readout_features=plan.get('raw_readout_features','code'),ridge_solver='dual' if dual else 'primal')
     if projection_proof is not None:
         head["input_projection"] = projection_proof
     if extra_proof is not None:
@@ -256,6 +282,8 @@ def fit(root, arm):
         selected_alpha=best[2], scores=scores, train_transitions=len(xt), validation_transitions=len(xv),
         validation_zero_RMSE=float(yv.square().mean().sqrt()),
         validation_RMSE=best[3]**.5, head_loss=objective,
+        raw_readout_features=plan.get('raw_readout_features','code'),
+        ridge_solver='dual' if dual else 'primal',
         validation_objective_RMSE=best[0]**.5, input_width=x.shape[-1],
         physical_kitchen_split_disjoint=True, actual_stopgradient_backward_pass=True,
         readout_precision=json.loads((root/"plan.json").read_text()).get("readout_precision","bf16"),
@@ -277,6 +305,7 @@ class Policy:
         self.versions = [p._version for p in self.encoder.parameters()]
         directory = root/"heads"/arm; proof = json.loads((directory/"ready.json").read_text())
         assert proof["passed"] and sha(directory/"head.pt") == proof["head_sha256"]
+        assert proof.get('raw_readout_features','code')==self.readout.raw_feature_mode
         self.weight = torch.load(directory/"head.pt", map_location="cpu", weights_only=True)["weight"].cuda()
         self.seconds = 0.; self.calls = 0
 

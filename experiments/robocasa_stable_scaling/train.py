@@ -222,8 +222,9 @@ def pixel_prediction_distortion(self, batch, render, anchor, condition):
     from vforge.models.as_jepa.pixels import pack
     from vforge.models.as_jepa.flow import flow_loss, draw_timesteps
     w = render.shape[1]
-    y = pack(render[:, 1:].flatten(0, 1))
-    anchors = pack(anchor).repeat_interleave(w-1, dim=0)
+    patch=getattr(self,'raw_render_size',64)//16
+    y = pack(render[:, 1:].flatten(0, 1),patch=patch)
+    anchors = pack(anchor,patch=patch).repeat_interleave(w-1, dim=0)
     if self.pixel_objective == "residual-flow":
         return flow_loss(self.renderer, y-anchors, condition.flatten(0, 1), anchors,
                          self.training_shift)
