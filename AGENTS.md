@@ -39,6 +39,7 @@
 
 ## 修改与恢复
 
+- 新源码版本写入前检查文件及全部祖先目录的符号链接；用`experiments/robocasa_compare/source_freeze.py`创建私有覆盖路径，禁止写穿共享base。默认回归须读取独立旧版快照，不能把同一解析路径当两个版本。
 - 先使用 `rg` 查找相关代码；并行读取独立信息，保持修改和恢复操作顺序明确。
 - 不修改 `runtime/vforge/mcore` 的 vendored upstream；修改 runtime 时先读 `runtime/AGENTS.md`。
 - 训练恢复须包含 model、optimizer、scheduler、RNG 和数据游标；披露未保存步骤的重放。

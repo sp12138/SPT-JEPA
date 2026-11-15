@@ -236,6 +236,19 @@ Jacobian，再沿用逐样本伪逆/9参数当前动作校准；不将瞬时向�
 根`runs/robocasa_reach3d_late_response_20261114`，检验后段是否仍回落，
 原自动ridge输出保留，两项均不打开确认集。
 
+重尾编码对照只改变匹配编码通道的分布族：初始后验为方差sigma0²的
+Laplace，初始prior仍N(0,I)，其KL用精确熵/二阶矩计算；条件后验/prior
+均为Laplace，尺度b=sigma0 sqrt(1-rho²)/sqrt(2)。逐维innovation误差r的
+精确KL为|r|/b+exp(-|r|/b)-1，近零二次、尾部梯度有界；不是逐样本
+筛除或手调梯度裁剪。外生Laplace AR噪声在观测/forecast两支共享，
+方差平稳但边缘形状可随时间变，二者每时刻分布匹配。它同时改变采样
+尾部与KL曲率，不能把任何收益只归因稳健性。没有新超参数/动作target，
+原sigma/rho/beta、全部事实日志、固定读出标签/64例及32封闭确认不变。
+原始根`runs/robocasa_reach3d_laplace_channel_20261114`。Gaussian默认门必须
+对独立Git旧版验证，且所有被覆盖源文件/祖先目录均私有；原链接比较
+失效记录保留，v2门通过后才允许完整阶段交接。实际更新/8与16步完整
+恢复仍是长训门，不把重尾统计或解析KL当控制改善。
+
 ## 前序Push迁移实验与信息边界
 
 dev13：固定未来视觉特征变化目标；dev15：原SPT temporal-forecast。

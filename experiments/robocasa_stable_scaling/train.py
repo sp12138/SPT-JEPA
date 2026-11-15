@@ -286,6 +286,9 @@ def build(root, cfg):
         if cfg.get("stationary_coding_channel",False):
             assert cfg.get("pixel_additive_transport",False)
             base.stationary_coding_channel=True
+        if cfg.get("coding_family","gaussian")!="gaussian":
+            assert cfg["coding_family"]=="laplace" and cfg.get("stationary_coding_channel",False)
+            base.coding_family="laplace"
         if cfg.get("observation_depth", 0):
             from experiments.robocasa_action_probe.probe import deepen_observation_adapter
             assert cfg["observation_depth"] == 2

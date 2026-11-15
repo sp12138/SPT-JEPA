@@ -11,6 +11,8 @@ An opt-in stationary coding channel matches the prior innovation variance to
 q's sigma0^2*(1-rho^2) and renders rollout samples with the same stationary AR
 noise as observation codes. Those innovations are random variables independent
 of future RGB; only the clean rollout mean uses the observed initial code.
+The Laplace option preserves variance and uses exact conditional Laplace KL;
+its AR marginal shape can vary with time, equally for both coding branches.
 """
 import math
 
@@ -26,6 +28,12 @@ from vforge.models.as_jepa.pixels import pack
 def innovation_error(mu,means,rho):
     error=mu.float()-means.float()
     return error[:,1:]-rho*error[:,:-1]
+
+
+def laplace_shift_nats(error,scale):
+    """Exact equal-scale Laplace KL, elementwise, with a bounded tail slope."""
+    magnitude=error.float().abs()/scale
+    return magnitude+torch.expm1(-magnitude)
 
 
 class AnalyticResidualSPT(RobustLeWM):
@@ -50,6 +58,11 @@ class AnalyticResidualSPT(RobustLeWM):
         return flow_loss(self.renderer,y,condition.flatten(0,1),anchors,self.training_shift)
 
     def initial_rate(self,mean):
+        if getattr(self,"coding_family","gaussian")=="laplace":
+            # q0 is Laplace with variance sigma0^2; the initial prior stays N(0,I).
+            width=self.sigma0/math.sqrt(2)
+            constant=.5*self.sigma0**2+.5*math.log(2*math.pi)-1-math.log(2*width)
+            return .5*mean.float().square().sum((-2,-1))+mean[0].numel()*constant
         return entry_nats(mean,self.sigma0)
 
     def loss(self,batch,step=0,ramp_steps=0):
@@ -57,7 +70,13 @@ class AnalyticResidualSPT(RobustLeWM):
         info=self.encode(dict(pixels=pixels,action=batch["action"]))
         flat=info["emb"];b,w=flat.shape[:2]
         mu=flat.reshape(b,w,self.state_slots,self.state_width)
-        noise=torch.randn_like(mu)
+        family=getattr(self,"coding_family","gaussian")
+        if family=="laplace":
+            assert getattr(self,"stationary_coding_channel",False)
+            noise=torch.distributions.Laplace(mu.new_zeros(()),mu.new_tensor(1/math.sqrt(2))).sample(mu.shape)
+        else:
+            assert family=="gaussian"
+            noise=torch.randn_like(mu)
         for t in range(1,w):
             noise[:,t]=self.rho*noise[:,t-1]+math.sqrt(1-self.rho**2)*noise[:,t]
         noisy=mu+self.sigma0*noise
@@ -79,14 +98,21 @@ class AnalyticResidualSPT(RobustLeWM):
         coding_sigma=self.sigma0
         if getattr(self,"stationary_coding_channel",False):
             coding_sigma*=math.sqrt(1-self.rho**2)
-        surprise=surprise_nats(error,torch.zeros_like(error),coding_sigma)
+        if family=="laplace":
+            innovation_nats=laplace_shift_nats(error,coding_sigma/math.sqrt(2))
+            surprise=innovation_nats.sum((-2,-1))
+        else:
+            surprise=surprise_nats(error,torch.zeros_like(error),coding_sigma)
         if not getattr(self,"stationary_coding_channel",False):
             surprise=surprise+self.state_dim*.5*(-self.rho**2-math.log1p(-self.rho**2))
         fm=self.distortion(batch,render,anchor,condition)
         rate=(entry+surprise.sum(1)).mean()/((w-1)*FRAME_ELEMS)
         beta=self.beta*min(1.,step/max(1,ramp_steps)) if ramp_steps else self.beta
         loss=fm+beta*rate
-        variable=(.5*mu[:,0].float().square()+error.square().sum(1)/(2*coding_sigma**2)).mean(0)
+        if family=="laplace":
+            variable=(.5*mu[:,0].float().square()+innovation_nats.sum(1)).mean(0)
+        else:
+            variable=(.5*mu[:,0].float().square()+error.square().sum(1)/(2*coding_sigma**2)).mean(0)
         return loss,dict(loss=loss,fm=fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),
             rate_share=beta*rate/fm.detach().clamp_min(1e-8),feature_std=mu.float().std((0,1)).mean(),
             active_dims=(variable>.1).sum(),temporal_noise_rho=loss.new_tensor(self.rho),
