@@ -91,6 +91,10 @@ class AnalyticResidualSPT(RobustLeWM):
             else:
                 powers=mu.new_tensor([self.rho**t for t in range(1,w)])[None,:,None,None]
                 forecast=means[:,1:]+powers*(noisy[:,:1]-mu[:,:1])
+            if not getattr(self,"decoder_forecast_noise",True):
+                # Keep the original posterior channel and analytic code rate.
+                # The conditional-mean forecast need not decode coding noise.
+                forecast=means[:,1:]
             choose=torch.rand(b,w-1,1,1,device=flat.device)<self.forecast_fraction
             condition=torch.where(choose,forecast,noisy[:,1:])
         error=innovation_error(mu,means,self.rho)

@@ -322,6 +322,9 @@ def build(root, cfg):
                 "spt-deep-observation", "spt-control-affine", "spt-conditional-rate"):
             base.original_cached_encode = base.encode
             base.encode = types.MethodType(fp32_cached_encode, base)
+    if not cfg.get("decoder_forecast_noise", True):
+        assert base.pixel_objective == "future-mean"
+        base.decoder_forecast_noise = False
     if cfg.get("pixel_likelihood"):
         from experiments.robocasa_stable_scaling.pixel_likelihood import install_pixel_likelihood
         install_pixel_likelihood(base, cfg["pixel_likelihood"])
