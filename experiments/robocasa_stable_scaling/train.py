@@ -42,23 +42,28 @@ def additive_predict(self, means, actions):
 
 class ControlAffineTransition(nn.Module):
     """Learn autonomous drift and a state-dependent action response."""
-    def __init__(self, integrator="euler", state_dim=64):
+    def __init__(self, integrator="euler", state_dim=64, constant_action_response=False):
         super().__init__()
         assert integrator in ("euler", "rk4")
         self.integrator = integrator
         self.state_dim = state_dim
+        self.constant_action_response = constant_action_response
         self.field = nn.Sequential(nn.Linear(state_dim, 192), nn.GELU(),
-            nn.Linear(192, state_dim*(state_dim+1)))
+            nn.Linear(192, state_dim if constant_action_response else state_dim*(state_dim+1)))
         nn.init.zeros_(self.field[-1].weight)
         nn.init.zeros_(self.field[-1].bias)
 
     def forward(self, means, actions):
         with torch.autocast("cuda", enabled=False):
             def velocity(state):
+                if self.constant_action_response:
+                    return self.field(state)+actions.float()
                 coefficients = self.field(state).reshape(*state.shape[:-1], self.state_dim, self.state_dim+1)
                 return coefficients[..., 0]+(coefficients[..., 1:] @ actions.float().unsqueeze(-1)).squeeze(-1)
             state = means.float()
             if self.integrator == "euler":
+                if self.constant_action_response:
+                    return state+velocity(state)
                 # Preserve the existing arithmetic order for full-state resumes.
                 coefficients = self.field(state).reshape(*state.shape[:-1], self.state_dim, self.state_dim+1)
                 return state+coefficients[..., 0]+(coefficients[..., 1:] @ actions.float().unsqueeze(-1)).squeeze(-1)
@@ -288,7 +293,10 @@ def build(root, cfg):
             with torch.random.fork_rng():
                 torch.manual_seed(92320261114+cfg["seed"])
                 base.action_encoder = nn.Linear(14, base.state_dim, bias=False)
-                base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"), base.state_dim)
+                constant = cfg.get("constant_action_response", False)
+                if constant:
+                    nn.init.zeros_(base.action_encoder.weight)
+                base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"), base.state_dim, constant)
             base.predict = types.MethodType(control_affine_predict, base)
         if cfg.get("pixel_additive_transport",False):
             assert cfg["variant"]=="spt-deep-observation"
