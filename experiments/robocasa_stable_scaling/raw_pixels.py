@@ -114,11 +114,13 @@ def build(root,cfg):
         renderer.load_state_dict(state,strict=True);renderer.sequence_parallel=False
         model.renderer=renderer
         model.distortion=types.MethodType(resolution_distortion,model)
-    if cfg.get('raw_encoder_heavy',False):
+    allocation = cfg.get('raw_encoder_heavy',False)
+    if allocation or 'raw_encoder_width' in cfg or 'raw_decoder_depth' in cfg:
         assert cfg.get('raw_shared_visual_anchor') and cfg.get('pixel_objective')=='future-mean'
         assert not cfg.get('raw_physical_joint',False)
         from experiments.robocasa_stable_scaling.encoder_allocation import install
-        install(model,cfg['seed'])
+        install(model,cfg['seed'],encoder_width=cfg.get('raw_encoder_width',384 if allocation else 192),
+            decoder_depth=cfg.get('raw_decoder_depth',6 if allocation else 12))
     if cfg.get('raw_shared_visual_anchor',False):
         assert model.raw_render_size==224 and cfg.get('pixel_objective')=='future-mean'
         assert not cfg.get('raw_clean_residual_velocity',False)
