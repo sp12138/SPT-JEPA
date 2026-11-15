@@ -46,6 +46,8 @@ Native224同2.50012h父状态的速度/干净参数化，在累计3→4h分别39
 
 同Native速度3h，直接读取DiT在t=1、零latent、当前RGB anchor、丢弃state条件时的冻结末层token，均值/空间矩头为50.56/56.86%、128.55/112.09mm，全0final；原压缩码39.20%/193.01mm。输入无动作或未来RGB，增加使用已学DiT及读出容量，非原状态表示或等推理FLOPs比较。普通TRAIN RGB的实际Policy与缓存逐位核验、body不变/物理重放通过，128记录仍仅64物理DEV；原始`runs/robocasa_reach3d_renderer_probe_20261115`。原始RGB另有直达DiT的路径，故压缩码loss/读出不能代表全部模型的迁移能力；这些粗收益也未解决精度。
 
+保留同Raw64-4h全部空间patch特征，98304输入/294912参数线性头仅75.05%/66.62mm、final及any均0，比1152参数均值头74.28%/69.21mm收益有限，不继续扩大读出。仍原17920/1536当前输入标签、同64DEV、0body更新；维度大于样本数时只改用数学等价的dual ridge，真实小子集与primal最大预测差约1.3e-11，原压缩码实际重拟合逐位相同。固定同步双相机batch2，Policy与实际缓存逐位核对。两次启动验证错误均在有效控制前保留，未重训body；根`runs/robocasa_reach3d_dense_backbone_probe_20261115`。不能据线性读出负结果宣称所有信息不存在，确认集未打开。
+
 下一对照将视觉编码器同时用于状态码与空间anchor，复用该样本初始帧的已有token，不重复跑编码器、不引入未来上下文；只预测自然未来RGB均值，禁止带噪未来像素作为renderer输入。两组41,536,028可训练参数、完整初始NN及前向函数相同，区别仅anchor视觉梯度通/断，原rate及超参数不变；固定同1392回合、17920/1536当前输入标签，独立均值线性头。零更新门确认前向逐位同、只有E梯度不同、E只注册一次、未来RGB不改变anchor缓存、默认64均值loss/RNG/梯度回归及224确定性解码通过；非零末层只用于验证克隆，训练初始NN已恢复。根`runs/robocasa_reach3d_{shared,detached}_visual_mean_20261115`，主根`shared-visual-handoff-20261115`。尚未开始训练、无性能结论；这检验视觉旁路假说，不能由图结构预告线性控制成功。
 
 deep+Euler4h的F响应读出较E-only的91.43%/21.48mm/0final改善到94.05%/12.73mm/4final（any8），同NN/标签/64例、仅9参数C、无body更新。完整1/3/4/6h却为91.57/93.94/94.05/93.34%、19.22/12.98/12.73/15.43mm、final2/1/4/3，后段回落，未稳定scaling。F被使用且参数化不同，不能单因素归因或混作E-only probe。保护性只读审计显示近目标约6mm平台及少量blocking失败并存，评测不进入训练/teacher/proposal。原始`runs/robocasa_reach3d_deep_field_geometry_v2_20261114`，32确认例未打开。
