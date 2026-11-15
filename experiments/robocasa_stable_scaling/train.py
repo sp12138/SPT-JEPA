@@ -316,6 +316,9 @@ def build(root, cfg):
                 "spt-deep-observation", "spt-control-affine", "spt-conditional-rate"):
             base.original_cached_encode = base.encode
             base.encode = types.MethodType(fp32_cached_encode, base)
+    if cfg.get("pixel_likelihood"):
+        from experiments.robocasa_stable_scaling.pixel_likelihood import install_pixel_likelihood
+        install_pixel_likelihood(base, cfg["pixel_likelihood"])
     return base
 
 
