@@ -6,10 +6,11 @@ from torch import nn
 
 
 class StereoPool(nn.Module):
-    def __init__(self, pool, depth, seed):
+    def __init__(self, pool, depth, seed, view_grouped=False):
         super().__init__()
         assert depth in (0, 2) and len(pool.queries) == 8
         self.inner = pool
+        self.view_grouped = view_grouped
         width = pool.queries.shape[-1]
         self.view_embedding = nn.Parameter(torch.zeros(2, 1, width))
         self.fusion = nn.ModuleList()
@@ -33,7 +34,18 @@ class StereoPool(nn.Module):
         pair = (pair+self.view_embedding).flatten(1, 2)
         for layer in self.fusion:
             pair = layer(pair)
-        joint = self.inner(pair)
+        if self.view_grouped:
+            # Interaction above can use both views. Keep their source addresses
+            # when compressing: each half of the queries reads one view.
+            k = len(self.inner.queries)
+            query_view = torch.arange(k, device=pair.device)//(k//2)
+            key_view = torch.arange(pair.shape[1], device=pair.device)//(pair.shape[1]//2)
+            mask = query_view[:, None] != key_view[None, :]
+            q = self.inner.queries.expand(pair.shape[0], -1, -1)
+            pooled, _ = self.inner.attn(q, pair, pair, attn_mask=mask, need_weights=False)
+            joint = self.inner.head(self.inner.norm(pooled))
+        else:
+            joint = self.inner(pair)
         # Preserve the existing cache's two rows per physical observation.
         # These are halves of one joint state, not camera-specific states.
         return joint.reshape(n, 4, joint.shape[-1])
@@ -81,7 +93,8 @@ def install(model, cfg):
     assert model.raw_render_size == 224 and model.pixel_objective == "future-mean"
     assert model.state_slots == 8 and model.state_width == 16
     assert not model.batchnorm_state and not model.batchnorm_projector
-    model.pool = StereoPool(model.pool, cfg["stereo_fusion_depth"], cfg["seed"])
+    model.pool = StereoPool(model.pool, cfg["stereo_fusion_depth"], cfg["seed"],
+        cfg.get("stereo_view_grouped", False))
     model.joint_views = True
     model._stereo_capture = False
     model.encode = types.MethodType(encode, model)
