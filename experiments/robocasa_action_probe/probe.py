@@ -288,7 +288,14 @@ def evaluate(root, arm, index, policy=None):
         initial_mse = float(np.mean((initial.astype(float)-cached["initial"].astype(float))**2))
         goal_mse = float(np.mean((goal_images.astype(float)-cached["goal"].astype(float))**2))
         assert max(initial_mse, goal_mse) < 5., (initial_mse, goal_mse)
-        began = time.perf_counter(); goal = policy.encode(dict(img_0=cached["goal"][0], img_1=cached["goal"][1]))
+        began = time.perf_counter()
+        goal_rgb = dict(img_0=cached["goal"][0], img_1=cached["goal"][1])
+        if hasattr(policy, "initialize_goal"):
+            # Only RGB crosses this inference interface, never simulator metadata.
+            current_rgb = dict(img_0=obs["img_0"], img_1=obs["img_1"])
+            goal = policy.initialize_goal(goal_rgb, current_rgb)
+        else:
+            goal = policy.encode(goal_rgb)
         frames.append(initial); physics_seconds = 0.
         for _ in range(5):
             command = policy.command(obs, goal)
@@ -319,6 +326,8 @@ def evaluate(root, arm, index, policy=None):
             inference_goal_distribution_shift=True, no_proprio_reward_or_state_to_policy=True)
         if hasattr(policy, "decisions"):
             row["controller_decisions"] = policy.decisions
+        if hasattr(policy, "goal_inference"):
+            row["goal_inference"] = policy.goal_inference
         save(output/"summary.json", row); print(json.dumps(row), flush=True)
     finally: env.close()
 
