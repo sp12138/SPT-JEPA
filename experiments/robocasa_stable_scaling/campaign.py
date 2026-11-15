@@ -201,7 +201,9 @@ def worker(root, host, run_name):
             save(run/"controller.json", dict(phase="waiting_for_owned_diagnostics", time=time.time()))
             if (root/"STOP").exists() or (run/"STOP").exists(): return
             time.sleep(5)
-        manifest = corpus(root, 1); stage(root, manifest, host)
+        first_hour=int(cfg.get("first_readout_hour",1));assert first_hour>=1
+        initial_version=first_hour if cfg["growing_data"] else 1
+        manifest = corpus(root, initial_version); stage(root, manifest, host)
         def learn(label, seconds, limit=None):
             if (run/label/"ready.json").exists(): return
             argv=[PYTHON,"-m","torch.distributed.run","--standalone","--nnodes=1","--nproc-per-node="+str(cfg["world_size"]),"-m","--",MODULE+".train",
@@ -209,8 +211,8 @@ def worker(root, host, run_name):
             if limit is not None: argv += ["--max-updates",str(limit)]
             call(root,argv,logs/("train-"+label+".log"),gpus)
         # Retain startup updates and prove a real full-state continuation before long training.
-        learn("entry",3600,8); learn("restore-probe",3600,8)
-        hour=1
+        learn("entry",first_hour*3600,8); learn("restore-probe",first_hour*3600,8)
+        hour=first_hour
         while not (root/"STOP").exists() and not (run/"STOP").exists() and not (root/"FINISHED").exists():
             label=f"hour-{hour:03d}"
             manifest=corpus(root,hour if cfg["growing_data"] else 1);stage(root,manifest,host)

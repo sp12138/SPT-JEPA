@@ -28,7 +28,8 @@ def sample(renderer, state, anchor, shift, steps=SAMPLER_STEPS, cfg_scale=CFG_SC
     """SPT's Euler sampler (RepWorldInference._denoise), with optional guidance on the state.
     Call with the renderer in eval mode: in train mode WorldDiT drops the state for a fraction of samples."""
     n = state.shape[0]
-    z = torch.randn((n, TOKEN_CH, 1, GRID, GRID), device=state.device, generator=generator)
+    assert anchor.ndim == 5 and anchor.shape[0] == n
+    z = torch.randn(anchor.shape, device=state.device, generator=generator)
     sched = shift_timestep(torch.linspace(1, 0, steps + 1, device=state.device), shift)
     drop = torch.ones(n, dtype=torch.bool, device=state.device)
     with renderer.anchored(anchor):

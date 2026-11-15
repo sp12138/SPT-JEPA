@@ -22,6 +22,21 @@ def resolution_distortion(self,batch,render,anchor,condition):
     return flow_loss(self.renderer,y,condition.flatten(0,1),anchors,self.training_shift)
 
 
+def clean_residual_velocity(self,latent,timestep,*args,**kwargs):
+    """Predict clean innovation; analytically carry full-rank Gaussian noise.
+
+    The public renderer interface still returns the original FM velocity.
+    Its loss is unchanged: velocity error equals clean-innovation error / t.
+    Flow sampling never evaluates its final endpoint at t=0.
+    """
+    assert self._anchor is not None and bool((timestep>0).all())
+    t=timestep.reshape(-1,1,1,1,1)
+    innovation_input=latent-(1-t)*self._anchor
+    clean=self._clean_residual_backbone(innovation_input,timestep,*args,**kwargs)
+    assert isinstance(clean,torch.Tensor) and clean.shape==latent.shape
+    return (self._anchor+clean-latent)/t
+
+
 def build(root,cfg):
     from experiments.robocasa_compare import train as common
     common.install_runtime(root/'code')
@@ -47,6 +62,9 @@ def build(root,cfg):
         renderer.load_state_dict(state,strict=True);renderer.sequence_parallel=False
         model.renderer=renderer
         model.distortion=types.MethodType(resolution_distortion,model)
+    if cfg.get('raw_clean_residual_velocity',False):
+        model.renderer._clean_residual_backbone=model.renderer.forward
+        model.renderer.forward=types.MethodType(clean_residual_velocity,model.renderer)
     model.prepare=types.MethodType(prepare_pixels,model)
     return model
 
