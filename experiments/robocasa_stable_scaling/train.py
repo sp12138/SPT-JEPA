@@ -346,6 +346,9 @@ class Windows:
             with np.load(row["local_observations"]) as stream:
                 assert set(stream.files) == {"render", "commands"}
                 self.observations[ident] = (stream["render"].copy(), stream["commands"].copy())
+            if self.cfg.get('raw_pixel_encoder',False) and self.cfg.get('raw_render_size',64)!=64:
+                assert self.cfg['raw_render_size']==224
+                self.observations[ident]=(self.pixels[ident].copy(),self.observations[ident][1])
         render, command = self.observations[ident]
         raw = np.zeros((8, 14), np.float32)
         raw[:-1, 7:10] = command[start:start+7, :3]; raw[:-1, 13] = -.04*command[start:start+7, 6]

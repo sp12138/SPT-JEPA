@@ -1,5 +1,6 @@
 """Scratch RGB encoder ablation using the same factual transitions and heads."""
 import types
+from dataclasses import replace
 
 import torch
 from torch import nn
@@ -8,7 +9,17 @@ from torch.nn import functional as F
 
 def prepare_pixels(self,batch):
     render=batch['render'].float()/127.5-1.
+    assert render.shape[-2:]==(self.raw_render_size,self.raw_render_size)
     return self.normalize(batch['pixels']),render,render[:,0]
+
+
+def resolution_distortion(self,batch,render,anchor,condition):
+    from vforge.models.as_jepa.pixels import pack
+    from vforge.models.as_jepa.flow import flow_loss
+    patch=self.raw_render_size//16;w=render.shape[1]
+    y=pack(render[:,1:].flatten(0,1),patch=patch)
+    anchors=pack(anchor,patch=patch).repeat_interleave(w-1,dim=0)
+    return flow_loss(self.renderer,y,condition.flatten(0,1),anchors,self.training_shift)
 
 
 def build(root,cfg):
@@ -21,6 +32,21 @@ def build(root,cfg):
         rho=.8,forecast_fraction=.5,forecast_seed=61001+cfg['seed'],rate_prior='forecast',
         flow_logit_shift=cfg.get('flow_logit_shift',0.),state_slots=cfg.get('state_slots',4))
     model.code_chart='global'
+    model.raw_render_size=cfg.get('raw_render_size',64)
+    assert model.raw_render_size in (64,224)
+    if model.raw_render_size!=64:
+        from vforge.models.as_jepa.renderer import AnchoredWorldDiT
+        # Keep the 16x16 token grid and the existing per-frame coding penalty.
+        # Only input/output projection shapes grow; common random weights pair.
+        original=model.renderer.state_dict()
+        with torch.random.fork_rng(devices=[]):
+            renderer=AnchoredWorldDiT(replace(model.renderer.config,channels=3*(model.raw_render_size//16)**2),
+                state_dim=model.state_width,num_slots=model.state_slots)
+        state=renderer.state_dict();assert state.keys()==original.keys()
+        state.update({k:v for k,v in original.items() if state[k].shape==v.shape})
+        renderer.load_state_dict(state,strict=True);renderer.sequence_parallel=False
+        model.renderer=renderer
+        model.distortion=types.MethodType(resolution_distortion,model)
     model.prepare=types.MethodType(prepare_pixels,model)
     return model
 
