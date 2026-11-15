@@ -37,6 +37,14 @@ def clean_residual_velocity(self,latent,timestep,*args,**kwargs):
     return (self._anchor+clean-latent)/t
 
 
+def current_rgb_mean_skip(self,latent,timestep,*args,**kwargs):
+    """Keep observed RGB exactly; learn its conditional future innovation."""
+    assert self._anchor is not None
+    innovation=self._mean_skip_backbone(latent,timestep,*args,**kwargs)
+    assert innovation.shape==self._anchor.shape
+    return self._anchor.float()+innovation.float()
+
+
 class SharedVisualAnchor(nn.Module):
     """Reuse the RGB encoder for spatial decoder context and the state code."""
     def __init__(self,encoder,mean,std,width,grid,patch,detach_context):
@@ -131,6 +139,11 @@ def build(root,cfg):
     if cfg.get('raw_clean_residual_velocity',False):
         model.renderer._clean_residual_backbone=model.renderer.forward
         model.renderer.forward=types.MethodType(clean_residual_velocity,model.renderer)
+    if cfg.get('raw_future_mean_rgb_skip',False):
+        assert cfg.get('raw_shared_visual_anchor') and cfg.get('pixel_objective')=='future-mean'
+        assert not cfg.get('raw_clean_residual_velocity',False)
+        model.renderer._mean_skip_backbone=model.renderer.forward
+        model.renderer.forward=types.MethodType(current_rgb_mean_skip,model.renderer)
     model.prepare=types.MethodType(prepare_pixels,model)
     return model
 

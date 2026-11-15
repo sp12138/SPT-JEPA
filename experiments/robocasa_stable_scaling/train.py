@@ -73,6 +73,22 @@ class ControlAffineTransition(nn.Module):
             return state+(k1+2*k2+2*k3+k4)/6
 
 
+class NonlinearActionTransition(nn.Module):
+    """A discrete consequence map can be nonlinear in the issued command."""
+    def __init__(self, state_dim=64):
+        super().__init__()
+        self.state_dim=state_dim
+        self.field=nn.Sequential(nn.Linear(2*state_dim,192),nn.GELU(),
+            nn.Linear(192,state_dim))
+        nn.init.zeros_(self.field[-1].weight)
+        nn.init.zeros_(self.field[-1].bias)
+
+    def forward(self, means, actions):
+        with torch.autocast('cuda',enabled=False):
+            state=means.float()
+            return state+self.field(torch.cat((state,actions.float()),dim=-1))
+
+
 def control_affine_predict(self, means, actions):
     return self.predictor(means, actions)
 
@@ -296,7 +312,13 @@ def build(root, cfg):
                 constant = cfg.get("constant_action_response", False)
                 if constant:
                     nn.init.zeros_(base.action_encoder.weight)
-                base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"), base.state_dim, constant)
+                transition=cfg.get('action_transition','control-affine')
+                assert transition in ('control-affine','nonlinear')
+                if transition=='nonlinear':
+                    assert not constant and cfg.get('control_integrator','euler')=='euler'
+                    base.predictor=NonlinearActionTransition(base.state_dim)
+                else:
+                    base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"), base.state_dim, constant)
             base.predict = types.MethodType(control_affine_predict, base)
         if cfg.get("pixel_additive_transport",False):
             assert cfg["variant"]=="spt-deep-observation"
