@@ -239,7 +239,13 @@ def pixel_prediction_distortion(self, batch, render, anchor, condition):
 
 
 def build(root, cfg):
-    base = old.build(root, cfg)
+    if cfg.get("raw_pixel_encoder",False):
+        assert cfg['variant']=='spt-deep-observation' and cfg.get('observation_depth',0)==0
+        assert not cfg.get('joint_views',False)
+        from experiments.robocasa_stable_scaling.raw_pixels import build as build_raw
+        base=build_raw(root,cfg)
+    else:
+        base = old.build(root, cfg)
     if cfg["variant"] in ("feature-delta", "feature-conditional", "action-transport", "codec-transport", "codec-conditional"):
         base.renderer.requires_grad_(False)
         base.conditional_feature_decoder = cfg["variant"] != "feature-delta"
@@ -316,7 +322,7 @@ class Windows:
     def __init__(self, root, manifest, cfg):
         self.records = json.loads(manifest.read_text())["records"]
         assert self.records and all(r["split"] == "train" for r in self.records)
-        self.cfg = cfg; self.features = {}; self.observations = {}
+        self.cfg = cfg; self.features = {}; self.observations = {}; self.pixels = {}
         # Normalize the actual command by the declared action bounds, rather
         # than reusing statistics derived from a different action semantic.
         self.mean = np.zeros(14, np.float32); self.std = np.ones(14, np.float32)
@@ -327,7 +333,16 @@ class Windows:
         row = self.records[int(rng.integers(len(self.records)))]; ident = row["id"]
         start = int(rng.integers(10))
         if ident not in self.features:
-            self.features[ident] = np.load(row["local_features"], mmap_mode="r")
+            if self.cfg.get('raw_pixel_encoder',False):
+                path=Path(row.get('local_rgb',row['rgb']))
+                assert sha(path)==row['rgb_sha256']
+                with np.load(path) as stream:
+                    assert set(stream.files)=={'pixels'}
+                    self.pixels[ident]=stream['pixels'].copy()
+                assert self.pixels[ident].shape==(17,2,3,224,224) and self.pixels[ident].dtype==np.uint8
+                self.features[ident]=None
+            else:
+                self.features[ident] = np.load(row["local_features"], mmap_mode="r")
             with np.load(row["local_observations"]) as stream:
                 assert set(stream.files) == {"render", "commands"}
                 self.observations[ident] = (stream["render"].copy(), stream["commands"].copy())
@@ -335,15 +350,21 @@ class Windows:
         raw = np.zeros((8, 14), np.float32)
         raw[:-1, 7:10] = command[start:start+7, :3]; raw[:-1, 13] = -.04*command[start:start+7, 6]
         action = np.zeros_like(raw); action[:-1] = (raw[:-1]-self.mean)/self.std
-        return dict(features=torch.from_numpy(self.features[ident][start:start+8].transpose(1, 0, 2, 3).copy()),
+        result=dict(features=(torch.zeros(2,8,1,1) if self.cfg.get('raw_pixel_encoder',False) else
+                torch.from_numpy(self.features[ident][start:start+8].transpose(1, 0, 2, 3).copy())),
             render=torch.from_numpy(render[start:start+8].transpose(1, 0, 2, 3, 4).copy()),
             action=torch.from_numpy(action))
+        if self.cfg.get('raw_pixel_encoder',False):
+            result['pixels']=torch.from_numpy(self.pixels[ident][start:start+8].transpose(1,0,2,3,4).copy())
+        return result
 
 
 def prepare(raw):
     f = raw["features"].cuda(non_blocking=True); b, v, w = f.shape[:3]
-    return dict(features=f.flatten(0, 1), render=raw["render"].cuda(non_blocking=True).flatten(0, 1),
+    result=dict(features=f.flatten(0, 1), render=raw["render"].cuda(non_blocking=True).flatten(0, 1),
         action=raw["action"].cuda(non_blocking=True)[:, None].expand(b, v, w, 14).reshape(b*v, w, 14))
+    if 'pixels' in raw:result['pixels']=raw['pixels'].cuda(non_blocking=True).flatten(0,1)
+    return result
 
 
 def rates(opt, elapsed):
@@ -408,8 +429,8 @@ def train(root, run, manifest, target, label, max_updates=None):
                 data_version_transition_is_intentional=sha(manifest)!=full["data_cursor"]["manifest_sha256"]))
         del full
     elif rank == 0:
-        shared = {k:v for k,v in model.state_dict().items() if k.startswith(("feature_adapter.", "pool.", "predictor.", "action_encoder."))}
-        encoder = {k:v for k,v in shared.items() if k.startswith(("feature_adapter.","pool."))}
+        shared = {k:v for k,v in model.state_dict().items() if k.startswith(("feature_adapter.", "encoder.", "pool.", "predictor.", "action_encoder."))}
+        encoder = {k:v for k,v in shared.items() if k.startswith(("feature_adapter.","encoder.","pool."))}
         full_encoder = dict(encoder)
         if cfg.get("joint_views"): full_encoder["joint_view_embedding"] = model.joint_view_embedding
         save(run/"initial.json", dict(passed=True, fresh_random_model=True, seed=cfg["seed"],
@@ -455,7 +476,7 @@ def train(root, run, manifest, target, label, max_updates=None):
             assert bool(finite), ("non-finite FP32 retry", step+1)
         norms = {}
         if segment < 8 or (step+1) % 100 == 0:
-            prefixes = ["feature_adapter.", "pool.", "action_encoder."]
+            prefixes = ["encoder." if cfg.get('raw_pixel_encoder',False) else "feature_adapter.", "pool.", "action_encoder."]
             if cfg.get("joint_views"): prefixes.append("joint_view_embedding")
             if cfg["variant"] not in ("action-transport","codec-transport") and not cfg.get("pixel_additive_transport",False):
                 prefixes.append("predictor.")

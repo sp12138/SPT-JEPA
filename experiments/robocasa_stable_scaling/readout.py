@@ -102,8 +102,27 @@ def fit(root, arm="spt64-linear", steps=5000):
     plan=json.loads((root/"plan.json").read_text())
     kind=plan.get("detached_head_kind","potential")
     objective=plan.get("head_fit_loss","mse")
-    assert kind in HEADS and objective in ("mse","mae")
-    def criterion(predicted, actual):
+    assert kind in HEADS and objective in ("mse","mae","consequence")
+    action_cap=plan.get("head_training_action_cap")
+    assert action_cap is None or action_cap==.3
+    response=None;response_hash=None
+    if objective=="consequence":
+        from experiments.robocasa_stable_scaling.response_readout import FrozenResponse
+        # Loading a frozen field must not consume the paired head's init RNG.
+        with torch.random.fork_rng(devices=[]):
+            response=FrozenResponse(root).cuda()
+        response_hash=common.state_hash(response.state_dict())
+        for path in (directory/"cache").glob("part-*.json"):
+            proof=json.loads(path.read_text())
+            assert proof["parent"]["full_nn_sha256"]==response.parent_nn_sha256
+            assert proof["readout_data_sha256"]==sha(root/"data.json")
+    def bounded(predicted):
+        if action_cap is None:return predicted
+        return predicted*torch.clamp(action_cap/predicted.norm(dim=-1,keepdim=True).clamp_min(1e-12),max=1.)
+    def criterion(predicted, actual, current, following):
+        predicted=bounded(predicted)
+        if response is not None:
+            return (response.predict_input_grad(current,predicted)-following.detach()).square().mean()
         error=predicted-actual
         return error.square().mean() if objective=="mse" else error.abs().mean()
     model = HEADS[kind](weight).cuda()
@@ -116,20 +135,20 @@ def fit(root, arm="spt64-linear", steps=5000):
     with torch.no_grad():
         reference = float((F.linear((v1-v0).double(), weight.cuda().double())-vy.double()).square().mean())
     assert abs(reference**.5-ready["validation_RMSE"]) < 1e-6
-    with torch.no_grad(): baseline_score=float(criterion(model(v0,v1),vy))
+    with torch.no_grad(): baseline_score=float(criterion(model(v0,v1),vy,v0,v1))
     best = (baseline_score, common.cpu(model.state_dict()), 0); history = []
     started = time.perf_counter()
     for step in range(1, steps+1):
         indices = torch.randint(len(x0), (512,), device="cuda", generator=generator)
         opt.zero_grad(set_to_none=True)
-        loss = criterion(model(x0[indices], x1[indices]),target[indices])
+        loss = criterion(model(x0[indices], x1[indices]),target[indices],x0[indices],x1[indices])
         assert torch.isfinite(loss); loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1., error_if_nonfinite=True); opt.step()
         if step % 100 == 0 or step == steps:
             with torch.no_grad():
                 prediction=model(v0,v1)
-                score=float(criterion(prediction,vy))
-                mse=float((prediction-vy).square().mean())
+                score=float(criterion(prediction,vy,v0,v1))
+                mse=float((bounded(prediction)-vy).square().mean())
             assert np.isfinite(score) and np.isfinite(mse)
             history.append(dict(step=step, train_objective=float(loss.detach()),
                 validation_objective=score, validation_RMSE=mse**.5))
@@ -140,18 +159,26 @@ def fit(root, arm="spt64-linear", steps=5000):
         source_linear_sha256=ready["head_sha256"], samples=steps*512))
     model.load_state_dict(best[1]); model.zero_grad(set_to_none=True)
     leaf = v0[:32].detach().requires_grad_()
-    test = criterion(model(leaf, v1[:32]),vy[:32]); test.backward()
+    test = criterion(model(leaf, v1[:32]),vy[:32],leaf,v1[:32]); test.backward()
     assert leaf.grad is None and all(p.grad is None or bool(torch.isfinite(p.grad).all()) for p in model.parameters())
     assert any(p.grad is not None and float(p.grad.norm()) > 0 for p in model.parameters())
     with torch.no_grad():
         assert torch.equal(model(v0[:32], v0[:32]), torch.zeros_like(vy[:32]))
-        validation_rmse=float((model(v0,v1)-vy).square().mean().sqrt())
+        validation_rmse=float((bounded(model(v0,v1))-vy).square().mean().sqrt())
+    if response is not None:
+        assert all(not p.requires_grad and p.grad is None for p in response.parameters())
+        assert common.state_hash(response.state_dict())==response_hash
     model.zero_grad(set_to_none=True)
     torch.save(dict(weight=weight, potential=best[1], head_type=kind, selected_step=best[2]), directory/"head.pt")
     save(directory/"ready.json", dict(ready, head_sha256=sha(directory/"head.pt"),
         head_type=kind, selected_step=best[2], steps_trained=steps,
         head_parameters=sum(p.numel() for p in model.parameters()),
         validation_RMSE=validation_rmse, head_fit_loss=objective,
+        head_training_action_cap=action_cap,
+        frozen_forward_nn_sha256=response.parent_nn_sha256 if response is not None else None,
+        frozen_forward_unchanged=True if response is not None else None,
+        consequence_target="naturally observed same-transition next RGB code" if response is not None else None,
+        current_action_labels_used_for_ridge_initialization=True,
         validation_objective=best[0], linear_validation_RMSE=baseline**.5,
         linear_FP64_validation_RMSE=reference**.5,
         validation_history=history, actual_stopgradient_backward_pass=True,

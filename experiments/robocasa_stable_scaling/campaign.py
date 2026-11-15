@@ -61,15 +61,19 @@ def corpus(root, version):
 
 def stage(root, manifest, host):
     d = json.loads(manifest.read_text())
-    marker = root/"corpora"/f"STAGED-{manifest.stem}-{host}.json"
+    raw_pixels=json.loads((root/'plan.json').read_text()).get('raw_pixel_encoder',False)
+    marker = root/"corpora"/f"STAGED-{'RGB-' if raw_pixels else ''}{manifest.stem}-{host}.json"
     if marker.exists():
         proof = json.loads(marker.read_text())
         assert proof["passed"] and proof["manifest_sha256"] == sha(manifest)
-        if all(Path(row[key]).exists() for row in d["records"] for key in ("local_features","local_observations")):
+        keys=('local_observations','rgb') if raw_pixels else ('local_features','local_observations')
+        if all(Path(row[key]).exists() for row in d["records"] for key in keys):
             return
     def one(row):
-        for kind, local, digest in [("features", "local_features", "features_sha256"),
-                ("observations", "local_observations", "observations_sha256")]:
+        values=[("observations", "local_observations", "observations_sha256")]
+        if not raw_pixels:values.insert(0,("features", "local_features", "features_sha256"))
+        else:assert Path(row['rgb']).exists()
+        for kind, local, digest in values:
             target = Path(row[local]); target.parent.mkdir(parents=True, exist_ok=True)
             if row["original"]:
                 assert target.exists()

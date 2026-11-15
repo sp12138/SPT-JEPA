@@ -79,7 +79,12 @@ class FrozenResponse(nn.Module):
 
     @torch.no_grad()
     def predict(self, current, action):
-        z=current.float().reshape(-1,2,64)
+        return self.predict_input_grad(current, action)
+
+    def predict_input_grad(self, current, action):
+        """Differentiate hypothetical inputs while keeping the learned body frozen."""
+        assert all(not p.requires_grad for p in self.parameters())
+        z=current.detach().float().reshape(-1,2,64)
         if self.integrator=="rk4":
             u=action.float()@self.input_map.T
             return self.rk4_transition(z,u[:,None].expand_as(z)).reshape(-1,128)

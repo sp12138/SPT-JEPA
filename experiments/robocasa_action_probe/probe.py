@@ -41,7 +41,7 @@ class Readout(nn.Module):
         common.install_runtime(root/"code")
         self.precision = json.loads((root/"plan.json").read_text()).get("readout_precision","bf16")
         assert self.precision in ("bf16","fp32")
-        self.parent = None; self.joint_views = False
+        self.parent = None; self.joint_views = False; self.raw_pixel_encoder=False
         self.frozen_layout=json.loads((root/"plan.json").read_text()).get("frozen_readout_layout","mean")
         assert self.frozen_layout in ("mean","spatial-moments")
         if self.frozen_layout=="spatial-moments":
@@ -61,22 +61,27 @@ class Readout(nn.Module):
             path = run/label/"weights.pt"
             assert ready["passed"] and sha(path) == ready["weights_sha256"]
             cfg = json.loads((run/"config.json").read_text())
-            self.feature_adapter = deepen_observation_adapter(
-                nn.Sequential(nn.Linear(1664, 192), nn.LayerNorm(192)),
-                cfg.get("observation_depth", 0))
-            self.pool = QueryPool(192, 3, cfg["state_slots"], 16)
             weights = torch.load(path, map_location="cpu", weights_only=True)
-            self.joint_views = cfg.get("joint_views",False)
-            if self.joint_views:
-                self.joint_view_embedding = nn.Parameter(weights["joint_view_embedding"].clone(),requires_grad=False)
-            for prefix, module in (("feature_adapter.", self.feature_adapter), ("pool.", self.pool)):
-                module.load_state_dict({k[len(prefix):]:v for k,v in weights.items() if k.startswith(prefix)}, strict=True)
+            self.raw_pixel_encoder=cfg.get('raw_pixel_encoder',False)
+            if self.raw_pixel_encoder:
+                from experiments.robocasa_stable_scaling.raw_pixels import RawPixelsReadout
+                self.raw_visual=RawPixelsReadout(root,cfg,weights,ready['nn_sha256'])
+            else:
+                self.feature_adapter = deepen_observation_adapter(
+                    nn.Sequential(nn.Linear(1664, 192), nn.LayerNorm(192)),cfg.get("observation_depth", 0))
+                self.pool = QueryPool(192, 3, cfg["state_slots"], 16)
+                self.joint_views = cfg.get("joint_views",False)
+                if self.joint_views:
+                    self.joint_view_embedding = nn.Parameter(weights["joint_view_embedding"].clone(),requires_grad=False)
+                for prefix, module in (("feature_adapter.", self.feature_adapter), ("pool.", self.pool)):
+                    module.load_state_dict({k[len(prefix):]:v for k,v in weights.items() if k.startswith(prefix)}, strict=True)
             self.parent = dict(run=str(run), label=label, step=ready["step"],
                 weights_sha256=ready["weights_sha256"], full_nn_sha256=ready["nn_sha256"])
         self.eval().requires_grad_(False)
 
     @torch.no_grad()
     def forward(self, features):
+        if self.raw_pixel_encoder:return self.raw_visual(features)
         if self.arm == "vjepa-linear":
             mean=features.float().mean(-2)
             if self.frozen_layout=="mean":return mean
@@ -104,9 +109,16 @@ def cache(root, arm, shard):
     for index, record in enumerate(records):
         if index % 8 != shard: continue
         rid = record["id"]
-        dense = np.load(record.get("local_features", source/"features/vjepa"/(rid+".npy")), mmap_mode="r")
-        assert dense.shape == (17, 2, 196, 1664)
-        features = torch.from_numpy(np.asarray(dense).copy()).flatten(0, 1).cuda()
+        if readout.raw_pixel_encoder:
+            path=Path(record.get('local_rgb',record['rgb']));assert sha(path)==record['rgb_sha256']
+            with np.load(path) as stream:
+                assert set(stream.files)=={'pixels'};pixels=stream['pixels']
+            assert pixels.shape==(17,2,3,224,224) and pixels.dtype==np.uint8
+            features=torch.from_numpy(pixels.copy()).flatten(0,1).cuda()
+        else:
+            dense = np.load(record.get("local_features", source/"features/vjepa"/(rid+".npy")), mmap_mode="r")
+            assert dense.shape == (17, 2, 196, 1664)
+            features = torch.from_numpy(np.asarray(dense).copy()).flatten(0, 1).cuda()
         code = readout(features).reshape(17, 2, -1).flatten(1).detach().cpu().numpy()
         with np.load(record.get("local_observations", source/"observations"/(rid+".npz"))) as stream:
             assert set(stream.files) == {"render", "commands"}
@@ -212,7 +224,7 @@ class Policy:
         self.base = base
         self.readout = Readout(root, arm).cuda()
         self.before = common.state_hash(self.readout.state_dict())
-        self.encoder = base.load_encoder(root, "vjepa")
+        self.encoder = self.readout.raw_visual.encoder if self.readout.raw_pixel_encoder else base.load_encoder(root, "vjepa")
         self.versions = [p._version for p in self.encoder.parameters()]
         directory = root/"heads"/arm; proof = json.loads((directory/"ready.json").read_text())
         assert proof["passed"] and sha(directory/"head.pt") == proof["head_sha256"]
@@ -228,7 +240,8 @@ class Policy:
             assert frame.dtype == np.uint8 and frame.std() > 1.
             images.append(cv2.resize(frame[:, left:left+h], (224,224), interpolation=cv2.INTER_AREA).transpose(2,0,1))
         torch.cuda.synchronize(); began = time.perf_counter()
-        features = self.base.encode(self.encoder, torch.from_numpy(np.stack(images)).cuda(), "vjepa")
+        images=torch.from_numpy(np.stack(images)).cuda()
+        features = images if self.readout.raw_pixel_encoder else self.base.encode(self.encoder, images, "vjepa")
         z = self.readout(features).flatten()
         torch.cuda.synchronize(); self.seconds += time.perf_counter()-began; self.calls += 1
         return z
