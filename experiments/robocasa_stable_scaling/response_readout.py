@@ -28,6 +28,8 @@ class FrozenResponse(nn.Module):
         run=Path(plan["source"])/"training"/plan["source_models"]["spt64-linear"]
         cfg=json.loads((run/"config.json").read_text())
         assert cfg["variant"]=="spt-control-affine" and cfg["state_slots"]==4
+        assert cfg.get('action_transition','control-affine')=='control-affine' and not cfg.get('nonlinear_action_residual',False), \
+            "This readout requires an affine command map; a nonlinear map needs its actual response."
         self.integrator=cfg.get("control_integrator","euler")
         assert self.integrator in ("euler","rk4") and not cfg.get("joint_views",False)
         assert self.integrator=="euler" or not self.symmetric_endpoints

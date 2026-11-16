@@ -42,7 +42,8 @@ def additive_predict(self, means, actions):
 
 class ControlAffineTransition(nn.Module):
     """Learn autonomous drift and a state-dependent action response."""
-    def __init__(self, integrator="euler", state_dim=64, constant_action_response=False):
+    def __init__(self, integrator="euler", state_dim=64, constant_action_response=False,
+                 nonlinear_action_residual=False):
         super().__init__()
         assert integrator in ("euler", "rk4")
         self.integrator = integrator
@@ -52,6 +53,14 @@ class ControlAffineTransition(nn.Module):
             nn.Linear(192, state_dim if constant_action_response else state_dim*(state_dim+1)))
         nn.init.zeros_(self.field[-1].weight)
         nn.init.zeros_(self.field[-1].bias)
+        self.nonlinear_action_residual = None
+        if nonlinear_action_residual:
+            assert integrator == "euler" and not constant_action_response
+            with torch.random.fork_rng(devices=[]):
+                self.nonlinear_action_residual = nn.Sequential(
+                    nn.Linear(2*state_dim, 192), nn.GELU(), nn.Linear(192, state_dim))
+                nn.init.zeros_(self.nonlinear_action_residual[-1].weight)
+                nn.init.zeros_(self.nonlinear_action_residual[-1].bias)
 
     def forward(self, means, actions):
         with torch.autocast("cuda", enabled=False):
@@ -66,7 +75,14 @@ class ControlAffineTransition(nn.Module):
                     return state+velocity(state)
                 # Preserve the existing arithmetic order for full-state resumes.
                 coefficients = self.field(state).reshape(*state.shape[:-1], self.state_dim, self.state_dim+1)
-                return state+coefficients[..., 0]+(coefficients[..., 1:] @ actions.float().unsqueeze(-1)).squeeze(-1)
+                result = state+coefficients[..., 0]+(coefficients[..., 1:] @ actions.float().unsqueeze(-1)).squeeze(-1)
+                if self.nonlinear_action_residual is not None:
+                    command = actions.float()
+                    correction = self.nonlinear_action_residual
+                    residual = correction(torch.cat((state, command), -1))-correction(
+                        torch.cat((state, torch.zeros_like(command)), -1))
+                    result = result+residual
+                return result
             # The same currently supplied command defines all four RK stages.
             k1 = velocity(state); k2 = velocity(state+k1*.5)
             k3 = velocity(state+k2*.5); k4 = velocity(state+k3)
@@ -316,9 +332,11 @@ def build(root, cfg):
                 assert transition in ('control-affine','nonlinear')
                 if transition=='nonlinear':
                     assert not constant and cfg.get('control_integrator','euler')=='euler'
+                    assert not cfg.get('nonlinear_action_residual',False)
                     base.predictor=NonlinearActionTransition(base.state_dim)
                 else:
-                    base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"), base.state_dim, constant)
+                    base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"), base.state_dim, constant,
+                        cfg.get('nonlinear_action_residual',False))
             base.predict = types.MethodType(control_affine_predict, base)
         if cfg.get("pixel_additive_transport",False):
             assert cfg["variant"]=="spt-deep-observation"
