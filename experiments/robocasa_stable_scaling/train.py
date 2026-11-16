@@ -40,6 +40,25 @@ def additive_predict(self, means, actions):
     return means.float()+actions.float()
 
 
+class IsometricActionEncoder(nn.Module):
+    """Learn action directions while fixing their otherwise arbitrary units."""
+    def __init__(self, action_dim, state_dim):
+        super().__init__()
+        assert state_dim >= action_dim
+        self.raw_weight = nn.Parameter(torch.empty(state_dim, action_dim))
+        nn.init.orthogonal_(self.raw_weight)
+
+    @property
+    def weight(self):
+        q, r = torch.linalg.qr(self.raw_weight.float(), mode='reduced')
+        signs = torch.where(r.diagonal() >= 0, 1., -1.).detach()
+        return q*signs[None]
+
+    def forward(self, action):
+        with torch.autocast(action.device.type, enabled=False):
+            return F.linear(action.float(), self.weight)
+
+
 class ControlAffineTransition(nn.Module):
     """Learn autonomous drift and a state-dependent action response."""
     def __init__(self, integrator="euler", state_dim=64, constant_action_response=False,
@@ -358,10 +377,14 @@ def build(root, cfg):
         if cfg["variant"] == "spt-control-affine":
             with torch.random.fork_rng():
                 torch.manual_seed(92320261114+cfg["seed"])
-                base.action_encoder = nn.Linear(14, base.state_dim, bias=False)
                 constant = cfg.get("constant_action_response", False)
-                if constant:
-                    nn.init.zeros_(base.action_encoder.weight)
+                if cfg.get('isometric_actions',False):
+                    assert constant and cfg.get('pure_action_transport')
+                    base.action_encoder=IsometricActionEncoder(14,base.state_dim)
+                else:
+                    base.action_encoder = nn.Linear(14, base.state_dim, bias=False)
+                    if constant:
+                        nn.init.zeros_(base.action_encoder.weight)
                 transition=cfg.get('action_transition','control-affine')
                 assert transition in ('control-affine','nonlinear')
                 if transition=='nonlinear':

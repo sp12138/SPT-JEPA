@@ -9,7 +9,7 @@ R=`/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114`；模型根
 | 主机/卡 | 根后缀 / run name | 当前方法；可训练参数 / 动作头参数 |
 |---|---|---|
 | dev13 0–3 | `flexible_mean_identity_20261116` / spt-flexible-mean-identity | 状态相关 F＋恒等观察映射；41.625M / 384 |
-| dev13 4–7 | `ema_action_transport_20261116` / spt-ema-action-transport | 自身 EMA 当前码＋共享动作平移；40.810M / 384 |
+| dev13 4–7 | `isometric_relative_state_20261116` / spt-isometric-relative-state | 相对状态编码＋学习正交动作基；40.810M / 384 |
 | dev15 0–3 | `mean_state_identity_20261116` / spt-mean-state-identity | 动作平移＋恒等观察映射；40.810M / 384 |
 | dev15 4–7 | `ema_initial_target_20261116` / spt-ema-initial-mean-readout | 自身 EMA 当前码＋状态相关 F；41.625M / 2304 |
 | dev6 0–3 | `mean_state_absolute_20261116` / spt-mean-state-absolute | 动作平移＋绝对观察映射；40.810M / 384 |
@@ -17,11 +17,11 @@ R=`/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114`；模型根
 
 ## 决策所需的关键结果
 
-- **保留纯动作平移继续 3/4/8h。** `z_next=z+A*a_t` 的 1→2h 从71.70%/67.51mm升至86.30%/29.59mm，native final/any仍全0。同384参数码头、同预算带漂移对照2h为79.79%/49.56mm；有粗控制改善，尚非稳定精细 scaling。源 `code-pure-action-transport-v1`。**不要为了启动已准备的 flexible-absolute 对照而停这个分支。**
-- EMA未来码1/2h仅49.27/49.96%、124.00/123.78mm、全0，已保全完整2h及部分3h状态后退出。相反方向的EMA当前码首小时73.60%/63.18mm/0final/1any；EMA当前码＋平移组合首小时57.24%/101.00mm/全0；两者继续第二小时判断 scaling。均为自身同数据随机初始化模型的EMA，decay=exp(-32/120060)，没有外部教师。源 `code-ema-initial-target-v1`，读出容量分别2304/384，不能混报。
+- **保留纯动作平移继续4/8h。** `z_next=z+A*a_t` 的1/2/3h为71.70/86.30/86.26%、67.51/29.59/31.97mm，final0/0/1、any0/0/2；2h改善未继续到3h，尚非稳定精细scaling。同384参数头的漂移对照2h79.79%/49.56mm，纯平移有匹配改善。源 `code-pure-action-transport-v1`。**不要为了启动已准备的flexible-absolute对照而停这个分支。**
+- EMA未来码1/2h49.27/49.96%、124.00/123.78mm、全0，已退出。EMA当前码1/2h73.60/83.54%、63.18/38.30mm、final全0/any1，继续第三小时；当前码＋平移组合1/2h57.24/71.11%、101.00/64.30mm、全0，保全完整2h及部分3h状态后退出，让卡给新相对编码。均为自身同数据随机初始化模型EMA，decay=exp(-32/120060)，无外部教师。源 `code-ema-initial-target-v1`；读出容量分别2304/384，不能混报。
 - 同8普通TRAIN窗口，未来码换成当前码，原RGB1h解码误差增至2.21–3.54倍，纯平移1h仅1.02–1.30倍；后者实际动作生成画面比自然未来编码解码更准。支持自然编码弱于动作生成路径，不能只改F。原始 `analysis/motion-code-necessity-first-hour.json`。EMA组合的在线/教师码差异在减去各自当前码后从.02033降至.000774，存在显著原点漂移；直接套原教师动作头，在线表示并未更好，不能宣称换读出就解决。原始 `analysis/ema-current-coordinate-gauge-first-hour.json`。
-- 观察映射试验使用确定状态均值，恒等版本为 `D(x0,z0,zh)=x0+g(x0,zh)-g(x0,z0)`，绝对版本为对照；原Gaussian rate保留作正则，不宣称完整像素ELBO。各4废弃更新梯度正常，同状态解码误差0；表中三个观察映射分支已主训，尚无完整控制成绩。恒等版本多一次D前向，额外计算单列。源 `code-state-observation-v1`；入口 `state-observation-pair-20261116` 和 `flexible-state-observation-pair-20261116`。**flexible-absolute仅准备，未启动**，需重新选择合适空出的卡位。
-- 进一步准备了**相对状态编码**：观察映射只读 `zh-z0`、零变化基准为0，已知当前RGB的entry rate为0；纯平移下整个loss不依赖每条物理相机流的任意码原点，无EMA或额外loss系数。4废弃更新、非零梯度、恒等解码及随机平移下loss/fm/rate误差0均通过；**仅准备，未主训，无性能结论**。源 `code-relative-state-v1`，入口 `relative-state-coding-20261116`，等证据和卡位，不停掉正在改善的纯平移。
+- 观察映射试验使用确定状态均值，恒等版本为 `D(x0,z0,zh)=x0+g(x0,zh)-g(x0,z0)`，绝对版本为对照；原Gaussian rate作正则，不宣称完整像素ELBO。首小时纯F恒等/绝对为69.37/74.64%、75.52/64.08mm；状态相关F恒等为78.00%/54.76mm，均0final，暂未超过旧参照，继续第二小时。恒等版本多一次D前向，额外计算单列。源 `code-state-observation-v1`；入口 `state-observation-pair-20261116` 和 `flexible-state-observation-pair-20261116`。**flexible-absolute仅准备，未启动**，需重新选择合适空出的卡位。
+- **新主训：相对状态编码＋学习正交动作基。** 观察映射只读`zh-z0`、零变化基准为0，已知当前RGB的entry rate为0；动作基通过QR学习、满足QᵀQ=I，固定潜空间的动作单位，避免任意缩小动作影响而降低rate。无EMA或新增loss系数，实际a_t仅为正向条件。4废弃更新梯度正常、恒等解码及原点平移下loss/fm/rate误差0，更新后正交误差2.4e-7。已在dev13 4–7唯一启动，**尚无控制成绩**。源`code-isometric-relative-v1`、入口`isometric-relative-state-20261116`；不带动作正交化的`relative-state-coding-20261116`仅准备，未主训，留作后续对照。
 - 宽E/浅D参照完整16h89.46%/27.26mm/2final，已保留额外部分17h全状态后退出；历史6h91.35%/17.78mm，后段未稳定保留收益。全局A＋漂移完整3h79.73%/52.43mm、绝对视角对齐5h86.08%/32.81mm、变化量对齐4h85.68%/35.38mm等已收尾。全部旧结果及完整/部分状态保留，后继均继承0更新；原始退休记录在MASTER，详情见 [CONCLUSIONS](experiments/CONCLUSIONS.md)。
 
 ## 固定边界
