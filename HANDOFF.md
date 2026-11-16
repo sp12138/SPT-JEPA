@@ -19,8 +19,8 @@
 |---|---|---|---|
 | dev13 0–3 | E384/D6，`encoder_allocation_20261116`；spt-encoder-heavy-shared-mean | 41.625M / 2304，E均值 | 5h：89.17%、24.13mm、0/1 |
 | dev13 4–7 | E384/D6+视角地址联合状态，`encoder_view_joint_20261116`；spt-encoder-heavy-view-address | 47.575M / 384，联合码 | 2h：84.63%、33.41mm、0/0 |
-| dev15 0–3 | E192/D6，`allocation_small_shallow_20261116`；spt-small-encoder-shallow-decoder | 24.986M / 1152，E均值 | 2h：84.19%、38.50mm、0/0 |
-| dev15 4–7 | E384/D12，`allocation_large_deep_20261116`；spt-large-encoder-deep-decoder | 58.175M / 2304，E均值 | 2h：83.92%、33.67mm、0/2 |
+| dev15 0–3 | E192/D6，`allocation_small_shallow_20261116`；spt-small-encoder-shallow-decoder | 24.986M / 1152，E均值 | 3h：84.83%、34.28mm、0/0 |
+| dev15 4–7 | E384/D12，`allocation_large_deep_20261116`；spt-large-encoder-deep-decoder | 58.175M / 2304，E均值 | 3h：85.86%、32.98mm、0/0 |
 | dev6 0–3 | 字面RGB恒等支路，`rgb_innovation_20261116`；spt-current-rgb-innovation | 41.625M / 2304，E均值 | 第一小时在训，未有训练后控制结果 |
 | dev6 4–7 | 非线性当前命令响应，`nonlinear_command_20261116`；spt-nonlinear-command-response | 40.847M / 2304，E均值 | 第一小时在训，未有训练后控制结果 |
 
@@ -32,9 +32,9 @@
 
 ## 已获insights与待办
 
-- **容量与吞吐都重要。** E384/D6的1/2/3/4/5h回报81.83/86.07/86.47/89.35/89.17%，距离42.23/30.87/30.73/24.52/24.13mm，final全0。2→3h暂平台、4h改善、5h近平台，未有稳定严格scaling。2×2在2h的E192/D12、E192/D6、E384/D12、E384/D6分别71.91/84.19/83.92/86.07%；宽E在深D下优势仍大，在浅D下回报优势区间含0；参数/更新/FLOPs及头容量不同，dev15部分时段还与有限诊断共卡，活跃墙钟含该研究开销，不能当独占GPU的纯架构分解。原始`analysis/encoder-decoder-factorial-{first-hour,second-hour}-paired.json`。
-- **保留视角来源确有早期粗收益，但联合压缩不是已经成功的解法。** 旧同容量视角地址1/2/3/4h为69.64/78.98/80.77/82.33%，距离62.68/43.14/45.62/43.20mm；2h比global融合+12.98点、四厨房均改善，后续精度仍不足。组合组使用384参数码头，不能直接用其分数与2304参数E均值头给body排优劣。固定组合2h父模型的同2304参数E均值有限诊断已通过旧码读出/实际E均值/缓存—策略/样本隔离门，正在缓存与控制；入口R/`encoder-view-mean-probe-20261116`，dev15 GPU6/7共卡，0body更新/同64DEV，不重复启动。
-- **增大这类动作头没有解决精度。** 固定容量组3h/45998步父模型，同5000头更新，MSE/MAE均值线性头为86.47/87.95%、30.73/25.93mm、final0/0、any0/1；460035参数状态相关Response头为87.07%/28.05mm、final0/any1，较MSE小改而弱于小MAE，不扩展。另压缩码LP384与冻结F响应C9为86.94/83.64%、28.92/37.58mm、final0/2、any1/3；F严格点数略增但粗指标下降，不整体推广。均0body更新、同64物理DEV；入口`encoder-{robust-mean,code-response,nonlinear-mean-head}-probe-20261116`及对应analysis配对JSON。MAE诊断曾15分钟分片超时，只续同权重剩余1例，63完成例SHA不变，0重训，原错误保留。
+- **容量与吞吐都重要。** E384/D6的1/2/3/4/5h回报81.83/86.07/86.47/89.35/89.17%，距离42.23/30.87/30.73/24.52/24.13mm，final全0。2→3h暂平台、4h改善、5h近平台，未有稳定严格scaling。2×2在2h的E192/D12、E192/D6、E384/D12、E384/D6分别71.91/84.19/83.92/86.07%；宽E在深D下优势仍大，在浅D下回报优势区间含0；参数/更新/FLOPs及头容量不同，dev15部分时段还与有限诊断共卡，活跃墙钟含该研究开销，不能当独占GPU的纯架构分解。3h四组为75.50/84.83/85.86/86.47%，final均0。E384/D12-3h与D6-2h更新30416/30468、回报85.86/86.07%、距离32.98/30.87mm，数值接近但活跃墙钟LR调度不同，是事后近更新数对照而非等效证明。原始`analysis/encoder-decoder-factorial-{first-hour,second-hour,third-hour}-paired.json`。
+- **保留视角来源确有早期粗收益，但联合压缩不是已经成功的解法。** 旧同容量视角地址1/2/3/4h为69.64/78.98/80.77/82.33%，距离62.68/43.14/45.62/43.20mm；2h比global融合+12.98点、四厨房均改善，后续精度仍不足。组合组使用384参数码头，不能直接用其分数与2304参数E均值头给body排优劣。固定组合2h父模型的2304参数E均值读出已DONE：81.53%/40.31mm、严格0；同父384参数码头84.63%/33.41mm，四厨房均较好，均值差−3.10点、95%[−4.54,−1.66]，距离+6.90mm、[6.32,7.65]。同宽的分视角E均值2h86.07%/30.87mm，但组间回报区间含0/体量及算力不同，不证明body普遍优劣。旧码默认/实际E均值/缓存—策略/隔离门均过，0body更新/同64DEV；额外dev15 GPU6/7共卡成本单列，负原型代码留EFS，未进入Git。入口R/`encoder-view-mean-probe-20261116`及`analysis/encoder-view-matched-mean-second-hour-paired.json`。
+- **增大这类动作头没有解决精度。** 固定容量组3h/45998步父模型，同5000头更新，MSE/MAE均值线性头为86.47/87.95%、30.73/25.93mm、final0/0、any0/1；460035参数状态相关Response头为87.07%/28.05mm、final0/any1，较MSE小改而弱于小MAE，不扩展。另压缩码LP384与冻结F响应C9为86.94/83.64%、28.92/37.58mm、final0/2、any1/3；F严格点数略增但粗指标下降，不整体推广。均0body更新、同64物理DEV；入口`encoder-{robust-mean,code-response,nonlinear-mean-head}-probe-20261116`及对应analysis配对JSON。C9校准矩阵奇异值1.134/1.034/1.014、条件数1.118，未见数值退化或整体缩小，不能归因为简单增益不足；只读`analysis/encoder-response-calibration-conditioning-audit.json`，非物理Jacobian。MAE诊断曾15分钟分片超时，只续同权重剩余1例，63完成例SHA不变，0重训，原错误保留。
 - **不能凭猜测调rate或LR。** 4h模型16普通TRAIN转移的latentleaf KL/像素梯度中位小/大命令.102/.200，未显示rate支配；当前图重构MSE/自然变化MSE中位.551/.038，静态错误能量.224/.143，未显示背景支配。这里只是一部梯度/少量事实，不是唯一归因。固定参考12288对实际150528元素归一化会缩小rate12.25倍，目前不据此改beta。原始`analysis/fine-factual-coding-budget-audit.json`。
 - **短期后果学到不等于控制精度。** 8TRAIN窗口的E384/D6一步预测/copy在1/2/3h为.675/.474/.443，三步.850/.499/.456，七步仍2.121/1.343/1.141；3h消融当前XYZ令一步误差2.29倍。实际F响应条件数1.57–1.86，非真实物理Jacobian。只读诊断v1曾把动作错移到下一帧，已作废并按训练`act_emb[:,:-1]`重跑v2；正式训练、动作标签和控制一直正确。勿沿用v1。
 
