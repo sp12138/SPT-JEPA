@@ -74,9 +74,14 @@ def shared_visual_loss(self,batch,step=0,ramp_steps=0):
     assert bridge.context_tokens is None and w>1
     def current_tokens(module,args):
         tokens=args[0]
-        assert bridge.context_tokens is None and tokens.shape[0]==b*w
+        assert bridge.context_tokens is None
         # Select the initial frame of each physical camera stream only.
-        initial=tokens.reshape(b,w,*tokens.shape[1:])[:,0,1:]
+        if getattr(self,'ema_future_targets',False):
+            assert tokens.shape[0]==b
+            initial=tokens[:,1:]
+        else:
+            assert tokens.shape[0]==b*w
+            initial=tokens.reshape(b,w,*tokens.shape[1:])[:,0,1:]
         bridge.context_tokens=initial.repeat_interleave(w-1,dim=0)
     hook=self.pool.register_forward_pre_hook(current_tokens)
     try:
@@ -179,7 +184,12 @@ class RawPixelsReadout(nn.Module):
         model=build_full(root,cfg)
         model.load_state_dict(weights,strict=True)
         assert common.state_hash(model.state_dict())==expected_hash
-        self.encoder=model.encoder;self.pool=model.pool;self.size=model.encoder_size
+        if cfg.get('ema_future_readout',False):
+            assert cfg.get('ema_future_targets') and not feature_mode.startswith('renderer-')
+            self.encoder=model.future_encoder;self.pool=model.future_pool
+        else:
+            self.encoder=model.encoder;self.pool=model.pool
+        self.size=model.encoder_size
         if feature_mode.startswith('renderer-'):
             assert model.raw_render_size==224,'Renderer feature readout requires the native224 model'
             self.renderer=model.renderer;self.state_slots=model.state_slots;self.state_width=model.state_width

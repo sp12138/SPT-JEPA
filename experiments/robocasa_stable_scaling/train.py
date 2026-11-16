@@ -396,6 +396,9 @@ def build(root, cfg):
     if cfg.get("pixel_likelihood"):
         from experiments.robocasa_stable_scaling.pixel_likelihood import install_pixel_likelihood
         install_pixel_likelihood(base, cfg["pixel_likelihood"])
+    if cfg.get('ema_future_targets',False):
+        from experiments.robocasa_stable_scaling.ema_future import install
+        install(base,cfg)
     return base
 
 
@@ -579,7 +582,11 @@ def train(root, run, manifest, target, label, max_updates=None):
                     for name, p in model.named_parameters() if name.startswith(prefix) and p.grad is not None)**.5
                 if step >= 2: assert norms[prefix] > 0 and math.isfinite(norms[prefix]), (prefix, norms)
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1., error_if_nonfinite=True)
-        opt.step(); torch.cuda.synchronize()
+        opt.step()
+        if hasattr(model,'update_future_teacher'):
+            model.update_future_teacher()
+            metrics['future_teacher_updates']=model.future_teacher_updates.float()
+        torch.cuda.synchronize()
         duration = torch.tensor(time.perf_counter()-began, device="cuda", dtype=torch.float64)
         dist.all_reduce(duration, op=dist.ReduceOp.MAX); elapsed += float(duration); step += 1; segment += 1
         if rank == 0 and (segment <= 8 or step % 100 == 0):

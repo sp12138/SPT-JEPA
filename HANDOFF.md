@@ -1,49 +1,35 @@
 # 当前交接
 
-目标是在**独立动作头实际控制**下验证可靠、稳定的scaling，最终超过RoboJEPA；尚未达成。用户要求本会话每小时检查，有明确问题便改进重跑，不在有限pilot后HOLD。仅dev13/dev15/dev6，不连接dev6-2c/grid16/dev2，不恢复旧goal、旧监控或文档中的旧ACTIVE。
+目标仍是让从零SPT-JEPA在独立动作头控制下出现可靠稳定的scaling，最终超过RoboJEPA；尚未达成。用户最新两次强调：**时间优先投入算法机制、关键实验和实际控制性能；常规检查最小化，不重复广泛兼容回归或独立CPU审计，记录只留核心结论与较优配置。** 有实际错误再修。
 
-## 状态与评估口径
+只用dev13/dev15/dev6。旧goal、旧监控及dev6-2c/grid16/dev2不恢复。当前主会话每小时检查并改进，不在有限pilot后HOLD。小时入口为R/SESSION_CHECKS.json，实际在跑分配以R/MASTER.json及进程为准，不根据旧文档ACTIVE恢复。
 
-- EFS总入口：`/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114`，简称R；模型根在其父目录。实时状态查R/MASTER.json、SESSION_CHECKS.json及实际进程/GPU。
-- 正式检查仅由主会话执行；第48次快照`session-checks/20261116T0641-{dev13,dev15,dev6}.json`，实际训练rank为8/4/8，dev15另四卡进入冻结读出，瞬时利用率0–100%，六组无ERROR。最新/下次时间只查SESSION_CHECKS，快照不代表持续满载；元数据用`MASTER.primary-write.lock`保护、重复快照不推进小时钟。
-- 同Reach blocking接口，固定12006条普通TRAIN日志，全部新主链随机初始化、祖先0。body只输入RGB/实际a_t、学习自然未来RGB/自身码，无外部教师或动作target。
-- 冻结/detach动作头只监督同一事实转移当前输入a_t的XYZ，17920训练/1536验证标签。推理用目标RGB替换自然next RGB，必须以实际控制验证该分布差异。
-- 每点同64个反复使用的DEV案例、双224 RGB、最多5命令/norm .3/native2mm final与any。32确认例封闭；单点、loss下降、平滑或偶然成功不算稳定scaling。
-- warmup900后inverse-sqrt active-wall调度，不是常数LR；完整恢复必须含model/optimizer/scheduler/4rank RNG/数据游标。不同参数、读出容量、更新数/共卡开销与预训练来源分别报告。
+R=`/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114`；模型根在R父目录。下表根后缀均加`robocasa_reach3d_`。
 
-## 当前六组
+| 主机/卡 | 根后缀 / run name | 当前算法 |
+|---|---|---|
+| dev13 0–3 | `encoder_allocation_20261116` / spt-encoder-heavy-shared-mean | E384/D6参照，41.625M，2304参数E均值头 |
+| dev13 4–7 | `global_response_strong_encoder_20261116` / spt-encoder-heavy-global-action | 共享动作方向+非线性自主变化，40.834M，384参数状态码头 |
+| dev15 0–3 | `synchronized_increment_target_20261116` / spt-synchronized-increment-target | 同步相机变化量对齐，41.625M，2304参数E均值头 |
+| dev15 4–7 | `synchronized_view_target_20261116` / spt-synchronized-view-target | 绝对状态视角对齐对照，41.625M，2304参数E均值头 |
+| dev6 0–3 | `ema_future_target_20261116` / spt-ema-future-mean-readout | 新启动自身EMA未来目标；41.625M可训练，2304参数EMA骨干均值头 |
+| dev6 4–7 | `rgb_root_marginal_v2_20261116` / spt-rgb-innovation-root-marginal | root条件先验，41.625M，2304参数E均值头 |
 
-各占四卡，根名均以`robocasa_reach3d_`开头。表为最近完整64DEV结果，小时快照另查SESSION_CHECKS，不把训练中阶段当完成。
+## 关键进展与下一步
 
-| 主机/卡 | 方法 / 根后缀 | 参数 / 头参数 | 训练小时：回报、距离mm、final/any计数 |
-|---|---|---|---|
-| dev13 0–3 | E384/D6，`encoder_allocation_20261116`；spt-encoder-heavy-shared-mean | 41.625M / 2304 E均值 | 10h：90.65%、20.96、2/4 |
-| dev13 4–7 | E384/D6+视角地址联合状态，`encoder_view_joint_20261116`；spt-encoder-heavy-view-address | 47.575M / 384联合码 | 7h：85.51%、32.86、3/4 |
-| dev15 0–3 | E192/D6，`allocation_small_shallow_20261116`；spt-small-encoder-shallow-decoder | 24.986M / 1152 E均值 | 8h：86.07%、28.73、0/0 |
-| dev15 4–7 | 同步视角随机未来码目标，`synchronized_view_target_20261116`；spt-synchronized-view-target | 41.625M / 2304 E均值 | 1h：70.21%、64.76、0/0 |
-| dev6 0–3 | RGB恒等支路，`rgb_innovation_20261116`；spt-current-rgb-innovation | 41.625M / 2304 E均值 | 5h：88.85%、28.83、0/1 |
-| dev6 4–7 | RGB恒等支路+root条件先验，`rgb_root_marginal_v2_20261116`；spt-rgb-innovation-root-marginal | 41.625M / 2304 E均值 | 2h：88.07%、29.55、1/2 |
+- 宽E/浅D参照从1h81.83%/42.23mm改善到6h91.35%/17.78mm，后段6–12h未稳定保留收益，native2mm末端成功稀少。不能把粗回报、验证loss或零星成功当达标。RGB恒等支路早期改善，但后段平台/回落；已保全完整8h控制及额外部分9h的完整训练状态，后者不报完整9h、不继承给新模型。
+- 绝对视角对齐1h70.21%/64.76mm，2h80.58%/45.38mm，3h82.74%/42.15mm，均0final。对齐伴随运动码变化变弱；直接读实际码也仅59.83%，低于RGB同384参数码头86.40%，不是均值头漏掉好表示。
+- 变化量对齐只交换`mu_h(other)+mu_0(source)-mu_0(other)`，保留相机原点。1h14962步为80.08%/48.43mm/0final，码头79.11%/50.61mm/0final，仍弱于RGB。8普通TRAIN窗口显示变化量转运改善、相对绝对对齐保留更多运动信号，但不足以带来控制优势。继续看完整后续预算，不扩大读出搜索。原始定位R/analysis/`root-increment-first-hour-motion-transfer.json`及`root-increment-code-probe-20261116`。
+- 共享动作方向用`z_next=z+f(z)+A*a_t`；旧弱骨干联合状态上的失败保留。当前强骨干1h72.59%/61.60mm/0final。A的XYZ列已有非退化秩，但同一动作头应用到其前向预测时与自然观测的读出严重失配：验证观测逆读出39.32mm，预测码套该头约1514.76mm，后者是内部诊断，不是环境真实位移。说明预测与推理编码未形成一致动作坐标，单靠共享A不够。
+- 固定一阶空间矩线性读出已完整结束：同父1/4/8h为79.34/87.56/89.50%、48.54/28.49/23.89mm，final全0；均弱于原均值头，参数6912对2304。0body更新、同17920/1536事实标签、192次模型—案例仍是同64物理DEV。R/`encoder-spatial-moments-probe-20261116/DONE.json`。此前相对误差、MAE、非线性及空间Potential等负结果保留，不继续堆头/调参。
+- **当前新改动是自身EMA未来目标。** 学生只编码当前帧、接受后果预测梯度；未来RGB由自身编码器/pool的EMA提供停止梯度的目标。当前学生码的原entry项保留，RGB/其他rate/噪声/beta不变。EMA时间尺度固定为一个120060窗口训练epoch，decay=exp(-32/120060)，非按任务调参。读出冻结EMA骨干；教师和学生均随机初始化，无外部预训练。代码`ema_future.py`，冻结源R/`code-ema-future-target-v1`，原始入口R/`ema-future-target-20261116`。4废弃功能更新通过梯度隔离/EMA更新检查，实际主训已唯一启动，尚无控制成绩。接下来以完整控制曲线决定是否有效。
 
-对应私有源为R/`code-encoder-allocation-v1`、`code-encoder-view-joint-v1`、`code-encoder-allocation-factorial-v1`、`code-synchronized-view-target-v1`、`code-precise-consequence-v1`及`code-root-marginal-v2`。初始化子张量配对不算独立seed。
+## 固定口径与执行边界
 
-实际启动证据在`encoder-allocation-20261116`、`encoder-view-combination-20261116`、`encoder-allocation-factorial-20261116`、`synchronized-view-target-20261116`、`precise-consequence-20261116`及`root-marginal-prior-20261116`的`ACTUAL-STARTUP-VERIFIED.json`。验证必须涵盖实际保留8/16更新、全状态恢复、四GPU rank、配置/私有源及CPU模型/优化器；准备门不能替代实际启动。同步视角组v2已核验实际8/16更新、10600步进度及7536步CPU完整状态；v1误查CUDA的CPU核验错误保留，训练未改。
+固定12006普通TRAIN日志，head只用17920训练/1536验证的同一事实转移当前输入a_t；表示冻结/detach，动作标签梯度不进body。学习器仅RGB/实际输入动作，自然未来RGB/自身编码可为目标；无未来/最优动作标签、专家路径、reward/state/taskID/语言或外部强教师。EMA只来自自身同数据训练。
 
-## 当前关键insights与下一步
+同64反复使用的DEV、双224 RGB、最多5命令/norm .3/native2mm final与any；32确认仍封闭。不同头容量、代码/均值读出、数据/预训练/祖先预算分开报告。所有新主链祖先0，同随机初值的分支不算独立种子。
 
-1. **粗定位随训练改善，精度仍不稳定。** 基组1/3/6/8/9/10h回报81.83/86.47/91.35/90.69/91.43/90.65%，距离42.23/30.73/17.78/21.06/19.81/20.96mm，final0/0/0/0/0/2。5–8h读出alpha均.01、验证RMSE仍降，不能归因为alpha跳变。视角联合组与小E组也未保持严格成功；当前仍以完整曲线判定，确认集不开。
-2. **RGB恒等支路提供早期粗收益，尚未稳定。** 1/2/3/4/5h为86.72/87.51/90.31/83.13/88.85%，32.31/31.85/23.43/41.33/28.83mm，final0/0/1/2/0。第3h对同预算基组+3.84点、四厨房区组95%[.59,7.67]，距离−7.30mm、[−14.04,−.57]；第4h回落主要在厨房10（−29.14点/+71.78mm），另三厨房近持平。3/4h的alpha均.01、事实验证RMSE仍降、无数值重试，实际评测已使用最高FP32精度，不伪造精度/alpha故障解释。详见`analysis/precise-consequence-third-hour-paired.json`及`analysis/independent-head-objectives-and-priors-review.json`。
-3. **更大/更复杂动作头与按小动作重权尚未解决。** 固定父模型的MAE、状态非线性、空间Potential、F响应等有限探针保留全部结果。最新相对误差头在预先固定3/5/8h、同2304参数/标签下仅77.93/81.79/83.81%、31.99/28.85/26.23mm、final0/3/2，四厨房粗回报都弱于匹配MSE（−8.53/−7.39/−6.88点），距离未可靠改善、严格计数不随预算增长；不扩展。两次新解析拟合+一次原拟合SHA复用、0body更新、192次模型—案例仍是同64DEV，dev15共卡成本单列。`relative-mean-scale-probe-v2-20261116/DONE.json`及上述配对review。
-4. **保留有效作用结构优于本轮直接替换。** 普通MLP转移1/2/3h77.24/79.61/83.53%，3h36.72mm、final/any0；F由815360减为37120参数，不能纯归因非线性。保留条件线性作用再加37120参数非线性余项，1/2/3h87.30/86.59/90.28%，3h23.42mm、final0/any2，基本持平RGB3h90.31%/23.43mm/final1，没有展示额外收益。完整3h/43046步、64DEV及CPU全状态保全后退役，0旧SGD重放；新同步视角组唯一启动，证据见`synchronized-view-target-20261116/OLD-READY-FOR-PRIMARY.json`，旧源与检查点不改。
-5. **视角一致性本身不够，已据实修正假设。** 绝对码交换组1h/15029步70.21%/64.76mm、final/any0；四厨房均弱于RGB1h，回报差−16.51点、区组95%[−19.48,−13.93]。同8TRAIN窗口跨视角码差.35333→.00547，但一步运动变化.01229→.00186，forecast/copy .555→5.780；动作头实际E均值的视角差/时变31.20→21.20。对齐伴随运动信号削弱，非唯一因果证明。保留该链继续曲线，另有限检验同384参数码读出能否改变结论，0body更新、同64DEV，`synchronized-view-code-readout-probe-20261116`，dev13共卡成本单列。新配对仅交换未来相对初始的码变化：`mu'_h(v)=mu_h(pi(v))+mu_0(v)-mu_0(pi(v))`，不强迫两相机初始原点相同；原F/像素目标/参数/噪声/rate/beta及2304参数E均值头不变，无新系数/标签。9穷举理论门、七类实际旧默认回归（含绝对组1h）、完整MVN/隔离/因果/SHA/实际读出及4废弃更新通过；`code-synchronized-increment-target-v1`与`synchronized-increment-target-20261116`。准备接替小E/D6完整9h，有限stop-only助手只保全完整64DEV/CPU状态，主会话复核后才唯一启动；当前尚未主训。诊断/配对/理论定位`analysis/{synchronized-view-target-first-hour-factual-audit,synchronized-target-and-prior-first-results,synchronized-increment-target-theory}.json`。
-6. **root条件先验只是另一可检验机制。** 保留原完整clean rollout中心，仅把AR未来—未来依赖改为共同条件初始码，保持边缘方差/root协方差、补精确Gaussian常数。7步误差弱/强模态惩罚比4.00/.156，不是统一调beta或修teacher forcing。1/2h86.93/88.07%、31.55/29.55mm、final0/1，尚无可靠早期优势，更非稳定scaling。独立Gaussian、真实旧默认、实际8/16恢复/CPU绑定loss源与优化器均过；v1等价FP32图守卫失败和v2修正留档。
+模型、优化器、调度器、各rank RNG、数据游标及EMA权重/计数随正常检查点保存；实际8/16续训验证保留。小时检查只记录必要状态和性能，不再堆兼容/审计文件。发现真实错误才修，不改已启动冻结源；源码新版本用`freeze_with_overrides`，不写穿共享链接或修改vendored runtime。
 
-TRAIN审计未支持简单rate支配或大量画面完全相同却动作冲突的解释；最小事实动作组预测误差高于零输出、但范数未统一缩小。此前联合状态、容量2×2及各种冻结头的精简结论/负结果查[CONCLUSIONS](experiments/CONCLUSIONS.md)，不重复启动失败探针。后续继续主会话每小时核查和完整控制收集，优先检验明确机制；有限DONE不结束主目标，尚无新best-config晋升。
-
-## 归档与恢复边界
-
-- Git仅核心源码/必要配置/精简结论；原始结果、模型、监控和临时审计留EFS。协议见[PROTOCOL](experiments/robocasa_stable_scaling/PROTOCOL.md)，已验证配方见[best-configs](experiments/best-configs.json)，[归档说明](docs/experiment-archives.md)。
-- 相对头v1嵌套根发生EGL库定位错误，episode前失败。核心环境改为向祖先查找真实bundle；独立旧平层完整环境字典不变、布局/缺库及真实离屏GL门通过，私有v2修环境、不重放拟合，旧源/错误/首头保留。`relative-mean-scale-probe-v2-20261116`。
-- 旧冻结V-JEPA G的12h94.86%/9.70mm/3final随后回落，不与从零主链或公开RoboJEPA混作公平胜出。旧Push日志z约束与Reach不同，已保全，不当纯算法收益。
-- 旧共享链接曾写穿，独立原版/私有修复见`source-recovery-20261114T2353`；不能追溯证明全部历史加载。新版本用`source_freeze.freeze_with_overrides`，不改已启动源码、共享链接或vendored runtime。
-- 原小语料完整8h/128308步保全，额外未完成9h的1992–2092步排除、未继承/重放；未来恢复须披露可能重放范围，不自动恢复。交接均先完整64DEV及CPU全状态。
-- 保护性评测/oracle/接触/闭环诊断不进入训练、教师或proposal memory；只读聚合指标/过滤错误。严禁未来/最优动作标签、专家路径或目标条件策略监督。
+小E完整9h205932步后退役；旧视角联合组完整9h124117步后退役。原始状态/结果均保留。当前其他旧实验不自动恢复。历史与负结果见[CONCLUSIONS](experiments/CONCLUSIONS.md)和[归档说明](docs/experiment-archives.md)，口径见[PROTOCOL](experiments/robocasa_stable_scaling/PROTOCOL.md)。Git仅核心代码、必要配置、精简结论；未有新best-config晋升。
