@@ -13,6 +13,8 @@ collaborator's tree unchanged:
 | `tests/as_jepa/test_round2.py` | `tests/as_jepa/` | 15 CPU contract tests for the model classes, including bitwise equality with `RobustLeWM` for `rho = 0.8` and with the collaborator's forecast loop (spec Section 10) |
 | `tests/as_jepa/test_benchmark_gap.py` | `tests/as_jepa/` | 5 CPU contract tests for the anchor rule and the staleness table (spec Section 10) |
 | `tests/as_jepa/test_rollout_gain.py` | `tests/as_jepa/` | 4 CPU contract tests for the rollout diagnostics, including a known centre pull (spec Section 10) |
+| `as_jepa_tools/gap_buckets.py` | `as_jepa_tools/` | The anchor-gap diagnostic (added 2026-11-16, not part of the round-2 spec): per rendered frame, the renderer's loss, how much it relies on the state and on the anchor, the rate and probe errors, in buckets of the anchor-to-frame distance. Reads the LeWM classes on PushT and benchmark windows, and the RoboCasa Reach3D family through the model's own `distortion`. Read-only. Handoff: `docs/lingjing/decoder-free/handoff-anchor-reader.md` (Part G) on branch `lingjing/decoder-free-as-jepa` |
+| `tests/as_jepa/test_gap_buckets.py` | `tests/as_jepa/` | 20 CPU contract tests for the diagnostic; they passed with the 24 tests above (44 of 44) on 2026-11-16 against the collaborator's branch `as-jepa/lingjing-fullspec-20261102` at `3131efaa` |
 | `as_jepa_lewm/learned_variance.py` | `as_jepa_lewm/` | `LearnedVarianceLeWM`, learned posterior and prior variances. No arm of this round uses it; copy it because `test_round2.py` imports it |
 
 Register the classes and route the benchmark datasets as spec Section 2.1 describes.
