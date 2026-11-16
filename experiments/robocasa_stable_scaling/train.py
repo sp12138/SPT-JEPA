@@ -250,7 +250,7 @@ def feature_codec_loss(self, batch, step=0, ramp_steps=0):
         rate_share=self.beta*rate/distortion.detach().clamp_min(1e-8))
 
 
-def pixel_prediction_distortion(self, batch, render, anchor, condition):
+def pixel_prediction_distortion(self, batch, render, anchor, condition, initial=None):
     """Compare conditional change density with conditional future-image mean.
 
     Both use the original code/rate and natural future RGB, without action
@@ -274,7 +274,20 @@ def pixel_prediction_distortion(self, batch, render, anchor, condition):
     torch.randn_like(y)
     t = torch.ones(y.shape[0], 1, device=y.device)
     with self.renderer.anchored(anchors):
-        predicted = self.renderer(torch.zeros_like(y), t, condition=condition.flatten(0, 1))
+        if getattr(self,"state_mean_observation",False):
+            # Both evaluations use the same conditioning mask so that an
+            # unchanged state gives the observed image even during training.
+            drop=(torch.rand(len(y),device=y.device)<self.renderer.config.condition_dropout
+                if self.training else torch.zeros(len(y),device=y.device,dtype=torch.bool))
+            predicted=self.renderer(torch.zeros_like(y),t,
+                condition=condition.flatten(0,1),condition_drop=drop)
+            if self.identity_observation:
+                assert initial is not None
+                reference=initial[:,None].expand(-1,w-1,-1,-1).flatten(0,1)
+                baseline=self.renderer(torch.zeros_like(y),t,condition=reference,condition_drop=drop)
+                predicted=anchors.float()+(predicted.float()-baseline.float())
+        else:
+            predicted = self.renderer(torch.zeros_like(y), t, condition=condition.flatten(0, 1))
     if getattr(self, "pixel_profile", None):
         from vforge.models.as_jepa.pixels import unpack
         from experiments.robocasa_stable_scaling.pixel_likelihood import profiled_pixel_nll
@@ -408,6 +421,13 @@ def build(root, cfg):
     if cfg.get('ema_future_targets',False):
         from experiments.robocasa_stable_scaling.ema_future import install
         install(base,cfg)
+    assert not cfg.get('identity_observation',False) or cfg.get('state_mean_observation',False)
+    if cfg.get('state_mean_observation',False):
+        assert cfg.get('raw_pixel_encoder') and cfg.get('pixel_objective')=='future-mean'
+        assert cfg.get('raw_future_mean_rgb_skip') and not cfg.get('randomize_target_views')
+        assert not cfg.get('raw_physical_joint') and not cfg.get('joint_views')
+        base.state_mean_observation=True
+        base.identity_observation=cfg.get('identity_observation',False)
     return base
 
 

@@ -167,7 +167,13 @@ class AnalyticResidualSPT(RobustLeWM):
             surprise=surprise+self.state_dim*.5*(-self.rho**2-math.log1p(-self.rho**2))
             if geometry=="root-marginal":
                 surprise=surprise+self.state_dim*marginal_constant[None,:]
-        fm=self.distortion(batch,render,anchor,condition)
+        if getattr(self,"state_mean_observation",False):
+            # A deterministic observation mean uses point states; the analytic
+            # Gaussian rate remains a regularizer, not a pixel-density claim.
+            condition=torch.where(choose,means[:,1:],mu[:,1:])
+            fm=self.distortion(batch,render,anchor,condition,initial=mu[:,0])
+        else:
+            fm=self.distortion(batch,render,anchor,condition)
         rate=(entry+surprise.sum(1)).mean()/((w-1)*FRAME_ELEMS)
         beta=self.beta*min(1.,step/max(1,ramp_steps)) if ramp_steps else self.beta
         loss=fm+beta*rate
