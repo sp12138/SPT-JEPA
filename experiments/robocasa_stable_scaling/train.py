@@ -17,7 +17,23 @@ from torch.utils.data import DataLoader
 from experiments.robocasa_compare import train as common
 from experiments.robocasa_compare.acquire import save, sha
 from experiments.robocasa_refine import encoder_ablation as old
-from experiments.robocasa_time_compare.train import optimizer
+from experiments.robocasa_time_compare.train import optimizer as default_optimizer
+
+
+def optimizer(model, cfg):
+    if not cfg.get("anchor_reader", False):
+        return default_optimizer(model, cfg)
+    assert cfg["method"] == "spt"
+    body, reader = [], []
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            (reader if name.startswith("reader.") else body).append(param)
+    assert body and reader
+    return torch.optim.AdamW([
+        dict(params=body, lr=5e-5, peak_lr=5e-5, weight_decay=1e-3, betas=(.9, .999)),
+        dict(params=reader, lr=model.reader_lr, peak_lr=model.reader_lr,
+             weight_decay=0., betas=(.9, .95)),
+    ], foreach=True)
 
 
 class ConditionalFeatureDecoder(nn.Module):
@@ -385,7 +401,10 @@ def build(root, cfg):
                 torch.manual_seed(92320261114+cfg["seed"])
                 constant = cfg.get("constant_action_response", False)
                 if cfg.get('isometric_actions',False):
-                    assert constant and cfg.get('pure_action_transport')
+                    assert constant
+                    assert cfg.get('pure_action_transport') or (
+                        cfg.get('consequence_likelihood_only') and
+                        cfg.get('consequence_likelihood_mode')=='factual-trajectory')
                     base.action_encoder=IsometricActionEncoder(14,base.state_dim)
                 else:
                     base.action_encoder = nn.Linear(14, base.state_dim, bias=False)
@@ -473,6 +492,17 @@ def build(root, cfg):
     if cfg.get('consequence_likelihood_only',False):
         from experiments.robocasa_stable_scaling.consequence_likelihood import install
         install(base,cfg)
+    if cfg.get("anchor_reader", False):
+        from experiments.anchor_reader_spt import attach_anchor_reader
+        assert not any(cfg.get(key, False) for key in (
+            "consequence_likelihood_only", "pixel_likelihood", "ema_future_targets",
+            "joint_views", "raw_physical_joint", "state_mean_observation"))
+        assert cfg.get("forecast_rate_geometry", "markov") == "markov"
+        attach_anchor_reader(base, beta_nats=cfg["anchor_reader_beta_nats"],
+            reader_seed=cfg["seed"])
+        # Keep the freshly drawn, unused decoder in checkpoint provenance only.
+        # Its shared encoder reference is unregistered; encoder gradients stay active.
+        base.renderer.requires_grad_(False)
     return base
 
 
@@ -652,7 +682,9 @@ def train(root, run, manifest, target, label, max_updates=None):
                     and not cfg.get("pixel_additive_transport",False)
                     and not cfg.get("pure_action_transport",False)):
                 prefixes.append("predictor.")
-            if not cfg.get('consequence_likelihood_only',False):
+            if cfg.get("anchor_reader", False):
+                prefixes.append("reader.")
+            elif not cfg.get('consequence_likelihood_only',False):
                 prefixes.append("future_decoder." if hasattr(model,"future_decoder") else "renderer.")
             for prefix in prefixes:
                 norms[prefix] = sum(float(p.grad.detach().float().norm())**2
