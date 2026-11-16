@@ -2,8 +2,14 @@
 
 AS-JEPA with the renderer replaced by the state's information beyond the anchor, computed in state space. With an optimal renderer, the round-1 objective depends on the encoder only through that quantity, the encoder's other entropies, and a constant. So at `lam = 0` this is the same objective with a different estimator for one term, and the theory carries over. It has no decoder, EMA, stop-gradient, augmentation or schedule, and every term is in nats.
 
+**Current handoff (2026-11-16): [handoff-anchor-reader.md](handoff-anchor-reader.md).** The log-det estimators of the first spec failed on PushT in all 62 recipes. The current version estimates the same quantity with a learned denoiser, the anchor reader, which the encoder is trained against. Its score is detached in the encoder's term, because each of the two players takes the gradient of its own loss; prediction targets stay attached, and there is still no EMA, decoder or augmentation.
+
 | File | What it is |
 | --- | --- |
+| [handoff-anchor-reader.md](handoff-anchor-reader.md) | the current handoff: the anchor-gap diagnostic on existing checkpoints, the denoiser objective on PushT, and its port to the current RoboCasa Reach3D protocol |
+| [as_jepa_lewm/anchor_reader.py](as_jepa_lewm/anchor_reader.py) | reference implementation of the denoiser (`AnchorReader`) and of `AnchorReaderLeWM`, with the contrastive control; copy it into the collaborator's `as_jepa_lewm/` |
+| [tests/as_jepa/test_anchor_reader.py](tests/as_jepa/test_anchor_reader.py) | its CPU contract tests |
+| [experiments/anchor_reader_spt.py](experiments/anchor_reader_spt.py) | adapter of the same objective for the collaborator's `AnalyticResidualSPT` family (RoboCasa Reach3D) |
 | [story.md](story.md) | formulation, objective, theory, how the explored techniques (`lam`, noise, open loop, one step) behave in this form, compatibility with the renderer version, narrative, prior work, risks |
 | [spec.md](spec.md) | experiment and implementation handoff: Phase 1 on PushT (price × prediction-weight grid; forecast structure × `lam`; prior input; pooled against per-window estimator; the transient threshold on the dot data; appearance and estimator gaming on the colour data; initial scale; an equivalence test) and TwoRoom; Phase 2 conditional |
 | [as_jepa_lewm/decoder_free.py](as_jepa_lewm/decoder_free.py) | reference implementation of `DecoderFreeLeWM`; copy it into the collaborator's `as_jepa_lewm/` |
