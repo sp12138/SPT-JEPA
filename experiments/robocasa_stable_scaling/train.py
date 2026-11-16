@@ -326,6 +326,11 @@ def build(root, cfg):
         if geometry=='root-marginal':
             assert cfg.get('raw_pixel_encoder') and pixel_objective=='future-mean'
             base.forecast_rate_geometry=geometry
+        if cfg.get('randomize_target_views',False):
+            assert cfg.get('raw_pixel_encoder') and pixel_objective=='future-mean'
+            assert not cfg.get('raw_physical_joint',False) and geometry=='markov'
+            assert cfg.get('coding_family','gaussian')=='gaussian' and not cfg.get('stationary_coding_channel',False)
+            base.randomize_target_views=True
         if cfg["variant"] == "spt-control-affine":
             with torch.random.fork_rng():
                 torch.manual_seed(92320261114+cfg["seed"])
@@ -443,7 +448,10 @@ def prepare(raw):
     f = raw["features"].cuda(non_blocking=True); b, v, w = f.shape[:3]
     result=dict(features=f.flatten(0, 1), render=raw["render"].cuda(non_blocking=True).flatten(0, 1),
         action=raw["action"].cuda(non_blocking=True)[:, None].expand(b, v, w, 14).reshape(b*v, w, 14))
-    if 'pixels' in raw:result['pixels']=raw['pixels'].cuda(non_blocking=True).flatten(0,1)
+    if 'pixels' in raw:
+        result['pixels']=raw['pixels'].cuda(non_blocking=True).flatten(0,1)
+        # Grouping metadata only; this count is never a neural-network input.
+        result['physical_views']=v
     return result
 
 

@@ -14,7 +14,9 @@ of future RGB; only the clean rollout mean uses the observed initial code.
 The Laplace option preserves variance and uses exact conditional Laplace KL;
 its AR marginal shape can vary with time, equally for both coding branches.
 """
+import hashlib
 import math
+import os
 
 import torch
 
@@ -80,11 +82,36 @@ class AnalyticResidualSPT(RobustLeWM):
             return .5*mean.float().square().sum((-2,-1))+mean[0].numel()*constant
         return entry_nats(mean,self.sigma0)
 
+    def posterior_means(self,mean,batch,step):
+        """Randomize future sensors within a synchronized physical sample.
+
+        A transitive cyclic permutation gives every source an equally likely
+        target view. The initial code, RGB rendering targets and actions stay
+        fixed. A named generator preserves all existing model RNG streams.
+        """
+        if not getattr(self,"randomize_target_views",False):
+            return mean
+        views=int(batch["physical_views"])
+        assert views>=1 and mean.shape[0]%views==0
+        if views==1:
+            return mean
+        b=mean.shape[0]//views;w=mean.shape[1]
+        sequence=mean.reshape(b,views,w,*mean.shape[2:])
+        key=f"spt-target-view:{self.forecast_seed}:{int(step)}:{os.environ.get('RANK','0')}"
+        seed=int.from_bytes(hashlib.sha256(key.encode()).digest()[:8],"little")&((1<<63)-1)
+        generator=torch.Generator(device=mean.device).manual_seed(seed)
+        shift=torch.randint(views,(b,w-1,1),device=mean.device,generator=generator)
+        order=(torch.arange(views,device=mean.device)[None,None,:]+shift)%views
+        future=sequence[:,:,1:].transpose(1,2)
+        index=order[...,None,None].expand_as(future)
+        target=future.gather(2,index).transpose(1,2)
+        return torch.cat((sequence[:,:,:1],target),2).reshape_as(mean)
+
     def loss(self,batch,step=0,ramp_steps=0):
         pixels,render,anchor=self.prepare(batch)
         info=self.encode(dict(pixels=pixels,action=batch["action"]))
         flat=info["emb"];b,w=flat.shape[:2]
-        mu=flat.reshape(b,w,self.state_slots,self.state_width)
+        mu=self.posterior_means(flat.reshape(b,w,self.state_slots,self.state_width),batch,step)
         family=getattr(self,"coding_family","gaussian")
         if family=="laplace":
             assert getattr(self,"stationary_coding_channel",False)
