@@ -13,14 +13,14 @@
 
 ## 当前六组
 
-各占四卡，根名均以`robocasa_reach3d_`开头。表为第48次检查时最新完整64DEV结果，非训练中阶段。
+各占四卡，根名均以`robocasa_reach3d_`开头。表为最近完整64DEV结果，小时快照另查SESSION_CHECKS，不把训练中阶段当完成。
 
 | 主机/卡 | 方法 / 根后缀 | 参数 / 头参数 | 训练小时：回报、距离mm、final/any计数 |
 |---|---|---|---|
 | dev13 0–3 | E384/D6，`encoder_allocation_20261116`；spt-encoder-heavy-shared-mean | 41.625M / 2304 E均值 | 10h：90.65%、20.96、2/4 |
 | dev13 4–7 | E384/D6+视角地址联合状态，`encoder_view_joint_20261116`；spt-encoder-heavy-view-address | 47.575M / 384联合码 | 7h：85.51%、32.86、3/4 |
-| dev15 0–3 | E192/D6，`allocation_small_shallow_20261116`；spt-small-encoder-shallow-decoder | 24.986M / 1152 E均值 | 7h：86.77%、27.31、0/2 |
-| dev15 4–7 | 同步视角随机未来码目标，`synchronized_view_target_20261116`；spt-synchronized-view-target | 41.625M / 2304 E均值 | 第1h在训，尚无控制成绩 |
+| dev15 0–3 | E192/D6，`allocation_small_shallow_20261116`；spt-small-encoder-shallow-decoder | 24.986M / 1152 E均值 | 8h：86.07%、28.73、0/0 |
+| dev15 4–7 | 同步视角随机未来码目标，`synchronized_view_target_20261116`；spt-synchronized-view-target | 41.625M / 2304 E均值 | 1h：70.21%、64.76、0/0 |
 | dev6 0–3 | RGB恒等支路，`rgb_innovation_20261116`；spt-current-rgb-innovation | 41.625M / 2304 E均值 | 5h：88.85%、28.83、0/1 |
 | dev6 4–7 | RGB恒等支路+root条件先验，`rgb_root_marginal_v2_20261116`；spt-rgb-innovation-root-marginal | 41.625M / 2304 E均值 | 2h：88.07%、29.55、1/2 |
 
@@ -34,7 +34,7 @@
 2. **RGB恒等支路提供早期粗收益，尚未稳定。** 1/2/3/4/5h为86.72/87.51/90.31/83.13/88.85%，32.31/31.85/23.43/41.33/28.83mm，final0/0/1/2/0。第3h对同预算基组+3.84点、四厨房区组95%[.59,7.67]，距离−7.30mm、[−14.04,−.57]；第4h回落主要在厨房10（−29.14点/+71.78mm），另三厨房近持平。3/4h的alpha均.01、事实验证RMSE仍降、无数值重试，实际评测已使用最高FP32精度，不伪造精度/alpha故障解释。详见`analysis/precise-consequence-third-hour-paired.json`及`analysis/independent-head-objectives-and-priors-review.json`。
 3. **更大/更复杂动作头与按小动作重权尚未解决。** 固定父模型的MAE、状态非线性、空间Potential、F响应等有限探针保留全部结果。最新相对误差头在预先固定3/5/8h、同2304参数/标签下仅77.93/81.79/83.81%、31.99/28.85/26.23mm、final0/3/2，四厨房粗回报都弱于匹配MSE（−8.53/−7.39/−6.88点），距离未可靠改善、严格计数不随预算增长；不扩展。两次新解析拟合+一次原拟合SHA复用、0body更新、192次模型—案例仍是同64DEV，dev15共卡成本单列。`relative-mean-scale-probe-v2-20261116/DONE.json`及上述配对review。
 4. **保留有效作用结构优于本轮直接替换。** 普通MLP转移1/2/3h77.24/79.61/83.53%，3h36.72mm、final/any0；F由815360减为37120参数，不能纯归因非线性。保留条件线性作用再加37120参数非线性余项，1/2/3h87.30/86.59/90.28%，3h23.42mm、final0/any2，基本持平RGB3h90.31%/23.43mm/final1，没有展示额外收益。完整3h/43046步、64DEV及CPU全状态保全后退役，0旧SGD重放；新同步视角组唯一启动，证据见`synchronized-view-target-20261116/OLD-READY-FOR-PRIMARY.json`，旧源与检查点不改。
-5. **新同步目标实验检验相机表示的坐标自由度。** 每一物理样本/未来时刻内均匀循环置换同步相机的posterior均值；保留初始码、原clean rollout源、实际a_t及每相机自然未来RGB/当前anchor。原Gaussian噪声/rate/beta/解码混合/参数/头均不变，无新loss系数。条件KL仍精确；对置换取期望会在原公共均值误差外产生由sigma/rho决定的视角方差惩罚，不能消除所有场景相关坐标自由度或预告控制收益。同8TRAIN窗口中RGB3/4h及root1h的跨视角码差为单步时变的14.41/13.33/25.28倍，把自然future码换为另一同步相机码会使原相机像素误差增6.81–15.88倍；这是可测视角差异，不是厨房10失败的因果证明。`analysis/view-randomized-target-theory.json`及`synchronized-view-code-audit.json`。六类独立真实旧默认回归、完整Gaussian值/梯度、样本隔离/未来因果/数据SHA/实际读出门通过，4功能更新废弃。v1回归器旧模块绑定错误保留，v2只修核验脚本，模型冻结源未改。新链祖先0。
+5. **视角一致性本身不够，已据实修正假设。** 绝对码交换组1h/15029步70.21%/64.76mm、final/any0；四厨房均弱于RGB1h，回报差−16.51点、区组95%[−19.48,−13.93]。同8TRAIN窗口跨视角码差.35333→.00547，但一步运动变化.01229→.00186，forecast/copy .555→5.780；动作头实际E均值的视角差/时变31.20→21.20。对齐伴随运动信号削弱，非唯一因果证明。保留该链继续曲线，另有限检验同384参数码读出能否改变结论，0body更新、同64DEV，`synchronized-view-code-readout-probe-20261116`，dev13共卡成本单列。新配对仅交换未来相对初始的码变化：`mu'_h(v)=mu_h(pi(v))+mu_0(v)-mu_0(pi(v))`，不强迫两相机初始原点相同；原F/像素目标/参数/噪声/rate/beta及2304参数E均值头不变，无新系数/标签。9穷举理论门、七类实际旧默认回归（含绝对组1h）、完整MVN/隔离/因果/SHA/实际读出及4废弃更新通过；`code-synchronized-increment-target-v1`与`synchronized-increment-target-20261116`。准备接替小E/D6完整9h，有限stop-only助手只保全完整64DEV/CPU状态，主会话复核后才唯一启动；当前尚未主训。诊断/配对/理论定位`analysis/{synchronized-view-target-first-hour-factual-audit,synchronized-target-and-prior-first-results,synchronized-increment-target-theory}.json`。
 6. **root条件先验只是另一可检验机制。** 保留原完整clean rollout中心，仅把AR未来—未来依赖改为共同条件初始码，保持边缘方差/root协方差、补精确Gaussian常数。7步误差弱/强模态惩罚比4.00/.156，不是统一调beta或修teacher forcing。1/2h86.93/88.07%、31.55/29.55mm、final0/1，尚无可靠早期优势，更非稳定scaling。独立Gaussian、真实旧默认、实际8/16恢复/CPU绑定loss源与优化器均过；v1等价FP32图守卫失败和v2修正留档。
 
 TRAIN审计未支持简单rate支配或大量画面完全相同却动作冲突的解释；最小事实动作组预测误差高于零输出、但范数未统一缩小。此前联合状态、容量2×2及各种冻结头的精简结论/负结果查[CONCLUSIONS](experiments/CONCLUSIONS.md)，不重复启动失败探针。后续继续主会话每小时核查和完整控制收集，优先检验明确机制；有限DONE不结束主目标，尚无新best-config晋升。

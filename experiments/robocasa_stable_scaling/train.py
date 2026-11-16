@@ -331,6 +331,11 @@ def build(root, cfg):
             assert not cfg.get('raw_physical_joint',False) and geometry=='markov'
             assert cfg.get('coding_family','gaussian')=='gaussian' and not cfg.get('stationary_coding_channel',False)
             base.randomize_target_views=True
+            transport=cfg.get('target_view_transport','absolute')
+            assert transport in ('absolute','root-increment')
+            base.target_view_transport=transport
+        else:
+            assert cfg.get('target_view_transport','absolute')=='absolute'
         if cfg["variant"] == "spt-control-affine":
             with torch.random.fork_rng():
                 torch.manual_seed(92320261114+cfg["seed"])

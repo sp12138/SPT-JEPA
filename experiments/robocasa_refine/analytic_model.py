@@ -104,7 +104,15 @@ class AnalyticResidualSPT(RobustLeWM):
         order=(torch.arange(views,device=mean.device)[None,None,:]+shift)%views
         future=sequence[:,:,1:].transpose(1,2)
         index=order[...,None,None].expand_as(future)
-        target=future.gather(2,index).transpose(1,2)
+        target=future.gather(2,index)
+        transport=getattr(self,"target_view_transport","absolute")
+        assert transport in ("absolute","root-increment")
+        if transport=="root-increment":
+            # Compare changes in a common local chart while retaining each
+            # source's observed origin. Identity permutations remain exact.
+            root=sequence[:,:,:1].transpose(1,2).expand_as(future)
+            target=target+(root-root.gather(2,index))
+        target=target.transpose(1,2)
         return torch.cat((sequence[:,:,:1],target),2).reshape_as(mean)
 
     def loss(self,batch,step=0,ramp_steps=0):
