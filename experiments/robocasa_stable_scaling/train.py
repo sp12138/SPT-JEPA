@@ -352,7 +352,16 @@ def build(root, cfg):
                 else:
                     base.predictor = ControlAffineTransition(cfg.get("control_integrator", "euler"), base.state_dim, constant,
                         cfg.get('nonlinear_action_residual',False))
-            base.predict = types.MethodType(control_affine_predict, base)
+            if cfg.get("pure_action_transport", False):
+                assert constant and transition == "control-affine"
+                assert cfg.get("control_integrator", "euler") == "euler"
+                assert not cfg.get("nonlinear_action_residual", False)
+                # All predictable change must share the learned command basis.
+                # Keep the unused drift weights for an identical initialization.
+                base.predictor.requires_grad_(False)
+                base.predict = types.MethodType(additive_predict, base)
+            else:
+                base.predict = types.MethodType(control_affine_predict, base)
         if cfg.get("pixel_additive_transport",False):
             assert cfg["variant"]=="spt-deep-observation"
             assert not cfg.get("joint_views",False) and pixel_objective is None
@@ -574,7 +583,9 @@ def train(root, run, manifest, target, label, max_updates=None):
         if segment < 8 or (step+1) % 100 == 0:
             prefixes = ["encoder." if cfg.get('raw_pixel_encoder',False) else "feature_adapter.", "pool.", "action_encoder."]
             if cfg.get("joint_views"): prefixes.append("joint_view_embedding")
-            if cfg["variant"] not in ("action-transport","codec-transport") and not cfg.get("pixel_additive_transport",False):
+            if (cfg["variant"] not in ("action-transport","codec-transport")
+                    and not cfg.get("pixel_additive_transport",False)
+                    and not cfg.get("pure_action_transport",False)):
                 prefixes.append("predictor.")
             prefixes.append("future_decoder." if hasattr(model,"future_decoder") else "renderer.")
             for prefix in prefixes:
