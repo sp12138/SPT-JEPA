@@ -181,6 +181,8 @@ class AnalyticResidualSPT(RobustLeWM):
             variable=(.5*mu[:,0].float().square()+innovation_nats.sum(1)).mean(0)
         else:
             variable=(.5*mu[:,0].float().square()+error.square().sum(1)/(2*coding_sigma**2)).mean(0)
+            if getattr(self,"relative_state_coding",False):
+                variable=(error.square().sum(1)/(2*coding_sigma**2)).mean(0)
         return loss,dict(loss=loss,fm=fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),
             rate_share=beta*rate/fm.detach().clamp_min(1e-8),feature_std=mu.float().std((0,1)).mean(),
             active_dims=(variable>.1).sum(),temporal_noise_rho=loss.new_tensor(self.rho),

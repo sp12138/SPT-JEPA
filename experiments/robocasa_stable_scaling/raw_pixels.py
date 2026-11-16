@@ -97,16 +97,22 @@ def render_future_mean(self,states,anchor,steps=1,seed=0,initial=None):
     assert self.pixel_objective=='future-mean'
     patch=self.raw_render_size//16;anchor=pack(self.render_anchor(anchor),patch=patch)
     if states.shape[-1]==self.state_dim:states=states.unflatten(-1,(self.state_slots,self.state_width))
+    reference=None
+    if getattr(self,'identity_observation',False):
+        assert initial is not None,'Identity observation rendering needs the known current state'
+        if initial.shape[-1]==self.state_dim:
+            initial=initial.unflatten(-1,(self.state_slots,self.state_width))
+        reference=initial
+        if getattr(self,'relative_state_coding',False):
+            states=states-initial
+            reference=torch.zeros_like(initial)
     with self.renderer.anchored(anchor):
         t=torch.ones(len(anchor),1,device=anchor.device)
         options=({'condition_drop':torch.zeros(len(anchor),device=anchor.device,dtype=torch.bool)}
             if getattr(self,'state_mean_observation',False) else {})
         value=self.renderer(torch.zeros_like(anchor),t,condition=states,**options)
         if getattr(self,'identity_observation',False):
-            assert initial is not None,'Identity observation rendering needs the known current state'
-            if initial.shape[-1]==self.state_dim:
-                initial=initial.unflatten(-1,(self.state_slots,self.state_width))
-            baseline=self.renderer(torch.zeros_like(anchor),t,condition=initial,**options)
+            baseline=self.renderer(torch.zeros_like(anchor),t,condition=reference,**options)
             value=anchor.float()+(value.float()-baseline.float())
     return unpack(value,patch=patch)
 

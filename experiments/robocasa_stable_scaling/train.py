@@ -279,11 +279,17 @@ def pixel_prediction_distortion(self, batch, render, anchor, condition, initial=
             # unchanged state gives the observed image even during training.
             drop=(torch.rand(len(y),device=y.device)<self.renderer.config.condition_dropout
                 if self.training else torch.zeros(len(y),device=y.device,dtype=torch.bool))
-            predicted=self.renderer(torch.zeros_like(y),t,
-                condition=condition.flatten(0,1),condition_drop=drop)
+            reference=None
             if self.identity_observation:
                 assert initial is not None
                 reference=initial[:,None].expand(-1,w-1,-1,-1).flatten(0,1)
+            states=condition.flatten(0,1)
+            if getattr(self,"relative_state_coding",False):
+                states=states-reference
+                reference=torch.zeros_like(reference)
+            predicted=self.renderer(torch.zeros_like(y),t,
+                condition=states,condition_drop=drop)
+            if self.identity_observation:
                 baseline=self.renderer(torch.zeros_like(y),t,condition=reference,condition_drop=drop)
                 predicted=anchors.float()+(predicted.float()-baseline.float())
         else:
@@ -428,6 +434,13 @@ def build(root, cfg):
         assert not cfg.get('raw_physical_joint') and not cfg.get('joint_views')
         base.state_mean_observation=True
         base.identity_observation=cfg.get('identity_observation',False)
+    if cfg.get('relative_state_coding',False):
+        assert cfg.get('state_mean_observation') and cfg.get('identity_observation')
+        assert cfg.get('pure_action_transport') and not cfg.get('ema_future_targets',False)
+        # Current RGB is already given: neither its arbitrary code origin nor
+        # its coding rate belongs to the conditional consequence model.
+        base.relative_state_coding=True
+        base.initial_rate=types.MethodType(conditional_initial_rate,base)
     return base
 
 
