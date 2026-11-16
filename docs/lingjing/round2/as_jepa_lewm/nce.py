@@ -20,6 +20,8 @@ class NCELeWM(ForecastScoredLeWM):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        if self.rho or self.forecast_noise != "sample":
+            raise ValueError("NCELeWM supports rho = 0 and forecast_noise = 'sample' only")
         self.renderer = None   # nothing renders; generation is not available for this model
 
     def audit_expected_gradients(self):

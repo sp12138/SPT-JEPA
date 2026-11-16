@@ -30,6 +30,8 @@ class LearnedVarianceLeWM(ForecastScoredLeWM):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        if self.rho or self.forecast_noise != "sample":
+            raise ValueError("LearnedVarianceLeWM supports rho = 0 and forecast_noise = 'sample' only")
         width, dd = self.pool.head.in_features, self.state_width
         head = nn.Linear(width, 2 * dd)
         with torch.no_grad():
