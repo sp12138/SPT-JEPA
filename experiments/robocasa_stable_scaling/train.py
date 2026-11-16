@@ -321,6 +321,11 @@ def build(root, cfg):
             assert pixel_objective in ("residual-flow", "future-mean")
             base.pixel_objective = pixel_objective
             base.distortion = types.MethodType(pixel_prediction_distortion, base)
+        geometry=cfg.get('forecast_rate_geometry','markov')
+        assert geometry in ('markov','root-marginal')
+        if geometry=='root-marginal':
+            assert cfg.get('raw_pixel_encoder') and pixel_objective=='future-mean'
+            base.forecast_rate_geometry=geometry
         if cfg["variant"] == "spt-control-affine":
             with torch.random.fork_rng():
                 torch.manual_seed(92320261114+cfg["seed"])

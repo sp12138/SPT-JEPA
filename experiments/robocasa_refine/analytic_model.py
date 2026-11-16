@@ -30,6 +30,21 @@ def innovation_error(mu,means,rho):
     return error[:,1:]-rho*error[:,:-1]
 
 
+def root_marginal_error(mu,means,rho):
+    """A root-conditioned prior with the same one-time forecast marginals.
+
+    Replacing the AR future graph by conditionally independent future codes
+    gives variance sigma0^2*S_h, S_h=sum_j rho^(2*j). The additional Gaussian
+    KL constant is code_dim/2*sum_h log(S_h); no new scale is introduced.
+    """
+    powers=mu.new_tensor([rho**(2*t) for t in range(mu.shape[1]-1)],dtype=torch.float32)
+    sums=powers.cumsum(0)
+    residual=mu.float()-means.float()
+    root_powers=mu.new_tensor([rho**t for t in range(1,mu.shape[1])],dtype=torch.float32)
+    error=(residual[:,1:]-root_powers[None,:,None,None]*residual[:,:1])/sums.sqrt()[None,:,None,None]
+    return error,.5*sums.log()
+
+
 def laplace_shift_nats(error,scale):
     """Exact equal-scale Laplace KL, elementwise, with a bounded tail slope."""
     magnitude=error.float().abs()/scale
@@ -97,7 +112,13 @@ class AnalyticResidualSPT(RobustLeWM):
                 forecast=means[:,1:]
             choose=torch.rand(b,w-1,1,1,device=flat.device)<self.forecast_fraction
             condition=torch.where(choose,forecast,noisy[:,1:])
-        error=innovation_error(mu,means,self.rho)
+        geometry=getattr(self,"forecast_rate_geometry","markov")
+        if geometry=="root-marginal":
+            assert family=="gaussian" and not getattr(self,"stationary_coding_channel",False)
+            error,marginal_constant=root_marginal_error(mu,means,self.rho)
+        else:
+            assert geometry=="markov"
+            error=innovation_error(mu,means,self.rho)
         entry=self.initial_rate(mu[:,0])
         coding_sigma=self.sigma0
         if getattr(self,"stationary_coding_channel",False):
@@ -109,6 +130,8 @@ class AnalyticResidualSPT(RobustLeWM):
             surprise=surprise_nats(error,torch.zeros_like(error),coding_sigma)
         if not getattr(self,"stationary_coding_channel",False):
             surprise=surprise+self.state_dim*.5*(-self.rho**2-math.log1p(-self.rho**2))
+            if geometry=="root-marginal":
+                surprise=surprise+self.state_dim*marginal_constant[None,:]
         fm=self.distortion(batch,render,anchor,condition)
         rate=(entry+surprise.sum(1)).mean()/((w-1)*FRAME_ELEMS)
         beta=self.beta*min(1.,step/max(1,ramp_steps)) if ramp_steps else self.beta
