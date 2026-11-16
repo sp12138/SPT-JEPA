@@ -1,4 +1,4 @@
-"""Predict a slowly moving future representation learned from the same logs."""
+"""Place a same-data EMA encoder on either side of a factual transition."""
 import copy
 import types
 
@@ -22,6 +22,23 @@ def encode_with_future_teacher(self, batch):
     return dict(emb=torch.cat((initial[:, None], future), 1), act_emb=actions)
 
 
+def encode_with_initial_teacher(self, batch):
+    """Keep direct future-image learning while stabilizing the known input."""
+    pixels = batch['pixels']
+    b, w = pixels.shape[:2]
+    with torch.autocast(pixels.device.type, enabled=False):
+        tokens = self.encoder(pixels.flatten(0, 1).float(),
+            interpolate_pos_encoding=True).last_hidden_state
+        online = self.pool(tokens).flatten(-2).reshape(b, w, -1)
+        self.future_encoder.eval(); self.future_pool.eval()
+        with torch.no_grad():
+            tokens = self.future_encoder(pixels[:, 0].float(),
+                interpolate_pos_encoding=True).last_hidden_state
+            initial = self.future_pool(tokens).flatten(-2)
+        actions = self.action_encoder(batch['action'].float())
+    return dict(emb=torch.cat((initial[:, None], online[:, 1:]), 1), act_emb=actions)
+
+
 @torch.no_grad()
 def update_future_teacher(self):
     decay = self.future_teacher_decay
@@ -39,10 +56,13 @@ def install(model, cfg):
     assert not cfg.get('raw_physical_joint') and not cfg.get('joint_views')
     assert not cfg.get('randomize_target_views')
     model.ema_future_targets = True
+    model.ema_target_side = cfg.get('ema_target_side', 'future')
+    assert model.ema_target_side in ('future', 'initial')
     model.future_teacher_decay = float(cfg['future_teacher_decay'])
     assert 0 < model.future_teacher_decay < 1
     model.future_encoder = copy.deepcopy(model.encoder).eval().requires_grad_(False)
     model.future_pool = copy.deepcopy(model.pool).eval().requires_grad_(False)
     model.register_buffer('future_teacher_updates', torch.zeros((), dtype=torch.int64))
-    model.encode = types.MethodType(encode_with_future_teacher, model)
+    model.encode = types.MethodType(encode_with_initial_teacher
+        if model.ema_target_side == 'initial' else encode_with_future_teacher, model)
     model.update_future_teacher = types.MethodType(update_future_teacher, model)

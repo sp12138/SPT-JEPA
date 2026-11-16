@@ -11,18 +11,18 @@ R=`/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114`；模型根
 | dev13 0–3 | `encoder_allocation_20261116` / spt-encoder-heavy-shared-mean | E384/D6参照，41.625M，2304参数E均值头 |
 | dev13 4–7 | `global_response_strong_encoder_20261116` / spt-encoder-heavy-global-action | 共享动作方向+非线性自主变化，40.834M，384参数状态码头 |
 | dev15 0–3 | `synchronized_increment_target_20261116` / spt-synchronized-increment-target | 同步相机变化量对齐，41.625M，2304参数E均值头 |
-| dev15 4–7 | `synchronized_view_target_20261116` / spt-synchronized-view-target | 绝对状态视角对齐对照，41.625M，2304参数E均值头 |
+| dev15 4–7 | `ema_initial_target_20261116` / spt-ema-initial-mean-readout | 自身EMA已知当前码、在线未来码，41.625M可训练，2304参数EMA骨干均值头 |
 | dev6 0–3 | `ema_future_target_20261116` / spt-ema-future-mean-readout | 新启动自身EMA未来目标；41.625M可训练，2304参数EMA骨干均值头 |
 | dev6 4–7 | `pure_action_transport_20261116` / spt-pure-action-transport | 去除自主漂移的共享动作平移，40.810M可训练，384参数状态码头 |
 
 ## 关键进展与下一步
 
 - 宽E/浅D参照从1h81.83%/42.23mm改善到6h91.35%/17.78mm，14h90.77%/22.60mm/1final，后段未稳定保留收益，native2mm末端成功稀少。不能把粗回报、验证loss或零星成功当达标。RGB恒等支路早期改善，但后段平台/回落；已保全完整8h控制及额外部分9h的完整训练状态，后者不报完整9h、不继承给新模型。
-- 绝对视角对齐1h70.21%/64.76mm，2h80.58%/45.38mm，3h82.74%/42.15mm，均0final。对齐伴随运动码变化变弱；直接读实际码也仅59.83%，低于RGB同384参数码头86.40%，不是均值头漏掉好表示。
-- 变化量对齐只交换`mu_h(other)+mu_0(source)-mu_0(other)`，保留相机原点。1h14962步为80.08%/48.43mm/0final，2h86.03%/31.77mm/0final；1h码头79.11%/50.61mm/0final，仍弱于RGB。8普通TRAIN窗口显示变化量转运改善、相对绝对对齐保留更多运动信号，但不足以带来控制优势。继续看完整后续预算，不扩大读出搜索。原始定位R/analysis/`root-increment-first-hour-motion-transfer.json`及`root-increment-code-probe-20261116`。
+- 绝对视角对齐1/2/3/4/5h为70.21/80.58/82.74/84.45/86.08%，5h32.81mm、final/any全0。对齐伴随运动码变化变弱；1h直接读实际码也仅59.83%，低于RGB同384参数码头86.40%，不是均值头漏掉好表示。完整5h状态及结果保全后退出，将卡交给EMA当前码对照。
+- 变化量对齐只交换`mu_h(other)+mu_0(source)-mu_0(other)`，保留相机原点。1/2/3h80.08/86.03/83.73%、48.43/31.77/39.41mm、final全0；1h码头79.11%/50.61mm/0final，仍弱于RGB。8普通TRAIN窗口显示变化量转运改善、相对绝对对齐保留更多运动信号，但不足以带来控制优势。继续看完整后续预算，不扩大读出搜索。原始定位R/analysis/`root-increment-first-hour-motion-transfer.json`及`root-increment-code-probe-20261116`。
 - 共享动作方向用`z_next=z+f(z)+A*a_t`；旧弱骨干联合状态上的失败保留。当前强骨干1/2h72.59/79.79%、61.60/49.56mm、final0/1。A的XYZ列已有非退化秩，但同一动作头应用到其前向预测时与自然观测的读出严重失配：1h验证观测39.32mm、预测码1514.76mm；2h为34.94/673.74mm，响应矩阵距单位阵仍13.35。均为内部诊断，不是环境真实位移。下一单独对照将`f(z)`去掉，强制`z_next=z+A*a_t`；其余损失/数据/随机初值/384参数码头与共享A组一致，无新增动作标签或损失权重。4废弃更新通过梯度与方程检查，主训已在dev6 4–7启动，尚无控制成绩。源`code-pure-action-transport-v1`，入口`pure-action-transport-20261116`。
 - 固定一阶空间矩线性读出已完整结束：同父1/4/8h为79.34/87.56/89.50%、48.54/28.49/23.89mm，final全0；均弱于原均值头，参数6912对2304。0body更新、同17920/1536事实标签、192次模型—案例仍是同64物理DEV。R/`encoder-spatial-moments-probe-20261116/DONE.json`。此前相对误差、MAE、非线性及空间Potential等负结果保留，不继续堆头/调参。
-- **当前新改动是自身EMA未来目标。** 学生只编码当前帧、接受后果预测梯度；未来RGB由自身编码器/pool的EMA提供停止梯度的目标。当前学生码的原entry项保留，RGB/其他rate/噪声/beta不变。EMA时间尺度固定为一个120060窗口训练epoch，decay=exp(-32/120060)，非按任务调参。读出冻结EMA骨干；教师和学生均随机初始化，无外部预训练。代码`ema_future.py`，冻结源R/`code-ema-future-target-v1`，原始入口R/`ema-future-target-20261116`。4废弃功能更新通过梯度隔离/EMA更新检查，实际主训已唯一启动，尚无控制成绩。接下来以完整控制曲线决定是否有效。
+- **EMA未来目标首小时失败：49.27%/124.00mm/0final/0any，事实动作验证读出47.71mm。** 原改动停止了全部未来编码梯度，学生只有当前帧可训练，可能切断了表示学习的重要信号；该解释仍待对照。新分支将EMA放到已知当前码，学生编码全部帧，未来码保留RGB/预测学习梯度，其他损失/数据/decay不变。4废弃更新确认未来码梯度非零、EMA当前码停止梯度；主训已在dev15 4–7启动，尚无控制成绩。两个分支均为自身随机初始化encoder/pool的EMA、decay=exp(-32/120060)、冻结EMA骨干均值读出，无外部教师/动作标签进入body。源码`ema_future.py`；入口`ema-future-target-20261116`与`ema-initial-target-20261116`，各自冻结源同名`code-…-v1`。未来目标旧分支继续看第二小时，不将单点失败当最终scaling结论。
 
 ## 固定口径与执行边界
 

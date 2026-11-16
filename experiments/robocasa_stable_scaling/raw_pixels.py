@@ -76,7 +76,7 @@ def shared_visual_loss(self,batch,step=0,ramp_steps=0):
         tokens=args[0]
         assert bridge.context_tokens is None
         # Select the initial frame of each physical camera stream only.
-        if getattr(self,'ema_future_targets',False):
+        if getattr(self,'ema_future_targets',False) and getattr(self,'ema_target_side','future')=='future':
             assert tokens.shape[0]==b
             initial=tokens[:,1:]
         else:
