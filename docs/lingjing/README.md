@@ -15,12 +15,13 @@ channels. The state must support latent planning, generation and probing.
 
 ## Where to start
 
-- [as-jepa-evaluation-handoff.md](as-jepa-evaluation-handoff.md) (2026-11-16): the
-  agreed evaluation design, handed to the collaborator. AS-JEPA as a world model; the
-  map of model families and how each is evaluated; one fixed action head on each
-  frozen model, evaluated as the policy alone (E1) and as the policy plus world-model
-  selection among its proposals (E2), with one CEM row for continuity; benchmarks,
-  controlled arms and a step-by-step agent plan on the RoboJEPA code base.
+- [as-jepa-evaluation-handoff.md](as-jepa-evaluation-handoff.md) (2026-11-16,
+  revision 2): the agreed evaluation design and story, handed to the collaborator. A
+  two-stage protocol for measuring how latent world models scale (own objective
+  without action prediction, then frozen or fine-tuned probes), three measurements
+  (policy alone, representation probes in physical units, policy plus latent
+  planning), CEM as a validation subset, the contribution assessment, benchmarks,
+  model series and a step-by-step agent plan on the RoboJEPA code base.
 - [as-jepa-round2-spec.md](as-jepa-round2-spec.md): the current handoff spec
   (2026-10-31, revision 3). Round 2 trains the renderer, with probability `lam` per
   frame, on the prior's forecast instead of the encoded state, which makes the
