@@ -470,6 +470,9 @@ def build(root, cfg):
         # its coding rate belongs to the conditional consequence model.
         base.relative_state_coding=True
         base.initial_rate=types.MethodType(conditional_initial_rate,base)
+    if cfg.get('consequence_likelihood_only',False):
+        from experiments.robocasa_stable_scaling.consequence_likelihood import install
+        install(base,cfg)
     return base
 
 
@@ -649,7 +652,8 @@ def train(root, run, manifest, target, label, max_updates=None):
                     and not cfg.get("pixel_additive_transport",False)
                     and not cfg.get("pure_action_transport",False)):
                 prefixes.append("predictor.")
-            prefixes.append("future_decoder." if hasattr(model,"future_decoder") else "renderer.")
+            if not cfg.get('consequence_likelihood_only',False):
+                prefixes.append("future_decoder." if hasattr(model,"future_decoder") else "renderer.")
             for prefix in prefixes:
                 norms[prefix] = sum(float(p.grad.detach().float().norm())**2
                     for name, p in model.named_parameters() if name.startswith(prefix) and p.grad is not None)**.5
