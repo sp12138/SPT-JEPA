@@ -85,8 +85,13 @@ def environment(root, gpu_list, simulator=False):
         base = Path("/tmp/prescottsun-robocasa-compare-20261110/simulator")
         assert (base / "READY.json").exists()
         paths = [str(base / "robocasa"), str(base / "robosuite")] + paths
-    project = root.parents[1]
+    # Frozen readout probes may sit below a run directory. Locate the shared
+    # driver bundle without assuming that every experiment has the same depth.
+    project = next((p for p in root.resolve().parents
+                    if (p / "environments/egl-lib/10_nvidia.json").is_file()), root.parents[1])
     egl = project / "environments/egl-lib"
+    if simulator and not (egl / "10_nvidia.json").is_file():
+        raise FileNotFoundError(f"Cannot locate the EGL driver bundle above {root}")
     return dict(os.environ, PYTHONPATH=":".join(paths), CUDA_VISIBLE_DEVICES=gpu_list,
                 MUJOCO_GL="egl", PYOPENGL_PLATFORM="egl", PYNPUT_BACKEND="dummy",
                 MUJOCO_EGL_DEVICE_ID=gpu_list.split(",")[0] if gpu_list else "0",

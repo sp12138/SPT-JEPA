@@ -5,7 +5,7 @@
 ## 状态与口径
 
 - EFS总入口：`/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114`（下称R），其父目录下存放各模型根。**实时状态看R的MASTER.json、SESSION_CHECKS.json及实际进程/GPU**，本文不是持续利用率证据。
-- 正式小时检查由当前主会话执行，不另建LLM监控。第45次快照`session-checks/20261116T0332-{dev13,dev15,dev6}.json`记录三机各8个实际GPU训练rank、瞬时78–98%、六组无ERROR。最新检查与下次时间只从SESSION_CHECKS读取，不把瞬时值当持续利用率。小时记录/有限交接用`MASTER.primary-write.lock`保护元数据，重复快照不推进时钟。
+- 正式小时检查由当前主会话执行，不另建LLM监控。第46次快照`session-checks/20261116T0432-{dev13,dev15,dev6}.json`记录三机各8个实际GPU训练rank、瞬时78–100%、六组无ERROR。最新检查与下次时间只从SESSION_CHECKS读取，不把瞬时值当持续利用率。小时记录/有限交接用`MASTER.primary-write.lock`保护元数据，重复快照不推进时钟。
 - 同Reach blocking执行接口，固定12006条普通TRAIN交互日志、无body数据增长，全学习链随机。编码器输入仅RGB，正向预测另输入实际a_t；自然未来RGB/自身码为后果目标，没有动作target或外部教师进入body。
 - 动作头始终冻结/detach表示，仅用同一事实转移输入a_t的XYZ：17920训练/1536验证标签。普通交互日志不是专家策略或目标条件动作标签。读出时将自然next RGB换为控制目标RGB，分布差异必须用真实控制检验。
 - 每点同64个反复使用的DEV案例、两路224 RGB、最多5命令/norm .3、native2mm final/any。32确认例仍封闭。单点、平滑、loss下降及偶然1/64不算稳定scaling；不同读出/头容量/FLOPs/预训练来源分别报告。
@@ -19,8 +19,8 @@
 |---|---|---|---|
 | dev13 0–3 | E384/D6，`encoder_allocation_20261116`；spt-encoder-heavy-shared-mean | 41.625M / 2304，E均值 | 8h：90.69%、21.06mm、0/1 |
 | dev13 4–7 | E384/D6+视角地址联合状态，`encoder_view_joint_20261116`；spt-encoder-heavy-view-address | 47.575M / 384，联合码 | 5h：85.78%、30.42mm、1/2 |
-| dev15 0–3 | E192/D6，`allocation_small_shallow_20261116`；spt-small-encoder-shallow-decoder | 24.986M / 1152，E均值 | 5h：86.21%、29.06mm、0/1 |
-| dev15 4–7 | RGB恒等支路+条件线性响应/非线性余项，`rgb_structured_command_20261116`；spt-rgb-innovation-structured-command | 41.662M / 2304，E均值 | 1h：87.30%、32.46mm、0/1 |
+| dev15 0–3 | E192/D6，`allocation_small_shallow_20261116`；spt-small-encoder-shallow-decoder | 24.986M / 1152，E均值 | 6h：86.17%、30.27mm、2/4 |
+| dev15 4–7 | RGB恒等支路+条件线性响应/非线性余项，`rgb_structured_command_20261116`；spt-rgb-innovation-structured-command | 41.662M / 2304，E均值 | 2h：86.59%、34.06mm、0/2 |
 | dev6 0–3 | 字面RGB恒等支路，`rgb_innovation_20261116`；spt-current-rgb-innovation | 41.625M / 2304，E均值 | 3h：90.31%、23.43mm、1/2 |
 | dev6 4–7 | RGB恒等支路+root条件先验，`rgb_root_marginal_v2_20261116`；spt-rgb-innovation-root-marginal | 41.625M / 2304，E均值 | 第一小时在训，尚无控制结果 |
 
@@ -40,9 +40,13 @@
 - **不能凭猜测调rate或LR。** 4h模型16普通TRAIN转移的latentleaf KL/像素梯度中位小/大命令.102/.200，未显示rate支配；当前图重构MSE/自然变化MSE中位.551/.038，静态错误能量.224/.143，未显示背景支配。这里只是一部梯度/少量事实，不是唯一归因。固定参考12288对实际150528元素归一化会缩小rate12.25倍，目前不据此改beta。原始`analysis/fine-factual-coding-budget-audit.json`。固定1216条动作头日志的全部RGB SHA及19456事实转移检查，仅2训练/1验证转移两路画面完全不变且输入非零；由此产生的零差分头验证RMSE下界仅.064mm，远小于当前约29.5mm，没有支持大量完全相同画面的标签冲突解释；仍不能排除近似视觉别名。0模型/头/控制更新、11秒CPU，`analysis/factual-current-action-observability-audit.json`。
 - **短期后果学到不等于控制精度。** 8TRAIN窗口的E384/D6一步预测/copy在1/2/3h为.675/.474/.443，三步.850/.499/.456，七步仍2.121/1.343/1.141；3h消融当前XYZ令一步误差2.29倍。实际F响应条件数1.57–1.86，非真实物理Jacobian。只读诊断v1曾把动作错移到下一帧，已作废并按训练`act_emb[:,:-1]`重跑v2；正式训练、动作标签和控制一直正确。勿沿用v1。 Current rate already centers the complete clean rollout; its residual is e_t-rho*e_(t-1), not a teacher-forced one-step mean.
 
-RGB恒等支路1/2/3h为86.72/87.51/90.31%、32.31/31.85/23.43mm、final0/0/1；第3h较同预算基组+3.84点、四厨房区组95%[.59,7.67]、距离−7.30mm、[−14.04,−.57]，3/4厨房改善，是继续训练的粗定位信号，尚非严格scaling；余项组首小时87.30%/32.46mm、final0/any1，相对RGB的回报差+.58点、四厨房区组95%[−.89,1.35]，距离差+.15mm、[−2.77,4.03]，暂无可靠增益。基组第7/8h未保持第6h粗指标，5/6/7/8h读出alpha均.01、验证RMSE仍降，不能再次归因为alpha切换。小E第5h86.21%/29.06mm、严格0；组合第5h85.78%/30.42mm、final1，均未严格scaling。配对定位`analysis/structured-command-first-hour-paired.json`、`analysis/precise-consequence-third-hour-paired.json`及`analysis/encoder-heavy-late-control-scaling.json`；同64已见DEV，不含种子不确定性。
+RGB恒等支路1/2/3h为86.72/87.51/90.31%、32.31/31.85/23.43mm、final0/0/1；第3h较同预算基组+3.84点、四厨房区组95%[.59,7.67]、距离−7.30mm、[−14.04,−.57]，3/4厨房改善，是继续训练的粗定位信号，尚非严格scaling；余项组首小时87.30%/32.46mm、final0/any1，相对RGB的回报差+.58点、四厨房区组95%[−.89,1.35]，距离差+.15mm、[−2.77,4.03]，暂无可靠增益。基组第7/8h未保持第6h粗指标，5/6/7/8h读出alpha均.01、验证RMSE仍降，不能再次归因为alpha切换。小E第6h86.17%/30.27mm、final2/any4，粗指标平台，单点strict上升未验证持续性；组合第5h85.78%/30.42mm、final1，均未严格scaling。配对定位`analysis/structured-command-first-hour-paired.json`、`analysis/precise-consequence-third-hour-paired.json`及`analysis/encoder-heavy-late-control-scaling.json`；同64已见DEV，不含种子不确定性。
 
 当前新组只改多步先验依赖图：在现有完整clean rollout中心不变时，未来码条件独立于前一未来码、共同条件于初始码，保持各时刻先验边缘方差及root协方差；误差由`e_h−rho*e_(h−1)`改为`(e_h−rho^h*e0)/sqrt(S_h)`，`S_h=sum_j rho^(2j)`，加精确Gaussian KL常数。不是修复teacher forcing或统一调beta；7步原弱误差模态的惩罚变为4.00倍、强模态为.156倍，无新增参数、尺度或标签。同8个普通TRAIN窗口的RGB1h/2h及原基组7h残差中，原最弱时域模态占误差能量77.7/81.4/84.6%，却只占原均值rate的26.0/30.3/34.6%；新几何实际均值惩罚为1.34/1.50/1.66倍，提供小样本依据而非唯一归因或控制证明，见`analysis/root-marginal-observed-error-audit.json`。独立18个完整Gaussian值/梯度/同边缘检验、五类实际旧默认回归、实际新loss与leaf梯度、单步/rho0全模型门及4废弃功能更新通过。根`root-marginal-prior-20261116`，私有`code-root-marginal-v2`，已在dev6 GPU4–7从零主训；v1 FP32等价图元素梯度守卫失败及源码/日志保留，v2保留通式e0并记录范数守卫，实际两个极限梯度逐位同。有限助手只完成普通MLP完整3h/44028步/64DEV及CPU全状态收尾，结果83.53%/36.72mm、final/any0；仍在粗改善但落后原/RGB，F容量和第2h空间头、第3h先验门共卡成本单列，不证明该方法类失效。主会话复核后唯一启动新组，0旧SGD重放/祖先0。新组实际8/16保留/全恢复、四GPU rank、私有train及CPU绑定analytic loss源码SHA与模型/优化器均过，证明`ACTUAL-STARTUP-VERIFIED.json`；无新控制成绩。
+
+结构余项2h回落到86.59%/34.06mm、final0/any2，暂未胜过RGB2h87.51%/31.85mm。事实动作尺度审计复现部署验证RMSE：最小3.06–9.74mm四分位中，基组3/8h及RGB3h误差5.188/4.577/5.014mm，均高于零输出3.502mm；中位预测/输入范数1.125/1.058/1.175，不是统一缩小。`analysis/factual-readout-command-scale-audit.json`，0模型/头/控制更新、2.77秒CPU。
+
+有限重验既有相对误差读出，保留旧表示上的负结果：在新控制结果前固定当前从零E的3/5/8h父模型，同2304参数/17920及1536当前标签，无新尺度/epsilon。当前助手R/`relative-mean-scale-probe-v2-20261116`，dev15 GPU4–7共卡成本单列；192模型—案例仍是同64DEV，非三个seed，32确认封闭。尚无完整控制成绩。v1嵌套根触发固定层级EGL路径错误，episode前失败，源/根/ERROR/日志/首头均保留；v2仅修环境祖先定位，原平层环境字典完全同、合成布局/缺库及真实离屏GL门通过，私有`code-relative-mean-env-v2`。新隔离根复用原3h头SHA，0拟合重放/0body更新，已恢复并通过前10例重放/模型不变；勿恢复v1。主线六组/本会话小时钟不变。曲线图留EFS analysis及仓库外`../SPT-JEPA-reports/independent-head-scaling-latest.png`。
 
 继续主会话小时检查，收齐后续实际控制曲线，必要时在完整阶段保全后调整。不把准备门、loss或偶然1/64当成功。有限诊断DONE不结束目标，32确认仍封闭，尚无新best-config晋升。
 
