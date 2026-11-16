@@ -360,9 +360,16 @@ def build(root, cfg):
             base.pixel_objective = pixel_objective
             base.distortion = types.MethodType(pixel_prediction_distortion, base)
         geometry=cfg.get('forecast_rate_geometry','markov')
-        assert geometry in ('markov','root-marginal')
+        assert geometry in ('markov','root-marginal','trajectory-categorical')
         if geometry=='root-marginal':
             assert cfg.get('raw_pixel_encoder') and pixel_objective=='future-mean'
+            base.forecast_rate_geometry=geometry
+        if geometry=='trajectory-categorical':
+            assert cfg.get('raw_pixel_encoder') and pixel_objective=='future-mean'
+            assert cfg.get('relative_state_coding') and cfg.get('state_mean_observation')
+            assert cfg.get('identity_observation') and cfg.get('isometric_actions')
+            assert cfg.get('coding_family','gaussian')=='gaussian'
+            assert not cfg.get('stationary_coding_channel',False)
             base.forecast_rate_geometry=geometry
         if cfg.get('randomize_target_views',False):
             assert cfg.get('raw_pixel_encoder') and pixel_objective=='future-mean'

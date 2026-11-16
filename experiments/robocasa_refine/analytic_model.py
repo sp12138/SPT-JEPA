@@ -32,6 +32,26 @@ def innovation_error(mu,means,rho):
     return error[:,1:]-rho*error[:,:-1]
 
 
+def trajectory_categorical_nll(mu,means,sigma):
+    """Identify each observed consequence among its own trajectory's frames.
+
+    All candidates and queries belong to one physical camera stream. The
+    predictor still receives only the initial observation and executed input
+    actions. Candidate images are training targets, never predictor inputs.
+    This conditional categorical likelihood replaces the Gaussian code rate;
+    it is not an additional loss or a continuous-density ELBO.
+    """
+    assert mu.shape==means.shape and mu.ndim==4 and mu.shape[1]>1 and sigma>0
+    candidates=mu.float().flatten(2)
+    queries=means[:,1:].float().flatten(2)
+    energy=(queries[:,:,None]-candidates[:,None]).square().sum(-1)/(2*sigma**2)
+    labels=torch.arange(1,mu.shape[1],device=mu.device).expand(mu.shape[0],-1)
+    nll=torch.nn.functional.cross_entropy(-energy.flatten(0,1),labels.flatten(),
+        reduction='none').reshape_as(labels)
+    accuracy=(energy.argmin(-1)==labels).float().mean()
+    return nll,accuracy
+
+
 def root_marginal_error(mu,means,rho):
     """A root-conditioned prior with the same one-time forecast marginals.
 
@@ -152,24 +172,28 @@ class AnalyticResidualSPT(RobustLeWM):
             assert family=="gaussian" and not getattr(self,"stationary_coding_channel",False)
             error,marginal_constant=root_marginal_error(mu,means,self.rho)
         else:
-            assert geometry=="markov"
+            assert geometry in ("markov","trajectory-categorical")
             error=innovation_error(mu,means,self.rho)
         entry=self.initial_rate(mu[:,0])
         coding_sigma=self.sigma0
         if getattr(self,"stationary_coding_channel",False):
             coding_sigma*=math.sqrt(1-self.rho**2)
-        if family=="laplace":
+        if geometry=="trajectory-categorical":
+            assert family=="gaussian" and getattr(self,"relative_state_coding",False)
+            assert getattr(self,"state_mean_observation",False)
+            surprise,retrieval_accuracy=trajectory_categorical_nll(mu,means,coding_sigma)
+        elif family=="laplace":
             innovation_nats=laplace_shift_nats(error,coding_sigma/math.sqrt(2))
             surprise=innovation_nats.sum((-2,-1))
         else:
             surprise=surprise_nats(error,torch.zeros_like(error),coding_sigma)
-        if not getattr(self,"stationary_coding_channel",False):
+        if geometry!="trajectory-categorical" and not getattr(self,"stationary_coding_channel",False):
             surprise=surprise+self.state_dim*.5*(-self.rho**2-math.log1p(-self.rho**2))
             if geometry=="root-marginal":
                 surprise=surprise+self.state_dim*marginal_constant[None,:]
         if getattr(self,"state_mean_observation",False):
-            # A deterministic observation mean uses point states; the analytic
-            # Gaussian rate remains a regularizer, not a pixel-density claim.
+            # Point states use the selected code regularizer or categorical
+            # likelihood, without a pixel-density ELBO claim.
             condition=torch.where(choose,means[:,1:],mu[:,1:])
             fm=self.distortion(batch,render,anchor,condition,initial=mu[:,0])
         else:
@@ -183,9 +207,14 @@ class AnalyticResidualSPT(RobustLeWM):
             variable=(.5*mu[:,0].float().square()+error.square().sum(1)/(2*coding_sigma**2)).mean(0)
             if getattr(self,"relative_state_coding",False):
                 variable=(error.square().sum(1)/(2*coding_sigma**2)).mean(0)
-        return loss,dict(loss=loss,fm=fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),
+        metrics=dict(loss=loss,fm=fm,rate=rate,entry=entry.mean(),surprise=surprise.mean(),
             rate_share=beta*rate/fm.detach().clamp_min(1e-8),feature_std=mu.float().std((0,1)).mean(),
             active_dims=(variable>.1).sum(),temporal_noise_rho=loss.new_tensor(self.rho),
             forecast_fraction=loss.new_tensor(self.forecast_fraction),
             clean_rollout_mse=(mu[:,1:].float()-means[:,1:].float()).square().mean(),
             analytic_coding_noise=loss.new_tensor(1.))
+        if geometry=="trajectory-categorical":
+            metrics.update(trajectory_retrieval_accuracy=retrieval_accuracy,
+                categorical_consequence_nll=surprise.mean(),
+                analytic_coding_noise=loss.new_tensor(0.))
+        return loss,metrics
