@@ -179,7 +179,7 @@ class AnalyticResidualSPT(RobustLeWM):
         if getattr(self,"stationary_coding_channel",False):
             coding_sigma*=math.sqrt(1-self.rho**2)
         if geometry=="trajectory-categorical":
-            assert family=="gaussian" and getattr(self,"relative_state_coding",False)
+            assert family=="gaussian"
             assert getattr(self,"state_mean_observation",False)
             surprise,retrieval_accuracy=trajectory_categorical_nll(mu,means,coding_sigma)
         elif family=="laplace":

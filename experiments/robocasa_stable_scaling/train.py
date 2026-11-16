@@ -366,8 +366,7 @@ def build(root, cfg):
             base.forecast_rate_geometry=geometry
         if geometry=='trajectory-categorical':
             assert cfg.get('raw_pixel_encoder') and pixel_objective=='future-mean'
-            assert cfg.get('relative_state_coding') and cfg.get('state_mean_observation')
-            assert cfg.get('identity_observation') and cfg.get('isometric_actions')
+            assert cfg.get('state_mean_observation')
             assert cfg.get('coding_family','gaussian')=='gaussian'
             assert not cfg.get('stationary_coding_channel',False)
             base.forecast_rate_geometry=geometry
