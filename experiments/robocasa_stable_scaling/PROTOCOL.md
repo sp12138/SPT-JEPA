@@ -192,6 +192,20 @@ same-data algorithm improvement. Four actual functional updates covering
 nonzero translation and angular inputs are discarded before fresh main
 training. Fixed17920/1536 head labels and the control protocol are unchanged.
 
+The covariance-block comparison uses the same forward-only network, data and
+head. Let P project onto Q[:,7:10], eP=P*error and eR=(I-P)*error. Requiring
+predictive covariance to be block diagonal between these subspaces gives
+Sigma*=bI+eP*eP^T+eR*eR^T. The profiled KL is
+.5log1p(||eP||^2/b)+.5log1p(||eR||^2/b), with the existing input-scale base
+and exact-zero fallback. There is no extra loss coefficient or network.
+The gradient in eP no longer depends directly on eR; shared encoder and basis
+parameters can still couple both terms. This remains a profile energy.
+Six independent Gaussian/geometry contracts plus the original seven pass.
+Four real functional updates are discarded. Main training branches from the
+latest saved same-data1.5h/32438-step parent with model, optimizer, scheduler,
+all-rank RNG and cursor retained. The first readout is cumulative2h, about.5h
+under the new criterion; disclose the full ancestry, not an independent seed.
+
 A finite projected-readout control freezes the joint body and its existing
 head, changing only W to W Q_XYZ Q_XYZ^T. There are no additional fits or body
 updates. Since Q belongs to the forward model, report this separately from

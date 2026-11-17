@@ -44,6 +44,31 @@ def profile_prediction_rate(rate, dimensions, covariance="isotropic"):
     return dimensions*.5*torch.log1p(2*rate/dimensions)
 
 
+def block_profile_prediction_rate(error, action_effect, sigma, basis,
+                                  normalize_action_scale=False):
+    """Profile Gaussian covariance separately in two orthogonal subspaces.
+
+    Columns of basis must be orthonormal. With P=basis*basis.T, the optimum
+    block-diagonal covariance >= bI is bI + (Pe)(Pe).T + (Re)(Re).T, R=I-P.
+    Its KL is the sum of two rank-one log determinants. This prevents errors
+    outside P from reducing the gradient of errors inside P. As with the full
+    profile, this is an energy criterion, not a normalized predictive density.
+    """
+    dtype = torch.float64 if error.dtype == torch.float64 else torch.float32
+    with torch.autocast(error.device.type, enabled=False):
+        flat = error.to(dtype).flatten(-2)
+        basis = basis.to(dtype)
+        assert basis.ndim == 2 and basis.shape[0] == flat.shape[-1]
+        parallel = flat@basis
+        remaining = flat-parallel@basis.T
+        base = flat.new_full(flat.shape[:-1], sigma**2)
+        if normalize_action_scale:
+            length = action_effect.detach().to(dtype).square().sum((-2, -1))
+            base = base*torch.where(length > 0, length, torch.ones_like(length))
+        return .5*torch.log1p(parallel.square().sum(-1)/base) + \
+            .5*torch.log1p(remaining.square().sum(-1)/base)
+
+
 def current_entropy_loss(self, batch, step=0, ramp_steps=0):
     if ramp_steps:
         raise ValueError("the conditional information objective has no ramp")
@@ -90,10 +115,14 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
     query = self.predict(current, actions)
     error = future.float()-query.float()
     normalize = getattr(self, 'action_scale_normalized_rate', False)
-    rate = factual_prediction_rate(error, actions, self.sigma0, normalize)
-    if getattr(self, 'profile_prediction_variance', False):
-        rate = profile_prediction_rate(rate, error.shape[-2]*error.shape[-1],
-            getattr(self, 'profile_prediction_covariance', 'isotropic'))
+    covariance = getattr(self, 'profile_prediction_covariance', 'isotropic')
+    if covariance == 'translation-blocks':
+        rate = block_profile_prediction_rate(error, actions, self.sigma0,
+            self.action_encoder.weight[:, 7:10], normalize)
+    else:
+        rate = factual_prediction_rate(error, actions, self.sigma0, normalize)
+        if getattr(self, 'profile_prediction_variance', False):
+            rate = profile_prediction_rate(rate, error.shape[-2]*error.shape[-1], covariance)
     loss = rate.mean()
     return loss, dict(loss=loss, conditional_rate_nats=loss,
         feature_std=flat.float().std((0, 1)).mean(),
@@ -103,6 +132,7 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
             getattr(self, 'profile_prediction_variance', False))),
         profiled_full_predictive_covariance=loss.new_tensor(float(
             getattr(self, 'profile_prediction_covariance', 'isotropic') == 'full')),
+        profiled_translation_blocks=loss.new_tensor(float(covariance == 'translation-blocks')),
         conditional_entry_rate=loss.new_tensor(0.), temporal_noise_rho=loss.new_tensor(0.),
         analytic_coding_noise=loss.new_tensor(0.))
 
@@ -119,8 +149,10 @@ def install(model, cfg):
     model.profile_prediction_variance = cfg.get('profile_prediction_variance', False)
     assert not model.profile_prediction_variance or rate_only
     model.profile_prediction_covariance = cfg.get('profile_prediction_covariance', 'isotropic')
-    assert model.profile_prediction_covariance in ('isotropic', 'full')
+    assert model.profile_prediction_covariance in ('isotropic', 'full', 'translation-blocks')
     assert model.profile_prediction_covariance == 'isotropic' or model.profile_prediction_variance
+    if model.profile_prediction_covariance == 'translation-blocks':
+        assert rate_only and cfg.get('raw_physical_joint')
     model.current_entropy_relative = cfg.get('current_entropy_relative', False)
     assert not model.current_entropy_relative or not rate_only
     assert cfg.get('pure_action_transport') and cfg.get('constant_action_response')
