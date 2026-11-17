@@ -12,6 +12,7 @@ import torch
 
 from as_jepa_lewm.anchor_reader import (encoder_entropy_term, reader_denoising_term,
                                        reader_stream_seed)
+from experiments.robocasa_stable_scaling.rigid_transport import rigid_prediction_error
 
 
 def factual_prediction_rate(error, action_effect, sigma, normalize_action_scale=False):
@@ -111,6 +112,22 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
     b, w = flat.shape[:2]
     current = flat[:, :-1].reshape(b*(w-1), 1, -1)
     future = flat[:, 1:].reshape_as(current)
+    if getattr(self, 'rigid_command_transport', False):
+        # Both camera rows describe one physical observation. Joint encode
+        # already verifies that they carry the same executed command.
+        command = batch['action'].reshape(b, 2, w, -1)[:, 0, :-1]
+        command = command.reshape(b*(w-1), -1)
+        error_square, rotation_error = rigid_prediction_error(
+            current[:, 0], future[:, 0], command, self.action_encoder.weight)
+        command_square = command.detach().float().square().sum(-1)
+        base = self.sigma0**2 * torch.where(command_square > 0, command_square, 1.)
+        loss = profile_prediction_rate(error_square/(2*base), flat.shape[-1], 'full').mean()
+        return loss, dict(loss=loss, conditional_rate_nats=loss,
+            feature_std=flat.float().std((0, 1)).mean(),
+            factual_prediction_mse=error_square.mean()/flat.shape[-1],
+            factual_rotation_error=rotation_error.mean(),
+            profiled_full_predictive_covariance=loss.new_tensor(1.),
+            rigid_command_transport=loss.new_tensor(1.))
     actions = encoded['act_emb'][:, :-1].reshape_as(current)
     query = self.predict(current, actions)
     error = future.float()-query.float()
@@ -153,6 +170,11 @@ def install(model, cfg):
     assert model.profile_prediction_covariance == 'isotropic' or model.profile_prediction_variance
     if model.profile_prediction_covariance == 'translation-blocks':
         assert rate_only and cfg.get('raw_physical_joint')
+    model.rigid_command_transport = cfg.get('rigid_command_transport', False)
+    if model.rigid_command_transport:
+        assert rate_only and cfg.get('raw_physical_joint')
+        assert model.profile_prediction_covariance == 'full'
+        assert model.action_scale_normalized_rate and cfg.get('learn_angular_commands')
     model.current_entropy_relative = cfg.get('current_entropy_relative', False)
     assert not model.current_entropy_relative or not rate_only
     assert cfg.get('pure_action_transport') and cfg.get('constant_action_response')

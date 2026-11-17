@@ -1,4 +1,4 @@
-"""Goal-free TRAIN interventions along the nontranslation actuator inputs.
+"""Goal-free TRAIN interventions on the known actuator inputs.
 
 The collection-only servo executes the requested rotation; native Reach ignores
 that input. Evaluation keeps its native controller. No model is instantiated.
@@ -18,11 +18,44 @@ from experiments.robocasa_stable_scaling.rotation_facts import step_rotation
 from experiments.robocasa_stable_scaling.stream import make_env
 
 
+def intervention_commands(seed, design):
+    rng = np.random.default_rng(seed)
+    commands = np.zeros((16, 7), np.float32)
+    if design == 'rotation':
+        direction = rng.normal(size=(8, 3))
+        direction /= np.linalg.norm(direction, axis=-1, keepdims=True)
+        radius = np.exp(rng.uniform(np.log(.01), 0., size=(8, 1)))
+        forward = direction*radius*.5
+        commands[:8, 3:6] = forward
+        commands[8:, 3:6] = -forward[::-1]
+        return commands
+    if design != 'interleaved':
+        raise ValueError(f'Unknown intervention design: {design}')
+
+    # Each loop visits both wrist settings at each translation endpoint.
+    # Its commands sum to zero, but training uses all measured consequences
+    # and does not assume that the servo actually returns to its start.
+    direction = rng.normal(size=(4, 2, 3))
+    direction /= np.linalg.norm(direction, axis=-1, keepdims=True)
+    radius = np.exp(rng.uniform(np.log(.01), 0., size=(4, 2, 1)))
+    deltas = direction*radius*np.array([.3, .5])[None, :, None]
+    for block, ((translation, rotation), order) in enumerate(zip(deltas, rng.permutation([0, 0, 1, 1]))):
+        pair = np.zeros((2, 7), np.float32)
+        pair[0, :3] = translation
+        pair[1, 3:6] = rotation
+        pair = pair[::1 if order == 0 else -1]
+        lo = 4*block
+        commands[lo:lo+2] = pair
+        commands[lo+2:lo+4] = -pair
+    return commands
+
+
 def collect(root, lane, lanes, limit=None):
     import cv2
     cv2.setNumThreads(1)
     plan = json.loads((root/'plan.json').read_text())
     assert 0 <= lane < lanes and plan['episodes'] % lanes == 0
+    design = plan.get('intervention_design', 'rotation')
     install_public(root)
     completed = 0
     for index in range(lane, plan['episodes'], lanes):
@@ -37,15 +70,7 @@ def collect(root, lane, lanes, limit=None):
         assert not directory.exists(), 'Preserve incomplete data before explicit retry'
         pair = plan['kitchens'][index % len(plan['kitchens'])]
         seed = plan['seed']+index
-        rng = np.random.default_rng(seed)
-        direction = rng.normal(size=(8, 3))
-        direction /= np.linalg.norm(direction, axis=-1, keepdims=True)
-        # Same normalized input range as the ordinary translation corpus.
-        radius = np.exp(rng.uniform(np.log(.01), 0., size=(8, 1)))
-        forward = direction*radius*.5
-        commands = np.zeros((16, 7), np.float32)
-        commands[:8, 3:6] = forward
-        commands[8:, 3:6] = -forward[::-1]
+        commands = intervention_commands(seed, design)
         began = time.time()
         env = make_env(pair, seed, 'reach')
         try:
@@ -58,7 +83,6 @@ def collect(root, lane, lanes, limit=None):
         finally:
             env.close()
         assert images.shape == (17, 2, 3, 224, 224) and images.dtype == np.uint8
-        assert np.all(commands[:, :3] == 0)
         render = np.stack([cv2.resize(x.transpose(1, 2, 0), (64, 64),
             interpolation=cv2.INTER_AREA).transpose(2, 0, 1)
             for x in images.reshape(-1, 3, 224, 224)]).reshape(17, 2, 3, 64, 64)
@@ -73,7 +97,8 @@ def collect(root, lane, lanes, limit=None):
             observations_sha256=sha(observations),
             local_observations=str(Path(plan['local_cache'])/'observations'/(ident+'.npz')),
             input_fields=['RGB', 'actually_issued_current_commands'],
-            current_XYZ_inputs_zero=True, collection_controller_differs_from_native_Reach=True,
+            intervention_design=design, current_XYZ_inputs_zero=design == 'rotation',
+            collection_controller_differs_from_native_Reach=True,
             normalized_angular_norm_range=[.01, 1.], angular_tolerance_rad=.001,
             no_model_instantiated=True, no_goal_reward_state_or_expert_in_experience=True,
             not_assumed_physically_closed=True, seconds=time.time()-began))

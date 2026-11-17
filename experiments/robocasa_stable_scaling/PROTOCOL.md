@@ -195,6 +195,30 @@ An independent seed2 uses exactly this12518-data recipe from a fresh whole
 random initialization, without inherited model or optimizer state. Verify its
 actual initial encoder and NN hashes differ from seed1, and retain the usual
 8-update entry and16-update restore proof. Reused DEV cases are not new cases.
+The paired angular-masked arm retains the same12518 RGB logs but keeps
+learn_angular_commands=false, matching the original input masking. Same seed1
+initial tensors, source, objective and head isolate experience from angular
+conditioning. No state/pose labels or additional functional short run are used.
+
+The angular transport comparison retains the isolated-rotation corpus, paired
+random tensors, full-profile rate and 384-parameter detached readout. Only
+the three angular code coordinates change their forecast geometry. Read
+them as an SO(3) rotation chart and compose the issued base-frame rotation
+on the left. Its squared chordal error divided by `2*(0.5 rad)^2` replaces
+the original angular residual energy and has the same local angular units.
+Other coordinates remain additive. The command scale and Gaussian profile
+energy are unchanged. No images are generated and no angle labels are used.
+This is a prior for commanded motion under the Reach interface. Physical
+clipping and imperfect execution can violate it.
+
+The interleaved collection compares the action coverage of 512 additional
+ordinary episodes at the same reset indices. It replaces isolated angular
+sequences with four randomized translation–rotation loops per episode and
+retains the base 12006 episodes. No loop endpoint is asserted to match its
+start. Every observed pair enters the same one-step objective with its
+actual current command. The number of frames is matched, while the mix of
+command types differs. Start with the unchanged additive full-profile learner
+to measure the contribution of collection before combining it with SO(3).
 
 The covariance-block comparison uses the same forward-only network, data and
 head. Let P project onto Q[:,7:10], eP=P*error and eR=(I-P)*error. Requiring
