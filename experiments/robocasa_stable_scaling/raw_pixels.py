@@ -190,10 +190,10 @@ def backbone_summary(tokens,feature_mode,has_cls=True):
 class RawPixelsReadout(nn.Module):
     def __init__(self,root,cfg,weights,expected_hash,feature_mode='code'):
         super().__init__()
-        assert feature_mode in ('code','cls','mean','spatial-moments','spatial-flat','renderer-mean','renderer-spatial-moments')
+        assert feature_mode in ('code','canonical-translation','cls','mean','spatial-moments','spatial-flat','renderer-mean','renderer-spatial-moments')
         self.feature_mode=feature_mode
         self.physical_joint=cfg.get('raw_physical_joint',False)
-        if self.physical_joint:assert feature_mode=='code'
+        if self.physical_joint:assert feature_mode in ('code','canonical-translation')
         from experiments.robocasa_stable_scaling.train import build as build_full
         from experiments.robocasa_compare import train as common
         model=build_full(root,cfg)
@@ -205,6 +205,9 @@ class RawPixelsReadout(nn.Module):
         else:
             self.encoder=model.encoder;self.pool=model.pool
         self.size=model.encoder_size
+        if feature_mode == 'canonical-translation':
+            assert self.physical_joint and cfg.get('orthogonal_world_actions', False)
+            self.register_buffer('canonical_basis',model.action_encoder.weight[:,7:10].detach().clone())
         if feature_mode.startswith('renderer-'):
             assert model.raw_render_size==224,'Renderer feature readout requires the native224 model'
             self.renderer=model.renderer;self.state_slots=model.state_slots;self.state_width=model.state_width
@@ -226,7 +229,12 @@ class RawPixelsReadout(nn.Module):
                 value=F.interpolate(value,size=(self.size,self.size),mode='bilinear',align_corners=False,antialias=True)
             value=(value-self.image_mean)/self.image_std
             tokens=self.encoder(value,interpolate_pos_encoding=True).last_hidden_state
-            if self.feature_mode=='code':return self.pool(tokens).flatten(-2).float()
+            if self.feature_mode in ('code','canonical-translation'):
+                code=self.pool(tokens).flatten(-2).float()
+                if self.feature_mode == 'canonical-translation':
+                    joint=code.reshape(-1,self.canonical_basis.shape[0])
+                    return joint@self.canonical_basis
+                return code
             return backbone_summary(tokens,self.feature_mode)
 
     @torch.no_grad()

@@ -125,7 +125,7 @@ def cache(root, arm, shard):
             dense = np.load(record.get("local_features", source/"features/vjepa"/(rid+".npy")), mmap_mode="r")
             assert dense.shape == (17, 2, 196, 1664)
             features = torch.from_numpy(np.asarray(dense).copy()).flatten(0, 1).cuda()
-        code = readout(features).reshape(17, 2, -1).flatten(1).detach().cpu().numpy()
+        code = readout(features).reshape(17, -1).detach().cpu().numpy()
         with np.load(record.get("local_observations", source/"observations"/(rid+".npz"))) as stream:
             assert set(stream.files) == {"render", "commands"}
             action = stream["commands"][:, :3].astype(np.float32)

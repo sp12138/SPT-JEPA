@@ -115,6 +115,47 @@ remain separate. Use the same random NN, corpus and detached factual-input head.
 Its noise magnitude carries the known current input's length as side
 information; that input is permitted, but the channel is not action-independent.
 
+The canonical-coordinate variants use the same learned orthonormal current-input
+embedding Q and the same conditional RGB objective.
+For Qv=Q[:,7:10], replace the free nonlinear mean mf by
+m = mf + Qv Qv^T (current + Q*a_t - mf). Thus Qv^T m advances by the known
+normalized current translation, while the orthogonal world state stays free to
+model orientation, objects and autonomous changes. This is a blocking
+delta-translation prior, not measured achieved motion; servo error and clipping
+remain modeling errors. The translational loss has a current-input inverse
+interpretation, never a future/optimal-action target.
+
+The candidate's frozen visual output is Qv^T E(RGB), with a9-parameter current
+input calibration; the unconstrained baseline keeps its full128-dimensional
+state and384-parameter head. Both have40.888M parameters, identical initial NN
+tensors, the same data and fixed17920/1536 current-input labels. Their prior
+functions and readout features intentionally differ. No label gradient enters
+either world model. Keep both this capacity difference and the raw encoder
+versus canonical-feature diagnostic visible in any comparison.
+
+Keep a strong unconstrained, fixed-noise baseline, a fixed-noise canonical
+ablation, and the canonical translation-block covariance candidate. In the
+latter, P=Qv Qv^T and Sigma=sigma0^2(I-P)+sigma_p^2 P, with
+sigma_p=sigma0*norm(normalized actually executed current input); zero inputs
+retain sigma0. Both q and p use this same conditional covariance. The closed
+Gaussian KL is ||P error||^2/(2 sigma_p^2) plus
+||(I-P) error||^2/(2 sigma0^2). Sample noise with
+[sigma0(I-P)+sigma_p P]*epsilon. This supplies relative precision only to
+coordinates grounded in input units, rather than all125 arbitrary world
+coordinates. Geometry stays FP32 under production BF16 autocast; values,
+gradients, sampling covariance and autocast are checked independently against
+full MultivariateNormal calculations. No extra loss coefficient is added.
+
+These runs use a separate12518-episode corpus: the original12006 plus
+512 ordinary TRAIN rotation logs, with current angular inputs enabled. The
+collection servo executes requested angular inputs instead of ignoring them;
+native evaluation is unchanged. Only RGB and actually issued current inputs
+are retained, with no performance/state selection. This is a distinct data
+protocol from the old12006-episode arms. Six analytic contracts and four final
+discarded GPU updates per arm validate implementation, not control success.
+Earlier whole-state-noise short attempts are retained and counted separately;
+their weights never enter a main run.
+
 The joint variance-profile arm changes only the prediction criterion. For each
 factual transition, minimizing KL(N(y,bI) || N(m,vI)) over v >= b gives
 v = b + ||y-m||^2/D and D/2 * log(1 + 2*rate/D). This introduces no learned

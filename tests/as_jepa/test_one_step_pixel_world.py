@@ -4,7 +4,8 @@ import unittest
 import torch
 
 from experiments.robocasa_stable_scaling.one_step_pixel_world import (
-    conditional_world_terms, input_noise_std, paired_pixel_mse)
+    canonical_translation_mean, conditional_world_terms, input_noise_std, paired_pixel_mse,
+    translation_block_noise)
 
 
 class ConditionalWorldContracts(unittest.TestCase):
@@ -71,6 +72,59 @@ class ConditionalWorldContracts(unittest.TestCase):
         torch.testing.assert_close(weights, torch.ones_like(weights))
         self.assertFalse(sigma.requires_grad)
         self.assertEqual(float(sigma[0, 2]), .1)
+
+    def test_canonical_prior_has_known_translation_and_free_remaining_state(self):
+        g = torch.Generator().manual_seed(973)
+        q = torch.linalg.qr(torch.randn(12, 6, generator=g, dtype=torch.float64))[0]
+        current = torch.randn(2, 1, 12, generator=g, dtype=torch.float64, requires_grad=True)
+        free = torch.randn(2, 1, 12, generator=g, dtype=torch.float64, requires_grad=True)
+        command = torch.randn(2, 1, 6, generator=g, dtype=torch.float64)
+        command[0, :, :3] = 0.  # A pure angular input has no translation component.
+        basis = q[:, :3]
+        mean = canonical_translation_mean(current, free, command@q.T, basis)
+        torch.testing.assert_close(mean@basis, current@basis+command[..., :3])
+        torch.testing.assert_close(mean-(mean@basis)@basis.T,
+                                   free-(free@basis)@basis.T)
+        derivative = torch.autograd.grad((mean@basis).square().sum(), free, retain_graph=True)[0]
+        torch.testing.assert_close(derivative, torch.zeros_like(derivative), atol=1e-12, rtol=0.)
+        gradients = torch.autograd.grad(mean[0].square().sum(), (current, free))
+        for gradient in gradients:
+            self.assertTrue(torch.equal(gradient[1], torch.zeros_like(gradient[1])))
+
+    def test_block_noise_and_KL_match_full_conditional_gaussian(self):
+        g = torch.Generator().manual_seed(561)
+        raw = torch.randn(8, 3, generator=g, dtype=torch.float64, requires_grad=True)
+        basis = torch.linalg.qr(raw)[0]
+        sigma = torch.tensor([[.001, .1]], dtype=torch.float64)
+        error = torch.randn(1, 2, 2, 4, generator=g, dtype=torch.float64, requires_grad=True)
+        identity = torch.eye(8, dtype=torch.float64)
+        projection = basis@basis.T
+        covariance = .1**2*identity+(sigma.square()-.1**2)[..., None, None]*projection
+        q = torch.distributions.MultivariateNormal(error.flatten(-2), covariance_matrix=covariance)
+        p = torch.distributions.MultivariateNormal(torch.zeros_like(error.flatten(-2)), covariance_matrix=covariance)
+        expected = torch.distributions.kl_divergence(q, p)
+        actual, rate, weight = conditional_world_terms(torch.zeros(1, 2), error,
+            torch.ones(1, 2, 14), sigma, 1, basis=basis, base_sigma=.1)
+        torch.testing.assert_close(actual, expected, rtol=1e-8, atol=1e-8)
+        left = torch.autograd.grad(actual.sum(), (error, raw), retain_graph=True)
+        right = torch.autograd.grad(expected.sum(), (error, raw), retain_graph=True)
+        for a, b in zip(left, right):
+            torch.testing.assert_close(a, b, rtol=1e-7, atol=1e-6)
+        standard = torch.randn(1, 2, 2, 4, generator=g, dtype=torch.float64)
+        transform = .1*identity+(sigma-.1)[..., None, None]*projection
+        torch.testing.assert_close(transform@transform.transpose(-1, -2), covariance)
+        noise = translation_block_noise(standard, sigma, .1, basis).flatten(-2)
+        matrix_noise = (transform@standard.flatten(-2)[..., None]).squeeze(-1)
+        torch.testing.assert_close(noise, matrix_noise)
+        # The actual training caller uses BF16 autocast; the conditional
+        # covariance's sensitive low-noise directions must still use FP32.
+        with torch.autocast('cpu', dtype=torch.bfloat16):
+            amp_noise = translation_block_noise(standard.float(), sigma.float(), .1, basis.float())
+            amp_terms, _, _ = conditional_world_terms(torch.zeros(1, 2), error.float(),
+                torch.ones(1, 2, 14), sigma.float(), 1, basis=basis.float(), base_sigma=.1)
+        torch.testing.assert_close(amp_noise.flatten(-2).double(), matrix_noise,
+                                   rtol=1e-5, atol=1e-7)
+        torch.testing.assert_close(amp_terms.double(), expected, rtol=1e-5, atol=1e-4)
 
 
 if __name__ == '__main__':
