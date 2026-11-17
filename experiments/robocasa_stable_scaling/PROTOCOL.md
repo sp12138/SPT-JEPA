@@ -103,6 +103,18 @@ input or current context. Keep the same corpus and detached384-parameter head.
 All40.888M parameters are scratch-trained, including the decoder; disclose the
 extra compute versus the22.224M forward-only family. Paired initial NNs match.
 
+The input-scale-noise variant changes one conditional Gaussian covariance:
+both posterior and prior use std=sigma0*norm(normalized executed current input).
+Exactly zero inputs retain sigma0. The decoder receives that posterior noise;
+the analytic KL uses the same variance, while the pixel likelihood keeps unit
+variance and no whole-loss input weighting. This tests channel resolution for
+fine consequences, motivated by within-episode decoder reliance, not a proven
+control gain. No future command, label gradient into the world model, learned
+noise scale, or extra coefficient is introduced; original fixed-noise results
+remain separate. Use the same random NN, corpus and detached factual-input head.
+Its noise magnitude carries the known current input's length as side
+information; that input is permitted, but the channel is not action-independent.
+
 The joint variance-profile arm changes only the prediction criterion. For each
 factual transition, minimizing KL(N(y,bI) || N(m,vI)) over v >= b gives
 v = b + ||y-m||^2/D and D/2 * log(1 + 2*rate/D). This introduces no learned
@@ -110,6 +122,14 @@ variance, loss weight or extra network. It is a profile criterion, not a
 normalized predictive density or a mutual-information bound. Use the same
 joint initialization, fixed corpus and detached factual-input head. The
 absolute-scale pairing only disables action-scale normalization.
+
+There is also an exact mean-error energy identity: twice the isotropic profile
+equals a centered normalized multivariate Student-t NLL with df=D; (D+1) times
+the full profile equals the centered df=1 NLL. This supplies a probabilistic
+interpretation after global rescaling and adding the known input-scale
+normalizer. It does not turn the original unscaled profile into a density,
+prove an RGB likelihood or information bound, or demonstrate a control gain.
+No recipe is changed by this identity.
 
 The full-covariance arm instead profiles every covariance Sigma >= bI.
 The optimum is bI + error*error^T, giving log1p(2*rate)/2; no matrix needs

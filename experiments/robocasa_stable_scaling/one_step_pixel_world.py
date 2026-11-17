@@ -16,6 +16,17 @@ def paired_pixel_mse(predicted, target, physical_batch, steps):
     return per_view.reshape(physical_batch, 2, steps).mean(1)
 
 
+def input_noise_std(commands, sigma):
+    """Resolve a consequence in units of its known, executed input.
+
+    A zero input retains the base Gaussian, including consistency at rest.
+    This changes both posterior noise and prior covariance, not pixel weights.
+    """
+    length_squared = commands.detach().square().sum(-1)
+    return sigma*torch.where(length_squared > 0, length_squared,
+                             torch.ones_like(length_squared)).sqrt()
+
+
 def conditional_world_terms(pixel_mse, latent_error, commands, sigma,
                             pixel_elements, risk="absolute"):
     """Gaussian pixel NLL plus latent KL, divided by both cameras' pixels.
@@ -49,7 +60,12 @@ def loss(self, batch, step=0, ramp_steps=0):
         predicted = self.predict(current, actions)[:, 0].reshape(
             b, h, self.state_slots, self.state_width)
         future = flat[:, 1:].reshape_as(predicted)
-        noisy = future+self.sigma0*torch.randn_like(future)
+        raw = batch['action'].reshape(b, 2, window, -1)
+        assert torch.equal(raw[:, 0], raw[:, 1])
+        sigma = (input_noise_std(raw[:, 0, :-1], self.sigma0)
+                 if self.one_step_world_noise_scale == 'executed-input' else self.sigma0)
+        std = sigma[..., None, None] if torch.is_tensor(sigma) else sigma
+        noisy = future+std*torch.randn_like(future)
         condition = noisy[:, None].expand(-1, 2, -1, -1, -1).reshape(
             b*2*h, self.state_slots, self.state_width)
         patch = self.raw_render_size//16
@@ -60,11 +76,9 @@ def loss(self, batch, step=0, ramp_steps=0):
             rgb = self.renderer(torch.zeros_like(target),
                 torch.ones(len(target), 1, device=target.device), condition=condition)
         mse = paired_pixel_mse(rgb.float(), target.float(), b, h)
-        raw = batch['action'].reshape(b, 2, window, -1)
-        assert torch.equal(raw[:, 0], raw[:, 1])
         elements = render.shape[2]*render.shape[3]*render.shape[4]*2
         terms, rate, weight = conditional_world_terms(mse,
-            future.float()-predicted.float(), raw[:, 0, :-1], self.sigma0,
+            future.float()-predicted.float(), raw[:, 0, :-1], sigma,
             elements, self.one_step_world_risk)
         total = terms.mean(); distortion = (weight*mse*.5).mean()
         coding = (weight*rate).mean()/elements
@@ -92,4 +106,8 @@ def install(model, cfg):
     model.one_step_pixel_world = True
     model.one_step_world_risk = cfg['one_step_world_risk']
     assert model.one_step_world_risk in ('absolute', 'action-scale')
+    model.one_step_world_noise_scale = cfg.get('one_step_world_noise_scale', 'fixed')
+    assert model.one_step_world_noise_scale in ('fixed', 'executed-input')
+    if model.one_step_world_noise_scale == 'executed-input':
+        assert model.one_step_world_risk == 'absolute'
     model.loss = types.MethodType(loss, model)

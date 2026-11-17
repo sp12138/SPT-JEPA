@@ -4,7 +4,7 @@ import unittest
 import torch
 
 from experiments.robocasa_stable_scaling.one_step_pixel_world import (
-    conditional_world_terms, paired_pixel_mse)
+    conditional_world_terms, input_noise_std, paired_pixel_mse)
 
 
 class ConditionalWorldContracts(unittest.TestCase):
@@ -50,6 +50,27 @@ class ConditionalWorldContracts(unittest.TestCase):
         gradients = torch.autograd.grad(terms[0].sum(), (rows, delta))
         self.assertTrue(torch.equal(gradients[0][6:], torch.zeros_like(gradients[0][6:])))
         self.assertTrue(torch.equal(gradients[1][1], torch.zeros_like(gradients[1][1])))
+
+    def test_input_dependent_covariance_matches_gaussian_kl_and_pixel_units(self):
+        commands = torch.tensor([[[.1, 0.], [1., 0.], [0., 0.]]],
+                                dtype=torch.float64, requires_grad=True)
+        sigma = input_noise_std(commands, .1)
+        error = torch.tensor([[[[.01, .02]], [[.1, .2]], [[.03, .04]]]],
+                             dtype=torch.float64, requires_grad=True)
+        mse = torch.ones(1, 3, dtype=torch.float64, requires_grad=True)
+        actual, rate, weights = conditional_world_terms(mse, error, commands, sigma, 12)
+        q = torch.distributions.Normal(error, sigma[..., None, None])
+        p = torch.distributions.Normal(torch.zeros_like(error), sigma[..., None, None])
+        independent_kl = torch.distributions.kl_divergence(q, p).sum((-2, -1))
+        torch.testing.assert_close(actual, .5*mse+independent_kl/12)
+        left = torch.autograd.grad(actual.sum(), (error, mse), retain_graph=True)
+        right = torch.autograd.grad((.5*mse+independent_kl/12).sum(), (error, mse))
+        for a, b in zip(left, right):
+            torch.testing.assert_close(a, b)
+        torch.testing.assert_close(rate[0, 0], rate[0, 1])
+        torch.testing.assert_close(weights, torch.ones_like(weights))
+        self.assertFalse(sigma.requires_grad)
+        self.assertEqual(float(sigma[0, 2]), .1)
 
 
 if __name__ == '__main__':
