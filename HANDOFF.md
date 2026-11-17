@@ -6,25 +6,26 @@
 
 | 主机/卡 | 当前run；根后缀加robocasa_reach3d_ | 可训练参数 / 头参数 |
 |---|---|---|
-| dev13 0–3 | spt-conditional-rate-only；conditional_rate_only_20261117 | 22.220M / 384 |
-| dev13 4–7 | spt-trajectory-flexible-likelihood；trajectory_flexible_likelihood_20261117 | 41.625M / 384 |
+| dev13 0–3 | spt-joint-absolute-profile-rate；joint_absolute_profile_rate_20261117 | 22.224M / 384 |
+| dev13 4–7 | spt-joint-full-covariance-profile；joint_full_covariance_profile_20261117 | 22.224M / 384 |
 | dev15 0–3 | spt-action-scale-rate；action_scale_rate_20261117 | 22.220M / 384 |
 | dev15 4–7 | spt-joint-profile-rate；joint_profile_rate_20261117 | 22.224M / 384 |
 | dev6 0–3 | spt-joint-forward；joint_forward_20261117 | 22.224M / 384 |
 | dev6 4–7 | spt-joint-action-scale-rate；joint_action_scale_rate_20261117 | 22.224M / 384 |
 
-最近实际小时检查UTC04:59:59：训练rank分别8/8/4，dev6另4卡在冻结读出；GPU瞬时利用率dev13 86–100%、dev15 85–97%、dev6 0–97%，不代表持续满载。六组无ERROR，新profile实际保留8/恢复16且进入主训。下一同会话检查UTC05:59:25。
+最近实际小时检查UTC06:00:03：训练rank分别4/4/8，其他卡在冻结读出或启动，不称持续满载。完整协方差组的启动登记误写dev15，与cfg的dev13不符，在训练前退出；已保留原日志并仅修正主机参数，0更新丢失，冻结源码/训练配置不改，真实8/16及主训待确认。绝对等方profile已实际8→16并主训8600步。下一检查UTC07:00:03。
 
 ## 决策所需结果
 
 下述均同64反复使用的DEV、双224RGB、最多5命令/norm .3/native2mm；格式为回报% / 平均末端mm / final成功数。各预算按活跃后果训练小时，不是墙钟或独立案例；32确认封闭。
 
-- 无熵绝对前向1/2/3/4h：82.62/79.27/70.21/65.53%，39.02/47.52/69.11/77.59mm，final1/0/0/0，持续退化。状态相关F＋像素/后果辨认1→4→9h为83.90→91.24→91.08%、38.67→19.81→20.44mm、final均0；中间5/6h各1，后段粗平台。
+- 旧每视角无熵绝对前向1/2/3/4h：82.62/79.27/70.21/65.53%，39.02/47.52/69.11/77.59mm，final1/0/0/0；保全完整4h及部分5h全状态后交给联合绝对profile组，后继继承0更新。状态相关F＋像素/后果辨认1→4→10h为83.90→91.24→91.40%、38.67→19.81→18.92mm、final均0；中间5/6h各1，完整10h及部分11h状态保全后交给完整协方差组。
 - 每视角尺度前向1/2/3h：77.00/75.55/75.80%，43.84/52.84/55.03mm，final0/3/1、any2/5/4。最小20%事实输入3.06–7.68mm的一小时当前命令RMSE4.68→2.63mm，<5mm案例2→11，但粗定位及尾部变差；细分点不改写严格成功。
-- 双相机联合128维绝对前向1/2h：91.43/90.23%，21.02/26.33mm，final1/0、any3/1。比每视角绝对前向首小时四厨房都好，区组95%回报收益[4.34,14.10]点、终距改善[8.69,28.30]mm；后续回退，尚非稳定精度。联合只多3200可训练参数、同总128码/384头，初始化pool/Q改变，不是独立种子或等更新比较。
+- 双相机联合128维绝对前向1/2/3h：91.43/90.23/90.70%，21.02/26.33/23.34mm，final1/0/0、any3/1/0。首小时比每视角绝对四厨房均好，区组95%回报收益[4.34,14.10]点/终距改善[8.69,28.30]mm；未形成稳定精度。联合仅多3200可训练参数、同128码/384头，pool/Q初始化改变，非独立seed或等更新比较。
 - 联合尺度前向1/2h：69.52/83.03%，69.82/30.30mm，final5/4、any5/7。细动作可读性更好，粗控制仍弱于联合绝对组，尚未统一两种收益。
-- 联合profile新组保留联合尺度组完整初始NN，仅将每转移Gaussian预测KL的额外等方差解析消去：原率l变为D/2 log(1+2l/D)。无新网络、权重或可调尺度，不称归一化预测密度/MI下界。4独立KL数学合同及4废弃GPU更新、物理配对/点读出/样本隔离通过，主祖先0；首小时控制未齐。源code-joint-profile-rate-v1，入口joint-profile-rate-20261117。
-- 固定联合尺度1h模型/原头的有限64DEV对照正在执行：仅将W换成W Q_XYZ Q_XYZᵀ，0新增body/头拟合。普通验证中约99.8%读出权重能量在前向动作子空间外，却只贡献约.31%事实命令能量；投影验证29.81→30.00mm并无整体收益，远目标外推假说须由闭环判断。使用冻结世界模型Q，**不是纯E-only probe**。单次入口joint-projection-readout-20261117，flat根joint_projection_20261117；不启动重复任务/监控。
+- 联合等方profile将每转移原Gaussian率l换成D/2 log(1+2l/D)，无新网络/权重/尺度。尺度归一版首小时76.75%/51.08mm/final3、any3，较未profile同尺度组粗指标改善但严格成功5→3，继续2h。绝对尺度配对只关闭尺度归一，复用不可变code-joint-profile-rate-v1，4废弃GPU更新通过、主祖先0，真实8/16和主训已过，暂无控制。入口joint-profile-rate-20261117、joint-absolute-profile-rate-20261117。
+- 完整协方差profile去掉等方限制：Σ≥bI下Gaussian KL最优Σ=bI+eeᵀ，目标.5 log(1+2l)，添加零残差坐标时不变，无手选秩/新网络/系数；仍不是归一化预测密度、推理方差估计器或MI下界。99.9%以上残差在动作子空间只是结构依据，尚无性能证据。7独立KL/梯度/最优性/填充/隔离合同(.016s)和4废弃GPU更新(2.10s)通过，主祖先0、完整初始NN同09bc10e5。入口joint-full-covariance-profile-20261117、code-joint-full-covariance-profile-v1，启动参数错误已纠正，实际续训待确认。
+- 固定投影W→W Q_XYZ Q_XYZᵀ已完成联合尺度1/2h同64DEV对照，0新body/头拟合：final5→7/4→5，any5→11/7→8，回报69.52→69.61/83.032→83.029%，终距69.82→69.37/30.30→29.47mm。两个预算均只有小幅精度收益，严格案例有得有失，投影自身7→5亦未scaling，不扩展新预算或晋级。子空间外99.8%权重却只贡献.31%事实命令能量的诊断不能解释整体失败。使用冻结Q，**不是纯E-only probe**；128模型—案例记录仍是64物理DEV。入口joint-projection-readout-20261117，flat根joint_projection_20261117，依据analysis/joint-projected-readout-first-two-hours.json。
 
 ## Lingjing最新上传与机制
 

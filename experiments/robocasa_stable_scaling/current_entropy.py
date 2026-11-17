@@ -29,12 +29,18 @@ def factual_prediction_rate(error, action_effect, sigma, normalize_action_scale=
     return rate
 
 
-def profile_prediction_rate(rate, dimensions):
-    """Eliminate extra isotropic predictive variance from each sample's KL.
+def profile_prediction_rate(rate, dimensions, covariance="isotropic"):
+    """Eliminate predictive covariance from each sample's Gaussian KL.
 
     For q=N(y,bI), p=N(mean,vI), v>=b, the minimizing v is b+||y-mean||²/D.
+    With arbitrary covariance >= bI, its optimum is bI+error*error.T instead;
+    the matrix determinant lemma gives log1p(2*rate)/2 without a D factor.
     This is a profile criterion, not a normalized predictive density or MI bound.
     """
+    if covariance not in ("isotropic", "full"):
+        raise ValueError("Unknown predictive covariance family")
+    if covariance == "full":
+        dimensions = 1
     return dimensions*.5*torch.log1p(2*rate/dimensions)
 
 
@@ -86,7 +92,8 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
     normalize = getattr(self, 'action_scale_normalized_rate', False)
     rate = factual_prediction_rate(error, actions, self.sigma0, normalize)
     if getattr(self, 'profile_prediction_variance', False):
-        rate = profile_prediction_rate(rate, error.shape[-2]*error.shape[-1])
+        rate = profile_prediction_rate(rate, error.shape[-2]*error.shape[-1],
+            getattr(self, 'profile_prediction_covariance', 'isotropic'))
     loss = rate.mean()
     return loss, dict(loss=loss, conditional_rate_nats=loss,
         feature_std=flat.float().std((0, 1)).mean(),
@@ -94,6 +101,8 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
         action_scale_normalized_rate=loss.new_tensor(float(normalize)),
         profiled_prediction_variance=loss.new_tensor(float(
             getattr(self, 'profile_prediction_variance', False))),
+        profiled_full_predictive_covariance=loss.new_tensor(float(
+            getattr(self, 'profile_prediction_covariance', 'isotropic') == 'full')),
         conditional_entry_rate=loss.new_tensor(0.), temporal_noise_rho=loss.new_tensor(0.),
         analytic_coding_noise=loss.new_tensor(0.))
 
@@ -109,6 +118,9 @@ def install(model, cfg):
     assert not model.action_scale_normalized_rate or rate_only
     model.profile_prediction_variance = cfg.get('profile_prediction_variance', False)
     assert not model.profile_prediction_variance or rate_only
+    model.profile_prediction_covariance = cfg.get('profile_prediction_covariance', 'isotropic')
+    assert model.profile_prediction_covariance in ('isotropic', 'full')
+    assert model.profile_prediction_covariance == 'isotropic' or model.profile_prediction_variance
     model.current_entropy_relative = cfg.get('current_entropy_relative', False)
     assert not model.current_entropy_relative or not rate_only
     assert cfg.get('pure_action_transport') and cfg.get('constant_action_response')

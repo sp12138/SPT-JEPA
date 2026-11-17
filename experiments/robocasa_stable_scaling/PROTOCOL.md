@@ -93,7 +93,17 @@ factual transition, minimizing KL(N(y,bI) || N(m,vI)) over v >= b gives
 v = b + ||y-m||^2/D and D/2 * log(1 + 2*rate/D). This introduces no learned
 variance, loss weight or extra network. It is a profile criterion, not a
 normalized predictive density or a mutual-information bound. Use the same
-joint initialization, fixed corpus and detached factual-input head.
+joint initialization, fixed corpus and detached factual-input head. The
+absolute-scale pairing only disables action-scale normalization.
+
+The full-covariance arm instead profiles every covariance Sigma >= bI.
+The optimum is bI + error*error^T, giving log1p(2*rate)/2; no matrix needs
+to be fitted or inverted. Adding zero residual coordinates leaves it
+unchanged. The rank-one covariance update follows from the single-transition
+optimum, rather than a manually selected rank. This remains a profile
+criterion, not a normalized predictive density or an inference-time
+uncertainty estimator. Keep the same joint initialization and absolute base
+variance; evaluate factual-input readouts on the unchanged control protocol.
 
 A finite projected-readout control freezes the joint body and its existing
 head, changing only W to W Q_XYZ Q_XYZ^T. There are no additional fits or body
