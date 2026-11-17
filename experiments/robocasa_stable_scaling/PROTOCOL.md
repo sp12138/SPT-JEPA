@@ -183,6 +183,15 @@ absolute base variance with the fixed executed-input-scale counterpart.
 Zero inputs retain absolute consistency. Evaluate factual-input readouts
 on the unchanged control protocol, without adding loss weights or ranks.
 
+A data-excitation control reuses the frozen full-covariance-profile source
+and its384-parameter detached head, with the12518 ordinary TRAIN corpus
+and actual current-angular inputs enabled. The objective and network stay
+the same; the full random NN matches the original12006-data arm, so this
+tests experience and input excitation, not an independent seed or a
+same-data algorithm improvement. Four actual functional updates covering
+nonzero translation and angular inputs are discarded before fresh main
+training. Fixed17920/1536 head labels and the control protocol are unchanged.
+
 A finite projected-readout control freezes the joint body and its existing
 head, changing only W to W Q_XYZ Q_XYZ^T. There are no additional fits or body
 updates. Since Q belongs to the forward model, report this separately from
