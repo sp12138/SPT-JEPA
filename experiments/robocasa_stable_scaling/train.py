@@ -464,7 +464,10 @@ def build(root, cfg):
             base.original_cached_encode = base.encode
             base.encode = types.MethodType(fp32_cached_encode, base)
     if cfg.get("raw_physical_joint", False):
-        from experiments.robocasa_stable_scaling.stereo_state import install
+        if cfg.get('conditional_rate_only', False):
+            from experiments.robocasa_stable_scaling.joint_forward import install
+        else:
+            from experiments.robocasa_stable_scaling.stereo_state import install
         install(base, cfg)
     if not cfg.get("decoder_forecast_noise", True):
         assert base.pixel_objective == "future-mean"
