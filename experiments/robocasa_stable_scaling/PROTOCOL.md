@@ -102,8 +102,10 @@ to be fitted or inverted. Adding zero residual coordinates leaves it
 unchanged. The rank-one covariance update follows from the single-transition
 optimum, rather than a manually selected rank. This remains a profile
 criterion, not a normalized predictive density or an inference-time
-uncertainty estimator. Keep the same joint initialization and absolute base
-variance; evaluate factual-input readouts on the unchanged control protocol.
+uncertainty estimator. Keep the same joint initialization; compare the
+absolute base variance with the fixed executed-input-scale counterpart.
+Zero inputs retain absolute consistency. Evaluate factual-input readouts
+on the unchanged control protocol, without adding loss weights or ranks.
 
 A finite projected-readout control freezes the joint body and its existing
 head, changing only W to W Q_XYZ Q_XYZ^T. There are no additional fits or body
