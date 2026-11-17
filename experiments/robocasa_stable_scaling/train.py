@@ -500,9 +500,13 @@ def build(root, cfg):
         assert cfg.get("forecast_rate_geometry", "markov") == "markov"
         attach_anchor_reader(base, beta_nats=cfg["anchor_reader_beta_nats"],
             reader_seed=cfg["seed"])
+        base.reader_relative_to_anchor = cfg.get("anchor_reader_relative", False)
         # Keep the freshly drawn, unused decoder in checkpoint provenance only.
         # Its shared encoder reference is unregistered; encoder gradients stay active.
         base.renderer.requires_grad_(False)
+    if cfg.get("current_entropy", False) or cfg.get("conditional_rate_only", False):
+        from experiments.robocasa_stable_scaling.current_entropy import install
+        install(base, cfg)
     return base
 
 
@@ -684,7 +688,7 @@ def train(root, run, manifest, target, label, max_updates=None):
                 prefixes.append("predictor.")
             if cfg.get("anchor_reader", False):
                 prefixes.append("reader.")
-            elif not cfg.get('consequence_likelihood_only',False):
+            elif not cfg.get('consequence_likelihood_only',False) and not cfg.get('conditional_rate_only',False):
                 prefixes.append("future_decoder." if hasattr(model,"future_decoder") else "renderer.")
             for prefix in prefixes:
                 norms[prefix] = sum(float(p.grad.detach().float().norm())**2

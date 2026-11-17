@@ -24,6 +24,10 @@ all the per-frame score identity uses; the reader reads noisy[:, 1:] and is trai
 The score is detached because each player takes the gradient of its own loss: the reader never receives the
 encoder's terms, and the encoder, pool, predictor and action encoder never receive R.
 
+The optional reader_relative_to_anchor attribute centers both score fitting and the encoder surrogate on
+mu_t - mu_0. This preserves the population conditional entropy and removes entropy-driven origin updates.
+Its default is False, preserving the original adapter's tensors, draws and metrics.
+
 beta_nats is a price in true nats per nat of rate. It is not the family's `beta`, which multiplies the rate per
 rendered value (nats divided by FRAME_ELEMS) against a pixel distortion; `beta` is unused here. The logged
 `rate` keeps the family's definition so runs stay comparable. reader_loss_weight keeps the reader's gradient
@@ -116,8 +120,14 @@ def anchor_reader_spt_loss(self, batch, step=0, ramp_steps=0):
             surprise = surprise + self.state_dim * marginal_constant[None, :]
     # ---- the anchor reader in place of the renderer's distortion
     cond = self.reader.condition(mu[:, 0], anchor)
-    ent, stats = encoder_entropy_term(self.reader, mu[:, 1:], noisy[:, 1:], cond, self.sigma0)
-    reader_loss = reader_denoising_term(self.reader, mu[:, 1:], cond, self.sigma0, self.reader_draws,
+    # Conditioning fixes the anchor: translating by its deterministic code
+    # preserves conditional entropy. Centering both the score fit and encoder
+    # surrogate removes origin updates even while the reader is inaccurate.
+    relative = getattr(self, "reader_relative_to_anchor", False)
+    target = mu[:, 1:]-mu[:, :1] if relative else mu[:, 1:]
+    target_sample = noisy[:, 1:]-mu[:, :1] if relative else noisy[:, 1:]
+    ent, stats = encoder_entropy_term(self.reader, target, target_sample, cond, self.sigma0)
+    reader_loss = reader_denoising_term(self.reader, target, cond, self.sigma0, self.reader_draws,
                                         reader_stream_seed(self.reader_seed, step)).mean()
     nats = (entry + surprise.sum(1)).mean()
     loss = (self.beta_nats * nats + ent.sum(1).mean()) / (w - 1) + self.reader_loss_weight * reader_loss
