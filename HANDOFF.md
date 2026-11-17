@@ -2,24 +2,26 @@
 
 目标：从零SPT-JEPA后果学习＋冻结表示的独立当前动作头，验证可靠稳定的实际控制scaling并超过参照。**尚未达成**。只用dev13/dev15/dev6；禁用dev6-2c/grid16/dev2。时间优先算法与闭环结果，不恢复旧goal、monitor或有限HOLD。
 
-状态真源R=/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114，查MASTER.json及SESSION_CHECKS.json。每小时同会话检查。第84次UTC19:19:05时训练rank为4/8/8，dev13另4卡在评测，所有训练无ERROR。下一次约UTC20:19。交替干预采集和主训共用资源。
+状态入口为 EFS `runs/robocasa_reach3d_scaling_20261114/{MASTER,SESSION_CHECKS}.json`。第85次同会话检查在UTC20:19确认三机各8个训练rank，六组无训练错误。下一次约UTC21:19。
 
 | 主机/卡 | 当前run；根后缀加robocasa_reach3d_ | body语料 / head参数 |
 |---|---|---|
-| dev13 0–3 | spt-canonical-world；canonical_world_20261117 | 12518 / 9 |
+| dev13 0–3 | spt-interleaved-additive-transport，interleaved_additive_transport_20261117 | 12518（交替512） / 384 |
 | dev13 4–7 | spt-causal-block-covariance；causal_block_covariance_20261117 | 12518 / 384 |
 | dev15 0–3 | spt-rotation-marginal-full-covariance-profile；rotation_marginal_full_covariance_profile_20261117 | 12518 / 384 |
 | dev15 4–7 | spt-rotation-excited-full-covariance-profile-seed2；rotation_excited_full_covariance_profile_seed2_20261117 | 12518 / 384 |
 | dev6 0–3 | spt-rigid-command-transport；rigid_command_transport_20261117 | 12518 / 384 |
 | dev6 4–7 | spt-rotation-excited-full-covariance-profile；rotation_excited_full_covariance_profile_20261117 | 12518 / 384 |
 
-新canonical/强对照UTC13:12启动，实际保留8→恢复16、主训900步、完整初始NN同6246cbd2已确认。canonical-fixed-noise已保全完整2h及部分3h后退役；三组40.888348M全部从零，未继承短测或旧模型。旧input-scaled完整2h与部分3h全状态已保全，原进程退出后接班，不再恢复。
+canonical-block完整5h为91.36%、12.45 mm、严格4/64。完整5h及部分6h的87125步全状态保全后退出，由交替组接班。固定噪声坐标组和自由RGB组的历史结果见结论。
 
-dev6自由RGB组完整5h回报91.37%、终距16.56mm、final1/any2，保全完整5h及部分6h80496步后退役。旋转复合组UTC19:40接班。它在相同12518日志上从配对初值09bc10e5开始，仅将角输入以SO(3)左乘预测。4次功能更新已废弃，保留8→恢复16及主训200步已确认。32个交替采集进程分布在三台，计划替换512额外纯旋转日志。源及路径见[结论](experiments/CONCLUSIONS.md)。
+旋转复合组在原12518日志和初值09bc10e5上检验SO(3)左乘预测。交替组从同一随机初值启动，沿用加法预测，将额外512条纯旋转替换为同reset、同厨房、同帧数的平移和转动交替轨迹。命令类型频率随采集设计改变。两组都沿用384参数冻结头，实际保留8→恢复16并进入主训。完整采集、权重来源及原始路径见[结论](experiments/CONCLUSIONS.md)。
 
 ## 当前成绩
 
 均同64反复使用的DEV、双224RGB、最多5命令/norm .3、native最终距离<2mm；any另列，32确认仍封闭。预算是活跃后果训练小时，不是独占墙钟或等FLOPs。
+
+- 纯旋转语料加法组累计1–4h严格成功10/17/19/18，平均终距43.32/15.87/13.42/12.12 mm。分块组累计2–4h为16/19/19，平均终距18.53/12.19/10.74 mm。第4h动作子空间投影仍19/64，有限对照已收尾。独立seed2和屏蔽角命令组首小时分别5/64和6/64。交替语料与SO(3)组等待首小时闭环。
 
 - 相对等方profile1–11h：回报76.75/80.14/81.71/87.10/81.96/84.23/88.21/84.61/87.01/86.53/89.30%，距离51.08/41.72/40.30/25.48/42.67/34.85/24.87/33.95/26.11/28.22/22.17mm，final3/6/12/8/11/13/12/9/9/11/10、any3/8/13/13/12/15/16/13/14/15/16。完整11h及部分12h240051步全状态已保全退役，后继继承0。13/64是该组DEV最高，仍有预算回退和案例丢失，不是可靠稳定scaling。
 - 相对完整协方差1–10h：72.17/78.41/76.40/80.34/82.07/87.79/83.95/87.01/83.13/83.10%，67.87/54.56/65.96/51.53/45.90/25.64/36.56/27.94/42.70/41.14mm，final6/6/8/11/10/17/10/11/10/7、any11/9/13/18/13/20/13/16/13/11。完整10h及部分11h220978步全状态保全退役，后继继承0。17/64是旧组DEV最高；小动作当前输入RMSE1.67mm，对同6h普通/等方2.11/1.98mm。6h一个厨房0，7h回落到10，未可靠确认。绝对版4h84.88%/43.99mm/final1，完整4h＋部分5h已保全退役。
@@ -43,11 +45,11 @@ Lingjing两分支远端头已再次核对：484f10f3（评测协议）和cd03863
 
 追加数据的纯前向对照UTC15:05在dev6 4–7启动，沿用原code-joint-full-covariance-profile-v1；同22.223504M可训练/40.863772M总量、384参数冻结头及初值09bc10e5，数据12518且当前角输入启用。实际XYZ＋角输入4废弃更新通过，主祖先0、实际保留8→恢复16并继续主训，主初值09bc10e5已确认。1/2/3h81.06/91.63/92.94%、43.32/15.87/13.42mm、final10/17/19、any12/19/23，对原同配方1/2/3h final6/6/8；2→3h得5失3，仍有案例回退。它改变经验/输入激励，非同12006算法胜出或独立seed；入口rotation-excited-full-covariance-profile-20261117。相同2h普通TRAIN旋转日志的.005rad输入被旧完整/新数据/新分块头误读为XYZ输入9.19/1.70/3.00mm（不是实测位移），新分块已知Q坐标只1.65mm，支持检验读出的正交泄漏；原始analysis/old-rotation-versus-new-data-and-covariance-second-hour-readout.json。独立seed2在dev15 4–7 UTC18:20启动，同数据/网络/配方，0继承且无重复短测；实际全NN初值f029e295、视觉初值31b97ec1均不同seed1，已保留8→恢复16及主训300步，0祖先更新。为区分新增经验和角输入作用，UTC18:43在dev15 0–3启动同12518经验但learn_angular_commands=false的配对组；未改网络/loss/标签，初值同09bc10e5、0继承、实际8→16及主训500已确认。入口rotation-marginal-full-covariance-profile-20261117。
 
-新的解析协方差分块续训已在dev13 4–7启动：P=Q_XYZ Q_XYZᵀ，将同一自然未来码残差e拆为Pe与(I−P)e，各自消去Gaussian协方差；不增加网络/权重/标签。与dev6新纯前向组同12518语料和384头，从其最新已保存1.5h/32438步完整状态分支，模型/Adam/调度/各rank RNG/游标全保留；首评累计2h，仅约.5h使用新目标，不是独立从零种子。13数学检查及4废弃真实TRAIN更新通过，实际32446→32454恢复及主训36200步已确认；32确认仍封闭。源code-causal-block-covariance-v1，入口causal-block-covariance-20261117。首评累计2h90.45%/18.53mm/final16/any17，低于同数据纯前向17，尚无目标改进胜出。冻结同2h体及原头，仅W→WP、0新拟合，90.85%/17.64mm/final21/any22；得6失1、三厨房final改善且一厨房粗距离退步，3h原头93.55%/12.19mm/final19/any23，投影93.55%/12.20mm/final19/any23，未保持额外收益、投影曲线21→19。另同2h纯前向原/投影均17，投影不是普遍提升，不晋级。第4h继续预先计划的复验。它使用世界模型Q，不是E-only probe；入口causal-block-projected-readout-20261117，确认32仍封闭。
+新的解析协方差分块续训已在dev13 4–7启动：P=Q_XYZ Q_XYZᵀ，将同一自然未来码残差e拆为Pe与(I−P)e，各自消去Gaussian协方差；不增加网络/权重/标签。与dev6新纯前向组同12518语料和384头，从其最新已保存1.5h/32438步完整状态分支，模型/Adam/调度/各rank RNG/游标全保留；首评累计2h，仅约.5h使用新目标，不是独立从零种子。13数学检查及4废弃真实TRAIN更新通过，实际32446→32454恢复及主训36200步已确认；32确认仍封闭。源code-causal-block-covariance-v1，入口causal-block-covariance-20261117。首评累计2h90.45%/18.53mm/final16/any17，低于同数据纯前向17，尚无目标改进胜出。冻结同2h体及原头，仅W→WP、0新拟合，90.85%/17.64mm/final21/any22；得6失1、三厨房final改善且一厨房粗距离退步，3h原头93.55%/12.19mm/final19/any23，投影93.55%/12.20mm/final19/any23，未保持额外收益、投影曲线21→19。另同2h纯前向原/投影均17，投影不是普遍提升，不晋级。第4h原头和投影均19/64，完整64例有限对照收尾。它使用世界模型Q，不是E-only probe；入口causal-block-projected-readout-20261117，确认32仍封闭。
 
 ## 接下来
 
-1. 收齐不同初始化与角输入消融。旋转复合与加法模型在相同12518日志上配对。交替采集完成后替换512额外日志，先使用原加法目标，区分采集覆盖和预测几何的作用。
+1. 收齐不同初始化、角输入消融、SO(3)复合和交替采集的配对闭环。逐指令分块目标的完整同数据4.5001h/96431步父状态已保全，4次短测更新已废弃。待角输入消融完成第2小时再比较并分配卡，首评累计5h。
 2. 每小时检查实际PID/GPU/ERROR及真实成功；有明确问题再改。新源、数据与head容量边界单列；32确认不开给方法选择。稳定性和独立初始化尚须验证。
 3. 只使用RGB历史/实际输入与自然未来RGB或自身码；当前a_t标签仅用于冻结/detach动作读出，无未来/最优动作、专家路径/策略、state/reward/taskID/语言或外部强教师。受保护评测/物理诊断不进训练、教师或proposal memory。
 

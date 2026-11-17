@@ -70,6 +70,29 @@ def block_profile_prediction_rate(error, action_effect, sigma, basis,
             .5*torch.log1p(remaining.square().sum(-1)/base)
 
 
+def direction_profile_prediction_rate(error, action_effect, sigma, normalize_action_scale=False):
+    """Profile the command direction and its orthogonal complement separately.
+
+    The actually issued input defines the direction on each transition.
+    This allows an amplitude error to downweight its own component without
+    downweighting transverse prediction errors in the same observation.
+    """
+    dtype = torch.float64 if error.dtype == torch.float64 else torch.float32
+    with torch.autocast(error.device.type, enabled=False):
+        flat = error.to(dtype).flatten(-2)
+        command = action_effect.to(dtype).flatten(-2)
+        length_squared = command.square().sum(-1, keepdim=True)
+        safe_squared = torch.where(length_squared > 0, length_squared, 1.)
+        direction = command * safe_squared.rsqrt()
+        parallel = (flat * direction).sum(-1, keepdim=True)
+        transverse = flat - parallel * direction
+        base = sigma**2
+        if normalize_action_scale:
+            base = base * safe_squared.squeeze(-1).detach()
+        return .5 * (torch.log1p(parallel.squeeze(-1).square() / base) +
+                     torch.log1p(transverse.square().sum(-1) / base))
+
+
 def current_entropy_loss(self, batch, step=0, ramp_steps=0):
     if ramp_steps:
         raise ValueError("the conditional information objective has no ramp")
@@ -136,12 +159,14 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
     if covariance == 'translation-blocks':
         rate = block_profile_prediction_rate(error, actions, self.sigma0,
             self.action_encoder.weight[:, 7:10], normalize)
+    elif covariance == 'command-direction':
+        rate = direction_profile_prediction_rate(error, actions, self.sigma0, normalize)
     else:
         rate = factual_prediction_rate(error, actions, self.sigma0, normalize)
         if getattr(self, 'profile_prediction_variance', False):
             rate = profile_prediction_rate(rate, error.shape[-2]*error.shape[-1], covariance)
     loss = rate.mean()
-    return loss, dict(loss=loss, conditional_rate_nats=loss,
+    metrics = dict(loss=loss, conditional_rate_nats=loss,
         feature_std=flat.float().std((0, 1)).mean(),
         factual_prediction_mse=error.square().mean(),
         action_scale_normalized_rate=loss.new_tensor(float(normalize)),
@@ -152,6 +177,9 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
         profiled_translation_blocks=loss.new_tensor(float(covariance == 'translation-blocks')),
         conditional_entry_rate=loss.new_tensor(0.), temporal_noise_rho=loss.new_tensor(0.),
         analytic_coding_noise=loss.new_tensor(0.))
+    if covariance == 'command-direction':
+        metrics['profiled_command_direction'] = loss.new_tensor(1.)
+    return loss, metrics
 
 
 def install(model, cfg):
@@ -166,7 +194,8 @@ def install(model, cfg):
     model.profile_prediction_variance = cfg.get('profile_prediction_variance', False)
     assert not model.profile_prediction_variance or rate_only
     model.profile_prediction_covariance = cfg.get('profile_prediction_covariance', 'isotropic')
-    assert model.profile_prediction_covariance in ('isotropic', 'full', 'translation-blocks')
+    assert model.profile_prediction_covariance in (
+        'isotropic', 'full', 'translation-blocks', 'command-direction')
     assert model.profile_prediction_covariance == 'isotropic' or model.profile_prediction_variance
     if model.profile_prediction_covariance == 'translation-blocks':
         assert rate_only and cfg.get('raw_physical_joint')

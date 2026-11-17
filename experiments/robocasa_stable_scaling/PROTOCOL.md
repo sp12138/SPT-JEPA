@@ -240,6 +240,16 @@ updates. Since Q belongs to the forward model, report this separately from
 an encoder-only probe. The original 64 DEV cases remain development data;
 the 32 confirmation cases stay closed. Keep prior negative readouts.
 
+The command-direction profile partitions each factual error into its component
+along the issued input embedding and the orthogonal remainder. With the same
+variance floor, profile each component separately using the above Gaussian
+criterion. A large parallel residual can then reduce its own gradient without
+reducing the transverse gradient. Zero input uses the original full profile.
+The direction comes from the actual current input and works across action
+coordinates. Preserve the same observations, architecture and detached head.
+Compare cumulative active training on the same-corpus seed1 branch with the
+continuing original criterion, retaining the full training state.
+
 线性读出的另一有限对照保持容量/标签不变，sample MSE除以该次已执行
 命令的平方范数，不用未来动作或效果/状态作权重；随机采样最小半径严格
 为正，零标签会报错，不引入可调epsilon。用同ridge候选、事实验证相对
