@@ -191,6 +191,10 @@ tests experience and input excitation, not an independent seed or a
 same-data algorithm improvement. Four actual functional updates covering
 nonzero translation and angular inputs are discarded before fresh main
 training. Fixed17920/1536 head labels and the control protocol are unchanged.
+An independent seed2 uses exactly this12518-data recipe from a fresh whole
+random initialization, without inherited model or optimizer state. Verify its
+actual initial encoder and NN hashes differ from seed1, and retain the usual
+8-update entry and16-update restore proof. Reused DEV cases are not new cases.
 
 The covariance-block comparison uses the same forward-only network, data and
 head. Let P project onto Q[:,7:10], eP=P*error and eR=(I-P)*error. Requiring
