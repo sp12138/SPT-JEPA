@@ -510,6 +510,9 @@ def build(root, cfg):
     if cfg.get("current_entropy", False) or cfg.get("conditional_rate_only", False):
         from experiments.robocasa_stable_scaling.current_entropy import install
         install(base, cfg)
+    if cfg.get('one_step_pixel_world', False):
+        from experiments.robocasa_stable_scaling.one_step_pixel_world import install
+        install(base, cfg)
     return base
 
 

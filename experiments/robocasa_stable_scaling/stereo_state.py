@@ -62,8 +62,14 @@ def encode(self, info):
         if self._stereo_capture:
             bridge = self.renderer.anchor_embed
             assert bridge.context_tokens is None
-            initial = tokens.reshape(bv, window, *tokens.shape[1:])[:, 0, 1:]
-            bridge.context_tokens = initial.repeat_interleave(window-1, dim=0)
+            if getattr(self, 'one_step_pixel_world', False):
+                # Each posterior decodes its own current observation, not the
+                # window's initial image or that transition's future image.
+                bridge.context_tokens = tokens.reshape(
+                    bv, window, *tokens.shape[1:])[:, :-1, 1:].flatten(0, 1)
+            else:
+                initial = tokens.reshape(bv, window, *tokens.shape[1:])[:, 0, 1:]
+                bridge.context_tokens = initial.repeat_interleave(window-1, dim=0)
         # Dataset camera streams are camera-major; pool pairs at the same time.
         paired = tokens.reshape(b, 2, window, *tokens.shape[1:])
         paired = paired.permute(0, 2, 1, 3, 4).reshape(b*window*2, *tokens.shape[1:])

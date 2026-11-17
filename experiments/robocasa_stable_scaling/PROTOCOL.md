@@ -88,6 +88,21 @@ reader或未来动作target；这是已知输入加权的前向误差，不作�
 相机/时间配对、物理样本隔离、实际点读出等于训练编码及未来帧不影响当前码
 先过门；负的旧联合像素实验保留，不能预先假设融合会改善控制。
 
+The one-step conditional RGB pair uses current RGB as observed side information:
+q(z|next RGB)=N(E(next),sigma^2 I), p(z|current RGB,a_t)=N(F(E(current),a_t),sigma^2 I),
+and a unit-variance Gaussian next-RGB likelihood whose mean decoder reads only
+current RGB and a noisy posterior code. Minimize pixel squared error/2 plus
+the analytic conditional Gaussian KL, divided by both cameras' RGB elements.
+There is no initial-state rate, correlated code noise, forecast-decoder mixture,
+or fixed command-effect norm. The existing nonlinear F can learn actual effects.
+The matched risk variant weights the entire one-step term by inverse squared
+known current-command length; zero inputs retain weight1. This is a weighted
+risk, without a new covariance or loss coefficient. Decoder context uses each
+transition's own current RGB; the final future frame cannot enter any prior
+input or current context. Keep the same corpus and detached384-parameter head.
+All40.888M parameters are scratch-trained, including the decoder; disclose the
+extra compute versus the22.224M forward-only family. Paired initial NNs match.
+
 The joint variance-profile arm changes only the prediction criterion. For each
 factual transition, minimizing KL(N(y,bI) || N(m,vI)) over v >= b gives
 v = b + ||y-m||^2/D and D/2 * log(1 + 2*rate/D). This introduces no learned
