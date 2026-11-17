@@ -88,6 +88,19 @@ reader或未来动作target；这是已知输入加权的前向误差，不作�
 相机/时间配对、物理样本隔离、实际点读出等于训练编码及未来帧不影响当前码
 先过门；负的旧联合像素实验保留，不能预先假设融合会改善控制。
 
+The joint variance-profile arm changes only the prediction criterion. For each
+factual transition, minimizing KL(N(y,bI) || N(m,vI)) over v >= b gives
+v = b + ||y-m||^2/D and D/2 * log(1 + 2*rate/D). This introduces no learned
+variance, loss weight or extra network. It is a profile criterion, not a
+normalized predictive density or a mutual-information bound. Use the same
+joint initialization, fixed corpus and detached factual-input head.
+
+A finite projected-readout control freezes the joint body and its existing
+head, changing only W to W Q_XYZ Q_XYZ^T. There are no additional fits or body
+updates. Since Q belongs to the forward model, report this separately from
+an encoder-only probe. The original 64 DEV cases remain development data;
+the 32 confirmation cases stay closed. Keep prior negative readouts.
+
 线性读出的另一有限对照保持容量/标签不变，sample MSE除以该次已执行
 命令的平方范数，不用未来动作或效果/状态作权重；随机采样最小半径严格
 为正，零标签会报错，不引入可调epsilon。用同ridge候选、事实验证相对

@@ -1,50 +1,45 @@
 # 当前交接
 
-目标：从零 SPT-JEPA 的独立动作头控制出现可靠稳定的 scaling，并超过已有参照。**尚未达成**；两点上升、loss 下降或零星成功都不算达标。用户要求时间优先算法机制、关键实验和实际控制，检查与记录最小化，避免重复兼容回归或 CPU 审计。
+目标：从零SPT-JEPA后果学习＋独立动作头，验证实际控制可靠稳定的scaling，并超过参照。**尚未达成**；loss下降、粗回报上升或零星成功均不算达标。时间优先算法、关键诊断和闭环结果，避免重复审计、兼容检查及细碎记录。
 
-只用 dev13、dev15、dev6；dev6-2c/grid16/dev2 不连接。当前主会话每小时检查并按证据改进，不在有限 pilot 后自行 HOLD；不恢复旧 goal、监控或第二套 LLM 监督。实际分配和检查入口为 R/MASTER.json、R/SESSION_CHECKS.json，不能根据旧 ACTIVE 文字恢复任务。
+只用dev13、dev15、dev6；dev6-2c/grid16/dev2不连接。同会话每小时检查并按证据改进，不在有限pilot后自行HOLD，不恢复旧goal/监控或启动第二套监督。R=`/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114`；实际状态查R/MASTER.json、R/SESSION_CHECKS.json，不能按旧ACTIVE恢复。
 
-R=`/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114`；模型根在其父目录，下表后缀均加 `robocasa_reach3d_`。
-
-| 主机/卡 | 根后缀 / run name | 当前方法；可训练参数 / 动作头参数 |
+| 主机/卡 | 当前run；根后缀加robocasa_reach3d_ | 可训练参数 / 头参数 |
 |---|---|---|
-| dev13 0–3 | `conditional_rate_only_20261117` / spt-conditional-rate-only | 同E/Q的一步Gaussian前向对照，无reader；22.220M / 384 |
-| dev13 4–7 | `trajectory_flexible_likelihood_20261117` / spt-trajectory-flexible-likelihood | 状态相关F＋样本内后果辨认；41.625M / 384 |
-| dev15 0–3 | `action_scale_rate_20261117` / spt-action-scale-rate | 按实际输入长度归一前向误差，无熵；22.220M / 384 |
-| dev15 4–7 | `relative_current_entropy_20261117` / spt-relative-current-entropy | 当前条件熵的相对坐标版；24.349M / 384 |
-| dev6 0–3 | `joint_forward_20261117` / spt-joint-forward | 同步双RGB联合128维状态＋一步前向；22.224M / 384 |
-| dev6 4–7 | `joint_action_scale_rate_20261117` / spt-joint-action-scale-rate | 同联合128维状态＋输入尺度归一前向；22.224M / 384 |
+| dev13 0–3 | spt-conditional-rate-only；conditional_rate_only_20261117 | 22.220M / 384 |
+| dev13 4–7 | spt-trajectory-flexible-likelihood；trajectory_flexible_likelihood_20261117 | 41.625M / 384 |
+| dev15 0–3 | spt-action-scale-rate；action_scale_rate_20261117 | 22.220M / 384 |
+| dev15 4–7 | spt-joint-profile-rate；joint_profile_rate_20261117 | 22.224M / 384 |
+| dev6 0–3 | spt-joint-forward；joint_forward_20261117 | 22.224M / 384 |
+| dev6 4–7 | spt-joint-action-scale-rate；joint_action_scale_rate_20261117 | 22.224M / 384 |
 
-## 决策所需的关键结果
+最近实际小时检查UTC04:59:59：训练rank分别8/8/4，dev6另4卡在冻结读出；GPU瞬时利用率dev13 86–100%、dev15 85–97%、dev6 0–97%，不代表持续满载。六组无ERROR，新profile实际保留8/恢复16且进入主训。下一同会话检查UTC05:59:25。
 
-- **纯动作平移已完整8h收尾。** 1/2/4/6/7/8h回报71.70/86.30/87.95/85.56/85.94/87.28%，距离67.51/29.59/29.87/37.58/37.48/31.75mm，final0/0/0/2/0/1；未稳定保持后段收益。完整8h及部分9h全状态保留，后继继承0更新，dev6 4–7已给单步8候选Q对照。源`code-pure-action-transport-v1`，完整曲线保留EFS。
-- EMA未来码1/2h49.27/49.96%、124.00/123.78mm、全0，已退出。EMA当前码完整6h88.04%/27.28mm、严格0，仍有粗改善但未精确scaling；保全完整6h及部分7h（含自身EMA）后将卡交给单步后果辨认；当前码＋平移组合1/2h57.24/71.11%、101.00/64.30mm、全0，保全完整2h及部分3h状态后退出，让卡给新相对编码。均为自身同数据随机初始化模型EMA，decay=exp(-32/120060)，无外部教师。源 `code-ema-initial-target-v1`；读出容量分别2304/384，不能混报。
-- 同8普通TRAIN窗口，未来码换成当前码，原RGB1h解码误差增至2.21–3.54倍，纯平移1h仅1.02–1.30倍；后者实际动作生成画面比自然未来编码解码更准。支持自然编码弱于动作生成路径，不能只改F。原始 `analysis/motion-code-necessity-first-hour.json`。EMA组合的在线/教师码差异在减去各自当前码后从.02033降至.000774，存在显著原点漂移；直接套原教师动作头，在线表示并未更好，不能宣称换读出就解决。原始 `analysis/ema-current-coordinate-gauge-first-hour.json`。
-- 观察映射试验解码确定状态均值，Gaussian rate作正则。纯F恒等/绝对版本2h为79.56/84.60%、48.26/37.28mm、final均0；恒等组多一次D前向。两组保全完整2h及部分3h状态后退出，让卡给相对编码对照与完整RGB预测。状态相关F恒等1/2/3h78.00/85.88/88.63%、54.76/34.68/27.46mm、全0，粗指标在改善但仍未突破；保全完整3h及部分4h状态后退出，将卡给后果辨认。源 `code-state-observation-v1`；入口 `state-observation-pair-20261116` 和 `flexible-state-observation-pair-20261116`。**flexible-absolute仅准备，未启动**，需重新选空出的卡位。
-- **相对状态编码已有早期对照。** 观察映射只读`zh-z0`、零变化基准0，已知当前RGB的entry rate为0。dev13版本用QR学习Q、满足QᵀQ=I，固定动作潜空间单位；dev15版本A自由学习，作同384参数头的对照。无EMA或新增loss系数，a_t仅为正向条件。各4废弃更新梯度正常、原点平移下loss/fm/rate误差0；正交版本更新后Q误差2.4e-7。正交版本1/2h77.15/77.62%、52.57/51.65mm、全0，平台后保全完整2h及部分3h状态退出；自由版本1/2/3h74.78/79.31/80.69%、57.18/42.05/38.31mm、全0；保全完整3h及部分4h后将卡交给二元单步后果似然。尚无性能突破。源`code-isometric-relative-v1`/`code-relative-state-v1`，入口`isometric-relative-state-20261116`/`relative-state-coding-20261116`；自由版本未启动前重分配到dev15 0–3，原功能检查主机仍是dev13，未改旧证明。
-- **完整RGB预测＋正交动作基已收尾。** 已核实历史最佳长训参照没有RGB直通，而RGB直通分支早期较快、6h反而86.57%/33.97mm，弱于无直通参照91.35%/17.78mm。新分支恢复从学习的当前E特征预测完整未来RGB、保留原Gaussian码噪声/rate/其余loss，仅改为纯平移与学习正交动作基；冻结E均值头2304参数，和384码头分开报告。1/2h75.91/77.90%、56.06/50.19mm、全0，尚无突破；保全完整2h及部分3h状态后让卡给后果似然唯一目标。源`code-isometric-relative-v1`，入口`dense-isometric-action-20261116`。
-- **两组后果辨认已启动。** 分别沿正交相对模型及原状态相关F恒等观察模型，只替换Gaussian未来码率：预测码从同一相机流的8个自然观测码中辨认实际后果，距离温度沿用sigma=.1、beta=.25及原归一化，不新增权重、网络或跨样本候选。正交相对1h的预测码误差/copy为1.93，自然编码在预测动作方向的投影幅度比仅.143，直接已知动作基读出也弱于原头，故不扩展直接几何头。新似然的手工公式、原点不变、样本隔离、塌缩状态非零编码梯度及4废弃更新通过；这不是性能证据。原状态相关F版本保留原Gaussian初始码率，未约束动作正交。正交组完整3h81.11%/39.85mm、final0，保全完整3h及部分4h后退出，让卡给全局自然参数；状态相关组1/2/3/4/5/6/7h83.90/89.00/89.72/91.24/91.04/89.87/91.03%、38.67/24.11/25.42/19.81/20.39/22.67/20.16mm、final0/0/0/0/1/1/0，后段仍为粗平台，继续观察后段，尚非稳定精细scaling。相应Gaussian78.00/85.88/88.63%、54.76/34.68/27.46mm，前两预算四厨房均改善。后果检索更准而Euclidean码预测更差，不能称世界状态预测校准；详见CONCLUSIONS。两组4功能更新均废弃，全链随机、祖先0，同384参数detach头和固定标签/64DEV/32封闭确认。源`code-trajectory-likelihood-v1`/`code-trajectory-flexible-v1`，入口`trajectory-consequence-likelihood-20261117`/`trajectory-flexible-likelihood-20261117`；正常入口保留8/16恢复，不重复CPU审计。
-- **后果似然唯一目标已完整3h收尾。** 同正交相对模型的E/pool/Q随机初值、同8帧样本内候选、sigma=.1，但以categorical NLL均值作为唯一loss，不用像素重构或辅助码率/权重。随机D保留在检查点中但冻结且从不执行；22.220M可训练/40.834M总参数，384参数detach头。4废弃更新确认E/pool/Q梯度、D零调用/零梯度，完整1/2/3h82.36/80.54/79.70%、37.94/44.51/46.38mm、严格均0/64，连续退化，已保全完整3h及部分4h后退出，将卡交给AnchorReader；同初始NN的Gaussian相对对照2h77.62%/51.65mm，更新24691对21983、后者更少，仍非稳定精细scaling。源`code-likelihood-only-v1`及核心`consequence_likelihood.py`，入口`consequence-likelihood-only-20261117`。三条初期似然分支首小时均已收齐，按查询/状态语义区别启动两个单步版本。
-- **两个单步后果似然版本已在dev15启动。** 4–7原状态相关F只从本次已观测当前E(x_t)及实际a_t查询下一观测，8候选，23.036M可训练；0–3用Q a_t固定单位、只比较当前/下一帧，22.220M，二元式见CONCLUSIONS。无像素/辅助码率/新增权重或动作target，随机D冻结不执行。各4更新验证预测输入均1当前状态/1当前动作且不反馈查询、E/pool/动作/F有效梯度、D零调用；二元式另验解析最优与样本隔离。状态相关1/2h82.25/82.13%、41.21/48.80mm、final均0；保全完整2h及部分3h后退出，让卡给单位nats AnchorReader。二元1/2/3/4h85.00/86.14/82.19/83.05%、27.89/26.46/41.89/41.62mm、final1/2/0/0（各64DEV），后段未恢复早期精度，已保留完整4h及部分5h后交给表示端动作尺度对照，尚无稳定scaling；已实际保留8/恢复16，不重复CPU审计。源`code-likelihood-factual-v1`/`code-likelihood-pair-v1`，入口`likelihood-factual-20261117`/`likelihood-pair-20261117`。
-- **新增两项结构对照，均从零且无像素项/动作target。** dev6 4–7保留同Q/E及8候选，仅把滚动查询改为逐次已观测当前状态，区分单步与二元候选的作用；复用不可变`code-likelihood-pair-v1`，入口`likelihood-factual-q-20261117`。dev13 0–3用q=g(E_current)+Q a_t，动作线性进入条件分布自然参数，学习上下文g而非假定物理均值恒定；仅多启用已有24832个上下文参数。样本内8候选NLL、同sigma和384参数detach头，源`code-global-natural-query-v1`，入口`global-natural-query-20261117`。各4废弃更新通过、D零调用、输入仅当前1状态/1动作；新全局版本验证初始函数同纯Q及混合log-odds恒等式。两组正常8/16通过；单步8Q1/2h86.20/83.09%、29.45/36.56mm、final0/1；全局上下文83.29/83.45%、37.99/38.47mm、严格均0。完整2h及部分3h保全后均收尾，卡分别给锚点相对reader和无熵Gaussian对照，不宣称其机制普遍有效。
-- 宽E/浅D参照完整16h89.46%/27.26mm/2final，已保留额外部分17h全状态后退出；历史6h91.35%/17.78mm，后段未稳定保留收益。全局A＋漂移完整3h79.73%/52.43mm、绝对视角对齐5h86.08%/32.81mm、变化量对齐4h85.68%/35.38mm等已收尾。全部旧结果及完整/部分状态保留，后继均继承0更新；原始退休记录在MASTER，详情见 [CONCLUSIONS](experiments/CONCLUSIONS.md)。
+## 决策所需结果
 
-- **Lingjing原AnchorReader直接迁移未见控制收益。** beta .3/1的码头15.36/15.47%、243.62/250.68mm，骨干均值头27.44/29.43%、208.15/190.68mm，严格均0；均保全完整1h及部分2h收尾。自己的相对锚点版保留完整F/entry/AR/beta1，修正熵原点梯度30.40→2.3e-6，但1/2h仍16.09/15.40%、239.14/252.57mm、严格均0；已保留完整2h及部分3h，dev6 4–7交给联合尺度前向组。原beta1/相对锚点的冻结F局部响应头验证57.29/59.62mm，弱于原线性56.28/57.47mm，4小拟合/0body/0新增控制，未扩展。原冻结源未改，默认关闭新选项的真实TRAIN loss/指标逐位同原版；未跑作者PushT门，不称完整PartP/PartR，未来动作chunk方案不采用。源`code-{anchor-reader,relative-anchor-reader}-v1`；原始`analysis/anchor-reader-first-hour-local-response-readout.json`。
+下述均同64反复使用的DEV、双224RGB、最多5命令/norm .3/native2mm；格式为回报% / 平均末端mm / final成功数。各预算按活跃后果训练小时，不是墙钟或独立案例；32确认封闭。
 
-- **有限空间读出检验。** 4h像素＋后果辨认的384参数码头91.24%/19.81mm/final0，同体2304参数均值头90.18%/24.26mm/final1；细动作输入3.06–7.68mm的码头RMSE仍5.26mm。新3072参数attention potential只在冻结骨干patch上学习空间池化，零query初始化严格等同均值头，只用原当前a_t标签/5000更新。4合同测试通过；5000更新的验证选择仍为0步，未超过均值初始化，已收尾；复用相同函数已有64DEV，不新增控制。私有源码/缓存/训练状态及负结果留EFS，不向Git或best-configs推广，0body更新，无新监控；入口`attentive-potential-20261117`。不把去噪MSE<.05单独判作Reach塌缩：理想线性Gaussian的3个高SNR方向/64维约为.047，仍以实际动作可读性和控制判断。
+- 无熵绝对前向1/2/3/4h：82.62/79.27/70.21/65.53%，39.02/47.52/69.11/77.59mm，final1/0/0/0，持续退化。状态相关F＋像素/后果辨认1→4→9h为83.90→91.24→91.08%、38.67→19.81→20.44mm、final均0；中间5/6h各1，后段粗平台。
+- 每视角尺度前向1/2/3h：77.00/75.55/75.80%，43.84/52.84/55.03mm，final0/3/1、any2/5/4。最小20%事实输入3.06–7.68mm的一小时当前命令RMSE4.68→2.63mm，<5mm案例2→11，但粗定位及尾部变差；细分点不改写严格成功。
+- 双相机联合128维绝对前向1/2h：91.43/90.23%，21.02/26.33mm，final1/0、any3/1。比每视角绝对前向首小时四厨房都好，区组95%回报收益[4.34,14.10]点、终距改善[8.69,28.30]mm；后续回退，尚非稳定精度。联合只多3200可训练参数、同总128码/384头，初始化pool/Q改变，不是独立种子或等更新比较。
+- 联合尺度前向1/2h：69.52/83.03%，69.82/30.30mm，final5/4、any5/7。细动作可读性更好，粗控制仍弱于联合绝对组，尚未统一两种收益。
+- 联合profile新组保留联合尺度组完整初始NN，仅将每转移Gaussian预测KL的额外等方差解析消去：原率l变为D/2 log(1+2l/D)。无新网络、权重或可调尺度，不称归一化预测密度/MI下界。4独立KL数学合同及4废弃GPU更新、物理配对/点读出/样本隔离通过，主祖先0；首小时控制未齐。源code-joint-profile-rate-v1，入口joint-profile-rate-20261117。
+- 固定联合尺度1h模型/原头的有限64DEV对照正在执行：仅将W换成W Q_XYZ Q_XYZᵀ，0新增body/头拟合。普通验证中约99.8%读出权重能量在前向动作子空间外，却只贡献约.31%事实命令能量；投影验证29.81→30.00mm并无整体收益，远目标外推假说须由闭环判断。使用冻结世界模型Q，**不是纯E-only probe**。单次入口joint-projection-readout-20261117，flat根joint_projection_20261117；不启动重复任务/监控。
 
-- **条件熵的原点修正有效，但未带来稳定scaling。** 同初值/数据/384头、21272/21288更新的首小时绝对→相对为56.27→85.28%、121.78→33.48mm，四厨房均改善，final均0；相对2h却回退至79.60%/49.68mm，仍0。绝对2h53.08%/124.32mm/0，已保全完整2h及部分3h后退役给联合前向；相对组继续3h。两组24.349M，理想条件熵目标不变，有限reader的原点梯度30.35→6.9e-7，但输入/优化亦改变，不能唯一归因。22.220M无熵前向对照1/2h82.62/79.27%、39.02/47.52mm、final1/0；首小时相对熵收益区组区间含0，尚无可靠额外价值。绝对1h同体均值头55.57%/113.81mm/0；相对1h直接Q的事实RMSE36.54mm弱于原31.50mm，不部署。各组实际8→16已过，从零、无像素/动作target；同64DEV、确认32封闭。原始`analysis/current-entropy-coordinate-first-hour-paired-control.json`、`analysis/relative-current-entropy-first-hour-coordinate-calibration.json`；源/入口见`code-{current-entropy,relative-current-entropy,conditional-rate}-v1`及对应根。
+## Lingjing最新上传与机制
 
-表示端尺度归一有细运动收益、整体控制仍差。dev15 0–3同完整NN/22.220M/384头的首小时77.00%/43.84mm/final0、any2，弱于绝对前向82.62%/39.02mm/final1。普通验证最小输入20%（3.06–7.68mm）当前a_t RMSE从4.68降至2.63mm（零输出3.00mm）；64DEV终距<5mm从2增至11、<10mm从7增至26，但中位20.79→24.81mm、>100mm从5增至7，严格成功没有改善。非零输入按长度平方归一、零输入保留绝对一致性，无reader/像素/额外参数或epsilon，仍是同绝对目标detach头；实际8→16已过，继续后续预算，不以细分点晋级。旧加权动作头负结果保留。源`code-action-scale-rate-v1`、入口`action-scale-rate-20261117`，依据`analysis/one-step-unit-forward-first-hour-residual-by-input-scale.json`。
+最新远端anchored-state-jepa为484f10f3、decoder-free-as-jepa为cd03863b。最新增量主要是分开表示/预测器的scaling评测协议，没有真实RGB控制胜出的证据。原AnchorReader beta .3/1码头仅15.36/15.47%、243.62/250.68mm、全0，均完整1h及部分2h保全；相对锚点修复熵原点后1/2h16.09/15.40%、239.14/252.57mm、全0，完整2h及部分3h保全。未跑作者PushT门，不称完成PartP/PartR；未来动作chunk/专家策略分支不采用。
 
-联合物理前向两组已在dev6启动。相同1h表示的事实读出，外部/腕部视角等192参数头RMSE30.44/50.71mm，最小输入组4.39/11.15mm；这是可读性差异，不是不可观测性证明。两路同步RGB先联合池化一个128维状态，保留原2×64总宽度/384参数头，只多3200可训练参数（22.223504M/40.863772M），无额外融合层、D或reader。绝对/尺度归一联合组完整初始NN相同，和分视角两组形成2×2，非独立seed；旧联合像素负结果保留。4物理配对合同、真实点读出=训练码/未来帧不影响当前/样本隔离通过；联合绝对共8废弃更新（含将测试错误9帧修为实际8帧），联合归一4废弃更新，主祖先均0，实际8→16及主训600/800步已过。两组暂无控制结果。入口`joint-forward-20261117`/`joint-action-scale-rate-20261117`、源`code-joint-forward-v1`/`code-joint-action-scale-rate-v1`，依据`analysis/one-step-first-hour-per-view-action-readability.json`。
+自己的当前条件熵绝对→相对首小时56.27→85.28%、121.78→33.48mm，四厨房都改善，但相对2/3/4h79.60/78.24/75.01%、49.68/49.45/61.66mm、final全0。相对完整4h及部分5h保全后交给profile，绝对完整2h及部分3h交给联合绝对组。无证据证明熵优于匹配无熵前向，reader拟合变好不等于控制收益。
+
+四个冻结联合1h体的状态条件MSE/Gaussian协方差头各5000更新，额外88.05GPU秒，均只监督普通事实当前输入。Gaussian NLL明显下降，但均值RMSE改善至多约.08mm，最细组未稳定改善；按验证收尾，0新增控制，不推广核心代码。入口conditional-action-uncertainty-20261117。历史动作先验去偏、势差/状态条件头、响应校准及空间读出负结果见CONCLUSIONS，不重复包装再跑。
+
+强加法前向并非“无inverse信号”：QᵀQ=I时，||d−Qa_t||²=||Qᵀd−a_t||²+||(I−QQᵀ)d||²，含代数等价的**当前事实输入**重建；显式目标仍为自然下一码，不含未来/最优动作。此结构可对齐控制坐标，但常数加法对接触/夹限/物体交互有限，Reach结果不能代替manipulation。
 
 ## 固定边界
 
-固定12006普通TRAIN日志，动作头仅用17920训练/1536验证的同一事实转移当前输入a_t；表示冻结/detach，动作标签梯度不进入后果学习器。输入仅RGB历史和实际执行动作，自然未来RGB/自身编码可作目标，目标图只用于控制；无未来/最优动作、专家路径、reward/state/taskID/语言或外部强教师。同步双相机属于一个物理样本，独立样本不交换表示/统计。
+固定12006普通TRAIN日志；头仅17920训练/1536验证的同转移实际a_t，表示冻结/detach，标签梯度不进后果学习器。输入仅RGB历史/实际动作，自然未来RGB或自身编码可作目标，目标图只用于控制。无外部教师、reward/state/taskID/语言、未来/最优动作、专家路径/策略。同步相机属于一个物理样本，独立样本不交换表示或统计。受保护评测/oracle/接触/闭环输入不进训练、教师或proposal memory。
 
-同64反复使用的DEV、双224 RGB、最多5命令/norm .3/native2mm final与any；32确认仍封闭。不同读出、容量、数据、教师来源、完整祖先与累计预算分别报告；同随机初值分支不是独立种子。保护性评测/oracle/接触/闭环输入不进入学习或proposal memory；不能把预测/验证误差下降当控制提升。
+新学习链随机祖先0；同初值分支不作独立seed。不同读出、容量、数据、教师、累计预算单列。32确认仍封闭，不把不同公开协议当公平胜出。正常续训保存model/optimizer/scheduler/全rank RNG/游标，实际8/16恢复已做，不重复CPU审计；有实际错误才修。不改已启动冻结源码、检查点或vendored runtime。
 
-正常检查点保存model/optimizer/scheduler/各rank RNG/数据游标及EMA状态，实际8/16续训检查保留；不重复独立CPU恢复或广泛兼容核验，有实际错误才修。新源码用freeze_with_overrides，不修改已启动冻结源、旧检查点或vendored runtime，不把额外部分小时报作完整小时。
-
-Git仅核心代码、必要配置、精简结论及已验证较优配置；原始实验和监控留EFS，不新增重复状态文件、不绕过ignore。未有新best-config晋升。流程边界见 [PROTOCOL](experiments/robocasa_stable_scaling/PROTOCOL.md)，原始归档见 [说明](docs/experiment-archives.md)。
+Git仅核心代码、必要配置、精简结论及已验证较优配置。原始细节/负结果/完整与部分状态留EFS；未有新best-config晋升。稳定规则见AGENTS，机制和历史见[CONCLUSIONS](experiments/CONCLUSIONS.md)，流程见[PROTOCOL](experiments/robocasa_stable_scaling/PROTOCOL.md)。
