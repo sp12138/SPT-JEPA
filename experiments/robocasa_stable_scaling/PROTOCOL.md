@@ -261,6 +261,18 @@ coordinates. Preserve the same observations, architecture and detached head.
 Compare cumulative active training on the same-corpus seed1 branch with the
 continuing original criterion, retaining the full training state.
 
+The coordinate-value arm encodes spatial moments in the same joint visual
+attention. Keep queries and keys unchanged. Replace six value channels with
+the two camera charts `(x, y, 1)`, with disjoint channels and zero spatial
+values for CLS. Attention weights therefore carry each view's image
+position and mass through the existing value projection. Translating an
+attention map by `(dx, dy)` shifts its first moment by its mass times that
+displacement. This algebra concerns image coordinates. The encoder must learn
+which parts of the images move under the current command.
+The paired model has the same parameter tensors, data, consequence objective
+and detached 384-parameter readout. The initial function changes through the
+values. Use no new losses, labels or tuned weights.
+
 线性读出的另一有限对照保持容量/标签不变，sample MSE除以该次已执行
 命令的平方范数，不用未来动作或效果/状态作权重；随机采样最小半径严格
 为正，零标签会报错，不引入可调epsilon。用同ridge候选、事实验证相对
