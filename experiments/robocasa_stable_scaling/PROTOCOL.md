@@ -199,6 +199,9 @@ The paired angular-masked arm retains the same12518 RGB logs but keeps
 learn_angular_commands=false, matching the original input masking. Same seed1
 initial tensors, source, objective and head isolate experience from angular
 conditioning. No state/pose labels or additional functional short run are used.
+Masking also changes the variance floor for pure-rotation facts. With zero
+encoded input they use the absolute fallback, so the result measures the
+combined change to mean conditioning and prediction weighting.
 
 The angular transport comparison retains the isolated-rotation corpus, paired
 random tensors, full-profile rate and 384-parameter detached readout. Only
@@ -219,6 +222,14 @@ start. Every observed pair enters the same one-step objective with its
 actual current command. The number of frames is matched, while the mix of
 command types differs. Start with the unchanged additive full-profile learner
 to measure the contribution of collection before combining it with SO(3).
+The first interleaved arm halves angular transitions, and its first hour
+trails the original additive control. A tighter count match replaces one
+pure-translation and one pure-rotation episode with two interleaved episodes
+within each kitchen. This keeps the number of each kind of command within
+every kitchen, the total 12518 episodes, the original fixed head labels,
+initial tensors and additive objective. Actual magnitudes and reset indices
+can differ. Use 464 already recorded interleaved episodes, the largest even
+subset within every kitchen, and keep all other logs in the archive.
 
 The covariance-block comparison uses the same forward-only network, data and
 head. Let P project onto Q[:,7:10], eP=P*error and eR=(I-P)*error. Requiring
