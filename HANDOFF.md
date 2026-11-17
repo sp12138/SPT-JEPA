@@ -2,7 +2,7 @@
 
 目标：从零SPT-JEPA后果学习＋冻结表示的独立当前动作头，验证可靠稳定的实际控制scaling并超过参照。**尚未达成**。只用dev13/dev15/dev6；禁用dev6-2c/grid16/dev2。时间优先算法与闭环结果，不恢复旧goal、monitor或有限HOLD。
 
-状态真源R=/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114，查MASTER.json及SESSION_CHECKS.json。每小时同会话检查；最近第78次UTC13:15:59，下一次UTC14:15:59。该快照训练rank为8/8/4、利用率0–100/81–97/0–97%，新组处在启动/恢复，不能称持续24卡满训。
+状态真源R=/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114，查MASTER.json及SESSION_CHECKS.json。每小时同会话检查；最近第79次UTC14:16:18，下一次UTC15:16:18。该快照训练rank为8/8/8、利用率77–97/84–99/82–100%，均在训练，无ERROR；这是瞬时检查，不能称持续24卡满训。
 
 | 主机/卡 | 当前run；根后缀加robocasa_reach3d_ | body语料 / head参数 |
 |---|---|---|
@@ -37,7 +37,7 @@ Lingjing最新仍为484f10f3（评测协议）、cd03863b/d4da0d16（讨论及ga
 
 512条普通TRAIN旋转日志全部保留，与原12006合成12518；不按state/性能筛选，collection servo显式执行旋转，评测不改。body-manifest SHA=f3b46db167e60a7a6a09ab16e444f5cd4b9506c7017ee070b402e47ab592031c，源orientation_interventions_20261117/BODY-CORPUS.json；仅RGB/实际当前输入进入学习。一次普通重放RGB不匹配已标无效，不能用其位置统计验证原始记录或影响训练。
 
-模型源code-canonical-state-v3，采集源code-canonical-world-v2；六独立Gaussian/梯度/协方差/混合精度及实际XYZ＋旋转短测通过。强对照/canonical-block各8废弃短测更新（含旧整项噪声4）、canonical-fixed4，均不继承；最终短测分别5.16/4.47/3.70s。三个主入口orthogonal-input-world-20261117、canonical-world-20261117、canonical-fixed-noise-world-20261117均已启动。原始诊断统一见R/analysis，不复制逐例文件进Git。
+训练数学源code-canonical-state-v3，采集源code-canonical-world-v2；坐标两组首次读出入口漏列新模式，code-canonical-readout-v4仅补probe允许值，其余Python逐字相同，原错误保留、0SGD重放。强对照仍V3；六独立Gaussian/梯度/协方差/混合精度及实际XYZ＋旋转短测通过。强对照/canonical-block各8废弃短测更新（含旧整项噪声4）、canonical-fixed4，均不继承；最终短测分别5.16/4.47/3.70s。三个主入口orthogonal-input-world-20261117、canonical-world-20261117、canonical-fixed-noise-world-20261117均已启动。原始诊断统一见R/analysis，不复制逐例文件进Git。
 
 ## 接下来
 

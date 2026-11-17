@@ -43,7 +43,7 @@ class Readout(nn.Module):
         assert self.precision in ("bf16","fp32")
         self.parent = None; self.joint_views = False; self.raw_pixel_encoder=False
         self.raw_feature_mode=json.loads((root/'plan.json').read_text()).get('raw_readout_features','code')
-        assert self.raw_feature_mode in ('code','cls','mean','spatial-moments','spatial-flat','renderer-mean','renderer-spatial-moments')
+        assert self.raw_feature_mode in ('code','canonical-translation','cls','mean','spatial-moments','spatial-flat','renderer-mean','renderer-spatial-moments')
         self.frozen_layout=json.loads((root/"plan.json").read_text()).get("frozen_readout_layout","mean")
         assert self.frozen_layout in ("mean","spatial-moments")
         if self.frozen_layout=="spatial-moments":
