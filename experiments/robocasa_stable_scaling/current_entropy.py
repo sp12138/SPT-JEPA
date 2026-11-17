@@ -14,6 +14,21 @@ from as_jepa_lewm.anchor_reader import (encoder_entropy_term, reader_denoising_t
                                        reader_stream_seed)
 
 
+def factual_prediction_rate(error, action_effect, sigma, normalize_action_scale=False):
+    """Forward residual rate, optionally in units of the factual input length.
+
+    Positive command lengths have no fitted scale or epsilon. A zero command
+    retains the original absolute consistency loss. This is weighted factual
+    prediction, not a mutual-information bound with action-dependent noise.
+    """
+    rate = error.float().square().sum((-2, -1)) / (2*sigma**2)
+    if normalize_action_scale:
+        length_squared = action_effect.detach().float().square().sum((-2, -1))
+        rate = rate / torch.where(length_squared > 0, length_squared,
+                                  torch.ones_like(length_squared))
+    return rate
+
+
 def current_entropy_loss(self, batch, step=0, ramp_steps=0):
     if ramp_steps:
         raise ValueError("the conditional information objective has no ramp")
@@ -58,11 +73,14 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
     future = flat[:, 1:].reshape_as(current)
     actions = encoded['act_emb'][:, :-1].reshape_as(current)
     query = self.predict(current, actions)
-    rate = (future.float()-query.float()).square().sum((-2, -1)) / (2*self.sigma0**2)
+    error = future.float()-query.float()
+    normalize = getattr(self, 'action_scale_normalized_rate', False)
+    rate = factual_prediction_rate(error, actions, self.sigma0, normalize)
     loss = rate.mean()
     return loss, dict(loss=loss, conditional_rate_nats=loss,
         feature_std=flat.float().std((0, 1)).mean(),
-        factual_prediction_mse=(future.float()-query.float()).square().mean(),
+        factual_prediction_mse=error.square().mean(),
+        action_scale_normalized_rate=loss.new_tensor(float(normalize)),
         conditional_entry_rate=loss.new_tensor(0.), temporal_noise_rho=loss.new_tensor(0.),
         analytic_coding_noise=loss.new_tensor(0.))
 
@@ -74,6 +92,8 @@ def install(model, cfg):
         assert not cfg.get('anchor_reader', False)
     else:
         assert cfg.get('anchor_reader') and cfg.get('anchor_reader_beta_nats') == 1.
+    model.action_scale_normalized_rate = cfg.get('action_scale_normalized_rate', False)
+    assert not model.action_scale_normalized_rate or rate_only
     model.current_entropy_relative = cfg.get('current_entropy_relative', False)
     assert not model.current_entropy_relative or not rate_only
     assert cfg.get('pure_action_transport') and cfg.get('constant_action_response')
