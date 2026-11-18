@@ -144,18 +144,27 @@ def causal_shortfall_residual(error, translation_effect, action_effect):
         return error + correction * direction, correction
 
 
-def camera_motion_rate(codes, action_effect, sigma):
+def camera_motion_rate(codes, action_effect, sigma, joint_codes=None):
     """Profile the mean squared forward residual across synchronized cameras.
 
     Each view predicts the effect of the same issued command. Its code can
     have a different constant origin. Mean squared residual is the error of
     the mean displacement plus the variance of the views' displacements.
+    Supplying a joint observation recenters the camera estimates at the
+    original stereo prediction while retaining exactly this variance.
     """
     dtype = torch.float64 if codes.dtype == torch.float64 else torch.float32
     codes = codes.to(dtype)
     command = action_effect.to(dtype)
-    error = codes[:, 1:] - (codes[:, :-1] + command.unsqueeze(2))
-    square = error.square().sum(dim=-1).mean(dim=2)
+    if joint_codes is None:
+        error = codes[:, 1:] - (codes[:, :-1] + command.unsqueeze(2))
+        square = error.square().sum(dim=-1).mean(dim=2)
+    else:
+        joint = joint_codes.to(dtype)
+        error = joint[:, 1:] - (joint[:, :-1] + command)
+        displacement = codes[:, 1:] - codes[:, :-1]
+        deviation = displacement - displacement.mean(dim=2, keepdim=True)
+        square = error.square().sum(dim=-1) + deviation.square().sum(dim=-1).mean(dim=2)
     length_squared = command.detach().square().sum(dim=-1)
     variance = sigma**2 * torch.where(length_squared > 0, length_squared, 1.)
     return .5 * torch.log1p(square / variance), square
@@ -202,7 +211,8 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
     flat = encoded['emb']
     if getattr(self, 'camera_motion_consensus', False):
         rate, square = camera_motion_rate(
-            encoded['camera_codes'], encoded['act_emb'][:, :-1], self.sigma0)
+            encoded['camera_codes'], encoded['act_emb'][:, :-1], self.sigma0,
+            joint_codes=flat if self.pool.motion_center == 'joint' else None)
         loss = rate.mean()
         return loss, dict(loss=loss, conditional_rate_nats=loss,
             feature_std=flat.float().std((0, 1)).mean(),

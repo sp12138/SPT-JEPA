@@ -22,13 +22,17 @@ def camera_coordinate_values(tokens):
 
 class JointPool(nn.Module):
     """Keep the cache's two 64D rows as halves of one joint 128D state."""
-    def __init__(self, inner, coordinate_values=False, motion_consensus=False):
+    def __init__(self, inner, coordinate_values=False, motion_consensus=False,
+                 motion_center='mean'):
         super().__init__()
         assert len(inner.queries) == 8
         self.inner = inner
         self.view_embedding = nn.Parameter(torch.zeros(2, 1, inner.queries.shape[-1]))
         self.coordinate_values = coordinate_values
         self.motion_consensus = motion_consensus
+        self.motion_center = motion_center
+        assert motion_center in ('mean', 'joint')
+        assert motion_center == 'mean' or motion_consensus
         assert not (coordinate_values and motion_consensus)
 
     def camera_codes(self, tokens):
@@ -41,7 +45,7 @@ class JointPool(nn.Module):
     def forward(self, tokens):
         n, length, width = tokens.shape
         assert n % 2 == 0
-        if self.motion_consensus:
+        if self.motion_consensus and self.motion_center == 'mean':
             joint = self.camera_codes(tokens).mean(dim=1)
             return joint.reshape(n, 4, joint.shape[-1])
         pair = tokens.reshape(n//2, 2, length, width) + self.view_embedding
@@ -76,7 +80,10 @@ def encode(self, info):
         if self.pool.motion_consensus:
             codes = self.pool.camera_codes(paired).reshape(b, window, 2, self.state_dim)
             info['camera_codes'] = codes
-            info['emb'] = codes.mean(dim=2)
+            if self.pool.motion_center == 'mean':
+                info['emb'] = codes.mean(dim=2)
+            else:
+                info['emb'] = self.pool(paired).reshape(b, window, self.state_dim)
         else:
             info['emb'] = self.pool(paired).reshape(b, window, self.state_dim)
         if 'action' in info:
@@ -92,5 +99,6 @@ def install(model, cfg):
     assert model.state_slots == 8 and model.state_width == 16
     assert not model.batchnorm_state and not model.batchnorm_projector
     model.pool = JointPool(model.pool, coordinate_values=cfg.get('joint_coordinate_values', False),
-                           motion_consensus=cfg.get('camera_motion_consensus', False))
+                           motion_consensus=cfg.get('camera_motion_consensus', False),
+                           motion_center=cfg.get('camera_motion_center', 'mean'))
     model.encode = types.MethodType(encode, model)

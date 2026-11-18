@@ -9,7 +9,7 @@
 | dev13 0–3 | spt-commutator-rigid-transport，commutator_rigid_transport_20261118 | 12518（替换512条旋转） / 384 |
 | dev13 4–7 | spt-precision-pair-precise，precision_pair_precise_20261117 | 12518（替换512） / 384 |
 | dev15 0–3 | spt-seed2-causal-shortfall，seed2_causal_shortfall_20261118 | 12518 / 384 |
-| dev15 4–7 | spt-rotation-excited-full-covariance-profile-seed2；rotation_excited_full_covariance_profile_seed2_20261117 | 12518 / 384 |
+| dev15 4–7 | spt-seed2-camera-motion-joint-center，seed2_camera_motion_joint_center_20261118 | 12518 / 384 |
 | dev6 0–3 | spt-rigid-command-transport；rigid_command_transport_20261117 | 12518 / 384 |
 | dev6 4–7 | spt-rigid-command-transport-seed2，rigid_command_transport_seed2_20261118 | 12518 / 384 |
 
@@ -51,7 +51,7 @@ Lingjing两分支远端头已再次核对：484f10f3（评测协议）和cd03863
 
 ## 接下来
 
-1. .2 mm 加法组首六小时严格成功 11/15/17/20/23/24；同初始化原加法第 6h 为 18/64。旋转复合 seed2 首小时 7/64，配对加法为 5/64。历史预测累计 9/10h 为 32/26，原配方为 30/29，完整评测和部分 11h 的 209349 步全状态保全。dev15 0–3 从同一原配方 8h 的 166108 步接续，用已观察事实估计当前命令的平移短差。实际完整恢复到 166124 步，累计 9h 读出中。候选双相机独立后果预测通过 4 步功能验证，来自同一 8h 父状态；零新增后果更新的池化对照已开始评估。
+1. .2 mm 加法组首六小时严格成功 11/15/17/20/23/24；同初始化原加法第 6h 为 18/64。旋转复合 seed2 首小时 7/64，配对加法为 5/64。历史预测累计 9/10h 为 32/26，原配方为 30/29，完整评测和部分 11h 的 209349 步全状态保全。dev15 0–3 从同一原配方 8h 的 166108 步接续，用已观察事实估计当前命令的平移短差。平移短差累计 9h 为 30/64，配对原算法也是 30/64。第 12h 原加法为 26/64，249539 步全状态已保留。单目码取均值的冻结对照仅 10/64，改为保留原双目读出，学习同一动作在两路相机中的共同位移。新组从同一 8h 父状态开始，实际 166116→166124→173100 步，首评累计 9h。
 2. 每小时检查实际PID/GPU/ERROR及真实成功；有明确问题再改。新源、数据与head容量边界单列；32确认不开给方法选择。稳定性和独立初始化尚须验证。
 3. 只使用RGB历史/实际输入与自然未来RGB或自身码；当前a_t标签仅用于冻结/detach动作读出，无未来/最优动作、专家路径/策略、state/reward/taskID/语言或外部强教师。受保护评测/物理诊断不进训练、教师或proposal memory。
 
