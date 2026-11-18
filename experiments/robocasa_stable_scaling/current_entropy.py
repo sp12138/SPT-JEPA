@@ -93,6 +93,29 @@ def direction_profile_prediction_rate(error, action_effect, sigma, normalize_act
                      torch.log1p(transverse.square().sum(-1) / base))
 
 
+def prefix_prediction_rate(error, action_effect, sigma):
+    """Profile causal innovations of a trajectory's integrated residuals.
+
+    Inputs have shape (physical samples, transitions, code dimensions). Each
+    increment stays in the units of its own issued command. If the normalized
+    residuals are differences of independent observations with marginal
+    increment variance one, this transformation whitens them. It is the
+    residual of each cumulative observation against its preceding mean,
+    including the zero origin, with its predictive variance removed.
+    """
+    dtype = torch.float64 if error.dtype == torch.float64 else torch.float32
+    with torch.autocast(error.device.type, enabled=False):
+        error = error.to(dtype)
+        command_squared = action_effect.detach().to(dtype).square().sum(-1, keepdim=True)
+        scale = torch.where(command_squared > 0, command_squared, 1.).sqrt() * sigma
+        path = (error / scale).cumsum(dim=1)
+        index = torch.arange(1, path.shape[1] + 1, dtype=dtype, device=path.device)
+        index = index[None, :, None]
+        preceding_mean = (path.cumsum(dim=1) - path) / index
+        innovation = (path - preceding_mean) * (2 * index / (index + 1)).sqrt()
+        return .5 * torch.log1p(innovation.square().sum(-1))
+
+
 def current_entropy_loss(self, batch, step=0, ramp_steps=0):
     if ramp_steps:
         raise ValueError("the conditional information objective has no ramp")
@@ -156,7 +179,11 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
     error = future.float()-query.float()
     normalize = getattr(self, 'action_scale_normalized_rate', False)
     covariance = getattr(self, 'profile_prediction_covariance', 'isotropic')
-    if covariance == 'translation-blocks':
+    prefix = getattr(self, 'factual_prefix_innovations', False)
+    if prefix:
+        rate = prefix_prediction_rate(error.reshape(b, w-1, -1),
+            actions.reshape(b, w-1, -1), self.sigma0)
+    elif covariance == 'translation-blocks':
         rate = block_profile_prediction_rate(error, actions, self.sigma0,
             self.action_encoder.weight[:, 7:10], normalize)
     elif covariance == 'command-direction':
@@ -179,6 +206,8 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
         analytic_coding_noise=loss.new_tensor(0.))
     if covariance == 'command-direction':
         metrics['profiled_command_direction'] = loss.new_tensor(1.)
+    if prefix:
+        metrics['factual_prefix_innovations'] = loss.new_tensor(1.)
     return loss, metrics
 
 
@@ -204,6 +233,11 @@ def install(model, cfg):
         assert rate_only and cfg.get('raw_physical_joint')
         assert model.profile_prediction_covariance == 'full'
         assert model.action_scale_normalized_rate and cfg.get('learn_angular_commands')
+    model.factual_prefix_innovations = cfg.get('factual_prefix_innovations', False)
+    if model.factual_prefix_innovations:
+        assert rate_only and cfg.get('raw_physical_joint')
+        assert model.profile_prediction_covariance == 'full'
+        assert model.action_scale_normalized_rate and not model.rigid_command_transport
     model.current_entropy_relative = cfg.get('current_entropy_relative', False)
     assert not model.current_entropy_relative or not rate_only
     assert cfg.get('pure_action_transport') and cfg.get('constant_action_response')
