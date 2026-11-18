@@ -4,6 +4,8 @@ import unittest
 import torch
 
 from experiments.robocasa_stable_scaling.current_entropy import factual_prediction_rate
+from experiments.robocasa_stable_scaling.visible_effect import (
+    fit_visible_posterior, visible_effect_rate, visible_probability)
 
 
 class FactualRateContracts(unittest.TestCase):
@@ -46,6 +48,38 @@ class FactualRateContracts(unittest.TestCase):
         self.assertTrue(torch.equal(grad[1:], torch.zeros_like(grad[1:])))
         alone = factual_prediction_rate(error[:1], action[:1], .1, True)
         self.assertTrue(torch.equal(rate[:1], alone))
+
+
+class VisibleEffectContracts(unittest.TestCase):
+    def test_rgb_posterior_uses_only_the_observed_transition(self):
+        pixels = torch.zeros(2, 2, 4, 3, 5, 5, dtype=torch.uint8)
+        pixels[0, 1, 1:] = 2
+        p = visible_probability(pixels, 2., -1.)
+        log_change = torch.tensor(1 + 1/150).log()
+        torch.testing.assert_close(p[0, 0], torch.sigmoid(2 * log_change - 1))
+        pixels[1] = 171
+        pixels[0, :, 2:] = 219
+        self.assertTrue(torch.equal(p[0, :1], visible_probability(pixels.flip(1), 2., -1.)[0, :1]))
+
+    def test_factual_and_silent_endpoints_and_collapse_gradient(self):
+        code = torch.zeros(2, 2, 3, dtype=torch.float64, requires_grad=True)
+        actions = torch.tensor([[[1., 0., 0.]], [[1., 0., 0.]]], dtype=torch.float64)
+        p = torch.tensor([[0.], [1.]], requires_grad=True)
+        loss, _ = visible_effect_rate(code, actions, p, .1)
+        torch.testing.assert_close(loss[:, 0], .5 * torch.tensor([1., 101.], dtype=code.dtype).log())
+        loss.sum().backward()
+        self.assertEqual(code.grad[0].abs().sum(), 0)
+        self.assertLess(code.grad[1, 1, 0], 0)
+        self.assertIsNone(p.grad)
+
+    def test_calibration_absorbs_sensor_units(self):
+        import numpy as np
+        rng = np.random.default_rng(11)
+        x = np.r_[rng.normal(-4, .6, 400), rng.normal(2, .6, 1600)]
+        fit = fit_visible_posterior(x)
+        shifted = fit_visible_posterior(x + .8)
+        np.testing.assert_allclose(fit['slope']*x + fit['bias'],
+            shifted['slope']*(x+.8) + shifted['bias'], atol=1e-4)
 
 
 if __name__ == '__main__':

@@ -13,6 +13,7 @@ import torch
 from as_jepa_lewm.anchor_reader import (encoder_entropy_term, reader_denoising_term,
                                        reader_stream_seed)
 from experiments.robocasa_stable_scaling.rigid_transport import rigid_prediction_error
+from experiments.robocasa_stable_scaling.visible_effect import visible_effect_rate, visible_probability
 
 
 def factual_prediction_rate(error, action_effect, sigma, normalize_action_scale=False):
@@ -209,6 +210,16 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
     pixels, _, _ = self.prepare(batch)
     encoded = self.encode(dict(pixels=pixels, action=batch['action']))
     flat = encoded['emb']
+    if self.visual_execution_posterior is not None:
+        b, w = flat.shape[:2]
+        rgb = batch['pixels'].reshape(b, 2, w, *batch['pixels'].shape[2:])
+        probability = visible_probability(rgb, **self.visual_execution_posterior)
+        rate, square = visible_effect_rate(flat, encoded['act_emb'][:, :-1], probability, self.sigma0)
+        loss = rate.mean()
+        return loss, dict(loss=loss, conditional_rate_nats=loss,
+            feature_std=flat.float().std((0, 1)).mean(),
+            factual_prediction_mse=square.mean()/flat.shape[-1],
+            visible_probability=probability.mean())
     if getattr(self, 'camera_motion_consensus', False):
         rate, square = camera_motion_rate(
             encoded['camera_codes'], encoded['act_emb'][:, :-1], self.sigma0,
@@ -323,6 +334,13 @@ def install(model, cfg):
         assert model.profile_prediction_covariance == 'full'
         assert not (model.rigid_command_transport or model.factual_prefix_innovations
                     or model.factual_execution_shortfall)
+    model.visual_execution_posterior = cfg.get('visual_execution_posterior')
+    if model.visual_execution_posterior is not None:
+        assert rate_only and cfg.get('raw_physical_joint') and model.action_scale_normalized_rate
+        assert model.profile_prediction_covariance == 'full'
+        assert not (model.camera_motion_consensus or model.rigid_command_transport
+                    or model.factual_prefix_innovations or model.factual_execution_shortfall)
+        assert set(model.visual_execution_posterior) == {'slope', 'bias'}
     model.current_entropy_relative = cfg.get('current_entropy_relative', False)
     assert not model.current_entropy_relative or not rate_only
     assert cfg.get('pure_action_transport') and cfg.get('constant_action_response')
