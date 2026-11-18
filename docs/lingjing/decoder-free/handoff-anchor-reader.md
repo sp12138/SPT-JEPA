@@ -2,6 +2,8 @@
 
 Written 2026-11-16 on branch `lingjing/decoder-free-as-jepa`, for the collaborator who runs the experiments. It supersedes Phase 2 of [spec.md](spec.md); Phase 1 of that spec is closed by your `CLOSEOUT_20261103.md` (62 PushT recipes of the log-det objective, none qualified). Checked against your branch `as-jepa/lingjing-fullspec-20261102` at `3131efaa`.
 
+> **Superseded in part (2026-11-18).** Parts P and R are replaced by [handoff-two-tracks.md](handoff-two-tracks.md), which adds AR(1) posterior noise, drops the initial-scale calibration and makes the reader's coordinates anchor-relative. Part G below stands.
+
 Three parts, in this order. Parts G and P are independent and can run in parallel.
 
 | Part | What | New training | Budget (estimate) |

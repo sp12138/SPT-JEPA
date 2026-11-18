@@ -322,6 +322,96 @@ class AnchorReaderModelTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 build(estimator=estimator).loss(self.batch, step=1, ramp_steps=10)
 
+    # 11 --------------------------------------------------------------- correlated posterior noise (rho)
+    def test_rho_argument_validation(self):
+        for kw in (dict(rho=1.), dict(rho=-.1), dict(estimator="logdet", rho=.8),
+                   dict(estimator="logdet_window", rho=.8), dict(rho=.8, prior_input="mean"),
+                   dict(rho=.8, lam=1., forecast_noise=True), dict(rho=.8, lam=1., horizon="rollout"),
+                   dict(estimator="nce", reader_relative=True), dict(estimator="logdet", reader_relative=True)):
+            with self.assertRaises(ValueError, msg=kw):
+                build(**kw)
+        for kw in (dict(rho=.8, lam=0.), dict(rho=.8, lam=0., horizon="rollout"), dict(rho=.8, lam=1.),
+                   dict(estimator="nce", rho=.8, lam=1.), dict(rho=.8, lam=1., reader_relative=True)):
+            build(**kw)                                     # accepted
+
+    def test_rho_zero_is_bitwise_the_default(self):
+        for estimator in ("denoiser", "nce"):
+            for kw in VARIANTS:
+                a, b = build(estimator=estimator, **kw), build(estimator=estimator, rho=0., **kw)
+                torch.manual_seed(5); loss_a, met_a = a.loss(self.batch, step=3); after_a = torch.rand(4)
+                torch.manual_seed(5); loss_b, met_b = b.loss(self.batch, step=3); after_b = torch.rand(4)
+                self.assertTrue(torch.equal(loss_a, loss_b) and torch.equal(after_a, after_b), (estimator, kw))
+                self.assertEqual(list(met_a), list(met_b))
+
+    def test_rho_gives_the_ar1_posterior_and_its_exact_kl(self):
+        from as_jepa_lewm.forecast_scored import ar1
+        from vforge.models.as_jepa.codes import surprise_nats
+        rho = .8
+        # the noise: unit marginal variance, correlation rho between consecutive frames
+        noise = ar1(torch.randn(20000, 6, 2, generator=torch.Generator().manual_seed(3)), rho)
+        self.assertAlmostEqual(float(noise.var()), 1., delta=.03)
+        corr = float((noise[:, 1:] * noise[:, :-1]).mean() / noise.var())
+        self.assertAlmostEqual(corr, rho, delta=.02)
+        for estimator in ("denoiser", "nce"):
+            for lam in (0., 1.):
+                m, ref = build(estimator=estimator, rho=rho, lam=lam), build(estimator=estimator, lam=lam)
+                torch.manual_seed(5); t = m.window_terms(self.batch, step=3); after = torch.rand(4)
+                torch.manual_seed(5); t0 = ref.window_terms(self.batch, step=3); after0 = torch.rand(4)
+                self.assertTrue(torch.equal(after, after0), (estimator, lam))    # same number of main-stream draws
+                self.assertTrue(torch.equal(t["mu"], t0["mu"]) and torch.equal(t["entry"], t0["entry"]))
+                xi0 = (t0["s"] - t0["mu"]) / m.sigma0
+                expect_s = t["mu"] + m.sigma0 * ar1(xi0.clone(), rho)
+                self.assertTrue(torch.allclose(t["s"], expect_s, atol=1e-6), (estimator, lam))
+                target = t["mu"][:, 1:] + rho * (t["s"][:, :-1] - t["mu"][:, :-1])
+                self.assertTrue(torch.equal(t["target"], target))
+                const = m.state_dim * .5 * (-rho ** 2 - math.log1p(-rho ** 2))
+                expect = surprise_nats(target, t["predicted"], m.sigma0) + const
+                self.assertTrue(torch.equal(t["surprise"], expect), (estimator, lam))
+                if lam:                                     # one-step noiseless forecast: Forecast_t = Surprise_t
+                    self.assertTrue(torch.equal(t["forecast"], t["surprise"]))
+                torch.manual_seed(5); loss, met = m.loss(self.batch, step=3)
+                self.assertTrue(math.isfinite(float(loss)))
+                self.assertAlmostEqual(float(met["temporal_noise_rho"]), rho, places=6)
+                loss.backward()
+                self.assertGreater(sum(float(p.grad.abs().sum()) for n, p in m.named_parameters()
+                                       if p.grad is not None and n.startswith(("encoder.", "pool."))), 0)
+
+    # 12 --------------------------------------------------------------- anchor-relative coordinates
+    def test_reader_relative_gives_a_common_shift_exactly_zero_gradient(self):
+        """With beta = lam = 0 the loss is the encoder term plus the reader's (detached) loss, so its gradient
+        with respect to a constant c added to every code (frames and anchor) is the entropy term's alone."""
+        grads = {}
+        for relative in (False, True):
+            m = build(estimator="denoiser", beta=0., lam=0., reader_relative=relative)
+            c = torch.zeros(m.state_dim, requires_grad=True)
+            encode = m.encode
+
+            def shifted(info, encode=encode, c=c):
+                out = encode(info); out["emb"] = out["emb"] + c
+                return out
+            m.encode = shifted
+            torch.manual_seed(5); loss, met = m.loss(self.batch, step=1)
+            grads[relative] = torch.autograd.grad(loss, c)[0]
+            self.assertEqual("reader_relative" in met, relative)
+        absolute = float(grads[False].abs().max())
+        self.assertGreater(absolute, 0)
+        self.assertLessEqual(float(grads[True].abs().max()), 1e-5 * absolute)
+
+    def test_reader_relative_denoises_the_change_from_the_anchor(self):
+        from as_jepa_lewm.anchor_reader import encoder_entropy_term, reader_denoising_term, reader_stream_seed
+        m = build(estimator="denoiser", reader_relative=True)
+        torch.manual_seed(5); t = m.window_terms(self.batch, step=1)
+        cond = m.reader.condition(t["mu_A"], t["anchor_frame"])
+        state, sample = t["mu"][:, 1:] - t["mu_A"][:, None], t["s"][:, 1:] - t["mu_A"][:, None]
+        ent, stats = encoder_entropy_term(m.reader, state, sample, cond, m.sigma0)
+        reader_loss = reader_denoising_term(m.reader, state, cond, m.sigma0, m.reader_draws,
+                                            reader_stream_seed(m.reader_seed, 1)).mean()
+        rate = m.beta * t["entry"].mean() + m.beta * t["surprise"].sum(1).mean() + m.lam * t["forecast"].sum(1).mean()
+        torch.manual_seed(5); loss, met = m.loss(self.batch, step=1)
+        self.assertTrue(torch.allclose(loss, rate + ent.sum(1).mean() + m.reader_loss_weight * reader_loss,
+                                       rtol=1e-5, atol=1e-5))
+        self.assertTrue(torch.equal(met["reader_mse"], stats["reader_mse"]))   # the noise is the same either way
+
 
 class AnchorReaderMechanismTest(unittest.TestCase):
     """The plain functions, without the encoder: AnchorReader, encoder_entropy_term, reader_denoising_term,
