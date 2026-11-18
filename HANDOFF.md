@@ -2,13 +2,13 @@
 
 目标：从零SPT-JEPA后果学习＋冻结表示的独立当前动作头，验证可靠稳定的实际控制scaling并超过参照。**尚未达成**。只用dev13/dev15/dev6；禁用dev6-2c/grid16/dev2。时间优先算法与闭环结果，不恢复旧goal、monitor或有限HOLD。
 
-状态入口为 EFS `runs/robocasa_reach3d_scaling_20261114/{MASTER,SESSION_CHECKS}.json`。第 94 次同会话检查在 UTC05:24 确认六组无训练错误。dev13/dev15/dev6 的训练 rank 为 0/8/4，其余卡执行三组冻结读出和控制评估。下一次约 UTC06:24。
+状态入口为 EFS `runs/robocasa_reach3d_scaling_20261114/{MASTER,SESSION_CHECKS}.json`。第 96 次同会话检查在 UTC07:25 确认六组无训练错误，三台各有 8 个训练 rank。下一次约 UTC08:25。
 
 | 主机/卡 | 当前run；根后缀加robocasa_reach3d_ | body语料 / head参数 |
 |---|---|---|
 | dev13 0–3 | spt-commutator-rigid-transport，commutator_rigid_transport_20261118 | 12518（替换512条旋转） / 384 |
 | dev13 4–7 | spt-precision-pair-precise，precision_pair_precise_20261117 | 12518（替换512） / 384 |
-| dev15 0–3 | spt-seed2-factual-prefix，seed2_factual_prefix_20261118 | 12518 / 384 |
+| dev15 0–3 | spt-seed2-causal-shortfall，seed2_causal_shortfall_20261118 | 12518 / 384 |
 | dev15 4–7 | spt-rotation-excited-full-covariance-profile-seed2；rotation_excited_full_covariance_profile_seed2_20261117 | 12518 / 384 |
 | dev6 0–3 | spt-rigid-command-transport；rigid_command_transport_20261117 | 12518 / 384 |
 | dev6 4–7 | spt-rigid-command-transport-seed2，rigid_command_transport_seed2_20261118 | 12518 / 384 |
@@ -51,7 +51,7 @@ Lingjing两分支远端头已再次核对：484f10f3（评测协议）和cd03863
 
 ## 接下来
 
-1. 继续 .2 mm 加法组、原语料旋转复合的两初始化及动作顺序采集对照。1 mm 采集组保留第 3h 的 10/64 及 60156 步全状态后退役。dev15 0–3 的历史预测从原语料 seed2 的 166108 步接续，累计 9h 为 32/64，原配方 30/64，同 .01 ridge 为 29/64。继续第 10h。原语料加法 seed1 的累计 7/8h 为 16/20，保全 171725 步全状态后退役，dev6 4–7 启动从零的旋转复合 seed2。
+1. .2 mm 加法组首五小时严格成功 11/15/17/20/23，继续第 6h。旋转复合 seed2 首小时 7/64，配对加法为 5/64。历史预测累计 9/10h 为 32/26，原配方为 30/29，完整评测和部分 11h 的 209349 步全状态保全。dev15 0–3 从同一原配方 8h 的 166108 步接续，用已观察事实估计当前命令的平移短差。实际完整恢复到 166124 步并进入主段，首评累计 9h。
 2. 每小时检查实际PID/GPU/ERROR及真实成功；有明确问题再改。新源、数据与head容量边界单列；32确认不开给方法选择。稳定性和独立初始化尚须验证。
 3. 只使用RGB历史/实际输入与自然未来RGB或自身码；当前a_t标签仅用于冻结/detach动作读出，无未来/最优动作、专家路径/策略、state/reward/taskID/语言或外部强教师。受保护评测/物理诊断不进训练、教师或proposal memory。
 

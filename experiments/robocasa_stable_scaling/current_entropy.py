@@ -116,6 +116,34 @@ def prefix_prediction_rate(error, action_effect, sigma):
         return .5 * torch.log1p(innovation.square().sum(-1))
 
 
+def causal_shortfall_residual(error, translation_effect, action_effect):
+    """Estimate an absolute translation shortfall from observed history.
+
+    Fit one nonnegative scalar along the issued translation directions in
+    each physical sample, weighting earlier facts by the same inverse squared
+    command lengths as the forward rate. Only earlier observations fit the
+    shortfall for the current prediction. Clip it at the current translation
+    length so that the estimate cannot reverse the issued direction.
+    """
+    dtype = torch.float64 if error.dtype == torch.float64 else torch.float32
+    with torch.autocast(error.device.type, enabled=False):
+        error = error.to(dtype)
+        translation_effect = translation_effect.to(dtype)
+        length = translation_effect.norm(dim=-1, keepdim=True)
+        moving = length > 0
+        direction = translation_effect / torch.where(moving, length, 1.)
+        command_squared = action_effect.detach().to(dtype).square().sum(-1, keepdim=True)
+        relative_precision = torch.where(command_squared > 0, command_squared, 1.).reciprocal()
+        relative_precision = relative_precision * moving
+        shortfall = -(error * direction).sum(-1, keepdim=True)
+        stats = torch.cat((shortfall * relative_precision, relative_precision), dim=-1)
+        history = torch.cat((torch.zeros_like(stats[:, :1]), stats.cumsum(dim=1)[:, :-1]), dim=1)
+        numerator, denominator = history.split(1, dim=-1)
+        estimate = (numerator / torch.where(denominator > 0, denominator, 1.)).clamp_min(0.)
+        correction = torch.minimum(estimate, length)
+        return error + correction * direction, correction
+
+
 def current_entropy_loss(self, batch, step=0, ramp_steps=0):
     if ramp_steps:
         raise ValueError("the conditional information objective has no ramp")
@@ -177,6 +205,15 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
     actions = encoded['act_emb'][:, :-1].reshape_as(current)
     query = self.predict(current, actions)
     error = future.float()-query.float()
+    shortfall = getattr(self, 'factual_execution_shortfall', False)
+    if shortfall:
+        command = batch['action'].reshape(b, 2, w, -1)[:, 0, :-1, 7:10]
+        with torch.autocast(error.device.type, enabled=False):
+            translation_effect = command.float() @ self.action_encoder.weight[:, 7:10].T
+        corrected, correction = causal_shortfall_residual(
+            error.reshape(b, w-1, -1), translation_effect,
+            actions.reshape(b, w-1, -1))
+        error = corrected.reshape_as(error)
     normalize = getattr(self, 'action_scale_normalized_rate', False)
     covariance = getattr(self, 'profile_prediction_covariance', 'isotropic')
     prefix = getattr(self, 'factual_prefix_innovations', False)
@@ -208,6 +245,8 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
         metrics['profiled_command_direction'] = loss.new_tensor(1.)
     if prefix:
         metrics['factual_prefix_innovations'] = loss.new_tensor(1.)
+    if shortfall:
+        metrics['factual_execution_shortfall'] = correction.detach().mean()
     return loss, metrics
 
 
@@ -238,6 +277,11 @@ def install(model, cfg):
         assert rate_only and cfg.get('raw_physical_joint')
         assert model.profile_prediction_covariance == 'full'
         assert model.action_scale_normalized_rate and not model.rigid_command_transport
+    model.factual_execution_shortfall = cfg.get('factual_execution_shortfall', False)
+    if model.factual_execution_shortfall:
+        assert rate_only and cfg.get('raw_physical_joint')
+        assert model.profile_prediction_covariance == 'full' and model.action_scale_normalized_rate
+        assert not model.rigid_command_transport and not model.factual_prefix_innovations
     model.current_entropy_relative = cfg.get('current_entropy_relative', False)
     assert not model.current_entropy_relative or not rate_only
     assert cfg.get('pure_action_transport') and cfg.get('constant_action_response')
