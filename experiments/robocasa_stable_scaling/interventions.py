@@ -21,13 +21,21 @@ from experiments.robocasa_stable_scaling.stream import make_env
 def intervention_commands(seed, design):
     rng = np.random.default_rng(seed)
     commands = np.zeros((16, 7), np.float32)
-    if design == 'rotation':
+    if design in ('rotation', 'rotation-commutator'):
         direction = rng.normal(size=(8, 3))
         direction /= np.linalg.norm(direction, axis=-1, keepdims=True)
         radius = np.exp(rng.uniform(np.log(.01), 0., size=(8, 1)))
         forward = direction*radius*.5
-        commands[:8, 3:6] = forward
-        commands[8:, 3:6] = -forward[::-1]
+        if design == 'rotation':
+            commands[:8, 3:6] = forward
+            commands[8:, 3:6] = -forward[::-1]
+        else:
+            # Keep the same commands, but reverse each rotation in the order
+            # it was issued. A+B-A-B is zero in vector coordinates, while the
+            # robot can retain a visible rotation from their composition.
+            first, second = forward[::2], forward[1::2]
+            loops = np.stack((first, second, -first, -second), axis=1)
+            commands[:, 3:6] = loops.reshape(-1, 3)
         return commands
     if design != 'interleaved':
         raise ValueError(f'Unknown intervention design: {design}')
@@ -97,7 +105,7 @@ def collect(root, lane, lanes, limit=None):
             observations_sha256=sha(observations),
             local_observations=str(Path(plan['local_cache'])/'observations'/(ident+'.npz')),
             input_fields=['RGB', 'actually_issued_current_commands'],
-            intervention_design=design, current_XYZ_inputs_zero=design == 'rotation',
+            intervention_design=design, current_XYZ_inputs_zero=design != 'interleaved',
             collection_controller_differs_from_native_Reach=True,
             normalized_angular_norm_range=[.01, 1.], angular_tolerance_rad=.001,
             no_model_instantiated=True, no_goal_reward_state_or_expert_in_experience=True,
