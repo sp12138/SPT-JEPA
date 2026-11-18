@@ -1,9 +1,46 @@
 {
   "schema_version": 1,
-  "updated": "2026-11-14",
+  "updated": "2026-11-18",
   "scope": "Descriptive best-established settings within each listed internal protocol; NOT global optima/SOTA. Original resolved configs are archival records, not automatic launch instructions. Keep source/config/result identities together.",
   "research_paused": false,
   "entries": {
+    "robocasa_reach3d_scratch_consequence_current_head": {
+      "status": "Highest observed strict success on the 64 repeatedly evaluated Reach3D development cases with the fixed-ridge protocol. Independent replication and stable budget scaling are pending.",
+      "source": "/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_unseen_factor_new_new_20261118",
+      "protocol": "experiments/robocasa_stable_scaling/PROTOCOL.md",
+      "training": {
+        "ancestor": "robocasa_reach3d_rotation_excited_full_covariance_profile_seed2_20261117, random seed 2, 12518 ordinary training trajectories, 12 active hours and 249539 updates",
+        "objective": "Normalized full-covariance profile of the actual input-conditioned additive latent transition, one physical sample at a time.",
+        "continuation": "Resume model, optimizer, scheduler, rank RNGs and data cursor. Sample the original corpus and 116 fresh trajectories at 1:1 odds. New trajectories cover 58 previously unseen training kitchen pairs, both layout and style levels absent from the parent.",
+        "additional_updates": 2048,
+        "total_updates": 251587,
+        "total_active_seconds": 44445.953325,
+        "training_ranks": 4,
+        "config_sha256": "28077e34de90e1ae9c18126261313fa68354f8785eb7bcc0e2045772ee1b24d2",
+        "checkpoint": "training/spt-factor-new_new/paired-2048/weights.pt",
+        "weights_sha256": "72954cbb3d8833b8d4eea3433fb879a891d7361326d0ed3dcb3fd498e759d47d"
+      },
+      "readout": {
+        "cell": "robocasa_reach3d_unseen_factor_transfer_20261118/new_new-fixed",
+        "ridge": 0.01,
+        "train_transitions": 17920,
+        "validation_transitions": 1536,
+        "method": "384 independent linear weights on the frozen 128D code difference. Labels are the same factual transition’s executed XYZ input.",
+        "head_sha256": "0075895313e418ad6274cf66fc51e490aea2ba28e81b25fcb0f899ec657462e5"
+      },
+      "evaluation": {
+        "cases": 64,
+        "kitchens": 4,
+        "observations": "two 224 RGB views",
+        "maximum_actions": 5,
+        "command_norm_limit_m": 0.3,
+        "strict_final_distance_m": 0.002,
+        "final_successes": 35,
+        "mean_final_distance_mm": 9.6017,
+        "within_5mm": 57
+      },
+      "boundaries": "One training initialization. Standard validation-selected ridge gave 30/64 on this same checkpoint. The same-update uniform reference had 27/64 and the former single best had 34/64. The 32-case independent confirmation panel remains sealed. No aligned public RoboJEPA comparison."
+    },
     "robocasa_matched_reach_deep_detached_readout": {
       "status": "development_return_selected_after_hours1_to9; unconfirmed; no stable_control_scaling; not_SOTA_or_long_run_promoted",
       "source": "/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scaling_20261114",
