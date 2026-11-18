@@ -144,6 +144,23 @@ def causal_shortfall_residual(error, translation_effect, action_effect):
         return error + correction * direction, correction
 
 
+def camera_motion_rate(codes, action_effect, sigma):
+    """Profile the mean squared forward residual across synchronized cameras.
+
+    Each view predicts the effect of the same issued command. Its code can
+    have a different constant origin. Mean squared residual is the error of
+    the mean displacement plus the variance of the views' displacements.
+    """
+    dtype = torch.float64 if codes.dtype == torch.float64 else torch.float32
+    codes = codes.to(dtype)
+    command = action_effect.to(dtype)
+    error = codes[:, 1:] - (codes[:, :-1] + command.unsqueeze(2))
+    square = error.square().sum(dim=-1).mean(dim=2)
+    length_squared = command.detach().square().sum(dim=-1)
+    variance = sigma**2 * torch.where(length_squared > 0, length_squared, 1.)
+    return .5 * torch.log1p(square / variance), square
+
+
 def current_entropy_loss(self, batch, step=0, ramp_steps=0):
     if ramp_steps:
         raise ValueError("the conditional information objective has no ramp")
@@ -183,6 +200,14 @@ def conditional_rate_loss(self, batch, step=0, ramp_steps=0):
     pixels, _, _ = self.prepare(batch)
     encoded = self.encode(dict(pixels=pixels, action=batch['action']))
     flat = encoded['emb']
+    if getattr(self, 'camera_motion_consensus', False):
+        rate, square = camera_motion_rate(
+            encoded['camera_codes'], encoded['act_emb'][:, :-1], self.sigma0)
+        loss = rate.mean()
+        return loss, dict(loss=loss, conditional_rate_nats=loss,
+            feature_std=flat.float().std((0, 1)).mean(),
+            factual_prediction_mse=square.mean()/flat.shape[-1],
+            camera_motion_consensus=loss.new_tensor(1.))
     b, w = flat.shape[:2]
     current = flat[:, :-1].reshape(b*(w-1), 1, -1)
     future = flat[:, 1:].reshape_as(current)
@@ -282,6 +307,12 @@ def install(model, cfg):
         assert rate_only and cfg.get('raw_physical_joint')
         assert model.profile_prediction_covariance == 'full' and model.action_scale_normalized_rate
         assert not model.rigid_command_transport and not model.factual_prefix_innovations
+    model.camera_motion_consensus = cfg.get('camera_motion_consensus', False)
+    if model.camera_motion_consensus:
+        assert rate_only and cfg.get('raw_physical_joint') and model.action_scale_normalized_rate
+        assert model.profile_prediction_covariance == 'full'
+        assert not (model.rigid_command_transport or model.factual_prefix_innovations
+                    or model.factual_execution_shortfall)
     model.current_entropy_relative = cfg.get('current_entropy_relative', False)
     assert not model.current_entropy_relative or not rate_only
     assert cfg.get('pure_action_transport') and cfg.get('constant_action_response')
