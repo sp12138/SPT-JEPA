@@ -5,28 +5,28 @@
   "research_paused": false,
   "entries": {
     "robocasa_reach3d_scratch_consequence_current_head": {
-      "status": "Highest observed strict success on the repeated 64-case Reach3D development panel with one fixed ridge coefficient. Subsequent training budgets and independent initialization are under test.",
-      "source": "/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_scene_stream_broad_20261119",
+      "status": "Highest observed strict success on four repeated development kitchens at a fixed 2048-update continuation. Independent initialization, longer-budget scaling and the sealed confirmation panel remain under evaluation.",
+      "source": "/efs/prescottsun/SPT-JEPA/runs/robocasa_reach3d_nested_scene_broad_1856_20261119",
       "protocol": "experiments/robocasa_stable_scaling/PROTOCOL.md",
       "training": {
         "ancestor": "robocasa_reach3d_rotation_excited_full_covariance_profile_seed2_20261117, random seed 2, 12518 ordinary training trajectories, 12 active hours and 249539 updates",
         "objective": "Normalized full-covariance profile of the actual input-conditioned additive latent transition, one physical sample at a time.",
-        "continuation": "Resume the full 12-hour model, optimizer, scheduler, four rank RNGs, and data cursor. Sample the base and 464 additional ordinary factual trajectories at equal odds. Each new trajectory visits a different TRAIN layout and style combination outside the 58 original combinations. The familiar-arm resets and every action are matched.",
+        "continuation": "Resume the full 12-hour state and sample from the base or 1856 additional ordinary factual training trajectories at equal odds. Each added trajectory visits a distinct layout and style combination outside the 58 original combinations. The familiar arm matches each reset seed and every input command.",
         "additional_updates": 2048,
         "total_updates": 251587,
-        "total_active_seconds": 43886.302701,
+        "total_active_seconds": 44138.511953,
         "training_ranks": 4,
-        "config_sha256": "0f9d805a0db08e281f6d938f025e632463da93ac414d9d57c208b3ce67577af7",
-        "checkpoint": "training/spt-scene-stream-broad/paired-2048/weights.pt",
-        "weights_sha256": "58aa1f220076c905ec6c46e5eb6ced3c648be21304fb775161ac6b2306cf855a"
+        "config_sha256": "8379db6671d5b126795a5f7469a51e58869d33baedbd90afad65d5489b64d6f1",
+        "checkpoint": "training/spt-nested-scene-broad-1856/paired-2048/weights.pt",
+        "weights_sha256": "a86f28b9258a26f0b4bfef1e1d5d8de9e4763b122bd054c6dc5a97a08bbb44ad"
       },
       "readout": {
-        "cell": "robocasa_reach3d_scene_stream_broad_20261119/hourly-readouts/spt-scene-stream-broad/paired-2048",
+        "cell": "robocasa_reach3d_nested_scene_broad_1856_20261119/hourly-readouts/spt-nested-scene-broad-1856/paired-2048",
         "ridge": 0.01,
         "train_transitions": 17920,
         "validation_transitions": 1536,
         "method": "384 independent linear weights on the frozen 128D code difference. Labels are the same factual transition’s executed XYZ input.",
-        "head_sha256": "1e8451569f157b98664b2f891ab1fb9a690669a33c81c1ba6c861a6d1acd7a86"
+        "head_sha256": "f31089f3ea9ff11dfd4a2ecf9ea630d3e59257360c3429770d6c9846250d0b52"
       },
       "evaluation": {
         "cases": 64,
@@ -35,12 +35,12 @@
         "maximum_actions": 5,
         "command_norm_limit_m": 0.3,
         "strict_final_distance_m": 0.002,
-        "final_successes": 37,
-        "mean_final_distance_mm": 9.0756,
-        "within_5mm": 58,
-        "mean_return": 0.954137
+        "final_successes": 39,
+        "mean_final_distance_mm": 8.5572,
+        "within_5mm": 59,
+        "mean_return": 0.958052
       },
-      "boundaries": "One trained parent and 64 development cases. Equally many new trajectories in the 58 familiar kitchens reached 26/64, with 14 gains and 3 losses for the broad arm. The preceding 116-trajectory record of 35/64 (unseen_factor_new_new_20261118) gained 7 and lost 5 cases when replaced by this model. The 32 independent confirmation cases remain sealed. Public RoboJEPA performance requires a protocol-matched comparison."
+      "boundaries": "The familiar arm reached 30/64. The broad arm gained 13 cases and lost 4. Nested 116/464/1856-episode panels scored 32/37/39 versus 26/26/30 for familiar kitchens. The 464-episode broad recipe reached 32 on reuse or 37 with 1392 fresh trajectories at +8192. All use the same 64 development cases. The 32 confirmation cases remain sealed. Public RoboJEPA performance requires a protocol-matched comparison."
     },
     "robocasa_matched_reach_deep_detached_readout": {
       "status": "development_return_selected_after_hours1_to9; unconfirmed; no stable_control_scaling; not_SOTA_or_long_run_promoted",
