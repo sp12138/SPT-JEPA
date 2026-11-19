@@ -520,6 +520,10 @@ class Windows:
     def __init__(self, root, manifest, cfg):
         self.records = json.loads(manifest.read_text())["records"]
         assert self.records and all(r["split"] == "train" for r in self.records)
+        self.collection_boundary = cfg.get("factual_collection_boundary")
+        if self.collection_boundary is not None:
+            if type(self.collection_boundary) is not int or not 0 < self.collection_boundary < len(self.records):
+                raise ValueError("factual_collection_boundary must split the manifest into two nonempty sources")
         self.cfg = cfg; self.features = {}; self.observations = {}; self.pixels = {}
         # Normalize the actual command by the declared action bounds, rather
         # than reusing statistics derived from a different action semantic.
@@ -530,7 +534,14 @@ class Windows:
 
     def __getitem__(self, index):
         rng = np.random.default_rng(np.random.SeedSequence([781021, self.cfg["seed"], int(index)]))
-        row = self.records[int(rng.integers(len(self.records)))]; ident = row["id"]
+        if self.collection_boundary is None:
+            row_index = rng.integers(len(self.records))
+        elif rng.integers(2) == 0:
+            row_index = rng.integers(self.collection_boundary)
+        else:
+            row_index = rng.integers(self.collection_boundary, len(self.records))
+        row = self.records[int(row_index)]
+        ident = row["id"]
         start = int(rng.integers(10))
         if ident not in self.features:
             if self.cfg.get('raw_pixel_encoder',False):
