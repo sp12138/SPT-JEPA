@@ -57,7 +57,7 @@ of objectives cannot reach that is also a complete answer.
 2. **A reference arm: Peng's Reach3D objective on PushT**, two seeds, one epoch,
    same probes. It tells us what the simplest pixel-free rule gives on a task where
    an object moves.
-3. **Fixes that follow from step 1.** One is already agreed: if the state carries
+3. **Fixes that follow from step 1.** One is authorised in advance: if the state carries
    time, give the reader what is known for free about time (the signed number of
    frames between anchor and frame, and the frame's index when it is available at
    test time), so that it stops being rewarded. Others you propose from the

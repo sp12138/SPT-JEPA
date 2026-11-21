@@ -5,6 +5,12 @@ side. Lingjing's agent sends each session one phase of work at a time and reads 
 reply in the session. This file is the standing brief for those sessions: a chat
 message names a phase below and adds only what is specific to that moment.
 
+**Update, later on 2026-11-21.** Peng opened three sessions, one per direction, and
+each now owns its direction end to end under a standing mandate:
+[mandates/README.md](mandates/README.md). The mandates replace the phase-by-phase
+Sections 2 to 5 below, which are kept as the record of what was run on the first
+day. Section 1 remains the baseline that the mandates' common rules extend.
+
 Background for every phase is in [../results-index.md](../results-index.md), which
 lists what has been run, with sources.
 
