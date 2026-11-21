@@ -15,27 +15,33 @@ channels. The state must support latent planning, generation and probing.
 
 ## Where to start
 
-- [decoder-free/handoff-anchor-reader.md](decoder-free/handoff-anchor-reader.md) (2026-11-16):
-  the current decoder-free handoff. The anchor-gap diagnostic on existing checkpoints
-  (PushT, Cube, the current RoboCasa Reach3D models), the denoiser estimator of the
-  decoder-free objective on PushT, and its port to the Reach3D protocol. Origin:
+- [../results-index.md](../results-index.md) (2026-11-21): one index of every
+  result in this repository, by line of work (the original framework with the pixel
+  renderer, the pixel-free variants, the evaluation assets), with protocols, sources
+  and a map of all experiment folders.
+- [decoder-free/handoff-two-tracks.md](decoder-free/handoff-two-tracks.md) (2026-11-18):
+  the current pixel-free proposal. The anchor reader, a learned denoiser that
+  estimates what the state carries beyond the anchor, with time-correlated posterior
+  noise (`rho = 0.8`), anchor-relative coordinates and no initial-scale calibration.
+  Section 4 is the PushT test that decides whether it works. It replaces Parts P and R
+  of [decoder-free/handoff-anchor-reader.md](decoder-free/handoff-anchor-reader.md)
+  (2026-11-16); Part G of that document, the anchor-gap diagnostic on existing
+  checkpoints, is still requested. The Reach3D arms of Section 5 were closed by a
+  measurement on frozen models (see the results index). Origin:
   [discussions/2026-11-15-latent-action-and-decoder-free-directions.md](discussions/2026-11-15-latent-action-and-decoder-free-directions.md).
-- [as-jepa-evaluation-handoff.md](as-jepa-evaluation-handoff.md) (2026-11-16): the
-  agreed evaluation design, handed to the collaborator. AS-JEPA as a world model; the
-  map of model families and how each is evaluated; one fixed action head on each
-  frozen model, evaluated as the policy alone (E1) and as the policy plus world-model
-  selection among its proposals (E2), with one CEM row for continuity; benchmarks,
-  controlled arms and a step-by-step agent plan on the RoboJEPA code base.
-- [decoder-free/](decoder-free/) (branch `lingjing/decoder-free-as-jepa`, 2026-10-31):
-  an exploratory line that replaces the renderer by the state's information beyond
-  the anchor, computed in state space. With an optimal renderer, the round-1
-  objective depends on the encoder only through that quantity, the encoder's other
-  entropies, and a constant, so the theory carries over and every term is in nats.
-  Theory in [decoder-free/story.md](decoder-free/story.md); a launchable spec
-  ([decoder-free/spec.md](decoder-free/spec.md)) with a price × prediction-weight
-  grid, forecast structure (`lam`, noise, open loop, one step), the transient
-  threshold, appearance, estimator gaming, initial scale and TwoRoom; reference implementation and 14
-  CPU tests. Origin: [discussions/2026-10-31-decoder-free-as-jepa.md](discussions/2026-10-31-decoder-free-as-jepa.md).
+- [as-jepa-evaluation-handoff.md](as-jepa-evaluation-handoff.md) (2026-11-16,
+  revision 2): the evaluation design and story. A two-stage protocol for measuring
+  how latent world models scale (own objective without action prediction, then frozen
+  or fine-tuned probes), three measurements (policy alone, representation probes in
+  physical units, policy plus latent planning), CEM as a validation subset, the
+  contribution assessment, benchmarks, model series and a step-by-step agent plan on
+  the RoboJEPA code base.
+- [decoder-free/](decoder-free/) (2026-10-31): the theory of the pixel-free line
+  ([decoder-free/story.md](decoder-free/story.md)) and its reference code and tests.
+  The first launch spec ([decoder-free/spec.md](decoder-free/spec.md)), which used a
+  closed-form Gaussian estimate of the same quantity, is superseded: all 62 PushT
+  recipes built on it failed. Origin:
+  [discussions/2026-10-31-decoder-free-as-jepa.md](discussions/2026-10-31-decoder-free-as-jepa.md).
 - [as-jepa-round2-spec.md](as-jepa-round2-spec.md): the current handoff spec
   (2026-10-31, revision 3). Round 2 trains the renderer, with probability `lam` per
   frame, on the prior's forecast instead of the encoded state, which makes the
