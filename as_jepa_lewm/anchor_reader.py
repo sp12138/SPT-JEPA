@@ -48,10 +48,23 @@ Knobs (in addition to those of decoder_free.py):
                       update. Adam's step is invariant to a constant factor on a group's gradient, so the
                       reader's own update does not depend on this factor. The logged reader_loss is unweighted.
   reader_seed         seed of the reader's initial weights and of its noise stream
+  rho                 AR(1) correlation of the posterior noise across consecutive frames (default 0). Each frame
+                      keeps marginal noise sigma0; the surprise becomes the exact KL of the AR(1) posterior's
+                      conditional q(s_t | s_<t, x) = N(mu_t + rho (s_{t-1} - mu_{t-1}), sigma0^2 (1 - rho^2))
+                      against the prior N(m_t, sigma0^2), as in ForecastScoredLeWM and RobustLeWM. The reader and
+                      the entropy term are unchanged, because each frame's noisy state is still a draw from its
+                      marginal. Needs a new estimator, prior_input="sample", and either lam = 0 or the one-step
+                      noiseless forecast (where Forecast_t equals Surprise_t).
+  reader_relative     False (default): the reader denoises s_t. True: it denoises s_t - mu_A, and the encoder
+                      term becomes sg(score) . (mu_t - mu_A) with mu_A attached. h(s_t | anchor) is unchanged,
+                      because mu_A is a function of the anchor; a common shift of every code now receives exactly
+                      zero gradient from this term, so an imperfect reader cannot drag the code's origin.
+                      Denoiser only (nce is translation invariant already).
 
 Logged in addition to DecoderFreeLeWM's keys: reader_loss (R), reader_mse (error per dimension of xi_hat on the
 posterior sample: 0 means the noise is fully recovered, so the anchor determines the state; values toward 1 mean
-the reader cannot separate signal from noise), score_rms. For the denoiser the logged info is the pooled log-det
+the reader cannot separate signal from noise), score_rms, and temporal_noise_rho and reader_relative when
+they differ from their defaults. For the denoiser the logged info is the pooled log-det
 diagnostic and the logged loss contains the surrogate sum_t ent_t, so neither is the trained quantity; for nce
 info is the trained InfoNCE value. information_diagnostics stays a no-grad monitor for every estimator.
 
@@ -69,6 +82,7 @@ from torch import nn
 from torch.nn import functional as F
 
 from as_jepa_lewm.decoder_free import DecoderFreeLeWM, ACTIVE_NATS
+from as_jepa_lewm.forecast_scored import ar1
 from vforge.models.as_jepa.codes import entry_nats, surprise_nats
 
 READER_INIT_STREAM = 15485863   # separate random stream for the reader's initial weights
@@ -187,11 +201,21 @@ def window_nce(mu, s, mu_A, sigma0):
 
 class AnchorReaderLeWM(DecoderFreeLeWM):
     def __init__(self, estimator="denoiser", reader_anchor="frame", reader_width=512, reader_depth=3,
-                 reader_draws=4, reader_lr=5e-4, reader_seed=0, reader_loss_weight=0.01, **kwargs):
+                 reader_draws=4, reader_lr=5e-4, reader_seed=0, reader_loss_weight=0.01, rho=0.,
+                 reader_relative=False, **kwargs):
         new = estimator in NEW_ESTIMATORS
         super().__init__(estimator="logdet" if new else estimator, **kwargs)      # the parent rejects unknown values
         if new and self.conditioning != "anchor":
             raise ValueError("the denoiser and nce estimators need the anchor reference")
+        if not 0. <= rho < 1.:
+            raise ValueError("rho must lie in [0, 1)")
+        if rho and not (new and self.prior_input == "sample"
+                        and (self.lam == 0 or (self.horizon == "one_step" and not self.forecast_noise))):
+            raise ValueError("rho needs a new estimator, prior_input='sample', and lam = 0 or the one-step "
+                             "noiseless forecast")
+        if reader_relative and estimator != "denoiser":
+            raise ValueError("reader_relative applies to the denoiser only")
+        self.rho, self.reader_relative = float(rho), bool(reader_relative)
         if reader_anchor not in {"frame", "state"}:
             raise ValueError("unknown reader_anchor")
         for name, value in (("reader_width", reader_width), ("reader_depth", reader_depth),
@@ -240,22 +264,29 @@ class AnchorReaderLeWM(DecoderFreeLeWM):
     # ---------------------------------------------------------------- objective
     def window_terms(self, batch, step=0):
         """DecoderFreeLeWM.loss up to the information term, in the same order, so every tensor and every
-        main-stream draw equals the parent's at the same seed and step. Also returns the anchor frame."""
+        main-stream draw equals the parent's at the same seed and step when rho = 0. Also returns the anchor
+        frame and the surprise target (mu_t at rho = 0; the AR(1) posterior's conditional mean otherwise)."""
         frames = self.frames(batch)
         info_in = self.encode(dict(pixels=frames, action=batch["action"]))
         flat, act_emb = info_in["emb"], info_in["act_emb"]
         b, w1 = flat.shape[:2]; w = w1 - 1
         mu_all = flat.reshape(b, w1, self.state_slots, self.state_width)
         mu, mu_A = mu_all[:, :w], mu_all[:, w]
-        s = mu + self.sigma0 * torch.randn_like(mu)
+        s = mu + self.sigma0 * ar1(torch.randn_like(mu), self.rho)                  # same draws; AR(1) for rho > 0
         inputs = s if self.prior_input == "sample" else mu
         predicted = self.predict(inputs.flatten(2)[:, :-1], act_emb[:, :-1]).reshape_as(mu[:, 1:])
         entry = entry_nats(mu[:, 0], self.sigma0)                                   # [B]
-        surprise = surprise_nats(mu[:, 1:], predicted, self.sigma0)                 # [B, T]
+        if self.rho:
+            target = mu[:, 1:] + self.rho * (s[:, :-1] - mu[:, :-1])
+            variance_kl_per_dimension = .5 * (-self.rho ** 2 - math.log1p(-self.rho ** 2))
+            surprise = surprise_nats(target, predicted, self.sigma0) + self.state_dim * variance_kl_per_dimension
+        else:
+            target = mu[:, 1:]
+            surprise = surprise_nats(mu[:, 1:], predicted, self.sigma0)             # [B, T]
         forecast = (self.forecast_term(mu, s, inputs, predicted, act_emb, surprise, step)
                     if self.lam > 0 else torch.zeros_like(surprise))
         return dict(mu=mu, mu_A=mu_A, s=s, inputs=inputs, predicted=predicted, entry=entry, surprise=surprise,
-                    forecast=forecast, anchor_frame=frames[:, w])
+                    forecast=forecast, anchor_frame=frames[:, w], target=target)
 
     def loss(self, batch, step=0, ramp_steps=0):
         if self.estimator not in NEW_ESTIMATORS:
@@ -270,8 +301,11 @@ class AnchorReaderLeWM(DecoderFreeLeWM):
         extra, info = {}, None
         if self.estimator == "denoiser":
             cond = self.reader.condition(mu_A, terms["anchor_frame"])
-            ent, extra = encoder_entropy_term(self.reader, mu[:, 1:], s[:, 1:], cond, self.sigma0)
-            reader_loss = reader_denoising_term(self.reader, mu[:, 1:], cond, self.sigma0, self.reader_draws,
+            state, sample = mu[:, 1:], s[:, 1:]
+            if self.reader_relative:            # mu_A attached: a common shift cancels exactly in the encoder term
+                state, sample = state - mu_A[:, None], sample - mu_A[:, None]
+            ent, extra = encoder_entropy_term(self.reader, state, sample, cond, self.sigma0)
+            reader_loss = reader_denoising_term(self.reader, state, cond, self.sigma0, self.reader_draws,
                                                 reader_stream_seed(self.reader_seed, step)).mean()
             loss = loss + ent.sum(1).mean() + self.reader_loss_weight * reader_loss
             extra["reader_loss"] = reader_loss.detach()
@@ -283,11 +317,11 @@ class AnchorReaderLeWM(DecoderFreeLeWM):
             diagnostics = self.information_diagnostics(mu[:, 1:].detach(), mu_A.detach())
             if info is None:                    # the denoiser's term has no value: log the pooled log-det instead
                 info = diagnostics["info_pooled"].float()
-            prev = inputs[:, :-1].float()
-            d_true, d_pred = mu[:, 1:].float() - prev, predicted.float() - prev
+            prev, target = inputs[:, :-1].float(), terms["target"].float()
+            d_true, d_pred = target - prev, predicted.float() - prev
             calib_slope = (d_true * d_pred).sum() / d_pred.square().sum().clamp_min(1e-12)
             per_dim_rate = (.5 * mu[:, 0].float().square()
-                            + (mu[:, 1:].float() - predicted.float()).square().sum(1) / (2 * self.sigma0 ** 2)).mean(0)
+                            + (target - predicted.float()).square().sum(1) / (2 * self.sigma0 ** 2)).mean(0)
             metrics = dict(loss=loss, info=info, entry=entry.mean(), surprise=surprise.mean(),
                            forecast=forecast.mean(), rate=(entry + surprise.sum(1)).mean(),
                            feature_std=mu.float().std((0, 1)).mean(),
@@ -295,4 +329,8 @@ class AnchorReaderLeWM(DecoderFreeLeWM):
                            active_dims=(per_dim_rate > ACTIVE_NATS).sum(), calib_slope=calib_slope)
             metrics.update(diagnostics)
             metrics.update(extra)
+            if self.rho:
+                metrics["temporal_noise_rho"] = loss.new_tensor(self.rho)
+            if self.reader_relative:
+                metrics["reader_relative"] = loss.new_tensor(1.)
         return loss, metrics
