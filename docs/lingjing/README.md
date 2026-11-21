@@ -4,10 +4,9 @@ Branch: `lingjing/anchored-state-jepa`. Moved here on 2026-10-25 from a private
 LeWM / stable-worldmodel fork (`sparse_jepa`), where the ideas were developed.
 Only plans, design notes and discussion logs were carried over; datasets,
 checkpoints, results, PDFs and literature dumps stay outside this repository.
-This directory preserves the planning snapshots. The 2026-10-27 insight campaign
-implemented both branches and published results; see the
-[task audit](../../experiments/insights12h/TASK_AUDIT_20261028.md) for completed
-work and remaining requirements. The original full experiment spec is incomplete.
+The collaborator implemented and ran the first round on branch
+`research/ideas-20261028`; this folder holds our plans, reviews and the round-2
+reference implementation.
 
 The goal is a video world model, trained end to end on top of SPT's ViT, causal
 transformer and DiT flow renderer, whose learned state holds what the dynamics
@@ -15,6 +14,49 @@ need and leaves persistent appearance and unpredictable detail to other
 channels. The state must support latent planning, generation and probing.
 
 ## Where to start
+
+- [decoder-free/handoff-anchor-reader.md](decoder-free/handoff-anchor-reader.md) (2026-11-16):
+  the current decoder-free handoff. The anchor-gap diagnostic on existing checkpoints
+  (PushT, Cube, the current RoboCasa Reach3D models), the denoiser estimator of the
+  decoder-free objective on PushT, and its port to the Reach3D protocol. Origin:
+  [discussions/2026-11-15-latent-action-and-decoder-free-directions.md](discussions/2026-11-15-latent-action-and-decoder-free-directions.md).
+- [as-jepa-evaluation-handoff.md](as-jepa-evaluation-handoff.md) (2026-11-16): the
+  agreed evaluation design, handed to the collaborator. AS-JEPA as a world model; the
+  map of model families and how each is evaluated; one fixed action head on each
+  frozen model, evaluated as the policy alone (E1) and as the policy plus world-model
+  selection among its proposals (E2), with one CEM row for continuity; benchmarks,
+  controlled arms and a step-by-step agent plan on the RoboJEPA code base.
+- [decoder-free/](decoder-free/) (branch `lingjing/decoder-free-as-jepa`, 2026-10-31):
+  an exploratory line that replaces the renderer by the state's information beyond
+  the anchor, computed in state space. With an optimal renderer, the round-1
+  objective depends on the encoder only through that quantity, the encoder's other
+  entropies, and a constant, so the theory carries over and every term is in nats.
+  Theory in [decoder-free/story.md](decoder-free/story.md); a launchable spec
+  ([decoder-free/spec.md](decoder-free/spec.md)) with a price × prediction-weight
+  grid, forecast structure (`lam`, noise, open loop, one step), the transient
+  threshold, appearance, estimator gaming, initial scale and TwoRoom; reference implementation and 14
+  CPU tests. Origin: [discussions/2026-10-31-decoder-free-as-jepa.md](discussions/2026-10-31-decoder-free-as-jepa.md).
+- [as-jepa-round2-spec.md](as-jepa-round2-spec.md): the current handoff spec
+  (2026-10-31, revision 3). Round 2 trains the renderer, with probability `lam` per
+  frame, on the prior's forecast instead of the encoded state, which makes the
+  objective reward information that predicts the future (sufficiency). The design
+  exploration covers `lam`, priced or noiseless forecasts, one-step or open-loop
+  horizons, correlated posterior noise (`rho`) and the code resolution (`sigma0`):
+  - PushT: a free diagnostic of rollout contraction on existing checkpoints, matched
+    LeWM, a forecast factorial, and the initial scale (with a sham control) and
+    `sigma0` on the seeds where the original arm failed.
+  - TwoRoom: why the state never left its initial scale, and whether starting it at
+    `sigma0` fixes that; priced against noiseless forecasts; `sigma0`.
+  - Cube: whether a past-only or constant anchor, or a smaller `sigma0`, moves the
+    cube into the state and into the planning cost.
+
+  The dot and colour purity tests wait for a later round. The spec also divides the
+  work with the collaborator's harder-task campaign. Reference implementation and 24
+  CPU contract tests in [round2/](round2/).
+- [as-jepa-results-review-20261028.md](as-jepa-results-review-20261028.md) and
+  [as-jepa-status-and-next-steps-20261029.md](as-jepa-status-and-next-steps-20261029.md):
+  the review of the collaborator's first-round results and the plan that
+  followed it (its Phase 1 is superseded by the round-2 spec).
 
 0. [as-jepa-story.md](as-jepa-story.md): the canonical statement (2026-10-26):
    formulation, the objective and how the JEPA loss emerges from it, the
