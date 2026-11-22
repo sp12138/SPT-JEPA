@@ -1,5 +1,9 @@
 # Direction mandates for the three shared sessions
 
+**Update 2026-11-22.** The standing goals in [../goals/](../goals/README.md) replace
+the work lists and stop conditions of these mandates. The common rules below stay
+in force except where the goals' README says otherwise.
+
 Written 2026-11-21. The project has three directions, and Peng has opened one agent
 session for each. Each session owns its direction end to end: it plans the runs,
 tunes, monitors, analyses and writes up. The work sits with these sessions because
