@@ -324,14 +324,15 @@ class AnchorReaderModelTest(unittest.TestCase):
 
     # 11 --------------------------------------------------------------- correlated posterior noise (rho)
     def test_rho_argument_validation(self):
-        for kw in (dict(rho=1.), dict(rho=-.1), dict(estimator="logdet", rho=.8),
-                   dict(estimator="logdet_window", rho=.8), dict(rho=.8, prior_input="mean"),
+        for kw in (dict(rho=1.), dict(rho=-.1), dict(estimator="logdet", rho=.8, prior_input="mean"),
+                   dict(estimator="logdet_window", rho=.8, lam=1., horizon="rollout"), dict(rho=.8, prior_input="mean"),
                    dict(rho=.8, lam=1., forecast_noise=True), dict(rho=.8, lam=1., horizon="rollout"),
                    dict(estimator="nce", reader_relative=True), dict(estimator="logdet", reader_relative=True)):
             with self.assertRaises(ValueError, msg=kw):
                 build(**kw)
         for kw in (dict(rho=.8, lam=0.), dict(rho=.8, lam=0., horizon="rollout"), dict(rho=.8, lam=1.),
-                   dict(estimator="nce", rho=.8, lam=1.), dict(rho=.8, lam=1., reader_relative=True)):
+                   dict(estimator="nce", rho=.8, lam=1.), dict(rho=.8, lam=1., reader_relative=True),
+                   dict(estimator="logdet", rho=.8, lam=1.), dict(estimator="logdet_window", rho=.8, lam=0.)):
             build(**kw)                                     # accepted
 
     def test_rho_zero_is_bitwise_the_default(self):
@@ -375,6 +376,32 @@ class AnchorReaderModelTest(unittest.TestCase):
                 loss.backward()
                 self.assertGreater(sum(float(p.grad.abs().sum()) for n, p in m.named_parameters()
                                        if p.grad is not None and n.startswith(("encoder.", "pool."))), 0)
+
+    def test_rho_with_the_log_det_estimators_is_the_parent_reward_on_the_ar1_terms(self):
+        rho = .8
+        for estimator in ("logdet", "logdet_window"):
+            for lam in (0., 1.):
+                m = build(estimator=estimator, rho=rho, lam=lam)
+                ref = build(estimator="denoiser", rho=rho, lam=lam)
+                self.assertIsNone(m.reader)
+                torch.manual_seed(5); t = m.window_terms(self.batch, step=3)
+                torch.manual_seed(5); t0 = ref.window_terms(self.batch, step=3)
+                for k in ("mu", "s", "entry", "surprise", "forecast"):      # the same AR(1) terms as the reader arms
+                    self.assertTrue(torch.equal(t[k], t0[k]), (estimator, lam, k))
+                torch.manual_seed(5); loss, met = m.loss(self.batch, step=3)
+                info = m.information(t["mu"][:, 1:], t["mu_A"])
+                expect = (m.beta * t["entry"].mean() + (m.beta + lam) * t["surprise"].sum(1).mean()
+                          - (W - 1) * info.to(t["entry"].dtype))
+                self.assertTrue(torch.allclose(loss, expect, rtol=1e-6, atol=1e-6), (estimator, lam))
+                self.assertTrue(torch.equal(met["info"], info.detach().float()))
+                key = "info_window" if estimator == "logdet_window" else "info_pooled"
+                self.assertAlmostEqual(float(met["info"]), float(met[key]), places=5)
+                self.assertAlmostEqual(float(met["temporal_noise_rho"]), rho, places=6)
+                self.assertFalse(any(k.startswith("reader") for k in met))
+                loss.backward()
+                for prefix in ENCODER_SIDE:
+                    self.assertGreater(sum(float(p.grad.abs().sum()) for n, p in m.named_parameters()
+                                           if p.grad is not None and n.startswith(prefix)), 0, (estimator, lam, prefix))
 
     # 12 --------------------------------------------------------------- anchor-relative coordinates
     def test_reader_relative_gives_a_common_shift_exactly_zero_gradient(self):

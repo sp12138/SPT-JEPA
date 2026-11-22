@@ -53,8 +53,10 @@ Knobs (in addition to those of decoder_free.py):
                       conditional q(s_t | s_<t, x) = N(mu_t + rho (s_{t-1} - mu_{t-1}), sigma0^2 (1 - rho^2))
                       against the prior N(m_t, sigma0^2), as in ForecastScoredLeWM and RobustLeWM. The reader and
                       the entropy term are unchanged, because each frame's noisy state is still a draw from its
-                      marginal. Needs a new estimator, prior_input="sample", and either lam = 0 or the one-step
-                      noiseless forecast (where Forecast_t equals Surprise_t).
+                      marginal. Needs prior_input="sample", and either lam = 0 or the one-step noiseless forecast
+                      (where Forecast_t equals Surprise_t). With "logdet" or "logdet_window" the information term
+                      is DecoderFreeLeWM's, computed on the same means: the closed-form reward with this noise
+                      and no reader.
   reader_relative     False (default): the reader denoises s_t. True: it denoises s_t - mu_A, and the encoder
                       term becomes sg(score) . (mu_t - mu_A) with mu_A attached. h(s_t | anchor) is unchanged,
                       because mu_A is a function of the anchor; a common shift of every code now receives exactly
@@ -209,10 +211,9 @@ class AnchorReaderLeWM(DecoderFreeLeWM):
             raise ValueError("the denoiser and nce estimators need the anchor reference")
         if not 0. <= rho < 1.:
             raise ValueError("rho must lie in [0, 1)")
-        if rho and not (new and self.prior_input == "sample"
+        if rho and not (self.prior_input == "sample"
                         and (self.lam == 0 or (self.horizon == "one_step" and not self.forecast_noise))):
-            raise ValueError("rho needs a new estimator, prior_input='sample', and lam = 0 or the one-step "
-                             "noiseless forecast")
+            raise ValueError("rho needs prior_input='sample', and lam = 0 or the one-step noiseless forecast")
         if reader_relative and estimator != "denoiser":
             raise ValueError("reader_relative applies to the denoiser only")
         self.rho, self.reader_relative = float(rho), bool(reader_relative)
@@ -289,7 +290,7 @@ class AnchorReaderLeWM(DecoderFreeLeWM):
                     forecast=forecast, anchor_frame=frames[:, w], target=target)
 
     def loss(self, batch, step=0, ramp_steps=0):
-        if self.estimator not in NEW_ESTIMATORS:
+        if self.estimator not in NEW_ESTIMATORS and not self.rho:
             return super().loss(batch, step, ramp_steps)
         if ramp_steps:
             raise ValueError("no schedule on the decoder-free objective")
@@ -309,10 +310,14 @@ class AnchorReaderLeWM(DecoderFreeLeWM):
                                                 reader_stream_seed(self.reader_seed, step)).mean()
             loss = loss + ent.sum(1).mean() + self.reader_loss_weight * reader_loss
             extra["reader_loss"] = reader_loss.detach()
-        else:
+        elif self.estimator == "nce":
             nce = window_nce(mu[:, 1:], s[:, 1:], mu_A, self.sigma0)                # [B, T]
             loss = loss - nce.sum(1).mean().to(entry.dtype)
             info = nce.mean().detach().float()
+        else:                                   # log-det with AR(1) noise: the parent's information term
+            trained = self.information(mu[:, 1:], mu_A)
+            loss = loss - mu[:, 1:].shape[1] * trained.to(entry.dtype)
+            info = trained.detach().float()
         with torch.no_grad():                                                       # as DecoderFreeLeWM.loss
             diagnostics = self.information_diagnostics(mu[:, 1:].detach(), mu_A.detach())
             if info is None:                    # the denoiser's term has no value: log the pooled log-det instead
