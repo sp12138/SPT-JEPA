@@ -1,8 +1,8 @@
-# SPT 与 SPT-JEPA 研究结论
+# SPT-JEPA 在 PushT、TwoRoom、Cube 和 Reach3D 上的研究结论
 
-截至 2026-11-22，补充此前 GitHub 结果索引未覆盖的已完成实验。**SPT 不用像素解码器、也不用 EMA，在 PushT 的固定 96 个起点中最高成功 84 次。** 在另一套 PushT 评测中，带渲染器的 F8 比窗内对比学习 Q5 更能识别方块是否到位。RoboCasa Reach3D 上，增加预训练所见厨房组合的收益在两个独立初始化上都出现了。三个发现使用的案例、规划预算和成功规则分别列在下文。[此前的逐任务结果索引](https://github.com/sp12138/SPT-JEPA/blob/77ee0551c0853e55a73e7b8ee5bdd1063544592d/docs/results-index.md)
+截至 2026-11-22，补充此前 GitHub 结果索引未覆盖的已完成实验。**SPT-JEPA-decoder-free 不用像素解码器、也不用 EMA，在 PushT 的固定 96 个起点中最高成功 84 次。** 在另一套 PushT 评测中，带渲染器的 F8 比窗内对比学习 Q5 更能识别方块是否到位。RoboCasa Reach3D 上，增加预训练所见厨房组合的收益在两个独立初始化上都出现了。三个发现使用的案例、规划预算和成功规则分别列在下文。[此前的逐任务结果索引](https://github.com/sp12138/SPT-JEPA/blob/77ee0551c0853e55a73e7b8ee5bdd1063544592d/docs/results-index.md)
 
-## 1. SPT 在没有像素解码器和 EMA 时也能规划 PushT
+## 1. SPT-JEPA-decoder-free 在无 EMA 的 PushT 规划中达到 84/96
 
 从随机初始化开始，视觉编码器 E 和视频预测器 R 用稀疏的历史帧预测未来视觉表征。动力学预测器 D 学习实际执行的动作如何改变表征，D 的梯度与 E 隔离。规划时用 D 展开候选动作，以预测终点到目标图像的表征距离打分。固定 96 个起点，每轮 CEM 用 300 个候选、做 30 轮优化、预测六步，以推杆和方块联合达标计成功。
 
@@ -13,7 +13,7 @@
 
 冻结分支两个峰值的累计更新为 50,577 和 54,577 步，最后完整评测为 64,577 步。一个种子重复评同一批案例，已经给出了这条路线可行的证据。冻结、六步损失、父权重和预算同时变化，各自贡献仍待等预算消融。另一个联合训练对照在同为 46,446 步时，无 EMA 与强 EMA 分别为 **66/96、67/96**，这组数据支持无 EMA 可用，尚未显示去掉 EMA 有性能优势。
 
-复核可从共享盘交接副本 `handoff/2026-11-21/HANDOFF.md` 第 23–33 行进入。SPT 历史运行名为 `pusht_noema_geometryE18577_Drollout6_seed234_20261119_v1_long` 和 `pusht_noema_regional_future2_switch15482_seed234_20261119_v1_long`，运行内按 `evaluations/stepNNNNNN/summary.json` 定位原始汇总。
+复核可从共享盘交接副本 `handoff/2026-11-21/HANDOFF.md` 第 23–33 行进入。这两条训练分支的历史运行名为 `pusht_noema_geometryE18577_Drollout6_seed234_20261119_v1_long` 和 `pusht_noema_regional_future2_switch15482_seed234_20261119_v1_long`，运行内按 `evaluations/stepNNNNNN/summary.json` 定位原始汇总。
 
 ## 2. SPT-JEPA 在 PushT 上学到了哪些可用于规划的信息
 
@@ -72,4 +72,4 @@ F8 使用 8 帧窗、37,473 次更新，LeWM 使用 4 帧窗、45,795 次更新�
 
 从官方 300M 权重先前运行保存的四条轨迹重新计算，平均回报为 **88.66%**，最终进入 2 mm 的为 **1/4**。该原生设置包含本体感觉输入。另一组在 64 个 RGB 开发案例上使用冻结 V-JEPA 2.1 编码器和固定线性头，平均回报 **77.67%**，最终成功 **0/64**。这个线性头不调用 RoboJEPA 预测器，切换预测器尺寸不会改变其权重或输入。上述结果不能支持我们已经超过同条件的 RoboJEPA CEM，完整的同案例 CEM 对照仍缺。原始归档见 `runs/lingjing_evaluation_20261122/native_archival_score.json` 与同目录 `HISTORICAL.md`。
 
-文中的 `handoff/` 与 `runs/` 均相对于共享项目根 `/efs/prescottsun/SPT-JEPA/`。SPT 旧运行的索引保存在交接副本中。
+文中的 `handoff/` 与 `runs/` 均相对于共享项目根 `/efs/prescottsun/SPT-JEPA/`。SPT-JEPA-decoder-free 历史运行的索引保存在交接副本中。
