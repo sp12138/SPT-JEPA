@@ -22,12 +22,19 @@ the linear readout's rose (81.37 to 85.70).
 ## Rules for the evaluation stage
 
 `AGENTS.md` governs how a model is pretrained and is not changed by this mandate.
-Parts of stage 2 go beyond what it currently allows (a policy head trained on
-action sequences toward a later frame of the same episode; fine-tuning the encoder
-with action labels; probes that read simulator state). The proposal is that the
-evaluation stage has its own rule set, kept separate from the from-scratch
-training rules and never mixed with them in one table. Until Peng confirms that
-in this session, do only the steps marked "allowed now".
+Decided by Lingjing on 2026-11-22, under the authority Peng delegated for this
+project: the evaluation stage has its own rule set.
+
+- Allowed, for evaluation only: a policy head trained on action sequences toward a
+  later frame of the same episode; fine-tuning a copy of the encoder with action
+  labels; probes trained on simulator state.
+- Nothing trained in the evaluation stage feeds back into any model's pretraining.
+- These results are reported in their own tables, never mixed with the
+  from-scratch training results.
+- The robot's joint readings (proprioception) may be used only for the labelled
+  reproduction row of the public RoboJEPA reference under its own settings. Every
+  comparison row is RGB only, with the commands actually issued as the action
+  history.
 
 ## Work, in order
 
@@ -50,10 +57,10 @@ in this session, do only the steps marked "allowed now".
    from existing results, without new training, the curves the repository already
    has (training hours; 116 / 464 / 1,856 added trajectories; two seeds) into one
    table in the protocol's format, with what is and is not matched.
-4. **State probes (after Peng's confirmation).** Log simulator state for the probe
+4. **State probes.** Log simulator state for the probe
    training logs, fit the probes on encoded states and on states the predictor
    rolls forward, and report error in physical units against horizon.
-5. **Policy head and policy plus planning (after Peng's confirmation).** As in
+5. **Policy head and policy plus planning.** As in
    Section 6, Step 1 of the design, with its success checks.
 
 ## Yours to decide
@@ -69,7 +76,5 @@ definition after results from it have been seen.
 
 ## Stop conditions
 
-- Steps 1 to 3 done and written up: stop and wait for the rule-set answer if it has
-  not come.
 - A public model cannot be reproduced within 5 points of its recorded number under
   its own settings: report the gap and stop that row; do not tune it.
