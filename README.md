@@ -1,5 +1,7 @@
 # SPT-JEPA
 
+[研究结论（中文）](docs/research-findings.md) 汇总了 SPT 无 EMA 的 PushT 规划、带渲染器与 decoder-free 的对照，以及 RoboCasa Reach3D 的场景覆盖实验。
+
 Initialized from [sp12138/SPT](https://github.com/sp12138/SPT) at commit
 [`d43a452`](https://github.com/sp12138/SPT/commit/d43a4528a6aaaaf76f10a92a67a294d91f1996b6) on 2026-10-24.
 The original SPT baseline documentation follows.
